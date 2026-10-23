@@ -1,5 +1,6 @@
 import { content, type Content } from '../../data';
 import { characterBaseStats } from '../character/stats';
+import { blessedBy } from '../gods/blessings';
 import type { Character } from '../character/types';
 import type { Modifier } from '../stats/modifiers';
 import type { PrimaryStat } from '../stats/types';
@@ -50,6 +51,7 @@ export function canLearnGeneral(char: Character, id: string, c: Content = conten
       if ((base[stat as PrimaryStat] ?? 0) < (need ?? 0)) return fail(`Requires ${need} ${stat.toUpperCase()}.`);
     }
   }
+  if (def.god && !blessedBy(char, def.god, c)) return fail(`Only those blessed by ${c.gods.get(def.god).name} may learn this.`);
   const grimoire = c.grimoires.find(id);
   if (grimoire && char.classes.some((p) => p.classId === grimoire.classId)) {
     return fail('You already know this skill through your class.');

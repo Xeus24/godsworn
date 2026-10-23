@@ -42,7 +42,7 @@ Every class starts with 34 primary points and gains 5.0 per level.
 ## Class resources (7)
 Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), Soul Shards (5, starts 1), Chi (5, starts 1), Verse (100).
 
-## Skills (22 starting + 50 skill-tree + 24 specialization + 24 hybrid + 39 general + 32 ultimates + 25 enemy + 8 mentor skills)
+## Skills (22 starting + 50 skill-tree + 24 specialization + 24 hybrid + 39 general + 10 divine + 32 ultimates + 25 enemy + 8 mentor + 10 punisher skills)
 
 **Class starters (16):**
 
@@ -68,7 +68,7 @@ Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), 
 **Racial (6):** Rally, Moonlit Step, Stoneform, Bloodlust, Pounce, Radiant Wings (see Races).
 
 ## Gods (10 + 1 hidden)
-Solenne (Sun & Justice, holy), Morrath (Death & Endings, shadow), Kael (War & Glory, physical), Ysolde (Nature & the Hunt, nature), Vex (Trickery & Luck, arcane), Thalor (Forge & Craft, fire), Nymira (Seas & Storms, lightning), Aurelis (Knowledge & Magic, arcane), Hesha (Hearth & Mercy, holy), Grimvald (Wealth & Trade, physical). Hidden: **The Nameless One** (Corruption & the Void, void).
+Solenne (Sun & Justice, holy), Morrath (Death & Endings, shadow), Kael (War & Glory, physical), Ysolde (Nature & the Hunt, nature), Vex (Trickery & Luck, arcane), Thalor (Forge & Craft, fire), Nymira (Seas & Storms, lightning), Aurelis (Knowledge & Magic, arcane), Hesha (Hearth & Mercy, holy), Grimvald (Wealth & Trade, physical). Hidden: **The Nameless One** (Corruption & the Void, void). Favor rules, blessings and divine items are in *Gods, favor and blessings* below.
 
 ## Equipment types
 **Weapons (20):** Sword, Greatsword, Axe, Greataxe, Mace, Warhammer, Dagger, Rapier, Spear, Scythe, Fist Weapon, Bow, Crossbow, Throwing Weapon, Staff, Wand, Tome, Orb, Instrument, Shield.
@@ -252,6 +252,31 @@ Generated from the data files by `npm run content:md`.
 | **Grimvald's Ledger** | Ancient Relic | 10 | +30% Gold Find; Every debt ever owed, in very small handwriting; Use: Collect the Debt: Weaken the target, make it Vulnerable, and pocket 25 gold.; Awakens (Pray at shrines 30 times while carrying it.): +40% gold find, +15% magic find |
 | **The Thousandth Page** | Ancient Relic | 20 | +10% increased Magic Attack; +5% Cooldown Reduction; Torn from Aurelis’s own book. The words rearrange when you are not looking; Use: Turn the Page: Reduce all cooldowns by 2 turns and restore 50 MP.; Awakens (Win 40 battles while wearing it.): +8% cooldown reduction, +10% XP |
 
+### Divine items (20)
+
+| Item | Base | Lvl | Effects |
+|---|---|---|---|
+| **Dawnspire** | Mithril Mace | 20 | +25% Holy Damage; +8 Faith; 20% more damage during the day |
+| **Aegis of the Open Eye** | Adamant Shield | 32 | +20% increased Defense; +15% Status Resist; Start every battle with Divine Protection |
+| **Raven’s Quill** | Ironwood Wand | 20 | +25% Shadow Damage; +8 Intelligence; 20% more damage at night |
+| **Shroud of the Last Door** | Spellweave Shawl | 32 | +10% increased Max HP; Once per battle, survive a killing blow with 1 HP |
+| **Blade of the Red Banner** | Mithril Greatsword | 20 | +10 Strength; +25% Crit Damage; Deal 25% more damage to bosses |
+| **Warhelm of Kael** | Adamant Helm | 32 | +12% Damage Bonus; +5% Crit Chance; Always act first in the opening round |
+| **Bow of the Green Hour** | Ironwood Bow | 20 | +25% Nature Damage; +8 Dexterity; 25% chance on hit to Poison |
+| **Antlered Circlet** | Shadowhide Cap | 32 | +8% Dodge; +5 HP Regen; A spirit stag joins you at the start of every battle |
+| **Two-Faced Dagger** | Mithril Dagger | 20 | +10 Luck; +8% Crit Chance; Critical hits have a 30% chance to steal 8 gold |
+| **Ring of Loaded Dice** | Platinum Ring | 32 | +30% Magic Find; +20% Crit Damage; Begin every battle in Stealth |
+| **Anvilbreaker** | Mithril Warhammer | 20 | +25% Fire Damage; +8 Vitality; 25% chance on hit to Burn |
+| **Forgefather’s Plate** | Adamant Breastplate | 32 | +25% increased Defense; 6% less Damage Taken; No speed penalty for off-class armor |
+| **Tidecaller** | Ironwood Staff | 20 | +20% Lightning Damage; +20% Ice Damage; Ice damage against Burning enemies always Shatters |
+| **Pearl of the Deep** | Platinum Amulet | 32 | +5 MP Regen; +10 Intelligence; 20% chance for spells to cast a second time |
+| **Codex of a Thousand Pages** | Arcanist's Tome | 20 | +25% Arcane Damage; +5% Cooldown Reduction; Knowledge is power, and this is a lot of knowledge |
+| **Starmark Circlet** | Spellweave Hood | 32 | +15% XP Gain; +12% increased Magic Attack; Kills restore 15 MP |
+| **Hearthkeeper** | Gold Holy Symbol | 20 | +25% Healing Power; +8 Wisdom; Half of all overhealing becomes a shield |
+| **Mantle of Mercy** | Adamant Pauldrons | 32 | +12% increased Max HP; +20% Healing Received; The first time you fall below 30% HP, heal 35% |
+| **Hammer of the Golden Scale** | Adamant Mace | 32 | +40% Gold Find; +10% increased Physical Attack; Kills grant 12 gold |
+| **Merchant-Prince’s Ring** | Gold Ring | 20 | +30% Gold Find; +8 Luck; Smells faintly of other people’s money |
+
 ### Item sets (10)
 
 **Warlord's Vigil** (Warrior): Warlord's Helm, Warlord's Pauldrons, Warlord's Breastplate, Warlord's Gauntlets, Warlord's Legplates, Warlord's Sabatons
@@ -428,7 +453,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
 
-### Enemies (26)
+### Enemies (36)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -458,6 +483,16 @@ Generated from the data files by `npm run content:md`.
 | **The Pale Tutor** | 15 | miniboss | humanoid, mentor | back | summoner | Grasp of the Grave, Dark Pact, Grave Chill | shadow +40%, holy -25% |
 | **Master Ren** | 15 | miniboss | humanoid, mentor | front | aggressive | Hundred Fists, Master’s Riposte |  |
 | **Lyra Silvertongue** | 15 | miniboss | humanoid, mentor | back | caster | Discordant Note, Pack Howl |  |
+| **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50% |
+| **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50% |
+| **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50% |
+| **Herald of Ysolde** | 1 | punisher | spirit, divine | back | caster | Wrath of Ysolde | nature +50% |
+| **Herald of Vex** | 1 | punisher | spirit, divine | back | caster | Wrath of Vex | arcane +50% |
+| **Herald of Thalor** | 1 | punisher | spirit, divine | back | caster | Wrath of Thalor | fire +50% |
+| **Herald of Nymira** | 1 | punisher | spirit, divine | back | caster | Wrath of Nymira | lightning +50% |
+| **Herald of Aurelis** | 1 | punisher | spirit, divine | back | caster | Wrath of Aurelis | arcane +50% |
+| **Herald of Hesha** | 1 | punisher | spirit, divine | back | caster | Wrath of Hesha | holy +50% |
+| **Herald of Grimvald** | 1 | punisher | spirit, divine | back | caster | Wrath of Grimvald | physical +50% |
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
@@ -672,10 +707,10 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | Bard | **Trickster**: Nothing is what it seems. | Misdirect (Confusion, Mirror Image) | **Grand Illusion**: Nothing is real: every enemy may be Charmed (70%), and the party vanishes into Stealth. | Master of Illusion: Crits may Charm the target. |
 <!-- specializations:end -->
 
-## General skills (71)
+## General skills (81)
 
 <!-- general:start -->
-71 general skills (ranks 1-10; Grimoires 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+81 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -750,6 +785,16 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | **Death Coil (Grimoire)** (level 15) | grimoire | Epic | Death Coil | Use the Death Coil skill of another class at 70% power. |
 | **Meditation (Grimoire)** (level 20) | grimoire | Legendary | Meditation | Use the Meditation skill of another class at 70% power. |
 | **Soothing Melody (Grimoire)** (level 15) | grimoire | Epic | Soothing Melody | Use the Soothing Melody skill of another class at 70% power. |
+| **Rite of Dawn** | divine | Divine | Sunlance | Sunlance in battle. Passive: +2% holy damage per rank. |
+| **Rite of Endings** | divine | Divine | Last Rites | Last Rites in battle. Passive: +2% shadow damage per rank. |
+| **Rite of War** | divine | Divine | Avatar of War | Avatar of War in battle. Passive: +1 STR per rank. |
+| **Rite of the Hunt** | divine | Divine | Wild Call | Wild Call in battle. Passive: +1 DEX per rank. |
+| **Rite of Chance** | divine | Divine | Coin Flip | Coin Flip in battle. Passive: +1 LUK per rank. |
+| **Rite of the Forge** | divine | Divine | Forge Strike | Forge Strike in battle. Passive: +2% defense per rank. |
+| **Rite of Storms** | divine | Divine | Maelstrom | Maelstrom in battle. Passive: +2% lightning damage per rank. |
+| **Rite of Knowing** | divine | Divine | Revelation | Revelation in battle. Passive: +1 INT per rank. |
+| **Rite of Mercy** | divine | Divine | Hearthlight | Hearthlight in battle. Passive: +3 healing power per rank. |
+| **Rite of Tithes** | divine | Divine | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
 <!-- general:end -->
 
 ## Multiclassing (8 trials, 12 hybrids)
@@ -816,3 +861,54 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Plague Flask** | Plague Doctor | 12 MP | 3 | Hurl a flask: 60% MATK nature damage to every enemy and 2 stacks of Poison. |
 | **Leech Cure** | Plague Doctor | 10 MP | 2 | Heal an ally for 120% MATK and draw out Poison. |
 <!-- multiclass:end -->
+
+## Gods, favor and blessings
+
+<!-- gods:start -->
+Favor runs from -100 to 1200. Tiers: Hated (-50 or less), Distrusted, Neutral (0), Acknowledged (100), Favored (250), Devoted (500), Exalted (800); Apostle needs a trial (Phase 9). Gaining favor costs the god's rivals 10% of it. Shrine prayer: +10 once per day.
+
+| God | Rivals / allies | Likes | Dislikes | Offerings | Prayer (battle) | Intervention |
+|---|---|---|---|---|---|---|
+| **Solenne**, Sun & Justice | Morrath / Hesha | Smiting the undead (+3); Ending cultists (+3); Wielding holy light (+0.5); Victories under the sun (+1) | Raising the dead (-2); Fleeing from evil (-2) | Values arms and armor for her crusaders. | **Sunburst**: Holy light sears every enemy (60% Divine Power). (15 favor) | **The Unclouded Eye**: Solenne’s gaze burns every enemy as she raises you. |
+| **Morrath**, Death & Endings | Solenne / Vex | Felling mighty foes (+5); Raising the dead (+2); Shadow arts (+0.5); Victories by night (+1) | Cheating death with healing (-0.25); Holy light (-0.5) | Collects the strange things the dead leave behind. | **Death’s Toll**: Curse and Weaken every enemy for 2 turns. (15 favor) | **Not Yet**: Morrath turns you away from the Last Door, and the shadows take payment from your foes. |
+| **Kael**, War & Glory | Hesha / Thalor | Winning battles (+2); Defeating champions (+4); Mighty blows (+0.5) | Cowardice (-5); Defeat (-3) | Loves good weapons above all things. | **Battle Cry**: +25% damage for you for 3 turns, and you gain Haste. (15 favor) | **Not Like This**: Kael refuses you a coward’s death: you rise in a red rage. |
+| **Ysolde**, Nature & the Hunt | Thalor / Nymira | Hunting beasts (+2); Nature magic (+0.5); The bow (+0.25) | Wasteful salvaging (-1); Wildfire (-0.25) | Accepts herbs, hides and food with joy. | **Huntress’s Mark**: Mark every enemy Vulnerable and Slow them for 2 turns. (15 favor) | **The Green Hour**: Vines bind your foes as the forest closes your wounds. |
+| **Vex**, Trickery & Luck | Grimvald / Morrath | Lucky strikes (+1); Stealing (+2); Gambling on the unknown (+1) | Boring caution (-2); Losing (badly) (-1) | Will take anything shiny. Especially gold. | **Loaded Dice**: +30 crit chance and +15 dodge for 3 turns. (15 favor) | **Double or Nothing**: Vex flips a coin for your life. It lands on its edge. |
+| **Thalor**, Forge & Craft | Ysolde / Kael | Improving your gear (+4); Reclaiming metal (+1); Fire (+0.5) | Neglecting your gear (-3); Cold that cracks steel (-0.25) | Loves rare ores and well-made armor. | **Forge-Blessed**: A shield of 20% max HP and +30% defense for 3 turns. (15 favor) | **Tempered**: Thalor reforges you in the heat of battle. |
+| **Nymira**, Seas & Storms | Aurelis / Ysolde | Storm-struck kills (+2); Lightning (+0.5); Frost (+0.5) | Fire (-0.5); Staying ashore (-1) | Pearls, gems and things from the deep. | **Call the Storm**: Lightning strikes every enemy (50% Divine Power) and soaks them Wet. (15 favor) | **The Tide Turns**: A wave of cold water lifts you to your feet and drags your foes under. |
+| **Aurelis**, Knowledge & Magic | Nymira / Grimvald | Reading skillbooks (+10); Uncovering secrets (+2); Arcane study (+0.5) | Abandoning an experiment (-1); Destroying craftsmanship (-0.5) | Books, scrolls and curiosities. | **Arcane Insight**: Restore 40 MP and reduce your cooldowns by 2. (15 favor) | **Footnote**: Aurelis amends the record: you did not die after all. |
+| **Hesha**, Hearth & Mercy | Kael / Solenne | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
+| **Grimvald**, Wealth & Trade | Vex / Aurelis | Earning gold (per 100) (+1); Profitable work (+0.5) | Losing money (-3); Theft (-1) | Gold. Honest, countable gold. | **Tithe**: Shield 25% of max HP and gain +20% gold find for this battle. (15 favor) | **Debt Forgiven**: Grimvald writes off your death as a bad debt. |
+
+### Blessings (90)
+
+Minor blessings last 10 battles and cost favor. Major blessings are offered 3 at a time when a tier is first reached, stay active while the tier holds, and fill 1-3 slots (more at levels 25 and 50). Rival gods' blessings cannot be slotted together.
+
+| God | Minor | Major (tier) |
+|---|---|---|
+| Solenne | **Dawnlight**: +15% holy damage.<br>**Ward of Day**: +10% defense.<br>**Judgement**: +20% damage against undead. | **Radiance** (acknowledged): +10% holy damage and +5 FAI.<br>**Vigil** (acknowledged): +8% max HP.<br>**Swift Justice** (favored): 20% chance on hit to deal bonus holy damage (40% Divine Power).<br>**Daybreak** (acknowledged): 20% more damage during the day.<br>**Aegis of Dawn** (devoted): Start every battle with Divine Protection for 1 turn and +15% holy damage.<br>**The Unclouded Eye** (exalted): +25% holy damage; your critical hits ignore half of defense. |
+| Morrath | **Shade**: +15% shadow damage.<br>**Grave Chill**: +10 status chance.<br>**The Toll**: +20% damage against enemies below 50% HP. | **Raven’s Eye** (acknowledged): +10% shadow damage and +5 INT.<br>**Patience of the Grave** (acknowledged): +10% status resist.<br>**Soul Harvest** (favored): Kills restore 10% of max HP.<br>**Nightfall** (acknowledged): 20% more damage at night.<br>**Legion of the Last Door** (devoted): Summoning skills raise one extra minion.<br>**Keeper’s Reprieve** (exalted): Once per battle, survive a killing blow with 1 HP; +15% shadow damage. |
+| Kael | **Fury**: +10% damage.<br>**Keen Blade**: +15% crit damage.<br>**Glory**: +20% damage while above 50% HP. | **Strength of the Banner** (acknowledged): +6 STR.<br>**Veteran** (acknowledged): +5% crit chance.<br>**First Blood** (favored): Always act first in the opening round.<br>**Warlust** (acknowledged): Kills grant +20% damage for 2 turns.<br>**Champion** (devoted): Deal 25% more damage to bosses; +10% damage.<br>**The Red Banner** (exalted): +20% damage and +15% crit damage; attacks on enemies below 20% HP always crit. |
+| Ysolde | **Thorn**: +15% nature damage.<br>**Stalker**: +8 dodge.<br>**The Hunt**: +20% damage against beasts. | **Grace of the Deer** (acknowledged): +6 DEX.<br>**Hunter’s Eye** (acknowledged): +10% damage with Ranged skills.<br>**Green Venom** (favored): 20% chance on hit to Poison.<br>**Wild Heart** (acknowledged): +4 HP regeneration and +5% speed.<br>**Mother of the Pack** (devoted): A spirit stag joins you at the start of every battle.<br>**The Antlered Moon** (exalted): +25% nature damage; damage over time can crit. |
+| Vex | **Beginner’s Luck**: +5 LUK.<br>**Sleight**: +6% crit chance.<br>**Jackpot**: +30% gold find and +20% magic find. | **Fortune’s Favorite** (acknowledged): +15% magic find.<br>**Quick Fingers** (acknowledged): +5 dodge and +2 speed.<br>**Gambler’s Edge** (favored): +25% crit damage, but -5 accuracy.<br>**Now You Don’t** (acknowledged): Begin every battle in Stealth.<br>**Two-Faced Coin** (devoted): Critical hits have a 25% chance to steal 5 gold and reduce your cooldowns by 1.<br>**The Smiling Coin** (exalted): +10 LUK, +10% crit chance and +25% magic find. |
+| Thalor | **Ember**: +15% fire damage.<br>**Tempered Plate**: +12% defense.<br>**Honed Edge**: +10% physical attack. | **Iron Sinew** (acknowledged): +4 STR and +4 VIT.<br>**Anvil Skin** (acknowledged): +10% defense.<br>**Forgefire** (favored): 20% chance on hit to Burn.<br>**Mastercraft** (acknowledged): No speed penalty for off-class armor; +5% max HP.<br>**Bulwark** (devoted): Take 10% less damage.<br>**The Anvil-Father** (exalted): +20% defense, +20% fire damage, and Burns spread when burning enemies die. |
+| Nymira | **Spark**: +15% lightning damage.<br>**Sea Frost**: +15% ice damage.<br>**High Tide**: +3 MP regeneration. | **Current** (acknowledged): +3 speed.<br>**The Depths** (acknowledged): +6 INT.<br>**Squall** (favored): Lightning skills deal 20% more damage.<br>**Shatterstorm** (acknowledged): Ice damage against Burning enemies always Shatters; +10% ice damage.<br>**Eye of the Hurricane** (devoted): Each turn, 25% chance to strike a random enemy with lightning (60% Divine Power).<br>**Mother of Tides** (exalted): +20% lightning and ice damage, and 20% chance for spells to cast twice. |
+| Aurelis | **Rune-Lit**: +15% arcane damage.<br>**Focus**: +10% max MP.<br>**Studious**: +15% XP. | **Bright Mind** (acknowledged): +4 INT and +4 WIS.<br>**Marginalia** (acknowledged): +3% cooldown reduction.<br>**Living Library** (favored): +10% XP and +2 MP regeneration.<br>**Arcanum** (acknowledged): Spells deal 15% more damage.<br>**Echoing Word** (devoted): 20% chance for spells to cast a second time for free.<br>**The Thousand-Page** (exalted): +25% arcane damage, +10% magic attack and +5% cooldown reduction. |
+| Hesha | **Warmth**: +3 HP regeneration.<br>**Gentle Hands**: +15 healing power.<br>**Home Cooking**: +10% max HP. | **Kindness** (acknowledged): +4 WIS and +4 FAI.<br>**Shelter** (acknowledged): +10% healing received.<br>**Merciful** (favored): Half of your overhealing becomes a shield.<br>**Banked Embers** (acknowledged): Heal 5% of max HP at the start of each turn.<br>**Hearthguard** (devoted): The first time you fall below 30% HP each battle, heal 40%.<br>**Keeper of the Hearth** (exalted): +25 healing power, +15% max HP, and take 8% less damage. |
+| Grimvald | **Lucky Coin**: +25% gold find.<br>**Balanced Ledger**: +5% defense and +5% damage.<br>**Compound Interest**: +15% magic find. | **Heavy Purse** (acknowledged): +20% gold find.<br>**Fair Scale** (acknowledged): +5 LUK.<br>**Investment** (favored): +10% XP and +10% gold find.<br>**Vault** (acknowledged): Start every battle with a shield of 15% max HP.<br>**Dividend** (devoted): Kills grant 10 gold.<br>**The Golden Scale** (exalted): +40% gold find, +25% magic find and +10% damage. |
+
+### Divine general skills
+
+| Skill | God | Battle skill | Effect |
+|---|---|---|---|
+| **Rite of Dawn** | Solenne | Sunlance | Sunlance in battle. Passive: +2% holy damage per rank. |
+| **Rite of Endings** | Morrath | Last Rites | Last Rites in battle. Passive: +2% shadow damage per rank. |
+| **Rite of War** | Kael | Avatar of War | Avatar of War in battle. Passive: +1 STR per rank. |
+| **Rite of the Hunt** | Ysolde | Wild Call | Wild Call in battle. Passive: +1 DEX per rank. |
+| **Rite of Chance** | Vex | Coin Flip | Coin Flip in battle. Passive: +1 LUK per rank. |
+| **Rite of the Forge** | Thalor | Forge Strike | Forge Strike in battle. Passive: +2% defense per rank. |
+| **Rite of Storms** | Nymira | Maelstrom | Maelstrom in battle. Passive: +2% lightning damage per rank. |
+| **Rite of Knowing** | Aurelis | Revelation | Revelation in battle. Passive: +1 INT per rank. |
+| **Rite of Mercy** | Hesha | Hearthlight | Hearthlight in battle. Passive: +3 healing power per rank. |
+| **Rite of Tithes** | Grimvald | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
+<!-- gods:end -->

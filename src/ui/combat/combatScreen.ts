@@ -226,6 +226,7 @@ export class CombatScreen implements Screen {
     if (key === 'a') this.useSkillOption(x, skillOptions(this.battle, x)[0] as SkillOption);
     else if (key === 'd') this.act({ kind: 'defend', actorId: x.id });
     else if (key === 'f' && this.battle.canFlee && !this.battle.isBoss) this.act({ kind: 'flee', actorId: x.id });
+    else if (key === 'p' && x.prayer && x.prayer.uses > 0 && !(x.cooldowns.pray ?? 0)) this.act({ kind: 'pray', actorId: x.id });
     else if (key === 'i') {
       this.menu = 'items';
       this.renderCommands();
@@ -401,6 +402,7 @@ export class CombatScreen implements Screen {
         btn(ultReady ? 'Skills ★' : 'Skills', () => ((this.menu = 'skills'), this.renderCommands())),
         btn('Items', () => ((this.menu = 'items'), this.renderCommands())),
         ...(x.abilities.length ? [btn('Abilities', () => ((this.menu = 'abilities'), this.renderCommands()))] : []),
+        ...(x.prayer ? [this.prayButton(x, btn)] : []),
         btn('Defend (D)', () => this.act({ kind: 'defend', actorId: x.id }), false, () => 'Take half damage until your next turn and recover 5% MP.'),
         btn(`Swap to ${x.row === 'front' ? 'back' : 'front'} row`, () => this.act({ kind: 'swap', actorId: x.id }), false, () => 'Back row: take 25% less physical damage, but melee attacks need the front row.'),
         btn('Flee (F)', () => this.act({ kind: 'flee', actorId: x.id }), !this.battle.canFlee || this.battle.isBoss),
@@ -483,6 +485,15 @@ export class CombatScreen implements Screen {
     this.logNode.scrollTop = this.logNode.scrollHeight;
   }
 
+  /** Pray to the patron: spends favor for the god's divine effect. */
+  private prayButton(x: Combatant, btn: (label: string, run: () => void, disabled?: boolean, tip?: () => HTMLElement | string) => HTMLButtonElement): HTMLButtonElement {
+    const p = x.prayer as NonNullable<Combatant['prayer']>;
+    const cd = x.cooldowns.pray ?? 0;
+    const god = content.gods.get(p.god);
+    const label = `Pray (P): ${p.name}${cd ? ` (${cd})` : ''}`;
+    return btn(label, () => this.act({ kind: 'pray', actorId: x.id }), cd > 0 || p.uses <= 0, () => `${god.name}: ${p.description} Costs ${p.cost} favor (${p.uses} prayer${p.uses === 1 ? '' : 's'} left).`);
+  }
+
   private showResults(r: BattleRewards): void {
     const lines: HTMLElement[] = [];
     const title = r.outcome === 'victory' ? 'Victory!' : r.outcome === 'defeat' ? (r.permadeath ? 'Your Legend Ends' : 'Defeat') : 'Escaped';
@@ -513,6 +524,14 @@ export class CombatScreen implements Screen {
             : `You wake up bruised but alive. Lost ${r.goldLost} gold, and your gear is battered.`,
         ),
       );
+    }
+    if (r.favor.length) {
+      const favor = r.favor.map((ch) => {
+        const god = content.gods.get(ch.god);
+        const d = Math.round((ch.after - ch.before) * 10) / 10;
+        return el('span', { style: `color:${god.color}` }, `${god.name} ${d > 0 ? '+' : ''}${d}`);
+      });
+      lines.push(el('p', { class: 'small result-favor' }, 'Favor: ', ...favor.flatMap((f, i) => (i ? [' · ', f] : [f]))));
     }
     const buttons: HTMLElement[] = [];
     const go = el('button', { class: 'primary' }, r.permadeath ? 'Return to title' : 'Continue');

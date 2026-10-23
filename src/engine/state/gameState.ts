@@ -14,6 +14,7 @@ import { applyStartingKit } from '../items/use';
 import { SPEC_LEVEL } from '../skills/specs';
 import type { PrimaryStat } from '../stats/types';
 import { advanceClock, createClock, hourOf, timeOfDay, type GameClock } from './clock';
+import { DevotionActions } from './devotionActions';
 import { GeneralActions } from './generalActions';
 import { ItemActions } from './itemActions';
 import { MulticlassActions } from './multiclassActions';
@@ -21,7 +22,7 @@ import { TreeActions } from './treeActions';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 7;
+export const SAVE_VERSION = 8;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -99,6 +100,7 @@ export class GameSession {
   readonly trees: TreeActions;
   readonly general: GeneralActions;
   readonly multiclass: MulticlassActions;
+  readonly devotion: DevotionActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -108,6 +110,7 @@ export class GameSession {
     this.trees = new TreeActions(this);
     this.general = new GeneralActions(this);
     this.multiclass = new MulticlassActions(this);
+    this.devotion = new DevotionActions(this);
   }
 
   /** Starts a new game and hands the hero their class's starting kit. */

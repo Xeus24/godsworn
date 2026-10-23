@@ -1,0 +1,126 @@
+/* ---------- Pantheon ---------- */
+
+.pantheon-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 900px) {
+  .pantheon-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+.pantheon-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.god-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.god-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 6px 8px;
+  border-left: 3px solid var(--god, #888);
+}
+
+.god-card.selected {
+  border-color: var(--gold);
+  border-left-color: var(--god, #888);
+}
+
+.god-head {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.favor-bar {
+  height: 14px;
+}
+
+.god-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.god-deeds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.god-deeds ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.blessing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 6px;
+}
+
+.blessing-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #4a3a5a;
+  border-radius: 6px;
+}
+
+.blessing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.blessing-chip {
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 12px;
+  cursor: help;
+}
+
+.blessing-chip.inactive,
+.blessing-chip.empty {
+  opacity: 0.5;
+}
+
+.blessing-chip.minor {
+  border-style: dashed;
+}
+
+.row.wrap,
+.tabs.wrap {
+  flex-wrap: wrap;
+}
+
+.gold-input {
+  width: 90px;
+}
+
+.result-favor span {
+  font-weight: bold;
+}

@@ -49,7 +49,7 @@ export class Battle {
   current: Combatant | undefined;
   /** Consecutive party hits on one target. */
   chain: { targetId?: string; count: number; lastSide?: Side } = { count: 0 };
-  readonly tally: BattleTally = { kills: [], partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, generalUses: {} };
+  readonly tally: BattleTally = { kills: [], partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, generalUses: {}, tagUses: {}, summons: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];
   private uid = 0;
@@ -135,6 +135,7 @@ export class Battle {
       resources: x.resources,
       timeOfDay: this.timeOfDay,
       weaponTypes: x.weaponTypes,
+      ...(x.patron ? { patron: x.patron } : {}),
       ...extra,
     };
   }

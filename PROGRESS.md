@@ -11,8 +11,8 @@
 | 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | **Done** |
 | 6 | Specializations, general skills, skillbooks | **Done** |
 | 7 | Multiclassing, hybrid prestige classes | **Done** |
-| 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | Next |
-| 9 | Apostleship | |
+| 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | **Done** |
+| 9 | Apostleship | Next |
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | |
 | 11 | Economy | |
 | 12 | Quests, dialogue, main story, companions | |
@@ -43,7 +43,7 @@
   - 8 base classes, each with base stats, per-level growth, weapon and armor permissions, a resource, a mechanic, a playstyle and 2 starting skills.
   - 7 class resources (Rage, Combo Points, Faith, Focus, Soul Shards, Chi, Verse).
   - 22 starting skills (16 class, 6 racial), 31 synergy tags, 20 weapon types, 4 armor weights.
-  - All 11 gods' identities (name, domain, element, colors, favored stats). Their favor mechanics arrive in Phase 8.
+  - All 11 gods' identities (name, domain, element, colors, favored stats). Their favor mechanics arrived in Phase 8.
   - A 13-node paragon board.
 - **Skill schema** (`engine/skills/types.ts`): tags, element, targeting, ranks with per-rank scaling, MP/HP/resource costs, cooldowns, damage and heal power, on-use effects, resource generation and finishers. Three effect kinds were added for class mechanics: `setStance`, `startSong` and `summon`.
 - **Character model** (`engine/character/`):
@@ -257,6 +257,35 @@
 - `npm run sim` now includes four multiclass pairs (from level 15) and reports win rates for the class and hybrid trials.
 - 267 unit tests.
 
+### Phase 8: gods, favor and blessings
+- **Favor** with each of the 10 gods runs from −100 to 1200 across tiers: Hated, Distrusted, Neutral, Acknowledged (100), Favored (250), Devoted (500) and Exalted (800). Apostle comes with its trial in Phase 9.
+- **Likes and dislikes:** every god has 2–4 of each, judged after every battle and action. They are capped per battle, and the Pantheon reveals each one the first time it triggers.
+  - Examples: Solenne likes slaying undead and cultists, holy magic and daytime victories, and dislikes raising the dead and fleeing. Kael likes victories and champions, and hates cowardice. Aurelis likes reading skillbooks. Hesha likes healing and resting, and dislikes killing people.
+  - Battle tallies now record killing-blow elements, skill tags used and minions raised, so deeds like "storm-struck kills" or "Shadow arts" work.
+- **Rivals and allies:** Solenne–Morrath, Kael–Hesha, Ysolde–Thalor, Vex–Grimvald and Nymira–Aurelis are rivals. Any favor gained with a god costs its rival 10% of that gain.
+- **Favor Gain** (FAI, Nephilim) multiplies gains, and the birth-sign bonus now applies with its god.
+- **Shrines** (on the Pantheon screen):
+  - Prayer gives +10 once per in-game day.
+  - Offerings of gold or items are valued by each god's tastes (Grimvald loves gold, Thalor ore, Ysolde herbs and hides, Aurelis books...).
+  - Choose a **patron**.
+  - Buy the god's Divine **scripture** for 150 favor from Favored.
+- **90 blessings:**
+  - Minor blessings (3 per god) cost favor and last 10 battles.
+  - Major blessings (6 per god, uncommon to legendary) are offered 3 at a time each time a god first reaches Acknowledged, Favored, Devoted or Exalted.
+  - Major slots: 1, +1 at level 25 and level 50. Rival gods' blessings cannot be slotted together.
+  - A major blessing goes quiet while its god's favor is below its tier, and its values scale with Blessing Power.
+- **In battle:**
+  - **Pray (P)** spends favor with your patron for a divine effect (Sunburst, Death's Toll, Battle Cry...), up to 3 times, with a 3-turn cooldown.
+  - **Divine Intervention:** a Devoted+ god may save you from death (back to 40% HP plus the god's own miracle). The chance is 10–50% depending on favor and FAI, and it recharges when you rest.
+- **Hated gods** curse you (+5% damage taken each), and their **Herald** (10 divine punishers) joins a quarter of your fights. Beating it earns 60 favor of penance.
+- **20 Divine items** (2 per god) drop only once you have the devotion they ask for, need it to equip, and earn their god +1 favor per battle while worn.
+- **10 Divine general skills** (Rite of Dawn, Rite of War...) scale with Divine Power and can only be learned while their god blesses you.
+- **UI:**
+  - Pantheon screen (P): god cards with favor bars and tiers, blessing slots, patron and intervention status.
+  - Per-god details: personality, rivals, discovered likes and dislikes, shrine prayer, offerings, minor blessings, major blessing choices and slots, and scriptures.
+  - In battle: a Pray button (and the P key), plus favor changes on the result screen. Favor toasts and tier-change warnings.
+- 290 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -275,7 +304,7 @@
 - **Level-up toasts are combined** per XP grant, so a large XP gain does not flood the screen.
 - **Items are slot-based, not shaped:** each item takes one grid cell, like most JRPG inventories. This keeps drag-and-drop simple.
 - **Sets: 10, not 8.** The spec says "at least 8 (one per class + 2 general)", which is 10.
-- **Divine items are gated on favor:** they need a devotion tier with their god, so none drop until Phase 8 adds favor. The rarity, requirement checks and tooltips already work.
+- **Divine items are gated on favor:** they need a devotion tier with their god, so they only drop (and can only be equipped) once you have that tier.
 - **Junk-rarity gear** is Damaged quality with no affixes and is auto-marked as junk. Magic Find makes junk rarer.
 - **Magic Find formula:** each rarity's weight × (1 + MF/100)^exponent, with exponents rising from 0.5 (Uncommon) to 1.4 (Primordial) and −0.5 for Junk. Each NG+ tier adds +25 MF. Elite/boss sources add 50–400 MF. The simulation shows about 0.9% legendaries from normal enemies and about 2.3% from bosses at level 60.
 - **Gear bases** are drawn from tiers within 15 levels of the item level, and gear drops weight your class's usable types ×3.
@@ -309,6 +338,11 @@
 - **The 12th spec node is a shared "Signature Mastery"** (+8% Ultimate Charge per rank, 3 ranks). It ties each branch to its new ultimate without inventing 24 more unique minors.
 - **The Library is reached from the inventory** until towns exist (Phase 10), which then move it to town Libraries.
 - **Balance after Phase 6:** 96.6% average wins (the encounters only reach level 15, so specializations do not show up there yet). Spec balance needs the higher-level zones of Phase 10; the full pass is Phase 16.
+- **Rival penalty is 10%, not more.** The spec says rival gods dislike your devotion to their enemy. At 25% a single god at Favored left its rival Hated (and sending punishers), which made any devotion a trap. At 10% a rival turns Hated only around Exalted.
+- **Major blessing offers:** each god's six are 3 uncommon (Acknowledged), 1 rare (Favored), 1 epic (Devoted) and 1 legendary (Exalted), so each offer always holds 3 options (unchosen ones return in later offers). "Permanent while Devoted" is read as "active while you keep the tier it needs".
+- **Blessing Power uses base FAI** (FAI × 1%) to scale blessings, so blessings never feed back into the stat that sizes them.
+- **Prayer costs 15 favor** and is limited to 3 per battle, so it is a real spend rather than a free spell.
+- **Favor is kept to one decimal** so small per-battle likes (0.25–1) still add up.
 - **Trials instead of trial quests (for now).** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor at the Proving Grounds. Phase 12 can wrap these fights in quests without changing the unlock rules.
 - **12 hybrids, all class pairs.** The spec asks for at least 10 and lists a Paladin + Apostle of the Sun hybrid (Sun Knight); that one needs apostleship and is deferred to Phase 9.
 - **A hybrid tree is one standard 16-node branch** (the same template as class branches), inside the spec's 15–20 range. It gates at 3 points per tier so its capstone is reachable at about 15 points.
@@ -326,9 +360,9 @@
 - **Titles** (section 8) move to Phase 13. They are earned from feats and achievements, which land there.
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
-- **The birth sign favor bonus** takes effect when favor exists (Phase 8). **The Dwarf crafting discount** takes effect with crafting (Phase 11).
-- **Divine items** (2–3 per god) are added in Phase 8 with favor. **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. Both rarities are fully supported by generation already; they just have no items yet, so they never drop.
-- **The Pray combat action** needs divine favor and comes with the gods in Phase 8. Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
+- **The Dwarf crafting discount** takes effect with crafting (Phase 11).
+- **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
+- Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
 - **The Proving Grounds are the way to fight until Phase 10** adds zones and random encounters. After that they remain as a training option in towns.
 - **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
@@ -337,9 +371,14 @@
 - **Class trainers in towns and trial quests:** the trainers live at the Proving Grounds until towns arrive (Phase 10), and the trial fights become short quests in Phase 12.
 - **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
 - **Mid-level balance** (levels 15–40, where multiclassing and hybrid trials happen) waits for the zones and encounters of Phase 10; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 because the auto-battler spends turns on a level-1 mage's spells.
-- **Divine general skills** arrive with the gods in Phase 8, and **Forbidden** ones with heresies in Phase 14. Both categories already exist in the engine and the UI.
+- **Forbidden** general skills arrive with heresies in Phase 14 (the category already exists).
+- **Apostleship** (Exalted + trial, apostle trees, Divine Avatar, divine weapons, edicts, apostasy) is Phase 9. **Divine-rarity blessings** come only from apostleship, so none exist yet.
+- **Temples, temple merchants and temple discounts** need towns (Phase 10) and shops (Phase 11). Until then every god's shrine is reached from the Pantheon screen, and the 30-minute prayer stands in for travel.
+- **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
+- **God quests and pantheon politics** (world events, god-specific story chapters) come with quests and the story (Phases 12 and 14). **The Nameless One** is discovered in NG+ (Phase 14).
+- **Divine Intervention is once per rest**, not once per dungeon, until dungeons exist (Phase 10).
 - **General skills that act on the overworld** (Lockpicking, Detect Traps, Haggle, Cooking, Sprint on the map) come with zones, towns and shops in Phases 10–11. Their stat and battle versions already work.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 8: gods (10 + 1 hidden): favor and devotion tiers, likes and dislikes, rivalries, shrines and offerings, blessings and their slots, divine intervention, the Pray action in battle, divine items and Divine general skills, and the Pantheon screen.
+- Phase 9: apostleship. Exalted favor plus each god's Trial of Apostleship makes you its Apostle (one at a time). Apostles get a 20–25 node apostle tree, a Divine Avatar form, a divine weapon that evolves at levels 30/45/60, Divine-rarity blessings, Divine Edicts, and apostasy. Sun Knight (Paladin + Apostle of Solenne) arrives too.

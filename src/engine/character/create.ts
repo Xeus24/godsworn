@@ -1,4 +1,5 @@
 import { content, type Content } from '../../data';
+import { createDevotion } from '../gods/devotion';
 import { emptyPrimaryStats } from '../stats/types';
 import { addToHotbar, treeState } from '../skills/tree';
 import { restoreFull } from './stats';
@@ -47,6 +48,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     xpMode: 'split',
     hybrids: [],
     trialsWon: [],
+    devotion: createDevotion(),
     allocated: emptyPrimaryStats(),
     attributePoints: 0,
     paragonLevel: 0,

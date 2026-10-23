@@ -1,6 +1,7 @@
 import { content, type Content } from '../../data';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
+import { divineModifiers } from '../gods/blessings';
 import { generalFlags, generalModifiers } from '../skills/general';
 import { treeFlags, treeModifiers } from '../skills/tree';
 import { calculateStats, calculateStatsDetailed, type StatResult } from '../stats/calculate';
@@ -35,7 +36,7 @@ export function characterBaseStats(char: Character, c: Content = content): Prima
   return out;
 }
 
-/** Every modifier the character currently has: race, birth sign, paragon, gear, skill trees, general skills, timed buffs. */
+/** Every modifier the character currently has: race, birth sign, paragon, gear, skill trees, general skills, blessings and curses, timed buffs. */
 export function characterModifiers(char: Character, c: Content = content): Modifier[] {
   const race = c.races.get(char.raceId);
   const sign = c.birthSigns.get(char.birthSignId);
@@ -54,6 +55,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...treeModifiers(char, c));
   mods.push(...generalModifiers(char, c));
   mods.push(...offClassArmorModifiers(char, c));
+  mods.push(...divineModifiers(char, characterBaseStats(char, c), c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
   return mods;
 }
@@ -76,7 +78,8 @@ export function offClassArmorModifiers(char: Character, c: Content = content): M
 
 /** Adds what the character itself knows (wielded weapon types) to a condition context. */
 function withOwnContext(char: Character, ctx: ConditionContext, c: Content): ConditionContext {
-  return { weaponTypes: equippedWeaponTypes(char, c), ...ctx };
+  const patron = char.devotion.patron;
+  return { weaponTypes: equippedWeaponTypes(char, c), ...(patron ? { patron } : {}), ...ctx };
 }
 
 export function characterStats(char: Character, ctx: ConditionContext = {}, c: Content = content): StatBlock {

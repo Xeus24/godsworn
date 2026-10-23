@@ -5,6 +5,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { content } from '../src/data';
+import { DEVOTION } from '../src/data/devotion';
 import { MULTICLASS } from '../src/data/progression';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
@@ -57,6 +58,7 @@ function itemsSection(): string {
   uniqueTable('legendary', 'Legendaries');
   uniqueTable('mythic', 'Mythics');
   uniqueTable('relic', 'Relics');
+  uniqueTable('divine', 'Divine items');
 
   out.push(`### Item sets (${content.itemSets.size})`, '');
   for (const set of content.itemSets.all()) {
@@ -171,7 +173,7 @@ function specsSection(): string {
 function generalSection(): string {
   const out: string[] = [];
   const all = content.generalSkills.all();
-  out.push(`${all.length} general skills (ranks 1-10; Grimoires 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.`, '');
+  out.push(`${all.length} general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.`, '');
   out.push('| Skill | Category | Book rarity | Battle skill | Effect |', '|---|---|---|---|---|');
   for (const g of all) {
     const battle = g.combatSkill ? content.skills.get(g.combatSkill).name : '';
@@ -212,7 +214,31 @@ function multiclassSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection };
+function godsSection(): string {
+  const out: string[] = [];
+  const t = DEVOTION.tierFloors;
+  out.push(`Favor runs from ${DEVOTION.minFavor} to ${DEVOTION.maxFavor}. Tiers: Hated (${t.distrusted - 1} or less), Distrusted, Neutral (${t.neutral}), Acknowledged (${t.acknowledged}), Favored (${t.favored}), Devoted (${t.devoted}), Exalted (${t.exalted}); Apostle needs a trial (Phase 9). Gaining favor costs the god's rivals ${DEVOTION.rivalShare * 100}% of it. Shrine prayer: +${DEVOTION.shrinePrayerFavor} once per day.`, '');
+  out.push('| God | Rivals / allies | Likes | Dislikes | Offerings | Prayer (battle) | Intervention |', '|---|---|---|---|---|---|---|');
+  for (const p of content.pantheon.all()) {
+    const g = content.gods.get(p.id);
+    const deeds = (list: typeof p.likes): string => list.map((d) => `${d.text} (${d.amount > 0 ? '+' : ''}${d.amount})`).join('; ');
+    const names = (ids: string[]): string => ids.map((id) => content.gods.get(id).name).join(', ');
+    out.push(`| **${g.name}**, ${g.domain} | ${names(p.rivals)} / ${names(p.allies)} | ${cell(deeds(p.likes))} | ${cell(deeds(p.dislikes))} | ${cell(p.offerings.text)} | **${p.prayer.name}**: ${cell(p.prayer.description)} (${p.prayer.cost} favor) | **${p.intervention.name}**: ${cell(p.intervention.text)} |`);
+  }
+  out.push('', `### Blessings (${content.blessings.size})`, '', 'Minor blessings last 10 battles and cost favor. Major blessings are offered 3 at a time when a tier is first reached, stay active while the tier holds, and fill 1-3 slots (more at levels 25 and 50). Rival gods\' blessings cannot be slotted together.', '', '| God | Minor | Major (tier) |', '|---|---|---|');
+  for (const p of content.pantheon.all()) {
+    const minors = content.blessings.filter((b) => b.god === p.id && b.kind === 'minor').map((b) => `**${b.name}**: ${b.description}`).join('<br>');
+    const majors = content.blessings.filter((b) => b.god === p.id && b.kind === 'major').map((b) => `**${b.name}** (${b.minTier}): ${b.description}`).join('<br>');
+    out.push(`| ${content.gods.get(p.id).name} | ${cell(minors)} | ${cell(majors)} |`);
+  }
+  out.push('', '### Divine general skills', '', '| Skill | God | Battle skill | Effect |', '|---|---|---|---|');
+  for (const g of content.generalSkills.filter((x) => x.category === 'divine')) {
+    out.push(`| **${g.name}** | ${content.gods.get(g.god ?? '').name} | ${g.combatSkill ? content.skills.get(g.combatSkill).name : ''} | ${cell(g.description)} |`);
+  }
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

@@ -2,6 +2,8 @@ import { content, type Content } from '../../data';
 import { ENEMY_GROWTH, TIER_SCALING } from '../../data/combat';
 import { characterBaseStats, characterModifiers } from '../character/stats';
 import type { Character } from '../character/types';
+import { blessingFlags, blessingTriggers } from '../gods/blessings';
+import { applyDivineCombat } from '../gods/combat';
 import { equipmentFlags, equipmentTriggers, equippedWeaponTypes } from '../items/equipment';
 import { generalCombatSkills, generalFlags } from '../skills/general';
 import { classUltimate } from '../skills/specs';
@@ -188,8 +190,8 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.mp = Math.min(char.mp, x.maxMp);
   x.classId = cls?.id;
   x.ai = cls?.id === 'cleric' ? 'healer' : 'aggressive';
-  x.flags = [...new Set([...equipmentFlags(char, c), ...treeFlags(char, c), ...generalFlags(char, c)])];
-  x.triggers = [...equipmentTriggers(char, c), ...treeTriggers(char, c)];
+  x.flags = [...new Set([...equipmentFlags(char, c), ...treeFlags(char, c), ...generalFlags(char, c), ...blessingFlags(char, c)])];
+  x.triggers = [...equipmentTriggers(char, c), ...treeTriggers(char, c), ...blessingTriggers(char, c)];
   x.weaponTypes = equippedWeaponTypes(char, c);
   x.skills = knownSkills(char, c).map((k) => ({
     id: k.id,
@@ -205,6 +207,7 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.hotbar = hotbar(char).filter((h): h is string => h !== null);
   x.ultimateSkill = cls ? classUltimate(char, cls.id, c) : undefined;
   x.basicAttack = heroBasicAttack(char, c);
+  applyDivineCombat(x, char, input.base.fai, c);
   x.portrait = { raceId: char.raceId, variant: char.portrait, color: cls?.color ?? '#888888' };
   // Every class resource a character has (multiclass characters can have two).
   for (const p of char.classes) {

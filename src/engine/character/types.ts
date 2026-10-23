@@ -1,4 +1,5 @@
 import type { EquipSlot, ItemInstance } from '../items/types';
+import type { Devotion } from '../gods/types';
 import type { GeneralSkillProgress } from '../skills/generalTypes';
 import type { ClassTreeState } from '../skills/treeTypes';
 import type { ModifierSpec } from '../stats/modifiers';
@@ -11,6 +12,8 @@ export interface TimedBuff {
   name: string;
   modifiers: ModifierSpec[];
   battlesLeft: number;
+  /** Minor blessings carry their god. */
+  god?: string;
 }
 
 export type ClassSlot = 'primary' | 'secondary' | 'tertiary';
@@ -51,6 +54,8 @@ export interface Character {
   hybrids: string[];
   /** Trial encounters won (class trials and hybrid trials). */
   trialsWon: string[];
+  /** Favor, patron, blessings and divine intervention. */
+  devotion: Devotion;
 
   /** Attribute points the player has spent, per stat. */
   allocated: PrimaryStats;

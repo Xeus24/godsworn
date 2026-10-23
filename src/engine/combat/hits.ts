@@ -1,8 +1,10 @@
 import { COMBAT } from '../../data/combat';
+import { DEVOTION } from '../../data/devotion';
 import type { Element } from '../stats/types';
 import type { Battle } from './battle';
 import { computeDamage, hitChance } from './damage';
-import { fireTrigger } from './effects';
+import { applyEffects, fireTrigger } from './effects';
+import { foesOf } from './skills';
 import { applyStatus, removeStatus } from './statuses';
 import type { Combatant } from './types';
 
@@ -167,6 +169,7 @@ export function applyDamage(
     }
     return;
   }
+  if (divineIntervention(b, target)) return;
   if (b.hasFlag(target, 'reviveOnce') && !target.reviveUsed) {
     target.reviveUsed = true;
     target.hp = 1;
@@ -174,7 +177,20 @@ export function applyDamage(
     b.log(`${target.name} refuses to fall!`);
     return;
   }
-  kill(b, target, source);
+  kill(b, target, source, info.element);
+}
+
+/** A Devoted+ god may catch the hero at death's door: back to 40% HP plus the god's own effect. */
+function divineIntervention(b: Battle, target: Combatant): boolean {
+  const iv = target.intervention;
+  if (!iv || iv.used || !b.rng.chance(iv.chance / 100)) return false;
+  iv.used = true;
+  b.tally.intervention = iv.god;
+  target.hp = Math.max(1, Math.round((target.maxHp * DEVOTION.intervention.hpAfter) / 100));
+  b.emit({ type: 'revive', targetId: target.id });
+  b.log(`${b.c.gods.get(iv.god).name} intervenes! ${iv.text}`);
+  applyEffects(b, target, iv.effects, foesOf(b, target).slice(0, 1));
+  return true;
 }
 
 function addStagger(b: Battle, source: Combatant, target: Combatant, dealt: number, element: Element, mult: number): void {
@@ -189,7 +205,7 @@ function addStagger(b: Battle, source: Combatant, target: Combatant, dealt: numb
   applyStatus(b, source, target, 'stun', { duration: 1, unresistable: true });
 }
 
-export function kill(b: Battle, target: Combatant, killer: Combatant): void {
+export function kill(b: Battle, target: Combatant, killer: Combatant, element?: Element): void {
   target.alive = false;
   target.hp = 0;
   target.shield = 0;
@@ -208,12 +224,13 @@ export function kill(b: Battle, target: Combatant, killer: Combatant): void {
       types: target.types,
       xp: target.xp,
       lootTable: target.lootTable,
+      ...(element ? { element } : {}),
     });
   }
   if (b.chain.targetId === target.id) b.chain = { count: 0 };
   // Summons crumble with their owner.
   for (const minion of b.combatants) {
-    if (minion.ownerId === target.id && minion.alive) kill(b, minion, killer);
+    if (minion.ownerId === target.id && minion.alive) kill(b, minion, killer, element);
   }
   if (target.side === 'enemy') {
     for (const x of b.alive('party')) {

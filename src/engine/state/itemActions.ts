@@ -131,6 +131,7 @@ export class ItemActions {
     item.identified = true;
     this.s.bus.emit('toast', { kind: 'loot', text: `${appraised ? 'Appraised' : 'Identified'}: ${itemName(item)}` });
     this.changed('identify');
+    this.s.devotion.deed('identify');
     return { ok: true };
   }
 
@@ -145,6 +146,7 @@ export class ItemActions {
     gem.quantity--;
     if (gem.quantity <= 0) this.inv.slots[gemIndex] = null;
     this.changed('socket');
+    this.s.devotion.deed('socket');
     return { ok: true };
   }
 
@@ -174,6 +176,7 @@ export class ItemActions {
     const names = yields.map((y) => `${y.qty}x ${content.items.get(y.itemId).name}`).join(', ');
     this.s.bus.emit('toast', { kind: 'info', text: `Salvaged: ${names || 'nothing'}` });
     this.changed('salvage');
+    this.s.devotion.deed('salvage');
     return { ok: true };
   }
 

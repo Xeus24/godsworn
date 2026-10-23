@@ -56,6 +56,7 @@ export class GeneralActions {
     if (!result.ok) return result;
     takeQuantity(this.s.state.inventory, book.baseId, 1);
     this.s.bus.emit('toast', { kind: 'level', text: result.message });
+    this.s.devotion.deed('bookRead');
     return this.done(result, 'general');
   }
 
@@ -70,7 +71,10 @@ export class GeneralActions {
     if (!this.s.spendGold(terms.gold, 'library')) return fail(`Studying costs ${terms.gold} gold.`);
     this.s.advanceTime(terms.days * 24 * 60);
     const result = learnGeneral(this.s.player, skill.id);
-    if (result.ok) this.s.bus.emit('toast', { kind: 'level', text: `After ${terms.days} day${terms.days > 1 ? 's' : ''} in the Library: ${result.message}` });
+    if (result.ok) {
+      this.s.bus.emit('toast', { kind: 'level', text: `After ${terms.days} day${terms.days > 1 ? 's' : ''} in the Library: ${result.message}` });
+      this.s.devotion.deed('bookRead');
+    }
     return this.done(result, 'general');
   }
 
@@ -112,6 +116,7 @@ export class GeneralActions {
       p.timedBuffs = [...p.timedBuffs.filter((b) => b.id !== buff.id), buff];
     }
     this.s.bus.emit('toast', { kind: 'info', text: camping > 0 ? `You rest by the fire and wake Well Rested (+${camping}% damage for ${WELL_RESTED_BATTLES} battles).` : 'You rest by the fire and wake refreshed.' });
+    this.s.devotion.onRest();
     this.s.bus.emit('stateChanged', { reason: 'rest' });
   }
 

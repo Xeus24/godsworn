@@ -1,6 +1,8 @@
 import { content, type Content } from '../../data';
 import type { Character } from '../character/types';
 import type { TriggeredEffect } from '../effects/types';
+import { atLeast, tierName } from '../gods/devotion';
+import type { DevotionTier } from '../gods/types';
 import type { Modifier } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
 import { addItem, canAdd, type Inventory } from './inventory';
@@ -77,7 +79,9 @@ export function canEquip(char: Character, item: ItemInstance, slot: EquipSlot, s
   for (const [stat, need] of Object.entries(req?.stats ?? {})) {
     if ((stats[stat as keyof PrimaryStats] ?? 0) < (need ?? 0)) return fail(`Requires ${need} ${stat.toUpperCase()}.`);
   }
-  if (req?.favor) return fail(`Requires ${req.favor.tier} devotion to ${c.gods.get(req.favor.god).name}.`);
+  if (req?.favor && !atLeast(char, req.favor.god, req.favor.tier as DevotionTier)) {
+    return fail(`Requires ${tierName(req.favor.tier as DevotionTier)} devotion to ${c.gods.get(req.favor.god).name}.`);
+  }
   return { ok: true };
 }
 

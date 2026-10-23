@@ -27,6 +27,8 @@ export interface GeneralSkillDef {
   /** Passive modifiers per rank, active while the skill is slotted. */
   passive?: ModifierSpec[];
   utility?: { kind: UtilityKind; perRank: number };
+  /** Divine skills: the god whose blessing is needed to learn them. */
+  god?: string;
   /** Mechanic flags granted while slotted (e.g. armorTraining). */
   flags?: string[];
   requirements?: { level?: number; stats?: Partial<PrimaryStats> };

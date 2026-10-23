@@ -161,6 +161,12 @@ export interface Combatant {
   sprite?: { family: string; main: string; accent: string };
   /** Weapon types in hand, for weaponType conditions. */
   weaponTypes: string[];
+  /** The hero's patron god (for patron conditions and the Pray action). */
+  patron?: string;
+  /** Pray: spends favor with the patron for a divine effect. */
+  prayer?: { god: string; name: string; description: string; effects: EffectSpec[]; cost: number; uses: number };
+  /** Divine Intervention: a Devoted+ god may save the hero from death once. */
+  intervention?: { god: string; name: string; text: string; effects: EffectSpec[]; chance: number; used: boolean };
   /** On-use abilities from equipped trinket and relic. */
   abilities: { slot: 'trinket' | 'relic'; name: string; description: string; effects: EffectSpec[]; cooldown: number }[];
 }
@@ -172,7 +178,8 @@ export type Action =
   | { kind: 'ability'; actorId: string; slot: 'trinket' | 'relic'; targetId?: string }
   | { kind: 'defend'; actorId: string }
   | { kind: 'swap'; actorId: string }
-  | { kind: 'flee'; actorId: string };
+  | { kind: 'flee'; actorId: string }
+  | { kind: 'pray'; actorId: string; targetId?: string };
 
 export type BattleEvent =
   | { type: 'turn'; actorId: string }
@@ -199,7 +206,7 @@ export type BattleOutcome = 'ongoing' | 'victory' | 'defeat' | 'fled';
 
 /** What the battle tracked, for rewards, relic deeds and stats. */
 export interface BattleTally {
-  kills: { enemyId: string; level: number; tier: EnemyTier; types: string[]; xp: number; lootTable?: string }[];
+  kills: { enemyId: string; level: number; tier: EnemyTier; types: string[]; xp: number; lootTable?: string; element?: Element }[];
   partyCrits: number;
   partyHeals: number;
   highestHit: number;
@@ -211,4 +218,10 @@ export interface BattleTally {
   skillUses: Record<string, number>;
   /** Uses of skills granted by general skills, keyed by general skill id, for training. */
   generalUses: Record<string, number>;
+  /** Hero skill uses per tag (gods like or dislike some kinds of magic). */
+  tagUses: Record<string, number>;
+  /** Minions raised by the party. */
+  summons: number;
+  /** God that intervened to save the hero this battle. */
+  intervention?: string;
 }

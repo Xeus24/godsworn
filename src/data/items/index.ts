@@ -1,3 +1,4 @@
+import { DIVINE_ITEMS } from './divine';
 import type { ItemBaseDef, UniqueItemDef } from '../../engine/items/types';
 import { ACCESSORY_BASES, RELIC_BASES } from './accessoryBases';
 import { ARMOR_BASES } from './armorBases';
@@ -25,7 +26,7 @@ export const ITEM_BASES: ItemBaseDef[] = [
 ];
 
 /** Every hand-designed item. Divine (Phase 8) and Primordial (Phase 15) items join this list later. */
-export const UNIQUE_ITEMS: UniqueItemDef[] = [...LEGENDARIES, ...MYTHICS, ...RELICS, ...SET_ITEMS];
+export const UNIQUE_ITEMS: UniqueItemDef[] = [...LEGENDARIES, ...MYTHICS, ...RELICS, ...SET_ITEMS, ...DIVINE_ITEMS];
 
 export { AFFIXES, CORRUPTIONS } from './affixes';
 export { LOOT_TABLES, SOURCE_TIERS, STARTING_KITS } from './loot';

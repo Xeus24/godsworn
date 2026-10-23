@@ -13,6 +13,8 @@ export interface EncounterOptions {
   timeOfDay?: 'day' | 'night';
   /** Overrides every enemy's level (e.g. scaling an encounter to the player). */
   level?: number;
+  /** A hated god's punisher joins the fight (god id). */
+  punisher?: string;
   c?: Content;
 }
 
@@ -24,6 +26,10 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const def = c.enemies.get(e.enemyId);
     return createEnemy(def, `enemy-${i + 1}`, opts.level ?? e.level ?? encounter.level, e.row ?? def.row, c);
   });
+  if (opts.punisher) {
+    const def = c.enemies.get(`punisher-${opts.punisher}`);
+    enemies.push(createEnemy(def, 'punisher', (opts.level ?? encounter.level) + 2, def.row, c));
+  }
   // Number duplicate names: "Green Slime A", "Green Slime B".
   const counts = new Map<string, number>();
   for (const e of enemies) counts.set(e.name, (counts.get(e.name) ?? 0) + 1);

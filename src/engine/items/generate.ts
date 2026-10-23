@@ -1,6 +1,8 @@
 import { content, type Content } from '../../data';
 import type { RarityDef } from '../../data/items/rarities';
 import type { Rng } from '../core/rng';
+import { tierIndex } from '../gods/devotion';
+import type { DevotionTier } from '../gods/types';
 import { affixTargetOf } from './lookup';
 import type {
   AffixDef,
@@ -27,6 +29,8 @@ export interface GenerateContext {
   sourceTier?: string;
   /** Biases gear toward types this class can use (x3 weight). */
   favorClassId?: string;
+  /** Devotion tier index per god: Divine items drop once their favor tier is met. */
+  favorTiers?: Record<string, number>;
   c?: Content;
 }
 
@@ -64,8 +68,8 @@ export function uniquePool(rarity: RarityId, ctx: GenerateContext): UniqueItemDe
       !u.noDrop &&
       u.level <= ctx.itemLevel &&
       (u.rarity !== 'mythic' || mythicsOk) &&
-      // Divine items need god favor checks (Phase 8) and never drop at random yet.
-      u.requirements?.favor === undefined,
+      // Divine items only drop for heroes with the devotion they ask for.
+      (u.requirements?.favor === undefined || (ctx.favorTiers?.[u.requirements.favor.god] ?? -1) >= tierIndex(u.requirements.favor.tier as DevotionTier)),
   );
 }
 

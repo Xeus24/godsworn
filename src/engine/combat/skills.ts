@@ -219,6 +219,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
   const label = `${mastered ? '\u2726 ' : ''}${skill.name}${opts.echo ? ' (Echo)' : ''}`;
   b.emit({ type: 'action', actorId: x.id, label, targets: targets.map((t) => t.id) });
   if (x.kind === 'hero' && !opts.free && skillId !== BASIC_ATTACK_ID) {
+    for (const t of skill.tags) b.tally.tagUses[t] = (b.tally.tagUses[t] ?? 0) + 1;
     const uses = known?.general ? b.tally.generalUses : b.tally.skillUses;
     const key = known?.general ?? skillId;
     uses[key] = (uses[key] ?? 0) + 1;

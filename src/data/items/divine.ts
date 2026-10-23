@@ -1,0 +1,40 @@
+import type { UniqueItemDef } from '../../engine/items/types';
+
+const req = (god: string, tier: 'favored' | 'devoted') => ({ favor: { god, tier } });
+
+/**
+ * Two Divine items per god. They only drop once you have the devotion tier
+ * they ask for, and while equipped they earn their god's favor each battle.
+ */
+export const DIVINE_ITEMS: UniqueItemDef[] = [
+  // Solenne
+  { id: 'dawnspire', name: 'Dawnspire', rarity: 'divine', baseId: 'mace-t3', level: 20, requirements: req('solenne', 'favored'), modifiers: [{ stat: 'holyDamage', type: 'flat', value: 25 }, { stat: 'fai', type: 'flat', value: 8 }], flags: ['strongerByDay'], effectText: ['20% more damage during the day'], lore: 'It is warm to the touch even at midnight.' },
+  { id: 'aegis-of-the-open-eye', name: 'Aegis of the Open Eye', rarity: 'divine', baseId: 'shield-t4', level: 32, requirements: req('solenne', 'devoted'), modifiers: [{ stat: 'defense', type: 'percent', value: 20 }, { stat: 'statusResist', type: 'flat', value: 15 }], triggers: [{ id: 'aegis-open-eye', trigger: 'onCombatStart', effects: [{ kind: 'applyStatus', status: 'divine-protection', duration: 1, target: 'self' }] }], effectText: ['Start every battle with Divine Protection'] },
+  // Morrath
+  { id: 'ravens-quill', name: 'Raven’s Quill', rarity: 'divine', baseId: 'wand-t3', level: 20, requirements: req('morrath', 'favored'), modifiers: [{ stat: 'shadowDamage', type: 'flat', value: 25 }, { stat: 'int', type: 'flat', value: 8 }], flags: ['strongerAtNight'], effectText: ['20% more damage at night'], lore: 'Writes names in the Book of Endings.' },
+  { id: 'shroud-of-the-last-door', name: 'Shroud of the Last Door', rarity: 'divine', baseId: 'cloth-cloak-t4', level: 32, requirements: req('morrath', 'devoted'), modifiers: [{ stat: 'maxHp', type: 'percent', value: 10 }], flags: ['reviveOnce'], effectText: ['Once per battle, survive a killing blow with 1 HP'] },
+  // Kael
+  { id: 'red-banner-blade', name: 'Blade of the Red Banner', rarity: 'divine', baseId: 'greatsword-t3', level: 20, requirements: req('kael', 'favored'), modifiers: [{ stat: 'str', type: 'flat', value: 10 }, { stat: 'critDamage', type: 'flat', value: 25 }], flags: ['bonusVsBosses'], effectText: ['Deal 25% more damage to bosses'], lore: 'Every war it has seen, it has won.' },
+  { id: 'warhelm-of-kael', name: 'Warhelm of Kael', rarity: 'divine', baseId: 'plate-head-t4', level: 32, requirements: req('kael', 'devoted'), modifiers: [{ stat: 'damageBonus', type: 'flat', value: 12 }, { stat: 'critChance', type: 'flat', value: 5 }], flags: ['firstStrike'], effectText: ['Always act first in the opening round'] },
+  // Ysolde
+  { id: 'green-hour-bow', name: 'Bow of the Green Hour', rarity: 'divine', baseId: 'bow-t3', level: 20, requirements: req('ysolde', 'favored'), modifiers: [{ stat: 'natureDamage', type: 'flat', value: 25 }, { stat: 'dex', type: 'flat', value: 8 }], triggers: [{ id: 'green-hour-poison', trigger: 'onHit', chance: 25, effects: [{ kind: 'applyStatus', status: 'poison', duration: 3 }] }], effectText: ['25% chance on hit to Poison'] },
+  { id: 'antlered-circlet', name: 'Antlered Circlet', rarity: 'divine', baseId: 'leather-head-t4', level: 32, requirements: req('ysolde', 'devoted'), modifiers: [{ stat: 'dodge', type: 'flat', value: 8 }, { stat: 'hpRegen', type: 'flat', value: 5 }], triggers: [{ id: 'antlered-stag', trigger: 'onCombatStart', effects: [{ kind: 'summon', summonId: 'spirit-stag' }] }], effectText: ['A spirit stag joins you at the start of every battle'] },
+  // Vex
+  { id: 'two-faced-dagger', name: 'Two-Faced Dagger', rarity: 'divine', baseId: 'dagger-t3', level: 20, requirements: req('vex', 'favored'), modifiers: [{ stat: 'luk', type: 'flat', value: 10 }, { stat: 'critChance', type: 'flat', value: 8 }], triggers: [{ id: 'two-faced-gold', trigger: 'onCrit', chance: 30, effects: [{ kind: 'gold', amount: 8 }] }], effectText: ['Critical hits have a 30% chance to steal 8 gold'] },
+  { id: 'ring-of-loaded-dice', name: 'Ring of Loaded Dice', rarity: 'divine', baseId: 'ring-t4', level: 32, requirements: req('vex', 'devoted'), modifiers: [{ stat: 'magicFind', type: 'flat', value: 30 }, { stat: 'critDamage', type: 'flat', value: 20 }], flags: ['stealthOnCombatStart'], effectText: ['Begin every battle in Stealth'] },
+  // Thalor
+  { id: 'anvilbreaker', name: 'Anvilbreaker', rarity: 'divine', baseId: 'warhammer-t3', level: 20, requirements: req('thalor', 'favored'), modifiers: [{ stat: 'fireDamage', type: 'flat', value: 25 }, { stat: 'vit', type: 'flat', value: 8 }], triggers: [{ id: 'anvilbreaker-burn', trigger: 'onHit', chance: 25, effects: [{ kind: 'applyStatus', status: 'burn', duration: 3 }] }], effectText: ['25% chance on hit to Burn'] },
+  { id: 'forgefather-plate', name: 'Forgefather’s Plate', rarity: 'divine', baseId: 'plate-chest-t4', level: 32, requirements: req('thalor', 'devoted'), modifiers: [{ stat: 'defense', type: 'percent', value: 25 }, { stat: 'damageTaken', type: 'more', value: -6 }], flags: ['armorTraining'], effectText: ['No speed penalty for off-class armor'] },
+  // Nymira
+  { id: 'tidecaller', name: 'Tidecaller', rarity: 'divine', baseId: 'staff-t3', level: 20, requirements: req('nymira', 'favored'), modifiers: [{ stat: 'lightningDamage', type: 'flat', value: 20 }, { stat: 'iceDamage', type: 'flat', value: 20 }], flags: ['shatterAlways'], effectText: ['Ice damage against Burning enemies always Shatters'] },
+  { id: 'pearl-of-the-deep', name: 'Pearl of the Deep', rarity: 'divine', baseId: 'amulet-t4', level: 32, requirements: req('nymira', 'devoted'), modifiers: [{ stat: 'mpRegen', type: 'flat', value: 5 }, { stat: 'int', type: 'flat', value: 10 }], flags: ['spellEcho'], effectText: ['20% chance for spells to cast a second time'] },
+  // Aurelis
+  { id: 'codex-of-a-thousand-pages', name: 'Codex of a Thousand Pages', rarity: 'divine', baseId: 'tome-t3', level: 20, requirements: req('aurelis', 'favored'), modifiers: [{ stat: 'arcaneDamage', type: 'flat', value: 25 }, { stat: 'cooldownReduction', type: 'flat', value: 5 }], effectText: ['Knowledge is power, and this is a lot of knowledge'] },
+  { id: 'starmark-circlet', name: 'Starmark Circlet', rarity: 'divine', baseId: 'cloth-head-t4', level: 32, requirements: req('aurelis', 'devoted'), modifiers: [{ stat: 'xpGain', type: 'flat', value: 15 }, { stat: 'magicAttack', type: 'percent', value: 12 }], triggers: [{ id: 'starmark-mp', trigger: 'onKill', effects: [{ kind: 'restoreMp', amount: 15, target: 'self' }] }], effectText: ['Kills restore 15 MP'] },
+  // Hesha
+  { id: 'hearthkeeper', name: 'Hearthkeeper', rarity: 'divine', baseId: 'holy-symbol-t3', level: 20, requirements: req('hesha', 'favored'), modifiers: [{ stat: 'healingPower', type: 'flat', value: 25 }, { stat: 'wis', type: 'flat', value: 8 }], flags: ['overhealShield'], effectText: ['Half of all overhealing becomes a shield'] },
+  { id: 'mantle-of-mercy', name: 'Mantle of Mercy', rarity: 'divine', baseId: 'mail-shoulders-t4', level: 32, requirements: req('hesha', 'devoted'), modifiers: [{ stat: 'maxHp', type: 'percent', value: 12 }, { stat: 'healingReceived', type: 'flat', value: 20 }], triggers: [{ id: 'mantle-mercy', trigger: 'onLowHp', limitPerCombat: 1, effects: [{ kind: 'heal', percentMaxHp: 35, target: 'self' }] }], effectText: ['The first time you fall below 30% HP, heal 35%'] },
+  // Grimvald
+  { id: 'golden-scale-hammer', name: 'Hammer of the Golden Scale', rarity: 'divine', baseId: 'mace-t4', level: 32, requirements: req('grimvald', 'devoted'), modifiers: [{ stat: 'goldFind', type: 'flat', value: 40 }, { stat: 'physicalAttack', type: 'percent', value: 10 }], triggers: [{ id: 'golden-scale-gold', trigger: 'onKill', effects: [{ kind: 'gold', amount: 12 }] }], effectText: ['Kills grant 12 gold'] },
+  { id: 'merchant-princes-ring', name: 'Merchant-Prince’s Ring', rarity: 'divine', baseId: 'ring-t3', level: 20, requirements: req('grimvald', 'favored'), modifiers: [{ stat: 'goldFind', type: 'flat', value: 30 }, { stat: 'luk', type: 'flat', value: 8 }], effectText: ['Smells faintly of other people’s money'] },
+];

@@ -3,7 +3,8 @@ import './ui/inventory/inventory.css';
 import './ui/combat/combat.css';
 import './ui/tree/tree.css';
 import './ui/general/general.css';
-import { validateContent } from './data';
+import './ui/pantheon/pantheon.css';
+import { content, validateContent } from './data';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
@@ -20,6 +21,7 @@ import { DebugPanel } from './ui/debug/debugPanel';
 import { GeneralScreen } from './ui/general/generalScreen';
 import { registerItemSections } from './ui/debug/itemSections';
 import { InventoryScreen } from './ui/inventory/inventoryScreen';
+import { PantheonScreen } from './ui/pantheon/pantheonScreen';
 import { ScreenManager } from './ui/screen';
 import { TitleScreen } from './ui/title/titleScreen';
 import { TreeScreen } from './ui/tree/treeScreen';
@@ -44,13 +46,14 @@ const nav: Nav = {
   inventory: showInventory,
   skills: showSkills,
   general: showGeneral,
+  pantheon: showPantheon,
   battle: showGrounds,
 };
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showGrounds });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 7: multiclassing & hybrids`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 8: gods & blessings`));
 }
 
 function showCreation(): void {
@@ -81,6 +84,10 @@ function showGeneral(): void {
   if (session) screens.show(new GeneralScreen(session, nav));
 }
 
+function showPantheon(): void {
+  if (session) screens.show(new PantheonScreen(session, nav));
+}
+
 function showGrounds(): void {
   if (session) screens.show(new ProvingGroundsScreen(session, nav, startFight));
 }
@@ -89,11 +96,14 @@ function startFight(encounter: EncounterDef): void {
   const s = session;
   if (!s) return;
   inBattle = true;
+  const punisher = s.devotion.punisherForFight();
   const battle = createEncounterBattle(s.player, encounter, {
     rng: s.rng,
     hooks: inventoryHooks(s),
     timeOfDay: timeOfDay(s.state.clock),
+    punisher,
   });
+  if (punisher) toasts.show('warning', `${content.gods.get(punisher).name} sends a herald to punish you!`);
   screens.show(
     new CombatScreen({
       session: s,
@@ -119,6 +129,7 @@ window.addEventListener('keydown', (e) => {
   if (key === 'g') showGrounds();
   if (key === 'k') showSkills();
   if (key === 'j') showGeneral();
+  if (key === 'p') showPantheon();
 });
 
 showTitle();

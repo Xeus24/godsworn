@@ -8,11 +8,13 @@ import { equippedItems } from '../items/equipment';
 import { rollLoot } from '../items/loot';
 import { itemName } from '../items/naming';
 import { recordDeed } from '../items/relics';
+import { favorTiers } from '../gods/devotion';
 import { utilityChance } from '../skills/general';
 import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
 import type { ItemInstance } from '../items/types';
 import { wearItem, wearItemPercent } from '../items/upkeep';
 import { tickTimedBuffs } from '../items/use';
+import type { FavorChange } from '../gods/devotion';
 import type { GameSession } from './gameState';
 
 export interface BattleRewards {
@@ -32,6 +34,8 @@ export interface BattleRewards {
   generalUps: [string, number][];
   /** A class or hybrid trial was won for the first time. */
   trialWon: boolean;
+  /** Favor changes from the gods' verdict on the battle. */
+  favor: FavorChange[];
   /** Hardcore death: the save is over. */
   permadeath: boolean;
 }
@@ -60,6 +64,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     masteryUps: [],
     generalUps: [],
     trialWon: false,
+    favor: [],
     permadeath: false,
   };
   const stats = s.state.stats;
@@ -105,6 +110,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
         ngPlus: s.state.ngPlus,
         sourceTier: kill.tier,
         favorClassId: p.classes[0]?.classId,
+        favorTiers: favorTiers(p),
       });
       rewards.gold += loot.gold;
       rewards.items.push(...loot.items);
@@ -163,6 +169,8 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   }
   for (const name of rewards.brokenItems) s.bus.emit('toast', { kind: 'warning', text: `${name} broke! Repair it to restore its stats.` });
   for (const name of rewards.expiredBuffs) s.bus.emit('toast', { kind: 'info', text: `${name} wore off.` });
+
+  if (!rewards.permadeath) rewards.favor = s.devotion.settle(b, rewards.gold, rewards.brokenItems.length);
 
   s.bus.emit('combatEnded', { encounterId: b.encounterId, result: b.outcome === 'ongoing' ? 'fled' : b.outcome });
   s.bus.emit('stateChanged', { reason: 'battle' });

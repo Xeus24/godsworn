@@ -34,15 +34,19 @@ import { CLASS_TREE_SKILLS, finalizeTrees, SPECIALIZATIONS } from './trees';
 import { buildBooks } from './general/books';
 import { grimoireSkills, GRIMOIRES } from './general/grimoires';
 import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
+import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
+import { BLESSINGS } from './blessings';
+import { PANTHEON } from './pantheon';
+import { PUNISHER_SKILLS, PUNISHERS } from './punishers';
 import { CLASS_TRIALS, HYBRIDS, MENTOR_SKILLS, MENTORS, TRIAL_ENCOUNTERS } from './multiclass';
 import { SONGS } from './songs';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
-const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName)];
+const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS];
 
 /**
  * The game's content, assembled from the data files in this folder. Engine
@@ -83,7 +87,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...MENTORS]),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...MENTORS, ...PUNISHERS]),
   summons: new ContentTable('summon', SUMMONS),
   encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
@@ -91,6 +95,8 @@ export const content = {
   generalSkills: new ContentTable('general skill', ALL_GENERAL),
   grimoires: new ContentTable('grimoire', GRIMOIRES),
   hybrids: new ContentTable('hybrid class', HYBRIDS),
+  pantheon: new ContentTable('pantheon entry', PANTHEON),
+  blessings: new ContentTable('blessing', BLESSINGS),
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
 };
 
@@ -327,6 +333,32 @@ export function validateContent(c: Content = content): void {
     v.check(g.combatSkill !== undefined || (g.passive?.length ?? 0) > 0 || g.utility !== undefined || (g.flags?.length ?? 0) > 0, `${where}: does nothing`);
     v.ref(c.items, `book-${g.id}`, where);
   }
+  // ---- Gods ----
+  for (const p of c.pantheon.all()) {
+    const where = `god ${p.id}`;
+    v.ref(c.gods, p.id, where);
+    for (const r of p.rivals) v.check(c.pantheon.find(r)?.rivals.includes(p.id) === true, `${where}: rival ${r} is not mutual`);
+    for (const a of p.allies) v.ref(c.gods, a, where);
+    for (const d of [...p.likes, ...p.dislikes]) if (d.tag) v.ref(c.skillTags, d.tag, where);
+    v.check(p.likes.every((d) => d.amount > 0) && p.dislikes.every((d) => d.amount < 0), `${where}: likes must be positive, dislikes negative`);
+    checkEffects(v, c, p.prayer.effects, `${where} prayer`);
+    checkEffects(v, c, p.intervention.effects, `${where} intervention`);
+    v.check(c.blessings.filter((b) => b.god === p.id && b.kind === 'minor').length === 3, `${where}: needs 3 minor blessings`);
+    v.check(c.blessings.filter((b) => b.god === p.id && b.kind === 'major').length === 6, `${where}: needs 6 major blessings`);
+    v.ref(c.enemies, `punisher-${p.id}`, where);
+  }
+  for (const g of c.gods.all()) v.check(g.hidden === true || c.pantheon.has(g.id), `god ${g.id}: no pantheon entry`);
+  for (const b of c.blessings.all()) {
+    const where = `blessing ${b.id}`;
+    v.ref(c.gods, b.god, where);
+    checkModifiers(v, b.modifiers, where);
+    checkTriggers(v, c, b.triggers, where);
+    checkFlags(v, c, b.flags, where);
+    v.check(b.kind === 'minor' ? (b.battles ?? 0) > 0 && (b.favorCost ?? 0) > 0 : b.minTier !== undefined, `${where}: minor needs battles and cost, major a tier`);
+  }
+  for (const u of c.uniques.all()) if (u.requirements?.favor) v.ref(c.gods, u.requirements.favor.god, `unique ${u.id}`);
+  for (const g of c.generalSkills.all()) v.check((g.category === 'divine') === (g.god !== undefined), `general skill ${g.id}: divine skills need a god (and only they)`);
+
   // ---- Multiclassing ----
   for (const cls of c.classes.all()) {
     const trial = c.classTrials.find(cls.id);

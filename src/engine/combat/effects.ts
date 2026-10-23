@@ -182,6 +182,7 @@ export function summon(b: Battle, owner: Combatant, summonId: string, consumeCor
     minion.nextAt = b.time + 100 / Math.max(1, b.stats(minion).speed) / 2;
     b.combatants.push(minion);
     b.registerTriggers(minion);
+    if (owner.side === 'party') b.tally.summons++;
     b.emit({ type: 'summon', combatantId: minion.id });
     last = minion;
   }

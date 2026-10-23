@@ -10,6 +10,8 @@ export const COMBAT = {
   defendMult: 0.5,
   /** Defending restores this % of max MP. */
   defendMpPct: 5,
+  /** Turns between prayers to your patron. */
+  prayCooldown: 3,
 
   /** Each consecutive party hit on the same target adds this to the chain multiplier. */
   chainStep: 0.1,

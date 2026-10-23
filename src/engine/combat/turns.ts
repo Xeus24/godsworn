@@ -191,6 +191,19 @@ export function perform(b: Battle, action: Action): { ok: true; events: BattleEv
     }
     case 'item':
       return useItem(b, x, action.itemId, action.targetId) ?? done();
+    case 'pray': {
+      const p = x.prayer;
+      if (!p) return { ok: false, reason: 'You have no patron to pray to.' };
+      if (p.uses <= 0) return { ok: false, reason: 'Not enough favor to pray again.' };
+      if ((x.cooldowns.pray ?? 0) > 0) return { ok: false, reason: `Ready in ${x.cooldowns.pray} turns.` };
+      p.uses--;
+      x.cooldowns.pray = COMBAT.prayCooldown;
+      b.tally.favor.push({ god: p.god, amount: -p.cost });
+      const target = b.get(action.targetId ?? '');
+      b.emit({ type: 'action', actorId: x.id, label: `${p.name} (prayer to ${b.c.gods.get(p.god).name})`, targets: target ? [target.id] : [] });
+      applyEffects(b, x, p.effects, target ? [target] : foesOf(b, x).slice(0, 1));
+      return done();
+    }
     case 'ability': {
       const ability = x.abilities.find((a) => a.slot === action.slot);
       if (!ability) return { ok: false, reason: 'No ability.' };

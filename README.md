@@ -40,6 +40,7 @@ Then open http://localhost:5173.
 | I | Inventory, equipment and stash |
 | K | Skill trees, specializations, builds and hotbar |
 | J | General skills and their slots |
+| P | Pantheon: favor, shrines, offerings and blessings (in battle: Pray) |
 | G | Proving Grounds (battles and resting) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
@@ -72,6 +73,8 @@ In battle:
 
 **Hybrid prestige classes:** some class pairs (Warrior + Mage = Spellblade, Rogue + Necromancer = Shadow Reaper, and 10 more) unlock a hidden hybrid tree once both classes reach level 25 and you win the pair's trial. Hybrid trees show up as ✧ tabs on the Skills screen.
 
+**Gods (P):** ten gods judge what you do. Each likes and dislikes certain deeds (slaying undead, fleeing, reading books, healing...), which you discover as they trigger, and gaining favor with a god annoys its rival. At each god's shrine you can pray once a day, make offerings of gold or items, buy minor blessings with favor, and pick a **patron**. When a god first acknowledges, favors, devotes itself to or exalts you, it offers a choice of three **major blessings** for your blessing slots. In battle, **Pray** (P) spends your patron's favor for a miracle, and a Devoted god may intervene to save you from death. Make a god hate you and its herald will hunt you.
+
 **General skills (J):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
@@ -96,6 +99,7 @@ src/
     items/      generation, affixes, sockets, equipment, inventory, loot
     combat/     battles: damage, statuses, skills, turns, AI, combatants
     skills/     skill trees, modifiers (patches), mastery, general skills, specializations
+    gods/       favor, devotion tiers, blessings, prayer and intervention
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -273,6 +277,15 @@ Specializations live in `src/data/trees/specsMartial.ts` and `specsArcane.ts`, o
   capstone: { name: 'Undying Rage', triggers: [/* ... */] },
 }
 ```
+
+### Example: a blessing
+Add a `minor(...)` or `major(...)` entry to `BLESSINGS` in `src/data/blessings.ts`. Majors need a `minTier`; minors a duration and favor cost (the helper fills defaults):
+
+```ts
+major('kael', { id: 'kael-veteran', name: 'Veteran', rarity: 'uncommon', minTier: 'acknowledged', description: '+5% crit chance.', modifiers: [flat('critChance', 5)] }),
+```
+
+A god's likes, dislikes, rivals, offerings, prayer and intervention live in `src/data/pantheon.ts`; favor tiers and rates in `src/data/devotion.ts`.
 
 ### Example: a hybrid prestige class
 Add a `HybridDef` to `HYBRIDS` in `src/data/multiclass.ts` (its two classes and trial encounter id; the trial encounter is generated from the two mentors), and a `BranchSpec` with the same id to `MARTIAL_HYBRID_BRANCHES` or `CUNNING_HYBRID_BRANCHES` in `src/data/trees/hybrids*.ts`, with its two skills in the matching `*_HYBRID_SKILLS` list:
