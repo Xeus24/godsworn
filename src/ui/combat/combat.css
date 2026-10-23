@@ -284,3 +284,34 @@
 .enc-tag.ok {
   color: var(--ok);
 }
+
+/* ---------- Class trainers ---------- */
+
+.trainers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.trainer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.trainer-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.xp-split {
+  margin-top: 8px;
+}
+
+.grounds-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}

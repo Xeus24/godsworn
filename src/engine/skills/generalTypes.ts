@@ -27,6 +27,8 @@ export interface GeneralSkillDef {
   /** Passive modifiers per rank, active while the skill is slotted. */
   passive?: ModifierSpec[];
   utility?: { kind: UtilityKind; perRank: number };
+  /** Mechanic flags granted while slotted (e.g. armorTraining). */
+  flags?: string[];
   requirements?: { level?: number; stats?: Partial<PrimaryStats> };
 }
 

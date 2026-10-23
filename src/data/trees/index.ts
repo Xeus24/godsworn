@@ -7,7 +7,10 @@ import { MONK_SKILLS, MONK_TREE } from './monk';
 import { NECROMANCER_SKILLS, NECROMANCER_TREE } from './necromancer';
 import { RANGER_SKILLS, RANGER_TREE } from './ranger';
 import { ROGUE_SKILLS, ROGUE_TREE } from './rogue';
-import { withSpecs, type SpecBranchSpec } from './builder';
+import { MULTICLASS } from '../progression';
+import { buildTree, withSpecs, type BranchSpec, type SpecBranchSpec } from './builder';
+import { CUNNING_HYBRID_BRANCHES, CUNNING_HYBRID_SKILLS } from './hybridsCunning';
+import { MARTIAL_HYBRID_BRANCHES, MARTIAL_HYBRID_SKILLS } from './hybridsMartial';
 import { ARCANE_SPEC_BRANCHES, ARCANE_SPEC_SKILLS } from './specsArcane';
 import { MARTIAL_SPEC_BRANCHES, MARTIAL_SPEC_SKILLS } from './specsMartial';
 import { WARRIOR_SKILLS, WARRIOR_TREE } from './warrior';
@@ -25,6 +28,8 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...BARD_SKILLS,
   ...MARTIAL_SPEC_SKILLS,
   ...ARCANE_SPEC_SKILLS,
+  ...MARTIAL_HYBRID_SKILLS,
+  ...CUNNING_HYBRID_SKILLS,
 ];
 
 const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES };
@@ -34,9 +39,18 @@ export const SPECIALIZATIONS: SpecializationDef[] = Object.entries(SPEC_BRANCHES
   specs.map((sp) => ({ id: sp.id, classId, name: sp.name, description: sp.description, ultimate: sp.ultimate, branch: sp.id })),
 );
 
-const RAW_TREES: SkillTreeDef[] = [WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE].map((t) =>
-  withSpecs(t, SPEC_BRANCHES[t.classId] ?? []),
-);
+const HYBRID_BRANCHES: Record<string, BranchSpec> = { ...MARTIAL_HYBRID_BRANCHES, ...CUNNING_HYBRID_BRANCHES };
+
+/** A hybrid tree is one standard 16-node branch, gated at 3 points per tier. Its id is the hybrid's id. */
+const HYBRID_TREES: SkillTreeDef[] = Object.entries(HYBRID_BRANCHES).map(([id, branch]) => {
+  const tree = buildTree(id, [branch]);
+  return { ...tree, branches: tree.branches.map((b) => ({ ...b, tierGate: MULTICLASS.hybridTierGate })) };
+});
+
+const RAW_TREES: SkillTreeDef[] = [
+  ...[WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE].map((t) => withSpecs(t, SPEC_BRANCHES[t.classId] ?? [])),
+  ...HYBRID_TREES,
+];
 
 /**
  * Fills in what the builder cannot know: active nodes take their skill's

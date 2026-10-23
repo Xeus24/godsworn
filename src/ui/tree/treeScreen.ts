@@ -3,6 +3,7 @@ import { masteryLevel, masteryProgress, MAX_MASTERY } from '../../engine/skills/
 import {
   activeBuild,
   availablePoints,
+  masteryPointsLeft,
   branchPoints,
   canAllocate,
   hotbar,
@@ -12,6 +13,7 @@ import {
   treeOf,
   treeState,
 } from '../../engine/skills/tree';
+import { MULTICLASS } from '../../data/progression';
 import { chosenSpec, SPEC_LEVEL, specChangeCost, specializationsFor } from '../../engine/skills/specs';
 import type { SkillTreeDef, TreeNodeDef } from '../../engine/skills/treeTypes';
 import type { GameSession } from '../../engine/state/gameState';
@@ -235,15 +237,18 @@ export class TreeScreen implements Screen {
   private sidebar(tree: SkillTreeDef): HTMLElement {
     const p = this.session.player;
     const st = treeState(p, this.classId);
-    const classTabs = p.classes.map((cp) => {
-      const b = el('button', { class: `tab${cp.classId === this.classId ? ' active' : ''}` }, content.classes.get(cp.classId).name);
+    const tabs = [...p.classes.map((cp) => [cp.classId, content.classes.get(cp.classId).name] as const), ...p.hybrids.map((id) => [id, `${content.hybrids.get(id).name} ✧`] as const)];
+    const classTabs = tabs.map(([id, name]) => {
+      const b = el('button', { class: `tab${id === this.classId ? ' active' : ''}` }, name);
       b.addEventListener('click', () => {
-        this.classId = cp.classId;
+        this.classId = id;
         this.selected = undefined;
         this.render();
       });
       return b;
     });
+    const progress = p.classes.find((cp) => cp.classId === this.classId);
+    const hybrid = content.hybrids.find(this.classId);
     const builds = st.builds.map((bd, i) => {
       const b = el('button', { class: `tab${i === st.active ? ' active' : ''}` }, bd.name);
       b.addEventListener('click', () => this.say(this.session.trees.switchBuild(this.classId, i)));
@@ -274,9 +279,11 @@ export class TreeScreen implements Screen {
       'section',
       { class: 'panel tree-side' },
       el('div', { class: 'tabs' }, ...classTabs),
-      el('div', { class: pts > 0 ? 'points-available' : 'dim' }, `${pts} skill point${pts === 1 ? '' : 's'} available`),
+      el('div', { class: pts > 0 ? 'points-available' : 'dim' }, `${pts} ${hybrid ? 'hybrid' : 'skill'} point${pts === 1 ? '' : 's'} available`),
+      ...(progress && progress.slot !== 'primary' ? [el('div', { class: 'small' }, `${masteryPointsLeft(p, this.classId)} Mastery Point(s): secondary-class keystones and capstones each need one (1 per ${MULTICLASS.masteryPointEvery} class levels).`)] : []),
+      ...(hybrid ? [el('p', { class: 'dim small' }, `${hybrid.description} Points: ${MULTICLASS.hybridBasePoints} on unlock, +1 per ${MULTICLASS.hybridLevelsPerPoint} combined ${hybrid.classes.map((id) => content.classes.get(id).name).join('/')} levels above ${MULTICLASS.hybridLevel}. Tiers need ${MULTICLASS.hybridTierGate} points each.`)] : []),
       el('p', { class: 'dim small' }, 'Double-click or shift-click to learn. Right-click to refund. Drag to pan, scroll to zoom.'),
-      this.specPanel(),
+      ...(progress ? [this.specPanel()] : []),
       el('h3', {}, 'Builds'),
       el('div', { class: 'tabs' }, ...builds),
       nameInput,

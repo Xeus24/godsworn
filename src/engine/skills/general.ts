@@ -132,6 +132,11 @@ export function generalCombatSkills(char: Character, c: Content = content): Gene
   );
 }
 
+/** Mechanic flags of slotted general skills. */
+export function generalFlags(char: Character, c: Content = content): string[] {
+  return [...new Set(slotted(char, c).flatMap(({ def }) => def.flags ?? []))];
+}
+
 /** Highest slotted rank of a utility kind (0 if none). */
 export function utilityRank(char: Character, kind: UtilityKind, c: Content = content): number {
   return slotted(char, c).reduce((best, { def, rank }) => (def.utility?.kind === kind ? Math.max(best, rank) : best), 0);

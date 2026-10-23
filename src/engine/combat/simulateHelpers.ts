@@ -1,13 +1,15 @@
 import { content, type Content } from '../../data';
 import { allocateAttribute } from '../character/attributes';
 import { createCharacter } from '../character/create';
-import { grantXp, totalXpForLevel } from '../character/progression';
+import { addClass } from '../character/multiclass';
+import { grantXp, skillPointsForClassLevel, totalXpForLevel } from '../character/progression';
 import { characterStats, restoreFull } from '../character/stats';
 import type { Character } from '../character/types';
 import { equipFromInventory } from '../items/equipment';
 import { createItem } from '../items/generate';
 import { addItem, createInventory } from '../items/inventory';
 import { GEAR_TIERS } from '../../data/items/materialTiers';
+import { MULTICLASS } from '../../data/progression';
 import { learnGeneral } from '../skills/general';
 import { chooseSpec, SPEC_LEVEL, specializationsFor } from '../skills/specs';
 import { allocate, availablePoints, canAllocate, treeOf } from '../skills/tree';
@@ -71,6 +73,32 @@ export function benchmarkHero(classId: string, level: number, raceId = 'human', 
     const progress = hero.generalSkills[id];
     if (progress) progress.rank = Math.min(10, Math.max(1, Math.ceil(level / 8)));
   }
+  restoreFull(hero, c);
+  return hero;
+}
+
+/**
+ * A two-class benchmark hero: the primary class at `level`, plus a
+ * secondary class taken at 15 that has kept pace at 80% of the levels
+ * since (or `secondaryLevel` if given), with its tree auto-spent too.
+ */
+export function benchmarkMulticlass(primary: string, secondary: string, level: number, secondaryLevel?: number, c: Content = content): Character {
+  const hero = benchmarkHero(primary, level, 'human', c);
+  const trial = c.classTrials.get(secondary).encounter;
+  hero.trialsWon.push(trial);
+  const levelBefore = hero.level;
+  hero.level = Math.max(hero.level, MULTICLASS.secondaryLevel);
+  if (!addClass(hero, secondary, 0, c).ok) return hero;
+  hero.level = levelBefore;
+  const progress = hero.classes[1];
+  if (!progress) return hero;
+  progress.level = secondaryLevel ?? Math.max(1, Math.round((level - MULTICLASS.secondaryLevel) * 0.8));
+  for (let l = 2; l <= progress.level; l++) progress.skillPoints += skillPointsForClassLevel(l);
+  if (progress.level >= SPEC_LEVEL) {
+    const spec = specializationsFor(secondary, c)[0];
+    if (spec) chooseSpec(hero, secondary, spec.id, c);
+  }
+  autoSpendTree(hero, secondary, c);
   restoreFull(hero, c);
   return hero;
 }

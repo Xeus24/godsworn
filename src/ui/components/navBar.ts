@@ -39,6 +39,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
     b.addEventListener('click', run);
     return b;
   };
+  const identity = `Level ${p.level} ${content.races.get(p.raceId).name} ${[...p.classes.map((c) => content.classes.get(c.classId).name), ...p.hybrids.map((h) => content.hybrids.get(h).name)].join(' / ')}`;
   const title = el('button', {}, 'Title');
   title.addEventListener('click', nav.title);
 
@@ -50,7 +51,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
       'div',
       { class: 'sheet-ident' },
       el('div', { class: 'sheet-name' }, p.name, p.hardcore ? el('span', { class: 'badge danger' }, 'Hardcore') : ''),
-      el('div', { class: 'dim' }, `Level ${p.level} ${content.races.get(p.raceId).name} ${p.classes.map((c) => content.classes.get(c.classId).name).join(' / ')}`),
+      el('div', { class: 'dim', title: identity }, identity),
       ...(extra ? [extra] : []),
     ),
     el(

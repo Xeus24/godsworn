@@ -3,6 +3,7 @@ import type { GeneralSkillProgress } from '../skills/generalTypes';
 import type { ClassTreeState } from '../skills/treeTypes';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
+import type { XpMode } from './multiclassTypes';
 
 /** A buff that lasts a number of battles (elixirs, food, minor blessings). */
 export interface TimedBuff {
@@ -44,6 +45,12 @@ export interface Character {
    * (e.g. [75, 25]). Values are relative weights.
    */
   xpSplit: number[];
+  /** 'split' follows xpSplit; 'focus' gives all class XP to the lowest-level class. */
+  xpMode: XpMode;
+  /** Unlocked hybrid prestige classes (their trees are owned like class trees). */
+  hybrids: string[];
+  /** Trial encounters won (class trials and hybrid trials). */
+  trialsWon: string[];
 
   /** Attribute points the player has spent, per stat. */
   allocated: PrimaryStats;

@@ -2,6 +2,8 @@ import { content, type Content } from '../../data';
 import type { Character } from '../character/types';
 import type { TriggeredEffect } from '../effects/types';
 import type { Modifier } from '../stats/modifiers';
+import { MULTICLASS } from '../../data/progression';
+import { earnedTreePoints, masteryPointsEarned, needsMasteryPoint, ownedTreeIds, ownsTree } from './treeOwners';
 import { BUILD_SLOTS, HOTBAR_SIZE, type ClassTreeState, type SkillPatch, type SkillTreeDef, type TreeBuild, type TreeNodeDef } from './treeTypes';
 
 /** Points that must be spent in a branch per tier: tier t needs (t - 1) x 5. */
@@ -52,12 +54,22 @@ export function branchPoints(build: TreeBuild, tree: SkillTreeDef, branch: strin
 }
 
 /** Total skill points earned by the class (levels, bonuses, tomes). */
-export function earnedPoints(char: Character, classId: string): number {
-  return char.classes.find((p) => p.classId === classId)?.skillPoints ?? 0;
+/** Points a tree has earned (class levels, or hybrid points). */
+export function earnedPoints(char: Character, classId: string, c: Content = content): number {
+  return earnedTreePoints(char, classId, c);
 }
 
 export function availablePoints(char: Character, classId: string): number {
   return earnedPoints(char, classId) - spentPoints(activeBuild(char, classId));
+}
+
+/** Mastery Points left for keystones and capstones in a non-primary class's active build. */
+export function masteryPointsLeft(char: Character, classId: string, c: Content = content): number {
+  const tree = c.trees.find(classId);
+  if (!tree) return 0;
+  const build = activeBuild(char, classId);
+  const spent = tree.nodes.filter((n) => rankOf(build, n.id) > 0 && needsMasteryPoint(char, n)).length;
+  return masteryPointsEarned(char, classId) - spent;
 }
 
 /**
@@ -91,10 +103,13 @@ export function canAllocate(char: Character, classId: string, nodeId: string, c:
   const tree = c.trees.find(classId);
   const node = nodeOf(classId, nodeId, c);
   if (!tree || !node) return fail('Unknown node.');
-  if (!char.classes.some((p) => p.classId === classId)) return fail('You have not learned this class.');
+  if (!ownsTree(char, classId)) return fail('You have not learned this class.');
   const build = activeBuild(char, classId);
   if (rankOf(build, nodeId) >= node.maxRank) return fail('Already at max rank.');
   if (availablePoints(char, classId) < 1) return fail('No skill points available.');
+  if (rankOf(build, nodeId) === 0 && needsMasteryPoint(char, node) && masteryPointsLeft(char, classId, c) < 1) {
+    return fail(`Needs a Mastery Point (a secondary class earns one every ${MULTICLASS.masteryPointEvery} class levels).`);
+  }
   const spec = tree.branches.find((b) => b.id === node.branch)?.spec;
   if (spec && char.classes.find((p) => p.classId === classId)?.specialization !== spec) {
     return fail(`Choose the ${c.specializations.find(spec)?.name ?? spec} specialization first.`);
@@ -223,16 +238,16 @@ export interface KnownSkill {
 /**
  * Every active skill the character knows: starting, racial and learned
  * skills (char.skills) plus everything taught by the active builds of all
- * its classes, with ranks combined and the chosen modifier attached.
+ * its class and hybrid trees, with ranks combined and the chosen modifier attached.
  */
 export function knownSkills(char: Character, c: Content = content): KnownSkill[] {
   const ranks = new Map<string, number>();
   for (const [id, r] of Object.entries(char.skills)) ranks.set(id, r);
   const patches = new Map<string, { patch: SkillPatch; node: string }>();
-  for (const p of char.classes) {
-    const tree = c.trees.find(p.classId);
+  for (const treeId of ownedTreeIds(char)) {
+    const tree = c.trees.find(treeId);
     if (!tree) continue;
-    const build = activeBuild(char, p.classId);
+    const build = activeBuild(char, treeId);
     for (const node of tree.nodes) {
       const r = rankOf(build, node.id);
       if (r === 0) continue;
@@ -251,10 +266,10 @@ export function knownSkills(char: Character, c: Content = content): KnownSkill[]
 }
 
 function eachAllocated(char: Character, c: Content, fn: (node: TreeNodeDef, rank: number) => void): void {
-  for (const p of char.classes) {
-    const tree = c.trees.find(p.classId);
+  for (const treeId of ownedTreeIds(char)) {
+    const tree = c.trees.find(treeId);
     if (!tree) continue;
-    const build = activeBuild(char, p.classId);
+    const build = activeBuild(char, treeId);
     for (const node of tree.nodes) {
       const r = rankOf(build, node.id);
       if (r > 0) fn(node, r);

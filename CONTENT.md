@@ -42,7 +42,7 @@ Every class starts with 34 primary points and gains 5.0 per level.
 ## Class resources (7)
 Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), Soul Shards (5, starts 1), Chi (5, starts 1), Verse (100).
 
-## Skills (22 starting + 50 skill-tree + 24 specialization + 39 general + 32 ultimates + 25 enemy skills)
+## Skills (22 starting + 50 skill-tree + 24 specialization + 24 hybrid + 39 general + 32 ultimates + 25 enemy + 8 mentor skills)
 
 **Class starters (16):**
 
@@ -377,7 +377,7 @@ Generated from the data files by `npm run content:md`.
 
 **Curiosities (12):** Loaded Dice, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap
 
-**Mechanic flags (17):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `immune:<status>`
+**Mechanic flags (18):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
 <!-- items:end -->
 
 ## Combat
@@ -428,7 +428,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
 
-### Enemies (18)
+### Enemies (26)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -450,10 +450,18 @@ Generated from the data files by `npm run content:md`.
 | **Dark Cultist** | 13 | normal | humanoid, cultist | back | summoner | Dark Pact, Shadow Bolt | shadow +30%, holy -20% |
 | **Wyld Boar** | 14 | normal | beast | front | aggressive | Gore Charge |  |
 | **Alpha of the Whisperwood** | 15 | elite | beast | front | aggressive | Savage Bite, Pack Howl, War Cry |  |
+| **Sword-Master Bram** | 15 | miniboss | humanoid, mentor | front | aggressive | Master’s Riposte, Shield Bash, War Cry |  |
+| **Archmage Velis** | 15 | miniboss | humanoid, mentor | back | caster | Lesson in Fire, Dazzle, Goblin Hex | fire +30%, ice +30% |
+| **Nell the Knife** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **Mother Aurelie** | 15 | miniboss | humanoid, mentor | back | healer | Final Judgement, Crude Mending | holy +50%, shadow -20% |
+| **Warden Sylas** | 15 | miniboss | humanoid, mentor | back | aggressive | Hail of Arrows, Pinning Shot |  |
+| **The Pale Tutor** | 15 | miniboss | humanoid, mentor | back | summoner | Grasp of the Grave, Dark Pact, Grave Chill | shadow +40%, holy -25% |
+| **Master Ren** | 15 | miniboss | humanoid, mentor | front | aggressive | Hundred Fists, Master’s Riposte |  |
+| **Lyra Silvertongue** | 15 | miniboss | humanoid, mentor | back | caster | Discordant Note, Pack Howl |  |
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
-### Encounters (14)
+### Encounters (34)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -471,6 +479,26 @@ Generated from the data files by `npm run content:md`.
 | **Cult Circle** | 13 | Skeleton Soldier, Dark Cultist, Dark Cultist |
 | **Boar Charge** | 14 | Wyld Boar, Wyld Boar |
 | **Hunt of the Alpha** | 15 | Alpha of the Whisperwood, Dire Wolf, Dire Wolf |
+| **Trial: Sword-Master Bram** | 15 | Sword-Master Bram, Bandit Thug |
+| **Trial: Archmage Velis** | 15 | Archmage Velis, Will-o'-Wisp |
+| **Trial: Nell the Knife** | 15 | Nell the Knife, Goblin Cutthroat |
+| **Trial: Mother Aurelie** | 15 | Mother Aurelie, Skeleton Soldier |
+| **Trial: Warden Sylas** | 15 | Warden Sylas, Dire Wolf |
+| **Trial: The Pale Tutor** | 15 | The Pale Tutor, Skeleton Soldier |
+| **Trial: Master Ren** | 15 | Master Ren |
+| **Trial: Lyra Silvertongue** | 15 | Lyra Silvertongue, Bandit Thug |
+| **Trial of the Spellblade** | 40 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Warpriest** | 40 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
+| **Trial of the Deathknight** | 40 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Beastlord** | 40 | Sword-Master Bram, Bandit Thug, Warden Sylas, Dire Wolf |
+| **Trial of the Templar Ascetic** | 40 | Mother Aurelie, Skeleton Soldier, Master Ren |
+| **Trial of the Stormfist** | 40 | Master Ren, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Shadow Reaper** | 40 | Nell the Knife, Goblin Cutthroat, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Spellthief** | 40 | Nell the Knife, Goblin Cutthroat, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Blade Dancer** | 40 | Nell the Knife, Goblin Cutthroat, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Wildsinger** | 40 | Warden Sylas, Dire Wolf, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Arcane Archer** | 40 | Warden Sylas, Dire Wolf, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Plague Doctor** | 40 | Mother Aurelie, Skeleton Soldier, The Pale Tutor, Skeleton Soldier |
 <!-- combat:end -->
 
 ## Skill trees
@@ -478,7 +506,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-8 class trees, 512 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+20 class trees, 512 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (64 nodes)
 
@@ -644,10 +672,10 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | Bard | **Trickster**: Nothing is what it seems. | Misdirect (Confusion, Mirror Image) | **Grand Illusion**: Nothing is real: every enemy may be Charmed (70%), and the party vanishes into Stealth. | Master of Illusion: Crits may Charm the target. |
 <!-- specializations:end -->
 
-## General skills (70)
+## General skills (71)
 
 <!-- general:start -->
-70 general skills (ranks 1-10; Grimoires 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+71 general skills (ranks 1-10; Grimoires 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -704,6 +732,7 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | **Herbal Remedy** | survival | Uncommon | Herbal Remedy | Cure Poison and Curse. |
 | **Foraging** | survival | Common |  | After a victory, 8% chance per rank to forage herbs. |
 | **Camping** | survival | Uncommon |  | Rest faster at camp (-30 minutes per rank) and wake Well Rested (+1% damage per rank for 3 battles). |
+| **Armor Training** (level 15) | survival | Rare |  | Wear any armor your classes allow without the off-class speed penalty. |
 | **Toughness** | survival | Common |  | Passive: +2% max HP per rank. |
 | **Endurance** | survival | Common |  | Passive: +2 HP regeneration per rank. |
 | **Iron Stomach** | survival | Common |  | Passive: +3% nature resist per rank. |
@@ -722,3 +751,68 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | **Meditation (Grimoire)** (level 20) | grimoire | Legendary | Meditation | Use the Meditation skill of another class at 70% power. |
 | **Soothing Melody (Grimoire)** (level 15) | grimoire | Epic | Soothing Melody | Use the Soothing Melody skill of another class at 70% power. |
 <!-- general:end -->
+
+## Multiclassing (8 trials, 12 hybrids)
+
+<!-- multiclass:start -->
+Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 12 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
+
+### Class mentors and trials
+
+| Class | Mentor | Trial | Mentor skills |
+|---|---|---|---|
+| Warrior | **Sword-Master Bram**: Forty years a soldier, still never late for drill. | Lv 15: Sword-Master Bram, Bandit Thug | Master’s Riposte, Shield Bash, War Cry |
+| Mage | **Archmage Velis**: Tests students by setting them on fire. Gently. | Lv 15: Archmage Velis, Will-o'-Wisp | Lesson in Fire, Dazzle, Goblin Hex |
+| Rogue | **Nell the Knife**: You will not see the lesson coming. That is the lesson. | Lv 15: Nell the Knife, Goblin Cutthroat | Now You See Me, Dirty Stab |
+| Cleric | **Mother Aurelie**: Kind, patient, and absolutely merciless with a mace. | Lv 15: Mother Aurelie, Skeleton Soldier | Final Judgement, Crude Mending |
+| Ranger | **Warden Sylas**: Has tracked the Whisperwood wolves for twenty winters. | Lv 15: Warden Sylas, Dire Wolf | Hail of Arrows, Pinning Shot |
+| Necromancer | **The Pale Tutor**: Nobody remembers their name. They prefer it that way. | Lv 15: The Pale Tutor, Skeleton Soldier | Grasp of the Grave, Dark Pact, Grave Chill |
+| Monk | **Master Ren**: Has not lost a sparring match in thirty years, or spoken in ten. | Lv 15: Master Ren | Hundred Fists, Master’s Riposte |
+| Bard | **Lyra Silvertongue**: Every insult she sings is technically a compliment. | Lv 15: Lyra Silvertongue, Bandit Thug | Discordant Note, Pack Howl |
+
+### Hybrid prestige classes
+
+| Hybrid | Classes | Skills (modifiers) | Notables | Keystone | Capstone |
+|---|---|---|---|---|---|
+| **Spellblade**: Steel and sorcery in one edge. | Warrior + Mage | **Arcane Edge** (Flame Edge, Mana Rend); **Spell Ward** (Riposte Ward, Mirror Ward) | Blade Weaving, Spell Strike | Keystone: +25% damage, -30% max MP. | Spellblade Master |
+| **Warpriest**: Prayer on the lips, a mace in the fist. | Warrior + Cleric | **Divine Smite** (Thunderous Smite, Smite the Wicked); **War Hymn** (Hymn of Wrath, Hymn of Mending) | Martyr’s Resolve, Crusade | Keystone: +25% damage, -50 healing power. | Avatar of War: Start every battle with +25% damage for 3 turns. |
+| **Deathknight**: A fallen champion who commands the grave. | Warrior + Necromancer | **Death Strike** (Blood Strike, Frost Strike); **Raise Ghoul** (Bone Legion, Death Pact) | Army of the Dead, Unholy Aura | Keystone: take 15% less damage, but healing on you is halved. | Lord of Death: Kills restore 10 MP. |
+| **Beastlord**: Leads a pack of spirit beasts into the fray. | Warrior + Ranger | **Savage Charge** (Gore, Stampeding Charge); **Call the Beast** (Alpha Bond, Pack Call) | Pack Leader, Blood Scent | Keystone: +25% damage, -10 accuracy. | King of Beasts: Start every battle with a spirit stag, and the party gains +15% damage for 3 turns. |
+| **Templar Ascetic**: The body a temple, the fist a prayer. | Cleric + Monk | **Radiant Palm** (Searing Palm, Palm of Mercy); **Vow of Stillness** (Vow of Iron, Vow of Light) | Inner Sanctum, Zealous Flurry | Keystone: +20% damage and 10% less damage taken, but -40% max MP. | Saint of the Fist |
+| **Stormfist**: A monk who caught lightning and never let go. | Monk + Mage | **Thunder Palm** (Chain Palm, Overcharged Palm); **Eye of the Storm** (Static Field, Lightning Reflexes) | Thunderclap, Storm Soul | Keystone: +8 speed, -30% defense. | Heart of Thunder: Each turn, 30% chance to strike a random enemy with lightning (80% MATK). |
+| **Shadow Reaper**: An assassin who reaps souls for the grave. | Rogue + Necromancer | **Reaping Strike** (Soul Harvest, Grim Sweep); **Mark of Death** (Lingering Doom, Swift Doom) | Shroud of Night, Harvest | Keystone: +35% damage below 50% HP, -20% max HP. | Harbinger: Your first two kills each battle raise a skeleton warrior. |
+| **Spellthief**: Steals mana, gold and the occasional spell. | Rogue + Mage | **Siphon Strike** (Arcane Larceny, Mana Burn); **Mirror Image** (Phantasm, Blink) | Spell Steal, Vanishing Act | Keystone: +30% damage, 20% less max HP. | Grand Larceny: Kills steal 10 gold and reduce your cooldowns by 1. |
+| **Blade Dancer**: Every fight a performance, every step a cut. | Rogue + Bard | **Dancing Blades** (Whirling Steel, Crimson Dance); **Tempo** (Allegro, Encore) | Riposte, Showstopper | Keystone: +15 dodge, -25% max HP. | Endless Dance: Kills reduce your cooldowns by 1 and Haste you. |
+| **Wildsinger**: Sings the forest awake and the pack to the hunt. | Ranger + Bard | **Song of the Wild** (Hunter’s Chorus, Verdant Verse); **Thorn Volley** (Briar Storm, Venom Thorns) | Call of the Pack, Harmony of Thorns | Keystone: +30% damage, but take 15% more damage. | Voice of the Wild: Each turn, 25% chance for the party to Regenerate. |
+| **Arcane Archer**: Every arrow a spell. | Ranger + Mage | **Arcane Shot** (Seeking Shot, Elemental Shot); **Arrow Nova** (Frost Nova, Storm Nova) | Spell Arrows, Arcane Barrage | Keystone: +30% damage, -25% defense. | Starfall: Open every battle with a free Arrow Nova. |
+| **Plague Doctor**: Cures and curses from the same bag. | Cleric + Necromancer | **Plague Flask** (Virulent Brew, Blinding Fumes); **Leech Cure** (Bloodletting, Panacea) | Epidemic, Contagion | Keystone: +20 status chance, -30 healing power. | Great Plague: Every battle opens with 3 stacks of Poison on every enemy. |
+
+### Hybrid skills
+
+| Skill | Hybrid | Cost | CD | Description |
+|---|---|---|---|---|
+| **Arcane Edge** | Spellblade | 6 MP | 1 | A rune-lit cut for 150% ATK arcane damage; restore 5 MP. |
+| **Spell Ward** | Spellblade | 10 MP | 4 | Shield yourself for 15% of max HP and gain +20% damage for 2 turns. |
+| **Divine Smite** | Warpriest | 8 MP | 2 | A crushing holy blow for 180% ATK. Heavy stagger. |
+| **War Hymn** | Warpriest | 12 MP | 5 | The party gains +15% damage and +10% defense for 3 turns. |
+| **Death Strike** | Deathknight | 8 MP | 1 | A necrotic blow for 150% ATK shadow damage that heals you for 10% of max HP. |
+| **Raise Ghoul** | Deathknight | 14 MP | 4 | Raise a skeleton warrior to fight beside you. |
+| **Savage Charge** | Beastlord | 6 MP | 2 | Charge any enemy for 160% ATK, with a 20% chance to Stun. |
+| **Call the Beast** | Beastlord | 14 MP | 5 | A spirit stag answers your call. |
+| **Radiant Palm** | Templar Ascetic | 6 MP | 1 | A palm of light for 150% ATK holy damage; heal 6% of max HP and gain 1 Chi. |
+| **Vow of Stillness** | Templar Ascetic | 12 MP | 5 | Shield yourself for 20% of max HP and Regenerate for 3 turns. |
+| **Thunder Palm** | Stormfist | 6 MP | 1 | A crackling strike for 150% ATK lightning damage (15% Stun); gain 1 Chi. |
+| **Eye of the Storm** | Stormfist | 10 MP | 4 | Become the calm at the center: Haste for 2 turns and a shield of 10% of max HP. |
+| **Reaping Strike** | Shadow Reaper | 6 MP | 1 | A scythe-like cut for 160% ATK shadow damage; heal 6% of max HP. |
+| **Mark of Death** | Shadow Reaper | 10 MP | 3 | Mark an enemy: 40% ATK shadow damage, Vulnerable for 2 turns and Cursed for 3. |
+| **Siphon Strike** | Spellthief | free | 1 | A quick cut for 140% ATK arcane damage that steals 8 MP. |
+| **Mirror Image** | Spellthief | 10 MP | 4 | Vanish behind illusions: Stealth and +25 dodge for 2 turns. |
+| **Dancing Blades** | Blade Dancer | 6 MP | 2 | Four flashing cuts at random enemies, 55% ATK each. |
+| **Tempo** | Blade Dancer | 12 MP | 5 | Quicken the music: the party is Hasted for 2 turns. |
+| **Song of the Wild** | Wildsinger | 10 MP | 4 | The party gains +15% damage and Regenerates for 2 turns. |
+| **Thorn Volley** | Wildsinger | 8 MP | 2 | Four thorned arrows at random enemies, 55% ATK nature damage each (30% Poison). |
+| **Arcane Shot** | Arcane Archer | 6 MP | 1 | A rune-tipped arrow for 170% ATK arcane damage; gain 1 Focus. |
+| **Arrow Nova** | Arcane Archer | 14 MP | 3 | Arrows burst into arcane light: 90% ATK to every enemy. |
+| **Plague Flask** | Plague Doctor | 12 MP | 3 | Hurl a flask: 60% MATK nature damage to every enemy and 2 stacks of Poison. |
+| **Leech Cure** | Plague Doctor | 10 MP | 2 | Heal an ally for 120% MATK and draw out Poison. |
+<!-- multiclass:end -->

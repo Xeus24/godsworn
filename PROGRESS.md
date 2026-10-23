@@ -10,8 +10,8 @@
 | 4 | Combat core | **Done** |
 | 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | **Done** |
 | 6 | Specializations, general skills, skillbooks | **Done** |
-| 7 | Multiclassing, hybrid prestige classes | Next |
-| 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | |
+| 7 | Multiclassing, hybrid prestige classes | **Done** |
+| 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | Next |
 | 9 | Apostleship | |
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | |
 | 11 | Economy | |
@@ -233,6 +233,30 @@
 - `npm run sim` heroes now take their class's first specialization from class level 20 and slot Toughness and Keen Eye. A smoke run of all 24 specializations at level 20 fires every signature ultimate.
 - 250 unit tests.
 
+### Phase 7: multiclassing and hybrid prestige classes
+- **Second class at level 15** (a third at level 40 from NG+2), taken from a class trainer after winning their **trial**:
+  - 8 class mentors (Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, the Pale Tutor, Master Ren, Lyra Silvertongue), each a mini-boss with a signature move, fought with a helper at level 15.
+  - The new class starts at level 1 with its starting skills, its own tree, resource bar and specialization (at its level 20), and adds its weapon and armor types.
+- **Multiclass rules:**
+  - Secondary classes grow stats at 50% (from Phase 2's formula).
+  - Skill points are earned and spent per class.
+  - **Mastery Points:** keystones and capstones in a non-primary class's tree each also cost a Mastery Point; that class earns one every 10 class levels.
+  - **Off-class armor:** each armor piece only a non-primary class can wear costs 2% speed, unless Armor Training removes it (a new general skill, and a flag on several hybrid capstones).
+- **Class XP split:** presets 100/0, 75/25, 50/50, 25/75 and 0/100 (or splits for three classes), plus **Focus**, which sends all class XP to the lowest-level class. The character level always gets all XP.
+- **12 hybrid prestige classes:** Spellblade, Warpriest, Deathknight, Beastlord, Templar Ascetic, Stormfist, Shadow Reaper, Spellthief, Blade Dancer, Wildsinger, Arcane Archer and Plague Doctor.
+  - Each unlocks when both its classes reach level 25 and its trial is won: both mentors and their helpers at level 40.
+  - Each has a 16-node tree (2 new skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone, a capstone), so there are 24 new hybrid skills.
+  - Hybrid points: 5 on unlock, +1 per 2 combined class levels above 25. Tiers need 3 points each.
+- **Synergy tags** already worked through `skillTag` conditions; hybrid notables lean on them (Blade Weaving buffs every Melee skill, Storm Soul every Lightning skill, from any class).
+- Trees are now owned by classes or hybrids, so builds, hotbars, refunds, passives, triggers and flags all work the same for hybrid trees.
+- **UI:**
+  - Proving Grounds: a Class Trainers panel (mentor cards, trial fights, "Take up" buttons) and Hybrid Trials for your class pairs.
+  - Character sheet: every class with its Mastery Points, hybrids with their points, and the XP split and Focus buttons.
+  - Skill trees: hybrid tabs (✧), point labels, and the Mastery Point rule shown for secondary classes.
+  - Toasts at level 15, for won trials, new classes and unlocked hybrids. The header now shortens long class lines (with the full line on hover).
+- `npm run sim` now includes four multiclass pairs (from level 15) and reports win rates for the class and hybrid trials.
+- 267 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -285,6 +309,14 @@
 - **The 12th spec node is a shared "Signature Mastery"** (+8% Ultimate Charge per rank, 3 ranks). It ties each branch to its new ultimate without inventing 24 more unique minors.
 - **The Library is reached from the inventory** until towns exist (Phase 10), which then move it to town Libraries.
 - **Balance after Phase 6:** 96.6% average wins (the encounters only reach level 15, so specializations do not show up there yet). Spec balance needs the higher-level zones of Phase 10; the full pass is Phase 16.
+- **Trials instead of trial quests (for now).** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor at the Proving Grounds. Phase 12 can wrap these fights in quests without changing the unlock rules.
+- **12 hybrids, all class pairs.** The spec asks for at least 10 and lists a Paladin + Apostle of the Sun hybrid (Sun Knight); that one needs apostleship and is deferred to Phase 9.
+- **A hybrid tree is one standard 16-node branch** (the same template as class branches), inside the spec's 15–20 range. It gates at 3 points per tier so its capstone is reachable at about 15 points.
+- **Hybrid points come from both classes' levels above 25**, so a hybrid grows with the pair rather than with either class alone, and needs no separate XP track.
+- **Mastery Points: 1 per 10 levels of the non-primary class.** A secondary class at 60 can take up to 6 keystones and capstones. The spec does not give a rate.
+- **The off-class armor penalty is 2% speed per piece.** Speed shifts the turn order, so heavy armor on a caster is a felt but small cost. Armor Training removes it.
+- **Focus mode** gives all class XP to whichever class is lowest, so a new secondary class catches up without the player micromanaging the split.
+- **Trial balance:** class trials are fought at level 15 and won 69–90% of the time by benchmark level-15 heroes of the other classes (`npm run sim`). Hybrid trials are fixed at level 40 and won 50–100% by benchmark pairs at level 35. They are fixed-level on purpose: a player who fails can level up and return. Tuning between levels 15 and 40 needs the content of Phase 10.
 - **A zero-base check** in content validation rejects percent and "more" modifiers on stats that start at 0. This caught two Phase 2 racial skills (Rally, Bloodlust) that would otherwise have done nothing.
 
 ## Known bugs
@@ -301,9 +333,13 @@
 - **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
 - **The stash is reachable from anywhere** until towns exist (Phase 10), which then restricts it to towns.
+- **Sun Knight** (Paladin specialization + Apostle of the Sun god) arrives with apostleship in Phase 9.
+- **Class trainers in towns and trial quests:** the trainers live at the Proving Grounds until towns arrive (Phase 10), and the trial fights become short quests in Phase 12.
+- **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
+- **Mid-level balance** (levels 15–40, where multiclassing and hybrid trials happen) waits for the zones and encounters of Phase 10; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 because the auto-battler spends turns on a level-1 mage's spells.
 - **Divine general skills** arrive with the gods in Phase 8, and **Forbidden** ones with heresies in Phase 14. Both categories already exist in the engine and the UI.
 - **General skills that act on the overworld** (Lockpicking, Detect Traps, Haggle, Cooking, Sprint on the map) come with zones, towns and shops in Phases 10–11. Their stat and battle versions already work.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 7: multiclassing (adding classes, the XP split between them, per-class trees and specializations) and hybrid prestige classes unlocked by class pairs.
+- Phase 8: gods (10 + 1 hidden): favor and devotion tiers, likes and dislikes, rivalries, shrines and offerings, blessings and their slots, divine intervention, the Pray action in battle, divine items and Divine general skills, and the Pantheon screen.

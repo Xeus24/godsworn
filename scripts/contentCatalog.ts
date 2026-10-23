@@ -5,6 +5,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { content } from '../src/data';
+import { MULTICLASS } from '../src/data/progression';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
 
@@ -117,12 +118,15 @@ function combatSection(): string {
   return out.join('\n');
 }
 
+/** Class trees only (hybrid trees share the table and are listed under Multiclassing). */
+const classTrees = (): SkillTreeDef[] => content.trees.filter((t) => content.classes.has(t.classId));
+
 function treesSection(): string {
   const out: string[] = [];
   const isClassBranch = (tree: SkillTreeDef, id: string): boolean => !tree.branches.find((b) => b.id === id)?.spec;
-  const total = content.trees.all().reduce((n, t) => n + t.nodes.filter((x) => isClassBranch(t, x.branch)).length, 0);
+  const total = classTrees().reduce((n, t) => n + t.nodes.filter((x) => isClassBranch(t, x.branch)).length, 0);
   out.push(`${content.trees.size} class trees, ${total} nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.`, '');
-  for (const tree of content.trees.all()) {
+  for (const tree of classTrees()) {
     const classNodes = tree.nodes.filter((x) => isClassBranch(tree, x.branch));
     out.push(`### ${content.classes.get(tree.classId).name} (${classNodes.length} nodes)`, '', '| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |', '|---|---|---|---|---|---|');
     for (const b of tree.branches.filter((x) => !x.spec)) {
@@ -138,7 +142,7 @@ function treesSection(): string {
     out.push('');
   }
   out.push('### Tree skills', '', '| Skill | Class | Cost | CD | Description |', '|---|---|---|---|---|');
-  for (const tree of content.trees.all()) {
+  for (const tree of classTrees()) {
     for (const n of tree.nodes.filter((x) => x.kind === 'active' && !x.starting && isClassBranch(tree, x.branch))) {
       const sk = content.skills.get(n.skill as string);
       const cost = [sk.cost.mp ? `${sk.cost.mp} MP` : '', sk.cost.resource ? `${sk.cost.resource.amount} ${content.resources.get(sk.cost.resource.id).name}` : ''].filter(Boolean).join(' + ') || 'free';
@@ -177,7 +181,38 @@ function generalSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection };
+function multiclassSection(): string {
+  const out: string[] = [];
+  out.push(`Second class at level ${MULTICLASS.secondaryLevel} (third at ${MULTICLASS.tertiaryLevel} in NG+${MULTICLASS.tertiaryNgPlus}+), after beating that class's mentor in a trial. ${content.hybrids.size} hybrid prestige classes unlock when both classes reach ${MULTICLASS.hybridLevel} and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at ${MULTICLASS.hybridTierGate} points per tier.`, '');
+  out.push('### Class mentors and trials', '', '| Class | Mentor | Trial | Mentor skills |', '|---|---|---|---|');
+  for (const t of content.classTrials.all()) {
+    const mentor = content.enemies.get(`mentor-${t.classId}`);
+    const enc = content.encounters.get(t.encounter);
+    out.push(`| ${content.classes.get(t.classId).name} | **${mentor.name}**: ${cell(mentor.description)} | Lv ${enc.level}: ${enc.enemies.map((e) => content.enemies.get(e.enemyId).name).join(', ')} | ${mentor.skills.map((sk) => content.skills.get(sk.id).name).join(', ')} |`);
+  }
+  out.push('', '### Hybrid prestige classes', '', '| Hybrid | Classes | Skills (modifiers) | Notables | Keystone | Capstone |', '|---|---|---|---|---|---|');
+  for (const h of content.hybrids.all()) {
+    const nodes = content.trees.get(h.id).nodes;
+    const skills = nodes
+      .filter((n) => n.kind === 'active')
+      .map((n) => `**${n.name}** (${nodes.filter((m) => m.variant?.skill === n.skill).map((m) => m.name).join(', ')})`)
+      .join('; ');
+    const names = (kind: string): string => nodes.filter((n) => n.kind === kind).map((n) => n.name).join(', ');
+    const keystone = nodes.find((n) => n.kind === 'keystone');
+    const capstone = nodes.find((n) => n.kind === 'capstone');
+    out.push(`| **${h.name}**: ${cell(h.description)} | ${h.classes.map((id) => content.classes.get(id).name).join(' + ')} | ${cell(skills)} | ${cell(names('notable'))} | ${cell(keystone?.text ?? keystone?.name ?? '')} | ${cell(`${capstone?.name ?? ''}${capstone?.text ? `: ${capstone.text}` : ''}`)} |`);
+  }
+  out.push('', '### Hybrid skills', '', '| Skill | Hybrid | Cost | CD | Description |', '|---|---|---|---|---|');
+  for (const h of content.hybrids.all()) {
+    for (const n of content.trees.get(h.id).nodes.filter((x) => x.kind === 'active')) {
+      const sk = content.skills.get(n.skill as string);
+      out.push(`| **${sk.name}** | ${h.name} | ${sk.cost.mp ? `${sk.cost.mp} MP` : 'free'} | ${sk.cooldown} | ${cell(sk.description)} |`);
+    }
+  }
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

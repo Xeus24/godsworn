@@ -3,7 +3,9 @@ import { allocatedTotal, respecCost } from '../../engine/character/attributes';
 import { paragonRank } from '../../engine/character/paragon';
 import { levelProgress, xpToNext } from '../../engine/character/progression';
 import { characterStatsDetailed } from '../../engine/character/stats';
-import { availablePoints, knownSkills } from '../../engine/skills/tree';
+import { MULTICLASS } from '../../data/progression';
+import { masteryPointsEarned } from '../../engine/skills/treeOwners';
+import { availablePoints, earnedPoints, knownSkills, masteryPointsLeft } from '../../engine/skills/tree';
 import type { GameSession } from '../../engine/state/gameState';
 import { ELEMENTS, PRIMARY_STATS, type StatId } from '../../engine/stats/types';
 import { navBar, type Nav } from '../components/navBar';
@@ -23,6 +25,11 @@ function bar(fraction: number, cls: string, label: string): HTMLElement {
     el('div', { class: 'bar-fill', style: `width:${pct}%` }),
     el('span', { class: 'bar-label' }, label),
   );
+}
+
+/** Preset splits for two classes (primary share), or an even split for three. */
+function splitPresets(count: number): number[][] {
+  return count === 2 ? MULTICLASS.splitPresets.map((pr) => [pr, 100 - pr]) : [[34, 33, 33], [50, 25, 25], [25, 50, 25], [25, 25, 50]];
 }
 
 export class CharacterScreen implements Screen {
@@ -135,8 +142,14 @@ export class CharacterScreen implements Screen {
           el('div', {}, el('b', { style: `color:${cls.color}` }, cls.name), ` · ${cp.slot} · level ${cp.level}`),
           bar(cp.level >= s.state.levelCap ? 1 : cp.xp / xpToNext(cp.level), 'xp thin', `${availablePoints(p, cp.classId)} of ${cp.skillPoints} skill points unspent`),
           el('div', { class: 'dim small' }, cls.mechanic.name + ': ' + cls.mechanic.description),
+          ...(cp.slot !== 'primary' ? [el('div', { class: 'small' }, `${masteryPointsLeft(p, cp.classId)} of ${masteryPointsEarned(p, cp.classId)} Mastery Points free (for keystones and capstones)`)] : []),
         );
       }),
+      ...p.hybrids.map((id) => {
+        const h = content.hybrids.get(id);
+        return el('div', { class: 'class-row' }, el('div', {}, el('b', {}, h.name), ' · hybrid'), el('div', { class: 'dim small' }, `${availablePoints(p, id)} of ${earnedPoints(p, id)} hybrid points unspent`));
+      }),
+      ...(p.classes.length > 1 ? [this.xpSplitPanel()] : []),
     );
 
     const skills = el(
@@ -182,4 +195,28 @@ export class CharacterScreen implements Screen {
       ),
     );
   };
+
+  /** XP split presets and the focus toggle (shown with two or more classes). */
+  private xpSplitPanel(): HTMLElement {
+    const s = this.session;
+    const p = s.player;
+    const names = p.classes.map((cp) => content.classes.get(cp.classId).name);
+    const focus = p.xpMode === 'focus';
+    const buttons = splitPresets(p.classes.length).map((w) => {
+      const active = !focus && w.every((v, i) => v === p.xpSplit[i]);
+      const b = el('button', { class: `tab${active ? ' active' : ''}` }, w.join(' / '));
+      b.addEventListener('click', () => s.multiclass.setSplit(w));
+      return b;
+    });
+    const focusBtn = el('button', { class: `tab${focus ? ' active' : ''}` }, 'Focus');
+    focusBtn.addEventListener('click', () => s.multiclass.setMode(focus ? 'split' : 'focus'));
+    attachTooltip(focusBtn, () => 'All class XP goes to your lowest-level class until it catches up.');
+    return el(
+      'div',
+      { class: 'xp-split' },
+      el('h3', {}, 'Class XP split'),
+      el('div', { class: 'dim small' }, `${names.join(' / ')}. Character level always gets all XP.`),
+      el('div', { class: 'tabs' }, ...buttons, focusBtn),
+    );
+  }
 }

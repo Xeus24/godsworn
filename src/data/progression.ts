@@ -20,6 +20,28 @@ export const PROGRESSION = {
   /** Gold cost to reset attribute points = respecCostPerLevel x level. */
   respecCostPerLevel: 50,
   startingGold: 50,
-  /** Secondary classes contribute this share of their stat growth (Phase 7). */
+  /** Secondary classes contribute this share of their stat growth. */
   secondaryGrowthShare: 0.5,
+} as const;
+
+/** Multiclassing and hybrid prestige class numbers. */
+export const MULTICLASS = {
+  /** Character level to take a secondary class. */
+  secondaryLevel: 15,
+  /** Character level and NG+ tier to take a third class. */
+  tertiaryLevel: 40,
+  tertiaryNgPlus: 2,
+  /** Non-primary classes earn a Mastery Point every N class levels (for keystones and capstones). */
+  masteryPointEvery: 10,
+  /** Both classes of a hybrid must reach this level. */
+  hybridLevel: 25,
+  /** Hybrid points: base on unlock + 1 per this many combined class levels above hybridLevel. */
+  hybridBasePoints: 5,
+  hybridLevelsPerPoint: 2,
+  /** Points per tier in a hybrid tree (6 tiers, so the capstone needs 15). */
+  hybridTierGate: 3,
+  /** Speed lost per armor piece only a non-primary class can wear (percent). */
+  offClassArmorSpeedPenalty: 2,
+  /** Preset XP splits offered for two classes (primary share). */
+  splitPresets: [100, 75, 50, 25, 0],
 } as const;

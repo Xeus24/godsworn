@@ -3,7 +3,7 @@ import { ENEMY_GROWTH, TIER_SCALING } from '../../data/combat';
 import { characterBaseStats, characterModifiers } from '../character/stats';
 import type { Character } from '../character/types';
 import { equipmentFlags, equipmentTriggers, equippedWeaponTypes } from '../items/equipment';
-import { generalCombatSkills } from '../skills/general';
+import { generalCombatSkills, generalFlags } from '../skills/general';
 import { classUltimate } from '../skills/specs';
 import { hotbar, knownSkills, treeFlags, treeTriggers } from '../skills/tree';
 import { baseOf, isBroken, uniqueOf } from '../items/lookup';
@@ -188,7 +188,7 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.mp = Math.min(char.mp, x.maxMp);
   x.classId = cls?.id;
   x.ai = cls?.id === 'cleric' ? 'healer' : 'aggressive';
-  x.flags = [...new Set([...equipmentFlags(char, c), ...treeFlags(char, c)])];
+  x.flags = [...new Set([...equipmentFlags(char, c), ...treeFlags(char, c), ...generalFlags(char, c)])];
   x.triggers = [...equipmentTriggers(char, c), ...treeTriggers(char, c)];
   x.weaponTypes = equippedWeaponTypes(char, c);
   x.skills = knownSkills(char, c).map((k) => ({

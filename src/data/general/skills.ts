@@ -73,9 +73,10 @@ export const GENERAL_COMBAT_SKILLS: SkillDef[] = [
 
 // ---------------------------------------------------------------- general skills
 
-type Spec = Omit<GeneralSkillDef, 'maxRank' | 'rarity'> & { rarity?: RarityId };
+type Spec = Omit<GeneralSkillDef, 'maxRank' | 'rarity'> & { rarity?: RarityId; maxRank?: number };
 
-const C = (s: Spec): GeneralSkillDef => ({ rarity: 'common', ...s, maxRank: 10 });
+/** Ranks 1-10 unless a skill has nothing to scale (a single-rank flag). */
+const C = (s: Spec): GeneralSkillDef => ({ rarity: 'common', maxRank: 10, ...s });
 
 export const GENERAL_SKILLS: GeneralSkillDef[] = [
   // ---- Combat (18) ----
@@ -129,12 +130,13 @@ export const GENERAL_SKILLS: GeneralSkillDef[] = [
   C({ id: 'quick-hands', name: 'Quick Hands', category: 'utility', rarity: 'uncommon', description: 'Passive: +0.5% cooldown reduction per rank.', passive: [flat('cooldownReduction', 0.5)] }),
   C({ id: 'keen-eye', name: 'Keen Eye', category: 'utility', description: 'Passive: +1 accuracy per rank.', passive: [flat('accuracy', 1)] }),
   C({ id: 'silver-tongue', name: 'Silver Tongue', category: 'utility', rarity: 'rare', description: 'Passive: +3% favor gain per rank.', passive: [flat('favorGain', 3)] }),
-  // ---- Survival (14) ----
+  // ---- Survival (15) ----
   C({ id: 'first-aid', name: 'First Aid', category: 'survival', description: 'Heal an ally and stop Bleeding.', combatSkill: 'g-first-aid' }),
   C({ id: 'bandage', name: 'Bandage', category: 'survival', description: 'Regenerate over a few turns.', combatSkill: 'g-bandage' }),
   C({ id: 'herbal-remedy', name: 'Herbal Remedy', category: 'survival', rarity: 'uncommon', description: 'Cure Poison and Curse.', combatSkill: 'g-herbal-remedy' }),
   C({ id: 'foraging', name: 'Foraging', category: 'survival', description: 'After a victory, 8% chance per rank to forage herbs.', utility: { kind: 'foraging', perRank: 8 } }),
   C({ id: 'camping', name: 'Camping', category: 'survival', rarity: 'uncommon', description: 'Rest faster at camp (-30 minutes per rank) and wake Well Rested (+1% damage per rank for 3 battles).', utility: { kind: 'camping', perRank: 1 } }),
+  C({ id: 'armor-training', name: 'Armor Training', category: 'survival', rarity: 'rare', maxRank: 1, description: 'Wear any armor your classes allow without the off-class speed penalty.', flags: ['armorTraining'], requirements: { level: 15 } }),
   C({ id: 'toughness', name: 'Toughness', category: 'survival', description: 'Passive: +2% max HP per rank.', passive: [pct('maxHp', 2)] }),
   C({ id: 'endurance', name: 'Endurance', category: 'survival', description: 'Passive: +2 HP regeneration per rank.', passive: [flat('hpRegen', 2)] }),
   C({ id: 'iron-stomach', name: 'Iron Stomach', category: 'survival', description: 'Passive: +3% nature resist per rank.', passive: [flat('natureResist', 3)] }),

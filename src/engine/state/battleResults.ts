@@ -30,6 +30,8 @@ export interface BattleRewards {
   masteryUps: [string, number][];
   /** General skills that trained to a new rank: [general id, new rank]. */
   generalUps: [string, number][];
+  /** A class or hybrid trial was won for the first time. */
+  trialWon: boolean;
   /** Hardcore death: the save is over. */
   permadeath: boolean;
 }
@@ -57,6 +59,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     goldLost: 0,
     masteryUps: [],
     generalUps: [],
+    trialWon: false,
     permadeath: false,
   };
   const stats = s.state.stats;
@@ -88,6 +91,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
 
   if (b.outcome === 'victory') {
     stats.battlesWon++;
+    rewards.trialWon = s.multiclass.recordVictory(b.encounterId);
     const heroStats = characterStats(p);
     for (const kill of b.tally.kills) {
       rewards.xp += killXp(kill.xp, kill.level, p.level);

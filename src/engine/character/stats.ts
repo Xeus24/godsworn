@@ -1,8 +1,8 @@
 import { content, type Content } from '../../data';
-import { PROGRESSION } from '../../data/progression';
+import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
-import { generalModifiers } from '../skills/general';
-import { treeModifiers } from '../skills/tree';
+import { generalFlags, generalModifiers } from '../skills/general';
+import { treeFlags, treeModifiers } from '../skills/tree';
 import { calculateStats, calculateStatsDetailed, type StatResult } from '../stats/calculate';
 import type { ConditionContext } from '../stats/conditions';
 import { withSource, type Modifier } from '../stats/modifiers';
@@ -53,8 +53,25 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...equipmentModifiers(char, c));
   mods.push(...treeModifiers(char, c));
   mods.push(...generalModifiers(char, c));
+  mods.push(...offClassArmorModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
   return mods;
+}
+
+/**
+ * Each armor piece only a non-primary class can wear costs 2% speed,
+ * unless a tree node or general skill grants Armor Training.
+ */
+export function offClassArmorModifiers(char: Character, c: Content = content): Modifier[] {
+  const primary = char.classes.find((p) => p.slot === 'primary');
+  if (!primary || char.classes.length < 2) return [];
+  if (treeFlags(char, c).includes('armorTraining') || generalFlags(char, c).includes('armorTraining')) return [];
+  const own = new Set(c.classes.get(primary.classId).armor);
+  const pieces = Object.values(char.equipment).filter((item) => {
+    const base = item ? c.items.find(item.baseId) : undefined;
+    return base?.category === 'armor' && !own.has(base.weight);
+  }).length;
+  return pieces > 0 ? [{ stat: 'speed', type: 'percent', value: -MULTICLASS.offClassArmorSpeedPenalty * pieces, source: 'offClassArmor' }] : [];
 }
 
 /** Adds what the character itself knows (wielded weapon types) to a condition context. */

@@ -27,6 +27,7 @@ export const MECHANICS: MechanicDef[] = [
   { id: 'executioner', text: 'Attacks against enemies below 20% HP always crit.' },
   { id: 'spellEcho', text: '20% chance for spells to cast a second time for free.' },
   { id: 'bloodMagic', text: 'Skills cost HP instead of MP.' },
+  { id: 'armorTraining', text: 'No speed penalty for wearing armor only a secondary class allows.' },
 ];
 
 export const IMMUNITY_PREFIX = 'immune:';

@@ -68,6 +68,10 @@ In battle:
 - **Mastery:** the more you use a skill, the stronger it gets.
 - **Specializations:** at class level 20, choose one of three (in the sidebar). It adds a fifth branch and replaces your ultimate. Before then you can preview each branch. The first choice is free; switching costs 100 gold × level and refunds the old branch.
 
+**Multiclassing:** at level 15 you can take a second class. Beat its mentor in a **trial** (Class Trainers, at the Proving Grounds), then take up the class. It starts at level 1 with its own skills, tree, resource and specialization. Set how class XP is shared on the character sheet (presets or **Focus**, which feeds your lowest class). Keystones and capstones in a secondary tree also need a **Mastery Point** (one per 10 levels of that class). Armor only your secondary class allows slows you a little, unless you learn **Armor Training**.
+
+**Hybrid prestige classes:** some class pairs (Warrior + Mage = Spellblade, Rogue + Necromancer = Shadow Reaper, and 10 more) unlock a hidden hybrid tree once both classes reach level 25 and you win the pair's trial. Hybrid trees show up as ✧ tabs on the Skills screen.
+
 **General skills (J):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
@@ -88,7 +92,7 @@ src/
     core/       RNG, event bus, game events
     stats/      stat ids, modifiers, conditions, calculateStats()
     effects/    triggers (on-hit, on-kill...) and effect dispatch
-    character/  creation, base stats, leveling, attributes, paragon
+    character/  creation, base stats, leveling, attributes, paragon, multiclassing
     items/      generation, affixes, sockets, equipment, inventory, loot
     combat/     battles: damage, statuses, skills, turns, AI, combatants
     skills/     skill trees, modifiers (patches), mastery, general skills, specializations
@@ -269,6 +273,15 @@ Specializations live in `src/data/trees/specsMartial.ts` and `specsArcane.ts`, o
   capstone: { name: 'Undying Rage', triggers: [/* ... */] },
 }
 ```
+
+### Example: a hybrid prestige class
+Add a `HybridDef` to `HYBRIDS` in `src/data/multiclass.ts` (its two classes and trial encounter id; the trial encounter is generated from the two mentors), and a `BranchSpec` with the same id to `MARTIAL_HYBRID_BRANCHES` or `CUNNING_HYBRID_BRANCHES` in `src/data/trees/hybrids*.ts`, with its two skills in the matching `*_HYBRID_SKILLS` list:
+
+```ts
+{ id: 'spellblade', name: 'Spellblade', classes: ['warrior', 'mage'], trial: 'trial-spellblade', description: 'Steel and sorcery in one edge.' }
+```
+
+The tree, its tab, the trial card and validation pick it up automatically.
 
 ### Example: a general skill
 Add an entry to `GENERAL_SKILLS` in `src/data/general/skills.ts`. A skillbook (`book-<id>`) is generated for it and joins the loot pools automatically:

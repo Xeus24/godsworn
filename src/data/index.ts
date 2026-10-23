@@ -34,12 +34,13 @@ import { CLASS_TREE_SKILLS, finalizeTrees, SPECIALIZATIONS } from './trees';
 import { buildBooks } from './general/books';
 import { grimoireSkills, GRIMOIRES } from './general/grimoires';
 import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
+import { CLASS_TRIALS, HYBRIDS, MENTOR_SKILLS, MENTORS, TRIAL_ENCOUNTERS } from './multiclass';
 import { SONGS } from './songs';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName)];
 
@@ -82,13 +83,15 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', ENEMIES),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...MENTORS]),
   summons: new ContentTable('summon', SUMMONS),
-  encounters: new ContentTable('encounter', ENCOUNTERS),
+  encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
   specializations: new ContentTable('specialization', SPECIALIZATIONS),
   generalSkills: new ContentTable('general skill', ALL_GENERAL),
   grimoires: new ContentTable('grimoire', GRIMOIRES),
+  hybrids: new ContentTable('hybrid class', HYBRIDS),
+  classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
 };
 
 export type Content = typeof content;
@@ -320,8 +323,23 @@ export function validateContent(c: Content = content): void {
     const where = `general skill ${g.id}`;
     if (g.combatSkill) v.ref(c.skills, g.combatSkill, where);
     checkModifiers(v, g.passive ?? [], where);
-    v.check(g.combatSkill !== undefined || (g.passive?.length ?? 0) > 0 || g.utility !== undefined, `${where}: does nothing`);
+    checkFlags(v, c, g.flags, where);
+    v.check(g.combatSkill !== undefined || (g.passive?.length ?? 0) > 0 || g.utility !== undefined || (g.flags?.length ?? 0) > 0, `${where}: does nothing`);
     v.ref(c.items, `book-${g.id}`, where);
+  }
+  // ---- Multiclassing ----
+  for (const cls of c.classes.all()) {
+    const trial = c.classTrials.find(cls.id);
+    v.check(trial !== undefined, `class ${cls.id}: no class trial`);
+    if (trial) v.ref(c.encounters, trial.encounter, `class trial ${cls.id}`);
+  }
+  for (const h of c.hybrids.all()) {
+    const where = `hybrid ${h.id}`;
+    for (const cls of h.classes) v.ref(c.classes, cls, where);
+    v.check(h.classes[0] !== h.classes[1], `${where}: needs two different classes`);
+    v.ref(c.encounters, h.trial, where);
+    const tree = c.trees.find(h.id);
+    v.check(tree !== undefined && tree.nodes.length >= 15 && tree.nodes.length <= 20, `${where}: needs a 15-20 node tree`);
   }
   for (const gr of c.grimoires.all()) {
     v.ref(c.skills, gr.skill, `grimoire ${gr.id}`);

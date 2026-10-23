@@ -69,6 +69,22 @@ export function splitXp(amount: number, weights: readonly number[]): number[] {
   return shares;
 }
 
+/**
+ * Weights for sharing class XP. Split mode uses the player's split; focus
+ * mode sends everything to the lowest-level class(es) below the cap, so
+ * a new class catches up without micromanaging.
+ */
+export function classXpWeights(char: Character, levelCap: number = PROGRESSION.levelCap): number[] {
+  if (char.xpMode === 'focus' && char.classes.length > 1) {
+    const open = char.classes.filter((p) => p.level < levelCap);
+    if (open.length > 0) {
+      const lowest = Math.min(...open.map((p) => p.level));
+      return char.classes.map((p) => (p.level === lowest ? 1 : 0));
+    }
+  }
+  return char.xpSplit.length === char.classes.length ? char.xpSplit : char.classes.map(() => 1);
+}
+
 function levelClass(progress: ClassProgress, amount: number, levelCap: number, out: ClassLevelUp[]): void {
   if (progress.level >= levelCap) return;
   progress.xp += amount;
@@ -92,7 +108,7 @@ export function grantXp(char: Character, amount: number, levelCap: number = PROG
   const xp = Math.max(0, Math.floor(amount));
   if (xp === 0) return result;
 
-  const shares = splitXp(xp, char.xpSplit.length === char.classes.length ? char.xpSplit : char.classes.map(() => 1));
+  const shares = splitXp(xp, classXpWeights(char, levelCap));
   char.classes.forEach((progress, i) => levelClass(progress, shares[i] ?? 0, levelCap, result.classLevels));
 
   const race = c.races.get(char.raceId);

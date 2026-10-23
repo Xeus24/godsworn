@@ -50,7 +50,7 @@ const nav: Nav = {
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showGrounds });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 6: specializations & general skills`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 7: multiclassing & hybrids`));
 }
 
 function showCreation(): void {

@@ -634,11 +634,18 @@ input.num {
 }
 
 .sheet-ident {
-  flex: 1;
+  flex: 1 1 160px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 0;
+  min-width: 140px;
+}
+
+/* Multiclass heroes have long class lines; keep them on one line. */
+.sheet-ident > .dim {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sheet-name {
