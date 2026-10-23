@@ -77,6 +77,7 @@ const BASE_INFO: StatInfo[] = [
   { id: 'damageBonus', name: 'Damage Bonus', short: 'DMG', description: 'Bonus damage of every kind.', format: 'percent' },
   { id: 'damageTaken', name: 'Damage Taken', short: 'TAKEN', description: 'Share of incoming damage taken.', format: 'percent' },
   { id: 'resourceGain', name: 'Resource Gain', short: 'RES', description: 'Bonus class resource generation.', format: 'percent' },
+  { id: 'ultimateGain', name: 'Ultimate Charge', short: 'ULT', description: 'Bonus ultimate gauge gain.', format: 'percent' },
   { id: 'hpRegen', name: 'HP Regen', short: 'HP/T', description: 'Health restored each turn.', format: 'int' },
   { id: 'mpRegen', name: 'MP Regen', short: 'MP/T', description: 'Mana restored each turn.', format: 'int' },
 ];

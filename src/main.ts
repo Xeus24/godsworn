@@ -2,6 +2,7 @@ import './style.css';
 import './ui/inventory/inventory.css';
 import './ui/combat/combat.css';
 import './ui/tree/tree.css';
+import './ui/general/general.css';
 import { validateContent } from './data';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
@@ -16,6 +17,7 @@ import { Toasts } from './ui/components/toasts';
 import { CreationScreen } from './ui/creation/creationScreen';
 import { registerCoreSections } from './ui/debug/coreSections';
 import { DebugPanel } from './ui/debug/debugPanel';
+import { GeneralScreen } from './ui/general/generalScreen';
 import { registerItemSections } from './ui/debug/itemSections';
 import { InventoryScreen } from './ui/inventory/inventoryScreen';
 import { ScreenManager } from './ui/screen';
@@ -41,13 +43,14 @@ const nav: Nav = {
   character: showCharacter,
   inventory: showInventory,
   skills: showSkills,
+  general: showGeneral,
   battle: showGrounds,
 };
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showGrounds });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 5: skill trees`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 6: specializations & general skills`));
 }
 
 function showCreation(): void {
@@ -72,6 +75,10 @@ function showInventory(): void {
 
 function showSkills(): void {
   if (session) screens.show(new TreeScreen(session, nav));
+}
+
+function showGeneral(): void {
+  if (session) screens.show(new GeneralScreen(session, nav));
 }
 
 function showGrounds(): void {
@@ -111,6 +118,7 @@ window.addEventListener('keydown', (e) => {
   if (key === 'i') showInventory();
   if (key === 'g') showGrounds();
   if (key === 'k') showSkills();
+  if (key === 'j') showGeneral();
 });
 
 showTitle();

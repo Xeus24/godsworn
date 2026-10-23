@@ -1,4 +1,5 @@
 import type { EquipSlot, ItemInstance } from '../items/types';
+import type { GeneralSkillProgress } from '../skills/generalTypes';
 import type { ClassTreeState } from '../skills/treeTypes';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
@@ -21,6 +22,8 @@ export interface ClassProgress {
   xp: number;
   /** Skill points earned by this class (levels, bonuses, tomes). Spent points live in the tree builds. */
   skillPoints: number;
+  /** Specialization chosen at class level 20. */
+  specialization?: string;
 }
 
 export interface Character {
@@ -62,6 +65,12 @@ export interface Character {
   trees: Record<string, ClassTreeState>;
   /** Mastery XP per skill id (uses in battle). */
   mastery: Record<string, number>;
+  /** Known general skills (from skillbooks and Grimoires). */
+  generalSkills: Record<string, GeneralSkillProgress>;
+  /** Slotted general skills (only slotted ones are active). */
+  generalSlots: (string | null)[];
+  /** Extra general slots from achievements and apostleship (later phases). */
+  bonusGeneralSlots: number;
 
   /** Current HP and MP. Max values come from calculateStats. */
   hp: number;

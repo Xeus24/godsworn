@@ -12,6 +12,7 @@ import {
   treeOf,
   treeState,
 } from '../../engine/skills/tree';
+import { chosenSpec, SPEC_LEVEL, specChangeCost, specializationsFor } from '../../engine/skills/specs';
 import type { SkillTreeDef, TreeNodeDef } from '../../engine/skills/treeTypes';
 import type { GameSession } from '../../engine/state/gameState';
 import { navBar, type Nav } from '../components/navBar';
@@ -41,6 +42,8 @@ export class TreeScreen implements Screen {
   /** Pan/zoom state survives re-renders. */
   private view = { x: 10, y: 10, scale: 0.9 };
   private pickingSlot: number | undefined;
+  /** Specialization branch shown before one is chosen. */
+  private previewSpec: string | undefined;
 
   constructor(
     private readonly session: GameSession,
@@ -117,7 +120,17 @@ export class TreeScreen implements Screen {
     }
   }
 
-  private graph(tree: SkillTreeDef): HTMLElement {
+  /** The tree as drawn: class branches plus the chosen (or previewed) specialization branch. */
+  private visibleTree(tree: SkillTreeDef): SkillTreeDef {
+    const chosen = chosenSpec(this.session.player, this.classId)?.id;
+    const shown = chosen ?? this.previewSpec ?? specializationsFor(this.classId)[0]?.id;
+    const branches = tree.branches.filter((b) => !b.spec || b.spec === shown);
+    const ids = new Set(branches.map((b) => b.id));
+    return { ...tree, branches, nodes: tree.nodes.filter((n) => ids.has(n.branch)) };
+  }
+
+  private graph(full: SkillTreeDef): HTMLElement {
+    const tree = this.visibleTree(full);
     const build = activeBuild(this.session.player, this.classId);
     // Tree units are screen pixels; the view transform pans and zooms.
     const root = svg('svg', { class: 'tree-svg', role: 'img', 'aria-label': 'Skill tree' });
@@ -130,7 +143,7 @@ export class TreeScreen implements Screen {
     tree.branches.forEach((b, i) => {
       const x = i * (4 * 110 + 80) + 60 + 165;
       const t = svg('text', { x, y: 24, 'text-anchor': 'middle', class: 'tree-branch-title', fill: b.color });
-      t.textContent = `${b.name} (${branchPoints(build, tree, b.id)})`;
+      t.textContent = b.spec && !chosenSpec(this.session.player, this.classId) ? `${b.name} (preview)` : `${b.name} (${branchPoints(build, tree, b.id)})`;
       layer.append(t);
     });
 
@@ -263,6 +276,7 @@ export class TreeScreen implements Screen {
       el('div', { class: 'tabs' }, ...classTabs),
       el('div', { class: pts > 0 ? 'points-available' : 'dim' }, `${pts} skill point${pts === 1 ? '' : 's'} available`),
       el('p', { class: 'dim small' }, 'Double-click or shift-click to learn. Right-click to refund. Drag to pan, scroll to zoom.'),
+      this.specPanel(),
       el('h3', {}, 'Builds'),
       el('div', { class: 'tabs' }, ...builds),
       nameInput,
@@ -276,6 +290,37 @@ export class TreeScreen implements Screen {
       el('h3', {}, 'Legend'),
       el('div', { class: 'tree-legend small dim' }, ...(['active', 'modifier', 'minor', 'notable', 'choice', 'keystone', 'capstone'] as const).map((k) => el('div', {}, KIND_LABEL[k]))),
       el('p', { class: 'dim small' }, `${tree.nodes.length} nodes in ${tree.branches.length} branches.`),
+    );
+  }
+
+  private specPanel(): HTMLElement {
+    const p = this.session.player;
+    const progress = p.classes.find((cp) => cp.classId === this.classId);
+    const chosen = chosenSpec(p, this.classId);
+    const unlocked = (progress?.level ?? 0) >= SPEC_LEVEL;
+    const cards = specializationsFor(this.classId).map((spec) => {
+      const isChosen = chosen?.id === spec.id;
+      const ult = content.skills.get(spec.ultimate);
+      const card = el('div', { class: `spec-card${isChosen ? ' chosen' : ''}` }, el('b', {}, spec.name), el('div', { class: 'dim small' }, spec.description), el('div', { class: 'small' }, `Ultimate: ${ult.name}`));
+      attachTooltip(card, () => skillCard(ult));
+      const view = el('button', { class: 'tab' }, 'View');
+      view.disabled = (this.previewSpec ?? specializationsFor(this.classId)[0]?.id) === spec.id;
+      view.addEventListener('click', () => {
+        this.previewSpec = spec.id;
+        this.render();
+      });
+      const pick = el('button', { class: isChosen ? 'tab' : 'tab primary' }, isChosen ? 'Chosen' : chosen ? `Switch (${specChangeCost(p)}g)` : 'Choose');
+      pick.disabled = isChosen || !unlocked;
+      pick.addEventListener('click', () => this.say(this.session.general.chooseSpec(this.classId, spec.id)));
+      card.append(el('div', { class: 'row' }, ...(chosen ? [] : [view]), pick));
+      return card;
+    });
+    return el(
+      'div',
+      {},
+      el('h3', {}, 'Specialization'),
+      el('p', { class: 'dim small' }, chosen ? `${chosen.name}: its branch is the fifth column. Switching refunds that branch.` : unlocked ? 'Choose one of three paths. The first choice is free.' : `Unlocks at ${content.classes.get(this.classId).name} level ${SPEC_LEVEL}. Preview the branches meanwhile.`),
+      ...cards,
     );
   }
 

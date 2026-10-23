@@ -250,7 +250,8 @@ export function createItem(baseId: string, quantity: number, newUid: () => strin
   return {
     uid: newUid(),
     baseId,
-    rarity: 'common',
+    // Books carry the rarity of the skill they teach.
+    rarity: base.category === 'book' ? base.rarity : 'common',
     quality: 'normal',
     itemLevel: base.level,
     baseRolls: averageBaseStats(base),

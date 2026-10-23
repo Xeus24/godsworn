@@ -47,6 +47,7 @@ export const DERIVED_STATS = [
   'damageBonus',
   'damageTaken',
   'resourceGain',
+  'ultimateGain',
   'hpRegen',
   'mpRegen',
   'blessingPower',

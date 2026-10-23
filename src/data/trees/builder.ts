@@ -160,3 +160,102 @@ export function buildTree(classId: string, specs: BranchSpec[]): SkillTreeDef {
   const branches: BranchDef[] = specs.map((s) => ({ id: s.id, classId, name: s.name, description: s.description, color: s.color }));
   return { id: classId, classId, branches, nodes: specs.flatMap((s, i) => buildBranch(classId, i, s)) };
 }
+
+// ---------------------------------------------------------------- specialization branches
+
+/** Spec branches gate tiers at 4 points each (they have 5 tiers and ~20 points). */
+export const SPEC_TIER_GATE = 4;
+
+/**
+ * A specialization's 12-node branch:
+ *   tier 1: signature skill, minor 1
+ *   tier 2: the skill's two modifiers, minor 2
+ *   tier 3: notable 1, minor 3, Signature Mastery (shared: ultimate charge)
+ *   tier 4: notable 2, a two-way choice
+ *   tier 5: capstone
+ */
+export interface SpecBranchSpec {
+  id: string;
+  name: string;
+  color: string;
+  description: string;
+  /** The signature ultimate (replaces the class ultimate). */
+  ultimate: string;
+  skill: string;
+  mods: [ModSpec, ModSpec];
+  minors: [MinorSpec, MinorSpec, MinorSpec];
+  notables: [PassiveSpec, PassiveSpec];
+  choice: [PassiveSpec, PassiveSpec];
+  capstone: PassiveSpec;
+}
+
+const SPEC_LAYOUT: Placed[] = [
+  { key: 'a', kind: 'active', tier: 1, lane: 1 },
+  { key: 'm1', kind: 'minor', tier: 1, lane: 2 },
+  { key: 'a1', kind: 'modifier', tier: 2, lane: 0, parents: ['a'] },
+  { key: 'a2', kind: 'modifier', tier: 2, lane: 1, parents: ['a'] },
+  { key: 'm2', kind: 'minor', tier: 2, lane: 3, parents: ['m1'] },
+  { key: 'n1', kind: 'notable', tier: 3, lane: 1, parents: ['a1', 'a2'] },
+  { key: 'm3', kind: 'minor', tier: 3, lane: 2, parents: ['m2'] },
+  { key: 'sig', kind: 'minor', tier: 3, lane: 0, parents: ['a1', 'a2'] },
+  { key: 'n2', kind: 'notable', tier: 4, lane: 1, parents: ['n1'] },
+  { key: 'c1', kind: 'choice', tier: 4, lane: 2, parents: ['n1', 'm3'] },
+  { key: 'c2', kind: 'choice', tier: 4, lane: 3, parents: ['m3'] },
+  { key: 'cap', kind: 'capstone', tier: 5, lane: 1, parents: ['n2', 'c1', 'c2'] },
+];
+
+function buildSpecBranch(classId: string, spec: SpecBranchSpec): TreeNodeDef[] {
+  const id = (key: string): string => `${classId}.${spec.id}.${key}`;
+  // Every spec branch sits in the fifth column; only the chosen one is shown.
+  const index = 4;
+  return SPEC_LAYOUT.map((slot): TreeNodeDef => {
+    const base = {
+      id: id(slot.key),
+      classId,
+      branch: spec.id,
+      kind: slot.kind,
+      tier: slot.tier,
+      lane: slot.lane,
+      parents: (slot.parents ?? []).map(id),
+      x: index * BRANCH_W + 60 + slot.lane * LANE_W,
+      y: 70 + (slot.tier - 1) * TIER_H,
+    };
+    switch (slot.key) {
+      case 'a':
+        return { ...base, name: spec.skill, skill: spec.skill, maxRank: SKILL_RANKS };
+      case 'a1':
+      case 'a2': {
+        const m = spec.mods[slot.key === 'a1' ? 0 : 1];
+        return { ...base, name: m.name, maxRank: 1, variant: { skill: spec.skill, patch: m.patch } };
+      }
+      case 'm1':
+      case 'm2':
+      case 'm3': {
+        const m = spec.minors[Number(slot.key[1]) - 1] as MinorSpec;
+        return { ...base, name: m.name, maxRank: m.maxRank ?? MINOR_RANKS, modifiers: m.mods };
+      }
+      case 'sig':
+        return { ...base, name: 'Signature Mastery', maxRank: 3, modifiers: [{ stat: 'ultimateGain', type: 'flat', value: 8 }] };
+      case 'n1':
+      case 'n2':
+        return passiveNode(base, spec.notables[slot.key === 'n1' ? 0 : 1]);
+      case 'c1':
+      case 'c2':
+        return { ...passiveNode(base, spec.choice[slot.key === 'c1' ? 0 : 1]), choiceGroup: id('choice') };
+      default:
+        return passiveNode(base, spec.capstone);
+    }
+  });
+}
+
+/** Adds three specialization branches to a class tree. */
+export function withSpecs(tree: SkillTreeDef, specs: SpecBranchSpec[]): SkillTreeDef {
+  return {
+    ...tree,
+    branches: [
+      ...tree.branches,
+      ...specs.map((s): BranchDef => ({ id: s.id, classId: tree.classId, name: s.name, description: s.description, color: s.color, spec: s.id, tierGate: SPEC_TIER_GATE })),
+    ],
+    nodes: [...tree.nodes, ...specs.flatMap((s) => buildSpecBranch(tree.classId, s))],
+  };
+}

@@ -67,7 +67,9 @@ export function availablePoints(char: Character, classId: string): number {
  */
 function requirementsMet(build: TreeBuild, tree: SkillTreeDef, node: TreeNodeDef): TreeResult {
   const inBranch = branchPoints(build, tree, node.branch) - rankOf(build, node.id);
-  const gate = (node.tier - 1) * TIER_GATE;
+  // Specialization branches gate faster (4 per tier) than class branches (5).
+  const perTier = tree.branches.find((b) => b.id === node.branch)?.tierGate ?? TIER_GATE;
+  const gate = (node.tier - 1) * perTier;
   if (inBranch < gate) return fail(`Needs ${gate} points in this branch (${inBranch} spent).`);
   if (node.parents.length > 0 && !node.parents.some((p) => rankOf(build, p) > 0)) {
     const names = node.parents.map((p) => tree.nodes.find((n) => n.id === p)?.name ?? p);
@@ -93,6 +95,10 @@ export function canAllocate(char: Character, classId: string, nodeId: string, c:
   const build = activeBuild(char, classId);
   if (rankOf(build, nodeId) >= node.maxRank) return fail('Already at max rank.');
   if (availablePoints(char, classId) < 1) return fail('No skill points available.');
+  const spec = tree.branches.find((b) => b.id === node.branch)?.spec;
+  if (spec && char.classes.find((p) => p.classId === classId)?.specialization !== spec) {
+    return fail(`Choose the ${c.specializations.find(spec)?.name ?? spec} specialization first.`);
+  }
   return requirementsMet(build, tree, node);
 }
 

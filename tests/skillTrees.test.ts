@@ -40,12 +40,15 @@ function maxOut(char: Character, classId: string, nodeId: string): void {
 }
 
 describe('tree content', () => {
-  it('every class has a 50-70 node tree with 4 branches', () => {
+  it('every class has a 50-70 node tree with 4 branches (plus 3 specialization branches)', () => {
     for (const cls of content.classes.all()) {
       const tree = treeOf(cls.id);
-      expect(tree.branches, cls.id).toHaveLength(4);
-      expect(tree.nodes.length, cls.id).toBeGreaterThanOrEqual(50);
-      expect(tree.nodes.length, cls.id).toBeLessThanOrEqual(70);
+      const classBranches = new Set(tree.branches.filter((b) => !b.spec).map((b) => b.id));
+      expect(classBranches.size, cls.id).toBe(4);
+      expect(tree.branches.filter((b) => b.spec), cls.id).toHaveLength(3);
+      const classNodes = tree.nodes.filter((n) => classBranches.has(n.branch));
+      expect(classNodes.length, cls.id).toBeGreaterThanOrEqual(50);
+      expect(classNodes.length, cls.id).toBeLessThanOrEqual(70);
     }
   });
 
@@ -56,7 +59,8 @@ describe('tree content', () => {
       }
       for (const b of tree.branches) {
         const nodes = tree.nodes.filter((n) => n.branch === b.id);
-        expect(nodes.filter((n) => n.kind === 'keystone')).toHaveLength(1);
+        // Specialization branches have no keystone.
+        expect(nodes.filter((n) => n.kind === 'keystone')).toHaveLength(b.spec ? 0 : 1);
         expect(nodes.filter((n) => n.kind === 'capstone')).toHaveLength(1);
         expect(nodes.filter((n) => n.kind === 'choice')).toHaveLength(2);
       }

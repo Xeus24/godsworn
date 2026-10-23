@@ -30,13 +30,18 @@ import { ENCOUNTERS, ENEMIES, SUMMONS } from './enemies';
 import { ENEMY_SKILLS } from './skills/enemy';
 import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
 import { ULTIMATE_SKILLS } from './skills/ultimates';
-import { CLASS_TREE_SKILLS, finalizeTrees } from './trees';
+import { CLASS_TREE_SKILLS, finalizeTrees, SPECIALIZATIONS } from './trees';
+import { buildBooks } from './general/books';
+import { grimoireSkills, GRIMOIRES } from './general/grimoires';
+import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
 import { SONGS } from './songs';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...CLASS_TREE_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS];
+const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
+const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName)];
 
 /**
  * The game's content, assembled from the data files in this folder. Engine
@@ -65,7 +70,7 @@ export const content = {
   mechanics: new ContentTable('mechanic', MECHANICS),
   rarities: new ContentTable('rarity', RARITY_DEFS),
   qualities: new ContentTable('quality', QUALITY_DEFS),
-  items: new ContentTable('item', ITEM_BASES),
+  items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL)]),
   uniques: new ContentTable('unique item', UNIQUE_ITEMS),
   itemSets: new ContentTable('item set', ITEM_SETS),
   runewords: new ContentTable('runeword', RUNEWORDS),
@@ -81,6 +86,9 @@ export const content = {
   summons: new ContentTable('summon', SUMMONS),
   encounters: new ContentTable('encounter', ENCOUNTERS),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
+  specializations: new ContentTable('specialization', SPECIALIZATIONS),
+  generalSkills: new ContentTable('general skill', ALL_GENERAL),
+  grimoires: new ContentTable('grimoire', GRIMOIRES),
 };
 
 export type Content = typeof content;
@@ -298,6 +306,26 @@ export function validateContent(c: Content = content): void {
   for (const enc of c.encounters.all()) {
     v.check(enc.enemies.length > 0 && enc.enemies.length <= 6, `encounter ${enc.id}: needs 1-6 enemies`);
     for (const e of enc.enemies) v.ref(c.enemies, e.enemyId, `encounter ${enc.id}`);
+  }
+
+  // ---- Specializations and general skills ----
+  for (const sp of c.specializations.all()) {
+    const where = `specialization ${sp.id}`;
+    v.ref(c.classes, sp.classId, where);
+    v.check(c.skills.find(sp.ultimate)?.ultimate === true, `${where}: ${sp.ultimate} is not an ultimate`);
+    v.check(c.trees.find(sp.classId)?.branches.some((b) => b.spec === sp.id) === true, `${where}: no tree branch`);
+  }
+  for (const cls of c.classes.all()) v.check(c.specializations.filter((s) => s.classId === cls.id).length === 3, `class ${cls.id}: needs 3 specializations`);
+  for (const g of c.generalSkills.all()) {
+    const where = `general skill ${g.id}`;
+    if (g.combatSkill) v.ref(c.skills, g.combatSkill, where);
+    checkModifiers(v, g.passive ?? [], where);
+    v.check(g.combatSkill !== undefined || (g.passive?.length ?? 0) > 0 || g.utility !== undefined, `${where}: does nothing`);
+    v.ref(c.items, `book-${g.id}`, where);
+  }
+  for (const gr of c.grimoires.all()) {
+    v.ref(c.skills, gr.skill, `grimoire ${gr.id}`);
+    v.ref(c.classes, gr.classId, `grimoire ${gr.id}`);
   }
 
   // ---- Skill trees ----

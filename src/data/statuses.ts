@@ -36,6 +36,8 @@ export interface StatusDef {
   charmed?: boolean;
   /** Next damaging action crits and consumes stealth; single-target enemy attacks avoid the bearer. */
   stealth?: boolean;
+  /** Single-target enemy attacks must pick a taunting unit if one is reachable. */
+  taunt?: boolean;
 }
 
 export const STATUSES: StatusDef[] = [
@@ -58,5 +60,6 @@ export const STATUSES: StatusDef[] = [
   { id: 'haste', name: 'Haste', kind: 'buff', glyph: 'Ha', color: '#ffd84a', description: '30% more speed.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'speed', type: 'more', value: 30 }] },
   { id: 'berserk', name: 'Berserk', kind: 'buff', glyph: 'Be', color: '#ff3b3b', description: '+30% damage and +10% crit, but takes 15% more damage.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'damageBonus', type: 'flat', value: 30 }, { stat: 'critChance', type: 'flat', value: 10 }, { stat: 'damageTaken', type: 'flat', value: 15 }] },
   { id: 'divine-protection', name: 'Divine Protection', kind: 'buff', glyph: 'DP', color: '#ffe8a0', description: 'Takes 50% less damage.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'damageTaken', type: 'more', value: -50 }] },
+  { id: 'taunt', name: 'Taunt', kind: 'buff', glyph: 'Ta', color: '#e8772e', description: 'Goading the enemy: their single-target attacks must hit you.', stacking: 'refresh', maxStacks: 1, taunt: true },
   { id: 'stealth', name: 'Stealth', kind: 'buff', glyph: 'Sh', color: '#9a9ab0', description: 'Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out.', stacking: 'refresh', maxStacks: 1, stealth: true },
 ];

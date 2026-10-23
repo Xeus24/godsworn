@@ -48,7 +48,7 @@ export type ArmorSlot = (typeof ARMOR_SLOTS)[number];
 
 export type AccessoryKind = 'ring' | 'amulet' | 'earring' | 'trinket' | 'holySymbol';
 
-export type ItemCategory = 'weapon' | 'armor' | 'accessory' | 'relic' | 'gem' | 'rune' | 'consumable' | 'material' | 'curiosity';
+export type ItemCategory = 'weapon' | 'armor' | 'accessory' | 'relic' | 'gem' | 'rune' | 'consumable' | 'material' | 'curiosity' | 'book';
 
 /** Which affix pool a gear item draws from. */
 export type AffixTarget = 'weapon' | 'armor' | 'jewelry';
@@ -181,6 +181,15 @@ export interface CuriosityDef extends BaseCommon {
   lovedBy?: string[];
 }
 
+/** Skillbooks and Grimoires: read to learn (or rank up) a general skill. */
+export interface BookDef extends BaseCommon {
+  category: 'book';
+  teaches: string;
+  /** Books carry their skill's rarity. */
+  rarity: RarityId;
+  grimoire?: boolean;
+}
+
 export type ItemBaseDef =
   | WeaponBaseDef
   | ArmorBaseDef
@@ -190,7 +199,8 @@ export type ItemBaseDef =
   | RuneDef
   | ConsumableDef
   | MaterialDef
-  | CuriosityDef;
+  | CuriosityDef
+  | BookDef;
 
 export type GearBaseDef = WeaponBaseDef | ArmorBaseDef | AccessoryBaseDef | RelicBaseDef;
 

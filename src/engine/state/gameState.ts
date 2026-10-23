@@ -11,14 +11,16 @@ import { TriggerSystem } from '../effects/triggers';
 import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
 import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
 import { applyStartingKit } from '../items/use';
+import { SPEC_LEVEL } from '../skills/specs';
 import type { PrimaryStat } from '../stats/types';
 import { advanceClock, createClock, hourOf, timeOfDay, type GameClock } from './clock';
+import { GeneralActions } from './generalActions';
 import { ItemActions } from './itemActions';
 import { TreeActions } from './treeActions';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -94,6 +96,7 @@ export class GameSession {
   readonly triggers: TriggerSystem;
   readonly items: ItemActions;
   readonly trees: TreeActions;
+  readonly general: GeneralActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -101,6 +104,7 @@ export class GameSession {
     this.triggers = new TriggerSystem(this.rng);
     this.items = new ItemActions(this);
     this.trees = new TreeActions(this);
+    this.general = new GeneralActions(this);
   }
 
   /** Starts a new game and hands the hero their class's starting kit. */
@@ -161,7 +165,12 @@ export class GameSession {
     }
     for (const cl of result.classLevels) {
       this.bus.emit('levelUp', { characterId: p.id, classId: cl.classId, level: cl.level });
+      if (cl.level === SPEC_LEVEL) {
+        this.bus.emit('toast', { kind: 'level', text: `${content.classes.get(cl.classId).name} ${SPEC_LEVEL}: choose a specialization in the Skills screen!` });
+      }
     }
+    const slots = this.general.growSlots();
+    if (slots > 0) this.bus.emit('toast', { kind: 'level', text: `+${slots} general skill slot${slots > 1 ? 's' : ''}.` });
     if (result.paragonLevels.length > 0) {
       const n = result.paragonLevels.length;
       this.bus.emit('toast', { kind: 'level', text: `Paragon level ${p.paragonLevel}! +${n} paragon point${n > 1 ? 's' : ''}.` });

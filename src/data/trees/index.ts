@@ -7,7 +7,11 @@ import { MONK_SKILLS, MONK_TREE } from './monk';
 import { NECROMANCER_SKILLS, NECROMANCER_TREE } from './necromancer';
 import { RANGER_SKILLS, RANGER_TREE } from './ranger';
 import { ROGUE_SKILLS, ROGUE_TREE } from './rogue';
+import { withSpecs, type SpecBranchSpec } from './builder';
+import { ARCANE_SPEC_BRANCHES, ARCANE_SPEC_SKILLS } from './specsArcane';
+import { MARTIAL_SPEC_BRANCHES, MARTIAL_SPEC_SKILLS } from './specsMartial';
 import { WARRIOR_SKILLS, WARRIOR_TREE } from './warrior';
+import type { SpecializationDef } from '../../engine/skills/generalTypes';
 
 /** Skills taught by class skill trees (starting skills live in skills/starter.ts). */
 export const CLASS_TREE_SKILLS: SkillDef[] = [
@@ -19,9 +23,20 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...NECROMANCER_SKILLS,
   ...MONK_SKILLS,
   ...BARD_SKILLS,
+  ...MARTIAL_SPEC_SKILLS,
+  ...ARCANE_SPEC_SKILLS,
 ];
 
-const RAW_TREES: SkillTreeDef[] = [WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE];
+const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES };
+
+/** Three specializations per class, chosen at class level 20. */
+export const SPECIALIZATIONS: SpecializationDef[] = Object.entries(SPEC_BRANCHES).flatMap(([classId, specs]) =>
+  specs.map((sp) => ({ id: sp.id, classId, name: sp.name, description: sp.description, ultimate: sp.ultimate, branch: sp.id })),
+);
+
+const RAW_TREES: SkillTreeDef[] = [WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE].map((t) =>
+  withSpecs(t, SPEC_BRANCHES[t.classId] ?? []),
+);
 
 /**
  * Fills in what the builder cannot know: active nodes take their skill's

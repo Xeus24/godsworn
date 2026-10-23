@@ -10,10 +10,11 @@ export interface Nav {
   character: () => void;
   inventory: () => void;
   skills: () => void;
+  general: () => void;
   battle: () => void;
 }
 
-export type NavTab = 'character' | 'inventory' | 'skills' | 'battle';
+export type NavTab = 'character' | 'inventory' | 'skills' | 'general' | 'battle';
 
 function bar(fraction: number, cls: string, label: string): HTMLElement {
   const pct = Math.max(0, Math.min(1, fraction)) * 100;
@@ -59,7 +60,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
       bar(p.mp / Math.max(1, stats.maxMp), 'mp', `MP ${p.mp} / ${stats.maxMp}`),
     ),
     el('div', { class: 'sheet-gold' }, `${session.state.gold} gold`),
-    el('nav', { class: 'tabs' }, tab('character', 'Character (C)', nav.character), tab('inventory', 'Inventory (I)', nav.inventory), tab('skills', 'Skills (K)', nav.skills), tab('battle', 'Proving Grounds (G)', nav.battle)),
+    el('nav', { class: 'tabs' }, tab('character', 'Character (C)', nav.character), tab('inventory', 'Inventory (I)', nav.inventory), tab('skills', 'Skills (K)', nav.skills), tab('general', 'General (J)', nav.general), tab('battle', 'Proving Grounds (G)', nav.battle)),
     title,
   );
 }

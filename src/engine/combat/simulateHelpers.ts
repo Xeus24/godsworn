@@ -8,6 +8,8 @@ import { equipFromInventory } from '../items/equipment';
 import { createItem } from '../items/generate';
 import { addItem, createInventory } from '../items/inventory';
 import { GEAR_TIERS } from '../../data/items/materialTiers';
+import { learnGeneral } from '../skills/general';
+import { chooseSpec, SPEC_LEVEL, specializationsFor } from '../skills/specs';
 import { allocate, availablePoints, canAllocate, treeOf } from '../skills/tree';
 import { PRIMARY_STATS, type PrimaryStat } from '../stats/types';
 
@@ -21,7 +23,9 @@ export function tierForLevel(level: number): number {
 /**
  * A "typical" hero for balance tests: level-appropriate common gear in
  * every armor slot the class can wear, its kit weapons upgraded to the
- * current tier, and attribute points spent in proportion to class growth.
+ * current tier, attribute points spent in proportion to class growth, an
+ * auto-spent tree (first specialization from class level 20) and two
+ * passive general skills.
  */
 export function benchmarkHero(classId: string, level: number, raceId = 'human', c: Content = content): Character {
   const hero = createCharacter({ name: 'Bench', portrait: 0, raceId, classId, birthSignId: 'the-forge' }, c);
@@ -56,7 +60,17 @@ export function benchmarkHero(classId: string, level: number, raceId = 'human', 
   for (const slot of ['head', 'shoulders', 'chest', 'gloves', 'belt', 'legs', 'boots', 'cloak']) give(`${weight}-${slot}-t${tier}`);
   const jewelTier = Math.min(6, Math.max(1, Math.ceil(level / 12)));
   for (const kind of ['ring', 'ring', 'amulet', 'earring', 'earring']) give(`${kind}-t${jewelTier}`);
+  if ((hero.classes[0]?.level ?? 0) >= SPEC_LEVEL) {
+    const spec = specializationsFor(classId, c)[0];
+    if (spec) chooseSpec(hero, classId, spec.id, c);
+  }
   autoSpendTree(hero, classId, c);
+  // Two passive general skills, as if a few skillbooks had been read along the way.
+  for (const id of ['toughness', 'keen-eye']) {
+    if (!learnGeneral(hero, id, c).ok) continue;
+    const progress = hero.generalSkills[id];
+    if (progress) progress.rank = Math.min(10, Math.max(1, Math.ceil(level / 8)));
+  }
   restoreFull(hero, c);
   return hero;
 }

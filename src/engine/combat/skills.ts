@@ -84,7 +84,10 @@ export interface SkillOption {
 /** Everything the combatant could use this turn: basic attack, known skills and the ultimate. */
 export function skillOptions(b: Battle, x: Combatant): SkillOption[] {
   const out: SkillOption[] = [{ skill: basicAttackSkill(b, x), rank: 1, check: { ok: true } }];
-  const order = x.hotbar ? x.hotbar.map((id) => x.skills.find((s) => s.id === id)).filter((s) => s !== undefined) : x.skills;
+  const hotbar = x.hotbar;
+  const order = hotbar
+    ? [...hotbar.map((id) => x.skills.find((s) => s.id === id)).filter((s) => s !== undefined), ...x.skills.filter((s) => s.general && !hotbar.includes(s.id))]
+    : x.skills;
   for (const s of order) {
     const skill = skillDef(b, x, s.id);
     if (skill.ultimate) continue;
@@ -118,7 +121,9 @@ export function validTargets(b: Battle, x: Combatant, skill: SkillDef): Combatan
   const melee = skill.tags.includes('Melee') && !skill.tags.includes('Movement') && !b.hasFlag(x, 'reach');
   if (melee && foes.some((f) => f.row === 'front')) foes = foes.filter((f) => f.row === 'front');
   const visible = foes.filter((f) => !isStealthed(b, f));
-  return visible.length > 0 ? visible : foes;
+  const pool = visible.length > 0 ? visible : foes;
+  const taunting = pool.filter((f) => f.statuses.some((st) => b.c.statuses.get(st.id).taunt));
+  return taunting.length > 0 ? taunting : pool;
 }
 
 export function needsTarget(skill: SkillDef): boolean {
@@ -213,7 +218,11 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
   const mastered = known?.mastery !== undefined && masteryLevel(known.mastery) >= MAX_MASTERY;
   const label = `${mastered ? '\u2726 ' : ''}${skill.name}${opts.echo ? ' (Echo)' : ''}`;
   b.emit({ type: 'action', actorId: x.id, label, targets: targets.map((t) => t.id) });
-  if (x.kind === 'hero' && !opts.free && skillId !== BASIC_ATTACK_ID) b.tally.skillUses[skillId] = (b.tally.skillUses[skillId] ?? 0) + 1;
+  if (x.kind === 'hero' && !opts.free && skillId !== BASIC_ATTACK_ID) {
+    const uses = known?.general ? b.tally.generalUses : b.tally.skillUses;
+    const key = known?.general ?? skillId;
+    uses[key] = (uses[key] ?? 0) + 1;
+  }
   const masteryMult = known?.mastery !== undefined ? masteryMultiplier(known.mastery) : 1;
 
   const chainMult = chainMultiplier(b, x, skill, skill.targeting === 'enemy' ? targets[0] : undefined);

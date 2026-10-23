@@ -45,9 +45,9 @@ export function gainResource(b: Battle, x: Combatant, id: string, amount: number
   if (x.resources[resId] !== before) b.emit({ type: 'resource', targetId: x.id });
 }
 
-function addUltimate(x: Combatant, amount: number): void {
+function addUltimate(b: Battle, x: Combatant, amount: number): void {
   if (x.side !== 'party' || amount <= 0) return;
-  x.ultimate = Math.min(100, x.ultimate + amount);
+  x.ultimate = Math.min(100, x.ultimate + amount * (1 + b.stats(x).ultimateGain / 100));
 }
 
 function otherMultiplier(b: Battle, attacker: Combatant, target: Combatant, opts: HitOptions): number {
@@ -118,7 +118,7 @@ export function dealDamage(b: Battle, attacker: Combatant, target: Combatant, op
     const gains = attacker.resourceId ? b.c.resources.get(attacker.resourceId).gains : undefined;
     if (gains?.onHitDealt) gainResource(b, attacker, attacker.resourceId as string, gains.onHitDealt);
     const u = COMBAT.ultimateOnDeal;
-    addUltimate(attacker, Math.min(u.max, u.base + (amount / Math.max(1, target.maxHp)) * u.perHpShare));
+    addUltimate(b, attacker, Math.min(u.max, u.base + (amount / Math.max(1, target.maxHp)) * u.perHpShare));
     if (aStats.lifesteal > 0 && attacker.alive) healTarget(b, attacker, attacker, (amount * aStats.lifesteal) / 100, { label: 'lifesteal' });
     if (!opts.fromEffect) {
       elementalCombos(b, attacker, target, opts.element, amount);
@@ -155,7 +155,7 @@ export function applyDamage(
       b.emit({ type: 'resource', targetId: target.id });
     }
   }
-  addUltimate(target, Math.min(COMBAT.ultimateOnTake.max, hpShare * COMBAT.ultimateOnTake.perHpShare));
+  addUltimate(b, target, Math.min(COMBAT.ultimateOnTake.max, hpShare * COMBAT.ultimateOnTake.perHpShare));
   if (!info.dot) addStagger(b, source, target, dealt, info.element, info.staggerMult ?? 1);
 
   if (target.hp > 0) {

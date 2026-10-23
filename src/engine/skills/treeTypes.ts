@@ -68,6 +68,10 @@ export interface BranchDef {
   name: string;
   description: string;
   color: string;
+  /** Specialization branches only open once that specialization is chosen. */
+  spec?: string;
+  /** Points per tier for this branch (default TIER_GATE). */
+  tierGate?: number;
 }
 
 export interface SkillTreeDef {

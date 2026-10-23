@@ -160,6 +160,12 @@ export const SUMMONS: SummonDef[] = [
     ai: 'caster', duration: 6, palette: { main: '#d8d0e8', accent: '#7a3ab0' },
   },
   {
+    id: 'bone-golem', name: 'Bone Golem', family: 'undead', types: ['undead', 'summon', 'construct'],
+    stats: { hp: 95, attack: 8, magic: 0, defense: 12, magicResist: 6, speed: 7 },
+    ownerPowerShare: 0.6, skills: [{ id: 'shield-bash' }], basicAttack: { element: 'physical', ranged: false, name: 'Bone Fist' },
+    ai: 'aggressive', duration: 8, palette: { main: '#d8d0b8', accent: '#5a3a8a' },
+  },
+  {
     id: 'wolf-companion', name: 'Wolf Companion', family: 'beast', types: ['beast', 'pet'],
     stats: { hp: 45, attack: 6, magic: 0, defense: 4, magicResist: 3, speed: 13, dodge: 8 },
     ownerPowerShare: 0.45, skills: [{ id: 'savage-bite' }], basicAttack: { element: 'physical', ranged: false, name: 'Bite' },

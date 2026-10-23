@@ -38,13 +38,14 @@ Then open http://localhost:5173.
 |---|---|
 | C | Character sheet |
 | I | Inventory, equipment and stash |
-| K | Skill trees, builds and hotbar |
+| K | Skill trees, specializations, builds and hotbar |
+| J | General skills and their slots |
 | G | Proving Grounds (battles and resting) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
 
-You start at the **Proving Grounds**. Pick an encounter to fight, or rest at camp to recover (8 hours pass).
+You start at the **Proving Grounds**. Pick an encounter to fight, or rest at camp to recover (8 hours pass, less with the Camping skill).
 
 In battle:
 
@@ -65,11 +66,14 @@ In battle:
 - **Builds:** you have three. Switch between them for free; each remembers its own tree, hotbar and (optionally) gear.
 - **Hotbar:** fill it from the panel on the right.
 - **Mastery:** the more you use a skill, the stronger it gets.
+- **Specializations:** at class level 20, choose one of three (in the sidebar). It adds a fifth branch and replaces your ultimate. Before then you can preview each branch. The first choice is free; switching costs 100 gold × level and refunds the old branch.
+
+**General skills (J):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
 
 - **Drag** items between your bags, the stash and the paper doll to move, equip or unequip them. **Drop a gem or rune onto gear** to socket it. The right runes in the right order form a runeword.
-- **Right-click** for the quick action: equip, use, identify or unequip.
+- **Right-click** for the quick action: equip, use, read, identify or unequip.
 - **Click** an item for its full tooltip and every action: Unsocket (costs gold), Mark as junk, Salvage into materials, Destroy (click twice).
 - **Hover** anything to see its stats and how it compares to what you are wearing. Green is an upgrade, red a downgrade.
 - Use the filter tabs, sorting and the loot filter (hide or auto-salvage low rarities) to keep your bags tidy.
@@ -87,7 +91,7 @@ src/
     character/  creation, base stats, leveling, attributes, paragon
     items/      generation, affixes, sockets, equipment, inventory, loot
     combat/     battles: damage, statuses, skills, turns, AI, combatants
-    skills/     skill definitions, skill trees, modifiers (patches), mastery
+    skills/     skill trees, modifiers (patches), mastery, general skills, specializations
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -251,6 +255,30 @@ Each class tree (`src/data/trees/<class>.ts`) is four `BranchSpec`s passed to `b
 ```
 
 New skills referenced by `a` / `b` go in the same file's `<CLASS>_SKILLS` list.
+
+### Example: a specialization
+Specializations live in `src/data/trees/specsMartial.ts` and `specsArcane.ts`, one `SpecBranchSpec` per spec under its class. `withSpecs` turns each into a 12-node branch in the class tree:
+
+```ts
+{
+  id: 'berserker', name: 'Berserker', color: '#d22d3c', description: 'Unbound fury.',
+  ultimate: 'bloodstorm',          // a skill with `ultimate: true`, listed in the same file
+  skill: 'frenzied-assault',       // the signature skill (source 'specialization')
+  mods: [/* two SkillPatch modifiers */],
+  minors: [/* x3 */], notables: [/* x2 */], choice: [/* x2 */],
+  capstone: { name: 'Undying Rage', triggers: [/* ... */] },
+}
+```
+
+### Example: a general skill
+Add an entry to `GENERAL_SKILLS` in `src/data/general/skills.ts`. A skillbook (`book-<id>`) is generated for it and joins the loot pools automatically:
+
+```ts
+C({ id: 'iron-will', name: 'Iron Will', category: 'survival', rarity: 'rare',
+    description: 'Passive: +1% status resist per rank.', passive: [flat('statusResist', 1)] }),
+```
+
+Passive values are per rank. Use `combatSkill` to grant a battle skill (define it in `GENERAL_COMBAT_SKILLS`) or `utility` to hook a field effect.
 
 ### Example: a new race
 Add an entry to `RACES` in `src/data/races.ts` with a `statBonus`, a `passive` (a list of modifiers) and an `activeSkill` id, then add that skill to `RACIAL_SKILLS`. The creation screen and portraits pick it up automatically. Without a palette in `src/ui/art/portraits.ts` the new race uses the Human palette.

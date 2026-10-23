@@ -21,6 +21,7 @@ import { itemName } from '../items/naming';
 import { lastFilledSocket, socketInto, unsocket, unsocketCost } from '../items/sockets';
 import type { EquipSlot, ItemInstance } from '../items/types';
 import { salvageYield } from '../items/upkeep';
+import { appraiseLimit } from '../skills/general';
 import { useConsumableInField, type UseResult } from '../items/use';
 import type { GameSession } from './gameState';
 
@@ -124,9 +125,11 @@ export class ItemActions {
   identify(loc: ItemLocation): Result {
     const item = this.itemAt(loc);
     if (!item || item.identified) return fail('Nothing to identify.');
-    if (!takeQuantity(this.inv, 'scroll-of-identify', 1)) return fail('You need a Scroll of Identify.');
+    // Appraise identifies items up to its rarity limit for free.
+    const appraised = content.rarities.get(item.rarity).order <= appraiseLimit(this.s.player);
+    if (!appraised && !takeQuantity(this.inv, 'scroll-of-identify', 1)) return fail('You need a Scroll of Identify (or a higher Appraise rank).');
     item.identified = true;
-    this.s.bus.emit('toast', { kind: 'loot', text: `Identified: ${itemName(item)}` });
+    this.s.bus.emit('toast', { kind: 'loot', text: `${appraised ? 'Appraised' : 'Identified'}: ${itemName(item)}` });
     this.changed('identify');
     return { ok: true };
   }

@@ -8,7 +8,7 @@ export type LootEntry =
   /** A specific item. */
   | { weight: number; kind: 'item'; itemId: string; qty?: [number, number] }
   /** A random item of a category, at or below the item level. */
-  | { weight: number; kind: 'pool'; pool: 'potion' | 'gem' | 'rune' | 'material' | 'curiosity' | 'consumable'; qty?: [number, number] }
+  | { weight: number; kind: 'pool'; pool: 'potion' | 'gem' | 'rune' | 'material' | 'curiosity' | 'consumable' | 'book'; qty?: [number, number] }
   | { weight: number; kind: 'table'; tableId: string };
 
 export interface LootTableDef {
@@ -58,6 +58,7 @@ export const LOOT_TABLES: LootTableDef[] = [
       { weight: 2, kind: 'pool', pool: 'rune' },
       { weight: 2, kind: 'pool', pool: 'curiosity' },
       { weight: 1, kind: 'pool', pool: 'consumable' },
+      { weight: 2, kind: 'pool', pool: 'book' },
     ],
   },
   {
@@ -74,6 +75,7 @@ export const LOOT_TABLES: LootTableDef[] = [
       { weight: 6, kind: 'pool', pool: 'rune' },
       { weight: 3, kind: 'pool', pool: 'consumable' },
       { weight: 3, kind: 'pool', pool: 'curiosity' },
+      { weight: 5, kind: 'pool', pool: 'book' },
     ],
   },
   {
@@ -88,6 +90,7 @@ export const LOOT_TABLES: LootTableDef[] = [
       { weight: 10, kind: 'pool', pool: 'rune', qty: [1, 2] },
       { weight: 10, kind: 'pool', pool: 'material', qty: [2, 5] },
       { weight: 5, kind: 'item', itemId: 'tome-of-insight' },
+      { weight: 10, kind: 'pool', pool: 'book' },
     ],
   },
   {
@@ -103,6 +106,7 @@ export const LOOT_TABLES: LootTableDef[] = [
       { weight: 8, kind: 'pool', pool: 'rune' },
       { weight: 7, kind: 'pool', pool: 'curiosity' },
       { weight: 5, kind: 'item', itemId: 'scroll-of-identify', qty: [1, 3] },
+      { weight: 6, kind: 'pool', pool: 'book' },
     ],
   },
 ];

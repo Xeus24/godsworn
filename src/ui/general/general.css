@@ -1,0 +1,115 @@
+/* ---------- General skills screen ---------- */
+
+.general-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 900px) {
+  .general-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+.general-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.general-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+}
+
+.general-slot {
+  position: relative;
+  text-align: left;
+  font-size: 12px;
+  padding: 6px 8px 6px 24px;
+  color: var(--dim, #9a8fb0);
+}
+
+.general-slot.filled {
+  color: inherit;
+  border-color: var(--gold);
+}
+
+.general-slot .hk {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  color: var(--gold);
+}
+
+.general-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+
+.general-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 90px 110px;
+  gap: 8px;
+  text-align: left;
+  font-size: 13px;
+  padding: 5px 8px;
+}
+
+.general-row.unknown {
+  opacity: 0.6;
+}
+
+.general-row.selected {
+  border-color: var(--gold);
+}
+
+.general-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.general-skillcard {
+  padding: 6px 8px;
+  border: 1px dashed #4a3a5a;
+  border-radius: 6px;
+  cursor: help;
+}
+
+.train-bar {
+  height: 6px;
+  background: #0a0710;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.train-bar > div {
+  height: 100%;
+  background: var(--gold);
+}
+
+.spec-card {
+  border: 1px solid #4a3a5a;
+  border-radius: 6px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.spec-card.chosen {
+  border-color: var(--gold);
+}

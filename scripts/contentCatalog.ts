@@ -5,6 +5,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { content } from '../src/data';
+import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
 
 const FILE = new URL('../CONTENT.md', import.meta.url);
@@ -118,11 +119,13 @@ function combatSection(): string {
 
 function treesSection(): string {
   const out: string[] = [];
-  const total = content.trees.all().reduce((n, t) => n + t.nodes.length, 0);
+  const isClassBranch = (tree: SkillTreeDef, id: string): boolean => !tree.branches.find((b) => b.id === id)?.spec;
+  const total = content.trees.all().reduce((n, t) => n + t.nodes.filter((x) => isClassBranch(t, x.branch)).length, 0);
   out.push(`${content.trees.size} class trees, ${total} nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.`, '');
   for (const tree of content.trees.all()) {
-    out.push(`### ${content.classes.get(tree.classId).name} (${tree.nodes.length} nodes)`, '', '| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |', '|---|---|---|---|---|---|');
-    for (const b of tree.branches) {
+    const classNodes = tree.nodes.filter((x) => isClassBranch(tree, x.branch));
+    out.push(`### ${content.classes.get(tree.classId).name} (${classNodes.length} nodes)`, '', '| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |', '|---|---|---|---|---|---|');
+    for (const b of tree.branches.filter((x) => !x.spec)) {
       const nodes = tree.nodes.filter((n) => n.branch === b.id);
       const skills = nodes
         .filter((n) => n.kind === 'active')
@@ -136,7 +139,7 @@ function treesSection(): string {
   }
   out.push('### Tree skills', '', '| Skill | Class | Cost | CD | Description |', '|---|---|---|---|---|');
   for (const tree of content.trees.all()) {
-    for (const n of tree.nodes.filter((x) => x.kind === 'active' && !x.starting)) {
+    for (const n of tree.nodes.filter((x) => x.kind === 'active' && !x.starting && isClassBranch(tree, x.branch))) {
       const sk = content.skills.get(n.skill as string);
       const cost = [sk.cost.mp ? `${sk.cost.mp} MP` : '', sk.cost.resource ? `${sk.cost.resource.amount} ${content.resources.get(sk.cost.resource.id).name}` : ''].filter(Boolean).join(' + ') || 'free';
       out.push(`| **${sk.name}** | ${content.classes.get(tree.classId).name} | ${cost} | ${sk.cooldown} | ${cell(sk.description)} |`);
@@ -145,7 +148,36 @@ function treesSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection };
+function specsSection(): string {
+  const out: string[] = [];
+  out.push(`${content.specializations.size} specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.`, '');
+  out.push('| Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |', '|---|---|---|---|---|');
+  for (const spec of content.specializations.all()) {
+    const tree = content.trees.get(spec.classId);
+    const nodes = tree.nodes.filter((n) => n.branch === spec.branch);
+    const active = nodes.find((n) => n.kind === 'active');
+    const mods = nodes.filter((n) => n.kind === 'modifier').map((n) => n.name).join(', ');
+    const ult = content.skills.get(spec.ultimate);
+    const cap = nodes.find((n) => n.kind === 'capstone');
+    out.push(`| ${content.classes.get(spec.classId).name} | **${spec.name}**: ${cell(spec.description)} | ${active?.name ?? ''} (${mods}) | **${ult.name}**: ${cell(ult.description)} | ${cell(`${cap?.name ?? ''}${cap?.text ? `: ${cap.text}` : ''}`)} |`);
+  }
+  return out.join('\n');
+}
+
+function generalSection(): string {
+  const out: string[] = [];
+  const all = content.generalSkills.all();
+  out.push(`${all.length} general skills (ranks 1-10; Grimoires 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.`, '');
+  out.push('| Skill | Category | Book rarity | Battle skill | Effect |', '|---|---|---|---|---|');
+  for (const g of all) {
+    const battle = g.combatSkill ? content.skills.get(g.combatSkill).name : '';
+    const req = g.requirements?.level ? ` (level ${g.requirements.level})` : '';
+    out.push(`| **${g.name}**${req} | ${g.category} | ${content.rarities.get(g.rarity).name} | ${battle} | ${cell(g.description)} |`);
+  }
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

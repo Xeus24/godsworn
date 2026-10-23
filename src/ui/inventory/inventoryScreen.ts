@@ -2,6 +2,7 @@ import { content } from '../../data';
 import { nextStashTabCost, type Inventory, type SortMode } from '../../engine/items/inventory';
 import { baseOf, isGear } from '../../engine/items/lookup';
 import { lastFilledSocket, unsocketCost } from '../../engine/items/sockets';
+import { appraiseLimit, bookSkill, studyTerms } from '../../engine/skills/general';
 import { RARITIES, type EquipSlot, type ItemCategory, type ItemInstance, type RarityId } from '../../engine/items/types';
 import type { GameSession } from '../../engine/state/gameState';
 import type { ItemLocation } from '../../engine/state/itemActions';
@@ -28,7 +29,7 @@ const FILTER_CATEGORIES: Record<Exclude<Filter, 'all'>, ItemCategory[]> = {
   consumables: ['consumable'],
   socketables: ['gem', 'rune'],
   materials: ['material'],
-  other: ['curiosity'],
+  other: ['curiosity', 'book'],
 };
 
 /** Paper-doll layout: [slot, grid column, grid row]. */
@@ -149,6 +150,7 @@ export class InventoryScreen implements Screen {
       return this.say(this.actions.move(loc, { where: 'inventory', index: free }));
     }
     if (isGear(item)) return this.say(this.actions.equip(loc.index));
+    if (bookSkill(item.baseId)) return this.say(this.session.general.readBook(loc.index));
     if (this.actions.isUsable(loc.index)) return this.say(this.actions.use(loc.index));
     this.say({ ok: false, reason: 'Drag gems and runes onto gear to socket them.' });
   }
@@ -295,9 +297,15 @@ export class InventoryScreen implements Screen {
     if (loc.where === 'equipment') btn('Unequip', () => this.say(this.actions.unequip(loc.slot)));
     if (loc.where === 'inventory' && gear) btn('Equip', () => this.say(this.actions.equip(loc.index)));
     if (loc.where === 'inventory' && this.actions.isUsable(loc.index)) btn('Use', () => this.say(this.actions.use(loc.index)));
+    if (loc.where === 'inventory' && bookSkill(item.baseId)) {
+      const terms = studyTerms(item.baseId);
+      btn('Read (consumes the book)', () => this.say(this.session.general.readBook(loc.index)));
+      btn(`Study at the Library (${terms.gold}g, ${terms.days} day${terms.days > 1 ? 's' : ''}; keep the book)`, () => this.say(this.session.general.study(loc.index)), this.session.state.gold < terms.gold);
+    }
     if (!item.identified) {
       const scrolls = this.actions.count('scroll-of-identify');
-      btn(`Identify (${scrolls} scroll${scrolls === 1 ? '' : 's'})`, () => this.say(this.actions.identify(loc)), scrolls === 0);
+      const appraise = content.rarities.get(item.rarity).order <= appraiseLimit(this.session.player);
+      btn(appraise ? 'Appraise (free)' : `Identify (${scrolls} scroll${scrolls === 1 ? '' : 's'})`, () => this.say(this.actions.identify(loc)), !appraise && scrolls === 0);
     }
     const filled = lastFilledSocket(item);
     if (filled >= 0) btn(`Unsocket (${unsocketCost(item, filled)}g)`, () => this.say(this.actions.unsocket(loc)));

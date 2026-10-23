@@ -53,6 +53,7 @@ export const DERIVED_FORMULAS: Record<DerivedStat, LinearFormula> = {
   // Percentage of incoming damage taken; 100 = normal.
   damageTaken: { base: 100 },
   resourceGain: { base: 0 },
+  ultimateGain: { base: 0 },
   hpRegen: { base: 0 },
   mpRegen: { base: 0, coefficients: { wis: 0.1 } },
 };

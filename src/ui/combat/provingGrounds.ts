@@ -1,13 +1,10 @@
 import { content } from '../../data';
-import { characterStats, restoreFull } from '../../engine/character/stats';
+import { characterStats } from '../../engine/character/stats';
 import type { EncounterDef } from '../../engine/combat/types';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
-
-/** Hours that pass when resting at camp. */
-export const REST_HOURS = 8;
 
 /**
  * Training fights against every encounter in the game so far, plus a camp
@@ -40,14 +37,10 @@ export class ProvingGroundsScreen implements Screen {
     const s = this.session;
     const p = s.player;
     const stats = characterStats(p);
-    const rest = el('button', {}, `Rest at camp (${REST_HOURS} hours)`);
-    rest.disabled = p.hp >= stats.maxHp && p.mp >= stats.maxMp;
-    rest.addEventListener('click', () => {
-      restoreFull(p);
-      s.advanceTime(REST_HOURS * 60);
-      s.bus.emit('toast', { kind: 'info', text: 'You rest by the fire and wake refreshed.' });
-      s.bus.emit('stateChanged', { reason: 'rest' });
-    });
+    const minutes = s.general.restMinutes();
+    const rest = el('button', {}, `Rest at camp (${Math.floor(minutes / 60)}h${minutes % 60 ? ` ${minutes % 60}m` : ''})`);
+    rest.disabled = p.hp >= stats.maxHp && p.mp >= stats.maxMp && !p.generalSlots.includes('camping');
+    rest.addEventListener('click', () => s.general.rest());
 
     const cards = content.encounters.all().map((enc) => {
       const diff = enc.level - p.level;

@@ -42,7 +42,7 @@ Every class starts with 34 primary points and gains 5.0 per level.
 ## Class resources (7)
 Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), Soul Shards (5, starts 1), Chi (5, starts 1), Verse (100).
 
-## Skills (22 starting + 50 skill-tree + 8 ultimates + 25 enemy skills)
+## Skills (22 starting + 50 skill-tree + 24 specialization + 39 general + 32 ultimates + 25 enemy skills)
 
 **Class starters (16):**
 
@@ -385,7 +385,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (20)
+### Status effects (21)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -408,6 +408,7 @@ Generated from the data files by `npm run content:md`.
 | **Haste** | buff | 30% more speed. |
 | **Berserk** | buff | +30% damage and +10% crit, but takes 15% more damage. |
 | **Divine Protection** | buff | Takes 50% less damage. |
+| **Taunt** | buff | Goading the enemy: their single-target attacks must hit you. |
 | **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
 
 ### Class ultimates (8)
@@ -450,7 +451,7 @@ Generated from the data files by `npm run content:md`.
 | **Wyld Boar** | 14 | normal | beast | front | aggressive | Gore Charge |  |
 | **Alpha of the Whisperwood** | 15 | elite | beast | front | aggressive | Savage Bite, Pack Howl, War Cry |  |
 
-**Summons (5):** Skeleton Warrior, Skeleton Mage, Wolf Companion, Spirit Stag, Bone Servant
+**Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
 ### Encounters (14)
 
@@ -609,3 +610,115 @@ Generated from the data files by `npm run content:md`.
 
 ## Not yet added
 Zones, quests, specializations, general skills, blessings, bosses, the remaining enemies (60+ across 8 zones), Divine and Primordial items (Phases 5+).
+
+## Specializations (24)
+
+<!-- specializations:start -->
+24 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+
+| Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
+|---|---|---|---|---|
+| Warrior | **Berserker**: Unbound fury: the closer to death, the deadlier. | Frenzied Assault (Blood Spray, Endless Frenzy) | **Bloodstorm**: A storm of blades: 300% ATK to every enemy, heal 20% of max HP and go Berserk. | Undying Rage |
+| Warrior | **Paladin**: A holy warrior: steel and faith as one. | Crusader Strike (Judgement Strike, Blessed Strike) | **Hammer of Heaven**: A hammer of light: 220% ATK holy damage to every enemy and Divine Protection for the party. | Lay on Hands: The first time you fall below 30% HP each battle, heal 50%. |
+| Warrior | **Warlord**: A commander who wins battles before they start. | Rallying Banner (War Banner, Iron Banner) | **Grand Offensive**: Lead the charge: 200% ATK to every enemy (30% Stun) and Haste the party. | Supreme Commander: The party starts every battle with +20% damage for 3 turns. |
+| Rogue | **Assassin**: One target. One strike. No witnesses. | Assassinate (Silent Kill, Deathblow) | **Thousand Cuts**: Ten flashing cuts on one enemy, 50% ATK each, every one a critical hit. | Angel of Death |
+| Rogue | **Shadowdancer**: Never where the blade falls. | Shadow Step (Umbral Blade, Shadow Veil) | **Shadow Storm**: Shadows erupt: 250% ATK shadow damage to every enemy, and you vanish into Stealth. | One with Darkness |
+| Rogue | **Swashbuckler**: Style, luck and a dazzling blade. | Flourish (Dazzling Flourish, Flashy) | **Grand Flourish**: A whirlwind performance: six strikes of 80% ATK at random enemies; the party gains +20% crit for 2 turns. | Legend of the Seas |
+| Ranger | **Beastmaster**: The pack is the weapon. | Bestial Wrath (Pack Hunt, Feral Roar) | **Stampede**: A stampede of spirit beasts: 220% ATK nature damage to every enemy, and a spirit stag joins you. | King of the Wild: A second wolf joins every battle. |
+| Ranger | **Sharpshooter**: Patience, then one perfect shot. | Deadly Aim (Kill Shot, Penetrating Shot) | **Final Arrow**: One perfect arrow: 600% ATK, always a critical hit. | Perfect Shot |
+| Ranger | **Warden**: Guardian of the wild places. | Entangling Roots (Thorned Roots, Binding Roots) | **Wrath of Nature**: The forest rises: 250% ATK nature damage to every enemy with heavy Poison, and the party regenerates. | Heart of the Forest |
+| Monk | **Grandmaster**: Perfection of the fist. | Seven-Sided Strike (Focused Strikes, Whirling Strikes) | **Fists of Fury**: Sixteen strikes on one enemy, 40% ATK each. | True Grandmaster |
+| Monk | **Mystic**: Spirit made flesh: healing and inner light. | Spirit Palm (Radiant Palm, Soothing Palm) | **Nirvana**: Perfect calm: heal 60% of max HP, gain Divine Protection and full Chi, and strike every enemy for 150% ATK. | Enlightened One |
+| Monk | **Wind Dancer**: Untouchable as the wind. | Cyclone Kick (Gale Kick, Wind Wall) | **Tempest Dance**: A dance like a storm: ten strikes of 50% ATK at random enemies, and you are Hasted. | Eye of the Hurricane |
+| Mage | **Pyromancer**: Fire, and nothing but fire. | Meteor (Meteor Shower, Impact) | **Sunfall**: Drop a piece of the sun: 320% MAG fire to every enemy with 3 stacks of Burn. | Lord of Flame: Fire crits explode on every enemy for 30% MAG. |
+| Mage | **Chronomancer**: Master of time: act more, wait less. | Time Warp (Accelerate, Slow Time) | **Time Stop**: Freeze time: Stun every enemy, Haste the party and reduce your cooldowns by 3. | Master of Time: Skills have a 20% chance to reduce your cooldowns by 1. |
+| Mage | **Stormcaller**: Ride the storm: soak, then strike. | Storm Surge (Tidal Surge, Static Surge) | **Maelstrom**: A raging maelstrom: every enemy is soaked, then eight bolts of 70% MAG lightning strike at random. | Avatar of Storms |
+| Cleric | **Inquisitor**: Hunter of heretics. The light that burns. | Condemn (Purge, Zealous Condemnation) | **Final Judgement**: The gods’ verdict: 300% DIV holy damage to every enemy. | Grand Inquisitor |
+| Cleric | **Oracle**: She sees the blow before it falls. | Foresight (Prophecy, Clairvoyance) | **Divine Prophecy**: Fate bends: heal the party for 50% of max HP, then grant Divine Protection and Haste. | Voice of the Gods |
+| Cleric | **Saint**: Mercy made flesh. No one dies on her watch. | Sacred Renewal (Radiant Renewal, Blessed Renewal) | **Resurrection**: Life without limit: fully heal the party and grant Regen and Divine Protection. | Living Saint: At the start of your turn, every ally heals 6% of max HP. |
+| Necromancer | **Lich**: Undeath, frost and endless spellcraft. | Soul Frost (Frozen Soul, Phylactery Drain) | **Eternal Winter**: The cold of the grave: 260% MAG ice to every enemy, with a 50% chance to Freeze. | Archlich |
+| Necromancer | **Bonelord**: An army of bone, and a golem to lead it. | Raise Bone Golem (Reinforced Golem, Bone Wall) | **Bone Apocalypse**: A storm of bone: 240% MAG physical to every enemy, and a Bone Golem rises. | Lord of the Ossuary: Two skeleton warriors rise at the start of every battle. |
+| Necromancer | **Plaguebringer**: Sickness that spreads, stacks and never stops. | Plague Bomb (Virulent Bomb, Concentrated) | **Black Death**: The great plague: 200% MAG nature to every enemy, 5 stacks of Poison and a Curse. | Herald of Pestilence |
+| Bard | **Virtuoso**: Pure musical genius, sharp enough to cut. | Masterpiece (Encore Performance, Crescendo Strike) | **Symphony of Destruction**: The final movement: 300% MAG arcane damage to every enemy. | Living Legend |
+| Bard | **Skald**: War-singer of the north. Songs that make heroes. | War Chant (Chant of Blood, Chant of Iron) | **Ragnarok Chorus**: A chorus to end the world: 250% MAG physical to every enemy, and the whole party goes Berserk. | Voice of Valhalla: Start every battle with the Song of Valor playing and the party Hasted. |
+| Bard | **Trickster**: Nothing is what it seems. | Misdirect (Confusion, Mirror Image) | **Grand Illusion**: Nothing is real: every enemy may be Charmed (70%), and the party vanishes into Stealth. | Master of Illusion: Crits may Charm the target. |
+<!-- specializations:end -->
+
+## General skills (70)
+
+<!-- general:start -->
+70 general skills (ranks 1-10; Grimoires 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+
+| Skill | Category | Book rarity | Battle skill | Effect |
+|---|---|---|---|---|
+| **Second Wind** | combat | Common | Second Wind | A battle heal you can use without MP. |
+| **Cleave** | combat | Common | Cleave | Hit the whole front row. |
+| **Throw Dagger** | combat | Common | Throw Dagger | A ranged attack for melee fighters. |
+| **Taunt** | combat | Uncommon | Taunt | Force enemies to attack you. |
+| **Power Attack** | combat | Common | Power Attack | One heavy blow. |
+| **Rend** | combat | Uncommon | Rend | Bleed your enemies. |
+| **Double Strike** | combat | Uncommon | Double Strike | Two quick blows. |
+| **Execute** (level 12) | combat | Rare | Execute | A guaranteed critical hit. |
+| **Kick** | combat | Common | Kick | Interrupt casters with a Silence. |
+| **Charge** | combat | Uncommon | Charge | Reach the back row. |
+| **Hamstring** | combat | Common | Hamstring | Slow the fast ones down. |
+| **Disarm** | combat | Uncommon | Disarm | Weaken a dangerous foe. |
+| **Feint** | combat | Uncommon | Feint | Set up a big hit with Vulnerable. |
+| **Brace** | combat | Common | Brace | A quick defensive stance. |
+| **Battle Cry** | combat | Uncommon | Battle Cry | A short damage boost. |
+| **Parry** | combat | Common | Parry | Dodge the next blow. |
+| **Weapon Mastery** (level 8) | combat | Rare |  | Passive: +2% physical attack per rank. |
+| **Combat Reflexes** (level 10) | combat | Rare |  | Passive: +0.5 crit chance and +0.4 dodge per rank. |
+| **Spark** | elemental | Common | Spark | A basic lightning spell. |
+| **Frost Ring** | elemental | Uncommon | Frost Ring | Slow every enemy. |
+| **Stone Skin** | elemental | Common | Stone Skin | Turn your skin to stone. |
+| **Flame Jet** | elemental | Common | Flame Jet | A basic fire spell. |
+| **Snowball** | elemental | Common | Snowball | A cheap, slowing spell. |
+| **Acid Splash** | elemental | Uncommon | Acid Splash | Melt armor with acid. |
+| **Umbral Bolt** | elemental | Uncommon | Umbral Bolt | A basic shadow spell. |
+| **Arcane Blast** | elemental | Rare | Arcane Blast | A powerful arcane spell. |
+| **Earthquake** (level 20) | elemental | Epic | Earthquake | Shake every enemy. |
+| **Lightning Rod** | elemental | Rare | Lightning Rod | Soak and shock in one cast. |
+| **Fire Shield** | elemental | Rare | Fire Shield | A flaming shield. |
+| **Mana Spring** | elemental | Uncommon | Mana Spring | Restore MP in battle. |
+| **Elemental Ward** | elemental | Rare | Elemental Ward | Resist the elements. |
+| **Ember Rain** | elemental | Rare | Ember Rain | Fire rains on random foes. |
+| **Thornburst** | elemental | Uncommon | Thornburst | Thorns under the front row. |
+| **Elemental Affinity** (level 15) | elemental | Epic |  | Passive: +2% fire, ice and lightning damage per rank. |
+| **Appraise** | utility | Uncommon |  | Identify items without scrolls. Higher ranks identify rarer items (Epic at rank 1, Legendary at 2, Mythic at 6, Relic at 10). Passive: +1% magic find per rank. |
+| **Pickpocket** | utility | Common | Pickpocket | Steal gold from enemies in battle. |
+| **Sprint** | utility | Common | Sprint | A burst of speed in battle. Passive: +0.5 speed per rank. |
+| **Smoke Screen** | utility | Uncommon | Smoke Screen | Blind every enemy. |
+| **Disguise** | utility | Rare | Disguise | Vanish from sight. |
+| **Distraction** | utility | Rare | Distraction | Turn an enemy against its friends. |
+| **Treasure Hunter** | utility | Rare |  | Passive: +3% gold find and +2% magic find per rank. |
+| **Lucky Star** | utility | Uncommon |  | Passive: +1 LUK per rank. |
+| **Fast Learner** | utility | Rare |  | Passive: +2% XP per rank. |
+| **Scavenging** | utility | Common |  | After a victory, 6% chance per rank to scavenge extra materials. |
+| **Tinkering** | utility | Uncommon |  | Gear has an 8% chance per rank to take no wear in a battle. |
+| **Quick Hands** | utility | Uncommon |  | Passive: +0.5% cooldown reduction per rank. |
+| **Keen Eye** | utility | Common |  | Passive: +1 accuracy per rank. |
+| **Silver Tongue** | utility | Rare |  | Passive: +3% favor gain per rank. |
+| **First Aid** | survival | Common | First Aid | Heal an ally and stop Bleeding. |
+| **Bandage** | survival | Common | Bandage | Regenerate over a few turns. |
+| **Herbal Remedy** | survival | Uncommon | Herbal Remedy | Cure Poison and Curse. |
+| **Foraging** | survival | Common |  | After a victory, 8% chance per rank to forage herbs. |
+| **Camping** | survival | Uncommon |  | Rest faster at camp (-30 minutes per rank) and wake Well Rested (+1% damage per rank for 3 battles). |
+| **Toughness** | survival | Common |  | Passive: +2% max HP per rank. |
+| **Endurance** | survival | Common |  | Passive: +2 HP regeneration per rank. |
+| **Iron Stomach** | survival | Common |  | Passive: +3% nature resist per rank. |
+| **Cold Resistance** | survival | Common |  | Passive: +3% ice resist per rank. |
+| **Fire Walker** | survival | Common |  | Passive: +3% fire resist per rank. |
+| **Survival Instinct** | survival | Rare |  | Passive: +1.5% status resist per rank. |
+| **Tracker** | survival | Uncommon |  | Passive: +2% damage against beasts per rank. |
+| **Monster Hunter** (level 15) | survival | Epic |  | Passive: +2% damage against undead, plants and constructs per rank. |
+| **Meditation** | survival | Uncommon |  | Passive: +1 MP regeneration per rank. |
+| **Shield Slam (Grimoire)** (level 15) | grimoire | Epic | Shield Slam | Use the Shield Slam skill of another class at 70% power. |
+| **Flame Wave (Grimoire)** (level 15) | grimoire | Epic | Flame Wave | Use the Flame Wave skill of another class at 70% power. |
+| **Fan of Knives (Grimoire)** (level 15) | grimoire | Epic | Fan of Knives | Use the Fan of Knives skill of another class at 70% power. |
+| **Prayer of Healing (Grimoire)** (level 20) | grimoire | Legendary | Prayer of Healing | Use the Prayer of Healing skill of another class at 70% power. |
+| **Arrow Barrage (Grimoire)** (level 15) | grimoire | Epic | Arrow Barrage | Use the Arrow Barrage skill of another class at 70% power. |
+| **Death Coil (Grimoire)** (level 15) | grimoire | Epic | Death Coil | Use the Death Coil skill of another class at 70% power. |
+| **Meditation (Grimoire)** (level 20) | grimoire | Legendary | Meditation | Use the Meditation skill of another class at 70% power. |
+| **Soothing Melody (Grimoire)** (level 15) | grimoire | Epic | Soothing Melody | Use the Soothing Melody skill of another class at 70% power. |
+<!-- general:end -->

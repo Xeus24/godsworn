@@ -9,8 +9,8 @@
 | 3 | Items, affixes, sockets/runes, inventory, stash, equipment | **Done** |
 | 4 | Combat core | **Done** |
 | 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | **Done** |
-| 6 | Specializations, general skills, skillbooks | Next |
-| 7 | Multiclassing, hybrid prestige classes | |
+| 6 | Specializations, general skills, skillbooks | **Done** |
+| 7 | Multiclassing, hybrid prestige classes | Next |
 | 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | |
 | 9 | Apostleship | |
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | |
@@ -208,6 +208,31 @@
 - `npm run sim` heroes now spend their points with a simple auto-build (skipping keystones).
 - 229 unit tests.
 
+### Phase 6: specializations, general skills, skillbooks
+- **24 specializations** (3 per class), chosen at class level 20:
+  - Warrior: Berserker, Paladin, Warlord. Rogue: Assassin, Shadowdancer, Swashbuckler. Ranger: Beastmaster, Sharpshooter, Warden. Monk: Grandmaster, Mystic, Wind Dancer.
+  - Mage: Pyromancer, Chronomancer, Stormcaller. Cleric: Inquisitor, Oracle, Saint. Necromancer: Lich, Bonelord, Plaguebringer. Bard: Virtuoso, Skald, Trickster.
+  - Each adds a **12-node branch** (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone) that gates at 4 points per tier.
+  - Each has a **signature ultimate** that replaces the class ultimate: 24 new ultimates plus 24 signature skills.
+  - The first choice is free. Switching costs 100 gold × level and refunds the old branch in every build.
+- **70 general skills,** learnable by any class:
+  - 18 combat, 16 elemental, 14 utility, 14 survival and 8 Grimoires; 47 of them grant a battle skill (39 general battle skills plus the 8 Grimoire skills).
+  - Ranks 1–10 (Grimoires 1–5), with passives that scale per rank.
+  - **Slots:** 2, plus one at levels 10/20/30/40/50 (plus bonus slots for later systems). Only slotted skills give passives, battle skills and utility effects.
+  - **Training:** battle skills train by use, passive and utility skills by 1 per victory while slotted. The next rank needs 6 × rank.
+  - **Utility hooks:** Appraise (free identify up to Epic, rising to Relic at rank 10), Camping (−30 min rest per rank and a Well Rested damage buff for 3 battles), Foraging and Scavenging (herbs and materials after victories), Tinkering (a chance per item to skip battle wear).
+  - **Grimoires** teach one class's signature skill to other classes at 70% power. You cannot read the Grimoire of your own class's skill.
+- **Skillbooks:** one per general skill (70), with rarities from Common to Legendary. They drop from normal enemies, elites, bosses and chests. Reading consumes the book. **Studying** at the Library (from the inventory, for now) keeps it, costing 50% of its value in gold plus 1–5 in-game days by rarity.
+- **New stat: Ultimate Charge** (`ultimateGain`), a bonus to ultimate gauge gain, used by Signature Mastery.
+- **UI:**
+  - General skills screen (J): slot grid, filterable catalogue of all 70 skills (known and unknown), and details with rank, training progress and the battle skill card.
+  - Skill tree screen: a Specialization panel to preview, choose or switch, with the chosen (or previewed) spec branch drawn as the fifth column.
+  - Inventory: book tooltips (what it teaches, your rank), Read / Study buttons, a free Appraise button, and books under the Other filter.
+  - In battle: slotted general battle skills appear in the Skills menu marked ◇, outside the 8-slot hotbar.
+  - Toasts for new general slots, training rank-ups and specialization unlocks at class level 20.
+- `npm run sim` heroes now take their class's first specialization from class level 20 and slot Toughness and Keen Eye. A smoke run of all 24 specializations at level 20 fires every signature ultimate.
+- 250 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -240,7 +265,7 @@
 - **Spells never miss; attacks roll accuracy minus dodge** (clamped 5–100%). Damage-over-time can crit only with `dotsCanCrit`.
 - **Only enemies have stagger bars** (35% of max HP, 20% for bosses). Physical hits fill it fully, other elements at 70%. Breaking an enemy stuns it for a turn, and it takes 50% more damage for 2 turns.
 - **The party chain** grows by +10% (max +50%) each time party members hit the same single target in consecutive party turns. Any enemy turn resets it.
-- **The Ultimate gauge** fills from dealing damage (2 + 40 × share of target HP, max 15 per hit) and taking damage. Each class gets one base ultimate now; specializations add more in Phase 6.
+- **The Ultimate gauge** fills from dealing damage (2 + 40 × share of target HP, max 15 per hit) and taking damage. Each class has one base ultimate; from Phase 6 a specialization replaces it with its own (Ultimate Charge speeds the gauge).
 - **Enemies are built from level-1 combat numbers** (HP, attack, magic, defense, resist, speed), not primaries. Flat modifiers land each stat exactly, so buffs, statuses and tier multipliers use the same modifier pipeline as heroes. Growth per level: HP +33%, attack/magic +24%, defense/resist +18%, speed +1.5%. Elites have 2.5× HP and 1.25× damage; bosses 9× and 1.5×.
 - **Armor tiers scale more gently** (×1 to ×5.5 across tiers, versus ×31 for weapon damage), because 100/(100+defense) makes each armor point worth more as it grows.
 - **Dexterity classes scale through finesse weapons:** daggers, rapiers and throwing knives give +1 Physical Attack per DEX, bows +1.2, crossbows +1, claws +1 and spears +0.5. This keeps the spec's formula (STR×2 + weapon) while letting Rogues and Rangers grow.
@@ -253,6 +278,13 @@
 - **The hotbar belongs to the primary class's active build,** so swapping builds swaps hotbars too.
 - **Refunding a single node is free** as long as nothing depends on it, making experimenting cheap. Wholesale resets cost gold.
 - **Balance after Phase 5** (40 fights per class × level, solo, benchmark gear, auto-built trees, enemy growth raised to HP +40%, attack/magic +29% per level): 96.4% average. Rogue, Ranger, Cleric and Monk are at or near 100%. The outlier is Necromancer at 54% at level 9, because the auto-build invests in corpse-dependent summons first; at levels 12–15 it recovers to 88–100%. The full tuning pass is Phase 16 (with companions).
+- **General skill count: 70** (62 regular plus 8 Grimoires). The spec asks for 60+.
+- **General battle skills sit outside the hotbar.** General slots already limit them, and keeping the 8-slot hotbar for class skills avoids crowding it. They appear in the Skills menu with a ◇.
+- **General skills train by use, not by XP.** This follows the spec's "use-based training" and rewards slotting what you actually use. Passive skills have no use to count, so they train on victories while slotted.
+- **Specialization branches gate at 4 points per tier** (not 5), since they have 5 tiers and about 20 points of nodes. Every spec branch shares the fifth column, and only the chosen one is shown.
+- **The 12th spec node is a shared "Signature Mastery"** (+8% Ultimate Charge per rank, 3 ranks). It ties each branch to its new ultimate without inventing 24 more unique minors.
+- **The Library is reached from the inventory** until towns exist (Phase 10), which then move it to town Libraries.
+- **Balance after Phase 6:** 96.6% average wins (the encounters only reach level 15, so specializations do not show up there yet). Spec balance needs the higher-level zones of Phase 10; the full pass is Phase 16.
 - **A zero-base check** in content validation rejects percent and "more" modifiers on stats that start at 0. This caught two Phase 2 racial skills (Rally, Bloodlust) that would otherwise have done nothing.
 
 ## Known bugs
@@ -269,7 +301,9 @@
 - **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
 - **The stash is reachable from anywhere** until towns exist (Phase 10), which then restricts it to towns.
+- **Divine general skills** arrive with the gods in Phase 8, and **Forbidden** ones with heresies in Phase 14. Both categories already exist in the engine and the UI.
+- **General skills that act on the overworld** (Lockpicking, Detect Traps, Haggle, Cooking, Sprint on the map) come with zones, towns and shops in Phases 10–11. Their stat and battle versions already work.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 6: specializations at level 20 (3 per class, 24 total), each with its own tree branch and signature ultimate. Plus general skills (60+, ranks 1–10, use-based training), general skill slots, skillbooks of every rarity, Grimoires, the Library, and Divine/Forbidden categories (gated until gods and NG+ exist).
+- Phase 7: multiclassing (adding classes, the XP split between them, per-class trees and specializations) and hybrid prestige classes unlocked by class pairs.

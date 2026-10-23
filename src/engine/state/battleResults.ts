@@ -8,6 +8,7 @@ import { equippedItems } from '../items/equipment';
 import { rollLoot } from '../items/loot';
 import { itemName } from '../items/naming';
 import { recordDeed } from '../items/relics';
+import { utilityChance } from '../skills/general';
 import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
 import type { ItemInstance } from '../items/types';
 import { wearItem, wearItemPercent } from '../items/upkeep';
@@ -27,6 +28,8 @@ export interface BattleRewards {
   goldLost: number;
   /** Skills that reached a new mastery level: [skill id, new level]. */
   masteryUps: [string, number][];
+  /** General skills that trained to a new rank: [general id, new rank]. */
+  generalUps: [string, number][];
   /** Hardcore death: the save is over. */
   permadeath: boolean;
 }
@@ -36,7 +39,7 @@ const BOSS_TIERS = new Set(['miniboss', 'boss', 'worldBoss']);
 /**
  * Applies a finished battle to the game: HP/MP carry over, XP, gold and
  * loot on victory, penalties on defeat, durability wear, timed buff ticks,
- * relic deeds and lifetime stats. Emits the matching events.
+ * relic deeds, general skill training and lifetime stats. Emits the matching events.
  */
 export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   const p = s.player;
@@ -53,6 +56,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     expiredBuffs: [],
     goldLost: 0,
     masteryUps: [],
+    generalUps: [],
     permadeath: false,
   };
   const stats = s.state.stats;
@@ -74,6 +78,8 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
       s.bus.emit('toast', { kind: 'level', text: after >= MAX_MASTERY ? `${name} mastered!` : `${name}: mastery ${after}` });
     }
   }
+
+  rewards.generalUps = s.general.trainAfterBattle(b);
 
   for (const kill of b.tally.kills) {
     stats.kills++;
@@ -100,6 +106,8 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
       rewards.items.push(...loot.items);
     }
     rewards.gold += b.tally.goldFound;
+    const topLevel = Math.max(p.level, ...b.tally.kills.map((k) => k.level));
+    rewards.items.push(...s.general.fieldFinds(topLevel));
     const xpResult = s.grantXp(rewards.xp);
     rewards.levelsGained = xpResult.levels;
     const received = s.items.receiveLoot(rewards.items, rewards.gold);
@@ -141,7 +149,10 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   }
 
   if (b.outcome !== 'defeat' || !p.hardcore) {
+    // Tinkering: each item may be spared this battle's wear.
+    const tinker = utilityChance(p, 'tinkering');
     for (const [, item] of equippedItems(p)) {
+      if (tinker > 0 && s.rng.chance(tinker)) continue;
       if (wearItem(item, COMBAT.wearPerBattle)) rewards.brokenItems.push(itemName(item));
     }
     rewards.expiredBuffs = tickTimedBuffs(p);

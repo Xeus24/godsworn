@@ -3,6 +3,8 @@ import { ENEMY_GROWTH, TIER_SCALING } from '../../data/combat';
 import { characterBaseStats, characterModifiers } from '../character/stats';
 import type { Character } from '../character/types';
 import { equipmentFlags, equipmentTriggers, equippedWeaponTypes } from '../items/equipment';
+import { generalCombatSkills } from '../skills/general';
+import { classUltimate } from '../skills/specs';
 import { hotbar, knownSkills, treeFlags, treeTriggers } from '../skills/tree';
 import { baseOf, isBroken, uniqueOf } from '../items/lookup';
 import { calculateStats, type StatInput } from '../stats/calculate';
@@ -195,8 +197,13 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
     mastery: char.mastery[k.id] ?? 0,
     ...(k.patch ? { patch: k.patch } : {}),
   }));
+  // Slotted general skills (and Grimoires) add battle skills outside the hotbar.
+  for (const g of generalCombatSkills(char, c)) {
+    if (x.skills.some((s) => s.id === g.skillId)) continue;
+    x.skills.push({ id: g.skillId, rank: g.rank, general: g.generalId, ...(g.patch ? { patch: g.patch } : {}) });
+  }
   x.hotbar = hotbar(char).filter((h): h is string => h !== null);
-  x.ultimateSkill = cls?.ultimate;
+  x.ultimateSkill = cls ? classUltimate(char, cls.id, c) : undefined;
   x.basicAttack = heroBasicAttack(char, c);
   x.portrait = { raceId: char.raceId, variant: char.portrait, color: cls?.color ?? '#888888' };
   // Every class resource a character has (multiclass characters can have two).

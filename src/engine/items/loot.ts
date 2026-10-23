@@ -1,3 +1,4 @@
+import { BOOK_DROP_WEIGHT } from '../../data/general/books';
 import type { LootEntry } from '../../data/items/loot';
 import { createItem, generateGear, type GenerateContext } from './generate';
 import type { ItemBaseDef, ItemInstance } from './types';
@@ -37,12 +38,15 @@ function poolCandidates(pool: Extract<LootEntry, { kind: 'pool' }>['pool'], item
       return c.items.filter((b) => b.category === 'material' && b.tier <= Math.ceil(itemLevel / 12) && b.kind !== 'essence');
     case 'curiosity':
       return c.items.filter((b) => b.category === 'curiosity' && atLevel(b));
+    case 'book':
+      return c.items.filter((b) => b.category === 'book' && atLevel(b) && (BOOK_DROP_WEIGHT[b.rarity] ?? 0) > 0);
   }
 }
 
 /** Weight inside a pool: newer (higher-level) items are favored; high runes are rare. */
 function poolWeight(b: ItemBaseDef, itemLevel: number): number {
   if (b.category === 'rune') return 1 / Math.pow(b.rank, 1.3);
+  if (b.category === 'book') return BOOK_DROP_WEIGHT[b.rarity] ?? 0;
   if (b.category === 'gem') return b.level >= itemLevel - 20 ? 3 : 1;
   if (b.category === 'consumable' && b.kind === 'potion') return b.level >= itemLevel - 15 ? 4 : 1;
   return 1;

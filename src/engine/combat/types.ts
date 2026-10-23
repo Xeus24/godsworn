@@ -122,8 +122,9 @@ export interface Combatant {
   resourceId?: string;
   statuses: StatusInstance[];
   buffs: BuffInstance[];
-  skills: { id: string; rank: number; patch?: SkillPatch; mastery?: number }[];
-  /** Heroes may only use skills on their hotbar (plus the ultimate). */
+  /** `general` marks a skill granted by a slotted general skill (trains that skill instead of mastery). */
+  skills: { id: string; rank: number; patch?: SkillPatch; mastery?: number; general?: string }[];
+  /** Heroes may only use skills on their hotbar (plus the ultimate and general skills). */
   hotbar?: string[];
   /** Turns until a skill (or `ability:trinket` / `ability:relic`) is ready. */
   cooldowns: Record<string, number>;
@@ -208,4 +209,6 @@ export interface BattleTally {
   itemsUsed: Record<string, number>;
   /** Skill uses by heroes, for mastery. */
   skillUses: Record<string, number>;
+  /** Uses of skills granted by general skills, keyed by general skill id, for training. */
+  generalUses: Record<string, number>;
 }

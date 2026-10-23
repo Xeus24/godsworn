@@ -346,7 +346,7 @@ export class CombatScreen implements Screen {
         .filter((o) => o.skill.id !== 'basic-attack')
         .map((o) =>
           btn(
-            `${o.skill.ultimate ? '★ ' : ''}${o.skill.name}${o.check.ok ? '' : ` (${o.check.reason})`}`,
+            `${o.skill.ultimate ? '★ ' : x.skills.find((k) => k.id === o.skill.id)?.general ? '◇ ' : ''}${o.skill.name}${o.check.ok ? '' : ` (${o.check.reason})`}`,
             () => this.useSkillOption(x, o),
             !o.check.ok,
             () => el('div', {}, el('div', { class: 'tip-title' }, o.skill.name), el('div', {}, o.skill.description), el('div', { class: 'tip-desc' }, `${skillCostText(o.skill)}${o.skill.cooldown ? ` · ${o.skill.cooldown}-turn cooldown` : ''}`)),

@@ -37,7 +37,19 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
   if (item.junk) out.push(line('tip-junk', 'Marked as junk'));
 
   if (!item.identified) {
-    out.push(line('tip-bad', 'Unidentified. Use a Scroll of Identify to reveal its powers.'));
+    out.push(line('tip-bad', 'Unidentified. Use a Scroll of Identify (or Appraise) to reveal its powers.'));
+  }
+
+  // Skillbooks: what they teach and how far along you are.
+  if (base.category === 'book') {
+    const skill = content.generalSkills.find(base.teaches);
+    if (skill) {
+      const rank = session?.player.generalSkills[skill.id]?.rank ?? 0;
+      out.push(line('tip-base', `Teaches ${skill.name} (${skill.category})`));
+      out.push(line('tip-desc', skill.description));
+      if (session) out.push(line(rank >= skill.maxRank ? 'tip-bad' : 'tip-good', rank > 0 ? `You know it: rank ${rank}/${skill.maxRank}` : 'Not yet learned.'));
+      if (skill.requirements?.level) out.push(line('tip-desc', `Requires level ${skill.requirements.level}`));
+    }
   }
 
   // Base numbers.
