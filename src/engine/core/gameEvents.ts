@@ -27,6 +27,8 @@ export interface GameEvents {
   enemyKilled: { enemyId: string; tier: string };
   zoneEntered: { zoneId: string };
   timeChanged: { day: number; hour: number };
+  /** Generic "something changed, redraw" signal for UI (debug cheats, respecs...). */
+  stateChanged: { reason: string };
   toast: { kind: 'info' | 'loot' | 'level' | 'favor' | 'blessing' | 'quest' | 'warning'; text: string };
 }
 

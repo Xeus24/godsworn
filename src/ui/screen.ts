@@ -1,3 +1,5 @@
+import { hideTooltip } from './components/tooltip';
+
 /** A full-window view (title, overworld, combat...). Only one is mounted at a time. */
 export interface Screen {
   mount(root: HTMLElement): void;
@@ -11,6 +13,7 @@ export class ScreenManager {
 
   show(screen: Screen): void {
     this.current?.unmount();
+    hideTooltip();
     this.root.replaceChildren();
     this.current = screen;
     screen.mount(this.root);

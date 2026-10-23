@@ -99,6 +99,9 @@ describe('dispatchProcs', () => {
       reduceCooldowns: (s) => log.push(`cdr ${s.turns}`),
       castSkill: (s) => log.push(`cast ${s.skillId}`),
       gold: (s) => log.push(`gold ${s.amount}`),
+      setStance: (s) => log.push(`stance ${s.stance}`),
+      startSong: (s) => log.push(`song ${s.song}`),
+      summon: (s) => log.push(`summon ${s.summonId}`),
     };
     const t = new TriggerSystem(new Rng(8));
     t.register(

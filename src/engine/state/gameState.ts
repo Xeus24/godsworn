@@ -1,11 +1,18 @@
+import { PROGRESSION } from '../../data/progression';
+import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
+import { spendParagonPoint } from '../character/paragon';
+import { grantXp, type XpResult } from '../character/progression';
+import { characterStats } from '../character/stats';
+import type { Character } from '../character/types';
 import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
-import { advanceClock, createClock, hourOf, type GameClock } from './clock';
+import type { PrimaryStat } from '../stats/types';
+import { advanceClock, createClock, hourOf, timeOfDay, type GameClock } from './clock';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -21,21 +28,28 @@ export interface GameState {
   rngState: number;
   clock: GameClock;
   flags: Record<string, boolean | number | string>;
+  player: Character;
+  gold: number;
+  levelCap: number;
 }
 
-export function createGameState(seed: number, now = Date.now()): GameState {
+export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
   return {
     meta: { game: GAME_NAME, version: SAVE_VERSION, createdAt: now, playTimeMs: 0 },
     seed: seed >>> 0,
     rngState: seed >>> 0,
     clock: createClock(),
     flags: {},
+    player,
+    gold: PROGRESSION.startingGold,
+    levelCap: PROGRESSION.levelCap,
   };
 }
 
 /**
  * Runtime wrapper around the saved state: the live RNG, the event bus and
- * the trigger registry. One per running game.
+ * the trigger registry. One per running game. Methods here mutate state
+ * through the engine modules and announce the results as events.
  */
 export class GameSession {
   readonly bus: GameEventBus;
@@ -48,10 +62,14 @@ export class GameSession {
     this.triggers = new TriggerSystem(this.rng);
   }
 
-  static newGame(seed: number): GameSession {
-    const session = new GameSession(createGameState(seed));
+  static newGame(seed: number, player: Character): GameSession {
+    const session = new GameSession(createGameState(seed, player));
     session.bus.emit('gameStarted', { seed: session.state.seed });
     return session;
+  }
+
+  get player(): Character {
+    return this.state.player;
   }
 
   /** Copies live runtime values into the state before saving. */
@@ -67,7 +85,68 @@ export class GameSession {
     if (hourChanged) this.bus.emit('timeChanged', { day: clock.day, hour: hourOf(clock) });
   }
 
+  get timeOfDay(): 'day' | 'night' {
+    return timeOfDay(this.state.clock);
+  }
+
   setFlag(key: string, value: boolean | number | string): void {
     this.state.flags[key] = value;
+  }
+
+  /** Grants XP, applying the XP Gain stat unless `raw` is set. */
+  grantXp(amount: number, raw = false): XpResult {
+    const p = this.player;
+    const bonus = raw ? 0 : characterStats(p).xpGain;
+    const total = Math.floor(amount * (1 + bonus / 100));
+    const result = grantXp(p, total, this.state.levelCap);
+    this.bus.emit('xpGained', { characterId: p.id, amount: total });
+    for (const level of result.levels) this.bus.emit('levelUp', { characterId: p.id, level });
+    if (result.levels.length > 0) {
+      // One toast per grant, however many levels it covered.
+      this.bus.emit('toast', { kind: 'level', text: `Level ${p.level}! +${result.attributePoints} attribute points.` });
+    }
+    for (const cl of result.classLevels) {
+      this.bus.emit('levelUp', { characterId: p.id, classId: cl.classId, level: cl.level });
+    }
+    if (result.paragonLevels.length > 0) {
+      const n = result.paragonLevels.length;
+      this.bus.emit('toast', { kind: 'level', text: `Paragon level ${p.paragonLevel}! +${n} paragon point${n > 1 ? 's' : ''}.` });
+    }
+    if (result.racialSkillPoints > 0) {
+      const n = result.racialSkillPoints;
+      this.bus.emit('toast', { kind: 'level', text: `Adaptable: +${n} bonus skill point${n > 1 ? 's' : ''}.` });
+    }
+    return result;
+  }
+
+  addGold(amount: number, reason: string): void {
+    const delta = Math.floor(amount);
+    if (delta === 0) return;
+    this.state.gold = Math.max(0, this.state.gold + delta);
+    this.bus.emit('goldChanged', { amount: delta, total: this.state.gold, reason });
+  }
+
+  /** Returns false (and changes nothing) if the player cannot afford it. */
+  spendGold(amount: number, reason: string): boolean {
+    const cost = Math.ceil(amount);
+    if (cost < 0 || this.state.gold < cost) return false;
+    this.addGold(-cost, reason);
+    return true;
+  }
+
+  allocate(stat: PrimaryStat, points = 1): AttributeResult {
+    return allocateAttribute(this.player, stat, points);
+  }
+
+  respec(): AttributeResult {
+    const cost = respecCost(this.player);
+    if (this.state.gold < cost) return { ok: false, reason: `Respec costs ${cost} gold.` };
+    const result = respecAttributes(this.player);
+    if (result.ok) this.spendGold(cost, 'respec');
+    return result;
+  }
+
+  spendParagon(nodeId: string): AttributeResult {
+    return spendParagonPoint(this.player, nodeId);
   }
 }

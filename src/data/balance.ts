@@ -64,6 +64,14 @@ export interface StatCap {
 
 /** Caps are applied after modifiers, unless an override modifier is present. */
 export const STAT_CAPS: Partial<Record<StatId, StatCap>> = {
+  // Penalties (e.g. racial maluses) can never push a primary below zero.
+  str: { min: 0 },
+  dex: { min: 0 },
+  int: { min: 0 },
+  vit: { min: 0 },
+  wis: { min: 0 },
+  luk: { min: 0 },
+  fai: { min: 0 },
   critChance: { min: 0, max: 60 },
   dodge: { min: 0, max: 35 },
   cooldownReduction: { min: 0, max: 40 },

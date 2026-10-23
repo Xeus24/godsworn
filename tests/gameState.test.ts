@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { advanceClock, formatClock, timeOfDay } from '../src/engine/state/clock';
 import { GAME_NAME, GameSession, SAVE_VERSION } from '../src/engine/state/gameState';
+import { makeHero } from './helpers';
 
 describe('clock', () => {
   it('rolls over days', () => {
@@ -23,14 +24,14 @@ describe('clock', () => {
 
 describe('GameSession', () => {
   it('creates state with Godsworn metadata', () => {
-    const s = GameSession.newGame(777);
+    const s = GameSession.newGame(777, makeHero());
     expect(s.state.meta.game).toBe(GAME_NAME);
     expect(s.state.meta.version).toBe(SAVE_VERSION);
     expect(s.state.seed).toBe(777);
   });
 
   it('snapshot captures the live RNG so a restored session continues identically', () => {
-    const a = GameSession.newGame(31337);
+    const a = GameSession.newGame(31337, makeHero());
     a.rng.next();
     const snap = a.snapshot();
     const expected = [a.rng.next(), a.rng.next()];
@@ -39,7 +40,7 @@ describe('GameSession', () => {
   });
 
   it('emits timeChanged when the hour changes', () => {
-    const s = GameSession.newGame(1);
+    const s = GameSession.newGame(1, makeHero());
     const hours: number[] = [];
     s.bus.on('timeChanged', (e) => hours.push(e.hour));
     s.advanceTime(30);

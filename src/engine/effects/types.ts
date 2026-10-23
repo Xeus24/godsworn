@@ -53,7 +53,13 @@ export type EffectSpec =
   | { kind: 'favor'; god: string; amount: number }
   | { kind: 'reduceCooldowns'; turns: number }
   | { kind: 'castSkill'; skillId: string; target?: EffectTarget }
-  | { kind: 'gold'; amount: number };
+  | { kind: 'gold'; amount: number }
+  /** Monk stances (and any other stance-based kit). */
+  | { kind: 'setStance'; stance: string }
+  /** Bard songs: a persistent party aura until replaced. */
+  | { kind: 'startSong'; song: string }
+  /** Summons an ally; `consumeCorpse` requires and uses up a fallen enemy. */
+  | { kind: 'summon'; summonId: string; consumeCorpse?: boolean };
 
 export type EffectKind = EffectSpec['kind'];
 
