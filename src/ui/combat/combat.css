@@ -146,6 +146,20 @@
   padding: 6px 8px;
 }
 
+.cmd-hotbar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.cmd-hotbar button {
+  font-size: 11px;
+  padding: 5px 6px;
+  text-align: left;
+  border-color: #6a4a9a;
+}
+
 .cmd-icon {
   width: 20px;
   height: 20px;

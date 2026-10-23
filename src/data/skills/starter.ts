@@ -226,7 +226,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     tags: ['Song', 'Buff', 'AoE'],
     element: 'arcane',
     targeting: 'allAllies',
-    maxRank: 5,
+    maxRank: 1,
     cost: { mp: 8 },
     cooldown: 0,
     effects: [{ kind: 'startSong', song: 'valor' }],

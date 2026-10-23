@@ -26,6 +26,7 @@ export const MECHANICS: MechanicDef[] = [
   { id: 'extraSummon', text: 'Summoning skills raise one extra minion.' },
   { id: 'executioner', text: 'Attacks against enemies below 20% HP always crit.' },
   { id: 'spellEcho', text: '20% chance for spells to cast a second time for free.' },
+  { id: 'bloodMagic', text: 'Skills cost HP instead of MP.' },
 ];
 
 export const IMMUNITY_PREFIX = 'immune:';

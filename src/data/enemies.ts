@@ -154,6 +154,12 @@ export const SUMMONS: SummonDef[] = [
     ai: 'aggressive', duration: 6, palette: { main: '#e8e0c8', accent: '#7a3ab0' },
   },
   {
+    id: 'skeleton-mage', name: 'Skeleton Mage', family: 'undead', types: ['undead', 'summon'],
+    stats: { hp: 30, attack: 2, magic: 8, defense: 3, magicResist: 6, speed: 10 },
+    ownerPowerShare: 0.55, skills: [{ id: 'shadow-bolt' }], basicAttack: { element: 'shadow', ranged: true, magic: true, name: 'Bone Bolt' },
+    ai: 'caster', duration: 6, palette: { main: '#d8d0e8', accent: '#7a3ab0' },
+  },
+  {
     id: 'wolf-companion', name: 'Wolf Companion', family: 'beast', types: ['beast', 'pet'],
     stats: { hp: 45, attack: 6, magic: 0, defense: 4, magicResist: 3, speed: 13, dodge: 8 },
     ownerPowerShare: 0.45, skills: [{ id: 'savage-bite' }], basicAttack: { element: 'physical', ranged: false, name: 'Bite' },

@@ -1,4 +1,5 @@
 import type { EquipSlot, ItemInstance } from '../items/types';
+import type { ClassTreeState } from '../skills/treeTypes';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
 
@@ -18,7 +19,7 @@ export interface ClassProgress {
   slot: ClassSlot;
   level: number;
   xp: number;
-  /** Unspent skill points, usable only in this class's tree. */
+  /** Skill points earned by this class (levels, bonuses, tomes). Spent points live in the tree builds. */
   skillPoints: number;
 }
 
@@ -55,8 +56,12 @@ export interface Character {
   equipment: Partial<Record<EquipSlot, ItemInstance>>;
   timedBuffs: TimedBuff[];
 
-  /** Known active skills: skill id -> rank. */
+  /** Skills known outside the trees (starting, racial, skillbooks): skill id -> rank. */
   skills: Record<string, number>;
+  /** Skill tree builds per class. */
+  trees: Record<string, ClassTreeState>;
+  /** Mastery XP per skill id (uses in battle). */
+  mastery: Record<string, number>;
 
   /** Current HP and MP. Max values come from calculateStats. */
   hp: number;

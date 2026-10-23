@@ -1,5 +1,6 @@
 import { content, type Content } from '../../data';
 import { emptyPrimaryStats } from '../stats/types';
+import { addToHotbar, treeState } from '../skills/tree';
 import { restoreFull } from './stats';
 import type { Character } from './types';
 
@@ -52,9 +53,13 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     equipment: {},
     timedBuffs: [],
     skills: Object.fromEntries(startingSkillIds(opts.raceId, opts.classId, c).map((id) => [id, 1])),
+    trees: {},
+    mastery: {},
     hp: 0,
     mp: 0,
   };
+  treeState(char, opts.classId);
+  for (const id of Object.keys(char.skills)) addToHotbar(char, id, c);
   restoreFull(char, c);
   return char;
 }

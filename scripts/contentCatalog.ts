@@ -116,7 +116,36 @@ function combatSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection };
+function treesSection(): string {
+  const out: string[] = [];
+  const total = content.trees.all().reduce((n, t) => n + t.nodes.length, 0);
+  out.push(`${content.trees.size} class trees, ${total} nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.`, '');
+  for (const tree of content.trees.all()) {
+    out.push(`### ${content.classes.get(tree.classId).name} (${tree.nodes.length} nodes)`, '', '| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |', '|---|---|---|---|---|---|');
+    for (const b of tree.branches) {
+      const nodes = tree.nodes.filter((n) => n.branch === b.id);
+      const skills = nodes
+        .filter((n) => n.kind === 'active')
+        .map((n) => `**${n.name}** (${nodes.filter((m) => m.variant?.skill === n.skill).map((m) => m.name).join(', ')})`)
+        .join('; ');
+      const names = (kind: string): string => nodes.filter((n) => n.kind === kind).map((n) => n.name).join(', ');
+      const keystone = nodes.find((n) => n.kind === 'keystone');
+      out.push(`| ${b.name} | ${cell(skills)} | ${cell(names('notable'))} | ${cell(names('choice').replace(', ', ' / '))} | ${cell(`${keystone?.name ?? ''}: ${keystone?.text ?? ''}`)} | ${cell(names('capstone'))} |`);
+    }
+    out.push('');
+  }
+  out.push('### Tree skills', '', '| Skill | Class | Cost | CD | Description |', '|---|---|---|---|---|');
+  for (const tree of content.trees.all()) {
+    for (const n of tree.nodes.filter((x) => x.kind === 'active' && !x.starting)) {
+      const sk = content.skills.get(n.skill as string);
+      const cost = [sk.cost.mp ? `${sk.cost.mp} MP` : '', sk.cost.resource ? `${sk.cost.resource.amount} ${content.resources.get(sk.cost.resource.id).name}` : ''].filter(Boolean).join(' + ') || 'free';
+      out.push(`| **${sk.name}** | ${content.classes.get(tree.classId).name} | ${cost} | ${sk.cooldown} | ${cell(sk.description)} |`);
+    }
+  }
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

@@ -1,4 +1,5 @@
 import type { EffectSpec, TriggeredEffect } from '../effects/types';
+import type { SkillPatch } from '../skills/treeTypes';
 import type { StatInput } from '../stats/calculate';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { Element } from '../stats/types';
@@ -121,7 +122,9 @@ export interface Combatant {
   resourceId?: string;
   statuses: StatusInstance[];
   buffs: BuffInstance[];
-  skills: { id: string; rank: number }[];
+  skills: { id: string; rank: number; patch?: SkillPatch; mastery?: number }[];
+  /** Heroes may only use skills on their hotbar (plus the ultimate). */
+  hotbar?: string[];
   /** Turns until a skill (or `ability:trinket` / `ability:relic`) is ready. */
   cooldowns: Record<string, number>;
   ultimate: number;
@@ -203,4 +206,6 @@ export interface BattleTally {
   favor: { god: string; amount: number }[];
   /** Consumables used, by item id. */
   itemsUsed: Record<string, number>;
+  /** Skill uses by heroes, for mastery. */
+  skillUses: Record<string, number>;
 }

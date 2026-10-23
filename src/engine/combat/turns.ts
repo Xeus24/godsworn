@@ -166,6 +166,7 @@ export function perform(b: Battle, action: Action): { ok: true; events: BattleEv
       const known = x.skills.find((s) => s.id === action.skillId);
       const isUlt = x.ultimateSkill === action.skillId;
       if (!known && !isUlt) return { ok: false, reason: 'Unknown skill.' };
+      if (!isUlt && x.hotbar && !x.hotbar.includes(action.skillId)) return { ok: false, reason: 'That skill is not on your hotbar.' };
       if (!useSkill(b, x, action.skillId, known?.rank ?? 1, action.targetId)) return { ok: false, reason: 'Cannot use that now.' };
       return done();
     }

@@ -42,7 +42,7 @@ Every class starts with 34 primary points and gains 5.0 per level.
 ## Class resources (7)
 Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), Soul Shards (5, starts 1), Chi (5, starts 1), Verse (100).
 
-## Skills (22 + 8 ultimates + 25 enemy skills)
+## Skills (22 starting + 50 skill-tree + 8 ultimates + 25 enemy skills)
 
 **Class starters (16):**
 
@@ -377,7 +377,7 @@ Generated from the data files by `npm run content:md`.
 
 **Curiosities (12):** Loaded Dice, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap
 
-**Mechanic flags (16):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `immune:<status>`
+**Mechanic flags (17):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `immune:<status>`
 <!-- items:end -->
 
 ## Combat
@@ -450,7 +450,7 @@ Generated from the data files by `npm run content:md`.
 | **Wyld Boar** | 14 | normal | beast | front | aggressive | Gore Charge |  |
 | **Alpha of the Whisperwood** | 15 | elite | beast | front | aggressive | Savage Bite, Pack Howl, War Cry |  |
 
-**Summons (4):** Skeleton Warrior, Wolf Companion, Spirit Stag, Bone Servant
+**Summons (5):** Skeleton Warrior, Skeleton Mage, Wolf Companion, Spirit Stag, Bone Servant
 
 ### Encounters (14)
 
@@ -472,5 +472,140 @@ Generated from the data files by `npm run content:md`.
 | **Hunt of the Alpha** | 15 | Alpha of the Whisperwood, Dire Wolf, Dire Wolf |
 <!-- combat:end -->
 
+## Skill trees
+
+Generated from the data files by `npm run content:md`.
+
+<!-- trees:start -->
+8 class trees, 512 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+
+### Warrior (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Arms | **Heavy Strike** (Sundering Blow, Cleaving Strike); **Mortal Strike** (Deep Wounds, Overpower) | Blood in the Water, Bleeding Edge | Two-Handed Mastery / Sword and Board | Reckless Abandon: Keystone: +30% damage, but take 20% more damage. | Colossus Smash |
+| Fury | **Rampage** (Unrelenting, Bloodthirst); **Enrage** (Frenzy, Blood Rage) | Battle Trance, Raging Blows | Seething / Controlled Fury | Blood Frenzy: Keystone: +8% lifesteal, but healing you receive is halved. | Avatar of War |
+| Protection | **Shield Wall** (Bulwark, Last Bastion); **Shield Slam** (Concussive Slam, Ricochet) | Iron Skin, Second Wind | Stalwart / Thorns | Unbreakable: Keystone: take 20% less damage, but deal 20% less. | Immortal |
+| Warcraft | **Battle Shout** (Commanding Shout, Intimidating Shout); **Whirlwind** (Bladestorm, Sweeping Strikes) | Opportunist, Momentum | Veteran / Brute | Glory Hound: Keystone: +15% damage and +25% XP, but -15% defense. | Unstoppable Force |
+
+### Mage (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Pyromancy | **Firebolt** (Splitting Fire, Searing Bolt); **Flame Wave** (Inferno, Ash Cloud) | Kindling, Burning Soul | Wildfire / Combustion | Pyromaniac: Keystone: +40% fire damage, but -30% ice and lightning damage. | Phoenix Heart |
+| Cryomancy | **Frost Shard** (Ice Lance, Glacial Spike); **Frost Nova** (Deep Freeze, Blizzard) | Frostbite, Winter’s Embrace | Ice Armor / Cold Snap | Absolute Zero: Keystone: +30% ice damage and +15% status chance, but 15% less speed. | Heart of Winter |
+| Stormcalling | **Lightning Bolt** (Overcharge, Static); **Chain Lightning** (Forked Lightning, Thunderstorm) | Conductor, Eye of the Storm | Stormcaller’s Fury / Rain Dance | Glass Cannon: Keystone: +35% damage, but -25% max HP. | Tempest |
+| Arcana | **Arcane Missiles** (Barrage, Seeking Missiles); **Mana Shield** (Reflective Shield, Arcane Ward) | Arcane Intellect, Clarity | Evocation / Spell Echo | Blood Magic: Keystone: skills cost HP instead of MP. +15% magic attack. | Archmage |
+
+### Rogue (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Assassination | **Backstab** (Mutilate, Hemorrhage); **Garrote** (Strangle, Crimson Tempest) | Cold Blood, Relentless | Vital Strikes / Opportunity | Death’s Dance: Keystone: +15% crit chance, but -20% max HP. | Master Assassin |
+| Shadow | **Vanish** (Shadowstep, Smoke Bomb); **Eviscerate** (Kidney Shot, Envenom) | Shadow Dance, Ruthlessness | Night Stalker / Daylight Blade | Living Shadow: Keystone: +12% dodge, but -15% max HP. | Umbral Lord |
+| Trickery | **Fan of Knives** (Razor Fan, Twin Fans); **Cheap Shot** (Blinding Powder, Dirty Tricks) | Pickpocket, Misdirection | Fleet-Footed / Tough as Nails | Gambler’s Edge: Keystone: +20% crit chance, but -15 accuracy. | Trickster’s Gambit |
+| Poisons | **Poison Blade** (Deadly Poison, Crippling Poison); **Toxic Cloud** (Miasma, Lingering Toxins) | Virulence, Festering | Toxicologist / Antidote | Plague Lord: Keystone: +25% status chance, but -20% physical damage. | Venom Master |
+
+### Cleric (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Holy | **Mend** (Renew, Greater Heal); **Prayer of Healing** (Sanctuary, Cleansing Light) | Devoted Healer, Light’s Embrace | Guardian Angel / Blessed Hands | Martyr: Keystone: +40% healing power, but -15% max HP. | Divine Hymn |
+| Smiting | **Smite** (Judgement, Radiance); **Holy Fire** (Purifying Flames, Consecration) | Undead Bane, Searing Light | Zeal / Wrath | Crusader: Keystone: +25% divine power, but -30% healing power. | Wrath of the Heavens |
+| Discipline | **Power Word: Shield** (Aegis, Barrier); **Penance** (Atonement, Contrition) | Inner Focus, Divine Aegis | Rapture / Borrowed Time | Penitent: Keystone: take 15% less damage, but deal 15% less. | Power Infusion |
+| Benediction | **Blessing of Might** (Blessing of Kings, Blessing of Haste); **Holy Nova** (Radiant Nova, Healing Nova) | Faithful, Grace | Pilgrim / Templar | Zealotry: Keystone: +25% damage, but -20% status resist. | Avatar of Light |
+
+### Ranger (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Marksmanship | **Aimed Shot** (Quick Shot, Trick Shot); **Snipe** (Headshot, Armor Piercing) | Deadeye, Lethal Shots | Steady Aim / Hair Trigger | Sniper’s Nest: Keystone: +25% Ranged damage, but -15% dodge. | Hawkeye |
+| Beast Mastery | **Sic 'Em** (Go for the Throat, Feral Frenzy); **Call of the Wild** (Pack Leader, Primal Bond) | Beast Within, Kill Command | Alpha / Lone Wolf | Spirit Bond: Keystone: take 15% less damage, but deal 10% less. | Lord of Beasts |
+| Survival | **Serpent Sting** (Viper Sting, Scorpid Sting); **Explosive Shot** (Cluster Bomb, Napalm) | Survivalist, Toxic Expertise | Camouflage / Trap Master | Hunter’s Instinct: Keystone: +10% dodge, but -20% defense. | Apex Predator |
+| Wilds | **Arrow Barrage** (Hail of Arrows, Focused Barrage); **Nature’s Grace** (Wild Growth, Thornskin) | Windwalker, Wind Shear | Hunter’s Mark / Nature’s Ally | Untamed: Keystone: +10 speed, but -15% max HP. | Storm of Arrows |
+
+### Necromancer (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Bone | **Raise Skeleton** (Skeletal Mage, Bone Army); **Bone Spear** (Bone Prison, Splintering) | Bone Armor, Corpse Explosion | Grave Lord / Bonecaller | Lich Form: Keystone: +20% magic attack and +30% shadow resist, but -40% holy resist. | King of Bones |
+| Blight | **Plague** (Contagion, Pestilence); **Decay** (Rot, Blight Wave) | Virulent Plague, Epidemic | Withering / Necrosis | Plaguebearer: Keystone: +25% status chance, but -30% nature resist. | Pestilent Lord |
+| Souls | **Soul Bolt** (Soul Rend, Twin Souls); **Soul Harvest** (Reaping, Soul Feast) | Soul Siphon, Dark Harvest | Soulstorm / Hoarder | Blood Pact: Keystone: skills cost HP instead of MP. +20% shadow damage. | Lord of Souls |
+| Death | **Death Coil** (Dark Mending, Unholy Coil); **Curse of Agony** (Curse of Weakness, Mass Curse) | Death’s Embrace, Fear Itself | Night Terror / Morbid | Undying: Keystone: +15 HP per turn, but healing you receive is halved. | Avatar of Death |
+
+### Monk (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Way of the Tiger | **Palm Strike** (Iron Palm, Swift Palm); **Tiger Claw** (Rending Claw, Pouncing Claw) | Tiger’s Fury, Bloodlust Strikes | Ferocity / Precision Strikes | Way of the Tiger: Keystone: +25% damage, but -25% defense. | Tiger King |
+| Way of the Crane | **Crane Stance** (Serene Crane, Crane Wings); **Crane Kick** (Sweeping Kick, Healing Kick) | Crane’s Grace, Counterstrike | Iron Body / Flowing Water | Stillness: Keystone: take 20% less damage, but 15% less speed. | Thousand Cranes |
+| Way of the Serpent | **Serpent Stance** (Coiled, Venomous Stance); **Viper Strike** (Neurotoxin, Twin Fangs) | Serpent’s Patience, Constrict | Venom Mastery / Slippery | Cold-Blooded: Keystone: +25% status chance, but -10% max HP. | Serpent God |
+| Way of the Spirit | **Chi Burst** (Spirit Wave, Chi Explosion); **Meditation** (Transcendence, Focus Mind) | Spirit Flow, Ki Mastery | Enlightenment / Harmony | Ascetic: Keystone: +20% max HP, but -10% damage. | Way of the Open Hand |
+
+### Bard (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Valor | **Battle Hymn** (War Song, Anthem of Blades); **Heroic Ballad** (Epic Tale, Legend) | Inspiring Presence, Crescendo Master | Encore / Virtuoso | Showstopper: Keystone: +30% damage, but -20% max MP. | Legendary Performer |
+| Ward | **Ballad of Warding** (Resonant Ward, Stalwart Chorus); **Soothing Melody** (Lullaby of Rest, Cleansing Chord) | Warding Chords, Second Verse | Hearthsong / Bulwark Rhythm | Pacifist’s Song: Keystone: +40% healing power, but -25% damage. | Song of Sanctuary |
+| Discord | **Discordant Note** (Shattering Note, Dissonance); **Cacophony** (Deafening, Mind Shatter) | Jarring Rhythm, Feedback | Hex Song / Nerve Pinch | Atonal: Keystone: +30% status chance, but -15 accuracy. | Maestro of Madness |
+| Showmanship | **Jig of Swiftness** (Quickstep, Hearthside Lullaby); **Dazzling Display** (Grand Display, Blinding Light) | Crowd Pleaser, Standing Ovation | Lucky Break / Showboat | Fortune’s Fool: Keystone: +25 LUK, but -20% defense. | Star of the Show |
+
+### Tree skills
+
+| Skill | Class | Cost | CD | Description |
+|---|---|---|---|---|
+| **Mortal Strike** | Warrior | 25 Rage | 2 | A crippling blow for 200% ATK. The target receives 50% less healing. |
+| **Enrage** | Warrior | free | 5 | Go Berserk for 3 turns and gain 30 Rage. |
+| **Shield Wall** | Warrior | 15 Rage | 4 | Brace: take 40% less damage for 2 turns. |
+| **Shield Slam** | Warrior | free | 3 | Slam for 130% ATK with a 40% chance to Stun. Heavy stagger. |
+| **Battle Shout** | Warrior | free | 5 | The party deals +20% damage for 3 turns. Gain 15 Rage. |
+| **Whirlwind** | Warrior | 35 Rage | 2 | Spin through every enemy for 110% ATK. |
+| **Flame Wave** | Mage | 14 MP | 2 | A wall of fire washes over every enemy for 110% MAG, possibly Burning them. |
+| **Frost Nova** | Mage | 16 MP | 3 | Ice erupts around every enemy for 80% MAG: Slowed, maybe Frozen. |
+| **Lightning Bolt** | Mage | 8 MP | 0 | A crack of lightning for 165% MAG. |
+| **Chain Lightning** | Mage | 14 MP | 2 | Lightning leaps between enemies: 4 strikes of 65% MAG at random targets. |
+| **Arcane Missiles** | Mage | 9 MP | 0 | Three seeking missiles, 60% MAG each, at random enemies. |
+| **Mana Shield** | Mage | 15 MP | 4 | Wrap yourself in a shield worth 150% MAG. |
+| **Garrote** | Rogue | free | 2 | Choke the target for 90% ATK and 3 stacks of Bleed. Builds a Combo Point. |
+| **Vanish** | Rogue | free | 5 | Disappear into the shadows: Stealth for 2 turns and +20% dodge. |
+| **Fan of Knives** | Rogue | free | 1 | Knives fly at every enemy for 75% ATK. Builds a Combo Point. |
+| **Cheap Shot** | Rogue | free | 3 | A low blow for 70% ATK with a 70% chance to Stun. Builds a Combo Point. |
+| **Poison Blade** | Rogue | free | 0 | A venom-coated cut for 100% ATK as nature damage and 2 stacks of Poison. Builds a Combo Point. |
+| **Toxic Cloud** | Rogue | 2 Combo Points | 3 | A cloud of poison: every enemy takes 50% ATK nature damage and 2 stacks of Poison. |
+| **Prayer of Healing** | Cleric | 18 MP | 3 | Heal every ally for 90% DIV. Grants Faith. |
+| **Holy Fire** | Cleric | 10 MP | 1 | Sacred flame for 130% DIV that Burns. |
+| **Power Word: Shield** | Cleric | 10 MP | 2 | Shield an ally for 160% DIV. |
+| **Penance** | Cleric | 12 MP | 2 | Three bolts of judgement, 55% DIV each. |
+| **Blessing of Might** | Cleric | 8 MP | 4 | Bless an ally: +20% damage for 3 turns. |
+| **Holy Nova** | Cleric | 30 Faith | 2 | A burst of light: 80% DIV to every enemy and every ally heals 10% of max HP. |
+| **Snipe** | Ranger | 6 MP | 3 | A long, careful shot for 230% ATK. Heavy stagger. Builds Focus. |
+| **Call of the Wild** | Ranger | 15 MP | 6 | Call a spirit stag to fight beside you. |
+| **Serpent Sting** | Ranger | 4 MP | 1 | A venomed arrow for 90% ATK nature damage and 2 stacks of Poison. Builds Focus. |
+| **Explosive Shot** | Ranger | 12 MP | 3 | An exploding arrow: 90% ATK fire damage to every enemy. |
+| **Arrow Barrage** | Ranger | 10 MP | 2 | Four arrows at random enemies, 55% ATK each. |
+| **Nature’s Grace** | Ranger | 12 MP | 4 | Heal 25% of max HP and gain Regen. |
+| **Bone Spear** | Necromancer | 8 MP | 1 | A spear of bone pierces the whole front row for 120% MAG. |
+| **Plague** | Necromancer | 10 MP | 2 | Infect the target: 60% MAG nature damage, 3 stacks of Poison and a Curse. |
+| **Decay** | Necromancer | 16 MP | 3 | Rot spreads to every enemy: 75% MAG nature damage and Poison. |
+| **Soul Harvest** | Necromancer | 6 MP + 1 Soul Shards | 1 | Finisher. Spends every Soul Shard: 80% MAG shadow damage plus 50% per shard. |
+| **Death Coil** | Necromancer | 10 MP | 1 | A coil of death for 130% MAG that heals you for 6% of max HP. |
+| **Curse of Agony** | Necromancer | 8 MP | 3 | Curse and Weaken the target, with a chance to Fear it. |
+| **Tiger Claw** | Monk | 2 Chi | 1 | Spend 2 Chi: a raking strike for 210% ATK that causes Bleed. |
+| **Crane Stance** | Monk | free | 0 | Shift into Crane stance: defensive, and basic attacks heal you. |
+| **Crane Kick** | Monk | 1 Chi | 1 | Spend 1 Chi: a graceful kick for 140% ATK that heals you for 8% of max HP. |
+| **Serpent Stance** | Monk | free | 0 | Shift into Serpent stance: evasive, and basic attacks Poison. |
+| **Viper Strike** | Monk | 1 Chi | 1 | Spend 1 Chi: a lightning-fast jab for 120% ATK nature damage and 2 stacks of Poison. |
+| **Chi Burst** | Monk | 2 Chi | 2 | Spend 2 Chi: a wave of spirit force hits every enemy for 85% ATK as arcane damage. |
+| **Meditation** | Monk | free | 4 | Center yourself: heal 15% of max HP, restore 20 MP and gain 2 Chi. |
+| **Battle Hymn** | Bard | 8 MP | 2 | A stirring verse: 130% MAG arcane damage and +10% party damage for 2 turns. Builds Verse. |
+| **Heroic Ballad** | Bard | 12 MP | 4 | The party deals +25% damage for 2 turns. |
+| **Ballad of Warding** | Bard | 8 MP | 0 | Begin the Ballad of Warding: allies gain defense and magic resist. |
+| **Soothing Melody** | Bard | 14 MP | 2 | Heal every ally for 75% MAG. |
+| **Cacophony** | Bard | 16 MP | 3 | A wall of noise: 85% MAG to every enemy, Weaken, and a chance to Silence. |
+| **Jig of Swiftness** | Bard | 8 MP | 0 | Begin the Jig of Swiftness: allies gain 10% speed. |
+| **Dazzling Display** | Bard | 12 MP | 2 | A blinding show: three bursts of 75% MAG at random enemies, each may Blind. |
+<!-- trees:end -->
+
 ## Not yet added
-Zones, quests, skill trees, blessings, bosses, the remaining enemies (60+ across 8 zones), Divine and Primordial items (Phases 5+).
+Zones, quests, specializations, general skills, blessings, bosses, the remaining enemies (60+ across 8 zones), Divine and Primordial items (Phases 5+).

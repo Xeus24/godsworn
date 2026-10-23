@@ -38,6 +38,7 @@ Then open http://localhost:5173.
 |---|---|
 | C | Character sheet |
 | I | Inventory, equipment and stash |
+| K | Skill trees, builds and hotbar |
 | G | Proving Grounds (battles and resting) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
@@ -53,8 +54,17 @@ In battle:
 - **Rows:** melee attacks can only reach the enemy front row while it stands. Your back row takes 25% less physical damage.
 - **Breaking enemies:** fill an enemy's yellow stagger bar to **Break** it (stunned, and takes 50% more damage). Consecutive party hits on one target build a **chain** bonus.
 - **Ultimate:** the gauge fills as you fight. At 100% your class ultimate unlocks in the Skills menu.
+- **Hotbar:** your 8 equipped skills sit in the hotbar row. Press 1–8 to use them, A to attack, D to defend, F to flee, I for items.
 - **Auto** lets the AI fight for you. **1× / 2× / 4×** set the battle speed.
 - Defeat costs 10% of your gold and some durability. In **Hardcore** it is permanent.
+
+**Skill trees (K):** every level gives skill points for your class. Spend them in four branches:
+- **Learning:** double-click (or shift-click) a node to learn it, right-click to refund. Deeper tiers unlock after 5 points per tier in that branch.
+- **Active skills:** each has two **modifier** nodes that change how it works; pick one in the details panel.
+- **Keystones:** big power with a real downside.
+- **Builds:** you have three. Switch between them for free; each remembers its own tree, hotbar and (optionally) gear.
+- **Hotbar:** fill it from the panel on the right.
+- **Mastery:** the more you use a skill, the stronger it gets.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
 
@@ -77,7 +87,7 @@ src/
     character/  creation, base stats, leveling, attributes, paragon
     items/      generation, affixes, sockets, equipment, inventory, loot
     combat/     battles: damage, statuses, skills, turns, AI, combatants
-    skills/     skill definitions
+    skills/     skill definitions, skill trees, modifiers (patches), mastery
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -218,6 +228,29 @@ Add an entry to `GODS` in `src/data/gods.ts`:
 ```
 
 Birth signs and blessings reference gods by `id`. Favor rules, likes and dislikes are added to the same entry in Phase 8.
+
+### Example: a skill tree branch
+Each class tree (`src/data/trees/<class>.ts`) is four `BranchSpec`s passed to `buildTree`. A branch only lists content; the builder handles tiers, positions and connections:
+
+```ts
+{
+  id: 'stormcalling', name: 'Stormcalling', color: '#ffd84a', description: 'Lightning and speed.',
+  a: { skill: 'lightning-bolt' },
+  aMods: [
+    { name: 'Overcharge', patch: { description: '+35% damage, +60% MP cost.', powerMult: 1.35, costMult: 1.6 } },
+    { name: 'Static', patch: { description: 'May Stun.', addEffects: [{ kind: 'applyStatus', status: 'stun', duration: 1, chance: 15 }] } },
+  ],
+  b: { skill: 'chain-lightning' },
+  bMods: [/* two more modifiers */],
+  minors: [{ name: 'Charged', mods: [flat('lightningDamage', 4)] }, /* x4 */],
+  notables: [{ name: 'Conductor', mods: [flat('damageBonus', 20, targetHas('wet'))] }, /* x2 */],
+  choice: [{ name: 'A', mods: [...] }, { name: 'B', triggers: [...] }],
+  keystone: { name: 'Glass Cannon', text: 'Keystone: +35% damage, -25% max HP.', mods: [flat('damageBonus', 35), pct('maxHp', -25)] },
+  capstone: { name: 'Tempest', triggers: [/* ... */] },
+}
+```
+
+New skills referenced by `a` / `b` go in the same file's `<CLASS>_SKILLS` list.
 
 ### Example: a new race
 Add an entry to `RACES` in `src/data/races.ts` with a `statBonus`, a `passive` (a list of modifiers) and an `activeSkill` id, then add that skill to `RACIAL_SKILLS`. The creation screen and portraits pick it up automatically. Without a palette in `src/ui/art/portraits.ts` the new race uses the Human palette.

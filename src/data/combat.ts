@@ -64,9 +64,9 @@ export const COMBAT = {
 
 /** Enemy stat growth per level above 1: stat x (1 + growth x (level - 1)). */
 export const ENEMY_GROWTH = {
-  hp: 0.33,
-  attack: 0.24,
-  magic: 0.24,
+  hp: 0.4,
+  attack: 0.29,
+  magic: 0.29,
   defense: 0.18,
   magicResist: 0.18,
   speed: 0.015,

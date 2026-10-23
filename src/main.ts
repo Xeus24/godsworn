@@ -1,6 +1,7 @@
 import './style.css';
 import './ui/inventory/inventory.css';
 import './ui/combat/combat.css';
+import './ui/tree/tree.css';
 import { validateContent } from './data';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
@@ -19,6 +20,7 @@ import { registerItemSections } from './ui/debug/itemSections';
 import { InventoryScreen } from './ui/inventory/inventoryScreen';
 import { ScreenManager } from './ui/screen';
 import { TitleScreen } from './ui/title/titleScreen';
+import { TreeScreen } from './ui/tree/treeScreen';
 
 validateContent();
 
@@ -38,13 +40,14 @@ const nav: Nav = {
   title: showTitle,
   character: showCharacter,
   inventory: showInventory,
+  skills: showSkills,
   battle: showGrounds,
 };
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showGrounds });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 4: combat`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 5: skill trees`));
 }
 
 function showCreation(): void {
@@ -65,6 +68,10 @@ function showCharacter(): void {
 
 function showInventory(): void {
   if (session) screens.show(new InventoryScreen(session, nav));
+}
+
+function showSkills(): void {
+  if (session) screens.show(new TreeScreen(session, nav));
 }
 
 function showGrounds(): void {
@@ -103,6 +110,7 @@ window.addEventListener('keydown', (e) => {
   if (key === 'c') showCharacter();
   if (key === 'i') showInventory();
   if (key === 'g') showGrounds();
+  if (key === 'k') showSkills();
 });
 
 showTitle();

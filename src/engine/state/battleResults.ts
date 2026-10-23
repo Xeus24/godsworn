@@ -8,6 +8,7 @@ import { equippedItems } from '../items/equipment';
 import { rollLoot } from '../items/loot';
 import { itemName } from '../items/naming';
 import { recordDeed } from '../items/relics';
+import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
 import type { ItemInstance } from '../items/types';
 import { wearItem, wearItemPercent } from '../items/upkeep';
 import { tickTimedBuffs } from '../items/use';
@@ -24,6 +25,8 @@ export interface BattleRewards {
   brokenItems: string[];
   expiredBuffs: string[];
   goldLost: number;
+  /** Skills that reached a new mastery level: [skill id, new level]. */
+  masteryUps: [string, number][];
   /** Hardcore death: the save is over. */
   permadeath: boolean;
 }
@@ -49,6 +52,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     brokenItems: [],
     expiredBuffs: [],
     goldLost: 0,
+    masteryUps: [],
     permadeath: false,
   };
   const stats = s.state.stats;
@@ -57,6 +61,18 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   if (hero) {
     p.hp = Math.max(0, hero.hp);
     p.mp = Math.max(0, hero.mp);
+  }
+
+  // Mastery counts every use, win or lose.
+  for (const [skillId, uses] of Object.entries(b.tally.skillUses)) {
+    const before = masteryLevel(p.mastery[skillId] ?? 0);
+    p.mastery[skillId] = (p.mastery[skillId] ?? 0) + uses;
+    const after = masteryLevel(p.mastery[skillId]);
+    if (after > before) {
+      rewards.masteryUps.push([skillId, after]);
+      const name = content.skills.get(skillId).name;
+      s.bus.emit('toast', { kind: 'level', text: after >= MAX_MASTERY ? `${name} mastered!` : `${name}: mastery ${after}` });
+    }
   }
 
   for (const kill of b.tally.kills) {

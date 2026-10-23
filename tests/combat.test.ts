@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
-import { COMBAT } from '../src/data/combat';
+import { COMBAT, ENEMY_GROWTH } from '../src/data/combat';
 import { chooseAction } from '../src/engine/combat/ai';
 import { Battle } from '../src/engine/combat/battle';
 import { createEnemy, createHero, scaleCombatStats } from '../src/engine/combat/combatants';
@@ -81,7 +81,7 @@ describe('enemy stats', () => {
 
   it('elite tier multiplies HP and XP', () => {
     const def = content.enemies.get('goblin-warchief');
-    expect(scaleCombatStats(def.stats, 7, 'elite').hp).toBe(Math.round(def.stats.hp * (1 + 0.33 * 6) * 2.5));
+    expect(scaleCombatStats(def.stats, 7, 'elite').hp).toBe(Math.round(def.stats.hp * (1 + ENEMY_GROWTH.hp * 6) * 2.5));
     expect(createEnemy(def, 'g', 7).xp).toBe(def.xp * 3);
   });
 });

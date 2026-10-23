@@ -206,10 +206,29 @@ export class CombatScreen implements Screen {
       this.render();
       return;
     }
+    const x = this.battle.current;
     const n = Number(e.key);
-    if (Number.isInteger(n) && n >= 1 && n <= 9) {
-      const buttons = [...this.commandNode.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')];
-      buttons[n - 1]?.click();
+    if (this.pending || this.menu !== 'main') {
+      // Inside a submenu or target list, numbers pick entries.
+      if (Number.isInteger(n) && n >= 1 && n <= 9) {
+        const buttons = [...this.commandNode.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')];
+        buttons[n - 1]?.click();
+      }
+      return;
+    }
+    if (Number.isInteger(n) && n >= 1 && n <= 8) {
+      const id = x.hotbar?.[n - 1];
+      const o = id ? skillOptions(this.battle, x).find((opt) => opt.skill.id === id) : undefined;
+      if (o?.check.ok) this.useSkillOption(x, o);
+      return;
+    }
+    const key = e.key.toLowerCase();
+    if (key === 'a') this.useSkillOption(x, skillOptions(this.battle, x)[0] as SkillOption);
+    else if (key === 'd') this.act({ kind: 'defend', actorId: x.id });
+    else if (key === 'f' && this.battle.canFlee && !this.battle.isBoss) this.act({ kind: 'flee', actorId: x.id });
+    else if (key === 'i') {
+      this.menu = 'items';
+      this.renderCommands();
     }
   }
 
@@ -364,8 +383,17 @@ export class CombatScreen implements Screen {
     }
     const attack = options[0] as SkillOption;
     const ultReady = x.ultimateSkill && x.ultimate >= 100;
+    const hotbarButtons = (x.hotbar ?? []).map((id, i) => {
+      const o = options.find((opt) => opt.skill.id === id);
+      if (!o) return el('span', {});
+      const b = btn(`${i + 1}. ${o.skill.name}${o.check.ok ? '' : ` (${o.check.reason})`}`, () => this.useSkillOption(x, o), !o.check.ok, () => el('div', {}, el('div', { class: 'tip-title' }, o.skill.name), el('div', {}, o.skill.description), el('div', { class: 'tip-desc' }, `${skillCostText(o.skill)}${o.skill.cooldown ? ` \u00b7 ${o.skill.cooldown}-turn cooldown` : ''}`)));
+      b.classList.add('hotbar-btn');
+      return b;
+    });
+    const ultimate = options.find((o) => o.skill.ultimate);
     node.replaceChildren(
       title,
+      el('div', { class: 'cmd-hotbar' }, ...hotbarButtons, ...(ultimate && ultReady ? [btn(`\u2605 ${ultimate.skill.name}`, () => this.useSkillOption(x, ultimate))] : [])),
       el(
         'div',
         { class: 'cmd-grid' },
@@ -373,9 +401,9 @@ export class CombatScreen implements Screen {
         btn(ultReady ? 'Skills ★' : 'Skills', () => ((this.menu = 'skills'), this.renderCommands())),
         btn('Items', () => ((this.menu = 'items'), this.renderCommands())),
         ...(x.abilities.length ? [btn('Abilities', () => ((this.menu = 'abilities'), this.renderCommands()))] : []),
-        btn('Defend', () => this.act({ kind: 'defend', actorId: x.id }), false, () => 'Take half damage until your next turn and recover 5% MP.'),
+        btn('Defend (D)', () => this.act({ kind: 'defend', actorId: x.id }), false, () => 'Take half damage until your next turn and recover 5% MP.'),
         btn(`Swap to ${x.row === 'front' ? 'back' : 'front'} row`, () => this.act({ kind: 'swap', actorId: x.id }), false, () => 'Back row: take 25% less physical damage, but melee attacks need the front row.'),
-        btn('Flee', () => this.act({ kind: 'flee', actorId: x.id }), !this.battle.canFlee || this.battle.isBoss),
+        btn('Flee (F)', () => this.act({ kind: 'flee', actorId: x.id }), !this.battle.canFlee || this.battle.isBoss),
       ),
     );
   }

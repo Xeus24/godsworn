@@ -3,6 +3,7 @@ import { allocatedTotal, respecCost } from '../../engine/character/attributes';
 import { paragonRank } from '../../engine/character/paragon';
 import { levelProgress, xpToNext } from '../../engine/character/progression';
 import { characterStatsDetailed } from '../../engine/character/stats';
+import { availablePoints, knownSkills } from '../../engine/skills/tree';
 import type { GameSession } from '../../engine/state/gameState';
 import { ELEMENTS, PRIMARY_STATS, type StatId } from '../../engine/stats/types';
 import { navBar, type Nav } from '../components/navBar';
@@ -132,7 +133,7 @@ export class CharacterScreen implements Screen {
           'div',
           { class: 'class-row' },
           el('div', {}, el('b', { style: `color:${cls.color}` }, cls.name), ` · ${cp.slot} · level ${cp.level}`),
-          bar(cp.level >= s.state.levelCap ? 1 : cp.xp / xpToNext(cp.level), 'xp thin', `${cp.skillPoints} skill points`),
+          bar(cp.level >= s.state.levelCap ? 1 : cp.xp / xpToNext(cp.level), 'xp thin', `${availablePoints(p, cp.classId)} of ${cp.skillPoints} skill points unspent`),
           el('div', { class: 'dim small' }, cls.mechanic.name + ': ' + cls.mechanic.description),
         );
       }),
@@ -142,7 +143,7 @@ export class CharacterScreen implements Screen {
       'section',
       { class: 'panel' },
       el('h3', {}, 'Skills'),
-      ...Object.entries(p.skills).map(([id, rank]) => skillCard(content.skills.get(id), rank)),
+      ...knownSkills(p).map((k) => skillCard(content.skills.get(k.id), k.rank)),
       el('h3', {}, `Racial: ${race.passive.name}`),
       el('p', { class: 'small' }, race.passive.description),
     );

@@ -8,8 +8,8 @@
 | 2 | Races, classes, leveling, attribute points | **Done** |
 | 3 | Items, affixes, sockets/runes, inventory, stash, equipment | **Done** |
 | 4 | Combat core | **Done** |
-| 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | Next |
-| 6 | Specializations, general skills, skillbooks | |
+| 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | **Done** |
+| 6 | Specializations, general skills, skillbooks | Next |
 | 7 | Multiclassing, hybrid prestige classes | |
 | 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | |
 | 9 | Apostleship | |
@@ -178,6 +178,36 @@
 - `npm run sim`: automated fights per class × level against nearby encounters, with benchmark gear and attributes. Prints win rate, average turns and damage per turn.
 - 206 unit tests.
 
+### Phase 5: class skill trees
+- **8 class trees, 64 nodes each (512 total), 4 branches per class.** Each branch has 16 nodes across 6 tiers:
+  - 2 active skills (ranks 1–5), each with 2 behavior-changing modifier nodes
+  - 4 minor passives (3 ranks each) and 2 notable passives
+  - a mutually exclusive choice pair
+  - a keystone with a real downside
+  - a capstone
+- **50 new class skills,** including Monk Crane/Serpent stances and Bard Warding/Swiftness songs, plus a Skeleton Mage summon.
+- **Tree engine** (`engine/skills/tree.ts`):
+  - tier gates ((t − 1) × 5 points spent in the branch)
+  - parent requirements (any connected parent) and choice exclusivity
+  - refunds that are refused if they would break another node's requirements
+  - per-class skill points (earned from class levels; spent per build)
+- **Skill modifiers** (`SkillPatch`): power multiplier, extra hits, new targeting, element, tags, added or replaced effects, cost and cooldown changes, extra resource, always-crit, stagger. One is active per skill, swappable out of combat. The first one learned activates automatically.
+- **Skill mastery:** each use in battle earns 1 mastery XP. 5 levels (10/30/75/150/300 uses), +3% power per level. Mastered skills show ✦ in battle and on the hotbar, with mastery toasts after battles.
+- **Builds:** 3 per class, each with its own allocation, modifiers, hotbar and optionally saved gear. Switching is free and re-equips the build's gear from your bags; resetting a build costs 25 gold × level.
+- **8-slot hotbar:** in battle only hotbar skills (plus the ultimate) can be used. New skills are added automatically; slots can be reassigned or swapped.
+- **Tree passives** feed `calculateStats`; tree triggers and flags (executioner, reviveOnce, spellEcho...) feed combat. New `bloodMagic` mechanic: MP costs are paid with HP.
+- **UI:**
+  - Skill tree screen (K):
+    - SVG node graph that pans (drag) and zooms (wheel, around the cursor), with distinct shapes per node kind and lit connections
+    - branch headers with points spent, and locked/available/allocated/maxed states
+    - search highlighting, and tooltips with current and next rank, requirements and mastery
+    - learn by double-click or shift-click, refund by right-click
+    - a details panel with an active modifier selector, build loadouts (switch, rename, save gear, reset), and a hotbar editor with mastery bars
+  - In battle: a hotbar row with keys 1–8, plus A (attack), D (defend), F (flee) and I (items) shortcuts.
+  - The character sheet lists every known skill and unspent points per class.
+- `npm run sim` heroes now spend their points with a simple auto-build (skipping keystones).
+- 229 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -217,6 +247,12 @@
 - **Back row:** 25% less physical damage taken, but melee attacks (without Movement or Reach) must target the enemy front row while it stands.
 - **Defeat outside Hardcore** puts you back at full HP (no towns yet). From Phase 10 you respawn in the last town.
 - **Balance at Phase 4** (`npm run sim`, 60 fights per class × level, solo hero, benchmark gear): 94.7% average wins against equal-level encounters. Every class is at 100% at levels 1–3. The weakest spots are Necromancer 66% at level 15, Mage 71% at level 15, and Warrior 73% at level 12 (against back-row casters). The full balance pass is Phase 16, once companions, skill trees and gear progression are in.
+- **Every branch uses one 16-node template** (the builder assigns tiers, lanes, parents and positions), so all trees are consistent and a new class only declares content. The spec asks for 50–70 nodes per class; this gives 64.
+- **Starting class skills are tree roots:** they begin at rank 1 for free, and their node adds ranks 2–5. Racial skills, Tiger Stance and the Song of Valor (single-rank skills) stay outside the trees.
+- **Skill points are tracked as "earned" per class.** Each build spends from that same pool, so three builds never cost extra points. Switching builds is free because that is the point of loadouts; resetting a build costs gold.
+- **The hotbar belongs to the primary class's active build,** so swapping builds swaps hotbars too.
+- **Refunding a single node is free** as long as nothing depends on it, making experimenting cheap. Wholesale resets cost gold.
+- **Balance after Phase 5** (40 fights per class × level, solo, benchmark gear, auto-built trees, enemy growth raised to HP +40%, attack/magic +29% per level): 96.4% average. Rogue, Ranger, Cleric and Monk are at or near 100%. The outlier is Necromancer at 54% at level 9, because the auto-build invests in corpse-dependent summons first; at levels 12–15 it recovers to 88–100%. The full tuning pass is Phase 16 (with companions).
 - **A zero-base check** in content validation rejects percent and "more" modifiers on stats that start at 0. This caught two Phase 2 racial skills (Rally, Bloodlust) that would otherwise have done nothing.
 
 ## Known bugs
@@ -236,4 +272,4 @@
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 5: class skill trees, 50–70 nodes per class across 4 branches. They include active skills (ranks 1–5), minor and notable passives, keystones, choice nodes, skill modifiers (one active per skill), skill mastery, prerequisites and depth gates, and capstones. Plus the pannable/zoomable tree UI with search, tooltips and 3 build loadouts, and the 8-slot hotbar (keys 1–8).
+- Phase 6: specializations at level 20 (3 per class, 24 total), each with its own tree branch and signature ultimate. Plus general skills (60+, ranks 1–10, use-based training), general skill slots, skillbooks of every rarity, Grimoires, the Library, and Divine/Forbidden categories (gated until gods and NG+ exist).

@@ -3,6 +3,7 @@ import { ENEMY_GROWTH, TIER_SCALING } from '../../data/combat';
 import { characterBaseStats, characterModifiers } from '../character/stats';
 import type { Character } from '../character/types';
 import { equipmentFlags, equipmentTriggers, equippedWeaponTypes } from '../items/equipment';
+import { hotbar, knownSkills, treeFlags, treeTriggers } from '../skills/tree';
 import { baseOf, isBroken, uniqueOf } from '../items/lookup';
 import { calculateStats, type StatInput } from '../stats/calculate';
 import type { Modifier, ModifierSpec } from '../stats/modifiers';
@@ -185,10 +186,16 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.mp = Math.min(char.mp, x.maxMp);
   x.classId = cls?.id;
   x.ai = cls?.id === 'cleric' ? 'healer' : 'aggressive';
-  x.flags = equipmentFlags(char, c);
-  x.triggers = equipmentTriggers(char, c);
+  x.flags = [...new Set([...equipmentFlags(char, c), ...treeFlags(char, c)])];
+  x.triggers = [...equipmentTriggers(char, c), ...treeTriggers(char, c)];
   x.weaponTypes = equippedWeaponTypes(char, c);
-  x.skills = Object.entries(char.skills).map(([skillId, rank]) => ({ id: skillId, rank }));
+  x.skills = knownSkills(char, c).map((k) => ({
+    id: k.id,
+    rank: k.rank,
+    mastery: char.mastery[k.id] ?? 0,
+    ...(k.patch ? { patch: k.patch } : {}),
+  }));
+  x.hotbar = hotbar(char).filter((h): h is string => h !== null);
   x.ultimateSkill = cls?.ultimate;
   x.basicAttack = heroBasicAttack(char, c);
   x.portrait = { raceId: char.raceId, variant: char.portrait, color: cls?.color ?? '#888888' };

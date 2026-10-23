@@ -1,4 +1,6 @@
 import { COMBAT } from '../../data/combat';
+import { masteryLevel, masteryMultiplier, MAX_MASTERY } from '../skills/mastery';
+import { applyPatch } from '../skills/patch';
 import { powerAtRank, type SkillDef } from '../skills/types';
 import type { Battle } from './battle';
 import { applyEffects, fireTrigger } from './effects';
@@ -40,8 +42,11 @@ export function basicAttackSkill(b: Battle, x: Combatant): SkillDef {
   };
 }
 
+/** The skill as this combatant uses it: with its chosen tree modifier applied. */
 export function skillDef(b: Battle, x: Combatant, skillId: string): SkillDef {
-  return skillId === BASIC_ATTACK_ID ? basicAttackSkill(b, x) : b.c.skills.get(skillId);
+  if (skillId === BASIC_ATTACK_ID) return basicAttackSkill(b, x);
+  const known = x.skills.find((s) => s.id === skillId);
+  return applyPatch(b.c.skills.get(skillId), known?.patch);
 }
 
 export type Check = { ok: true } | { ok: false; reason: string };
@@ -52,7 +57,12 @@ export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
   if (skill.ultimate) return x.ultimate >= 100 ? { ok: true } : { ok: false, reason: `Ultimate ${Math.floor(x.ultimate)}%` };
   const cd = x.cooldowns[skill.id] ?? 0;
   if (cd > 0) return { ok: false, reason: `${cd} turn${cd > 1 ? 's' : ''}` };
-  if (skill.cost.mp && x.mp < skill.cost.mp) return { ok: false, reason: 'Not enough MP' };
+  if (skill.cost.mp) {
+    // Blood Magic pays MP costs with HP instead, and never kills the caster.
+    if (b.hasFlag(x, 'bloodMagic')) {
+      if (x.hp <= skill.cost.mp) return { ok: false, reason: 'Not enough HP' };
+    } else if (x.mp < skill.cost.mp) return { ok: false, reason: 'Not enough MP' };
+  }
   if (skill.cost.resource) {
     const have = x.resources[skill.cost.resource.id];
     if (have === undefined || have < skill.cost.resource.amount) {
@@ -74,8 +84,9 @@ export interface SkillOption {
 /** Everything the combatant could use this turn: basic attack, known skills and the ultimate. */
 export function skillOptions(b: Battle, x: Combatant): SkillOption[] {
   const out: SkillOption[] = [{ skill: basicAttackSkill(b, x), rank: 1, check: { ok: true } }];
-  for (const s of x.skills) {
-    const skill = b.c.skills.get(s.id);
+  const order = x.hotbar ? x.hotbar.map((id) => x.skills.find((s) => s.id === id)).filter((s) => s !== undefined) : x.skills;
+  for (const s of order) {
+    const skill = skillDef(b, x, s.id);
     if (skill.ultimate) continue;
     out.push({ skill, rank: s.rank, check: canUseSkill(b, x, skill) });
   }
@@ -149,7 +160,10 @@ function resolveTargets(b: Battle, x: Combatant, skill: SkillDef, targetId?: str
 }
 
 function payCosts(b: Battle, x: Combatant, skill: SkillDef): void {
-  if (skill.cost.mp) x.mp -= skill.cost.mp;
+  if (skill.cost.mp) {
+    if (b.hasFlag(x, 'bloodMagic')) x.hp = Math.max(1, x.hp - skill.cost.mp);
+    else x.mp -= skill.cost.mp;
+  }
   if (skill.cost.hpPct) x.hp = Math.max(1, x.hp - Math.round((x.maxHp * skill.cost.hpPct) / 100));
   // Finishers spend everything themselves; other skills pay their listed amount.
   if (skill.cost.resource && !skill.finisher) {
@@ -195,13 +209,18 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
   }
   const targets = resolveTargets(b, x, skill, targetId);
   if (skill.targeting !== 'randomEnemies' && skill.targeting !== 'self' && targets.length === 0 && (skill.damage || skill.heal)) return false;
-  b.emit({ type: 'action', actorId: x.id, label: opts.echo ? `${skill.name} (Echo)` : skill.name, targets: targets.map((t) => t.id) });
+  const known = x.skills.find((s) => s.id === skillId);
+  const mastered = known?.mastery !== undefined && masteryLevel(known.mastery) >= MAX_MASTERY;
+  const label = `${mastered ? '\u2726 ' : ''}${skill.name}${opts.echo ? ' (Echo)' : ''}`;
+  b.emit({ type: 'action', actorId: x.id, label, targets: targets.map((t) => t.id) });
+  if (x.kind === 'hero' && !opts.free && skillId !== BASIC_ATTACK_ID) b.tally.skillUses[skillId] = (b.tally.skillUses[skillId] ?? 0) + 1;
+  const masteryMult = known?.mastery !== undefined ? masteryMultiplier(known.mastery) : 1;
 
   const chainMult = chainMultiplier(b, x, skill, skill.targeting === 'enemy' ? targets[0] : undefined);
   const stealthCrit = skill.damage !== undefined && isStealthed(b, x);
   if (stealthCrit) for (const s of [...x.statuses]) if (b.c.statuses.get(s.id).stealth) removeStatus(b, x, s.id);
 
-  let mult = skill.damage ? powerAtRank(skill.damage, rank) : 0;
+  let mult = skill.damage ? powerAtRank(skill.damage, rank) * masteryMult : 0;
   if (skill.finisher) {
     const points = x.resources[skill.finisher.resource] ?? 0;
     mult += skill.finisher.multiplierPerPoint * points;
@@ -237,7 +256,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
 
   if (skill.heal) {
     const stats = b.stats(x, { skillTags: skill.tags });
-    const amount = stats[skill.heal.stat] * powerAtRank(skill.heal, rank) * (1 + stats.healingPower / 100);
+    const amount = stats[skill.heal.stat] * powerAtRank(skill.heal, rank) * masteryMult * (1 + stats.healingPower / 100);
     for (const t of targets) healTarget(b, x, t, amount, { spell: true });
   }
 

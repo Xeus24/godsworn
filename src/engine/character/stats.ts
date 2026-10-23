@@ -1,6 +1,7 @@
 import { content, type Content } from '../../data';
 import { PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
+import { treeModifiers } from '../skills/tree';
 import { calculateStats, calculateStatsDetailed, type StatResult } from '../stats/calculate';
 import type { ConditionContext } from '../stats/conditions';
 import { withSource, type Modifier } from '../stats/modifiers';
@@ -33,7 +34,7 @@ export function characterBaseStats(char: Character, c: Content = content): Prima
   return out;
 }
 
-/** Every modifier the character currently has: race, birth sign, paragon, gear, timed buffs. */
+/** Every modifier the character currently has: race, birth sign, paragon, gear, skill trees, timed buffs. */
 export function characterModifiers(char: Character, c: Content = content): Modifier[] {
   const race = c.races.get(char.raceId);
   const sign = c.birthSigns.get(char.birthSignId);
@@ -49,6 +50,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
     }
   }
   mods.push(...equipmentModifiers(char, c));
+  mods.push(...treeModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
   return mods;
 }

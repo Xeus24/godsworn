@@ -30,10 +30,13 @@ import { ENCOUNTERS, ENEMIES, SUMMONS } from './enemies';
 import { ENEMY_SKILLS } from './skills/enemy';
 import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
 import { ULTIMATE_SKILLS } from './skills/ultimates';
+import { CLASS_TREE_SKILLS, finalizeTrees } from './trees';
 import { SONGS } from './songs';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
+
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...CLASS_TREE_SKILLS];
 
 /**
  * The game's content, assembled from the data files in this folder. Engine
@@ -54,7 +57,7 @@ export const content = {
     'skill tag',
     SKILL_TAGS.map((id) => ({ id })),
   ),
-  skills: new ContentTable('skill', [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS]),
+  skills: new ContentTable('skill', ALL_SKILLS),
   races: new ContentTable('race', RACES),
   birthSigns: new ContentTable('birth sign', BIRTH_SIGNS),
   classes: new ContentTable('class', CLASSES),
@@ -77,6 +80,7 @@ export const content = {
   enemies: new ContentTable('enemy', ENEMIES),
   summons: new ContentTable('summon', SUMMONS),
   encounters: new ContentTable('encounter', ENCOUNTERS),
+  trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
 };
 
 export type Content = typeof content;
@@ -294,6 +298,30 @@ export function validateContent(c: Content = content): void {
   for (const enc of c.encounters.all()) {
     v.check(enc.enemies.length > 0 && enc.enemies.length <= 6, `encounter ${enc.id}: needs 1-6 enemies`);
     for (const e of enc.enemies) v.ref(c.enemies, e.enemyId, `encounter ${enc.id}`);
+  }
+
+  // ---- Skill trees ----
+  for (const cls of c.classes.all()) v.check(c.trees.has(cls.id), `class ${cls.id}: no skill tree`);
+  for (const tree of c.trees.all()) {
+    const ids = new Set<string>();
+    const branchIds = new Set(tree.branches.map((b) => b.id));
+    for (const n of tree.nodes) {
+      const where = `tree node ${n.id}`;
+      v.check(!ids.has(n.id), `${where}: duplicate id`);
+      ids.add(n.id);
+      v.check(branchIds.has(n.branch), `${where}: unknown branch`);
+      if (n.skill) v.ref(c.skills, n.skill, where);
+      if (n.variant) {
+        v.ref(c.skills, n.variant.skill, where);
+        checkEffects(v, c, n.variant.patch.addEffects ?? [], where);
+        checkEffects(v, c, n.variant.patch.replaceEffects ?? [], where);
+        for (const t of n.variant.patch.addTags ?? []) v.ref(c.skillTags, t, where);
+      }
+      checkModifiers(v, n.modifiers ?? [], where);
+      checkTriggers(v, c, n.triggers, where);
+      checkFlags(v, c, n.flags, where);
+    }
+    for (const n of tree.nodes) for (const p of n.parents) v.check(ids.has(p), `tree node ${n.id}: unknown parent ${p}`);
   }
 
   v.throwIfInvalid();

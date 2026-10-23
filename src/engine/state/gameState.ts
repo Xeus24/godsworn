@@ -14,10 +14,11 @@ import { applyStartingKit } from '../items/use';
 import type { PrimaryStat } from '../stats/types';
 import { advanceClock, createClock, hourOf, timeOfDay, type GameClock } from './clock';
 import { ItemActions } from './itemActions';
+import { TreeActions } from './treeActions';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -92,12 +93,14 @@ export class GameSession {
   readonly rng: Rng;
   readonly triggers: TriggerSystem;
   readonly items: ItemActions;
+  readonly trees: TreeActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
     this.rng = new Rng(state.rngState);
     this.triggers = new TriggerSystem(this.rng);
     this.items = new ItemActions(this);
+    this.trees = new TreeActions(this);
   }
 
   /** Starts a new game and hands the hero their class's starting kit. */
