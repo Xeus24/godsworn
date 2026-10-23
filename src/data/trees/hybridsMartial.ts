@@ -17,6 +17,9 @@ export const MARTIAL_HYBRID_SKILLS: SkillDef[] = [
   // Beastlord (Warrior + Ranger)
   hybrid({ id: 'savage-charge', name: 'Savage Charge', description: 'Charge any enemy for 160% ATK, with a 20% chance to Stun.', tags: ['Attack', 'Melee', 'Physical', 'Movement'], element: 'physical', targeting: 'enemy', cost: { mp: 6 }, cooldown: 2, damage: { stat: 'physicalAttack', multiplier: 1.6, perRank: 0.1 }, effects: [{ kind: 'applyStatus', status: 'stun', duration: 1, chance: 20 }] }),
   hybrid({ id: 'call-the-beast', name: 'Call the Beast', description: 'A spirit stag answers your call.', tags: ['Summon', 'Pet', 'Nature'], element: 'nature', targeting: 'self', cost: { mp: 14 }, cooldown: 5, effects: [{ kind: 'summon', summonId: 'spirit-stag' }] }),
+  // Sun Knight (Warrior with the Paladin specialization + Apostle of Solenne)
+  hybrid({ id: 'solar-blade', name: 'Solar Blade', description: 'A blade of noon for 140% ATK + 70% Divine Power holy damage; Blinds (30%).', tags: ['Attack', 'Melee', 'Holy', 'Divine'], element: 'holy', targeting: 'enemy', cost: { mp: 8 }, cooldown: 1, damage: { stat: 'physicalAttack', multiplier: 1.4, perRank: 0.1 }, effects: [{ kind: 'damage', element: 'holy', scaling: { stat: 'divinePower', ratio: 0.7 } }, { kind: 'applyStatus', status: 'blind', duration: 1, chance: 30 }] }),
+  hybrid({ id: 'sunshield', name: 'Sunshield', description: 'Raise the sun: the party is shielded for 15% of max HP and gains Divine Protection for 1 turn.', tags: ['Buff', 'Holy', 'Divine', 'AoE'], element: 'holy', targeting: 'allAllies', cost: { mp: 16 }, cooldown: 5, effects: [{ kind: 'shield', percentMaxHp: 15 }, { kind: 'applyStatus', status: 'divine-protection', duration: 1 }] }),
   // Templar Ascetic (Cleric + Monk)
   hybrid({ id: 'radiant-palm', name: 'Radiant Palm', description: 'A palm of light for 150% ATK holy damage; heal 6% of max HP and gain 1 Chi.', tags: ['Attack', 'Melee', 'Holy'], element: 'holy', targeting: 'enemy', cost: { mp: 6 }, cooldown: 1, damage: { stat: 'physicalAttack', multiplier: 1.5, perRank: 0.1 }, effects: [{ kind: 'heal', percentMaxHp: 6, target: 'self' }], generates: { resource: 'chi', amount: 1 } }),
   hybrid({ id: 'vow-of-stillness', name: 'Vow of Stillness', description: 'Shield yourself for 20% of max HP and Regenerate for 3 turns.', tags: ['Buff', 'Holy', 'Heal'], element: 'holy', targeting: 'self', cost: { mp: 12 }, cooldown: 5, effects: [{ kind: 'shield', percentMaxHp: 20 }, { kind: 'applyStatus', status: 'regen', duration: 3 }] }),
@@ -109,6 +112,24 @@ export const MARTIAL_HYBRID_BRANCHES: Record<string, BranchSpec> = {
     choice: [{ name: 'Hunter', mods: [flat('physicalAttack', 8)] }, { name: 'Beast Hide', mods: [pct('maxHp', 10)] }],
     keystone: { name: 'Primal Rage', text: 'Keystone: +25% damage, -10 accuracy.', mods: [flat('damageBonus', 25), flat('accuracy', -10)] },
     capstone: { name: 'King of Beasts', text: 'Start every battle with a spirit stag, and the party gains +15% damage for 3 turns.', triggers: [{ id: 'beastlord-king', trigger: 'onCombatStart', effects: [{ kind: 'summon', summonId: 'spirit-stag' }, { kind: 'buff', id: 'king-of-beasts', duration: 3, modifiers: [{ stat: 'damageBonus', type: 'flat', value: 15 }], target: 'allAllies' }] }] },
+  },
+  'sun-knight': {
+    id: 'sun-knight', name: 'Sun Knight', color: '#ffe17a', description: 'Solenne’s own champion: steel at noon.',
+    a: { skill: 'solar-blade' },
+    aMods: [
+      { name: 'Zenith Strike', patch: { description: '+30% damage, +30% MP cost.', powerMult: 1.3, costMult: 1.3 } },
+      { name: 'Sunfire Edge', patch: { description: 'Also Burns.', addEffects: [{ kind: 'applyStatus', status: 'burn', duration: 3 }] } },
+    ],
+    b: { skill: 'sunshield' },
+    bMods: [
+      { name: 'Aegis of Noon', patch: { description: 'The shield is 25% of max HP.', replaceEffects: [{ kind: 'shield', percentMaxHp: 25 }, { kind: 'applyStatus', status: 'divine-protection', duration: 1 }] } },
+      { name: 'Daystar', patch: { description: '1 turn shorter cooldown.', cooldownDelta: -1 } },
+    ],
+    minors: [{ name: 'Solar Plate', mods: [pct('defense', 3)] }, { name: 'Holy Steel', mods: [flat('holyDamage', 4)] }, { name: 'Oathkeeper', mods: [flat('fai', 1)] }, { name: 'Radiant Vigor', mods: [pct('maxHp', 2)] }],
+    notables: [{ name: 'High Noon', flags: ['strongerByDay'] }, { name: 'Sun’s Champion', text: '+20% damage against undead and cultists.', mods: [flat('damageBonus', 20, { kind: 'any', of: [{ kind: 'targetType', enemyType: 'undead' }, { kind: 'targetType', enemyType: 'cultist' }] })] }],
+    choice: [{ name: 'Blade of Dawn', mods: [flat('critDamage', 25)] }, { name: 'Wall of Dawn', mods: [more('damageTaken', -10)] }],
+    keystone: { name: 'Burning Oath', text: 'Keystone: +30% holy damage, -15% max MP.', mods: [flat('holyDamage', 30), pct('maxMp', -15)] },
+    capstone: { name: 'Knight of the Unclouded Eye', text: 'Start every battle with Divine Protection and +20% damage for 3 turns.', flags: ['armorTraining'], triggers: [{ id: 'sun-knight-cap', trigger: 'onCombatStart', effects: [{ kind: 'applyStatus', status: 'divine-protection', duration: 1, target: 'self' }, { kind: 'buff', id: 'sun-knight-cap', duration: 3, modifiers: [{ stat: 'damageBonus', type: 'flat', value: 20 }], target: 'self' }] }] },
   },
   'templar-ascetic': {
     id: 'templar-ascetic', name: 'Templar Ascetic', color: '#f0d890', description: 'Holy discipline: the body as a temple, the fist as a prayer.',

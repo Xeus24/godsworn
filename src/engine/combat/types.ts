@@ -130,6 +130,9 @@ export interface Combatant {
   cooldowns: Record<string, number>;
   ultimate: number;
   ultimateSkill?: string;
+  /** An Apostle's Divine Avatar: an ultimate usable once per battle. */
+  avatarSkill?: string;
+  avatarUsed?: boolean;
   stagger?: { value: number; max: number; brokenTurns: number };
   alive: boolean;
   flags: string[];

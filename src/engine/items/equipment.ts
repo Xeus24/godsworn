@@ -60,7 +60,9 @@ export function canEquip(char: Character, item: ItemInstance, slot: EquipSlot, s
   if (!item.identified) return fail('Identify this item first.');
   if (char.level < requiredLevel(item, c)) return fail(`Requires level ${requiredLevel(item, c)}.`);
   const perms = permissions(char, c);
-  if (base.category === 'weapon' && !perms.weapons.has(base.weaponType)) {
+  const godBound = uniqueOf(item, c)?.requirements?.apostleOf;
+  if (godBound && char.devotion.apostle?.god !== godBound) return fail(`Only the Apostle of ${c.gods.get(godBound).name} may wield this.`);
+  if (base.category === 'weapon' && !godBound && !perms.weapons.has(base.weaponType)) {
     return fail(`Your class cannot use ${c.weaponTypes.get(base.weaponType).name.toLowerCase()}s.`);
   }
   if (base.category === 'armor' && !perms.armor.has(base.weight)) {

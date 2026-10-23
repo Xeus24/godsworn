@@ -4,7 +4,7 @@ import type { Character } from '../character/types';
 import { DEVOTION_TIERS, type DeedEvent, type Devotion, type DevotionTier, type FavorDeed } from './types';
 
 export function createDevotion(): Devotion {
-  return { favor: {}, discovered: [], lastPrayer: {}, majors: [], slotted: [], offers: {}, offeredTier: {}, interventionReady: true };
+  return { favor: {}, discovered: [], lastPrayer: {}, majors: [], slotted: [], offers: {}, offeredTier: {}, interventionReady: true, trialStage: {}, reliquary: [], titles: [] };
 }
 
 export function favorOf(char: Character, god: string): number {
@@ -22,7 +22,9 @@ export function tierIndex(tier: DevotionTier): number {
   return DEVOTION_TIERS.indexOf(tier);
 }
 
+/** A god's tier for this character: Apostle if you serve it, else by favor. */
 export function tierOf(char: Character, god: string): DevotionTier {
+  if (char.devotion.apostle?.god === god) return 'apostle';
   return tierFor(favorOf(char, god));
 }
 

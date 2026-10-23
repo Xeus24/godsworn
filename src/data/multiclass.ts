@@ -51,7 +51,7 @@ export const CLASS_TRIALS: ClassTrialDef[] = [
   { classId: 'bard', encounter: 'trial-bard', quote: 'Keep up with the rhythm, darling, or get left behind.' },
 ];
 
-/** Twelve hybrid prestige classes from class pairs. */
+/** Twelve hybrid prestige classes from class pairs, and the Sun Knight (Paladin + Apostle of Solenne). */
 export const HYBRIDS: HybridDef[] = [
   { id: 'spellblade', name: 'Spellblade', classes: ['warrior', 'mage'], trial: 'trial-spellblade', description: 'Steel and sorcery in one edge.' },
   { id: 'warpriest', name: 'Warpriest', classes: ['warrior', 'cleric'], trial: 'trial-warpriest', description: 'Prayer on the lips, a mace in the fist.' },
@@ -65,6 +65,7 @@ export const HYBRIDS: HybridDef[] = [
   { id: 'wildsinger', name: 'Wildsinger', classes: ['ranger', 'bard'], trial: 'trial-wildsinger', description: 'Sings the forest awake and the pack to the hunt.' },
   { id: 'arcane-archer', name: 'Arcane Archer', classes: ['ranger', 'mage'], trial: 'trial-arcane-archer', description: 'Every arrow a spell.' },
   { id: 'plague-doctor', name: 'Plague Doctor', classes: ['cleric', 'necromancer'], trial: 'trial-plague-doctor', description: 'Cures and curses from the same bag.' },
+  { id: 'sun-knight', name: 'Sun Knight', classes: ['warrior'], requires: { specialization: 'paladin', apostleOf: 'solenne' }, trial: 'trial-sun-knight', description: 'A Paladin sworn as Solenne’s Apostle: the sun with a sword.' },
 ];
 
 const trialSupport: Record<string, EncounterDef['enemies']> = {
@@ -92,10 +93,13 @@ export const TRIAL_ENCOUNTERS: EncounterDef[] = [
   ...HYBRIDS.map((h): EncounterDef => ({
     id: h.trial,
     name: `Trial of the ${h.name}`,
-    description: `Both of your mentors at once. Prove you can be ${h.name === 'Arcane Archer' ? 'an' : 'a'} ${h.name}.`,
+    description: `${h.classes.length > 1 ? 'Both of your mentors at once' : 'Your mentor and the heralds of the sun'}. Prove you can be ${h.name === 'Arcane Archer' ? 'an' : 'a'} ${h.name}.`,
     level: HYBRID_TRIAL_LEVEL,
     canFlee: true,
-    // Both mentors, each with their class trial's helper.
-    enemies: h.classes.flatMap((c) => [{ enemyId: mentorOf(c) }, ...(trialSupport[c] ?? [])]).map((e) => ({ ...e, level: HYBRID_TRIAL_LEVEL })),
+    // The mentors, each with their class trial's helper; an apostle hybrid also faces its god's heralds.
+    enemies: [
+      ...h.classes.flatMap((c) => [{ enemyId: mentorOf(c) }, ...(trialSupport[c] ?? [])]),
+      ...(h.requires?.apostleOf ? [{ enemyId: `punisher-${h.requires.apostleOf}` }, { enemyId: `punisher-${h.requires.apostleOf}` }] : []),
+    ].map((e) => ({ ...e, level: HYBRID_TRIAL_LEVEL })),
   })),
 ];

@@ -8,6 +8,7 @@ import { content, validateContent } from './data';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
+import type { Battle } from './engine/combat/battle';
 import { createEncounterBattle } from './engine/combat/setup';
 import { timeOfDay } from './engine/state/clock';
 import { CharacterScreen } from './ui/character/characterScreen';
@@ -34,6 +35,8 @@ if (!root) throw new Error('#app element missing');
 let session: GameSession | undefined;
 /** Screen hotkeys are disabled mid-battle. */
 let inBattle = false;
+/** The fight in progress (for console poking). */
+let currentBattle: Battle | undefined;
 const screens = new ScreenManager(root);
 const toasts = new Toasts();
 const debug = new DebugPanel();
@@ -85,14 +88,15 @@ function showGeneral(): void {
 }
 
 function showPantheon(): void {
-  if (session) screens.show(new PantheonScreen(session, nav));
+  if (session) screens.show(new PantheonScreen(session, nav, startFight));
 }
 
 function showGrounds(): void {
   if (session) screens.show(new ProvingGroundsScreen(session, nav, startFight));
 }
 
-function startFight(encounter: EncounterDef): void {
+/** Starts a fight; `level` overrides enemy levels (apostle trials scale to the hero). */
+function startFight(encounter: EncounterDef, level?: number): void {
   const s = session;
   if (!s) return;
   inBattle = true;
@@ -102,7 +106,9 @@ function startFight(encounter: EncounterDef): void {
     hooks: inventoryHooks(s),
     timeOfDay: timeOfDay(s.state.clock),
     punisher,
+    ...(level !== undefined ? { level } : {}),
   });
+  currentBattle = battle;
   if (punisher) toasts.show('warning', `${content.gods.get(punisher).name} sends a herald to punish you!`);
   screens.show(
     new CombatScreen({
@@ -115,7 +121,7 @@ function startFight(encounter: EncounterDef): void {
           showTitle();
         } else showGrounds();
       },
-      onRematch: () => startFight(encounter),
+      onRematch: () => startFight(encounter, level),
     }),
   );
 }
@@ -135,4 +141,4 @@ window.addEventListener('keydown', (e) => {
 showTitle();
 
 // Exposed for console poking during development.
-Object.assign(window, { godsworn: { get session() { return session; } } });
+Object.assign(window, { godsworn: { get session() { return session; }, get battle() { return currentBattle; } } });

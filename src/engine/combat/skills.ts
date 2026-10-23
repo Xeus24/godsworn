@@ -54,6 +54,7 @@ export type Check = { ok: true } | { ok: false; reason: string };
 export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
   if (skill.id === BASIC_ATTACK_ID) return { ok: true };
   if (isSilenced(b, x)) return { ok: false, reason: 'Silenced' };
+  if (skill.ultimate && skill.id === x.avatarSkill && x.avatarUsed) return { ok: false, reason: 'Once per battle' };
   if (skill.ultimate) return x.ultimate >= 100 ? { ok: true } : { ok: false, reason: `Ultimate ${Math.floor(x.ultimate)}%` };
   const cd = x.cooldowns[skill.id] ?? 0;
   if (cd > 0) return { ok: false, reason: `${cd} turn${cd > 1 ? 's' : ''}` };
@@ -96,6 +97,10 @@ export function skillOptions(b: Battle, x: Combatant): SkillOption[] {
   if (x.ultimateSkill) {
     const ult = b.c.skills.get(x.ultimateSkill);
     out.push({ skill: ult, rank: 1, check: canUseSkill(b, x, ult) });
+  }
+  if (x.avatarSkill) {
+    const avatar = b.c.skills.get(x.avatarSkill);
+    out.push({ skill: avatar, rank: 1, check: canUseSkill(b, x, avatar) });
   }
   return out;
 }
@@ -180,6 +185,7 @@ function payCosts(b: Battle, x: Combatant, skill: SkillDef): void {
     x.cooldowns[skill.id] = Math.max(1, Math.round(skill.cooldown * (1 - cdr / 100)));
   }
   if (skill.ultimate) x.ultimate = 0;
+  if (skill.id === x.avatarSkill) x.avatarUsed = true;
 }
 
 /** Party chain: consecutive party hits on the same single target build a multiplier. */

@@ -39,7 +39,7 @@ describe('favor tiers', () => {
     const visible = content.gods.filter((g) => !g.hidden);
     expect(content.pantheon.size).toBe(visible.length);
     expect(content.blessings.filter((b) => b.kind === 'minor')).toHaveLength(visible.length * 3);
-    expect(content.blessings.filter((b) => b.kind === 'major')).toHaveLength(visible.length * 6);
+    expect(content.blessings.filter((b) => b.kind === 'major' && b.rarity !== 'divine')).toHaveLength(visible.length * 6);
   });
 });
 

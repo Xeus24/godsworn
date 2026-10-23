@@ -1,12 +1,14 @@
 /**
- * A hybrid prestige class: a hidden 16-node tree unlocked by a pair of
- * classes, both at HYBRID_LEVEL, once its trial has been won.
+ * A hybrid prestige class: a hidden 16-node tree unlocked by its classes
+ * (usually a pair), all at HYBRID_LEVEL, once its trial has been won.
+ * Some also need a specialization or Apostleship of a god.
  */
 export interface HybridDef {
   id: string;
   name: string;
   description: string;
-  classes: [string, string];
+  classes: string[];
+  requires?: { specialization?: string; apostleOf?: string };
   /** Encounter that must be won to unlock it (the two class mentors). */
   trial: string;
 }

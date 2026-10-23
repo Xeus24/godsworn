@@ -41,7 +41,7 @@ for (const classId of arg('only', '') === 'trials' ? [] : CLASSES) {
       cells.push('-'.padStart(16));
       continue;
     }
-    const encounters = content.encounters.filter((e) => Math.abs(e.level - level) <= 2 && !isTrialEncounter(e.id));
+    const encounters = content.encounters.filter((e) => Math.abs(e.level - level) <= 2 && !isTrialEncounter(e.id) && !e.id.startsWith('apostle-trial-'));
     let wins = 0;
     let fights = 0;
     let turns = 0;
@@ -94,5 +94,30 @@ for (const t of content.classTrials.all()) {
 }
 console.log(`\nHybrid trials (the pair, both classes at ${MULTICLASS.hybridLevel}, character level 35, vs level ${HYBRID_TRIAL_LEVEL} mentors; target 40-70%)`);
 for (const h of content.hybrids.all()) {
-  trialRow(h.name, h.trial, () => [benchmarkMulticlass(h.classes[0], h.classes[1], 35, MULTICLASS.hybridLevel), benchmarkMulticlass(h.classes[1], h.classes[0], 35, MULTICLASS.hybridLevel)]);
+  const [a, b] = h.classes;
+  // Single-class hybrids (Sun Knight) need Apostleship and are left to the apostle tests.
+  if (!a || !b) continue;
+  trialRow(h.name, h.trial, () => [benchmarkMulticlass(a, b, 35, MULTICLASS.hybridLevel), benchmarkMulticlass(b, a, 35, MULTICLASS.hybridLevel)]);
+}
+
+// Trials of Apostleship: every class at level 35 against each god's three stages (fought at 35, 36 and 38).
+console.log('\nTrials of Apostleship (all classes at level 35; stages 1-2 target 60-90%, the Aspect 40-70%)');
+for (const g of content.pantheon.all()) {
+  const cells: string[] = [];
+  for (let stage = 1; stage <= 3; stage++) {
+    let wins = 0;
+    let fights = 0;
+    const rng = new Rng(stage * 31 + g.id.length);
+    for (let i = 0; i < TRIAL_FIGHTS; i++) {
+      for (const cls of content.classes.ids()) {
+        const hero = benchmarkHero(cls, 35);
+        const b = createEncounterBattle(hero, content.encounters.get(`apostle-trial-${g.id}-${stage}`), { rng, level: 35 + ([0, 1, 3][stage - 1] ?? 0) });
+        runAutoBattle(b);
+        fights++;
+        if (b.outcome === 'victory') wins++;
+      }
+    }
+    cells.push(`${((wins / Math.max(1, fights)) * 100).toFixed(1).padStart(6)}%`);
+  }
+  console.log(`${content.gods.get(g.id).name.padEnd(12)} ${cells.join('  ')}`);
 }

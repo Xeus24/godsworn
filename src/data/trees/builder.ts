@@ -259,3 +259,61 @@ export function withSpecs(tree: SkillTreeDef, specs: SpecBranchSpec[]): SkillTre
     nodes: [...tree.nodes, ...specs.flatMap((s) => buildSpecBranch(tree.classId, s))],
   };
 }
+
+// ---------------------------------------------------------------- apostle trees
+
+/** What an apostle tree needs from its god to generate its minor nodes. */
+export interface ApostleGodInfo {
+  id: string;
+  name: string;
+  element: string;
+  favoredStats: string[];
+}
+
+/** The hand-written part of an apostle tree: everything but the minor nodes. */
+export type ApostleSpec = Omit<BranchSpec, 'minors'>;
+
+/** Apostle trees gate at 3 points per tier (7 tiers deep with the Devotion lane). */
+export const APOSTLE_TIER_GATE = 3;
+
+/**
+ * An apostle tree: the standard 16-node branch (its 4 minors generated from
+ * the god's element and favored stats) plus a 4-node Devotion lane, 20 nodes
+ * in all. Its id is `apostle-<god>`.
+ */
+export function buildApostleTree(god: ApostleGodInfo, spec: ApostleSpec): SkillTreeDef {
+  const treeId = `apostle-${god.id}`;
+  const element = `${god.element}Damage` as StatId;
+  const s1 = (god.favoredStats[0] ?? 'fai') as StatId;
+  const s2 = (god.favoredStats[1] ?? s1) as StatId;
+  const minors: [MinorSpec, MinorSpec, MinorSpec, MinorSpec] = [
+    { name: `${god.name}'s Touch`, mods: [flat(element, 4)] },
+    { name: 'Devout', mods: [flat(s1, 2)] },
+    { name: 'Sacred Vigor', mods: [pct('maxHp', 2)] },
+    { name: 'Conviction', mods: [flat(s2, 2)] },
+  ];
+  const tree = buildTree(treeId, [{ ...spec, minors }]);
+  const id = (key: string): string => `${treeId}.${spec.id}.${key}`;
+  const lane = (key: string, tier: number, parents: string[], node: Pick<TreeNodeDef, 'kind' | 'name' | 'maxRank'> & Partial<TreeNodeDef>): TreeNodeDef => ({
+    id: id(key),
+    classId: treeId,
+    branch: spec.id,
+    tier,
+    lane: 4,
+    parents: parents.map(id),
+    x: 60 + 4 * LANE_W,
+    y: 70 + (tier - 1) * TIER_H,
+    ...node,
+  });
+  const devotion: TreeNodeDef[] = [
+    lane('d1', 1, [], { kind: 'minor', name: 'Divine Spark', maxRank: MINOR_RANKS, modifiers: [flat('divinePower', 4)] }),
+    lane('d2', 2, ['d1'], { kind: 'minor', name: 'Faithful Heart', maxRank: MINOR_RANKS, modifiers: [flat('fai', 2)] }),
+    lane('d3', 3, ['d2'], { kind: 'minor', name: 'Blessed', maxRank: MINOR_RANKS, modifiers: [flat('blessingPower', 5)] }),
+    lane('d4', 4, ['d3'], { kind: 'notable', name: `Chosen of ${god.name}`, maxRank: 1, text: 'Your Divine Avatar charges faster.', modifiers: [flat('ultimateGain', 15), flat('favorGain', 10)] }),
+  ];
+  return {
+    ...tree,
+    branches: tree.branches.map((b) => ({ ...b, tierGate: APOSTLE_TIER_GATE })),
+    nodes: [...tree.nodes, ...devotion],
+  };
+}

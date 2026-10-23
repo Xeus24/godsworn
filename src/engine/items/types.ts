@@ -212,8 +212,10 @@ export interface ItemRequirements {
   level?: number;
   stats?: Partial<PrimaryStats>;
   classes?: string[];
-  /** God-bound items need this devotion tier with the god (Phase 8). */
+  /** God-bound items need this devotion tier with the god. */
   favor?: { god: string; tier: string };
+  /** Divine weapons: only that god's Apostle may wield them (any class). */
+  apostleOf?: string;
 }
 
 /** Relics wake up after their owner completes a deed while wearing them. */

@@ -38,13 +38,14 @@ import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
 import { BLESSINGS } from './blessings';
 import { PANTHEON } from './pantheon';
 import { PUNISHER_SKILLS, PUNISHERS } from './punishers';
+import { APOSTLE_BLESSINGS, APOSTLE_TRIALS, APOSTLES, ASPECT_SKILLS, ASPECTS, DIVINE_WEAPONS, EDICTS } from './apostles';
 import { CLASS_TRIALS, HYBRIDS, MENTOR_SKILLS, MENTORS, TRIAL_ENCOUNTERS } from './multiclass';
 import { SONGS } from './songs';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS];
 
@@ -76,7 +77,7 @@ export const content = {
   rarities: new ContentTable('rarity', RARITY_DEFS),
   qualities: new ContentTable('quality', QUALITY_DEFS),
   items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL)]),
-  uniques: new ContentTable('unique item', UNIQUE_ITEMS),
+  uniques: new ContentTable('unique item', [...UNIQUE_ITEMS, ...DIVINE_WEAPONS]),
   itemSets: new ContentTable('item set', ITEM_SETS),
   runewords: new ContentTable('runeword', RUNEWORDS),
   affixes: new ContentTable('affix', AFFIXES),
@@ -87,16 +88,18 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...MENTORS, ...PUNISHERS]),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS]),
   summons: new ContentTable('summon', SUMMONS),
-  encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS]),
+  encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
   specializations: new ContentTable('specialization', SPECIALIZATIONS),
   generalSkills: new ContentTable('general skill', ALL_GENERAL),
   grimoires: new ContentTable('grimoire', GRIMOIRES),
   hybrids: new ContentTable('hybrid class', HYBRIDS),
   pantheon: new ContentTable('pantheon entry', PANTHEON),
-  blessings: new ContentTable('blessing', BLESSINGS),
+  blessings: new ContentTable('blessing', [...BLESSINGS, ...APOSTLE_BLESSINGS]),
+  apostles: new ContentTable('apostle', APOSTLES.map((a) => ({ ...a, id: a.god }))),
+  edicts: new ContentTable('edict', EDICTS),
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
 };
 
@@ -344,8 +347,19 @@ export function validateContent(c: Content = content): void {
     checkEffects(v, c, p.prayer.effects, `${where} prayer`);
     checkEffects(v, c, p.intervention.effects, `${where} intervention`);
     v.check(c.blessings.filter((b) => b.god === p.id && b.kind === 'minor').length === 3, `${where}: needs 3 minor blessings`);
-    v.check(c.blessings.filter((b) => b.god === p.id && b.kind === 'major').length === 6, `${where}: needs 6 major blessings`);
+    v.check(c.blessings.filter((b) => b.god === p.id && b.kind === 'major' && b.rarity !== 'divine').length === 6, `${where}: needs 6 major blessings (plus its Divine one)`);
     v.ref(c.enemies, `punisher-${p.id}`, where);
+    const apostle = c.apostles.find(p.id);
+    v.check(apostle !== undefined, `${where}: no apostleship`);
+    if (apostle) {
+      v.check(c.skills.find(apostle.avatar)?.ultimate === true, `${where}: avatar must be an ultimate`);
+      const tree = c.trees.find(`apostle-${p.id}`);
+      v.check(tree !== undefined && tree.nodes.length >= 20 && tree.nodes.length <= 25, `${where}: needs a 20-25 node apostle tree`);
+      for (let st = 1; st <= 4; st++) v.ref(c.uniques, `divine-weapon-${p.id}-${st}`, where);
+      for (let st = 1; st <= 3; st++) v.ref(c.encounters, `apostle-trial-${p.id}-${st}`, where);
+      v.ref(c.blessings, `${p.id}-divine`, where);
+      v.check(c.edicts.filter((e) => e.god === p.id).length > 0, `${where}: no edicts`);
+    }
   }
   for (const g of c.gods.all()) v.check(g.hidden === true || c.pantheon.has(g.id), `god ${g.id}: no pantheon entry`);
   for (const b of c.blessings.all()) {
@@ -368,7 +382,9 @@ export function validateContent(c: Content = content): void {
   for (const h of c.hybrids.all()) {
     const where = `hybrid ${h.id}`;
     for (const cls of h.classes) v.ref(c.classes, cls, where);
-    v.check(h.classes[0] !== h.classes[1], `${where}: needs two different classes`);
+    v.check(h.classes.length >= 1 && h.classes.length <= 2 && new Set(h.classes).size === h.classes.length, `${where}: needs one or two different classes`);
+    if (h.requires?.specialization) v.ref(c.specializations, h.requires.specialization, where);
+    if (h.requires?.apostleOf) v.ref(c.gods, h.requires.apostleOf, where);
     v.ref(c.encounters, h.trial, where);
     const tree = c.trees.find(h.id);
     v.check(tree !== undefined && tree.nodes.length >= 15 && tree.nodes.length <= 20, `${where}: needs a 15-20 node tree`);

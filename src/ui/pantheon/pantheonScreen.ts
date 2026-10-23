@@ -3,12 +3,16 @@ import { DEVOTION } from '../../data/devotion';
 import type { PantheonDef } from '../../data/pantheon';
 import { activeMinors, blessingSlotCount, isActive } from '../../engine/gods/blessings';
 import { interventionChance, interveningGod } from '../../engine/gods/combat';
-import { atLeast, favorOf, goldOfferingFavor, itemOfferingFavor, tierFor, tierName, tierProgress } from '../../engine/gods/devotion';
+import { atLeast, favorOf, goldOfferingFavor, itemOfferingFavor, tierName, tierOf, tierProgress } from '../../engine/gods/devotion';
 import type { BlessingDef } from '../../engine/gods/types';
 import { characterBaseStats } from '../../engine/character/stats';
 import { itemValue } from '../../engine/items/itemStats';
 import { itemName } from '../../engine/items/naming';
 import type { GameSession } from '../../engine/state/gameState';
+import { WEAPON_STAGES } from '../../data/apostles';
+import type { EncounterDef } from '../../engine/combat/types';
+import { apostleTreeId, canAscend, canAttemptTrial, currentEdict, trialEncounterId, trialLevel, weaponStage } from '../../engine/gods/apostle';
+import { availablePoints } from '../../engine/skills/tree';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { el, type Screen } from '../screen';
@@ -26,10 +30,12 @@ export class PantheonScreen implements Screen {
   private selected: string;
   private message = '';
   private goldAmount = 100;
+  private confirmRenounce = false;
 
   constructor(
     private readonly session: GameSession,
     private readonly nav: Nav,
+    private readonly fight: (encounter: EncounterDef, level?: number) => void,
   ) {
     this.selected = session.player.devotion.patron ?? content.pantheon.all()[0]?.id ?? 'solenne';
   }
@@ -59,7 +65,7 @@ export class PantheonScreen implements Screen {
 
   private favorBar(god: string): HTMLElement {
     const favor = favorOf(this.session.player, god);
-    const tier = tierFor(favor);
+    const tier = tierOf(this.session.player, god);
     return el(
       'div',
       { class: `bar favor-bar tier-${tier}` },
@@ -72,7 +78,7 @@ export class PantheonScreen implements Screen {
     const p = this.session.player;
     const cards = content.pantheon.all().map((g) => {
       const god = content.gods.get(g.id);
-      const tier = tierFor(favorOf(p, g.id));
+      const tier = tierOf(p, g.id);
       const offer = p.devotion.offers[g.id] ? el('span', { class: 'badge gold' }, 'Blessing!') : '';
       const card = el(
         'button',
@@ -219,6 +225,7 @@ export class PantheonScreen implements Screen {
         ),
       );
     }
+    panel.append(...this.apostleSection(g.id));
     const scripture = content.generalSkills.all().find((x) => x.god === g.id);
     if (scripture) {
       panel.append(
@@ -228,6 +235,65 @@ export class PantheonScreen implements Screen {
       );
     }
     return panel;
+  }
+
+  /** Trial of Apostleship (from Exalted), ascension, and the Apostle's duties and apostasy. */
+  private apostleSection(god: string): HTMLElement[] {
+    const s = this.session;
+    const p = s.player;
+    const name = content.gods.get(god).name;
+    const apostle = p.devotion.apostle;
+    if (apostle?.god === god) {
+      const def = content.apostles.get(god);
+      const avatar = content.skills.get(def.avatar);
+      const edict = currentEdict(p);
+      const e = apostle.edict;
+      const weapon = def.weapon.names[weaponStage(p.level) - 1];
+      const renounce = this.btn(this.confirmRenounce ? 'Click again: renounce forever?' : 'Renounce (apostasy)', () => {
+        if (!this.confirmRenounce) {
+          this.confirmRenounce = true;
+          this.render();
+          return;
+        }
+        this.confirmRenounce = false;
+        this.say(s.devotion.renounce());
+      }, false, 'danger');
+      return [
+        el('h3', {}, `Apostle of ${name}`),
+        el('p', { class: 'small' }, `Divine Avatar: ${avatar.name}. ${avatar.description} (once per battle, uses the Ultimate gauge)`),
+        el('p', { class: 'small' }, `Divine weapon: ${weapon}. It evolves at levels ${WEAPON_STAGES.slice(1).map((st) => st.level).join(', ')}.`),
+        el('p', { class: 'small' }, `Apostle tree: ${availablePoints(p, apostleTreeId(god))} point(s) to spend in the Skills screen.`),
+        el('h3', {}, 'Divine Edict'),
+        edict && e
+          ? el('div', { class: `edict${apostle.neglected ? ' neglected' : ''}` }, el('b', {}, edict.text), el('div', { class: 'small' }, `Progress ${e.progress}/${edict.count} · ${e.battlesLeft} battle${e.battlesLeft === 1 ? '' : 's'} left · ${apostle.edictsDone} fulfilled`), ...(apostle.neglected ? [el('div', { class: 'tip-bad small' }, 'Neglected: apostle passives at 75% until you fulfil an edict.')] : []))
+          : el('p', { class: 'dim small' }, 'No edict right now.'),
+        el('p', { class: 'dim small' }, `Fulfilling an edict earns favor and gold; ignoring one costs favor and weakens your apostle powers. Renouncing ${name} makes them Hated, stores your weapon and apostle tree, and their heralds will hunt you.`),
+        renounce,
+      ];
+    }
+    if (!atLeast(p, god, 'exalted') && (p.devotion.trialStage[god] ?? 0) === 0) {
+      return [el('h3', {}, 'Trial of Apostleship'), el('p', { class: 'dim small' }, `Reach Exalted favor (${DEVOTION.tierFloors.exalted}) to face ${name}'s trial and become their Apostle.`)];
+    }
+    const done = p.devotion.trialStage[god] ?? 0;
+    const stages = [1, 2, 3].map((stage) => {
+      const enc = content.encounters.get(trialEncounterId(god, stage));
+      const check = canAttemptTrial(p, god, stage);
+      const level = trialLevel(p, stage);
+      return el(
+        'div',
+        { class: `trial-stage${stage <= done ? ' done' : ''}` },
+        el('b', {}, enc.name),
+        el('div', { class: 'dim small' }, `${enc.description} (level ${level})`),
+        stage <= done ? el('span', { class: 'enc-tag ok' }, 'Complete') : this.btn('Fight', () => this.fight(enc, level), !check.ok, 'primary'),
+      );
+    });
+    const ascend = canAscend(p, god);
+    return [
+      el('h3', {}, 'Trial of Apostleship'),
+      el('p', { class: 'dim small' }, `Three stages, fought at your level. Apostles gain a 20-node apostle tree, a Divine Avatar, a god-bound weapon, a Divine blessing (with its own slot) and a title. You may serve only one god as Apostle.`),
+      el('div', { class: 'trial-grid' }, ...stages),
+      ...(done >= 3 ? [this.btn(`Ascend as Apostle of ${name}`, () => this.say(s.devotion.ascend(god)), !ascend.ok, 'primary'), ...(!ascend.ok ? [el('div', { class: 'dim small' }, ascend.reason)] : [])] : []),
+    ];
   }
 
   render = (): void => {

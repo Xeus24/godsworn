@@ -31,3 +31,22 @@ export const DEVOTION = {
   offerTiers: ['acknowledged', 'favored', 'devoted', 'exalted'] as DevotionTier[],
   offerSize: 3,
 } as const;
+
+/** Apostleship numbers. */
+export const APOSTLESHIP = {
+  /** Trial of Apostleship: three stages fought at max(minLevel, your level) + offset. */
+  trialMinLevel: 30,
+  trialLevelOffsets: [0, 1, 3],
+  /** Apostle tree points: base + 1 per character level after ascension + 1 per 2 paragon levels. */
+  basePoints: 10,
+  /** Apostles get one extra blessing slot (for their Divine blessing). */
+  extraBlessingSlots: 1,
+  /** Divine Edicts: completing one gives favor and gold (x level); failing costs favor and weakens apostle passives. */
+  edictFavor: 40,
+  edictGoldPerLevel: 25,
+  edictPenalty: 30,
+  neglectMultiplier: 0.75,
+  /** Apostasy: the old god becomes Hated and its heralds hunt you this many battles, at this chance. */
+  huntBattles: 15,
+  huntChance: 0.5,
+} as const;

@@ -341,6 +341,24 @@ export class CombatScene {
     g.ellipse(cx, cy + 2, size * 0.38, 7, 0, 0, Math.PI * 2);
     g.fill();
 
+    // Divine Avatar: a pulsing halo in the god's color behind the hero.
+    const avatar = x.buffs.find((bf) => bf.id.startsWith('avatar:'));
+    if (avatar && x.alive) {
+      const god = content.gods.find(avatar.id.slice('avatar:'.length));
+      const pulse = 0.55 + 0.25 * Math.sin(performance.now() / 180);
+      const glow = g.createRadialGradient(cx, top + size / 2, size * 0.2, cx, top + size / 2, size * 0.95);
+      glow.addColorStop(0, `${god?.color ?? '#ffd54a'}cc`);
+      glow.addColorStop(1, `${god?.color ?? '#ffd54a'}00`);
+      g.globalAlpha = pulse;
+      g.fillStyle = glow;
+      g.fillRect(cx - size, top - size / 2, size * 2, size * 2);
+      g.globalAlpha = 1;
+      g.strokeStyle = god?.color ?? '#ffd54a';
+      g.lineWidth = 2;
+      g.beginPath();
+      g.ellipse(cx, top - 8, size * 0.32, 6, 0, 0, Math.PI * 2);
+      g.stroke();
+    }
     if (x.portrait) {
       const img = portraitCanvas(x.portrait.raceId, x.portrait.variant, x.portrait.color);
       g.fillStyle = x.portrait.color;

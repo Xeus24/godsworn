@@ -5,7 +5,8 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { content } from '../src/data';
-import { DEVOTION } from '../src/data/devotion';
+import { WEAPON_STAGES } from '../src/data/apostles';
+import { APOSTLESHIP, DEVOTION } from '../src/data/devotion';
 import { MULTICLASS } from '../src/data/progression';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
@@ -58,7 +59,7 @@ function itemsSection(): string {
   uniqueTable('legendary', 'Legendaries');
   uniqueTable('mythic', 'Mythics');
   uniqueTable('relic', 'Relics');
-  uniqueTable('divine', 'Divine items');
+  uniqueTable('divine', 'Divine items (favor-gated drops, plus each god-bound weapon stage)');
 
   out.push(`### Item sets (${content.itemSets.size})`, '');
   for (const set of content.itemSets.all()) {
@@ -238,7 +239,26 @@ function godsSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection };
+function apostlesSection(): string {
+  const out: string[] = [];
+  out.push(`Exalted favor plus the god's three-stage Trial of Apostleship (two rounds of heralds, then the god's Aspect, fought at max(${APOSTLESHIP.trialMinLevel}, your level) + 0/1/3) make you its Apostle. One god at a time. Apostles get a 20-node tree (${APOSTLESHIP.basePoints} points + 1 per level after ascension), a Divine Avatar (an ultimate, once per battle), a god-bound weapon that evolves at levels ${WEAPON_STAGES.slice(1).map((s) => s.level).join('/')}, a Divine blessing in an extra slot, a title and Divine Edicts. Apostasy makes the god Hated and its heralds hunt you for ${APOSTLESHIP.huntBattles} battles.`, '');
+  out.push('| God | Divine Avatar | Divine weapon (stages) | Divine blessing | Tree skills | Keystone / capstone |', '|---|---|---|---|---|---|');
+  for (const a of content.apostles.all()) {
+    const god = content.gods.get(a.god);
+    const avatar = content.skills.get(a.avatar);
+    const blessing = content.blessings.get(`${a.god}-divine`);
+    const nodes = content.trees.get(`apostle-${a.god}`).nodes;
+    const skills = nodes.filter((n) => n.kind === 'active').map((n) => `**${n.name}**: ${content.skills.get(n.skill as string).description}`).join('<br>');
+    const k = nodes.find((n) => n.kind === 'keystone');
+    const cap = nodes.find((n) => n.kind === 'capstone');
+    out.push(`| **${god.name}** | **${avatar.name}**: ${cell(avatar.description)} | ${a.weapon.names.join(' → ')} (${content.weaponTypes.get(a.weapon.type).name}) | **${blessing.name}**: ${cell(blessing.description)} | ${cell(skills)} | ${cell(`${k?.text ?? k?.name ?? ''} / ${cap?.name ?? ''}${cap?.text ? `: ${cap.text}` : ''}`)} |`);
+  }
+  out.push('', `### Divine Edicts (${content.edicts.size})`, '', 'Each like of your god becomes an edict: do it a number of times within 20 battles. Fulfilled: +' + APOSTLESHIP.edictFavor + ' favor and gold. Ignored: -' + APOSTLESHIP.edictPenalty + ' favor and apostle passives at ' + APOSTLESHIP.neglectMultiplier * 100 + '% until the next edict is fulfilled.', '');
+  for (const g of content.pantheon.all()) out.push(`- **${content.gods.get(g.id).name}:** ${content.edicts.filter((e) => e.god === g.id).map((e) => e.text).join('; ')}`);
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

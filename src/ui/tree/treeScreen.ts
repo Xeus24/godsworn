@@ -13,7 +13,9 @@ import {
   treeOf,
   treeState,
 } from '../../engine/skills/tree';
+import { APOSTLESHIP } from '../../data/devotion';
 import { MULTICLASS } from '../../data/progression';
+import { APOSTLE_TIER_GATE } from '../../data/trees/builder';
 import { chosenSpec, SPEC_LEVEL, specChangeCost, specializationsFor } from '../../engine/skills/specs';
 import type { SkillTreeDef, TreeNodeDef } from '../../engine/skills/treeTypes';
 import type { GameSession } from '../../engine/state/gameState';
@@ -237,7 +239,12 @@ export class TreeScreen implements Screen {
   private sidebar(tree: SkillTreeDef): HTMLElement {
     const p = this.session.player;
     const st = treeState(p, this.classId);
-    const tabs = [...p.classes.map((cp) => [cp.classId, content.classes.get(cp.classId).name] as const), ...p.hybrids.map((id) => [id, `${content.hybrids.get(id).name} ✧`] as const)];
+    const apostle = p.devotion.apostle;
+    const tabs = [
+      ...p.classes.map((cp) => [cp.classId, content.classes.get(cp.classId).name] as const),
+      ...p.hybrids.map((id) => [id, `${content.hybrids.get(id).name} ✧`] as const),
+      ...(apostle ? [[`apostle-${apostle.god}`, `Apostle of ${content.gods.get(apostle.god).name} ✦`] as const] : []),
+    ];
     const classTabs = tabs.map(([id, name]) => {
       const b = el('button', { class: `tab${id === this.classId ? ' active' : ''}` }, name);
       b.addEventListener('click', () => {
@@ -279,7 +286,8 @@ export class TreeScreen implements Screen {
       'section',
       { class: 'panel tree-side' },
       el('div', { class: 'tabs' }, ...classTabs),
-      el('div', { class: pts > 0 ? 'points-available' : 'dim' }, `${pts} ${hybrid ? 'hybrid' : 'skill'} point${pts === 1 ? '' : 's'} available`),
+      el('div', { class: pts > 0 ? 'points-available' : 'dim' }, `${pts} ${hybrid ? 'hybrid' : this.classId.startsWith('apostle-') ? 'apostle' : 'skill'} point${pts === 1 ? '' : 's'} available`),
+      ...(this.classId.startsWith('apostle-') ? [el('p', { class: 'dim small' }, `Apostle points: ${APOSTLESHIP.basePoints} on ascension, +1 per level after, +1 per 2 paragon levels. Tiers need ${APOSTLE_TIER_GATE} points each.${p.devotion.apostle?.neglected ? ' Neglected edict: passives at 75%.' : ''}`)] : []),
       ...(progress && progress.slot !== 'primary' ? [el('div', { class: 'small' }, `${masteryPointsLeft(p, this.classId)} Mastery Point(s): secondary-class keystones and capstones each need one (1 per ${MULTICLASS.masteryPointEvery} class levels).`)] : []),
       ...(hybrid ? [el('p', { class: 'dim small' }, `${hybrid.description} Points: ${MULTICLASS.hybridBasePoints} on unlock, +1 per ${MULTICLASS.hybridLevelsPerPoint} combined ${hybrid.classes.map((id) => content.classes.get(id).name).join('/')} levels above ${MULTICLASS.hybridLevel}. Tiers need ${MULTICLASS.hybridTierGate} points each.`)] : []),
       el('p', { class: 'dim small' }, 'Double-click or shift-click to learn. Right-click to refund. Drag to pan, scroll to zoom.'),

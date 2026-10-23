@@ -1,5 +1,5 @@
 import type { EffectSpec, TriggeredEffect } from '../effects/types';
-import type { RarityId } from '../items/types';
+import type { ItemInstance, RarityId } from '../items/types';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { Element } from '../stats/types';
 
@@ -106,4 +106,45 @@ export interface Devotion {
   offeredTier: Record<string, number>;
   /** Divine Intervention recharges when you rest. */
   interventionReady: boolean;
+  /** Apostle trial stages won per god (0-3). */
+  trialStage: Record<string, number>;
+  /** The god you are Apostle of, if any. */
+  apostle?: ApostleState;
+  /** Divine weapons of renounced gods, kept in case you return. */
+  reliquary: ItemInstance[];
+  /** After apostasy, the old god's heralds hunt you for a number of battles. */
+  hunt?: { god: string; battles: number };
+  /** Permanent titles (e.g. "Apostle of Solenne"). */
+  titles: string[];
+}
+
+/** Being a god's Apostle. */
+export interface ApostleState {
+  god: string;
+  /** Character level at ascension (apostle points grow from here). */
+  level: number;
+  /** The current Divine Edict, if any. */
+  edict?: { id: string; progress: number; battlesLeft: number };
+  edictsDone: number;
+  /** An ignored edict weakens apostle passives until the next one is completed. */
+  neglected: boolean;
+}
+
+/** What Apostleship of a god gives: avatar, weapon, Divine blessing and edicts. */
+export interface ApostleDef {
+  god: string;
+  /** The Divine Avatar skill (an ultimate usable once per battle). */
+  avatar: string;
+  /** God-bound weapon: base weapon type and one name per evolution stage. */
+  weapon: { type: string; names: [string, string, string, string]; lore: string };
+}
+
+/** A Divine Edict: do one of your god's likes a number of times within some battles. */
+export interface EdictDef {
+  id: string;
+  god: string;
+  text: string;
+  deed: FavorDeed;
+  count: number;
+  battles: number;
 }

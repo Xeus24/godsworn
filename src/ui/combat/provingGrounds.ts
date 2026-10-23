@@ -45,7 +45,7 @@ export class ProvingGroundsScreen implements Screen {
     rest.disabled = p.hp >= stats.maxHp && p.mp >= stats.maxMp && !p.generalSlots.includes('camping');
     rest.addEventListener('click', () => s.general.rest());
 
-    const cards = content.encounters.filter((enc) => !isTrialEncounter(enc.id)).map((enc) => {
+    const cards = content.encounters.filter((enc) => !isTrialEncounter(enc.id) && !enc.id.startsWith('apostle-trial-')).map((enc) => {
       const diff = enc.level - p.level;
       const tag = diff >= 3 ? ['Deadly', 'danger'] : diff >= 1 ? ['Hard', 'warn'] : diff <= -4 ? ['Trivial', 'dim'] : ['Fair', 'ok'];
       const fightBtn = el('button', { class: 'primary' }, 'Fight');

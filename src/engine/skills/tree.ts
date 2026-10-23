@@ -3,7 +3,7 @@ import type { Character } from '../character/types';
 import type { TriggeredEffect } from '../effects/types';
 import type { Modifier } from '../stats/modifiers';
 import { MULTICLASS } from '../../data/progression';
-import { earnedTreePoints, masteryPointsEarned, needsMasteryPoint, ownedTreeIds, ownsTree } from './treeOwners';
+import { earnedTreePoints, masteryPointsEarned, needsMasteryPoint, ownedTreeIds, ownsTree, treePassiveMultiplier } from './treeOwners';
 import { BUILD_SLOTS, HOTBAR_SIZE, type ClassTreeState, type SkillPatch, type SkillTreeDef, type TreeBuild, type TreeNodeDef } from './treeTypes';
 
 /** Points that must be spent in a branch per tier: tier t needs (t - 1) x 5. */
@@ -281,7 +281,8 @@ function eachAllocated(char: Character, c: Content, fn: (node: TreeNodeDef, rank
 export function treeModifiers(char: Character, c: Content = content): Modifier[] {
   const out: Modifier[] = [];
   eachAllocated(char, c, (node, rank) => {
-    for (const m of node.modifiers ?? []) out.push({ ...m, value: m.value * rank, source: `tree:${node.id}` });
+    const mult = treePassiveMultiplier(char, node.classId);
+    for (const m of node.modifiers ?? []) out.push({ ...m, value: m.value * rank * mult, source: `tree:${node.id}` });
   });
   return out;
 }

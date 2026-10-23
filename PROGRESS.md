@@ -12,8 +12,8 @@
 | 6 | Specializations, general skills, skillbooks | **Done** |
 | 7 | Multiclassing, hybrid prestige classes | **Done** |
 | 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | **Done** |
-| 9 | Apostleship | Next |
-| 10 | Overworld, zones, towns, day/night, weather, factions, housing | |
+| 9 | Apostleship | **Done** |
+| 10 | Overworld, zones, towns, day/night, weather, factions, housing | Next |
 | 11 | Economy | |
 | 12 | Quests, dialogue, main story, companions | |
 | 13 | Bosses, elites, bestiary, achievements, codex | |
@@ -286,6 +286,31 @@
   - In battle: a Pray button (and the P key), plus favor changes on the result screen. Favor toasts and tier-change warnings.
 - 290 unit tests.
 
+### Phase 9: apostleship
+- **Trial of Apostleship:** from Exalted favor, three stages per god, each fought at max(30, your level) plus 0/1/3:
+  - the Ordeal: three of the god's heralds
+  - the Gauntlet: four heralds
+  - the Aspect: the god in person, a boss you cannot flee
+- **Ascension:** after the trial you may become that god's **Apostle**, one god at a time. You get:
+  - the **Apostle** devotion tier and the permanent title "Apostle of X"
+  - an **apostle tree**, independent of class (20 nodes: the standard 16-node branch plus a 4-node Devotion lane). Points: 10, +1 per character level after ascension, +1 per 2 paragon levels. Tiers need 3 points each.
+  - a **Divine Avatar**: a second ultimate, usable once per battle, that transforms you for 3 turns (a halo in the god's color) and unleashes the god on every enemy
+  - a **god-bound divine weapon** that any class can wield (only its Apostle may). It evolves at levels 30, 45 and 60 into four named stages, keeping its sockets and upgrades.
+  - a **Divine-rarity blessing** with its own extra slot
+  - **Divine Edicts:** your god's likes become orders, such as "Smiting the undead: 4 times" within 20 battles. Fulfilling one earns favor and gold. Ignoring one costs favor and weakens apostle passives to 75% until the next is fulfilled.
+- **Apostasy:** renouncing makes the god Hated, stores your weapon in a reliquary and your apostle tree (kept, not owned), and silences its Divine blessing. Its heralds hunt you in half your fights for 15 battles. Returning to a god later restores the stored weapon.
+- **Content:**
+  - 10 apostle trees with 20 apostle skills and 10 Divine Avatars
+  - 40 divine weapon stages, 10 Divine blessings, 10 Aspect bosses with 10 Judgement skills
+  - 30 trial fights and 31 edicts (generated from the gods' likes)
+- **Sun Knight**, the 13th hybrid: a Warrior with the Paladin specialization who is Apostle of Solenne. Hybrids can now need one class plus a specialization or Apostleship.
+- **UI:**
+  - Pantheon: trial stage cards (fought from there, scaled to your level), the Ascend button, and an Apostle panel with the avatar, weapon, points, current edict and a two-click Renounce. God cards show "Apostle".
+  - Skills: the apostle tree tab (✦).
+  - In battle: the Avatar as a second ★ ultimate, with its halo.
+- `npm run sim` reports trial win rates for every god: Ordeal 85–99%, Gauntlet 62–85%, Aspect 58–78% for level-35 benchmark heroes.
+- 304 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -338,13 +363,18 @@
 - **The 12th spec node is a shared "Signature Mastery"** (+8% Ultimate Charge per rank, 3 ranks). It ties each branch to its new ultimate without inventing 24 more unique minors.
 - **The Library is reached from the inventory** until towns exist (Phase 10), which then move it to town Libraries.
 - **Balance after Phase 6:** 96.6% average wins (the encounters only reach level 15, so specializations do not show up there yet). Spec balance needs the higher-level zones of Phase 10; the full pass is Phase 16.
+- **Apostle trees are class-independent** and scale mostly with Divine Power (FAI), so any class can serve any god. The Devotion lane (Divine Power, FAI, Blessing Power, then Ultimate Charge for the Avatar) is shared; each tree's minors come from its god's element and favored stats.
+- **The Divine Avatar shares the Ultimate gauge** (the spec: the gauge "enables class ultimates or the Divine Avatar"): using either empties it, and the Avatar works once per battle.
+- **Divine weapons ignore class weapon rules** (they are god-bound): a mage Apostle of Kael can swing his greatsword.
+- **Edicts reuse the gods' likes** (1–20 repetitions, about 12 favor's worth of the deed) and last 20 battles, rather than in-game days, until the overworld makes days meaningful.
+- **Trials scale to the hero** (never below level 30), so Exalted favor reached early is not a dead end, and the trial stays a challenge late.
 - **Rival penalty is 10%, not more.** The spec says rival gods dislike your devotion to their enemy. At 25% a single god at Favored left its rival Hated (and sending punishers), which made any devotion a trap. At 10% a rival turns Hated only around Exalted.
 - **Major blessing offers:** each god's six are 3 uncommon (Acknowledged), 1 rare (Favored), 1 epic (Devoted) and 1 legendary (Exalted), so each offer always holds 3 options (unchosen ones return in later offers). "Permanent while Devoted" is read as "active while you keep the tier it needs".
 - **Blessing Power uses base FAI** (FAI × 1%) to scale blessings, so blessings never feed back into the stat that sizes them.
 - **Prayer costs 15 favor** and is limited to 3 per battle, so it is a real spend rather than a free spell.
 - **Favor is kept to one decimal** so small per-battle likes (0.25–1) still add up.
 - **Trials instead of trial quests (for now).** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor at the Proving Grounds. Phase 12 can wrap these fights in quests without changing the unlock rules.
-- **12 hybrids, all class pairs.** The spec asks for at least 10 and lists a Paladin + Apostle of the Sun hybrid (Sun Knight); that one needs apostleship and is deferred to Phase 9.
+- **12 class-pair hybrids, plus the Sun Knight.** The spec asks for at least 10. The Sun Knight (Warrior with the Paladin specialization + Apostle of Solenne) arrived with apostleship in Phase 9; hybrids can now require a specialization or an Apostleship.
 - **A hybrid tree is one standard 16-node branch** (the same template as class branches), inside the spec's 15–20 range. It gates at 3 points per tier so its capstone is reachable at about 15 points.
 - **Hybrid points come from both classes' levels above 25**, so a hybrid grows with the pair rather than with either class alone, and needs no separate XP track.
 - **Mastery Points: 1 per 10 levels of the non-primary class.** A secondary class at 60 can take up to 6 keystones and capstones. The spec does not give a rate.
@@ -357,7 +387,7 @@
 - None known.
 
 ## Cut / deferred
-- **Titles** (section 8) move to Phase 13. They are earned from feats and achievements, which land there.
+- **Titles** (section 8) move to Phase 13 with feats and achievements. Apostle titles are already earned and stored (and shown on the Pantheon); the title display and other titles come then.
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
 - **The Dwarf crafting discount** takes effect with crafting (Phase 11).
@@ -367,12 +397,12 @@
 - **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
 - **The stash is reachable from anywhere** until towns exist (Phase 10), which then restricts it to towns.
-- **Sun Knight** (Paladin specialization + Apostle of the Sun god) arrives with apostleship in Phase 9.
 - **Class trainers in towns and trial quests:** the trainers live at the Proving Grounds until towns arrive (Phase 10), and the trial fights become short quests in Phase 12.
 - **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
 - **Mid-level balance** (levels 15–40, where multiclassing and hybrid trials happen) waits for the zones and encounters of Phase 10; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 because the auto-battler spends turns on a level-1 mage's spells.
 - **Forbidden** general skills arrive with heresies in Phase 14 (the category already exists).
-- **Apostleship** (Exalted + trial, apostle trees, Divine Avatar, divine weapons, edicts, apostasy) is Phase 9. **Divine-rarity blessings** come only from apostleship, so none exist yet.
+- **Apostle followers, temple quests, pantheon politics and story branches by god** need towns, NPCs and quests (Phases 10, 12 and 14). The Trial of Apostleship is three fights for now; Phase 12 can wrap it in a questline with the same unlock rule.
+- **Two apostles at once** (Defender path, NG+3+) comes with Twilight of the Gods in Phase 14.
 - **Temples, temple merchants and temple discounts** need towns (Phase 10) and shops (Phase 11). Until then every god's shrine is reached from the Pantheon screen, and the 30-minute prayer stands in for travel.
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
 - **God quests and pantheon politics** (world events, god-specific story chapters) come with quests and the story (Phases 12 and 14). **The Nameless One** is discovered in NG+ (Phase 14).
@@ -381,4 +411,4 @@
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 9: apostleship. Exalted favor plus each god's Trial of Apostleship makes you its Apostle (one at a time). Apostles get a 20–25 node apostle tree, a Divine Avatar form, a divine weapon that evolves at levels 30/45/60, Divine-rarity blessings, Divine Edicts, and apostasy. Sun Knight (Paladin + Apostle of Solenne) arrives too.
+- Phase 10: the overworld. 8 zones (Meadowlands to the Dark Citadel) with their own enemies, dungeons, world bosses and god shrines; towns with services (trainers, temples, Library, stash); the day/night cycle and weather affecting encounters; 4–5 factions with reputation; and player housing. After Phase 10 is committed, `main` is pushed to GitHub.

@@ -1,6 +1,6 @@
 import { content, type Content } from '../../data';
 import { DERIVED_FORMULAS } from '../../data/balance';
-import { DEVOTION } from '../../data/devotion';
+import { APOSTLESHIP, DEVOTION } from '../../data/devotion';
 import type { Character, TimedBuff } from '../character/types';
 import type { Rng } from '../core/rng';
 import type { TriggeredEffect } from '../effects/types';
@@ -12,9 +12,9 @@ import type { BlessingDef } from './types';
 export type BlessingResult = { ok: true } | { ok: false; reason: string };
 const fail = (reason: string): BlessingResult => ({ ok: false, reason });
 
-/** Major blessing slots: 1, plus one at each level in DEVOTION.blessingSlotLevels. */
+/** Major blessing slots: 1, plus one at each level in DEVOTION.blessingSlotLevels, plus one for an Apostle. */
 export function blessingSlotCount(char: Character): number {
-  return 1 + DEVOTION.blessingSlotLevels.filter((l) => char.level >= l).length;
+  return 1 + DEVOTION.blessingSlotLevels.filter((l) => char.level >= l).length + (char.devotion.apostle ? APOSTLESHIP.extraBlessingSlots : 0);
 }
 
 /** Whether a slotted major blessing is active: its god's tier must still meet its minimum. */

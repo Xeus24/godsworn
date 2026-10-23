@@ -124,3 +124,37 @@
 .result-favor span {
   font-weight: bold;
 }
+
+.trial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 6px;
+}
+
+.trial-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #4a3a5a;
+  border-radius: 6px;
+}
+
+.trial-stage.done {
+  opacity: 0.6;
+}
+
+.edict {
+  padding: 6px 8px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+}
+
+.edict.neglected {
+  border-color: #e0503a;
+}
+
+button.danger {
+  border-color: #e0503a;
+  color: #ff8a7a;
+}

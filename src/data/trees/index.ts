@@ -7,6 +7,7 @@ import { MONK_SKILLS, MONK_TREE } from './monk';
 import { NECROMANCER_SKILLS, NECROMANCER_TREE } from './necromancer';
 import { RANGER_SKILLS, RANGER_TREE } from './ranger';
 import { ROGUE_SKILLS, ROGUE_TREE } from './rogue';
+import { APOSTLE_SKILLS, APOSTLE_TREES } from '../apostles';
 import { MULTICLASS } from '../progression';
 import { buildTree, withSpecs, type BranchSpec, type SpecBranchSpec } from './builder';
 import { CUNNING_HYBRID_BRANCHES, CUNNING_HYBRID_SKILLS } from './hybridsCunning';
@@ -30,6 +31,7 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...ARCANE_SPEC_SKILLS,
   ...MARTIAL_HYBRID_SKILLS,
   ...CUNNING_HYBRID_SKILLS,
+  ...APOSTLE_SKILLS,
 ];
 
 const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES };
@@ -48,6 +50,7 @@ const HYBRID_TREES: SkillTreeDef[] = Object.entries(HYBRID_BRANCHES).map(([id, b
 });
 
 const RAW_TREES: SkillTreeDef[] = [
+  ...APOSTLE_TREES,
   ...[WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE].map((t) => withSpecs(t, SPEC_BRANCHES[t.classId] ?? [])),
   ...HYBRID_TREES,
 ];

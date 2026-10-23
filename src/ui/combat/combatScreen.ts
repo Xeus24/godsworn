@@ -391,10 +391,10 @@ export class CombatScreen implements Screen {
       b.classList.add('hotbar-btn');
       return b;
     });
-    const ultimate = options.find((o) => o.skill.ultimate);
+    const ultimates = options.filter((o) => o.skill.ultimate && o.check.ok);
     node.replaceChildren(
       title,
-      el('div', { class: 'cmd-hotbar' }, ...hotbarButtons, ...(ultimate && ultReady ? [btn(`\u2605 ${ultimate.skill.name}`, () => this.useSkillOption(x, ultimate))] : [])),
+      el('div', { class: 'cmd-hotbar' }, ...hotbarButtons, ...(ultReady ? ultimates.map((u) => btn(`\u2605 ${u.skill.name}`, () => this.useSkillOption(x, u))) : [])),
       el(
         'div',
         { class: 'cmd-grid' },

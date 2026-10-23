@@ -75,6 +75,8 @@ In battle:
 
 **Gods (P):** ten gods judge what you do. Each likes and dislikes certain deeds (slaying undead, fleeing, reading books, healing...), which you discover as they trigger, and gaining favor with a god annoys its rival. At each god's shrine you can pray once a day, make offerings of gold or items, buy minor blessings with favor, and pick a **patron**. When a god first acknowledges, favors, devotes itself to or exalts you, it offers a choice of three **major blessings** for your blessing slots. In battle, **Pray** (P) spends your patron's favor for a miracle, and a Devoted god may intervene to save you from death. Make a god hate you and its herald will hunt you.
 
+**Apostleship:** reach Exalted with a god and its shrine offers the **Trial of Apostleship**: three fights, the last against the god's Aspect. Win it and **Ascend** to become that god's Apostle. You gain an apostle tree (the ✦ tab in Skills), a **Divine Avatar** (a second ★ ultimate, once per battle), a divine weapon that grows with you, a Divine blessing and a title. Your god issues **Divine Edicts**; ignore them and your powers fade. You can **renounce** a god, but it will never forget.
+
 **General skills (J):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
@@ -277,6 +279,9 @@ Specializations live in `src/data/trees/specsMartial.ts` and `specsArcane.ts`, o
   capstone: { name: 'Undying Rage', triggers: [/* ... */] },
 }
 ```
+
+### Example: an apostle tree
+Each god's apostleship lives in `src/data/apostles/apostlesA.ts` or `apostlesB.ts`: two tree skills (`rite(...)`), the Divine Avatar (`avatar(...)`), the divine weapon's type and stage names, its Divine blessing (`divineBlessing(...)`), and an `ApostleSpec` (skills, modifiers, notables, choice, keystone, capstone). The minors, the Devotion lane, the weapon stages, the trial fights and the edicts are generated in `src/data/apostles/index.ts`.
 
 ### Example: a blessing
 Add a `minor(...)` or `major(...)` entry to `BLESSINGS` in `src/data/blessings.ts`. Majors need a `minTier`; minors a duration and favor cost (the helper fills defaults):

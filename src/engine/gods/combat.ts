@@ -23,8 +23,10 @@ export function interventionChance(char: Character, god: string, fai: number): n
   return Math.min(iv.cap, Math.round(iv.base + above / iv.favorPerPoint + fai * iv.faiRatio));
 }
 
-/** Sets the hero's patron, prayer (uses = favor / cost, max 3) and intervention for a battle. */
+/** Sets the hero's patron, prayer (uses = favor / cost, max 3), intervention and Divine Avatar for a battle. */
 export function applyDivineCombat(x: Combatant, char: Character, fai: number, c: Content = content): void {
+  const apostle = char.devotion.apostle;
+  if (apostle) x.avatarSkill = c.apostles.get(apostle.god).avatar;
   const patron = char.devotion.patron;
   if (patron) {
     x.patron = patron;

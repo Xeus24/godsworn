@@ -42,7 +42,7 @@ Every class starts with 34 primary points and gains 5.0 per level.
 ## Class resources (7)
 Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), Soul Shards (5, starts 1), Chi (5, starts 1), Verse (100).
 
-## Skills (22 starting + 50 skill-tree + 24 specialization + 24 hybrid + 39 general + 10 divine + 32 ultimates + 25 enemy + 8 mentor + 10 punisher skills)
+## Skills (22 starting + 50 skill-tree + 24 specialization + 24 hybrid + 39 general + 10 divine + 20 apostle + 2 Sun Knight + 32 ultimates + 10 Divine Avatars + 25 enemy + 8 mentor + 20 punisher/Aspect skills)
 
 **Class starters (16):**
 
@@ -252,7 +252,7 @@ Generated from the data files by `npm run content:md`.
 | **Grimvald's Ledger** | Ancient Relic | 10 | +30% Gold Find; Every debt ever owed, in very small handwriting; Use: Collect the Debt: Weaken the target, make it Vulnerable, and pocket 25 gold.; Awakens (Pray at shrines 30 times while carrying it.): +40% gold find, +15% magic find |
 | **The Thousandth Page** | Ancient Relic | 20 | +10% increased Magic Attack; +5% Cooldown Reduction; Torn from Aurelis’s own book. The words rearrange when you are not looking; Use: Turn the Page: Reduce all cooldowns by 2 turns and restore 50 MP.; Awakens (Win 40 battles while wearing it.): +8% cooldown reduction, +10% XP |
 
-### Divine items (20)
+### Divine items (favor-gated drops, plus each god-bound weapon stage) (60)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -276,6 +276,46 @@ Generated from the data files by `npm run content:md`.
 | **Mantle of Mercy** | Adamant Pauldrons | 32 | +12% increased Max HP; +20% Healing Received; The first time you fall below 30% HP, heal 35% |
 | **Hammer of the Golden Scale** | Adamant Mace | 32 | +40% Gold Find; +10% increased Physical Attack; Kills grant 12 gold |
 | **Merchant-Prince’s Ring** | Gold Ring | 20 | +30% Gold Find; +8 Luck; Smells faintly of other people’s money |
+| **Dawnbreaker** | Mithril Mace | 1 | +15% Holy Damage; +6 Faith; +10% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Dawnbreaker, Risen** | Adamant Mace | 30 | +25% Holy Damage; +10 Faith; +15% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Dawnbreaker, Zenith** | Starmetal Mace | 45 | +35% Holy Damage; +14 Faith; +20% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Solenne's power |
+| **Dawnbreaker, the Unclouded** | Godforged Mace | 60 | +50% Holy Damage; +20 Faith; +30% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Solenne's power |
+| **Last Light** | Mithril Scythe | 1 | +15% Shadow Damage; +6 Intelligence; +10% increased Divine Power; God-bound: only Morrath's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Last Light, Unlit** | Adamant Scythe | 30 | +25% Shadow Damage; +10 Intelligence; +15% increased Divine Power; God-bound: only Morrath's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Last Light, Eclipse** | Starmetal Scythe | 45 | +35% Shadow Damage; +14 Intelligence; +20% increased Divine Power; God-bound: only Morrath's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Morrath's power |
+| **Last Light, the Final Door** | Godforged Scythe | 60 | +50% Shadow Damage; +20 Intelligence; +30% increased Divine Power; God-bound: only Morrath's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Morrath's power |
+| **Warbringer** | Mithril Greatsword | 1 | +15% Physical Damage; +6 Strength; +10% increased Divine Power; God-bound: only Kael's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Warbringer, Bloodied** | Adamant Greatsword | 30 | +25% Physical Damage; +10 Strength; +15% increased Divine Power; God-bound: only Kael's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Warbringer, Triumphant** | Starmetal Greatsword | 45 | +35% Physical Damage; +14 Strength; +20% increased Divine Power; God-bound: only Kael's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Kael's power |
+| **Warbringer, the Red Banner** | Godforged Greatsword | 60 | +50% Physical Damage; +20 Strength; +30% increased Divine Power; God-bound: only Kael's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Kael's power |
+| **Moonbough** | Ironwood Bow | 1 | +15% Nature Damage; +6 Dexterity; +10% increased Divine Power; God-bound: only Ysolde's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Moonbough, Waxing** | Elderwood Bow | 30 | +25% Nature Damage; +10 Dexterity; +15% increased Divine Power; God-bound: only Ysolde's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Moonbough, Full** | Moonwood Bow | 45 | +35% Nature Damage; +14 Dexterity; +20% increased Divine Power; God-bound: only Ysolde's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ysolde's power |
+| **Moonbough, the Antlered Moon** | Worldtree Bow | 60 | +50% Nature Damage; +20 Dexterity; +30% increased Divine Power; God-bound: only Ysolde's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ysolde's power |
+| **Snake Eyes** | Mithril Dagger | 1 | +15% Arcane Damage; +6 Luck; +10% increased Divine Power; God-bound: only Vex's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Snake Eyes, Lucky** | Adamant Dagger | 30 | +25% Arcane Damage; +10 Luck; +15% increased Divine Power; God-bound: only Vex's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Snake Eyes, Charmed** | Starmetal Dagger | 45 | +35% Arcane Damage; +14 Luck; +20% increased Divine Power; God-bound: only Vex's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Vex's power |
+| **Snake Eyes, the Smiling Coin** | Godforged Dagger | 60 | +50% Arcane Damage; +20 Luck; +30% increased Divine Power; God-bound: only Vex's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Vex's power |
+| **Firstforged** | Mithril Warhammer | 1 | +15% Fire Damage; +6 Strength; +10% increased Divine Power; God-bound: only Thalor's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Firstforged, Tempered** | Adamant Warhammer | 30 | +25% Fire Damage; +10 Strength; +15% increased Divine Power; God-bound: only Thalor's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Firstforged, White-Hot** | Starmetal Warhammer | 45 | +35% Fire Damage; +14 Strength; +20% increased Divine Power; God-bound: only Thalor's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Thalor's power |
+| **Firstforged, the Anvil-Father** | Godforged Warhammer | 60 | +50% Fire Damage; +20 Strength; +30% increased Divine Power; God-bound: only Thalor's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Thalor's power |
+| **Tidecaller’s Trident** | Mithril Spear | 1 | +15% Lightning Damage; +6 Intelligence; +10% increased Divine Power; God-bound: only Nymira's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Tidecaller’s Trident, Rising** | Adamant Spear | 30 | +25% Lightning Damage; +10 Intelligence; +15% increased Divine Power; God-bound: only Nymira's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Tidecaller’s Trident, Storm-Crowned** | Starmetal Spear | 45 | +35% Lightning Damage; +14 Intelligence; +20% increased Divine Power; God-bound: only Nymira's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Nymira's power |
+| **Tidecaller’s Trident, Mother of Tides** | Godforged Spear | 60 | +50% Lightning Damage; +20 Intelligence; +30% increased Divine Power; God-bound: only Nymira's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Nymira's power |
+| **Margin of Stars** | Ironwood Staff | 1 | +15% Arcane Damage; +6 Intelligence; +10% increased Divine Power; God-bound: only Aurelis's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Margin of Stars, Annotated** | Elderwood Staff | 30 | +25% Arcane Damage; +10 Intelligence; +15% increased Divine Power; God-bound: only Aurelis's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Margin of Stars, Illuminated** | Moonwood Staff | 45 | +35% Arcane Damage; +14 Intelligence; +20% increased Divine Power; God-bound: only Aurelis's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Aurelis's power |
+| **Margin of Stars, the Thousand-Page** | Worldtree Staff | 60 | +50% Arcane Damage; +20 Intelligence; +30% increased Divine Power; God-bound: only Aurelis's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Aurelis's power |
+| **Hearthstaff** | Ironwood Staff | 1 | +15% Holy Damage; +6 Wisdom; +10% increased Divine Power; God-bound: only Hesha's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Hearthstaff, Kindled** | Elderwood Staff | 30 | +25% Holy Damage; +10 Wisdom; +15% increased Divine Power; God-bound: only Hesha's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Hearthstaff, Ever-Lit** | Moonwood Staff | 45 | +35% Holy Damage; +14 Wisdom; +20% increased Divine Power; God-bound: only Hesha's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Hesha's power |
+| **Hearthstaff, Keeper of the Hearth** | Worldtree Staff | 60 | +50% Holy Damage; +20 Wisdom; +30% increased Divine Power; God-bound: only Hesha's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Hesha's power |
+| **Ledger’s Edge** | Mithril Axe | 1 | +15% Physical Damage; +6 Luck; +10% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Ledger’s Edge, Audited** | Adamant Axe | 30 | +25% Physical Damage; +10 Luck; +15% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Ledger’s Edge, Compounded** | Starmetal Axe | 45 | +35% Physical Damage; +14 Luck; +20% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Grimvald's power |
+| **Ledger’s Edge, the Golden Scale** | Godforged Axe | 60 | +50% Physical Damage; +20 Luck; +30% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Grimvald's power |
 
 ### Item sets (10)
 
@@ -453,7 +493,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
 
-### Enemies (36)
+### Enemies (46)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -493,10 +533,20 @@ Generated from the data files by `npm run content:md`.
 | **Herald of Aurelis** | 1 | punisher | spirit, divine | back | caster | Wrath of Aurelis | arcane +50% |
 | **Herald of Hesha** | 1 | punisher | spirit, divine | back | caster | Wrath of Hesha | holy +50% |
 | **Herald of Grimvald** | 1 | punisher | spirit, divine | back | caster | Wrath of Grimvald | physical +50% |
+| **Aspect of Solenne** | 30 | boss | spirit, divine | front | aggressive | Wrath of Solenne, Judgement of Solenne | holy +60% |
+| **Aspect of Morrath** | 30 | boss | spirit, divine | front | aggressive | Wrath of Morrath, Judgement of Morrath | shadow +60% |
+| **Aspect of Kael** | 30 | boss | spirit, divine | front | aggressive | Wrath of Kael, Judgement of Kael | physical +60% |
+| **Aspect of Ysolde** | 30 | boss | spirit, divine | front | aggressive | Wrath of Ysolde, Judgement of Ysolde | nature +60% |
+| **Aspect of Vex** | 30 | boss | spirit, divine | front | aggressive | Wrath of Vex, Judgement of Vex | arcane +60% |
+| **Aspect of Thalor** | 30 | boss | spirit, divine | front | aggressive | Wrath of Thalor, Judgement of Thalor | fire +60% |
+| **Aspect of Nymira** | 30 | boss | spirit, divine | front | aggressive | Wrath of Nymira, Judgement of Nymira | lightning +60% |
+| **Aspect of Aurelis** | 30 | boss | spirit, divine | front | aggressive | Wrath of Aurelis, Judgement of Aurelis | arcane +60% |
+| **Aspect of Hesha** | 30 | boss | spirit, divine | front | aggressive | Wrath of Hesha, Judgement of Hesha | holy +60% |
+| **Aspect of Grimvald** | 30 | boss | spirit, divine | front | aggressive | Wrath of Grimvald, Judgement of Grimvald | physical +60% |
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
-### Encounters (34)
+### Encounters (65)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -534,6 +584,37 @@ Generated from the data files by `npm run content:md`.
 | **Trial of the Wildsinger** | 40 | Warden Sylas, Dire Wolf, Lyra Silvertongue, Bandit Thug |
 | **Trial of the Arcane Archer** | 40 | Warden Sylas, Dire Wolf, Archmage Velis, Will-o'-Wisp |
 | **Trial of the Plague Doctor** | 40 | Mother Aurelie, Skeleton Soldier, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Sun Knight** | 40 | Sword-Master Bram, Bandit Thug, Herald of Solenne, Herald of Solenne |
+| **Trial of Solenne: the Ordeal** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne |
+| **Trial of Solenne: the Gauntlet** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne, Herald of Solenne |
+| **Trial of Solenne: the Aspect** | 30 | Aspect of Solenne, Herald of Solenne |
+| **Trial of Morrath: the Ordeal** | 30 | Herald of Morrath, Herald of Morrath, Herald of Morrath |
+| **Trial of Morrath: the Gauntlet** | 30 | Herald of Morrath, Herald of Morrath, Herald of Morrath, Herald of Morrath |
+| **Trial of Morrath: the Aspect** | 30 | Aspect of Morrath, Herald of Morrath |
+| **Trial of Kael: the Ordeal** | 30 | Herald of Kael, Herald of Kael, Herald of Kael |
+| **Trial of Kael: the Gauntlet** | 30 | Herald of Kael, Herald of Kael, Herald of Kael, Herald of Kael |
+| **Trial of Kael: the Aspect** | 30 | Aspect of Kael, Herald of Kael |
+| **Trial of Ysolde: the Ordeal** | 30 | Herald of Ysolde, Herald of Ysolde, Herald of Ysolde |
+| **Trial of Ysolde: the Gauntlet** | 30 | Herald of Ysolde, Herald of Ysolde, Herald of Ysolde, Herald of Ysolde |
+| **Trial of Ysolde: the Aspect** | 30 | Aspect of Ysolde, Herald of Ysolde |
+| **Trial of Vex: the Ordeal** | 30 | Herald of Vex, Herald of Vex, Herald of Vex |
+| **Trial of Vex: the Gauntlet** | 30 | Herald of Vex, Herald of Vex, Herald of Vex, Herald of Vex |
+| **Trial of Vex: the Aspect** | 30 | Aspect of Vex, Herald of Vex |
+| **Trial of Thalor: the Ordeal** | 30 | Herald of Thalor, Herald of Thalor, Herald of Thalor |
+| **Trial of Thalor: the Gauntlet** | 30 | Herald of Thalor, Herald of Thalor, Herald of Thalor, Herald of Thalor |
+| **Trial of Thalor: the Aspect** | 30 | Aspect of Thalor, Herald of Thalor |
+| **Trial of Nymira: the Ordeal** | 30 | Herald of Nymira, Herald of Nymira, Herald of Nymira |
+| **Trial of Nymira: the Gauntlet** | 30 | Herald of Nymira, Herald of Nymira, Herald of Nymira, Herald of Nymira |
+| **Trial of Nymira: the Aspect** | 30 | Aspect of Nymira, Herald of Nymira |
+| **Trial of Aurelis: the Ordeal** | 30 | Herald of Aurelis, Herald of Aurelis, Herald of Aurelis |
+| **Trial of Aurelis: the Gauntlet** | 30 | Herald of Aurelis, Herald of Aurelis, Herald of Aurelis, Herald of Aurelis |
+| **Trial of Aurelis: the Aspect** | 30 | Aspect of Aurelis, Herald of Aurelis |
+| **Trial of Hesha: the Ordeal** | 30 | Herald of Hesha, Herald of Hesha, Herald of Hesha |
+| **Trial of Hesha: the Gauntlet** | 30 | Herald of Hesha, Herald of Hesha, Herald of Hesha, Herald of Hesha |
+| **Trial of Hesha: the Aspect** | 30 | Aspect of Hesha, Herald of Hesha |
+| **Trial of Grimvald: the Ordeal** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
+| **Trial of Grimvald: the Gauntlet** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
+| **Trial of Grimvald: the Aspect** | 30 | Aspect of Grimvald, Herald of Grimvald |
 <!-- combat:end -->
 
 ## Skill trees
@@ -541,7 +622,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-20 class trees, 512 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+31 class trees, 512 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (64 nodes)
 
@@ -797,10 +878,10 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | **Rite of Tithes** | divine | Divine | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
 <!-- general:end -->
 
-## Multiclassing (8 trials, 12 hybrids)
+## Multiclassing (8 trials, 13 hybrids)
 
 <!-- multiclass:start -->
-Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 12 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
+Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 13 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
 
 ### Class mentors and trials
 
@@ -831,6 +912,7 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Wildsinger**: Sings the forest awake and the pack to the hunt. | Ranger + Bard | **Song of the Wild** (Hunter’s Chorus, Verdant Verse); **Thorn Volley** (Briar Storm, Venom Thorns) | Call of the Pack, Harmony of Thorns | Keystone: +30% damage, but take 15% more damage. | Voice of the Wild: Each turn, 25% chance for the party to Regenerate. |
 | **Arcane Archer**: Every arrow a spell. | Ranger + Mage | **Arcane Shot** (Seeking Shot, Elemental Shot); **Arrow Nova** (Frost Nova, Storm Nova) | Spell Arrows, Arcane Barrage | Keystone: +30% damage, -25% defense. | Starfall: Open every battle with a free Arrow Nova. |
 | **Plague Doctor**: Cures and curses from the same bag. | Cleric + Necromancer | **Plague Flask** (Virulent Brew, Blinding Fumes); **Leech Cure** (Bloodletting, Panacea) | Epidemic, Contagion | Keystone: +20 status chance, -30 healing power. | Great Plague: Every battle opens with 3 stacks of Poison on every enemy. |
+| **Sun Knight**: A Paladin sworn as Solenne’s Apostle: the sun with a sword. | Warrior | **Solar Blade** (Zenith Strike, Sunfire Edge); **Sunshield** (Aegis of Noon, Daystar) | High Noon, Sun’s Champion | Keystone: +30% holy damage, -15% max MP. | Knight of the Unclouded Eye: Start every battle with Divine Protection and +20% damage for 3 turns. |
 
 ### Hybrid skills
 
@@ -860,6 +942,8 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Arrow Nova** | Arcane Archer | 14 MP | 3 | Arrows burst into arcane light: 90% ATK to every enemy. |
 | **Plague Flask** | Plague Doctor | 12 MP | 3 | Hurl a flask: 60% MATK nature damage to every enemy and 2 stacks of Poison. |
 | **Leech Cure** | Plague Doctor | 10 MP | 2 | Heal an ally for 120% MATK and draw out Poison. |
+| **Solar Blade** | Sun Knight | 8 MP | 1 | A blade of noon for 140% ATK + 70% Divine Power holy damage; Blinds (30%). |
+| **Sunshield** | Sun Knight | 16 MP | 5 | Raise the sun: the party is shielded for 15% of max HP and gains Divine Protection for 1 turn. |
 <!-- multiclass:end -->
 
 ## Gods, favor and blessings
@@ -880,22 +964,22 @@ Favor runs from -100 to 1200. Tiers: Hated (-50 or less), Distrusted, Neutral (0
 | **Hesha**, Hearth & Mercy | Kael / Solenne | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
 | **Grimvald**, Wealth & Trade | Vex / Aurelis | Earning gold (per 100) (+1); Profitable work (+0.5) | Losing money (-3); Theft (-1) | Gold. Honest, countable gold. | **Tithe**: Shield 25% of max HP and gain +20% gold find for this battle. (15 favor) | **Debt Forgiven**: Grimvald writes off your death as a bad debt. |
 
-### Blessings (90)
+### Blessings (100)
 
 Minor blessings last 10 battles and cost favor. Major blessings are offered 3 at a time when a tier is first reached, stay active while the tier holds, and fill 1-3 slots (more at levels 25 and 50). Rival gods' blessings cannot be slotted together.
 
 | God | Minor | Major (tier) |
 |---|---|---|
-| Solenne | **Dawnlight**: +15% holy damage.<br>**Ward of Day**: +10% defense.<br>**Judgement**: +20% damage against undead. | **Radiance** (acknowledged): +10% holy damage and +5 FAI.<br>**Vigil** (acknowledged): +8% max HP.<br>**Swift Justice** (favored): 20% chance on hit to deal bonus holy damage (40% Divine Power).<br>**Daybreak** (acknowledged): 20% more damage during the day.<br>**Aegis of Dawn** (devoted): Start every battle with Divine Protection for 1 turn and +15% holy damage.<br>**The Unclouded Eye** (exalted): +25% holy damage; your critical hits ignore half of defense. |
-| Morrath | **Shade**: +15% shadow damage.<br>**Grave Chill**: +10 status chance.<br>**The Toll**: +20% damage against enemies below 50% HP. | **Raven’s Eye** (acknowledged): +10% shadow damage and +5 INT.<br>**Patience of the Grave** (acknowledged): +10% status resist.<br>**Soul Harvest** (favored): Kills restore 10% of max HP.<br>**Nightfall** (acknowledged): 20% more damage at night.<br>**Legion of the Last Door** (devoted): Summoning skills raise one extra minion.<br>**Keeper’s Reprieve** (exalted): Once per battle, survive a killing blow with 1 HP; +15% shadow damage. |
-| Kael | **Fury**: +10% damage.<br>**Keen Blade**: +15% crit damage.<br>**Glory**: +20% damage while above 50% HP. | **Strength of the Banner** (acknowledged): +6 STR.<br>**Veteran** (acknowledged): +5% crit chance.<br>**First Blood** (favored): Always act first in the opening round.<br>**Warlust** (acknowledged): Kills grant +20% damage for 2 turns.<br>**Champion** (devoted): Deal 25% more damage to bosses; +10% damage.<br>**The Red Banner** (exalted): +20% damage and +15% crit damage; attacks on enemies below 20% HP always crit. |
-| Ysolde | **Thorn**: +15% nature damage.<br>**Stalker**: +8 dodge.<br>**The Hunt**: +20% damage against beasts. | **Grace of the Deer** (acknowledged): +6 DEX.<br>**Hunter’s Eye** (acknowledged): +10% damage with Ranged skills.<br>**Green Venom** (favored): 20% chance on hit to Poison.<br>**Wild Heart** (acknowledged): +4 HP regeneration and +5% speed.<br>**Mother of the Pack** (devoted): A spirit stag joins you at the start of every battle.<br>**The Antlered Moon** (exalted): +25% nature damage; damage over time can crit. |
-| Vex | **Beginner’s Luck**: +5 LUK.<br>**Sleight**: +6% crit chance.<br>**Jackpot**: +30% gold find and +20% magic find. | **Fortune’s Favorite** (acknowledged): +15% magic find.<br>**Quick Fingers** (acknowledged): +5 dodge and +2 speed.<br>**Gambler’s Edge** (favored): +25% crit damage, but -5 accuracy.<br>**Now You Don’t** (acknowledged): Begin every battle in Stealth.<br>**Two-Faced Coin** (devoted): Critical hits have a 25% chance to steal 5 gold and reduce your cooldowns by 1.<br>**The Smiling Coin** (exalted): +10 LUK, +10% crit chance and +25% magic find. |
-| Thalor | **Ember**: +15% fire damage.<br>**Tempered Plate**: +12% defense.<br>**Honed Edge**: +10% physical attack. | **Iron Sinew** (acknowledged): +4 STR and +4 VIT.<br>**Anvil Skin** (acknowledged): +10% defense.<br>**Forgefire** (favored): 20% chance on hit to Burn.<br>**Mastercraft** (acknowledged): No speed penalty for off-class armor; +5% max HP.<br>**Bulwark** (devoted): Take 10% less damage.<br>**The Anvil-Father** (exalted): +20% defense, +20% fire damage, and Burns spread when burning enemies die. |
-| Nymira | **Spark**: +15% lightning damage.<br>**Sea Frost**: +15% ice damage.<br>**High Tide**: +3 MP regeneration. | **Current** (acknowledged): +3 speed.<br>**The Depths** (acknowledged): +6 INT.<br>**Squall** (favored): Lightning skills deal 20% more damage.<br>**Shatterstorm** (acknowledged): Ice damage against Burning enemies always Shatters; +10% ice damage.<br>**Eye of the Hurricane** (devoted): Each turn, 25% chance to strike a random enemy with lightning (60% Divine Power).<br>**Mother of Tides** (exalted): +20% lightning and ice damage, and 20% chance for spells to cast twice. |
-| Aurelis | **Rune-Lit**: +15% arcane damage.<br>**Focus**: +10% max MP.<br>**Studious**: +15% XP. | **Bright Mind** (acknowledged): +4 INT and +4 WIS.<br>**Marginalia** (acknowledged): +3% cooldown reduction.<br>**Living Library** (favored): +10% XP and +2 MP regeneration.<br>**Arcanum** (acknowledged): Spells deal 15% more damage.<br>**Echoing Word** (devoted): 20% chance for spells to cast a second time for free.<br>**The Thousand-Page** (exalted): +25% arcane damage, +10% magic attack and +5% cooldown reduction. |
-| Hesha | **Warmth**: +3 HP regeneration.<br>**Gentle Hands**: +15 healing power.<br>**Home Cooking**: +10% max HP. | **Kindness** (acknowledged): +4 WIS and +4 FAI.<br>**Shelter** (acknowledged): +10% healing received.<br>**Merciful** (favored): Half of your overhealing becomes a shield.<br>**Banked Embers** (acknowledged): Heal 5% of max HP at the start of each turn.<br>**Hearthguard** (devoted): The first time you fall below 30% HP each battle, heal 40%.<br>**Keeper of the Hearth** (exalted): +25 healing power, +15% max HP, and take 8% less damage. |
-| Grimvald | **Lucky Coin**: +25% gold find.<br>**Balanced Ledger**: +5% defense and +5% damage.<br>**Compound Interest**: +15% magic find. | **Heavy Purse** (acknowledged): +20% gold find.<br>**Fair Scale** (acknowledged): +5 LUK.<br>**Investment** (favored): +10% XP and +10% gold find.<br>**Vault** (acknowledged): Start every battle with a shield of 15% max HP.<br>**Dividend** (devoted): Kills grant 10 gold.<br>**The Golden Scale** (exalted): +40% gold find, +25% magic find and +10% damage. |
+| Solenne | **Dawnlight**: +15% holy damage.<br>**Ward of Day**: +10% defense.<br>**Judgement**: +20% damage against undead. | **Radiance** (acknowledged): +10% holy damage and +5 FAI.<br>**Vigil** (acknowledged): +8% max HP.<br>**Swift Justice** (favored): 20% chance on hit to deal bonus holy damage (40% Divine Power).<br>**Daybreak** (acknowledged): 20% more damage during the day.<br>**Aegis of Dawn** (devoted): Start every battle with Divine Protection for 1 turn and +15% holy damage.<br>**The Unclouded Eye** (exalted): +25% holy damage; your critical hits ignore half of defense.<br>**Sunsworn** (apostle): Your hits have a 25% chance to call down a pillar of light (80% Divine Power). |
+| Morrath | **Shade**: +15% shadow damage.<br>**Grave Chill**: +10 status chance.<br>**The Toll**: +20% damage against enemies below 50% HP. | **Raven’s Eye** (acknowledged): +10% shadow damage and +5 INT.<br>**Patience of the Grave** (acknowledged): +10% status resist.<br>**Soul Harvest** (favored): Kills restore 10% of max HP.<br>**Nightfall** (acknowledged): 20% more damage at night.<br>**Legion of the Last Door** (devoted): Summoning skills raise one extra minion.<br>**Keeper’s Reprieve** (exalted): Once per battle, survive a killing blow with 1 HP; +15% shadow damage.<br>**Deathless** (apostle): Kills restore 15% of max HP and summon a skeleton (twice per battle). |
+| Kael | **Fury**: +10% damage.<br>**Keen Blade**: +15% crit damage.<br>**Glory**: +20% damage while above 50% HP. | **Strength of the Banner** (acknowledged): +6 STR.<br>**Veteran** (acknowledged): +5% crit chance.<br>**First Blood** (favored): Always act first in the opening round.<br>**Warlust** (acknowledged): Kills grant +20% damage for 2 turns.<br>**Champion** (devoted): Deal 25% more damage to bosses; +10% damage.<br>**The Red Banner** (exalted): +20% damage and +15% crit damage; attacks on enemies below 20% HP always crit.<br>**Glorybound** (apostle): Every kill grants +15% damage for the rest of the battle (up to 3 times). |
+| Ysolde | **Thorn**: +15% nature damage.<br>**Stalker**: +8 dodge.<br>**The Hunt**: +20% damage against beasts. | **Grace of the Deer** (acknowledged): +6 DEX.<br>**Hunter’s Eye** (acknowledged): +10% damage with Ranged skills.<br>**Green Venom** (favored): 20% chance on hit to Poison.<br>**Wild Heart** (acknowledged): +4 HP regeneration and +5% speed.<br>**Mother of the Pack** (devoted): A spirit stag joins you at the start of every battle.<br>**The Antlered Moon** (exalted): +25% nature damage; damage over time can crit.<br>**Wildborn** (apostle): A spirit stag joins you each battle, and your hits have a 25% chance to Poison. |
+| Vex | **Beginner’s Luck**: +5 LUK.<br>**Sleight**: +6% crit chance.<br>**Jackpot**: +30% gold find and +20% magic find. | **Fortune’s Favorite** (acknowledged): +15% magic find.<br>**Quick Fingers** (acknowledged): +5 dodge and +2 speed.<br>**Gambler’s Edge** (favored): +25% crit damage, but -5 accuracy.<br>**Now You Don’t** (acknowledged): Begin every battle in Stealth.<br>**Two-Faced Coin** (devoted): Critical hits have a 25% chance to steal 5 gold and reduce your cooldowns by 1.<br>**The Smiling Coin** (exalted): +10 LUK, +10% crit chance and +25% magic find.<br>**Fortune’s Own** (apostle): Critical hits have a 35% chance to reduce your cooldowns by 1 and steal 10 gold. |
+| Thalor | **Ember**: +15% fire damage.<br>**Tempered Plate**: +12% defense.<br>**Honed Edge**: +10% physical attack. | **Iron Sinew** (acknowledged): +4 STR and +4 VIT.<br>**Anvil Skin** (acknowledged): +10% defense.<br>**Forgefire** (favored): 20% chance on hit to Burn.<br>**Mastercraft** (acknowledged): No speed penalty for off-class armor; +5% max HP.<br>**Bulwark** (devoted): Take 10% less damage.<br>**The Anvil-Father** (exalted): +20% defense, +20% fire damage, and Burns spread when burning enemies die.<br>**Forgeborn** (apostle): Take 12% less damage; hits have a 25% chance to Burn. |
+| Nymira | **Spark**: +15% lightning damage.<br>**Sea Frost**: +15% ice damage.<br>**High Tide**: +3 MP regeneration. | **Current** (acknowledged): +3 speed.<br>**The Depths** (acknowledged): +6 INT.<br>**Squall** (favored): Lightning skills deal 20% more damage.<br>**Shatterstorm** (acknowledged): Ice damage against Burning enemies always Shatters; +10% ice damage.<br>**Eye of the Hurricane** (devoted): Each turn, 25% chance to strike a random enemy with lightning (60% Divine Power).<br>**Mother of Tides** (exalted): +20% lightning and ice damage, and 20% chance for spells to cast twice.<br>**Stormborn** (apostle): Each turn, 30% chance to strike a random enemy with lightning (80% Divine Power). |
+| Aurelis | **Rune-Lit**: +15% arcane damage.<br>**Focus**: +10% max MP.<br>**Studious**: +15% XP. | **Bright Mind** (acknowledged): +4 INT and +4 WIS.<br>**Marginalia** (acknowledged): +3% cooldown reduction.<br>**Living Library** (favored): +10% XP and +2 MP regeneration.<br>**Arcanum** (acknowledged): Spells deal 15% more damage.<br>**Echoing Word** (devoted): 20% chance for spells to cast a second time for free.<br>**The Thousand-Page** (exalted): +25% arcane damage, +10% magic attack and +5% cooldown reduction.<br>**Lorebound** (apostle): 20% chance for spells to cast twice; +10% cooldown reduction. |
+| Hesha | **Warmth**: +3 HP regeneration.<br>**Gentle Hands**: +15 healing power.<br>**Home Cooking**: +10% max HP. | **Kindness** (acknowledged): +4 WIS and +4 FAI.<br>**Shelter** (acknowledged): +10% healing received.<br>**Merciful** (favored): Half of your overhealing becomes a shield.<br>**Banked Embers** (acknowledged): Heal 5% of max HP at the start of each turn.<br>**Hearthguard** (devoted): The first time you fall below 30% HP each battle, heal 40%.<br>**Keeper of the Hearth** (exalted): +25 healing power, +15% max HP, and take 8% less damage.<br>**Hearthbound** (apostle): Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. |
+| Grimvald | **Lucky Coin**: +25% gold find.<br>**Balanced Ledger**: +5% defense and +5% damage.<br>**Compound Interest**: +15% magic find. | **Heavy Purse** (acknowledged): +20% gold find.<br>**Fair Scale** (acknowledged): +5 LUK.<br>**Investment** (favored): +10% XP and +10% gold find.<br>**Vault** (acknowledged): Start every battle with a shield of 15% max HP.<br>**Dividend** (devoted): Kills grant 10 gold.<br>**The Golden Scale** (exalted): +40% gold find, +25% magic find and +10% damage.<br>**Goldbound** (apostle): Kills grant 15 gold; +50% gold find and +30% magic find. |
 
 ### Divine general skills
 
@@ -912,3 +996,37 @@ Minor blessings last 10 battles and cost favor. Major blessings are offered 3 at
 | **Rite of Mercy** | Hesha | Hearthlight | Hearthlight in battle. Passive: +3 healing power per rank. |
 | **Rite of Tithes** | Grimvald | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
 <!-- gods:end -->
+
+## Apostleship
+
+<!-- apostles:start -->
+Exalted favor plus the god's three-stage Trial of Apostleship (two rounds of heralds, then the god's Aspect, fought at max(30, your level) + 0/1/3) make you its Apostle. One god at a time. Apostles get a 20-node tree (10 points + 1 per level after ascension), a Divine Avatar (an ultimate, once per battle), a god-bound weapon that evolves at levels 30/45/60, a Divine blessing in an extra slot, a title and Divine Edicts. Apostasy makes the god Hated and its heralds hunt you for 15 battles.
+
+| God | Divine Avatar | Divine weapon (stages) | Divine blessing | Tree skills | Keystone / capstone |
+|---|---|---|---|---|---|
+| **Solenne** | **Avatar of the Sun**: Become the Unclouded Eye for 3 turns: +40% damage, +30% defense, and a blinding flare (200% Divine Power holy) on every enemy. | Dawnbreaker → Dawnbreaker, Risen → Dawnbreaker, Zenith → Dawnbreaker, the Unclouded (Mace) | **Sunsworn**: Your hits have a 25% chance to call down a pillar of light (80% Divine Power). | **Radiant Verdict**: Pass judgement: 170% Divine Power holy damage.<br>**Sanctified Ground**: Holy ground: the party Regenerates and gains +20% holy damage for 3 turns. | Keystone: +30% holy damage, but -20% max MP. / Light Everlasting |
+| **Morrath** | **Avatar of the Last Door**: Become Death’s keeper for 3 turns: +40% damage and 20% lifesteal; every enemy takes 180% Divine Power shadow damage and is Cursed. | Last Light → Last Light, Unlit → Last Light, Eclipse → Last Light, the Final Door (Scythe) | **Deathless**: Kills restore 15% of max HP and summon a skeleton (twice per battle). | **Reap the Fallen**: 160% Divine Power shadow damage; heal 10% of max HP.<br>**Raven Host**: Raise two skeletons and Fear every enemy for 1 turn. | Keystone: +35% shadow damage, -15% max HP. / Keeper of the Door: Kills Fear every enemy for 1 turn. |
+| **Kael** | **Avatar of War**: Become the Red Banner for 3 turns: +60% damage and +20% crit chance, and strike every enemy for 180% Divine Power. | Warbringer → Warbringer, Bloodied → Warbringer, Triumphant → Warbringer, the Red Banner (Greatsword) | **Glorybound**: Every kill grants +15% damage for the rest of the battle (up to 3 times). | **Banner Strike**: A war-god’s blow for 140% ATK + 60% Divine Power. Heavy stagger.<br>**Warcry of Kael**: The party gains +25% damage and Haste for 2 turns. | Keystone: +30% damage, -10% defense. / Banner of Kael: Start every battle with Haste and +20% damage for 3 turns. |
+| **Ysolde** | **Avatar of the Hunt**: Become the Antlered Moon for 3 turns: +40% damage, +20 dodge and Regen; every enemy takes 160% Divine Power nature damage and is Poisoned. | Moonbough → Moonbough, Waxing → Moonbough, Full → Moonbough, the Antlered Moon (Bow) | **Wildborn**: A spirit stag joins you each battle, and your hits have a 25% chance to Poison. | **Moonlit Arrow**: A silver arrow for 120% ATK + 60% Divine Power nature damage that Poisons.<br>**Call of the Wild Hunt**: Summon two spirit stags; every enemy is Slowed. | Keystone: +25 dodge, -20% max HP. / The Green Hour: Each turn, 25% chance to Poison every enemy. |
+| **Vex** | **Avatar of Chance**: Become the Smiling Coin for 3 turns: +50% crit chance and +40% crit damage; every enemy takes 150% Divine Power arcane damage and may be Charmed. | Snake Eyes → Snake Eyes, Lucky → Snake Eyes, Charmed → Snake Eyes, the Smiling Coin (Dagger) | **Fortune’s Own**: Critical hits have a 35% chance to reduce your cooldowns by 1 and steal 10 gold. | **Loaded Fortune**: Flip a coin of fate: 160% Divine Power arcane damage that always crits.<br>**Sleight of Fate**: Vanish into Stealth, gain +30% crit chance for 2 turns, and steal 15 gold. | Keystone: +20% crit chance, -15 accuracy. / House Edge: Kills reduce your cooldowns by 1. |
+| **Thalor** | **Avatar of the Forge**: Become the Anvil-Father for 3 turns: +40% damage and +50% defense; every enemy takes 180% Divine Power fire damage and Burns. | Firstforged → Firstforged, Tempered → Firstforged, White-Hot → Firstforged, the Anvil-Father (Warhammer) | **Forgeborn**: Take 12% less damage; hits have a 25% chance to Burn. | **Hammerfall**: A forge-hot blow for 130% ATK + 60% Divine Power fire damage. Heavy stagger.<br>**Anvil Ward**: Shield yourself for 30% of max HP and gain +25% defense for 3 turns. | Keystone: take 15% less damage, -8 speed. / Unbreakable: Start every battle with a shield of 25% max HP. |
+| **Nymira** | **Avatar of the Tempest**: Become the Mother of Tides for 3 turns: +40% damage and Haste; every enemy takes 200% Divine Power lightning damage and may Freeze. | Tidecaller’s Trident → Tidecaller’s Trident, Rising → Tidecaller’s Trident, Storm-Crowned → Tidecaller’s Trident, Mother of Tides (Spear) | **Stormborn**: Each turn, 30% chance to strike a random enemy with lightning (80% Divine Power). | **Tidal Surge**: A wave for 100% Divine Power ice damage to every enemy; they are Wet.<br>**Stormlash**: 180% Divine Power lightning damage; 20% chance to Stun. | Keystone: +30% lightning and ice damage, -20% defense. / Mother of Tides |
+| **Aurelis** | **Avatar of Knowing**: Become the Thousand-Page for 3 turns: +50% damage and +5 MP regeneration; every enemy takes 200% Divine Power arcane damage and is Silenced. | Margin of Stars → Margin of Stars, Annotated → Margin of Stars, Illuminated → Margin of Stars, the Thousand-Page (Staff) | **Lorebound**: 20% chance for spells to cast twice; +10% cooldown reduction. | **Word of Unmaking**: 180% Divine Power arcane damage; Silences (40%).<br>**The Thousand Pages**: Pages whirl around you: restore 30 MP, reduce cooldowns by 2, and +20% damage for 2 turns. | Keystone: +35% arcane damage, -15% max HP. / Omniscience: Skills have a 25% chance to reduce your cooldowns by 1. |
+| **Hesha** | **Avatar of the Hearth**: Become the Keeper of the Hearth for 3 turns: take 40% less damage and gain +30 healing power; every enemy takes 150% Divine Power holy damage, and you heal fully. | Hearthstaff → Hearthstaff, Kindled → Hearthstaff, Ever-Lit → Hearthstaff, Keeper of the Hearth (Staff) | **Hearthbound**: Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. | **Mercy of the Hearth**: Heal the party for 120% Divine Power and remove Poison and Bleed.<br>**Gentle Rebuke**: 130% Divine Power holy damage that Weakens; heal 8% of max HP. | Keystone: +40 healing power, -20% damage. / Hearth Eternal |
+| **Grimvald** | **Avatar of Wealth**: Become the Golden Scale for 3 turns: +40% damage and a golden shield; every enemy takes 160% Divine Power and you gain 50 gold. | Ledger’s Edge → Ledger’s Edge, Audited → Ledger’s Edge, Compounded → Ledger’s Edge, the Golden Scale (Axe) | **Goldbound**: Kills grant 15 gold; +50% gold find and +30% magic find. | **Golden Rebuke**: A strike of solid gold for 120% ATK + 60% Divine Power; steal 10 gold.<br>**Audit**: Every enemy is Weakened and Vulnerable for 2 turns; you gain a shield of 20% max HP. | Keystone: +60% gold find and +20% damage, but take 10% more damage. / The Golden Scale: Start every battle with a shield of 20% max HP. |
+
+### Divine Edicts (31)
+
+Each like of your god becomes an edict: do it a number of times within 20 battles. Fulfilled: +40 favor and gold. Ignored: -30 favor and apostle passives at 75% until the next edict is fulfilled.
+
+- **Solenne:** Smiting the undead: 4 times; Ending cultists: 4 times; Wielding holy light: 20 times; Victories under the sun: 12 times
+- **Morrath:** Felling mighty foes: 2 times; Raising the dead: 6 times; Shadow arts: 20 times; Victories by night: 12 times
+- **Kael:** Winning battles: 6 times; Defeating champions: 3 times; Mighty blows: 20 times
+- **Ysolde:** Hunting beasts: 6 times; Nature magic: 20 times; The bow: 20 times
+- **Vex:** Lucky strikes: 12 times; Stealing: 6 times; Gambling on the unknown: 12 times
+- **Thalor:** Improving your gear: 3 times; Reclaiming metal: 12 times; Fire: 20 times
+- **Nymira:** Storm-struck kills: 6 times; Lightning: 20 times; Frost: 20 times
+- **Aurelis:** Reading skillbooks: 1 time; Uncovering secrets: 6 times; Arcane study: 20 times
+- **Hesha:** Healing: 20 times; Resting and caring for yourself: 4 times; Healing magic: 20 times
+- **Grimvald:** Earning gold (per 100): 12 times; Profitable work: 20 times
+<!-- apostles:end -->

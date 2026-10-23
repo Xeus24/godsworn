@@ -68,12 +68,12 @@ export function setXpSplit(char: Character, weights: number[]): MulticlassResult
 
 // ---------------------------------------------------------------- hybrids
 
-/** Hybrids whose two classes the character has (unlocked or not). */
+/** Hybrids whose classes the character has (unlocked or not). */
 export function hybridsFor(char: Character, c: Content = content): HybridDef[] {
   return c.hybrids.filter((h) => h.classes.every((id) => char.classes.some((p) => p.classId === id)));
 }
 
-/** Whether the hybrid's trial may be attempted: both classes at level 25. */
+/** Whether the hybrid's trial may be attempted: its classes at level 25, plus any specialization or Apostleship it needs. */
 export function hybridTrialOpen(char: Character, hybridId: string, c: Content = content): MulticlassResult {
   const h = c.hybrids.find(hybridId);
   if (!h) return fail('Unknown hybrid.');
@@ -82,6 +82,10 @@ export function hybridTrialOpen(char: Character, hybridId: string, c: Content = 
     if (!progress) return fail(`Requires the ${c.classes.get(id).name} class.`);
     if (progress.level < MULTICLASS.hybridLevel) return fail(`Requires ${c.classes.get(id).name} level ${MULTICLASS.hybridLevel}.`);
   }
+  const spec = h.requires?.specialization;
+  if (spec && !char.classes.some((p) => p.specialization === spec)) return fail(`Requires the ${c.specializations.get(spec).name} specialization.`);
+  const god = h.requires?.apostleOf;
+  if (god && char.devotion.apostle?.god !== god) return fail(`Requires Apostleship of ${c.gods.get(god).name}.`);
   return { ok: true };
 }
 

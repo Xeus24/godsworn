@@ -1,11 +1,13 @@
 import { content } from '../../data';
-import { DEVOTION } from '../../data/devotion';
+import { APOSTLESHIP, DEVOTION } from '../../data/devotion';
 import { characterBaseStats, characterStats, clampVitals } from '../character/stats';
 import type { Battle } from '../combat/battle';
 import { createItem } from '../items/generate';
 import { canAdd, addItem } from '../items/inventory';
 import { itemValue } from '../items/itemStats';
 import { baseOf } from '../items/lookup';
+import { itemName } from '../items/naming';
+import type { ItemInstance } from '../items/types';
 import { equippedItems } from '../items/equipment';
 import {
   blessingScale,
@@ -31,6 +33,7 @@ import {
   type DeedOccurrence,
   type FavorChange,
 } from '../gods/devotion';
+import { ascend, currentEdict, divineWeaponOf, evolveDivineWeapon, forgeDivineWeapon, issueEdict, progressEdict, recordTrialStage, renounce, tickEdict } from '../gods/apostle';
 import { punisherGod, rollPunisher } from '../gods/punishers';
 import type { DeedEvent } from '../gods/types';
 import type { GameSession } from './gameState';
@@ -78,11 +81,93 @@ export class DevotionActions {
     return changes;
   }
 
-  /** Judges a batch of deeds and applies the result. */
+  /** Judges a batch of deeds and applies the result (and counts them toward the current edict). */
   deeds(occurrences: readonly DeedOccurrence[], reason: string, quiet = false): FavorChange[] {
     const { deltas, discovered } = judgeDeeds(occurrences);
     discover(this.p, discovered);
-    return this.apply(deltas, reason, false, quiet);
+    const changes = this.apply(deltas, reason, false, quiet);
+    this.advanceEdict(occurrences);
+    return changes;
+  }
+
+  // ------------------------------------------------------------ apostleship
+
+  /** Ascends as the god's Apostle; the divine weapon goes into your bags. */
+  ascend(god: string): DevotionResult {
+    const probe = forgeDivineWeapon(god, 1, this.s.rng, () => 'probe');
+    if (!canAdd(this.s.state.inventory, probe)) return fail('Make room in your bags for your divine weapon.');
+    const result = ascend(this.p, god, this.s.rng, () => this.s.newUid());
+    if (!result.ok) return result;
+    addItem(this.s.state.inventory, result.weapon);
+    const name = content.gods.get(god).name;
+    this.s.bus.emit('apostleAscension', { god });
+    this.s.bus.emit('toast', { kind: 'blessing', text: `You are the Apostle of ${name}! ${itemName(result.weapon)} is yours, and a new tree awaits.` });
+    const edict = currentEdict(this.p);
+    if (edict) this.s.bus.emit('toast', { kind: 'quest', text: `Divine Edict: ${edict.text}` });
+    this.changed('apostle');
+    return { ok: true };
+  }
+
+  /** Renounces Apostleship: the god turns Hated, its weapon goes to the reliquary, its heralds hunt you. */
+  renounce(): DevotionResult {
+    const god = this.p.devotion.apostle?.god;
+    const before = god ? favorOf(this.p, god) : 0;
+    const result = renounce(this.p);
+    if (!result.ok) return result;
+    const take = (item: ItemInstance | null | undefined): item is ItemInstance => item !== null && item !== undefined && divineWeaponOf(item)?.god === result.god;
+    for (const [slot, item] of equippedItems(this.p)) {
+      if (take(item)) {
+        delete this.p.equipment[slot];
+        this.p.devotion.reliquary.push(item);
+      }
+    }
+    for (const grid of [this.s.state.inventory, ...this.s.state.stash.tabs]) {
+      grid.slots.forEach((item, i) => {
+        if (item && take(item)) {
+          this.p.devotion.reliquary.push(item);
+          grid.slots[i] = null;
+        }
+      });
+    }
+    this.s.bus.emit('favorChanged', { god: result.god, previous: before, current: DEVOTION.minFavor, reason: 'apostasy' });
+    this.s.bus.emit('toast', { kind: 'warning', text: `You renounce ${content.gods.get(result.god).name}. Their heralds will hunt you.` });
+    this.changed('apostasy');
+    return { ok: true };
+  }
+
+  /** Evolves the divine weapon (wherever it is) after level-ups. */
+  evolveWeapons(): void {
+    const items = [...equippedItems(this.p).map(([, i]) => i), ...this.s.state.inventory.slots, ...this.s.state.stash.tabs.flatMap((t) => t.slots)];
+    for (const item of items) {
+      if (item && evolveDivineWeapon(item, this.p.level, this.s.rng)) {
+        this.s.bus.emit('toast', { kind: 'loot', text: `Your divine weapon evolves: ${itemName(item)}!` });
+        this.changed('evolve');
+      }
+    }
+  }
+
+  private advanceEdict(occurrences: readonly DeedOccurrence[]): void {
+    const a = this.p.devotion.apostle;
+    const done = progressEdict(this.p, occurrences);
+    if (!a || !done) return;
+    a.edictsDone++;
+    a.neglected = false;
+    const gold = APOSTLESHIP.edictGoldPerLevel * this.p.level;
+    this.s.addGold(gold, 'edict');
+    this.s.bus.emit('toast', { kind: 'quest', text: `Edict fulfilled: ${done.text}. +${gold} gold.` });
+    this.apply({ [a.god]: APOSTLESHIP.edictFavor }, 'edict');
+    const next = issueEdict(this.p, this.s.rng);
+    if (next) this.s.bus.emit('toast', { kind: 'quest', text: `New Divine Edict: ${next.text}` });
+  }
+
+  private tickEdicts(): void {
+    const a = this.p.devotion.apostle;
+    if (!a || !tickEdict(this.p)) return;
+    a.neglected = true;
+    this.s.bus.emit('toast', { kind: 'warning', text: `You ignored ${content.gods.get(a.god).name}'s edict. Your apostle powers weaken until you fulfil the next.` });
+    this.apply({ [a.god]: -APOSTLESHIP.edictPenalty }, 'edict', true);
+    const next = issueEdict(this.p, this.s.rng);
+    if (next) this.s.bus.emit('toast', { kind: 'quest', text: `New Divine Edict: ${next.text}` });
   }
 
   deed(event: DeedEvent, count = 1): FavorChange[] {
@@ -227,6 +312,18 @@ export class DevotionActions {
       if (god) changes.push(...this.apply({ [god]: DEVOTION.penanceFavor }, 'penance', true));
     }
     if (t.intervention) this.p.devotion.interventionReady = false;
+    // Apostle trial stages, edicts and apostasy hunts.
+    if (b.outcome === 'victory') {
+      const god = recordTrialStage(this.p, b.encounterId);
+      if (god) {
+        const stage = this.p.devotion.trialStage[god] ?? 0;
+        this.s.bus.emit('toast', { kind: 'blessing', text: stage >= 3 ? `The Trial of ${content.gods.get(god).name} is complete. Ascend at the Pantheon!` : `Trial stage ${stage} of 3 complete.` });
+      }
+    }
+    this.advanceEdict(occ);
+    this.tickEdicts();
+    const hunt = this.p.devotion.hunt;
+    if (hunt && --hunt.battles <= 0) delete this.p.devotion.hunt;
     return changes;
   }
 }

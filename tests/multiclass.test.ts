@@ -182,10 +182,10 @@ describe('hybrid prestige classes', () => {
     return hero;
   }
 
-  it('there are at least 10, each a 15-20 node tree for two different classes', () => {
-    expect(content.hybrids.size).toBeGreaterThanOrEqual(10);
+  it('there are at least 10, each a 15-20 node tree (class pairs, plus the Sun Knight)', () => {
+    expect(content.hybrids.filter((h) => h.classes.length === 2).length).toBeGreaterThanOrEqual(10);
     for (const h of content.hybrids.all()) {
-      expect(new Set(h.classes).size).toBe(2);
+      expect(new Set(h.classes).size).toBe(h.requires ? 1 : 2);
       const nodes = treeOf(h.id).nodes.length;
       expect(nodes).toBeGreaterThanOrEqual(15);
       expect(nodes).toBeLessThanOrEqual(20);

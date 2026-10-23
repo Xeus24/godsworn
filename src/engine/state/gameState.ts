@@ -178,6 +178,7 @@ export class GameSession {
     if (result.levels.includes(MULTICLASS.secondaryLevel) && p.classes.length === 1) {
       this.bus.emit('toast', { kind: 'level', text: `Level ${MULTICLASS.secondaryLevel}: you may take a second class! Win a trial at the Proving Grounds.` });
     }
+    if (result.levels.length > 0) this.devotion.evolveWeapons();
     const slots = this.general.growSlots();
     if (slots > 0) this.bus.emit('toast', { kind: 'level', text: `+${slots} general skill slot${slots > 1 ? 's' : ''}.` });
     if (result.paragonLevels.length > 0) {
