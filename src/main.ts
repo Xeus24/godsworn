@@ -1,12 +1,16 @@
 import './style.css';
+import './ui/inventory/inventory.css';
 import { validateContent } from './data';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import { CharacterScreen } from './ui/character/characterScreen';
+import type { Nav } from './ui/components/navBar';
 import { Toasts } from './ui/components/toasts';
 import { CreationScreen } from './ui/creation/creationScreen';
 import { registerCoreSections } from './ui/debug/coreSections';
 import { DebugPanel } from './ui/debug/debugPanel';
+import { registerItemSections } from './ui/debug/itemSections';
+import { InventoryScreen } from './ui/inventory/inventoryScreen';
 import { ScreenManager } from './ui/screen';
 import { TitleScreen } from './ui/title/titleScreen';
 
@@ -20,11 +24,18 @@ const screens = new ScreenManager(root);
 const toasts = new Toasts();
 const debug = new DebugPanel();
 registerCoreSections(debug, () => session);
+registerItemSections(debug, () => session);
+
+const nav: Nav = {
+  title: showTitle,
+  character: showCharacter,
+  inventory: showInventory,
+};
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showCharacter });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 2: characters`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 3: items`));
 }
 
 function showCreation(): void {
@@ -40,13 +51,19 @@ function startGame(hero: Character): void {
 }
 
 function showCharacter(): void {
-  if (session) screens.show(new CharacterScreen(session, showTitle));
+  if (session) screens.show(new CharacterScreen(session, nav));
+}
+
+function showInventory(): void {
+  if (session) screens.show(new InventoryScreen(session, nav));
 }
 
 window.addEventListener('keydown', (e) => {
-  const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
-  if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
-  if (e.key.toLowerCase() === 'c' && session) showCharacter();
+  const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !session) return;
+  const key = e.key.toLowerCase();
+  if (key === 'c') showCharacter();
+  if (key === 'i') showInventory();
 });
 
 showTitle();

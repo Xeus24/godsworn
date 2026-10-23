@@ -1,3 +1,4 @@
+import { content } from '../../data';
 import { PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
 import { spendParagonPoint } from '../character/paragon';
@@ -7,12 +8,16 @@ import type { Character } from '../character/types';
 import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
+import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
+import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
+import { applyStartingKit } from '../items/use';
 import type { PrimaryStat } from '../stats/types';
 import { advanceClock, createClock, hourOf, timeOfDay, type GameClock } from './clock';
+import { ItemActions } from './itemActions';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -31,6 +36,13 @@ export interface GameState {
   player: Character;
   gold: number;
   levelCap: number;
+  /** New Game+ tier; 0 for a first playthrough. */
+  ngPlus: number;
+  inventory: Inventory;
+  stash: Stash;
+  /** Counter for item uids. */
+  nextUid: number;
+  lootFilter: LootFilterSettings;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -43,6 +55,11 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     player,
     gold: PROGRESSION.startingGold,
     levelCap: PROGRESSION.levelCap,
+    ngPlus: 0,
+    inventory: createInventory(),
+    stash: createStash(),
+    nextUid: 0,
+    lootFilter: { ...DEFAULT_LOOT_FILTER },
   };
 }
 
@@ -55,17 +72,32 @@ export class GameSession {
   readonly bus: GameEventBus;
   readonly rng: Rng;
   readonly triggers: TriggerSystem;
+  readonly items: ItemActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
     this.rng = new Rng(state.rngState);
     this.triggers = new TriggerSystem(this.rng);
+    this.items = new ItemActions(this);
   }
 
+  /** Starts a new game and hands the hero their class's starting kit. */
   static newGame(seed: number, player: Character): GameSession {
     const session = new GameSession(createGameState(seed, player));
+    const classId = player.classes[0]?.classId;
+    const kit = classId ? content.startingKits[classId] : undefined;
+    if (kit) {
+      const result = applyStartingKit(player, session.state.inventory, kit, () => session.newUid());
+      if (!result.ok) throw new Error(`Starting kit failed: ${result.reason}`);
+    }
     session.bus.emit('gameStarted', { seed: session.state.seed });
     return session;
+  }
+
+  /** A fresh, unique item id for this save. */
+  newUid(): string {
+    this.state.nextUid++;
+    return `i${this.state.nextUid}`;
   }
 
   get player(): Character {

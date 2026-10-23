@@ -20,6 +20,8 @@ export interface ClassDef {
   growth: PrimaryStats;
   weapons: string[];
   armor: string[];
+  /** Can hold a one-handed melee or throwing weapon in the off hand. */
+  dualWield?: boolean;
   startingSkills: string[];
 }
 
@@ -40,6 +42,7 @@ export const CLASSES: ClassDef[] = [
     growth: { str: 2, dex: 0.5, int: 0.1, vit: 1.5, wis: 0.3, luk: 0.3, fai: 0.3 },
     weapons: ['sword', 'greatsword', 'axe', 'greataxe', 'mace', 'warhammer', 'spear', 'shield'],
     armor: ['cloth', 'leather', 'mail', 'plate'],
+    dualWield: true,
     startingSkills: ['heavy-strike', 'rampage'],
   },
   {
@@ -78,6 +81,7 @@ export const CLASSES: ClassDef[] = [
     growth: { str: 0.7, dex: 2, int: 0.2, vit: 0.8, wis: 0.2, luk: 1, fai: 0.1 },
     weapons: ['dagger', 'rapier', 'sword', 'throwing', 'crossbow', 'fist'],
     armor: ['cloth', 'leather'],
+    dualWield: true,
     startingSkills: ['backstab', 'eviscerate'],
   },
   {
@@ -150,6 +154,7 @@ export const CLASSES: ClassDef[] = [
     growth: { str: 1.1, dex: 1.4, int: 0.1, vit: 0.9, wis: 0.8, luk: 0.3, fai: 0.4 },
     weapons: ['fist', 'staff', 'spear'],
     armor: ['cloth', 'leather'],
+    dualWield: true,
     startingSkills: ['palm-strike', 'stance-of-the-tiger'],
   },
   {

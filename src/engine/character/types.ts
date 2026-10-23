@@ -1,4 +1,14 @@
+import type { EquipSlot, ItemInstance } from '../items/types';
+import type { ModifierSpec } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
+
+/** A buff that lasts a number of battles (elixirs, food, minor blessings). */
+export interface TimedBuff {
+  id: string;
+  name: string;
+  modifiers: ModifierSpec[];
+  battlesLeft: number;
+}
 
 export type ClassSlot = 'primary' | 'secondary' | 'tertiary';
 
@@ -40,6 +50,10 @@ export interface Character {
   paragonPoints: number;
   /** Ranks per paragon node id. */
   paragon: Record<string, number>;
+
+  /** Equipped items by slot. */
+  equipment: Partial<Record<EquipSlot, ItemInstance>>;
+  timedBuffs: TimedBuff[];
 
   /** Known active skills: skill id -> rank. */
   skills: Record<string, number>;

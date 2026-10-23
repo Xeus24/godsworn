@@ -1,0 +1,70 @@
+/**
+ * Fill-only pixel sketches for item icons (at most 14x14, centred on a
+ * 16x16 canvas and outlined automatically). Letters are palette slots:
+ *   m main material, l light, d dark, w white highlight,
+ *   g dark grip, h light grip, a gold accent, e gem/energy color,
+ *   p paper, k near-black, r red, v green, c cyan, y yellow.
+ */
+export const ITEM_PATTERNS: Record<string, string[]> = {
+  // ---------------- weapons ----------------
+  sword: ['...w...', '..lwd..', '..lmd..', '..lmd..', '..lmd..', '..lmd..', '..lmd..', '..lmd..', 'aaaaaaa', '...g...', '...h...', '...g...', '..aea..', '...a...'],
+  greatsword: ['....w....', '...lwd...', '...lmd...', '..llmdd..', '..llmdd..', '..llmdd..', '..llmdd..', '..llmdd..', '..llmdd..', 'aaaaaaaaa', 'a...g...a', '....h....', '....g....', '...aea...'],
+  dagger: ['..w..', '.lwd.', '.lmd.', '.lmd.', '.lmd.', 'aaaaa', '..g..', '..h..', '.aea.', '..a..'],
+  rapier: ['...w...', '...w...', '...m...', '...m...', '...m...', '...m...', '...m...', '...m...', '...m...', '.aaaaa.', 'a..g..a', '.aaha..', '...g...', '..aea..'],
+  axe: ['.lll......', 'lmmmd.h...', 'lmmmmdh...', 'lmmmmdh...', 'lmmmd.h...', '.ddd..h...', '......g...', '......h...', '......g...', '......h...', '......g...', '......h...', '......g...', '.....aea..'],
+  greataxe: ['.lll..h..lll.', 'lmmmd.h.lmmmd', 'lmmmmmhmmmmmd', 'lmmmmmhmmmmmd', 'lmmmd.h.lmmmd', '.ddd..h..ddd.', '......g......', '......h......', '......g......', '......h......', '......g......', '......h......', '......g......', '.....aea.....'],
+  mace: ['..l.l.l..', '.lmmmmmd.', 'lmmmmmmmd', '.lmmmmmd.', 'lmmmmmmmd', '.ddmmmdd.', '..d.d.d..', '....g....', '....h....', '....g....', '....h....', '....g....', '...aea...', '....a....'],
+  warhammer: ['lllllllllll', 'lmmmmmmmmmd', 'lmmmmmmmmmd', 'dddddhddddd', '.....h.....', '.....g.....', '.....h.....', '.....g.....', '.....h.....', '.....g.....', '.....h.....', '.....g.....', '....aea....'],
+  spear: ['...w...', '..lwd..', '..lmd..', '.lmmmd.', '..lmd..', '...d...', '..aaa..', '...h...', '...g...', '...h...', '...g...', '...h...', '...g...', '...a...'],
+  scythe: ['.lllllll..', 'lmmmmmmmhd', '.....ddmh.', '........h.', '........g.', '........h.', '........g.', '........h.', '........g.', '........h.', '........g.', '........h.', '.......aea'],
+  fist: ['.l.l.l.l.', '.m.m.m.m.', '.m.m.m.m.', '.d.d.d.d.', 'lmmmmmmmd', 'lmmmmmmmd', 'ggggggggg', 'ghhhhhhhg', 'ggggggggg', '.gggaggg.'],
+  bow: ['..hg.....', '.h..g....', 'h....w...', 'h.....w..', 'h......w.', 'h......w.', 'ga.....w.', 'ga.....w.', 'h......w.', 'h......w.', 'h.....w..', 'h....w...', '.h..g....', '..hg.....'],
+  crossbow: ['....w....', '...lwd...', 'hhhhmhhhh', 'h...m...h', '....m....', '...ama...', '...hgh...', '...hgh...', '...hgh...', '...hgh...', '...ggg...', '....g....'],
+  throwing: ['w.....w', 'lw...lw', '.lw.lw.', '..lmd..', '.ld.ld.', 'ld...ld', 'a.....a'],
+  staff: ['..eee..', '.eweee.', '.eeeee.', '..eee..', '...a...', '..aha..', '...h...', '...g...', '...h...', '...g...', '...h...', '...g...', '...h...', '...a...'],
+  wand: ['...e...', '..ewe..', '...e...', '..aaa..', '...h...', '...g...', '...h...', '...g...', '...h...', '..aaa..'],
+  tome: ['lmmmmmmmd', 'lmaaaaamd', 'lmamemamd', 'lmaeeeamd', 'lmamemamd', 'lmaaaaamd', 'lmmmmmmmd', 'lmmmmmmmd', 'ppppppppd', 'ddddddddd'],
+  orb: ['...lll...', '..lwwee..', '.lwweeee.', '.lweeeee.', '.leeeeee.', '.leeeeed.', '..eeeed..', '...ddd...', '..aaaaa..', '.aamamaa.', '..aaaaa..'],
+  instrument: ['...g...', '...h...', '..ggg..', '...h...', '...h...', '..hhh..', '.hhhhh.', 'hhhkhhh', 'hhkkkhh', 'hhhkhhh', 'hhhhhhh', '.hhhhh.', '..hhh..'],
+  shield: ['lllllllll', 'lmmmmmmmd', 'lmmmammmd', 'lmmaeammd', 'lmmmammmd', 'lmmmmmmmd', '.lmmmmmd.', '.lmmmmmd.', '..lmmmd..', '...lmd...', '....d....'],
+  // ---------------- armor ----------------
+  head: ['...lll...', '.llmmmmd.', 'lmmmmmmmd', 'lmmmmmmmd', 'lmaaaaamd', 'lmkkmkkmd', 'lmkkmkkmd', 'lmmm.mmmd', 'lmm...mmd', '.d.....d.'],
+  shoulders: ['..lll.....lll..', '.lmmmd...lmmmd.', 'lmmmmmd.lmmmmmd', 'lmmammd.lmmammd', 'dmmmmmd.dmmmmmd', '.ddddd...ddddd.'],
+  chest: ['.ll.....ll.', 'lmml...lmmd', 'lmmmmlmmmmd', 'lmmmmmmmmmd', '.lmmmammmd.', '.lmmmmmmmd.', '.lmmmmmmmd.', '.lmmmmmmmd.', '.aaaaaaaaa.', '.lmmmmmmmd.', '..ddddddd..'],
+  gloves: ['.l.l.l....', '.m.m.m.l..', '.m.m.m.m..', '.mmmmmmm..', 'lmmmmmmmd.', 'lmmmmmmmmd', 'lmmmmmmmd.', '.aaaaaaa..', '.ddddddd..'],
+  belt: ['lmmmmmmmmmmmmd', 'lmmmmaaaammmmd', 'dddddakkaddddd', 'lmmmmaaaammmmd', '.......d......'],
+  legs: ['lmmmaaammmd', 'lmmmmmmmmmd', 'lmmmmdlmmmd', 'lmmmd.lmmmd', 'lmmmd.lmmmd', 'lmmmd.lmmmd', 'lmmmd.lmmmd', 'lmmmd.lmmmd', 'lmmmd.lmmmd', 'ddddd.ddddd'],
+  boots: ['..lmmd.......', '..lmmd.......', '..lmmd.......', '..lmmd.......', '..lmmd.......', '.aaaaaa......', '.lmmmmmd.....', '.lmmmmmmmmd..', '.lmmmmmmmmmd.', '.ddddddddddd.'],
+  cloak: ['...aaaaa...', '..lmmammmd..', '.lmmmmmmmd.', '.lmmmmmmmd.', 'lmmmmmmmmmd', 'lmmmmmmmmmd', 'lmmmmmmmmmd', 'lmmmmmmmmmd', 'lmmmmmmmmmd', 'lmmmmmmmmmd', 'dmdmdmdmdmd'],
+  // ---------------- jewelry & relics ----------------
+  ring: ['...eee...', '..ewwee..', '...eee...', '..lmmmd..', '.lm...md.', 'lm.....md', 'lm.....md', '.lm...md.', '..ddddd..'],
+  amulet: ['d.......d', '.d.....d.', '..d...d..', '...d.d...', '...lmd...', '..lmmmd..', '.lmeeemd.', '.lmewemd.', '.lmeeemd.', '..lmmmd..', '...ddd...'],
+  earring: ['..ll..', '.l..d.', '.l..d.', '..ld..', '...m..', '..lmd.', '.leeed', '.lewed', '..eed.', '...d..'],
+  trinket: ['...lmmd...', '..lmmmmd..', '.lmaaaamd.', '.lmaeeamd.', '.lmaeeamd.', '.lmaaaamd.', '..lmmmmd..', '...lmmd...', '....hh....', '....gg....'],
+  holySymbol: ['....aa....', '....aa....', '.aaaaaaaa.', '.aaaaaaaa.', '....aa....', '....aa....', '...aeea...', '...aeea...', '....aa....', '....aa....', '....aa....'],
+  relic: ['....yyy....', '...yeeey...', '..yeewwey..', '..yeewwey..', '...yeeey...', '....yyy....', '...lmmmd...', '..lmmmmmd..', '.lmmammmmd.', '.lmmmmmmmd.', '..ddddddd..'],
+  // ---------------- socketables ----------------
+  gem: ['...lll...', '..lwwmd..', '.lwwmmmd.', 'lmmmmmmmd', '.dmmmmmd.', '..dmmmd..', '...dmd...', '....d....'],
+  rune: ['.lmmmmmd.', 'lmmmmmmmd', 'lmmeeemmd', 'lmmmemmmd', 'lmmeeemmd', 'lmmmemmmd', 'lmmeeemmd', 'lmmmmmmmd', '.ddddddd.'],
+  // ---------------- consumables ----------------
+  potion: ['...hh...', '...gg...', '...ww...', '..wllw..', '..lwee..', '.leeeee.', 'leweeeee', 'leeeeeed', 'leeeeeed', '.deeeed.', '..dddd..'],
+  flask: ['..hh..', '..gg..', '..ww..', '..we..', '.weee.', '.weee.', 'weeeee', 'weeeee', 'weeeee', '.eeee.'],
+  food: ['..hhhhhh..', '.hhhhhhhh.', 'hhrrhhrrhh', 'hhhhhhhhhh', '.ggggggggg', '..gggggg..'],
+  bomb: ['......yr', '.....h..', '..kkkhk.', '.kkwkkkk', 'kkwkkkkk', 'kkkkkkkk', 'kkkkkkkk', 'kkkkkkkk', '.kkkkkk.', '..kkkk..'],
+  scroll: ['hpppppppph', 'h.ppppppph', '.ppkkkkpp.', '.pppppppp.', '.ppkkkpp..', '.pppppppp.', '.ppkkkkpp.', '.pppppppp.', 'hpppppppph', 'h........h'],
+  feather: ['......rr', '.....rry', '....rryr', '...rryr.', '..rryr..', '.rryr...', '.ryr....', '.yr.....', 'y.......', 'y.......'],
+  salts: ['.wwwwww.', 'hhhhhhhh', 'hwwwwwwh', 'hwlwlwwh', 'hwwlwwlh', 'hwwwwwwh', '.hhhhhh.'],
+  book: ['lmmmmmmmd', 'lmyyyyymd', 'lmyeeeymd', 'lmyeweymd', 'lmyeeeymd', 'lmyyyyymd', 'lmmmmmmmd', 'ppppppppd', 'ddddddddd'],
+  bag: ['...hhh....', '..h...h...', '.hhhhhhh..', 'hhhhhhhhh.', 'hhhhahhhhg', 'hhhhhhhhhg', 'hhhhhhhhhg', '.ggggggggg'],
+  // ---------------- materials & curiosities ----------------
+  ore: ['...mmm...', '.lmmmmmd.', 'lmmemmmmd', 'lmmmmmemd', 'lmemmmmmd', '.dmmmmmd.', '..ddddd..'],
+  plank: ['hhhhhhhhhhhh', 'hghhhhhhghhh', 'hhhhhhhhhhhh', 'gggggggggggg'],
+  hide: ['.mm.....mm.', 'lmmmmmmmmmd', '.lmmmmmmmd.', '.lmmmmmmmd.', 'lmmmmmmmmmd', '.mm.....mm.'],
+  cloth: ['lmmmmmmmmm', 'lmlmlmlmlm', 'lmmmmmmmmm', 'mlmlmlmlmd', 'lmmmmmmmmm', '.ddddddddd'],
+  herb: ['...v...', '..vvv..', '.vv.vv.', 'vv.v.vv', '...v...', '..vvv..', '...v...', '...g...'],
+  essence: ['...e...', '..eee..', '.eewee.', 'eewwwee', '.eewee.', '..eee..', '...e...'],
+  shard: ['....yw', '...ywy', '..ywy.', '.yey..', 'yey...', 'ey....'],
+  fragment: ['..kkk..', '.kkekk.', 'kkeeekk', 'kkeweek', '.kkeek.', '..kkk..'],
+  fang: ['ww......', 'wwww....', '.wwwww..', '..wwwww.', '...wwwwd', '.....wdd'],
+  curiosity: ['.wwwww.', 'wkwwwkw', 'wwwwwww', 'wwwkwww', 'wwwwwww', 'wkwwwkw', '.wwwww.'],
+};

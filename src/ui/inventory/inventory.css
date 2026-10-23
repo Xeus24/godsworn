@@ -1,0 +1,287 @@
+/* ---------- Tabs & selects (shared) ---------- */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tab {
+  padding: 3px 10px;
+  font-size: 12px;
+}
+
+.tab.active {
+  border-color: var(--gold);
+  color: var(--gold-hi);
+  background: #3a2a14;
+}
+
+select {
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px solid var(--border);
+  padding: 3px 4px;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* ---------- Inventory layout ---------- */
+
+.inventory-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) auto auto;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  overflow-y: auto;
+  align-items: start;
+}
+
+@media (max-width: 1250px) {
+  .inventory-body {
+    grid-template-columns: minmax(280px, 340px) auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .inventory-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 44px);
+  gap: 3px;
+}
+
+.paper-doll {
+  display: grid;
+  grid-template-columns: 44px 1fr 1fr 44px;
+  grid-template-rows: repeat(8, 44px);
+  gap: 3px;
+}
+
+.doll-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse, #2a1f3a, transparent 70%);
+  border: 1px dashed var(--border);
+  text-align: center;
+}
+
+.doll-name {
+  font-family: var(--font-display);
+  color: var(--gold);
+  font-size: 18px;
+}
+
+/* ---------- Item cells ---------- */
+
+.item-cell {
+  --rarity: var(--border);
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: #0b0812;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.paper-doll .item-cell {
+  justify-self: center;
+}
+
+.item-cell.has-item {
+  border-color: var(--rarity);
+  background: radial-gradient(circle, color-mix(in srgb, var(--rarity) 22%, transparent), #0b0812 75%);
+}
+
+.item-cell.animated {
+  animation: rarity-glow 1.6s ease-in-out infinite;
+}
+
+@keyframes rarity-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--rarity), inset 0 0 4px var(--rarity);
+  }
+  50% {
+    box-shadow: 0 0 6px 1px var(--rarity), inset 0 0 8px var(--rarity);
+  }
+}
+
+.item-cell img {
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+}
+
+.item-cell .qty {
+  position: absolute;
+  right: 2px;
+  bottom: 0;
+  font-size: 10px;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.item-cell .placeholder {
+  font-size: 9px;
+  color: #4a3a5a;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.item-cell.selected {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 1px;
+}
+
+.item-cell.drop-target {
+  outline: 2px dashed var(--ok);
+}
+
+.item-cell.dimmed {
+  opacity: 0.25;
+}
+
+.item-cell.junk::after {
+  content: 'J';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  font-size: 9px;
+  color: var(--r-junk);
+}
+
+.item-cell.broken {
+  background: repeating-linear-gradient(45deg, #2a0a0a, #2a0a0a 4px, #12060a 4px, #12060a 8px);
+}
+
+.item-cell.unidentified img {
+  filter: brightness(0.6) saturate(0.4);
+}
+
+.item-cell.unidentified::before {
+  content: '?';
+  position: absolute;
+  right: 3px;
+  top: 0;
+  font-size: 11px;
+  color: var(--gold-hi);
+}
+
+.loot-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.action-panel .item-tip {
+  margin-bottom: 8px;
+}
+
+/* ---------- Item tooltip ---------- */
+
+.item-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 220px;
+}
+
+.tip-base {
+  color: var(--text);
+}
+
+.tip-implicit {
+  color: #c8d0e0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+}
+
+.tip-affix {
+  color: #8fb8ff;
+}
+
+.tip-tier {
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.tip-unique {
+  color: var(--r-legendary);
+}
+
+.tip-runeword {
+  color: var(--gold-hi);
+}
+
+.tip-socket {
+  color: #b8e0ff;
+}
+
+.tip-set {
+  color: var(--r-set);
+}
+
+.tip-ability {
+  color: #9fe6a0;
+}
+
+.tip-corrupt {
+  color: #e04080;
+}
+
+.tip-junk {
+  color: var(--r-junk);
+}
+
+.tip-good {
+  color: var(--ok);
+}
+
+.tip-bad {
+  color: var(--danger);
+}
+
+.tip-lore {
+  color: var(--text-dim);
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+.tip-value {
+  margin-top: 4px;
+  color: var(--r-divine);
+  font-size: 11px;
+}

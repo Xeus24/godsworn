@@ -247,7 +247,7 @@ export const RACIAL_SKILLS: SkillDef[] = [
     cost: {},
     cooldown: 6,
     effects: [
-      { kind: 'buff', id: 'rally', duration: 3, modifiers: [{ stat: 'damageBonus', type: 'percent', value: 15 }] },
+      { kind: 'buff', id: 'rally', duration: 3, modifiers: [{ stat: 'damageBonus', type: 'flat', value: 15 }] },
     ],
   },
   {
@@ -291,7 +291,7 @@ export const RACIAL_SKILLS: SkillDef[] = [
     cooldown: 6,
     effects: [
       { kind: 'heal', percentMaxHp: 15 },
-      { kind: 'buff', id: 'bloodlust', duration: 3, modifiers: [{ stat: 'physicalDamage', type: 'percent', value: 20 }] },
+      { kind: 'buff', id: 'bloodlust', duration: 3, modifiers: [{ stat: 'physicalDamage', type: 'flat', value: 20 }] },
     ],
   },
   {

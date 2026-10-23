@@ -1,0 +1,64 @@
+import type { CuriosityDef, MaterialDef, MaterialKind } from '../../engine/items/types';
+
+type MaterialSpec = [id: string, name: string, kind: MaterialKind, tier: number, value: number, description: string];
+
+const SPECS: MaterialSpec[] = [
+  ['iron-ore', 'Iron Ore', 'ore', 1, 4, 'Common ore for basic smithing.'],
+  ['mithril-ore', 'Mithril Ore', 'ore', 3, 20, 'Light, bright and prized by smiths.'],
+  ['adamant-ore', 'Adamant Ore', 'ore', 4, 45, 'Nearly unbreakable once forged.'],
+  ['starmetal-ore', 'Starmetal Ore', 'ore', 5, 90, 'Fell from the sky, still warm.'],
+  ['ashwood-plank', 'Ashwood Plank', 'wood', 1, 4, 'Straight-grained wood for bows and staves.'],
+  ['elderwood-plank', 'Elderwood Plank', 'wood', 4, 40, 'Old wood that hums with magic.'],
+  ['rough-hide', 'Rough Hide', 'leather', 1, 4, 'A stiff, untreated hide.'],
+  ['thick-hide', 'Thick Hide', 'leather', 3, 18, 'Tough hide from a large beast.'],
+  ['drake-scale', 'Drake Scale', 'leather', 5, 85, 'A heat-proof scale from a lesser dragon.'],
+  ['linen-scrap', 'Linen Scrap', 'cloth', 1, 3, 'Scraps of plain cloth.'],
+  ['silk-bolt', 'Silk Bolt', 'cloth', 3, 22, 'Fine silk for enchanted robes.'],
+  ['moonsilk', 'Moonsilk', 'cloth', 5, 80, 'Woven only under a full moon.'],
+  ['healroot', 'Healroot', 'herb', 1, 5, 'A bitter root used in health potions.'],
+  ['manabloom', 'Manabloom', 'herb', 1, 6, 'A blue flower that tingles with mana.'],
+  ['fireweed', 'Fireweed', 'herb', 2, 10, 'Warm to the touch. Used in fire bombs.'],
+  ['frostleaf', 'Frostleaf', 'herb', 3, 14, 'Never thaws. Used in frost bombs.'],
+  ['faint-essence', 'Faint Essence', 'essence', 1, 5, 'Salvaged from common and uncommon gear.'],
+  ['lesser-essence', 'Lesser Essence', 'essence', 2, 15, 'Salvaged from rare gear.'],
+  ['greater-essence', 'Greater Essence', 'essence', 3, 45, 'Salvaged from epic gear.'],
+  ['radiant-essence', 'Radiant Essence', 'essence', 4, 150, 'Salvaged from legendary, set and relic gear.'],
+  ['mythic-essence', 'Mythic Essence', 'essence', 5, 500, 'Salvaged from mythic and divine gear.'],
+  ['primal-essence', 'Primal Essence', 'essence', 6, 1500, 'Salvaged from ascended and primordial gear.'],
+  ['beast-fang', 'Beast Fang', 'monster', 1, 3, 'A sharp fang.'],
+  ['bone-dust', 'Bone Dust', 'monster', 1, 3, 'Ground bone from the restless dead.'],
+  ['slime-gel', 'Slime Gel', 'monster', 1, 2, 'It wobbles.'],
+  ['harpy-feather', 'Harpy Feather', 'monster', 2, 8, 'Iridescent and sharp-edged.'],
+  ['wyvern-scale', 'Wyvern Scale', 'monster', 4, 40, 'Harder than steel.'],
+  ['demon-horn', 'Demon Horn', 'monster', 5, 70, 'Still smells of brimstone.'],
+  ['divine-shard', 'Divine Shard', 'divine', 5, 250, 'A splinter of a god’s power.'],
+  ['void-fragment', 'Void Fragment', 'void', 6, 400, 'A piece of nothing. It is heavier than it should be.'],
+];
+
+export const MATERIALS: MaterialDef[] = SPECS.map(([id, name, kind, tier, value, description]) => ({
+  id,
+  name,
+  category: 'material',
+  kind,
+  tier,
+  level: 1,
+  value,
+  stack: 99,
+  description,
+}));
+
+/** Useless but charming. Sell them, or offer them to a god who likes them. */
+export const CURIOSITIES: CuriosityDef[] = [
+  { id: 'loaded-dice', name: 'Loaded Dice', category: 'curiosity', level: 1, value: 25, stack: 99, lovedBy: ['vex'], description: 'They always roll a six. Almost always.' },
+  { id: 'two-headed-coin', name: 'Two-Headed Coin', category: 'curiosity', level: 1, value: 30, stack: 99, lovedBy: ['vex', 'grimvald'], description: 'Heads you win. Heads I lose.' },
+  { id: 'rubber-chicken', name: 'Rubber Chicken', category: 'curiosity', level: 1, value: 8, stack: 99, lovedBy: ['vex'], description: 'Of no conceivable use. It squeaks.' },
+  { id: 'bent-horseshoe', name: 'Bent Horseshoe', category: 'curiosity', level: 1, value: 6, stack: 99, lovedBy: ['thalor'], description: 'Someone was very strong, or very angry.' },
+  { id: 'jar-of-fireflies', name: 'Jar of Fireflies', category: 'curiosity', level: 1, value: 15, stack: 99, lovedBy: ['ysolde'], description: 'Let them go, maybe?' },
+  { id: 'unsent-letter', name: 'Unsent Letter', category: 'curiosity', level: 1, value: 4, stack: 99, lovedBy: ['hesha'], description: '"Dearest Marna, I should have said it sooner..."' },
+  { id: 'cracked-hourglass', name: 'Cracked Hourglass', category: 'curiosity', level: 10, value: 40, stack: 99, lovedBy: ['morrath'], description: 'The sand flows upward.' },
+  { id: 'message-in-a-bottle', name: 'Message in a Bottle', category: 'curiosity', level: 1, value: 12, stack: 99, lovedBy: ['nymira'], description: 'The message is just "help". It is in your handwriting.' },
+  { id: 'misprinted-spellbook', name: 'Misprinted Spellbook', category: 'curiosity', level: 5, value: 35, stack: 99, lovedBy: ['aurelis'], description: 'Every spell in it summons a single sock.' },
+  { id: 'polished-war-medal', name: 'Polished War Medal', category: 'curiosity', level: 5, value: 50, stack: 99, lovedBy: ['kael'], description: 'For Valor Above and Beyond. The name is scratched out.' },
+  { id: 'sun-bleached-skull', name: 'Sun-Bleached Skull', category: 'curiosity', level: 1, value: 10, stack: 99, lovedBy: ['morrath', 'solenne'], description: 'It looks faintly relieved.' },
+  { id: 'gilded-mousetrap', name: 'Gilded Mousetrap', category: 'curiosity', level: 15, value: 120, stack: 99, lovedBy: ['grimvald'], description: 'For a very rich, very specific mouse.' },
+];

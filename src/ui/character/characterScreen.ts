@@ -5,7 +5,7 @@ import { levelProgress, xpToNext } from '../../engine/character/progression';
 import { characterStatsDetailed } from '../../engine/character/stats';
 import type { GameSession } from '../../engine/state/gameState';
 import { ELEMENTS, PRIMARY_STATS, type StatId } from '../../engine/stats/types';
-import { drawPortrait } from '../art/portraits';
+import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { formatStat, skillCard, statBreakdownTooltip } from '../format';
 import { el, type Screen } from '../screen';
@@ -30,7 +30,7 @@ export class CharacterScreen implements Screen {
 
   constructor(
     private readonly session: GameSession,
-    private readonly onTitle: () => void,
+    private readonly nav: Nav,
   ) {}
 
   mount(root: HTMLElement): void {
@@ -59,35 +59,11 @@ export class CharacterScreen implements Screen {
     const { stats, breakdown } = characterStatsDetailed(p);
     const race = content.races.get(p.raceId);
 
-    const portrait = el('canvas', { class: 'portrait-small pixel' });
-    const primaryClass = p.classes[0];
-    drawPortrait(portrait, p.raceId, p.portrait, primaryClass ? content.classes.get(primaryClass.classId).color + '55' : undefined);
-
     const atCap = p.level >= s.state.levelCap;
     const xpLabel = atCap
-      ? `Paragon ${p.paragonLevel} · ${Math.floor(levelProgress(p, s.state.levelCap) * 100)}%`
+      ? `Paragon ${p.paragonLevel} \u00b7 ${Math.floor(levelProgress(p, s.state.levelCap) * 100)}%`
       : `XP ${p.xp} / ${xpToNext(p.level)}`;
-    const titleBtn = el('button', {}, 'Title');
-    titleBtn.addEventListener('click', this.onTitle);
-
-    const header = el(
-      'header',
-      { class: 'sheet-header' },
-      portrait,
-      el(
-        'div',
-        { class: 'sheet-ident' },
-        el('div', { class: 'sheet-name' }, p.name, p.hardcore ? el('span', { class: 'badge danger' }, 'Hardcore') : ''),
-        el('div', { class: 'dim' }, `Level ${p.level} ${race.name} ${p.classes.map((c) => content.classes.get(c.classId).name).join(' / ')}`),
-        bar(levelProgress(p, s.state.levelCap), 'xp', xpLabel),
-      ),
-      el('div', { class: 'sheet-vitals' },
-        bar(p.hp / stats.maxHp, 'hp', `HP ${p.hp} / ${stats.maxHp}`),
-        bar(p.mp / Math.max(1, stats.maxMp), 'mp', `MP ${p.mp} / ${stats.maxMp}`),
-      ),
-      el('div', { class: 'sheet-gold' }, `${s.state.gold} gold`),
-      titleBtn,
-    );
+    const header = navBar(s, this.nav, 'character', bar(levelProgress(p, s.state.levelCap), 'xp', xpLabel));
 
     const statRow = (id: StatId): HTMLElement => {
       const row = el('div', { class: 'stat-row' }, el('span', {}, content.stats.get(id).name), el('b', {}, formatStat(id, stats[id])));

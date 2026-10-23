@@ -24,6 +24,8 @@ Then open http://localhost:5173.
 | `npm test` | Unit tests (Vitest) |
 | `npm run build` | Type-check and production build to `dist/` |
 | `npm run preview` | Serve the production build |
+| `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
+| `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 
 ## Play
 
@@ -34,9 +36,18 @@ Then open http://localhost:5173.
 | Key | Action |
 |---|---|
 | C | Character sheet |
-| ` (backtick) | Developer panel (XP, levels, gold) |
+| I | Inventory, equipment and stash |
+| ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
+
+You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
+
+- **Drag** items between your bags, the stash and the paper doll to move, equip or unequip them. **Drop a gem or rune onto gear** to socket it. The right runes in the right order form a runeword.
+- **Right-click** for the quick action: equip, use, identify or unequip.
+- **Click** an item for its full tooltip and every action: Unsocket (costs gold), Mark as junk, Salvage into materials, Destroy (click twice).
+- **Hover** anything to see its stats and how it compares to what you are wearing. Green is an upgrade, red a downgrade.
+- Use the filter tabs, sorting and the loot filter (hide or auto-salvage low rarities) to keep your bags tidy.
 
 More screens and controls are documented here as each phase lands.
 
@@ -49,12 +60,14 @@ src/
     stats/      stat ids, modifiers, conditions, calculateStats()
     effects/    triggers (on-hit, on-kill...) and effect dispatch
     character/  creation, base stats, leveling, attributes, paragon
+    items/      generation, affixes, sockets, equipment, inventory, loot
     skills/     skill definitions
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
   ui/         rendering and input only
 tests/        Vitest unit tests
+scripts/      simulations and content tools (run with tsx)
 ```
 
 ## Core concepts
@@ -99,7 +112,32 @@ Content is plain TypeScript data in `src/data/`. `src/data/index.ts` wraps each 
 
 ## Adding content
 
-Examples for items and enemies are added here when those systems land (Phases 3 and 4).
+An example for enemies is added here when combat lands (Phase 4).
+
+### Example: a new legendary item
+Add an entry to `LEGENDARIES` in `src/data/items/legendaries.ts`. It needs a base item (any gear id such as `bow-t3`, `plate-chest-t5` or `ring-t2`), fixed modifiers, and optionally triggered effects and mechanic flags:
+
+```ts
+{
+  id: 'tidebreaker',
+  name: 'Tidebreaker',
+  rarity: 'legendary',
+  baseId: 'spear-t4',
+  level: 30,
+  modifiers: [{ stat: 'lightningDamage', type: 'flat', value: 25 }],
+  triggers: [{
+    id: 'tidebreaker-wet',
+    trigger: 'onHit',
+    chance: 30,
+    effects: [{ kind: 'applyStatus', status: 'wet', duration: 2 }],
+  }],
+  flags: ['reach'],
+  effectText: ['30% chance on hit to soak the target (Wet)', 'Melee attacks can strike the back row'],
+  lore: 'Thrown into the sea by Nymira, it came back on the next tide.',
+}
+```
+
+That is all it takes: it drops at item level 30 or higher, shows up in tooltips, the developer panel and CONTENT.md, and `validateContent()` checks every id, stat and flag it uses. Sets (`sets.ts`), runewords (`runes.ts`), affixes (`affixes.ts`) and consumables (`consumables.ts`) work the same way.
 
 ### Example: a new skill
 Add an entry to a skill list in `src/data/skills/` (for example `CLASS_STARTER_SKILLS` in `starter.ts`):

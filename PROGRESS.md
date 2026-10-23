@@ -6,8 +6,8 @@
 |---|---|---|
 | 1 | Project setup, RNG, modifier & trigger systems, stats, data loading | **Done** |
 | 2 | Races, classes, leveling, attribute points | **Done** |
-| 3 | Items, affixes, sockets/runes, inventory, stash, equipment | Next |
-| 4 | Combat core | |
+| 3 | Items, affixes, sockets/runes, inventory, stash, equipment | **Done** |
+| 4 | Combat core | Next |
 | 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | |
 | 6 | Specializations, general skills, skillbooks | |
 | 7 | Multiclassing, hybrid prestige classes | |
@@ -73,6 +73,63 @@
   - Developer panel character cheats: XP grants, set level, max level, gold, attribute points.
 - 102 unit tests.
 
+### Phase 3: items
+- **Item model** (`engine/items/`): bases, unique definitions, and item instances. An instance records its rarity, quality, item level, base rolls, affixes, sockets, identified state, durability, enchant level, stack size, junk mark, corruption, ascended flag and relic awakening.
+- **Rarities:**
+  - All 12 tiers, with drop weights, Magic Find exponents, affix counts, socket chances, stat and value multipliers, and minimum NG+ levels.
+  - Mythics drop only from elites and bosses.
+  - Epic and above drop unidentified.
+  - Ascended items (NG+1+) are upgraded legendaries and mythics: +25% unique power and extra affixes.
+  - Corruption (NG+, Epic+): one boon and one drawback.
+- **Quality:** Damaged, Normal, Superior and Masterwork (−10% to +20% base stats).
+- **Bases:**
+  - 20 weapon types × 7 tiers, each type with its own damage, magic, speed, crit and innate bonus.
+  - 8 armor slots × 4 weights × 7 tiers.
+  - 6 jewelry tiers each of rings, amulets, earrings and holy symbols.
+  - 6 trinkets × 3 tiers with on-use abilities, plus a relic base.
+- **Affixes:** 26 prefixes and 25 suffixes, each with 7 tiers gated by item level. Tiers roll weighted toward the highest available. Group exclusivity and at most 3 prefixes and 3 suffixes per item.
+- **Generated names**, e.g. "Blazing Masterwork Steel Greataxe of the Bear".
+- **Hand-designed items:**
+  - 42 legendaries, 15 mythics (two unique effects each), and 10 relics, each with an active ability, lore and an awakening deed.
+  - 10 item sets: one per class with 2/4/6-piece bonuses, plus 2 general sets.
+- **Sockets:** 35 gems (7 types × 5 grades, with different bonuses in weapon, armor and jewelry) and 20 runes. 16 runewords form when exact runes, in order, fill every socket. Unsocketing costs gold and returns the gem.
+- **Other items:**
+  - 37 consumables: potions in 5 sizes, elixirs, food, bombs, holy water, scrolls, Phoenix Feather, Cleansing Salts, Tome of Insight, Traveler's Pack.
+  - 30 materials and 12 curiosities (some loved by particular gods).
+- **Loot:**
+  - Weighted loot tables (normal, elite, boss, chest) with item pools and level-scaled gold.
+  - Source tiers add Magic Find.
+  - Gear drops lean toward types your class can use.
+  - A loot filter hides or auto-salvages gear below chosen rarities.
+- **Equipment:**
+  - 18 slots.
+  - Class weapon and armor permissions; dual wielding for Warrior, Rogue and Monk, with off-hand weapons dealing 50% damage.
+  - Two-handers and off-hand items displace each other.
+  - Level, stat, class and favor requirements.
+  - Set bonuses, item triggers and mechanic flags are collected for combat.
+  - Gear feeds `calculateStats` and the `weaponType` condition.
+- **Inventory:**
+  - 48-slot grid, stacks to 99, expandable to 96 with Traveler's Packs.
+  - Sort by category, rarity, level or name (junk always last).
+- **Stash:** shared, with up to 6 tabs costing 1k to 100k gold.
+- **Upkeep:** durability (broken gear gives no stats) with a repair cost formula; salvage into essences, raw materials and socketed gems.
+- **Consumables outside combat:** potions, elixirs and food (timed buffs that last N battles), Tome of Insight, bags.
+- **Starting kits** per class, equipped automatically on a new game.
+- **Item comparison** (`compareEquip`): the exact stat changes if equipped, including set bonuses and two-handers.
+- **UI:**
+  - 55 procedural pixel-art icon patterns, recolored by material tier, rarity and gem type, and outlined automatically.
+  - Inventory screen (I):
+    - paper doll, 48-slot grid with category filter tabs, sorting, loot filter controls, and the stash with buyable tabs
+    - drag-and-drop to equip, move, swap and socket (drop a gem or rune onto gear)
+    - right-click quick actions (equip, use, identify, unequip)
+    - an action panel (Equip, Use, Identify, Unsocket, Mark junk, Salvage, Destroy with a second click to confirm)
+  - Rich item tooltips: base stats, implicits, affix tiers, unique effects, sockets, runeword, set progress and bonuses, abilities, awakening progress, lore, durability, requirements, comparison deltas and value.
+  - Animated borders for Mythic and above.
+  - A shared nav bar on the Character and Inventory screens.
+  - Developer panel item cheats: gear of any rarity, type and item level; any unique; gem, rune and consumable packs; loot table rolls; gear wear and repair.
+- `npm run sim:loot`: 100,000 gear drops per source tier (normal, elite, boss) × NG+ 0/1/5, printing rarity distributions.
+- 165 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -89,6 +146,18 @@
 - **Respec costs gold, scaled by level.** Skill-tree respec arrives with the trees in Phase 5.
 - **Names** are 1–20 characters: letters (any language), spaces, apostrophes and hyphens.
 - **Level-up toasts are combined** per XP grant, so a large XP gain does not flood the screen.
+- **Items are slot-based, not shaped:** each item takes one grid cell, like most JRPG inventories. This keeps drag-and-drop simple.
+- **Sets: 10, not 8.** The spec says "at least 8 (one per class + 2 general)", which is 10.
+- **Divine items are gated on favor:** they need a devotion tier with their god, so none drop until Phase 8 adds favor. The rarity, requirement checks and tooltips already work.
+- **Junk-rarity gear** is Damaged quality with no affixes and is auto-marked as junk. Magic Find makes junk rarer.
+- **Magic Find formula:** each rarity's weight × (1 + MF/100)^exponent, with exponents rising from 0.5 (Uncommon) to 1.4 (Primordial) and −0.5 for Junk. Each NG+ tier adds +25 MF. Elite/boss sources add 50–400 MF. The simulation shows about 0.9% legendaries from normal enemies and about 2.3% from bosses at level 60.
+- **Gear bases** are drawn from tiers within 15 levels of the item level, and gear drops weight your class's usable types ×3.
+- **Affix values** on whole-number stats (STR, HP, armor) roll whole numbers; percentage stats keep one decimal.
+- **Unidentified items** show only base stats and cannot be equipped.
+- **Off-hand weapons** add 50% of their damage. Tomes, orbs and shields are off-hand-only and add their full stats.
+- **Runewords** only form in non-unique gear, with the exact runes in order filling every socket.
+- **Corrupted items** still accept gems and runes. "Cannot be modified" applies to crafting (upgrades, rerolls, adding sockets) in Phase 11.
+- **A zero-base check** in content validation rejects percent and "more" modifiers on stats that start at 0. This caught two Phase 2 racial skills (Rally, Bloodlust) that would otherwise have done nothing.
 
 ## Known bugs
 - None known.
@@ -98,6 +167,12 @@
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
 - **The birth sign favor bonus** takes effect when favor exists (Phase 8). **The Dwarf crafting discount** takes effect with crafting (Phase 11).
+- **Divine items** (2–3 per god) are added in Phase 8 with favor. **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. Both rarities are fully supported by generation already; they just have no items yet, so they never drop.
+- **Item effects in combat** (triggers, mechanic flags such as `executioner` and `reviveOnce`, on-use abilities, combat-only consumables, durability loss) are wired into battles in Phase 4. The engine already collects them per character.
+- **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
+- **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
+- **The stash is reachable from anywhere** until towns exist (Phase 10), which then restricts it to towns.
+- **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 3: item bases for all 20 weapon types, 8 armor slots × 4 weights, accessories, relics; the 12 rarity tiers plus Corrupted and quality; affixes with prefixes and suffixes and generated names; sockets, gems, runes and runewords; unidentified items; item sets; durability; inventory (48-slot grid with stacking, sorting and filters), stash and equipment (paper doll); starting kits per class.
+- Phase 4: the combat core. Turn order by Speed with a timeline, front and back rows, the damage formula, elements and resistances, all status effects, stagger/break, chains, the Ultimate gauge, and enemy AI profiles. Item triggers, flags, abilities and combat consumables get wired in, and the starting and racial skills become usable.
