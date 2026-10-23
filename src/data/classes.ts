@@ -23,6 +23,12 @@ export interface ClassDef {
   /** Can hold a one-handed melee or throwing weapon in the off hand. */
   dualWield?: boolean;
   startingSkills: string[];
+  /** Usable when the Ultimate gauge is full. Specializations add more in Phase 6. */
+  ultimate: string;
+  /** Summoned at the start of every battle (the Ranger's pet). */
+  startingSummon?: string;
+  /** Where the class stands at the start of a battle. */
+  defaultRow: 'front' | 'back';
 }
 
 export const CLASSES: ClassDef[] = [
@@ -44,6 +50,8 @@ export const CLASSES: ClassDef[] = [
     armor: ['cloth', 'leather', 'mail', 'plate'],
     dualWield: true,
     startingSkills: ['heavy-strike', 'rampage'],
+    ultimate: 'earthsplitter',
+    defaultRow: 'front',
   },
   {
     id: 'mage',
@@ -64,6 +72,8 @@ export const CLASSES: ClassDef[] = [
     weapons: ['staff', 'wand', 'tome', 'orb', 'dagger'],
     armor: ['cloth'],
     startingSkills: ['firebolt', 'frost-shard'],
+    ultimate: 'cataclysm',
+    defaultRow: 'back',
   },
   {
     id: 'rogue',
@@ -83,6 +93,8 @@ export const CLASSES: ClassDef[] = [
     armor: ['cloth', 'leather'],
     dualWield: true,
     startingSkills: ['backstab', 'eviscerate'],
+    ultimate: 'death-mark',
+    defaultRow: 'front',
   },
   {
     id: 'cleric',
@@ -101,6 +113,8 @@ export const CLASSES: ClassDef[] = [
     weapons: ['mace', 'warhammer', 'staff', 'tome', 'shield'],
     armor: ['cloth', 'leather', 'mail'],
     startingSkills: ['smite', 'mend'],
+    ultimate: 'miracle',
+    defaultRow: 'front',
   },
   {
     id: 'ranger',
@@ -119,6 +133,9 @@ export const CLASSES: ClassDef[] = [
     weapons: ['bow', 'crossbow', 'spear', 'axe', 'dagger', 'throwing'],
     armor: ['leather', 'mail'],
     startingSkills: ['aimed-shot', 'sic-em'],
+    ultimate: 'rain-of-arrows',
+    defaultRow: 'back',
+    startingSummon: 'wolf-companion',
   },
   {
     id: 'necromancer',
@@ -137,6 +154,8 @@ export const CLASSES: ClassDef[] = [
     weapons: ['scythe', 'staff', 'wand', 'dagger', 'orb', 'tome'],
     armor: ['cloth'],
     startingSkills: ['soul-bolt', 'raise-skeleton'],
+    ultimate: 'army-of-the-dead',
+    defaultRow: 'back',
   },
   {
     id: 'monk',
@@ -156,6 +175,8 @@ export const CLASSES: ClassDef[] = [
     armor: ['cloth', 'leather'],
     dualWield: true,
     startingSkills: ['palm-strike', 'stance-of-the-tiger'],
+    ultimate: 'hundred-fists',
+    defaultRow: 'front',
   },
   {
     id: 'bard',
@@ -174,5 +195,7 @@ export const CLASSES: ClassDef[] = [
     weapons: ['instrument', 'rapier', 'sword', 'dagger', 'wand'],
     armor: ['cloth', 'leather'],
     startingSkills: ['discordant-note', 'song-of-valor'],
+    ultimate: 'grand-finale',
+    defaultRow: 'back',
   },
 ];

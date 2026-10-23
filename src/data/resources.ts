@@ -1,3 +1,20 @@
+/** How a resource fills up in combat, on top of skills that generate it. */
+export interface ResourceGains {
+  /** Per damaging hit dealt. */
+  onHitDealt?: number;
+  /** Per 1% of max HP lost to a hit, capped per hit at onDamageTakenMax. */
+  onDamageTakenPct?: number;
+  onDamageTakenMax?: number;
+  /** Per basic attack. */
+  onBasicAttack?: number;
+  /** At the start of each turn while one of your songs plays. */
+  perTurnWhileSinging?: number;
+  /** Whenever any enemy dies. */
+  onEnemyDeath?: number;
+  /** Lose all of it when a single hit takes at least this % of max HP. */
+  loseAllOnHitPct?: number;
+}
+
 /**
  * Class resources. Every character also has MP; these sit alongside it.
  * `start` is the value at the beginning of each combat, and `decayPerTurn`
@@ -11,6 +28,7 @@ export interface ResourceDef {
   decayPerTurn: number;
   color: string;
   description: string;
+  gains?: ResourceGains;
 }
 
 export const RESOURCES: ResourceDef[] = [
@@ -22,6 +40,7 @@ export const RESOURCES: ResourceDef[] = [
     decayPerTurn: 5,
     color: '#d9433b',
     description: 'Builds when you deal or take damage. Fades slowly when idle.',
+    gains: { onHitDealt: 4, onDamageTakenPct: 0.6, onDamageTakenMax: 15 },
   },
   {
     id: 'combo',
@@ -48,7 +67,8 @@ export const RESOURCES: ResourceDef[] = [
     start: 0,
     decayPerTurn: 0,
     color: '#7fd17f',
-    description: 'Each stack adds ranged damage. Lost when you take a heavy hit.',
+    description: 'Each stack adds 8% ranged damage. Lost when a single hit takes 15% of your HP.',
+    gains: { loseAllOnHitPct: 15 },
   },
   {
     id: 'soulShards',
@@ -57,7 +77,8 @@ export const RESOURCES: ResourceDef[] = [
     start: 1,
     decayPerTurn: 0,
     color: '#9b7fd1',
-    description: 'Harvested from the dying. Spent on the strongest dark magic.',
+    description: 'Harvested from the dying (+1 whenever an enemy falls). Spent on the strongest dark magic.',
+    gains: { onEnemyDeath: 1 },
   },
   {
     id: 'chi',
@@ -66,7 +87,8 @@ export const RESOURCES: ResourceDef[] = [
     start: 1,
     decayPerTurn: 0,
     color: '#5fd1c4',
-    description: 'Built by strikes, spent on techniques. Stances shape your basic attacks.',
+    description: 'Built by basic attacks and strikes, spent on techniques. Stances shape your basic attacks.',
+    gains: { onBasicAttack: 1 },
   },
   {
     id: 'verse',
@@ -75,6 +97,7 @@ export const RESOURCES: ResourceDef[] = [
     start: 0,
     decayPerTurn: 0,
     color: '#e98ad6',
-    description: 'Builds while a song plays. Switching songs at 50+ Verse triggers a Crescendo.',
+    description: 'Builds while a song plays (+10 per turn). Switching songs at 50+ Verse triggers a Crescendo.',
+    gains: { perTurnWhileSinging: 10 },
   },
 ];

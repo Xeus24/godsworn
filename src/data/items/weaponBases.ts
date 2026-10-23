@@ -3,7 +3,10 @@ import type { ModifierSpec } from '../../engine/stats/modifiers';
 import { GEAR_TIERS, MATERIAL_NAMES } from './materialTiers';
 
 /**
- * Per-weapon-type profile at tier 1. Each type has its own damage, speed,
+ * Per-weapon-type profile at tier 1. Finesse weapons (daggers, rapiers,
+ * bows, crossbows, throwing knives, claws, spears) add Physical Attack per
+ * point of DEX, so Dexterity classes scale like Strength classes do.
+ * Each type has its own damage, speed,
  * crit and innate bonus; tiers scale damage/magic/armor from these numbers.
  */
 interface WeaponProfile {
@@ -30,14 +33,14 @@ const PROFILES: WeaponProfile[] = [
   { type: 'greataxe', noun: 'Greataxe', material: 'metal', hands: 2, damage: 15, implicit: [{ stat: 'critDamage', type: 'flat', value: 15 }, { stat: 'speed', type: 'flat', value: -1 }], sockets: 3, value: 32 },
   { type: 'mace', noun: 'Mace', material: 'metal', hands: 1, damage: 9, implicit: [{ stat: 'physicalDamage', type: 'flat', value: 4 }], sockets: 2, value: 20 },
   { type: 'warhammer', noun: 'Warhammer', material: 'metal', hands: 2, damage: 17, implicit: [{ stat: 'physicalDamage', type: 'flat', value: 8 }, { stat: 'speed', type: 'flat', value: -2 }], sockets: 3, value: 34 },
-  { type: 'dagger', noun: 'Dagger', material: 'metal', hands: 1, damage: 6, implicit: [{ stat: 'critChance', type: 'flat', value: 4 }, { stat: 'speed', type: 'flat', value: 1 }], sockets: 1, value: 16 },
-  { type: 'rapier', noun: 'Rapier', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'accuracy', type: 'flat', value: 6 }, { stat: 'dodge', type: 'flat', value: 2 }], sockets: 2, value: 22 },
-  { type: 'spear', noun: 'Spear', material: 'metal', hands: 2, damage: 12, implicit: [{ stat: 'critChance', type: 'flat', value: 2 }, { stat: 'speed', type: 'flat', value: 1 }], sockets: 3, value: 28 },
+  { type: 'dagger', noun: 'Dagger', material: 'metal', hands: 1, damage: 6, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'critChance', type: 'flat', value: 4 }, { stat: 'speed', type: 'flat', value: 1 }], sockets: 1, value: 16 },
+  { type: 'rapier', noun: 'Rapier', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'accuracy', type: 'flat', value: 6 }, { stat: 'dodge', type: 'flat', value: 2 }], sockets: 2, value: 22 },
+  { type: 'spear', noun: 'Spear', material: 'metal', hands: 2, damage: 12, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 0.5, per: { stat: 'dex' } }, { stat: 'critChance', type: 'flat', value: 2 }, { stat: 'speed', type: 'flat', value: 1 }], sockets: 3, value: 28 },
   { type: 'scythe', noun: 'Scythe', material: 'metal', hands: 2, damage: 11, magic: 6, implicit: [{ stat: 'lifesteal', type: 'flat', value: 2 }], sockets: 3, value: 34 },
-  { type: 'fist', noun: 'Claws', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'speed', type: 'flat', value: 2 }, { stat: 'critChance', type: 'flat', value: 2 }], sockets: 1, value: 18 },
-  { type: 'bow', noun: 'Bow', material: 'wood', hands: 2, damage: 11, implicit: [{ stat: 'critChance', type: 'flat', value: 3 }, { stat: 'accuracy', type: 'flat', value: 4 }], sockets: 3, value: 28 },
-  { type: 'crossbow', noun: 'Crossbow', material: 'wood', hands: 2, damage: 14, implicit: [{ stat: 'critDamage', type: 'flat', value: 20 }, { stat: 'speed', type: 'flat', value: -2 }], sockets: 3, value: 30 },
-  { type: 'throwing', noun: 'Throwing Knives', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'speed', type: 'flat', value: 2 }, { stat: 'critChance', type: 'flat', value: 2 }], sockets: 1, value: 18 },
+  { type: 'fist', noun: 'Claws', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'speed', type: 'flat', value: 2 }, { stat: 'critChance', type: 'flat', value: 2 }], sockets: 1, value: 18 },
+  { type: 'bow', noun: 'Bow', material: 'wood', hands: 2, damage: 11, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1.2, per: { stat: 'dex' } }, { stat: 'critChance', type: 'flat', value: 3 }, { stat: 'accuracy', type: 'flat', value: 4 }], sockets: 3, value: 28 },
+  { type: 'crossbow', noun: 'Crossbow', material: 'wood', hands: 2, damage: 14, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'critDamage', type: 'flat', value: 20 }, { stat: 'speed', type: 'flat', value: -2 }], sockets: 3, value: 30 },
+  { type: 'throwing', noun: 'Throwing Knives', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'speed', type: 'flat', value: 2 }, { stat: 'critChance', type: 'flat', value: 2 }], sockets: 1, value: 18 },
   { type: 'staff', noun: 'Staff', material: 'wood', hands: 2, damage: 4, magic: 12, implicit: [{ stat: 'maxMp', type: 'percent', value: 10 }], sockets: 3, value: 30 },
   { type: 'wand', noun: 'Wand', material: 'wood', hands: 1, magic: 8, implicit: [{ stat: 'critChance', type: 'flat', value: 3 }], sockets: 1, value: 22 },
   { type: 'tome', noun: 'Tome', material: 'tome', hands: 1, offhandOnly: true, magic: 4, implicit: [{ stat: 'maxMp', type: 'percent', value: 8 }, { stat: 'cooldownReduction', type: 'flat', value: 2 }], sockets: 1, value: 20 },

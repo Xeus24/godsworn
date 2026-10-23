@@ -20,6 +20,13 @@ export interface Modifier {
   /** Where the modifier comes from, e.g. "item:abc", "blessing:solenne-1". */
   source: string;
   condition?: Condition;
+  /**
+   * Scales the value by another stat: value x floor(stat / every).
+   * "+1.5 Physical Attack per DEX" is { value: 1.5, per: { stat: 'dex' } }.
+   * `per.stat` must be a primary or gear stat, and the modified stat a
+   * derived or elemental one, because those resolve later.
+   */
+  per?: { stat: StatId; every?: number };
 }
 
 /** A modifier as written in content files; the source is filled in when applied. */

@@ -24,6 +24,7 @@ Then open http://localhost:5173.
 | `npm test` | Unit tests (Vitest) |
 | `npm run build` | Type-check and production build to `dist/` |
 | `npm run preview` | Serve the production build |
+| `npm run sim` | Simulate fights per class and level; print win rates, turns and damage per turn |
 | `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 
@@ -37,9 +38,23 @@ Then open http://localhost:5173.
 |---|---|
 | C | Character sheet |
 | I | Inventory, equipment and stash |
+| G | Proving Grounds (battles and resting) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
+
+You start at the **Proving Grounds**. Pick an encounter to fight, or rest at camp to recover (8 hours pass).
+
+In battle:
+
+- The **turn order** runs across the top. Faster combatants act more often.
+- On your turn choose **Attack, Skills, Items, Abilities** (trinket and relic powers), **Defend** (half damage until your next turn), **Swap** rows or **Flee**. Number keys 1–9 pick menu entries.
+- **Targets:** click an enemy on the battlefield or pick it from the list. Esc cancels.
+- **Rows:** melee attacks can only reach the enemy front row while it stands. Your back row takes 25% less physical damage.
+- **Breaking enemies:** fill an enemy's yellow stagger bar to **Break** it (stunned, and takes 50% more damage). Consecutive party hits on one target build a **chain** bonus.
+- **Ultimate:** the gauge fills as you fight. At 100% your class ultimate unlocks in the Skills menu.
+- **Auto** lets the AI fight for you. **1× / 2× / 4×** set the battle speed.
+- Defeat costs 10% of your gold and some durability. In **Hardcore** it is permanent.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
 
@@ -61,6 +76,7 @@ src/
     effects/    triggers (on-hit, on-kill...) and effect dispatch
     character/  creation, base stats, leveling, attributes, paragon
     items/      generation, affixes, sockets, equipment, inventory, loot
+    combat/     battles: damage, statuses, skills, turns, AI, combatants
     skills/     skill definitions
     state/      saved game state, session, clock
     content/    content tables and validation
@@ -112,7 +128,31 @@ Content is plain TypeScript data in `src/data/`. `src/data/index.ts` wraps each 
 
 ## Adding content
 
-An example for enemies is added here when combat lands (Phase 4).
+### Example: a new enemy and encounter
+Add an entry to `ENEMIES` in `src/data/enemies.ts`. Stats are level-1 numbers that scale with the level it spawns at:
+
+```ts
+{
+  id: 'bog-hag', name: 'Bog Hag', family: 'humanoid', types: ['humanoid', 'witch'],
+  level: 12, tier: 'normal', row: 'back',
+  stats: { hp: 50, attack: 6, magic: 16, defense: 3, magicResist: 8, speed: 10 },
+  resists: { nature: 50, fire: -25 },
+  skills: [{ id: 'venom-fang' }, { id: 'grave-chill', weight: 2 }],
+  basicAttack: { element: 'nature', ranged: true, magic: true, name: 'Swamp Spit' },
+  ai: 'caster', xp: 34, lootTable: 'normal-enemy',
+  description: 'She brews her potions from lost travelers.',
+  palette: { main: '#4a6a3a', accent: '#8a3ab0' },
+}
+```
+
+`family` picks the sprite (slime, beast, goblin, humanoid, undead, spirit, spider, plant, wisp), `ai` the behavior profile, and `skills` any skill in `src/data/skills/`. Then put it in a fight by adding an encounter to `ENCOUNTERS` in the same file:
+
+```ts
+{ id: 'hag-hollow', name: 'Hag Hollow', description: 'Something stirs in the reeds.', level: 12, canFlee: true,
+  enemies: [{ enemyId: 'treant-sapling' }, { enemyId: 'bog-hag', row: 'back' }] }
+```
+
+Run `npm run sim` afterwards to check the encounter's win rates.
 
 ### Example: a new legendary item
 Add an entry to `LEGENDARIES` in `src/data/items/legendaries.ts`. It needs a base item (any gear id such as `bow-t3`, `plate-chest-t5` or `ring-t2`), fixed modifiers, and optionally triggered effects and mechanic flags:

@@ -7,8 +7,8 @@
 | 1 | Project setup, RNG, modifier & trigger systems, stats, data loading | **Done** |
 | 2 | Races, classes, leveling, attribute points | **Done** |
 | 3 | Items, affixes, sockets/runes, inventory, stash, equipment | **Done** |
-| 4 | Combat core | Next |
-| 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | |
+| 4 | Combat core | **Done** |
+| 5 | Class skill trees, modifiers, mastery, tree UI, loadouts | Next |
 | 6 | Specializations, general skills, skillbooks | |
 | 7 | Multiclassing, hybrid prestige classes | |
 | 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | |
@@ -130,6 +130,54 @@
 - `npm run sim:loot`: 100,000 gear drops per source tier (normal, elite, boss) × NG+ 0/1/5, printing rarity distributions.
 - 165 unit tests.
 
+### Phase 4: combat core
+- **Combat engine** (`engine/combat/`, no DOM). A `Battle` holds the state; rules live in focused modules:
+  - `damage`: the spec formula `(attack × multiplier) × 100/(100+defense) × elementMod × critMod × random(0.9–1.1) × other`. Physical damage uses Defense; other elements use Magic Resist. Resistances run −100% to 200%, and above 100% the hit heals.
+  - `hits`: accuracy vs dodge, crits, shields, death, `reviveOnce`, lifesteal, stagger/break, the Ultimate gauge, resource gains, elemental combos (Burn+Ice = Shatter, Wet+Lightning = Conduct; always for Mages, 35% for others), and corpses.
+  - `statuses`: every status in the spec plus Stealth and Wet (20 in data; Shield is an absorb pool shown with the bars, not a status entry). They have chance × status chance vs status resist, immunities (`immune:<id>`), stack/refresh rules, damage and healing over time, lost turns (stun, freeze, fear), Silence and Charm.
+  - `effects`: every data effect kind runs in battle, including summons (corpse-powered or not), Bard songs with Crescendos, and Monk stances.
+  - `skills`: costs, cooldowns (with CDR), finishers, the party chain multiplier, Spell Echo, ultimates, row rules (melee needs the front row unless Movement or Reach), and stealth (guaranteed crit; can't be singled out).
+  - `turns`: initiative by Speed (each turn costs 100/speed, so speed changes shift the timeline), timeline preview, `firstStrike`, turn start/end upkeep. Actions: Attack, Skill, Item, Ability (trinket/relic on-use), Defend, Swap row, Flee.
+  - `ai`: scoring AI with 7 profiles (aggressive, defensive, healer, caster, summoner, assassin, support). It also drives party auto-battle.
+- **Class mechanics in play:**
+  - Rage from dealing and taking damage, with decay.
+  - Mage combos.
+  - Combo Points and finishers, plus stealth crits.
+  - Cleric overheal turns into a shield.
+  - The Ranger's wolf pet joins every battle; Focus adds ranged damage and is lost on heavy hits.
+  - Necromancer corpses and Soul Shards (+1 per enemy death).
+  - Monk Chi from basic attacks; stances change basic attacks.
+  - Bard songs as party auras, building Verse; switching songs triggers a Crescendo.
+  - Resource gains are data-driven (`ResourceDef.gains`).
+- **Content:**
+  - 8 class ultimates and 3 stances.
+  - 4 songs, 25 enemy skills, 4 summons.
+  - 18 enemies (Meadowlands and Whisperwood, including 2 elites).
+  - 14 Proving Grounds encounters.
+  - Enemies scale by level and tier from level-1 stats through the normal modifier pipeline.
+- **Items in combat:** consumables (potions, bombs, holy water, escape scrolls, Phoenix Feathers, salts, spirit tonics) and trinket/relic abilities. Item triggers and flags all fire, including `executioner`, `critsIgnoreDefense`, `bonusVsBosses`, day/night bonuses, `dotsCanCrit`, `burnSpreadsOnDeath`, `overhealShield`, `extraSummon`, `twinSongs`, `spellEcho`, `shatterAlways`, `reach`, `firstStrike` and `stealthOnCombatStart`.
+- **After battle** (`settleBattle`):
+  - Victory: XP, gold and loot (per enemy loot table and tier, through the loot filter).
+  - Defeat: lose 10% gold and 10% durability, then respawn at full HP. Hardcore heroes die for good and the save ends.
+  - Always: HP/MP carry over, gear wears by 1, timed buffs tick, relic deeds count, lifetime stats update.
+- **"Per stat" modifiers:** `{ value, per: { stat } }`, e.g. "+1 Physical Attack per DEX". Finesse weapons use it so Dexterity classes scale.
+- **UI:**
+  - Canvas battle scene with:
+    - pixel creature sprites (9 families)
+    - hero portraits
+    - HP, shield and stagger bars, and status icons with stack counts
+    - floating damage, crit, heal, miss, BREAK and combo text
+    - hit flashes and shake, corpses, and day/night backdrops
+  - Combat screen with:
+    - a turn-order timeline
+    - party panel with HP, MP, resource and Ultimate bars
+    - command menus (Attack, Skills, Items, Abilities, Defend, Swap, Flee) with tooltips
+    - click-or-list targeting, keys 1–9 for menu entries and Esc to cancel
+    - a scrolling log, auto-battle, 1×/2×/4× speed, and a results overlay with Fight again
+  - Proving Grounds screen (G): every encounter with difficulty versus your level, plus resting at camp (restores HP/MP, advances the clock 8 hours).
+- `npm run sim`: automated fights per class × level against nearby encounters, with benchmark gear and attributes. Prints win rate, average turns and damage per turn.
+- 206 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -157,6 +205,18 @@
 - **Off-hand weapons** add 50% of their damage. Tomes, orbs and shields are off-hand-only and add their full stats.
 - **Runewords** only form in non-unique gear, with the exact runes in order filling every socket.
 - **Corrupted items** still accept gems and runes. "Cannot be modified" applies to crafting (upgrades, rerolls, adding sockets) in Phase 11.
+- **Combat is initiative-based** (a CTB-style timeline): each action costs 100/Speed time units, so twice the speed means twice the turns. This makes Speed buffs and debuffs visibly shift the timeline, as the spec asks.
+- **Status durations count the bearer's own turns.** Damage over time ticks at turn start; durations drop at turn end.
+- **Spells never miss; attacks roll accuracy minus dodge** (clamped 5–100%). Damage-over-time can crit only with `dotsCanCrit`.
+- **Only enemies have stagger bars** (35% of max HP, 20% for bosses). Physical hits fill it fully, other elements at 70%. Breaking an enemy stuns it for a turn, and it takes 50% more damage for 2 turns.
+- **The party chain** grows by +10% (max +50%) each time party members hit the same single target in consecutive party turns. Any enemy turn resets it.
+- **The Ultimate gauge** fills from dealing damage (2 + 40 × share of target HP, max 15 per hit) and taking damage. Each class gets one base ultimate now; specializations add more in Phase 6.
+- **Enemies are built from level-1 combat numbers** (HP, attack, magic, defense, resist, speed), not primaries. Flat modifiers land each stat exactly, so buffs, statuses and tier multipliers use the same modifier pipeline as heroes. Growth per level: HP +33%, attack/magic +24%, defense/resist +18%, speed +1.5%. Elites have 2.5× HP and 1.25× damage; bosses 9× and 1.5×.
+- **Armor tiers scale more gently** (×1 to ×5.5 across tiers, versus ×31 for weapon damage), because 100/(100+defense) makes each armor point worth more as it grows.
+- **Dexterity classes scale through finesse weapons:** daggers, rapiers and throwing knives give +1 Physical Attack per DEX, bows +1.2, crossbows +1, claws +1 and spears +0.5. This keeps the spec's formula (STR×2 + weapon) while letting Rogues and Rangers grow.
+- **Back row:** 25% less physical damage taken, but melee attacks (without Movement or Reach) must target the enemy front row while it stands.
+- **Defeat outside Hardcore** puts you back at full HP (no towns yet). From Phase 10 you respawn in the last town.
+- **Balance at Phase 4** (`npm run sim`, 60 fights per class × level, solo hero, benchmark gear): 94.7% average wins against equal-level encounters. Every class is at 100% at levels 1–3. The weakest spots are Necromancer 66% at level 15, Mage 71% at level 15, and Warrior 73% at level 12 (against back-row casters). The full balance pass is Phase 16, once companions, skill trees and gear progression are in.
 - **A zero-base check** in content validation rejects percent and "more" modifiers on stats that start at 0. This caught two Phase 2 racial skills (Rally, Bloodlust) that would otherwise have done nothing.
 
 ## Known bugs
@@ -168,11 +228,12 @@
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
 - **The birth sign favor bonus** takes effect when favor exists (Phase 8). **The Dwarf crafting discount** takes effect with crafting (Phase 11).
 - **Divine items** (2–3 per god) are added in Phase 8 with favor. **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. Both rarities are fully supported by generation already; they just have no items yet, so they never drop.
-- **Item effects in combat** (triggers, mechanic flags such as `executioner` and `reviveOnce`, on-use abilities, combat-only consumables, durability loss) are wired into battles in Phase 4. The engine already collects them per character.
+- **The Pray combat action** needs divine favor and comes with the gods in Phase 8. Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
+- **The Proving Grounds are the way to fight until Phase 10** adds zones and random encounters. After that they remain as a training option in towns.
 - **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
 - **The stash is reachable from anywhere** until towns exist (Phase 10), which then restricts it to towns.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 4: the combat core. Turn order by Speed with a timeline, front and back rows, the damage formula, elements and resistances, all status effects, stagger/break, chains, the Ultimate gauge, and enemy AI profiles. Item triggers, flags, abilities and combat consumables get wired in, and the starting and racial skills become usable.
+- Phase 5: class skill trees, 50–70 nodes per class across 4 branches. They include active skills (ranks 1–5), minor and notable passives, keystones, choice nodes, skill modifiers (one active per skill), skill mastery, prerequisites and depth gates, and capstones. Plus the pannable/zoomable tree UI with search, tooltips and 3 build loadouts, and the 8-slot hotbar (keys 1–8).

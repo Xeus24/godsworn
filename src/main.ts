@@ -1,9 +1,15 @@
 import './style.css';
 import './ui/inventory/inventory.css';
+import './ui/combat/combat.css';
 import { validateContent } from './data';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
+import type { EncounterDef } from './engine/combat/types';
+import { createEncounterBattle } from './engine/combat/setup';
+import { timeOfDay } from './engine/state/clock';
 import { CharacterScreen } from './ui/character/characterScreen';
+import { CombatScreen, inventoryHooks } from './ui/combat/combatScreen';
+import { ProvingGroundsScreen } from './ui/combat/provingGrounds';
 import type { Nav } from './ui/components/navBar';
 import { Toasts } from './ui/components/toasts';
 import { CreationScreen } from './ui/creation/creationScreen';
@@ -20,6 +26,8 @@ const root = document.getElementById('app');
 if (!root) throw new Error('#app element missing');
 
 let session: GameSession | undefined;
+/** Screen hotkeys are disabled mid-battle. */
+let inBattle = false;
 const screens = new ScreenManager(root);
 const toasts = new Toasts();
 const debug = new DebugPanel();
@@ -30,12 +38,13 @@ const nav: Nav = {
   title: showTitle,
   character: showCharacter,
   inventory: showInventory,
+  battle: showGrounds,
 };
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
-  if (session) items.unshift({ label: 'Resume', onSelect: showCharacter });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 3: items`));
+  if (session) items.unshift({ label: 'Resume', onSelect: showGrounds });
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 4: combat`));
 }
 
 function showCreation(): void {
@@ -47,7 +56,7 @@ function startGame(hero: Character): void {
   session.bus.on('toast', ({ kind, text }) => toasts.show(kind, text));
   session.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
   toasts.show('info', `${hero.name} swears the oath.`);
-  showCharacter();
+  showGrounds();
 }
 
 function showCharacter(): void {
@@ -58,12 +67,42 @@ function showInventory(): void {
   if (session) screens.show(new InventoryScreen(session, nav));
 }
 
+function showGrounds(): void {
+  if (session) screens.show(new ProvingGroundsScreen(session, nav, startFight));
+}
+
+function startFight(encounter: EncounterDef): void {
+  const s = session;
+  if (!s) return;
+  inBattle = true;
+  const battle = createEncounterBattle(s.player, encounter, {
+    rng: s.rng,
+    hooks: inventoryHooks(s),
+    timeOfDay: timeOfDay(s.state.clock),
+  });
+  screens.show(
+    new CombatScreen({
+      session: s,
+      battle,
+      onExit: () => {
+        inBattle = false;
+        if (s.state.gameOver) {
+          session = undefined;
+          showTitle();
+        } else showGrounds();
+      },
+      onRematch: () => startFight(encounter),
+    }),
+  );
+}
+
 window.addEventListener('keydown', (e) => {
   const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
-  if (typing || e.metaKey || e.ctrlKey || e.altKey || !session) return;
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !session || inBattle) return;
   const key = e.key.toLowerCase();
   if (key === 'c') showCharacter();
   if (key === 'i') showInventory();
+  if (key === 'g') showGrounds();
 });
 
 showTitle();

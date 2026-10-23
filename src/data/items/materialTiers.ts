@@ -7,7 +7,11 @@ export interface GearTier {
   level: number;
   /** Multiplies weapon damage/magic. */
   weaponMult: number;
-  /** Multiplies armor and resist. */
+  /**
+   * Multiplies armor and resist. Grows slower than weapon damage because
+   * Defense works through 100 / (100 + defense): armor gets more valuable
+   * per point as it rises.
+   */
   armorMult: number;
   /** Multiplies gold value. */
   valueMult: number;
@@ -15,12 +19,12 @@ export interface GearTier {
 
 export const GEAR_TIERS: GearTier[] = [
   { tier: 1, level: 1, weaponMult: 1, armorMult: 1, valueMult: 1 },
-  { tier: 2, level: 10, weaponMult: 2.8, armorMult: 2.5, valueMult: 3 },
-  { tier: 3, level: 20, weaponMult: 6, armorMult: 5, valueMult: 8 },
-  { tier: 4, level: 30, weaponMult: 10.5, armorMult: 8, valueMult: 18 },
-  { tier: 5, level: 42, weaponMult: 16, armorMult: 12, valueMult: 35 },
-  { tier: 6, level: 54, weaponMult: 23, armorMult: 16.5, valueMult: 60 },
-  { tier: 7, level: 66, weaponMult: 31, armorMult: 21, valueMult: 100 },
+  { tier: 2, level: 10, weaponMult: 2.8, armorMult: 1.6, valueMult: 3 },
+  { tier: 3, level: 20, weaponMult: 6, armorMult: 2.3, valueMult: 8 },
+  { tier: 4, level: 30, weaponMult: 10.5, armorMult: 3, valueMult: 18 },
+  { tier: 5, level: 42, weaponMult: 16, armorMult: 3.8, valueMult: 35 },
+  { tier: 6, level: 54, weaponMult: 23, armorMult: 4.6, valueMult: 60 },
+  { tier: 7, level: 66, weaponMult: 31, armorMult: 5.5, valueMult: 100 },
 ];
 
 /** Name prefix per material family and tier (index 0 = tier 1). */

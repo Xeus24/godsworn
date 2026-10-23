@@ -92,7 +92,31 @@ function itemsSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection };
+function combatSection(): string {
+  const out: string[] = [];
+  out.push(`### Status effects (${content.statuses.size})`, '', '| Status | Kind | Effect |', '|---|---|---|');
+  for (const st of content.statuses.all()) out.push(`| **${st.name}** | ${st.kind} | ${cell(st.description)} |`);
+  out.push('', `### Class ultimates (${content.classes.size})`, '', '| Class | Ultimate | Effect |', '|---|---|---|');
+  for (const cls of content.classes.all()) {
+    const u = content.skills.get(cls.ultimate);
+    out.push(`| ${cls.name} | **${u.name}** | ${cell(u.description)} |`);
+  }
+  out.push('', `**Songs (${content.songs.size}):** ${content.songs.all().map((s) => `${s.name} (${s.description} Crescendo: ${s.crescendo.description})`).join(' · ')}`);
+  out.push('', `**Stances (${content.stances.size}):** ${content.stances.all().map((s) => `${s.name} (${s.description})`).join(' · ')}`, '');
+  out.push(`### Enemies (${content.enemies.size})`, '', '| Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |', '|---|---|---|---|---|---|---|---|');
+  for (const e of content.enemies.all()) {
+    const res = Object.entries(e.resists ?? {}).map(([el, v]) => `${el} ${v! > 0 ? '+' : ''}${v}%`).join(', ');
+    out.push(`| **${e.name}** | ${e.level} | ${e.tier} | ${e.types.join(', ')} | ${e.row} | ${e.ai} | ${e.skills.map((s) => content.skills.get(s.id).name).join(', ')} | ${res} |`);
+  }
+  out.push('', `**Summons (${content.summons.size}):** ${content.summons.all().map((s) => s.name).join(', ')}`, '');
+  out.push(`### Encounters (${content.encounters.size})`, '', '| Encounter | Lvl | Enemies |', '|---|---|---|');
+  for (const enc of content.encounters.all()) {
+    out.push(`| **${enc.name}** | ${enc.level} | ${enc.enemies.map((e) => content.enemies.get(e.enemyId).name).join(', ')} |`);
+  }
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

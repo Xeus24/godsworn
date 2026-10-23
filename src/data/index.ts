@@ -2,7 +2,7 @@ import { ContentTable, ContentValidator } from '../engine/content/registry';
 import type { EffectSpec, TriggeredEffect } from '../engine/effects/types';
 import { isGearBase } from '../engine/items/types';
 import type { ModifierSpec } from '../engine/stats/modifiers';
-import { DERIVED_STATS, ELEMENTS, isPrimaryStat, isStatId, type Element } from '../engine/stats/types';
+import { DERIVED_STATS, ELEMENTS, GEAR_STATS, isPrimaryStat, isStatId, type Element } from '../engine/stats/types';
 import { DERIVED_FORMULAS, STAT_CAPS } from './balance';
 import { BIRTH_SIGNS } from './birthSigns';
 import { CLASSES } from './classes';
@@ -26,7 +26,13 @@ import { PARAGON_NODES } from './paragon';
 import { RACES } from './races';
 import { RESOURCES } from './resources';
 import { SKILL_TAGS } from './skillTags';
+import { ENCOUNTERS, ENEMIES, SUMMONS } from './enemies';
+import { ENEMY_SKILLS } from './skills/enemy';
 import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
+import { ULTIMATE_SKILLS } from './skills/ultimates';
+import { SONGS } from './songs';
+import { STANCES } from './stances';
+import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 
 /**
@@ -48,7 +54,7 @@ export const content = {
     'skill tag',
     SKILL_TAGS.map((id) => ({ id })),
   ),
-  skills: new ContentTable('skill', [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS]),
+  skills: new ContentTable('skill', [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS]),
   races: new ContentTable('race', RACES),
   birthSigns: new ContentTable('birth sign', BIRTH_SIGNS),
   classes: new ContentTable('class', CLASSES),
@@ -65,6 +71,12 @@ export const content = {
   lootTables: new ContentTable('loot table', LOOT_TABLES),
   sourceTiers: new ContentTable('source tier', SOURCE_TIERS),
   startingKits: STARTING_KITS,
+  statuses: new ContentTable('status', STATUSES),
+  songs: new ContentTable('song', SONGS),
+  stances: new ContentTable('stance', STANCES),
+  enemies: new ContentTable('enemy', ENEMIES),
+  summons: new ContentTable('summon', SUMMONS),
+  encounters: new ContentTable('encounter', ENCOUNTERS),
 };
 
 export type Content = typeof content;
@@ -84,6 +96,10 @@ function startsAtZero(stat: string): boolean {
 function checkModifiers(v: ContentValidator, mods: readonly ModifierSpec[], where: string): void {
   for (const m of mods) {
     v.check(isStatId(m.stat), `${where}: unknown stat "${m.stat}"`);
+    if (m.per) {
+      v.check(isPrimaryStat(m.per.stat) || (GEAR_STATS as readonly string[]).includes(m.per.stat), `${where}: "per" must reference a primary or gear stat`);
+      v.check(!isPrimaryStat(m.stat) && !(GEAR_STATS as readonly string[]).includes(m.stat), `${where}: "per" modifiers can only target derived or elemental stats`);
+    }
     v.check(
       !((m.type === 'percent' || m.type === 'more') && startsAtZero(m.stat)),
       `${where}: "${m.type}" modifier on ${m.stat} does nothing (it starts at 0); use "flat"`,
@@ -99,6 +115,10 @@ function checkEffects(v: ContentValidator, c: Content, effects: readonly EffectS
     if (e.kind === 'gainResource' && e.resource !== 'class') v.ref(c.resources, e.resource, where);
     if (e.kind === 'castSkill') v.ref(c.skills, e.skillId, where);
     if (e.kind === 'damage' && e.scaling) v.check(isStatId(e.scaling.stat), `${where}: unknown scaling stat "${e.scaling.stat}"`);
+    if (e.kind === 'applyStatus' || e.kind === 'removeStatus') v.ref(c.statuses, e.status, where);
+    if (e.kind === 'summon') v.ref(c.summons, e.summonId, where);
+    if (e.kind === 'setStance') v.ref(c.stances, e.stance, where);
+    if (e.kind === 'startSong') v.ref(c.songs, e.song, where);
   }
 }
 
@@ -108,7 +128,10 @@ function checkTriggers(v: ContentValidator, c: Content, triggers: readonly Trigg
 
 function checkFlags(v: ContentValidator, c: Content, flags: readonly string[] | undefined, where: string): void {
   for (const flag of flags ?? []) {
-    if (flag.startsWith(IMMUNITY_PREFIX)) continue;
+    if (flag.startsWith(IMMUNITY_PREFIX)) {
+      v.ref(c.statuses, flag.slice(IMMUNITY_PREFIX.length), where);
+      continue;
+    }
     v.ref(c.mechanics, flag, where);
   }
 }
@@ -154,6 +177,9 @@ export function validateContent(c: Content = content): void {
     for (const a of cls.armor) v.ref(c.armorWeights, a, where);
     for (const s of cls.startingSkills) v.ref(c.skills, s, where);
     v.check(c.startingKits[cls.id] !== undefined, `${where}: no starting kit`);
+    v.ref(c.skills, cls.ultimate, where);
+    if (cls.startingSummon) v.ref(c.summons, cls.startingSummon, where);
+    v.check(c.skills.find(cls.ultimate)?.ultimate === true, `${where}: ${cls.ultimate} is not an ultimate`);
   }
 
   for (const node of c.paragon.all()) checkModifiers(v, node.perRank, `paragon ${node.id}`);
@@ -244,6 +270,30 @@ export function validateContent(c: Content = content): void {
       const base = c.items.find(entry.itemId);
       if (entry.equip) v.check(base !== undefined && isGearBase(base), `${where}: ${entry.itemId} cannot be equipped`);
     }
+  }
+
+  // ---- Combat ----
+  for (const st of c.statuses.all()) checkModifiers(v, st.modifiers ?? [], `status ${st.id}`);
+  for (const song of c.songs.all()) {
+    checkModifiers(v, song.aura, `song ${song.id}`);
+    checkEffects(v, c, song.crescendo.effects, `song ${song.id}`);
+  }
+  for (const stance of c.stances.all()) {
+    checkModifiers(v, stance.modifiers, `stance ${stance.id}`);
+    checkEffects(v, c, stance.basicAttack.effects, `stance ${stance.id}`);
+  }
+  for (const e of c.enemies.all()) {
+    const where = `enemy ${e.id}`;
+    for (const sk of e.skills) v.ref(c.skills, sk.id, where);
+    v.ref(c.lootTables, e.lootTable, where);
+    checkModifiers(v, e.modifiers ?? [], where);
+    checkTriggers(v, c, e.triggers, where);
+    checkFlags(v, c, e.flags, where);
+  }
+  for (const s of c.summons.all()) for (const sk of s.skills) v.ref(c.skills, sk.id, `summon ${s.id}`);
+  for (const enc of c.encounters.all()) {
+    v.check(enc.enemies.length > 0 && enc.enemies.length <= 6, `encounter ${enc.id}: needs 1-6 enemies`);
+    for (const e of enc.enemies) v.ref(c.enemies, e.enemyId, `encounter ${enc.id}`);
   }
 
   v.throwIfInvalid();

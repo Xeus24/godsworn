@@ -62,7 +62,8 @@ function evalFormula(f: LinearFormula, level: number, inputs: Partial<StatBlock>
  *   3. derived stats: formula(final primaries, final gear) + modifiers
  *   4. elemental damage/resist: 0 + modifiers
  * Within each stat: flat, then additive percent, then multiplicative "more",
- * then overrides. Caps are applied last.
+ * then overrides. Caps are applied last. Modifiers with `per` are scaled by
+ * the referenced (already resolved) stat first.
  *
  * Pass a ConditionContext to evaluate conditional modifiers, e.g. skill tags
  * when computing damage for a specific skill.
@@ -73,7 +74,11 @@ export function calculateStatsDetailed(input: StatInput, ctx: ConditionContext =
   const breakdown = {} as Record<StatId, StatBreakdown>;
 
   const apply = (stat: StatId, base: number): void => {
-    const b = resolveStat(base, active.get(stat) ?? []);
+    // "Per stat" modifiers read stats resolved earlier (primaries and gear).
+    const mods = (active.get(stat) ?? []).map((m) =>
+      m.per ? { ...m, value: m.value * Math.floor((stats[m.per.stat] ?? 0) / (m.per.every ?? 1)) } : m,
+    );
+    const b = resolveStat(base, mods);
     breakdown[stat] = b;
     stats[stat] = finalize(stat, b);
   };

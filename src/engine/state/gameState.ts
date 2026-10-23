@@ -17,13 +17,27 @@ import { ItemActions } from './itemActions';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
   version: number;
   createdAt: number;
   playTimeMs: number;
+}
+
+/** Lifetime counters for the stats screen and achievements. */
+export interface GameStats {
+  kills: number;
+  battlesWon: number;
+  battlesLost: number;
+  battlesFled: number;
+  deaths: number;
+  highestHit: number;
+}
+
+export function createGameStats(): GameStats {
+  return { kills: 0, battlesWon: 0, battlesLost: 0, battlesFled: 0, deaths: 0, highestHit: 0 };
 }
 
 /** Everything that is saved. Plain JSON data only. */
@@ -43,6 +57,9 @@ export interface GameState {
   /** Counter for item uids. */
   nextUid: number;
   lootFilter: LootFilterSettings;
+  stats: GameStats;
+  /** Set when a Hardcore hero dies; the save can no longer be played. */
+  gameOver: boolean;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -60,6 +77,8 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     stash: createStash(),
     nextUid: 0,
     lootFilter: { ...DEFAULT_LOOT_FILTER },
+    stats: createGameStats(),
+    gameOver: false,
   };
 }
 

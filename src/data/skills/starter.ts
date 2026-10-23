@@ -42,7 +42,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 6 },
     cooldown: 0,
-    damage: { stat: 'magicAttack', multiplier: 1.4, perRank: 0.12 },
+    damage: { stat: 'magicAttack', multiplier: 1.6, perRank: 0.12 },
     effects: [{ kind: 'applyStatus', status: 'burn', duration: 3, chance: 35 }],
   },
   {
@@ -56,7 +56,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 8 },
     cooldown: 1,
-    damage: { stat: 'magicAttack', multiplier: 1.2, perRank: 0.1 },
+    damage: { stat: 'magicAttack', multiplier: 1.4, perRank: 0.1 },
     effects: [{ kind: 'applyStatus', status: 'slow', duration: 2, chance: 60 }],
   },
   // Rogue
@@ -100,7 +100,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 5 },
     cooldown: 0,
-    damage: { stat: 'divinePower', multiplier: 1.35, perRank: 0.1 },
+    damage: { stat: 'divinePower', multiplier: 1.8, perRank: 0.12 },
     generates: { resource: 'faith', amount: 15 },
   },
   {
@@ -114,7 +114,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 8 },
     cooldown: 0,
-    heal: { stat: 'divinePower', multiplier: 1.6, perRank: 0.15 },
+    heal: { stat: 'divinePower', multiplier: 2, perRank: 0.15 },
     generates: { resource: 'faith', amount: 10 },
   },
   // Ranger
@@ -158,7 +158,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 5 },
     cooldown: 0,
-    damage: { stat: 'magicAttack', multiplier: 1.3, perRank: 0.1 },
+    damage: { stat: 'magicAttack', multiplier: 1.6, perRank: 0.12 },
     generates: { resource: 'soulShards', amount: 1 },
   },
   {
@@ -214,7 +214,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 5 },
     cooldown: 0,
-    damage: { stat: 'magicAttack', multiplier: 1.15, perRank: 0.1 },
+    damage: { stat: 'magicAttack', multiplier: 1.45, perRank: 0.1 },
     effects: [{ kind: 'applyStatus', status: 'silence', duration: 1, chance: 25 }],
     generates: { resource: 'verse', amount: 20 },
   },

@@ -402,7 +402,7 @@ input.num {
 
 .toasts {
   position: fixed;
-  bottom: 16px;
+  top: 92px;
   right: 16px;
   z-index: 1500;
   display: flex;

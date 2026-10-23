@@ -12,7 +12,7 @@ export type SkillTargeting =
   | 'ally'
   | 'allAllies';
 
-export type SkillSource = 'class' | 'racial' | 'general' | 'specialization' | 'hybrid' | 'apostle' | 'avatar';
+export type SkillSource = 'class' | 'racial' | 'general' | 'specialization' | 'hybrid' | 'apostle' | 'avatar' | 'ultimate' | 'enemy' | 'basic';
 
 /** Which attack stat a skill's damage or healing scales from. */
 export type ScalingStat = 'physicalAttack' | 'magicAttack' | 'divinePower';
@@ -58,6 +58,14 @@ export interface SkillDef {
    * damage multiplier for each point spent.
    */
   finisher?: { resource: string; multiplierPerPoint: number };
+  /** Needs a full Ultimate gauge and empties it. */
+  ultimate?: boolean;
+  /** Every hit is a critical hit. */
+  alwaysCrit?: boolean;
+  /** Spells never miss; attacks roll accuracy against dodge. Defaults from the Spell tag. */
+  canMiss?: boolean;
+  /** Extra stagger multiplier on hits (default 1). */
+  stagger?: number;
 }
 
 /** Multiplier for a skill power at a given rank. */

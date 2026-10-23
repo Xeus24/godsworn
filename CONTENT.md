@@ -42,7 +42,7 @@ Every class starts with 34 primary points and gains 5.0 per level.
 ## Class resources (7)
 Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), Soul Shards (5, starts 1), Chi (5, starts 1), Verse (100).
 
-## Skills (22)
+## Skills (22 + 8 ultimates + 25 enemy skills)
 
 **Class starters (16):**
 
@@ -50,19 +50,19 @@ Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), 
 |---|---|---|---|---|---|
 | Heavy Strike | Warrior | free | 0 | 130% ATK (+10%/rank) | +15 Rage |
 | Rampage | Warrior | 40 Rage | 1 | 90% ATK ×3 | |
-| Firebolt | Mage | 6 MP | 0 | 140% MAG | 35% Burn |
-| Frost Shard | Mage | 8 MP | 1 | 120% MAG | 60% Slow |
+| Firebolt | Mage | 6 MP | 0 | 160% MAG | 35% Burn |
+| Frost Shard | Mage | 8 MP | 1 | 140% MAG | 60% Slow |
 | Backstab | Rogue | free | 0 | 120% ATK | +1 Combo |
 | Eviscerate | Rogue | 1 Combo | 0 | 60% ATK +55% per point | finisher |
-| Smite | Cleric | 5 MP | 0 | 135% DIV holy | +15 Faith |
-| Mend | Cleric | 8 MP | 0 | heals 160% DIV | +10 Faith; overheal becomes a shield |
+| Smite | Cleric | 5 MP | 0 | 180% DIV holy | +15 Faith |
+| Mend | Cleric | 8 MP | 0 | heals 200% DIV | +10 Faith; overheal becomes a shield |
 | Aimed Shot | Ranger | free | 0 | 125% ATK | +1 Focus |
 | Sic 'Em | Ranger | 5 MP | 2 | 110% ATK | 70% Bleed (pet) |
-| Soul Bolt | Necromancer | 5 MP | 0 | 130% MAG shadow | +1 Soul Shard |
+| Soul Bolt | Necromancer | 5 MP | 0 | 160% MAG shadow | +1 Soul Shard |
 | Raise Skeleton | Necromancer | 10 MP + 1 Shard | 2 | | consumes a corpse, summons a Skeleton Warrior |
 | Palm Strike | Monk | free | 0 | 115% ATK | +1 Chi |
 | Tiger Stance | Monk | free | 0 | | enter Tiger stance |
-| Discordant Note | Bard | 5 MP | 0 | 115% MAG arcane | 25% Silence, +20 Verse |
+| Discordant Note | Bard | 5 MP | 0 | 145% MAG arcane | 25% Silence, +20 Verse |
 | Song of Valor | Bard | 8 MP | 0 | | starts the Valor song |
 
 **Racial (6):** Rally, Moonlit Step, Stoneform, Bloodlust, Pounce, Radiant Wings (see Races).
@@ -129,6 +129,7 @@ Might/Finesse/Intellect/Fortitude/Insight/Fortune/Devotion (+1 to one primary pe
 ## Engine vocabulary
 - **Trigger hooks (14):** onHit, onCrit, onKill, onDamageTaken, onDodge, onTurnStart, onTurnEnd, onLowHp, onSkillCast, onHeal, onStatusApplied, onCombatStart, onCombatEnd, onDeath
 - **Effect kinds (15):** damage, heal, restoreMp, gainResource, applyStatus, removeStatus, shield, buff, favor, reduceCooldowns, castSkill, gold, setStance, startSong, summon
+- **Modifier types (4):** flat, percent (additive), more (multiplicative), override. Any modifier can carry a condition, and derived/elemental modifiers can scale `per` a primary or gear stat (e.g. +1 Physical Attack per DEX).
 - **Condition kinds (20):** always, hpBelow, hpAbove, inCombat, timeOfDay, weather, weaponType, skillTag, element, hasStatus, targetHasStatus, targetType, targetHpBelow, patron, stance, resourceAtLeast, flag, all, any, not
 - **Skill tags (31):** Attack, Spell, Melee, Ranged, Projectile, AoE, DoT, Heal, Buff, Debuff, Summon, Pet, Song, Stance, Movement, Finisher, Builder, Curse, Shout, Physical, Fire, Ice, Lightning, Nature, Poison, Holy, Shadow, Arcane, Void, Divine, Racial
 
@@ -151,14 +152,14 @@ Generated from the data files by `npm run content:md`.
 | Greataxe | 2 | 12-18 |  | +15% Crit Damage, -1 Speed |
 | Mace | 1 | 7-11 |  | +4% Physical Damage |
 | Warhammer | 2 | 14-20 |  | +8% Physical Damage, -2 Speed |
-| Dagger | 1 | 5-7 |  | +4% Crit Chance, +1 Speed |
-| Rapier | 1 | 6-8 |  | +6% Accuracy, +2% Dodge |
-| Spear | 2 | 10-14 |  | +2% Crit Chance, +1 Speed |
+| Dagger | 1 | 5-7 |  | +1 Physical Attack, +4% Crit Chance, +1 Speed |
+| Rapier | 1 | 6-8 |  | +1 Physical Attack, +6% Accuracy, +2% Dodge |
+| Spear | 2 | 10-14 |  | +0.5 Physical Attack, +2% Crit Chance, +1 Speed |
 | Scythe | 2 | 9-13 | 5-7 | +2% Lifesteal |
-| Fist Weapon | 1 | 6-8 |  | +2 Speed, +2% Crit Chance |
-| Bow | 2 | 9-13 |  | +3% Crit Chance, +4% Accuracy |
-| Crossbow | 2 | 11-17 |  | +20% Crit Damage, -2 Speed |
-| Throwing Weapon | 1 | 6-8 |  | +2 Speed, +2% Crit Chance |
+| Fist Weapon | 1 | 6-8 |  | +1 Physical Attack, +2 Speed, +2% Crit Chance |
+| Bow | 2 | 9-13 |  | +1.2 Physical Attack, +3% Crit Chance, +4% Accuracy |
+| Crossbow | 2 | 11-17 |  | +1 Physical Attack, +20% Crit Damage, -2 Speed |
+| Throwing Weapon | 1 | 6-8 |  | +1 Physical Attack, +2 Speed, +2% Crit Chance |
 | Staff | 2 | 3-5 | 10-14 | +10% increased Max MP |
 | Wand | 1 |  | 6-10 | +3% Crit Chance |
 | Tome | off-hand |  | 3-5 | +8% increased Max MP, +2% Cooldown Reduction |
@@ -379,5 +380,97 @@ Generated from the data files by `npm run content:md`.
 **Mechanic flags (16):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `immune:<status>`
 <!-- items:end -->
 
+## Combat
+
+Generated from the data files by `npm run content:md`.
+
+<!-- combat:start -->
+### Status effects (20)
+
+| Status | Kind | Effect |
+|---|---|---|
+| **Burn** | debuff | Takes fire damage each turn. Ice damage on a Burning target can Shatter. |
+| **Poison** | debuff | Takes nature damage each turn and receives 5% less healing per stack. |
+| **Bleed** | debuff | Takes physical damage each turn. |
+| **Freeze** | debuff | Frozen solid: loses its turn and has 25% less defense. |
+| **Stun** | debuff | Loses its next turn. |
+| **Slow** | debuff | 30% less speed. |
+| **Blind** | debuff | -40% accuracy. |
+| **Silence** | debuff | Cannot use skills. |
+| **Weaken** | debuff | 25% less physical and magic attack. |
+| **Vulnerable** | debuff | Takes 25% more damage. |
+| **Charm** | debuff | Beguiled: attacks its own allies. |
+| **Fear** | debuff | 50% chance to cower and lose the turn; 15% less damage. |
+| **Curse** | debuff | Receives 50% less healing and resists statuses less. |
+| **Corruption** | debuff | Void eats away at body and soul: void damage each turn and -8% max HP per stack. |
+| **Wet** | debuff | Soaked: -25% lightning resist, +25% fire resist. Lightning on a Wet target can Conduct. |
+| **Regen** | buff | Heals 6% of max HP each turn. |
+| **Haste** | buff | 30% more speed. |
+| **Berserk** | buff | +30% damage and +10% crit, but takes 15% more damage. |
+| **Divine Protection** | buff | Takes 50% less damage. |
+| **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
+
+### Class ultimates (8)
+
+| Class | Ultimate | Effect |
+|---|---|---|
+| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. |
+| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. |
+| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |
+| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. |
+| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |
+| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. |
+| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |
+| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. |
+
+**Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
+
+**Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
+
+### Enemies (18)
+
+| Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
+|---|---|---|---|---|---|---|---|
+| **Green Slime** | 1 | normal | slime | front | aggressive | Acid Splash | physical +15%, nature +50%, fire -30% |
+| **Meadow Wolf** | 2 | normal | beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **Giant Rat** | 1 | normal | beast, vermin | front | assassin | Plague Bite |  |
+| **Goblin Cutthroat** | 3 | normal | humanoid, goblin | front | assassin | Dirty Stab |  |
+| **Goblin Shaman** | 4 | normal | humanoid, goblin | back | healer | Goblin Hex, Crude Mending | fire +25% |
+| **Hollow Scarecrow** | 5 | normal | construct, cursed | front | support | Dreadful Caw | fire -50%, shadow +30%, nature +20% |
+| **Bandit Thug** | 6 | normal | humanoid, bandit | front | aggressive | Crushing Swing |  |
+| **Bandit Archer** | 6 | normal | humanoid, bandit | back | assassin | Pinning Shot, Volley |  |
+| **Goblin Warchief** | 7 | elite | humanoid, goblin | front | aggressive | Cleave, War Cry, Shield Bash |  |
+| **Dire Wolf** | 9 | normal | beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **Whisperwood Spider** | 10 | normal | beast, insect | back | support | Web Spit, Venom Fang | nature +40%, fire -25% |
+| **Skeleton Soldier** | 10 | normal | undead | front | defensive | Shield Bash | physical +10%, nature +75%, shadow +50%, holy -50% |
+| **Restless Ghost** | 11 | normal | undead, spirit | back | caster | Grave Chill, Banshee Wail | physical +40%, shadow +60%, holy -50%, nature +50% |
+| **Treant Sapling** | 12 | normal | plant | front | defensive | Barkskin, Root Lash | fire -50%, nature +50%, physical +15%, lightning +20% |
+| **Will-o'-Wisp** | 12 | normal | elemental, spirit | back | caster | Dazzle | arcane +50%, physical +25%, shadow -25% |
+| **Dark Cultist** | 13 | normal | humanoid, cultist | back | summoner | Dark Pact, Shadow Bolt | shadow +30%, holy -20% |
+| **Wyld Boar** | 14 | normal | beast | front | aggressive | Gore Charge |  |
+| **Alpha of the Whisperwood** | 15 | elite | beast | front | aggressive | Savage Bite, Pack Howl, War Cry |  |
+
+**Summons (4):** Skeleton Warrior, Wolf Companion, Spirit Stag, Bone Servant
+
+### Encounters (14)
+
+| Encounter | Lvl | Enemies |
+|---|---|---|
+| **Slime Puddle** | 1 | Green Slime, Green Slime |
+| **Rats' Nest** | 2 | Giant Rat, Giant Rat, Giant Rat |
+| **Wolf Pack** | 3 | Meadow Wolf, Meadow Wolf, Meadow Wolf |
+| **Goblin Raiders** | 4 | Goblin Cutthroat, Goblin Cutthroat, Goblin Shaman |
+| **Haunted Field** | 5 | Hollow Scarecrow, Hollow Scarecrow |
+| **Bandit Ambush** | 6 | Bandit Thug, Bandit Thug, Bandit Archer |
+| **The Warchief’s Warband** | 8 | Goblin Warchief, Goblin Cutthroat, Goblin Shaman |
+| **Dire Pack** | 9 | Dire Wolf, Dire Wolf |
+| **Web Hollow** | 10 | Dire Wolf, Whisperwood Spider, Whisperwood Spider |
+| **Old Battlefield** | 11 | Skeleton Soldier, Skeleton Soldier, Restless Ghost |
+| **Lights in the Fog** | 12 | Treant Sapling, Will-o'-Wisp, Will-o'-Wisp |
+| **Cult Circle** | 13 | Skeleton Soldier, Dark Cultist, Dark Cultist |
+| **Boar Charge** | 14 | Wyld Boar, Wyld Boar |
+| **Hunt of the Alpha** | 15 | Alpha of the Whisperwood, Dire Wolf, Dire Wolf |
+<!-- combat:end -->
+
 ## Not yet added
-Enemies, zones, quests, skill trees, blessings, Divine and Primordial items (Phases 4+).
+Zones, quests, skill trees, blessings, bosses, the remaining enemies (60+ across 8 zones), Divine and Primordial items (Phases 5+).
