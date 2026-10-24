@@ -40,6 +40,7 @@ import {
   zoneOf,
 } from '../world/world';
 import type { GameSession } from './gameState';
+import type { QuestMarker } from '../quests/quests';
 
 export type WorldResult = { ok: true } | { ok: false; reason: string };
 const fail = (reason: string): WorldResult => ({ ok: false, reason });
@@ -48,7 +49,7 @@ const fail = (reason: string): WorldResult => ({ ok: false, reason });
 export interface PendingFight {
   map: string;
   entity?: string;
-  kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss';
+  kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss' | 'quest';
 }
 
 export type StepResult =
@@ -56,7 +57,9 @@ export type StepResult =
   | { kind: 'moved'; message?: string }
   | { kind: 'map'; message?: string }
   | { kind: 'town'; town: string }
-  | { kind: 'fight'; encounter: EncounterDef; level: number };
+  | { kind: 'fight'; encounter: EncounterDef; level: number }
+  /** Someone waits at a quest marker: open a conversation. */
+  | { kind: 'talk'; marker: QuestMarker };
 
 /** Inn and home rest buff. */
 const WELL_RESTED = { id: 'inn-rested', name: 'Well Rested (inn)', modifiers: [{ stat: 'damageBonus' as const, type: 'flat' as const, value: 5 }], battlesLeft: 3 };
@@ -151,6 +154,13 @@ export class WorldActions {
     const nx = p.x + dx;
     const ny = p.y + dy;
     const target = entityAt(map, nx, ny);
+    const marker = this.s.quests.markerAt(map.id, nx, ny);
+    if (marker && passable(this.world, map, nx, ny)) {
+      this.placeAt(map.id, nx, ny);
+      this.s.advanceTime(isDungeon(map.id) ? DUNGEON_STEP_MINUTES : STEP_MINUTES);
+      if (this.world.grace > 0) this.world.grace--;
+      return this.useMarker(marker);
+    }
     const exit = target?.kind === 'exit';
     if (!exit && !passable(this.world, map, nx, ny)) {
       return { kind: 'blocked', ...(tileAt(map, nx, ny) === 'D' ? { message: 'A sealed door. Three rune stones must be lit to open it.' } : {}) };
@@ -174,6 +184,24 @@ export class WorldActions {
       }
     }
     return { kind: 'moved' };
+  }
+
+  /** Steps onto (or uses) a quest marker. */
+  useMarker(marker: QuestMarker): StepResult {
+    const r = this.s.quests.useMarker(marker);
+    if (r.kind === 'fight') {
+      this.pending = { map: this.map.id, kind: 'quest' };
+      return r;
+    }
+    if (r.kind === 'talk') return r;
+    this.changed('marker');
+    return { kind: 'moved', ...(r.message ? { message: r.message } : {}) };
+  }
+
+  /** A quest marker on your tile, if any. */
+  markerHere(): QuestMarker | undefined {
+    const p = this.world.position;
+    return this.s.quests.markerAt(p.map, p.x, p.y);
   }
 
   private fight(e: MapEntity, kind: PendingFight['kind']): StepResult {
@@ -383,6 +411,7 @@ export class WorldActions {
   private sleep(): void {
     const p = this.s.player;
     restoreFull(p);
+    this.s.party.restoreAll();
     this.s.advanceTime(8 * 60);
     p.timedBuffs = [...p.timedBuffs.filter((b) => b.id !== WELL_RESTED.id), { ...WELL_RESTED, modifiers: [...WELL_RESTED.modifiers] }];
     this.s.devotion.onRest();
@@ -457,7 +486,11 @@ export class WorldActions {
 
   /** Faction reputation from a batch of deeds; each faction's god takes a little favor too. */
   factionDeeds(occ: readonly DeedOccurrence[]): RepChange[] {
-    const deltas = judgeFactions(occ);
+    return this.addRep(judgeFactions(occ));
+  }
+
+  /** Reputation changes (quests, deeds); announces new ranks and shares favor with each faction's god. */
+  addRep(deltas: Record<string, number>): RepChange[] {
     if (Object.keys(deltas).length === 0) return [];
     const p = this.s.player;
     const before = Object.fromEntries(content.factions.all().map((f) => [f.id, rankOf(f, repOf(p, f.id))?.name]));

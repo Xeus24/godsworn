@@ -495,7 +495,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
 
-### Enemies (94)
+### Enemies (121)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -593,10 +593,37 @@ Generated from the data files by `npm run content:md`.
 | **Aspect of Aurelis** | 30 | boss | spirit, divine | front | aggressive | Wrath of Aurelis, Judgement of Aurelis | arcane +60% |
 | **Aspect of Hesha** | 30 | boss | spirit, divine | front | aggressive | Wrath of Hesha, Judgement of Hesha | holy +60% |
 | **Aspect of Grimvald** | 30 | boss | spirit, divine | front | aggressive | Wrath of Grimvald, Judgement of Grimvald | physical +60% |
+| **Unsworn Zealot** | 4 | normal | humanoid, cultist, unsworn | front | aggressive | Crushing Swing | holy -15% |
+| **Unsworn Adept** | 5 | normal | humanoid, cultist, unsworn | back | caster | Shadow Bolt, Goblin Hex | shadow +20%, holy -15% |
+| **Hollow Knight** | 30 | normal | humanoid, unsworn, void | front | aggressive | Dark Cleave, Shield Bash | void +30%, holy -20% |
+| **Oathburner** | 30 | normal | humanoid, cultist, unsworn | back | caster | Hellfire Bolt, Curse of Ages | fire +30%, holy -20% |
+| **Deacon Mott** | 6 | miniboss | humanoid, cultist, unsworn | back | caster | Shadow Bolt, Goblin Hex, Crude Mending | holy -10% |
+| **Varn the Hollow** | 14 | miniboss | humanoid, unsworn | back | assassin | Pinning Shot, Volley, Venom Fang |  |
+| **The Shard-Warden** | 22 | miniboss | construct, void | front | aggressive | Crystal Shard, Harden, Tremor | physical +25%, lightning -25%, void +40% |
+| **Captain Idris Kaur** | 30 | miniboss | humanoid, bandit, unsworn | front | aggressive | Cutlass Flurry, War Cry, Cleave |  |
+| **The Wight of Saint Orren** | 38 | boss | undead | front | aggressive | Grave Chill, Curse of Ages, Banshee Wail, Enrage | holy -30%, ice +40%, shadow +30% |
+| **Admiral Vey of the Black Tide** | 46 | boss | humanoid, unsworn | front | aggressive | Cutlass Flurry, Arc Lightning, Enrage | lightning +30%, ice +20% |
+| **The Severance Engine** | 53 | boss | construct, void | front | aggressive | Void Rend, Corruption Wave, Tremor, Enrage | void +50%, fire +30%, lightning -20% |
+| **Seryth the Oathbreaker** | 60 | boss | humanoid, unsworn, void | front | aggressive | Dark Cleave, Void Rend, Corruption Wave, Curse of Ages, Enrage | void +50%, holy +10% |
+| **Shadow of the Unwritten** | 60 | boss | spirit, void | front | caster | Corruption Wave, Void Rend, Curse of Ages, Enrage | void +80%, holy -25% |
+| **Korga Ironhide** | 26 | boss | humanoid | front | aggressive | Cleave, War Cry |  |
+| **Legion Champion** | 32 | boss | humanoid | front | aggressive | Cleave, Shield Bash, War Cry, Enrage |  |
+| **Blighted Treant** | 13 | elite | plant | front | aggressive | Root Lash, Spore Cloud | nature +40%, fire -40% |
+| **Vault Guardian** | 46 | elite | construct | front | aggressive | Harden, Tremor | physical +20%, lightning -20% |
+| **The Bone Priest** | 16 | miniboss | undead, cultist | back | summoner | Dark Pact, Grave Chill | holy -30%, shadow +40% |
+| **Hask the Poacher** | 18 | elite | humanoid, bandit | back | assassin | Pinning Shot, Volley |  |
+| **Warchief Gorza** | 36 | miniboss | humanoid, unsworn | front | aggressive | Cleave, War Cry, Tremor |  |
+| **The Unwritten Page** | 40 | miniboss | spirit, void | front | caster | Corruption Wave, Curse of Ages | void +60%, arcane +30% |
+| **The Drowned Choir** | 46 | miniboss | spirit, undead | back | caster | Siren Song, Drown, Banshee Wail | ice +40%, lightning -20% |
+| **Mirage Keeper** | 28 | elite | elemental | front | caster | Sandstorm, Dazzle | fire +50%, ice -30% |
+| **Nim the Herbalist** | 10 | normal | humanoid | back | healer | Crude Mending |  |
+| **Brannoc the Sled-Driver** | 34 | normal | humanoid | front | aggressive | Shield Bash |  |
+| **Marisol Tidesong** | 42 | normal | humanoid | back | support | Crude Mending |  |
+| **Caravan Master Oduya** | 26 | normal | humanoid | front | aggressive | Crushing Swing |  |
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
-### Encounters (65)
+### Encounters (119)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -665,6 +692,60 @@ Generated from the data files by `npm run content:md`.
 | **Trial of Grimvald: the Ordeal** | 30 | Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Gauntlet** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Aspect** | 30 | Aspect of Grimvald, Herald of Grimvald |
+| **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
+| **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
+| **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
+| **The Shard-Warden** | 22 | The Shard-Warden, Cave Bat, Cave Bat |
+| **Raider Camp** | 27 | Desert Raider, Desert Raider, Oathburner |
+| **Captain Idris Kaur** | 30 | Hollow Knight, Captain Idris Kaur, Desert Raider |
+| **Tomb Guardians** | 34 | Frost Wolf, Frost Wolf, Frost Wolf |
+| **The Wight of Saint Orren** | 38 | The Wight of Saint Orren, Ice Elemental |
+| **Black Tide Raiders** | 43 | Corsair, Hollow Knight, Oathburner |
+| **Admiral Vey** | 46 | Corsair, Admiral Vey of the Black Tide, Siren |
+| **The Severance Engine** | 53 | Hollow Knight, The Severance Engine, Oathburner |
+| **Seryth the Oathbreaker** | 60 | Hollow Knight, Seryth the Oathbreaker, Oathburner |
+| **Shadow of the Unwritten** | 60 | Shadow of the Unwritten, Void Wraith |
+| **Solenne’s Chained Herald** | 50 | Herald of Solenne, Hollow Knight, Oathburner |
+| **Morrath’s Chained Herald** | 50 | Herald of Morrath, Hollow Knight, Oathburner |
+| **Kael’s Chained Herald** | 50 | Herald of Kael, Hollow Knight, Oathburner |
+| **Ysolde’s Chained Herald** | 50 | Herald of Ysolde, Hollow Knight, Oathburner |
+| **Vex’s Chained Herald** | 50 | Herald of Vex, Hollow Knight, Oathburner |
+| **Thalor’s Chained Herald** | 50 | Herald of Thalor, Hollow Knight, Oathburner |
+| **Nymira’s Chained Herald** | 50 | Herald of Nymira, Hollow Knight, Oathburner |
+| **Aurelis’s Chained Herald** | 50 | Herald of Aurelis, Hollow Knight, Oathburner |
+| **Hesha’s Chained Herald** | 50 | Herald of Hesha, Hollow Knight, Oathburner |
+| **Grimvald’s Chained Herald** | 50 | Herald of Grimvald, Hollow Knight, Oathburner |
+| **Ardath’s Honor Guard** | 15 | Skeleton Soldier, Skeleton Soldier, Restless Ghost |
+| **Wolves at the Gate** | 12 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
+| **The Mirage’s Anger** | 28 | Dust Elemental, Mirage Keeper, Dust Elemental |
+| **The Statue’s Wardens** | 37 | Yeti, Frost Wolf, Frost Wolf |
+| **Corsairs at the Light** | 45 | Corsair, Corsair, Harpy |
+| **Solenne’s Herald** | 25 | Herald of Solenne, Herald of Solenne |
+| **Morrath’s Herald** | 25 | Herald of Morrath, Herald of Morrath |
+| **Kael’s Herald** | 25 | Herald of Kael, Herald of Kael |
+| **Ysolde’s Herald** | 25 | Herald of Ysolde, Herald of Ysolde |
+| **Vex’s Herald** | 25 | Herald of Vex, Herald of Vex |
+| **Thalor’s Herald** | 25 | Herald of Thalor, Herald of Thalor |
+| **Nymira’s Herald** | 25 | Herald of Nymira, Herald of Nymira |
+| **Aurelis’s Herald** | 25 | Herald of Aurelis, Herald of Aurelis |
+| **Hesha’s Herald** | 25 | Herald of Hesha, Herald of Hesha |
+| **Grimvald’s Herald** | 25 | Herald of Grimvald, Herald of Grimvald |
+| **The Cult Circle** | 14 | Skeleton Soldier, Dark Cultist, Dark Cultist |
+| **The Blight Root** | 13 | Blighted Treant, Treant Sapling, Treant Sapling |
+| **Raiders at the Pass** | 29 | Desert Raider, Desert Raider, Sand Scorpion |
+| **The Legion Champion** | 32 | Legion Champion |
+| **Runaway Experiment** | 36 | Ice Elemental, Storm Elemental, Ice Elemental |
+| **The Alpha** | 11 | Alpha of the Whisperwood, Dire Wolf, Dire Wolf |
+| **The Bone Priest** | 16 | Skeleton Soldier, Skeleton Soldier, The Bone Priest |
+| **Hask’s Poachers** | 18 | Bandit Thug, Bandit Thug, Hask the Poacher |
+| **Korga Ironhide** | 26 | Korga Ironhide |
+| **Warchief Gorza** | 36 | Hollow Knight, Warchief Gorza, Oathburner |
+| **Book Thieves** | 33 | Frost Giant, Ice Witch, Ice Witch |
+| **The Unwritten Page** | 40 | The Unwritten Page, Ice Elemental |
+| **Debt Collectors** | 41 | Corsair, Corsair, Corsair |
+| **The Counting House Vault** | 46 | Vault Guardian, Vault Guardian |
+| **The Drowned Choir** | 46 | Drowned Sailor, Drowned Sailor, The Drowned Choir |
+| **The Drowned Rise** | 42 | Drowned Sailor, Drowned Sailor, Siren |
 <!-- combat:end -->
 
 ## Skill trees
@@ -803,7 +884,7 @@ Generated from the data files by `npm run content:md`.
 <!-- trees:end -->
 
 ## Not yet added
-Zones, quests, specializations, general skills, blessings, bosses, the remaining enemies (60+ across 8 zones), Divine and Primordial items (Phases 5+).
+Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content (Phase 14), endgame activities and Primordial items (Phase 15).
 
 ## Specializations (24)
 
@@ -1006,7 +1087,7 @@ Favor runs from -100 to 1200. Tiers: Hated (-50 or less), Distrusted, Neutral (0
 
 | God | Rivals / allies | Likes | Dislikes | Offerings | Prayer (battle) | Intervention |
 |---|---|---|---|---|---|---|
-| **Solenne**, Sun & Justice | Morrath / Hesha | Smiting the undead (+3); Ending cultists (+3); Wielding holy light (+0.5); Victories under the sun (+1) | Raising the dead (-2); Fleeing from evil (-2) | Values arms and armor for her crusaders. | **Sunburst**: Holy light sears every enemy (60% Divine Power). (15 favor) | **The Unclouded Eye**: Solenne’s gaze burns every enemy as she raises you. |
+| **Solenne**, Sun & Justice | Morrath / Hesha | Smiting the undead (+3); Ending cultists (+3); Wielding holy light (+0.5); Victories under the sun (+1); Helping people in need (+4) | Raising the dead (-2); Fleeing from evil (-2) | Values arms and armor for her crusaders. | **Sunburst**: Holy light sears every enemy (60% Divine Power). (15 favor) | **The Unclouded Eye**: Solenne’s gaze burns every enemy as she raises you. |
 | **Morrath**, Death & Endings | Solenne / Vex | Felling mighty foes (+5); Raising the dead (+2); Shadow arts (+0.5); Victories by night (+1) | Cheating death with healing (-0.25); Holy light (-0.5) | Collects the strange things the dead leave behind. | **Death’s Toll**: Curse and Weaken every enemy for 2 turns. (15 favor) | **Not Yet**: Morrath turns you away from the Last Door, and the shadows take payment from your foes. |
 | **Kael**, War & Glory | Hesha / Thalor | Winning battles (+2); Defeating champions (+4); Mighty blows (+0.5) | Cowardice (-5); Defeat (-3) | Loves good weapons above all things. | **Battle Cry**: +25% damage for you for 3 turns, and you gain Haste. (15 favor) | **Not Like This**: Kael refuses you a coward’s death: you rise in a red rage. |
 | **Ysolde**, Nature & the Hunt | Thalor / Nymira | Hunting beasts (+2); Nature magic (+0.5); The bow (+0.25) | Wasteful salvaging (-1); Wildfire (-0.25) | Accepts herbs, hides and food with joy. | **Huntress’s Mark**: Mark every enemy Vulnerable and Slow them for 2 turns. (15 favor) | **The Green Hour**: Vines bind your foes as the forest closes your wounds. |
@@ -1014,7 +1095,7 @@ Favor runs from -100 to 1200. Tiers: Hated (-50 or less), Distrusted, Neutral (0
 | **Thalor**, Forge & Craft | Ysolde / Kael | Improving your gear (+4); Crafting (+2); Reclaiming metal (+1); Fire (+0.5) | Neglecting your gear (-3); Cold that cracks steel (-0.25) | Loves rare ores and well-made armor. | **Forge-Blessed**: A shield of 20% max HP and +30% defense for 3 turns. (15 favor) | **Tempered**: Thalor reforges you in the heat of battle. |
 | **Nymira**, Seas & Storms | Aurelis / Ysolde | Storm-struck kills (+2); Lightning (+0.5); Frost (+0.5) | Fire (-0.5); Staying ashore (-1) | Pearls, gems and things from the deep. | **Call the Storm**: Lightning strikes every enemy (50% Divine Power) and soaks them Wet. (15 favor) | **The Tide Turns**: A wave of cold water lifts you to your feet and drags your foes under. |
 | **Aurelis**, Knowledge & Magic | Nymira / Grimvald | Reading skillbooks (+10); Uncovering secrets (+2); Arcane study (+0.5) | Abandoning an experiment (-1); Destroying craftsmanship (-0.5) | Books, scrolls and curiosities. | **Arcane Insight**: Restore 40 MP and reduce your cooldowns by 2. (15 favor) | **Footnote**: Aurelis amends the record: you did not die after all. |
-| **Hesha**, Hearth & Mercy | Kael / Solenne | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
+| **Hesha**, Hearth & Mercy | Kael / Solenne | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5); Sparing a beaten foe (+10) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
 | **Grimvald**, Wealth & Trade | Vex / Aurelis | Earning gold (per 100) (+1); Profitable work (+0.5) | Losing money (-3); Theft (-1) | Gold. Honest, countable gold. | **Tithe**: Shield 25% of max HP and gain +20% gold find for this battle. (15 favor) | **Debt Forgiven**: Grimvald writes off your death as a bad debt. |
 
 ### Blessings (100)
@@ -1068,11 +1149,11 @@ Exalted favor plus the god's three-stage Trial of Apostleship (two rounds of her
 | **Hesha** | **Avatar of the Hearth**: Become the Keeper of the Hearth for 3 turns: take 40% less damage and gain +30 healing power; every enemy takes 150% Divine Power holy damage, and you heal fully. | Hearthstaff → Hearthstaff, Kindled → Hearthstaff, Ever-Lit → Hearthstaff, Keeper of the Hearth (Staff) | **Hearthbound**: Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. | **Mercy of the Hearth**: Heal the party for 120% Divine Power and remove Poison and Bleed.<br>**Gentle Rebuke**: 130% Divine Power holy damage that Weakens; heal 8% of max HP. | Keystone: +40 healing power, -20% damage. / Hearth Eternal |
 | **Grimvald** | **Avatar of Wealth**: Become the Golden Scale for 3 turns: +40% damage and a golden shield; every enemy takes 160% Divine Power and you gain 50 gold. | Ledger’s Edge → Ledger’s Edge, Audited → Ledger’s Edge, Compounded → Ledger’s Edge, the Golden Scale (Axe) | **Goldbound**: Kills grant 15 gold; +50% gold find and +30% magic find. | **Golden Rebuke**: A strike of solid gold for 120% ATK + 60% Divine Power; steal 10 gold.<br>**Audit**: Every enemy is Weakened and Vulnerable for 2 turns; you gain a shield of 20% max HP. | Keystone: +60% gold find and +20% damage, but take 10% more damage. / The Golden Scale: Start every battle with a shield of 20% max HP. |
 
-### Divine Edicts (33)
+### Divine Edicts (34)
 
 Each like of your god becomes an edict: do it a number of times within 20 battles. Fulfilled: +40 favor and gold. Ignored: -30 favor and apostle passives at 75% until the next edict is fulfilled.
 
-- **Solenne:** Smiting the undead: 4 times; Ending cultists: 4 times; Wielding holy light: 20 times; Victories under the sun: 12 times
+- **Solenne:** Smiting the undead: 4 times; Ending cultists: 4 times; Wielding holy light: 20 times; Victories under the sun: 12 times; Helping people in need: 3 times
 - **Morrath:** Felling mighty foes: 2 times; Raising the dead: 6 times; Shadow arts: 20 times; Victories by night: 12 times
 - **Kael:** Winning battles: 6 times; Defeating champions: 3 times; Mighty blows: 20 times
 - **Ysolde:** Hunting beasts: 6 times; Nature magic: 20 times; The bow: 20 times
@@ -1281,3 +1362,219 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **Upgrade** +1 to +15: success 100% / 100% / 100% / 100% / 100% / 90% / 80% / 70% / 60% / 50% / 40% / 33% / 26% / 20% / 15%; past +10 a failure drops a level. Enchanting adds 0.5% per level.
 - **Reroll** one affix, **add a socket** (up to the base maximum), **raise quality** (Damaged > Normal > Superior > Masterwork), **ascend** (NG+: Legendary or Mythic becomes Ascended). Corrupted items cannot be modified.
 <!-- economy:end -->
+
+## Quests, story and companions
+
+<!-- story:start -->
+139 quests, 68 NPCs, 62 dialogues, 6 companions, 4 endings.
+
+### Main story (8)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **The Silent Shrine** | 3 | starts by itself | Speak with Brother Aldric in Brightwater (talk); Examine the silent shrine (talk); Drive off the Unsworn zealots (fight); Confront Deacon Mott (talk); Defeat Deacon Mott (fight); Report to Brother Aldric (talk) |
+| **Whispers in the Wood** | 11 | starts by itself | Speak with Warden-Captain Ysra in Thornwick (talk); Listen to the Heartwood (talk); Put down hollowed beasts in the Whisperwood (kill); Defeat Varn the Hollow (fight); Decide Varn’s fate (talk); Report to Warden-Captain Ysra (talk) |
+| **Beneath the Hills** | 19 | starts by itself | Enter the Sunken Caves (visit); Light the rune stones of the Drowned Grotto (runes); Defeat the Shard-Warden (fight); Decide what to do with the shard (talk) |
+| **Blades for Hire** | 27 | starts by itself | Speak with Marshal Dara in Sandhaven (talk); Raid the camp (fight); Bring the Unsworn orders to Marshal Dara (deliver); Defeat Captain Idris Kaur (fight); Decide Idris Kaur’s fate (talk); Report to Marshal Dara (talk) |
+| **The Frozen Oath** | 35 | starts by itself | Speak with Archmage Oriel in Frosthold (talk); Answer the tomb door (talk); Lay the Wight of Saint Orren to rest (fight); Speak with Saint Orren (talk); Report to Archmage Oriel (talk) |
+| **The Black Tide** | 43 | starts by itself | Speak with Harbormaster Quill in Saltmere (talk); Repel the Black Tide raiders (fight); Defeat Admiral Vey (fight); Report to Harbormaster Quill (talk) · timed |
+| **The Forge of Severance** | 51 | starts by itself | Reach the edge of the Rift (visit); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Find the last of the Fallen Smiths (talk); Destroy the Severance Engine (fight) |
+| **The Unsworn King** | 58 | starts by itself | Reach the Citadel gates (visit); Defeat the Commander of the Black Throne (clear); Face Seryth (talk); Defeat Seryth the Oathbreaker (fight); Destroy the Shadow of the Unwritten (fight); Stand before the Black Throne (talk) |
+
+### Side quests (34)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **Rats in the Cellar** | 2 | Marta | Kill giant rats (kill) |
+| **Where’s Biscuit?** | 3 | Tobin Furrow | Find Biscuit (talk) |
+| **Roots for the Hearth** | 3 | Sister Wenna | Gather healroot (collect) |
+| **Scarecrow Season** | 5 | Tobin Furrow | Destroy walking scarecrows (kill) · timed |
+| **A Letter for Thornwick** | 6 | Hobb | Give Old Pell the letter (deliver) |
+| **The Goblin Tax** | 8 | Captain Reyna Holt | Defeat the Goblin King (clear) |
+| **The Herbalist’s Escort** | 10 | Nim | Bring Nim safely to the grove (escort) |
+| **Cards in the Webs** | 12 | Grinning Jack | Kill forest spiders (kill) |
+| **The Speaking Stones** | 12 | Bran the Carver | Touch the stones in the right order (sequence) |
+| **Orders, Never Sent** | 15 | Thornwick board | Speak with the ghost (talk) |
+| **Wolves at the Gate** | 12 | Thornwick board | Drive off the wolf packs (fight) · timed |
+| **The Air Runs Thin** | 18 | Old Pell | Dig out the miners (talk) · timed |
+| **The Crystal Song** | 20 | Old Pell | Shatter crystal golems (kill) |
+| **Drowned Debts** | 21 | Sandhaven board | Lay drowned sailors to rest (kill) |
+| **Water First** | 26 | Oduya | Bring water to the caravan (talk); Bring the caravan to Sandhaven (escort) |
+| **The Sun-King’s Crown** | 31 | Curator Hesk | Defeat the Withered Sun-King (clear); Decide what to do with the crown (talk) |
+| **The Mirage Keeper** | 28 | Sandhaven board | Answer the Mirage Keeper (talk) |
+| **Lio’s Marker** | 27 | Lio Two-Dice | Help Lio with his debt (talk) |
+| **The Mercy of the Sands** | 30 | Imani | Speak with Marshal Dara (talk) |
+| **The Supply Line** | 34 | Brannoc | Bring the sled safely to the waystation (escort) |
+| **Yeti Pelts** | 35 | Ulla | Hunt yetis (kill) |
+| **A Question of Ice** | 37 | Frosthold board | Answer the frozen statue (talk) |
+| **A Scholar’s Last Note** | 39 | Archivist Senne | Defeat the Frost Queen (clear) |
+| **Storm Over the Archive** | 38 | Loremaster Ivo | Speak with Tidecaller Maren (talk) |
+| **Discreet Cargo** | 41 | Old Wick | Decide where the crate goes (talk); Turn the crate in to Harbormaster Quill (deliver); Sell the crate to Mags (deliver) |
+| **Siren Song** | 43 | Old Wick | Silence sirens (kill) |
+| **The Light Stays Lit** | 45 | Keeper Ansel | Drive the corsairs from the lighthouse (fight) · timed |
+| **The Leviathan’s Egg** | 47 | Tidecaller Maren | Defeat the Leviathan Spawn (clear); Bring the egg to Tidecaller Maren (talk) |
+| **Embers of the Fallen** | 50 | Forgemaster Brunhild | Mine starmetal ore (collect) |
+| **The Remembered** | 52 | Archivist Senne | Read the names on the anvil (talk) |
+| **Imp Infestation** | 50 | Saltmere board | Kill fire imps (kill) |
+| **Maps That Lie** | 56 | Archivist Senne | Survey the western gate (visit); Survey the heart of the Citadel (visit); Survey the far side (visit) |
+| **The Unwritten Page** | 58 | Loremaster Ivo | Read what the scribe writes (talk) |
+| **Kneeling in the Ash** | 58 | High Lector Amara | Free fallen paladins (kill); Go to the kneeling paladins (talk) |
+
+### Faction questlines (15)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **Ashes to Ashes** | 6 | Commander Elric Vance | Destroy undead (kill) |
+| **The Cult Below** | 14 | Commander Elric Vance | Break the cult circle (fight) |
+| **Dawn’s Vigil** | 16 | Commander Elric Vance | Slay the Bone Lord (clear) |
+| **Cull the Pack** | 10 | Warden-Captain Ysra | Cull beasts in the Whisperwood (kill) |
+| **The Blight Root** | 13 | Warden-Captain Ysra | Fell the blighted treant (fight) |
+| **The Elder’s Rage** | 17 | Warden-Captain Ysra | Defeat Gnarlroot the Elder (kill) |
+| **Bandit Contracts** | 26 | Marshal Dara Vosk | Defeat desert raiders (kill) |
+| **Hold the Pass** | 29 | Marshal Dara Vosk | Hold the pass (fight) · timed |
+| **The Champion’s Ring** | 32 | Marshal Dara Vosk | Defeat the Legion Champion (fight) |
+| **Required Reading** | 33 | Archmage Oriel | Read a skillbook (deed); Identify unknown items (deed) |
+| **Runaway Experiment** | 36 | Archmage Oriel | Subdue the runaway experiment (fight) |
+| **The Frost Wyrm’s Heart** | 40 | Archmage Oriel | Slay the Frost Wyrm (kill) |
+| **Fence This** | 41 | Mags | Hand the ring to Lio in Sandhaven (deliver) |
+| **Competition** | 44 | Mags | Defeat the pirate captain (clear) |
+| **Honor Among Thieves** | 47 | Mags | Meet the contact at the cove (talk); Report to Mags (talk) |
+
+### Companion quests (11)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **The Lantern of Saint Ilse** | 16 | Brother Aldric | Defeat the Bone Priest (fight); Speak with Aldric about the Lantern (talk) |
+| **The Lone Hunter** | 11 | Fenn Ashwhistle | Bring down the alpha (fight); Speak with Fenn (talk) |
+| **The Last of the Pack** | 18 | Fenn Ashwhistle | Defeat Hask’s poachers (fight); Stand with Fenn (talk) |
+| **First Blood** | 26 | Korga Ironhide | Win the duel (fight); Speak with Korga (talk) |
+| **Blood Price** | 36 | Korga Ironhide | Defeat Warchief Gorza (fight); Speak with Korga (talk) |
+| **Overdue** | 33 | Ilyra Vael | Recover Ilyra’s book (fight); Speak with Ilyra (talk) |
+| **The Forbidden Shelf** | 40 | Ilyra Vael | Subdue the Unwritten Page (fight); Speak with Ilyra (talk) |
+| **A Debt Between Thieves** | 41 | Sable | Settle Sable’s debt (talk); Deal with the debt collectors (fight); Speak with Sable (talk) |
+| **The Grimvald Job** | 46 | Sable | Get past the vault guardians (fight); Divide the take with Sable (talk) |
+| **A Song for the Drowned** | 42 | Marisol Tidesong | Bring Marisol safely to the shore (escort); Hold off the drowned (fight); Listen to the song (talk) |
+| **The Leviathan’s Lullaby** | 47 | Marisol Tidesong | Silence the Drowned Choir (fight); Stand with Marisol (talk) |
+
+### God questlines (40)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **Pilgrim of Solenne** | 8 | High Lector Amara | Pray at the Sunstone Shrine in The Meadowlands (visit); Pray at the Sunstone Shrine in The Ashen Desert (visit) |
+| **The Will of Solenne** | 16 | High Lector Amara | Smite the undead (kill); Bring an offering to the temple (deliver) |
+| **Solenne’s Herald** | 26 | High Lector Amara | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Solenne** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Morrath** | 8 | The Pale Warden | Pray at the Raven Cairn in The Whisperwood (visit); Pray at the Raven Cairn in The Dark Citadel (visit) |
+| **The Will of Morrath** | 16 | The Pale Warden | Bring an end to the mighty (elites and bosses) (kill); Bring an offering to the temple (deliver) |
+| **Morrath’s Herald** | 26 | The Pale Warden | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Morrath** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Kael** | 8 | Warpriest Tavus | Pray at the Banner Stone in The Ashen Desert (visit); Pray at the Banner Stone in The Volcanic Rift (visit) |
+| **The Will of Kael** | 16 | Warpriest Tavus | Win battles (deed); Bring an offering to the temple (deliver) |
+| **Kael’s Herald** | 26 | Warpriest Tavus | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Kael** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Ysolde** | 8 | Mother Thessa | Pray at the Antler Grove in The Whisperwood (visit) |
+| **The Will of Ysolde** | 16 | Mother Thessa | Hunt beasts (kill); Bring an offering to the temple (deliver) |
+| **Ysolde’s Herald** | 26 | Mother Thessa | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Ysolde** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Vex** | 8 | Grinning Jack | Pray at the Crooked Coin in The Dark Citadel (visit) |
+| **The Will of Vex** | 16 | Grinning Jack | Land lucky strikes (critical hits) (deed); Bring an offering to the temple (deliver) |
+| **Vex’s Herald** | 26 | Grinning Jack | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Vex** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Thalor** | 8 | Forgemaster Brunhild | Pray at the Anvil Shrine in Frostspire (visit); Pray at the Anvil Shrine in The Volcanic Rift (visit) |
+| **The Will of Thalor** | 16 | Forgemaster Brunhild | Craft something at the Workshop (deed); Bring an offering to the temple (deliver) |
+| **Thalor’s Herald** | 26 | Forgemaster Brunhild | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Thalor** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Nymira** | 8 | Tidecaller Maren | Pray at the Tide Pool Shrine in The Sunken Caves (visit); Pray at the Tide Pool Shrine in The Stormcoast (visit) |
+| **The Will of Nymira** | 16 | Tidecaller Maren | Clear the flooded Sunken Caves of their creatures (kill); Bring an offering to the temple (deliver) |
+| **Nymira’s Herald** | 26 | Tidecaller Maren | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Nymira** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Aurelis** | 8 | Loremaster Ivo | Pray at the Lectern Shrine in Frostspire (visit) |
+| **The Will of Aurelis** | 16 | Loremaster Ivo | Uncover the unknown (identify items) (deed); Bring an offering to the temple (deliver) |
+| **Aurelis’s Herald** | 26 | Loremaster Ivo | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Aurelis** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Hesha** | 8 | Sister Wenna | Pray at the Hearthstone in The Meadowlands (visit) |
+| **The Will of Hesha** | 16 | Sister Wenna | Rest and care for yourself (camp, inn or home) (deed); Bring an offering to the temple (deliver) |
+| **Hesha’s Herald** | 26 | Sister Wenna | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Hesha** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **Pilgrim of Grimvald** | 8 | Factor Goldmere | Pray at the Counting Stone in The Stormcoast (visit) |
+| **The Will of Grimvald** | 16 | Factor Goldmere | Show your prosperity: have 1,500 gold to your name (state); Bring an offering to the temple (deliver) |
+| **Grimvald’s Herald** | 26 | Factor Goldmere | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Grimvald** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+
+### Class trials (8)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **Trial of the Warrior** | 15 | Sword-Master Bram | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Mage** | 15 | Archmage Velis | Read a skillbook (deed); Win the trial (state) |
+| **Trial of the Rogue** | 15 | Nell the Knife | Land 12 critical hits (deed); Win the trial (state) |
+| **Trial of the Cleric** | 15 | Mother Aurelie | Earn the acknowledgement of Solenne or Hesha (state); Win the trial (state) |
+| **Trial of the Ranger** | 15 | Warden Sylas | Hunt 10 beasts (kill); Win the trial (state) |
+| **Trial of the Necromancer** | 15 | The Pale Tutor | Study death: destroy 8 undead (kill); Win the trial (state) |
+| **Trial of the Monk** | 15 | Master Ren | Rest twice (at camp, an inn or home) (deed); Win the trial (state) |
+| **Trial of the Bard** | 15 | Lyra Silvertongue | Collect 2 lore pages (state); Win the trial (state) |
+
+### Hybrid trials (13)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **The Way of the Spellblade** | 36 | Sword-Master Bram | Speak with your other mentor (talk); Win the Trial of the Spellblade (state) |
+| **The Way of the Warpriest** | 36 | Sword-Master Bram | Speak with your other mentor (talk); Win the Trial of the Warpriest (state) |
+| **The Way of the Deathknight** | 36 | Sword-Master Bram | Speak with your other mentor (talk); Win the Trial of the Deathknight (state) |
+| **The Way of the Beastlord** | 36 | Sword-Master Bram | Speak with your other mentor (talk); Win the Trial of the Beastlord (state) |
+| **The Way of the Templar Ascetic** | 36 | Mother Aurelie | Speak with your other mentor (talk); Win the Trial of the Templar Ascetic (state) |
+| **The Way of the Stormfist** | 36 | Master Ren | Speak with your other mentor (talk); Win the Trial of the Stormfist (state) |
+| **The Way of the Shadow Reaper** | 36 | Nell the Knife | Speak with your other mentor (talk); Win the Trial of the Shadow Reaper (state) |
+| **The Way of the Spellthief** | 36 | Nell the Knife | Speak with your other mentor (talk); Win the Trial of the Spellthief (state) |
+| **The Way of the Blade Dancer** | 36 | Nell the Knife | Speak with your other mentor (talk); Win the Trial of the Blade Dancer (state) |
+| **The Way of the Wildsinger** | 36 | Warden Sylas | Speak with your other mentor (talk); Win the Trial of the Wildsinger (state) |
+| **The Way of the Arcane Archer** | 36 | Warden Sylas | Speak with your other mentor (talk); Win the Trial of the Arcane Archer (state) |
+| **The Way of the Plague Doctor** | 36 | Mother Aurelie | Speak with your other mentor (talk); Win the Trial of the Plague Doctor (state) |
+| **The Way of the Sun Knight** | 36 | Sword-Master Bram | Speak with the priest (talk); Win the Trial of the Sun Knight (state) |
+
+### Bounties (repeatable daily) (10)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **Bounty: Green Slime** | 5 | Brightwater board | Slay Green Slime (kill) |
+| **Bounty: Giant Rat** | 5 | Brightwater board | Slay Giant Rat (kill) |
+| **Bounty: Dire Wolf** | 12 | Thornwick board | Slay Dire Wolf (kill) |
+| **Bounty: Whisperwood Spider** | 12 | Thornwick board | Slay Whisperwood Spider (kill) |
+| **Bounty: Sand Scorpion** | 28 | Sandhaven board | Slay Sand Scorpion (kill) |
+| **Bounty: Desert Raider** | 28 | Sandhaven board | Slay Desert Raider (kill) |
+| **Bounty: Frost Wolf** | 36 | Frosthold board | Slay Frost Wolf (kill) |
+| **Bounty: Yeti** | 36 | Frosthold board | Slay Yeti (kill) |
+| **Bounty: Corsair** | 44 | Saltmere board | Slay Corsair (kill) |
+| **Bounty: Sea Serpent** | 44 | Saltmere board | Slay Sea Serpent (kill) |
+
+### Endings
+
+- **The Godsworn** (title “Godsworn”), with a paragraph for each god’s Apostle: Seryth falls, and with him the last of the Severance. Across the land, shrine after shrine flickers back to life, and the priests swear the sunstones burn brighter than they did before. They tell the story of the Apostle who walked the whole road, from the Meadowlands to the Black Throne, and never once let go of their god’s hand.
+- **The Mended Oath** (title “Oathmender”): The Shadow of the Unwritten unravels, and Seryth kneels in the ash where the throne stood, holding Saint Orren’s ring. He does not ask to be forgiven. He goes west instead, alone, to every shrine he and his followers broke, and lights them again by hand, one by one. The gods do not speak to him. He does not need them to. People say that the mercy you showed on the road taught an Oathbreaker how to keep his word.
+- **The Unsworn Crown** (title “the Unsworn”): The Shadow is gone, and the Severance is yours: a seed of nothing in your palm. You could plant it. You could cut every thread between the world and its gods with a thought. For now you only hold it, and the gods, for the first time in their long lives, are afraid of a mortal. Seryth sits at your right hand on the Black Throne, and the shrines of the world burn a little dimmer, waiting to learn what you will do.
+- **The Free Blade** (title “Free Blade”): Seryth falls, and the Severance with him. No god guided your hand; you did it with steel, stubbornness and friends. The shrines light again, the priests give thanks to the heavens, and you let them. You know who walked the road. The gods know too. Some of them, perhaps, are a little embarrassed.
+
+### Companions
+
+- **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
+  - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
+- **Fenn Ashwhistle**, Lone Hunter: Beastkin Ranger (Beastmaster), follows Ysolde, met in Thornwick. Likes hunting poachers and bandits, nature magic, sleeping under the stars; dislikes waste, leaving the pack behind.
+  - Bond: 20: Hunter’s Eye (+5% crit chance.) or Fleet (+6 dodge.) · 40: Barbed Arrows (+12% Nature damage and +10 Status Chance.) or Pack Tactics (+10% physical attack.) · 60: First Shot (Acts sooner: +12% speed.) or Clean Kill (Kills restore 8% of her HP.) · 80: Apex (+20% crit damage and +5% crit chance.) or Call of the Wild (+10% damage and +8% max HP.) · Oath: Last of the Pack (+12% damage and +8% speed; her crits make the target Vulnerable.)
+- **Korga Ironhide**, Sellsword: Orc Warrior (Berserker), follows Kael, met in Sandhaven. Likes winning, beating champions, big hits; dislikes running, sparing enemies.
+  - Bond: 20: Iron Hide (+10% defense.) or Heavy Axe (+10% physical attack.) · 40: Come Here (+12% max HP; enemies hit her instead of the back row more often (front row, +defense).) or Bloodlust (+5% lifesteal.) · 60: Never Down (Once per battle, below 30% HP: heal 30% and go Berserk.) or Cleaver (+15% crit damage and +3% crit chance.) · 80: Warlord’s Shout (Starts every battle Hasted, and the whole party with her.) or Titan (+15% max HP and +10% damage.) · Oath: Blood-Sworn (+15% damage and +10% defense; kills grant her a 10% shield.)
+- **Ilyra Vael**, Guild Mage: Elf Mage (Chronomancer), follows Aurelis, met in Frosthold. Likes reading skillbooks, identifying artifacts, spellcraft; dislikes destroying enchanted things, cowardice.
+  - Bond: 20: Focus (+10% Magic Attack.) or Deep Well (+15% max MP and +3 MP regeneration.) · 40: Frostweave (+15% Ice damage.) or Emberweave (+15% Fire damage.) · 60: Borrowed Time (+8% cooldown reduction.) or Arcane Ward (Starts battle with a shield of 15% max HP.) · 80: Genius (+15% Magic Attack and +10% Ultimate Charge.) or Archmage (+10% damage and +10 Status Chance.) · Oath: Margin Notes (+12% damage and +8% cooldown reduction; her spells restore 3 MP when they crit.)
+- **Sable**, Thief: Human Rogue (Swashbuckler), follows Vex, met in Saltmere. Likes stealing, getting paid, gambling, clean work; dislikes getting caught, running without the loot.
+  - Bond: 20: Light Fingers (+10% gold find.) or Quick (+8 dodge.) · 40: The Knife Trick (+6% crit chance.) or Lucky Coin (+10% magic find and +5% damage.) · 60: Vanishing Act (Starts every battle in Stealth.) or Poisoned Blades (+12% Poison/Nature damage and +10 Status Chance.) · 80: Ace Up the Sleeve (+25% crit damage.) or Fortune Favors (+10% damage and +8% speed.) · Oath: Partner in Crime (+12% damage, +15% gold find; her crits Blind the target.)
+- **Marisol Tidesong**, Singer to the Drowned: Nephilim Bard (Skald), follows Nymira, met in Saltmere. Likes storm magic, music, a quiet night, good deeds; dislikes waking the dead, leaving people behind.
+  - Bond: 20: Carrying Voice (+10% Magic Attack.) or Sea Shanty (+8% speed.) · 40: Storm Song (+15% Lightning damage.) or Calm Waters (+12 Healing Power and +10 Status Resist.) · 60: Chorus (Every ally starts battle Regenerating.) or Rising Tide (+15% Ultimate Charge.) · 80: Showstopper (+10% damage and +10% Magic Attack.) or Anchor (+15% max HP and +10 Ice and Lightning resistance.) · Oath: Lullaby of the Deep (+12% damage; starts every battle with a 10% shield on every ally.)
+
+### People
+
+- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Brother Aldric (Priest of Solenne)
+- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Fenn Ashwhistle (Lone Hunter)
+- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Korga Ironhide (Sellsword)
+- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Ilyra Vael (Guild Mage)
+- **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned)
+- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue
+<!-- story:end -->

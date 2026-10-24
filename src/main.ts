@@ -21,6 +21,7 @@ import { registerCoreSections } from './ui/debug/coreSections';
 import { DebugPanel } from './ui/debug/debugPanel';
 import { GeneralScreen } from './ui/general/generalScreen';
 import { registerItemSections } from './ui/debug/itemSections';
+import { registerQuestSections } from './ui/debug/questSections';
 import { InventoryScreen } from './ui/inventory/inventoryScreen';
 import { PantheonScreen } from './ui/pantheon/pantheonScreen';
 import { ScreenManager } from './ui/screen';
@@ -31,6 +32,11 @@ import { TownScreen } from './ui/world/townScreen';
 import { WorkshopScreen } from './ui/world/workshopScreen';
 import { WorldScreen } from './ui/world/worldScreen';
 import './ui/world/world.css';
+import './ui/quests/quests.css';
+import type { Conversation, ConversationOutcome } from './engine/state/conversation';
+import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
+import { QuestLogScreen } from './ui/quests/questLog';
+import { PartyScreen } from './ui/party/partyScreen';
 
 validateContent();
 
@@ -47,6 +53,7 @@ const toasts = new Toasts();
 const debug = new DebugPanel();
 registerCoreSections(debug, () => session);
 registerItemSections(debug, () => session);
+registerQuestSections(debug, () => session);
 
 const nav: Nav = {
   title: showTitle,
@@ -55,13 +62,42 @@ const nav: Nav = {
   skills: showSkills,
   general: showGeneral,
   pantheon: showPantheon,
+  quests: showQuests,
+  party: showParty,
   world: showWorld,
 };
+
+/** The conversation on screen, if any (screen hotkeys pause while it is open). */
+let dialogue: DialogueOverlay | undefined;
+
+/**
+ * Opens a conversation over the current screen. When it closes, a fight it
+ * started begins, or the story's ending is shown.
+ */
+function talk(conv: Conversation): void {
+  dialogue?.close();
+  dialogue = new DialogueOverlay(conv, (outcome: ConversationOutcome) => {
+    dialogue = undefined;
+    const s = session;
+    if (!s) return;
+    if (outcome.fight) {
+      const { encounter, level } = s.quests.fightFor(outcome.fight);
+      startFight(encounter, level, true);
+    } else if (outcome.ending) showEnding();
+  });
+  document.body.append(dialogue.element);
+}
+
+function showEnding(): void {
+  const s = session;
+  if (!s?.state.quests.ending || s.state.quests.ending.seen) return;
+  document.body.append(new EndingOverlay(s, () => showWorld()).element);
+}
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showWorld });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 11: the economy`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 12: quests and companions`));
 }
 
 function showCreation(): void {
@@ -92,21 +128,29 @@ function showGeneral(): void {
   if (session) screens.show(new GeneralScreen(session, nav));
 }
 
+function showQuests(): void {
+  if (session) screens.show(new QuestLogScreen(session, nav));
+}
+
+function showParty(): void {
+  if (session) screens.show(new PartyScreen(session, nav, talk));
+}
+
 function showPantheon(): void {
   if (session) screens.show(new PantheonScreen(session, nav, startFight));
 }
 
 function showGrounds(): void {
-  if (session) screens.show(new ProvingGroundsScreen(session, nav, (enc) => startFight(enc), showWorld));
+  if (session) screens.show(new ProvingGroundsScreen(session, nav, (enc) => startFight(enc), showWorld, talk));
 }
 
 /** The overworld, or the town screen when you are standing in a town you just entered. */
 function showWorld(): void {
-  if (session) screens.show(new WorldScreen(session, nav, (enc, level) => startFight(enc, level, true), showTown));
+  if (session) screens.show(new WorldScreen(session, nav, (enc, level) => startFight(enc, level, true), showTown, talk));
 }
 
 function showTown(town: string): void {
-  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), leave: showWorld }, town));
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), leave: showWorld, talk }, town));
 }
 
 function showMarket(town: string): void {
@@ -133,6 +177,8 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
     timeOfDay: timeOfDay(s.state.clock),
     weather: s.world.weatherNow(),
     punisher,
+    companions: s.party.battleMembers(),
+    guests: s.quests.guests(),
     ...(level !== undefined ? { level } : {}),
   });
   currentBattle = battle;
@@ -146,7 +192,10 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
         if (s.state.gameOver) {
           session = undefined;
           showTitle();
-        } else showWorld();
+        } else {
+          showWorld();
+          showEnding();
+        }
       },
       ...(world ? {} : { onRematch: () => startFight(encounter, level) }),
     }),
@@ -155,13 +204,15 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
 
 window.addEventListener('keydown', (e) => {
   const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
-  if (typing || e.metaKey || e.ctrlKey || e.altKey || !session || inBattle) return;
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !session || inBattle || dialogue) return;
   const key = e.key.toLowerCase();
   if (key === 'c') showCharacter();
   if (key === 'i') showInventory();
   if (key === 'g') showWorld();
   if (key === 'k') showSkills();
-  if (key === 'j') showGeneral();
+  if (key === 'l') showGeneral();
+  if (key === 'j') showQuests();
+  if (key === 'o') showParty();
   if (key === 'p') showPantheon();
 });
 

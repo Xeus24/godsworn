@@ -181,7 +181,9 @@ export class ItemActions {
   }
 
   destroy(loc: ItemLocation): Result {
-    if (!this.itemAt(loc)) return fail('Nothing there.');
+    const target = this.itemAt(loc);
+    if (!target) return fail('Nothing there.');
+    if (content.items.get(target.baseId).category === 'quest') return fail('You need that for a quest.');
     if (loc.where === 'equipment') return fail('Unequip it first.');
     this.removeAt(loc);
     this.changed('destroy');

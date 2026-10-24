@@ -5,6 +5,7 @@ import { canAddClass, classSlotCount, hybridsFor, hybridTrialOpen, isTrialEncoun
 import type { EncounterDef } from '../../engine/combat/types';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
+import type { Conversation } from '../../engine/state/conversation';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
@@ -22,7 +23,20 @@ export class ProvingGroundsScreen implements Screen {
     private readonly nav: Nav,
     private readonly fight: (encounter: EncounterDef) => void,
     private readonly back: () => void,
+    private readonly talk: (conv: Conversation) => void,
   ) {}
+
+  /** A "talk to the mentor" button, marked when they have a quest or an errand for you. */
+  private talkButton(mentor: string): HTMLButtonElement {
+    const npc = content.npcs.get(mentor);
+    const mark = this.session.quests.npcMark(mentor);
+    const b = el('button', { class: `tab${mark ? ' marked' : ''}` }, `${mark ? `${mark} ` : ''}Talk to ${npc.name}`);
+    b.addEventListener('click', () => {
+      const conv = this.session.quests.talkTo(mentor);
+      if (conv) this.talk(conv);
+    });
+    return b;
+  }
 
   mount(root: HTMLElement): void {
     this.root = root;
@@ -101,17 +115,21 @@ export class ProvingGroundsScreen implements Screen {
         const enc = content.encounters.get(t.encounter);
         const won = p.trialsWon.includes(t.encounter);
         const check = canAddClass(p, t.classId, s.state.ngPlus);
+        const open = s.quests.trialOpen(t.encounter);
         const action = won
           ? btn(`Take up ${cls.name}`, () => this.say(s.multiclass.addClass(t.classId)), !check.ok, 'primary')
-          : btn('Fight trial', () => this.fight(enc), !atLevel, 'primary');
+          : btn('Fight trial', () => this.fight(enc), !atLevel || !open, 'primary');
+        const quest = s.quests.trialQuest(t.encounter);
         return el(
           'div',
           { class: 'trainer-card panel' },
           el('div', { class: 'enc-head' }, el('b', { style: `color:${cls.color}` }, cls.name), el('span', { class: `enc-tag ${won ? 'ok' : 'warn'}` }, won ? 'Trial won' : `Lv ${enc.level} trial`)),
           el('div', { class: 'small' }, enc.name.replace('Trial: ', '')),
           el('div', { class: 'dim small' }, `“${t.quote}”`),
+          this.talkButton(`mentor-${t.classId}`),
           action,
           ...(won && !check.ok ? [el('div', { class: 'dim small' }, check.reason)] : []),
+          ...(!won && atLevel && !open && quest ? [el('div', { class: 'dim small' }, s.state.quests.active[quest.id] ? `Finish the errand of “${quest.name}” first.` : `Talk to the trainer to begin “${quest.name}”.`)] : []),
         );
       });
     const hybridCards = hybridsFor(p).map((h) => {
@@ -119,19 +137,22 @@ export class ProvingGroundsScreen implements Screen {
       const unlocked = p.hybrids.includes(h.id);
       const won = p.trialsWon.includes(h.trial);
       const open = hybridTrialOpen(p, h.id);
+      const questOpen = s.quests.trialOpen(h.trial);
       const action = unlocked
         ? el('span', { class: 'enc-tag ok' }, 'Unlocked')
         : won
           ? btn(`Unlock ${h.name}`, () => this.say(s.multiclass.unlockHybrid(h.id)), false, 'primary')
-          : btn('Fight trial', () => this.fight(enc), !open.ok, 'primary');
+          : btn('Fight trial', () => this.fight(enc), !open.ok || !questOpen, 'primary');
       return el(
         'div',
         { class: 'trainer-card panel' },
         el('div', { class: 'enc-head' }, el('b', {}, h.name), el('span', { class: 'enc-tag warn' }, `Lv ${enc.level} trial`)),
         el('div', { class: 'small' }, h.classes.map((id) => content.classes.get(id).name).join(' + ')),
         el('div', { class: 'dim small' }, h.description),
+        ...(unlocked ? [] : [this.talkButton(`mentor-${h.classes[0] as string}`)]),
         action,
         ...(!unlocked && !won && !open.ok ? [el('div', { class: 'dim small' }, open.reason)] : []),
+        ...(!unlocked && !won && open.ok && !questOpen ? [el('div', { class: 'dim small' }, `Your ${content.classes.get(h.classes[0] as string).name} mentor has a quest for you first.`)] : []),
       );
     });
     const slots = classSlotCount(p, s.state.ngPlus);

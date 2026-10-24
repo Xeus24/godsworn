@@ -171,6 +171,8 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   for (const name of rewards.expiredBuffs) s.bus.emit('toast', { kind: 'info', text: `${name} wore off.` });
 
   if (!rewards.permadeath) rewards.favor = s.devotion.settle(b, rewards.gold, rewards.brokenItems.length);
+  s.party.afterBattle(b);
+  s.quests.afterBattle(b);
 
   s.bus.emit('combatEnded', { encounterId: b.encounterId, result: b.outcome === 'ongoing' ? 'fled' : b.outcome });
   s.bus.emit('stateChanged', { reason: 'battle' });

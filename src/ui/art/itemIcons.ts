@@ -121,6 +121,8 @@ export function iconSpec(item: ItemInstance): IconSpec {
       return { pattern: 'tome', main: base.grimoire ? '#2a2030' : rarityColor === '#f2f2f2' ? '#8a6a4a' : rarityColor, energy: base.grimoire ? '#c02a4a' : '#ffe08a' };
     case 'recipe':
       return { pattern: 'scroll', main: '#e8dcb8', energy: rarityColor };
+    case 'quest':
+      return { pattern: 'curiosity', main: '#ffd84a', energy: '#ff9a1f' };
   }
 }
 

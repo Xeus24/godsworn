@@ -39,7 +39,9 @@ Then open http://localhost:5173.
 | C | Character sheet |
 | I | Inventory, equipment and stash |
 | K | Skill trees, specializations, builds and hotbar |
-| J | General skills and their slots |
+| L | General skills and their slots |
+| J | Quest log: active quests, objectives, where to go, rewards, tracking |
+| O | Party: companions, approval, bond perks, their gear, talking to them |
 | P | Pantheon: favor, shrines, offerings and blessings (in battle: Pray) |
 | G | The world (WASD or arrows to walk, E to use, M for the world map) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
@@ -90,7 +92,7 @@ In battle:
 
 **Apostleship:** reach Exalted with a god and its shrine offers the **Trial of Apostleship**: three fights, the last against the god's Aspect. Win it and **Ascend** to become that god's Apostle. You gain an apostle tree (the ✦ tab in Skills), a **Divine Avatar** (a second ★ ultimate, once per battle), a divine weapon that grows with you, a Divine blessing and a title. Your god issues **Divine Edicts**; ignore them and your powers fade. You can **renounce** a god, but it will never forget.
 
-**General skills (J):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
+**General skills (L):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
 
@@ -99,6 +101,15 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 - **Click** an item for its full tooltip and every action: Unsocket (costs gold), Mark as junk, Salvage into materials, Destroy (click twice).
 - **Hover** anything to see its stats and how it compares to what you are wearing. Green is an upgrade, red a downgrade.
 - Use the filter tabs, sorting and the loot filter (hide or auto-salvage low rarities) to keep your bags tidy.
+
+**Quests and the story:** the story begins at once: Brother Aldric at the Brightwater temple needs help. Talk to people in towns (the **People** and **Temple** cards): **!** marks someone with a quest for you, **?** someone waiting for a report or an errand. Towns also have a **Quest Board** (side quests and daily bounties). Out in the world, quest objectives appear as markers (**!** someone to talk to, **⚔** a fight, **★** a place, **⚑** an escort's destination, **◆** a standing stone), on the minimap and on the world map. The tracked quest (◆ in the quest log) shows in the world sidebar.
+
+- **Conversations** open in a window over the screen: pick a reply with the mouse or keys 1–9 (Esc leaves). Some replies need something, shown in brackets: **[WIS 12]**, **[Favored by Hesha]**, **[Apostle]**, a class, an item or gold.
+- **Quest types:** kill, collect (carry the items), deliver, talk, visit, escort (they fight beside you; if they fall, the quest fails), defend (several waves, against the clock), puzzles (riddles, rune stones, standing stones in the right order), bosses and dungeons, timed quests and choices with consequences (favor, reputation, companions' approval, the story itself).
+- **The main story** runs through all eight zones, against the Unsworn and Seryth the Oathbreaker. Mercy, what you do with the Severance Shard, Saint Orren's ring and whether you are an Apostle change how it ends: there are four endings, one with a different epilogue for each god. An Apostle also answers their own god's charge in chapter 7.
+- **Every god** has a questline from its temple priest that leads to its Trial of Apostleship; **class trainers** give a short errand before their trial (the arena only lets you fight a trial once its quest is at that stage); **hybrid trials** ask you to consult each mentor first; each **faction** has three quests that end in a title.
+
+**Companions (O):** six people can join you (Brother Aldric, Fenn, Korga, Ilyra, Sable and Marisol), and up to three fight beside you; the rest wait in reserve. They level with you and spend their own points, but you choose their gear (equip from your bags on the Party screen). Each follows a god and has likes and dislikes: **approval** rises and falls with what you do, which gods you please, and your choices in conversations. At 20/40/60/80 approval you pick one of two **bond perks**; at 30 they share a **personal quest**, which earns an **oath** perk. At −50 they leave you, and wait in their town until you make amends. Enemies grow tougher with every companion in the fight.
 
 More screens and controls are documented here as each phase lands.
 
@@ -117,6 +128,8 @@ src/
     gods/       favor, devotion tiers, blessings, prayer and intervention
     world/      map generation, movement, encounters, weather, factions, housing
     economy/    shops, pricing, crafting, professions, gear services
+    quests/     quest and dialogue types, conditions, progress, marker placement
+    party/      companions: creation, approval, bond perks
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -350,6 +363,40 @@ C({ id: 'iron-will', name: 'Iron Will', category: 'survival', rarity: 'rare',
 ```
 
 Passive values are per rank. Use `combatSkill` to grant a battle skill (define it in `GENERAL_COMBAT_SKILLS`) or `utility` to hook a field effect.
+
+### Example: a quest, an NPC and a conversation
+Quests live in `src/data/story/` and are built from the helpers in `src/data/story/helpers.ts`. Add a giver to `TOWN_NPCS` (`npcs.ts`), a quest to `SIDE_QUESTS` and its dialogue to `SIDE_DIALOGUES` (`side.ts`):
+
+```ts
+npc({ id: 'old-bea', name: 'Old Bea', title: 'Beekeeper', town: 'brightwater', race: 'human', portrait: 2, color: '#e0c050',
+      greeting: '“Mind the bees, dear.”' }),
+
+{
+  id: 'side-bees', name: 'Bees in the Bonnet', kind: 'side', level: 4, zone: 'meadowlands', giver: 'old-bea',
+  summary: '“Slimes have been eating my honey. Then a man in the woods offered to buy it. Odd, isn’t it?”',
+  stages: [
+    stage('slimes', 'Clear the slimes from the hives.', [kill('k', 'Squash green slimes', 5, { enemyId: 'green-slime' })]),
+    stage('man', 'Find the honey buyer by the Goblin Warren.', [
+      talk('t', 'Speak to the honey buyer', 'lost-goat', 'd-bees', near('meadowlands', 'dungeon', 'goblin-warren', 'A man with a jar')),
+    ], { turnIn: 'old-bea', turnInText: '“A goat? Buying honey? Well I never.”' }),
+  ],
+  rewards: { xp: 0.4, gold: 6, favor: { hesha: 10 } },
+},
+
+dialogue('d-bees', {
+  start: say('lost-goat', '“Meh.”', { choices: [
+    choice('Sell it the honey.', 'sold', [gold(50)]),
+    check(stat('wis', 15), 'That is a goat in a coat.', 'seen', [setFlag('saw-the-goat')]),
+  ] }),
+  sold: say('narrator', 'The goat pays in exact change.'),
+  seen: say('narrator', 'The coat falls off. It is a goat.'),
+}),
+```
+
+Objective kinds: `kill`, `collect`, `deliver`, `talk` (in town, or at a marker with `at`), `visit`, `fight` (an encounter, at a marker or started from dialogue, optionally in `waves`), `escort`, `clear`, `runes`, `sequence`, `deed` (anything the gods can notice) and `state` (any condition). Stages can be timed (`hours`), handed in (`turnIn`), branch (`next: [{ cond, stage }]`) and run actions when they start or finish. Choices can need conditions (`check(...)`, shown as **[WIS 15]**) and run actions: start quests, set flags, give items or gold, change favor, reputation or a companion's approval, recruit, start a fight or reach an ending. Markers are placed a few steps from an anchor (an entity on the map) and never move; `npm test` checks every marker lands on reachable ground, and startup validation checks every reference.
+
+### Example: a companion
+Add a `CompanionDef` to `COMPANIONS` in `src/data/story/companions.ts` (race, class, specialization, god, home town, likes, dislikes, four bond tiers of two perks, an oath perk) and its recruitment and personal quests. Their NPC is generated from the definition; recruit them with the `recruit` action.
 
 ### Example: a new race
 Add an entry to `RACES` in `src/data/races.ts` with a `statBonus`, a `passive` (a list of modifiers) and an `activeSkill` id, then add that skill to `RACIAL_SKILLS`. The creation screen and portraits pick it up automatically. Without a palette in `src/ui/art/portraits.ts` the new race uses the Human palette.

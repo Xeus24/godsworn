@@ -15,8 +15,8 @@
 | 9 | Apostleship | **Done** |
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | **Done** |
 | 11 | Economy | **Done** |
-| 12 | Quests, dialogue, main story, companions | Next |
-| 13 | Bosses, elites, bestiary, achievements, codex | |
+| 12 | Quests, dialogue, main story, companions | **Done** |
+| 13 | Bosses, elites, bestiary, achievements, codex | Next |
 | 14 | New Game+ and Twilight of the Gods | |
 | 15 | Endgame activities, challenge modes, Ascended/Primordial items | |
 | 16 | Save system, settings, audio, polish, balance, playtest | |
@@ -389,6 +389,38 @@
 - **UI:** a Market screen (shop tabs, stock with tooltips, sell panel, buyback, repairs, the Gambler) and a Workshop screen (professions, gathering levels, recipes with have/need counts, forge base picker, gear services with odds and costs). You can read recipe scrolls from your bags. Gathering nodes are drawn on the map.
 - 352 unit tests.
 
+### Phase 12: quests, dialogue, the story and companions
+- **Quest engine** (`engine/quests/`, `state/questActions.ts`): data-driven quests made of stages, each with objectives, an optional time limit, an optional hand-in NPC, branches on conditions and actions when a stage starts or ends.
+  - 12 objective kinds: kill (by enemy, type, tier, zone), collect (carried items, handed over at the end), deliver, talk (in town or at a field marker), visit, fight (at a marker, from dialogue, or anywhere, with waves), escort (the NPC fights beside you; if they fall, the quest fails), clear a dungeon, light its runes, touch standing stones in order, deeds (anything the gods notice) and states (any condition).
+  - Progress comes from kills, battle results, deeds, markers, carried items and the game state. Quests can be offered by an NPC, posted on a town's quest board, or start by themselves (the story, the apostle trials). Bounties repeat daily. Failed quests can be taken again.
+  - Rewards scale with the quest's level: XP as a share of that level, gold per level, items, gear of a rarity, favor, reputation, skill points and titles. Finishing most quests is a new deed, "Helping people", which Solenne likes.
+  - 23 condition kinds (level, class, race, stats, favor tier, Apostle, trial stages, reputation, items, gold, flags, counters, quest states, companions, trials, hybrids, dungeons, lore, time of day, all/any/not).
+- **Quest markers** are placed a few steps from an anchor (an entity or arrival point) by a seeded walk over open ground, so they never move and need no saving. A test checks all 110 marker spots land on reachable ground.
+- **Dialogue** (`state/conversation.ts`): branching conversations with speakers (NPCs, you, a narrator), choices with conditions (shown as [WIS 12] or [Favored by Hesha] when locked; choices that hinge on story state stay hidden) and actions (start quests, flags and counters, items, gold, favor, reputation, approval, recruiting, fights, endings, titles). Talking to an NPC opens their topic list: reports (?), deliveries, errands, new quests (!) and topics. Text can name you, your patron and your god.
+- **Content:** 139 quests, 68 NPCs, 62 dialogues, 4 endings, 10 quest items, 27 story enemies and 54 quest encounters.
+  - **The main story** (8 chapters, one per zone): the Unsworn, a cult that breaks oaths to the gods, and Seryth the Oathbreaker, once the first Apostle of his age, who means to cut the threads between mortals and the gods with the Severance Engine. Chapters branch on mercy (Mott, Varn, Idris), the Severance Shard (kept or destroyed), Saint Orren's ring and apostleship: an Apostle answers their own god's charge in chapter 7 (10 variants). **Four endings:** the Godsworn (with an epilogue for each of the 10 gods), the Mended Oath (redeem Seryth with the ring after showing mercy), the Unsworn Crown (take his offer) and the Free Blade.
+  - **34 side quests** across all zones and every quest type, including riddles, the Speaking Stones, two timed rescues and sieges, three escorts, and two **pantheon politics** choices (Kael against Hesha over captured raiders; Aurelis against Nymira over the sea charts).
+  - **40 god quests** (4 per god, generated from the pantheon): a pilgrimage to its shrines, its will plus an offering, its herald's test, and the Trial of Apostleship (starts at Exalted and wraps the three trial fights).
+  - **8 class trial quests** (an errand anyone can do, then the trial; the arena only offers a trial at that stage) and **13 hybrid quests** (consult each mentor, then the trial).
+  - **15 faction quests** (3 per faction, opened by rank, ending in a title).
+  - **10 bounties** (2 per town board, repeatable daily).
+- **Companions** (`engine/party/`, `state/partyActions.ts`): Brother Aldric (Cleric of Solenne), Fenn (Ranger of Ysolde), Korga (Warrior of Kael), Ilyra (Mage of Aurelis), Sable (Rogue of Vex) and Marisol (Bard of Nymira).
+  - Each is a full character (class, tree, specialization, gear) who joins at your level, shares your XP and spends their own points; their plain gear keeps up with their level until you hand them something better from your bags.
+  - **Approval** (−100 to 100) moves with their likes and dislikes (judged like a god's), with favor you earn with their god (and its rival), and with dialogue choices. At −50 they leave and wait in their town (make amends for gold).
+  - **Bond tree:** at 20/40/60/80 approval, pick one of two perks (modifiers, triggers). **Personal quests** open at 30 approval and earn an **oath** perk. 6 recruitment-or-story quests and 6 personal quests.
+  - Up to three fight beside you, controlled by you (or auto-battle); HP carries over and the fallen get up after a win.
+- **Party scaling** (`PARTY_SCALING` in `data/combat.ts`): each companion in a fight gives every enemy +150% HP and +12% damage, and companions fight at 70% attack power, so a full party is stronger than a hero alone without trivializing fights.
+- **UI:**
+  - Dialogue window (portraits, keys 1–9, Esc to leave) and an ending screen.
+  - Quest log (J): quests by kind, the current stage, objectives with progress and where to go, time left, rewards, Track and Abandon, completed and failed lists.
+  - Party screen (O): companions, approval bars, likes and dislikes, bond perks, stats, gear (equip from bags, unequip), Talk, party or reserve, make amends.
+  - Towns: People and temple priests with ! and ? marks, and the Quest Board. The arena: talk to the mentors.
+  - World: quest markers drawn on the map (through the fog), on the minimap and on the world map; the tracked quest in the sidebar; E uses a marker.
+  - General skills moved from J to **L** (J is the quest log, as the spec asks).
+  - Developer panel: start or advance quests, mark the story's first seven chapters done, reach any ending, recruit companions, change approval.
+- **Balance** (story fights with benchmark heroes, `scripts/.scratch` sims): ordinary quest fights 63–100% solo; story bosses 34–75% solo for the hero alone and about 45–100% with companions depending on who they are (a cleric or a ranger's wolf helps most); the final Shadow of the Unwritten 17% alone, 46% with two companions.
+- 378 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -460,7 +492,7 @@
 - **Enemy late growth and zone threat.** Heroes grow faster than linearly past level 15 (gear tiers multiply weapon damage up to ×31), while enemy stats grew linearly. Enemies now gain growth × (level − 15)^1.6 on top, and each zone has a `threat` dial (percent HP and damage) for fine tuning. Levels 1–15 are unchanged.
 - **Trial levels after the late growth:** apostle trials are fought at your level +0/+1/+2 against 2 heralds, 3 heralds, then the Aspect (Ordeal 79–94%, Gauntlet 46–56%, Aspect 35–45% for level-35 heroes), and hybrid trials at level 36.
 - **Divine Intervention recharges when you rest** (inn, home or camp). You cannot camp in dungeons, so in practice it is once per delve, as the spec asks.
-- **Trials instead of trial quests (for now).** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor in the town arena. Phase 12 can wrap these fights in quests without changing the unlock rules.
+- **Trials instead of trial quests (Phase 7, now wrapped):** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor in the town arena. Phase 12 can wrap these fights in quests without changing the unlock rules.
 - **12 class-pair hybrids, plus the Sun Knight.** The spec asks for at least 10. The Sun Knight (Warrior with the Paladin specialization + Apostle of Solenne) arrived with apostleship in Phase 9; hybrids can now require a specialization or an Apostleship.
 - **A hybrid tree is one standard 16-node branch** (the same template as class branches), inside the spec's 15–20 range. It gates at 3 points per tier so its capstone is reachable at about 15 points.
 - **Hybrid points come from both classes' levels above 25**, so a hybrid grows with the pair rather than with either class alone, and needs no separate XP track.
@@ -470,10 +502,23 @@
 - **Trial balance:** class trials are fought at level 15 and won 69–90% of the time by benchmark level-15 heroes of the other classes (`npm run sim`). Hybrid trials are fixed at level 40 and won 50–100% by benchmark pairs at level 35. They are fixed-level on purpose: a player who fails can level up and return. Tuning between levels 15 and 40 needs the content of Phase 10.
 - **A zero-base check** in content validation rejects percent and "more" modifiers on stats that start at 0. This caught two Phase 2 racial skills (Rally, Bloodlust) that would otherwise have done nothing.
 
+- **Quests are data, the engine only interprets.** Every quest, NPC, dialogue, companion and ending is plain data in `src/data/story/`; the engine knows objective, condition and action kinds, never specific quests. God, trial, hybrid and bounty quests are generated from the existing pantheon, trials and zones.
+- **Talk objectives complete when the conversation thread ends,** unless the chosen reply is a "leave" ([Leave] Not yet). A reply that starts a fight completes the talk, and the fight that follows gets its own marker on the same tile, so a lost fight can be retried by stepping there again.
+- **Quest fights scale to you** within a few levels of the encounter's own (−2 to +3); the gods' herald tests match your level exactly, since favor can come at any level.
+- **The story never fails for good.** A timed main-story stage that runs out restarts its chapter; side quests that fail (time, a fallen escort) can be taken again from their giver.
+- **Companions are full characters** rather than simplified allies, so every class mechanic, tree and item works for them unchanged. Their "personal skill tree" is the bond tree (8 perks in 4 tiers plus an oath); their class tree is auto-built, as the player cannot reach it from the skill screen yet.
+- **Companions share all your XP** (not a split), so a companion recruited late is never behind; they join at your level.
+- **Approval from favor** is 5% of the favor you gain with their god (−3% for its rival), at most 3 per change.
+- **Party scaling over separate party balance.** The world was tuned for a hero alone, so rather than retune every encounter, enemies scale with the number of companions in the fight.
+- **Escorted NPCs fight on your side under AI control** (as summons without an owner), at your level with extra HP. Losing the battle or losing them fails the escort.
+- **Endings are recorded, not final:** the world stays open after the epilogue, and the ending (with your god, if any) is saved for New Game+ in Phase 14.
+
 ## Known bugs
 - None known.
 
 ## Cut / deferred
+- **Companions' class trees** are auto-built; the skill tree screen edits only your own trees (Phase 16 polish could open companions' trees too). Companion gear is managed on the Party screen, not by dragging onto a paper doll.
+- **Party balance** (companions vary a lot by class) gets its full pass with the balance simulation in Phase 16. The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
 - **Titles** (section 8) move to Phase 13 with feats and achievements. Apostle titles are already earned and stored (and shown on the Pantheon); the title display and other titles come then.
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
@@ -483,15 +528,14 @@
 - **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
 - **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
 - **Forbidden** general skills arrive with heresies in Phase 14 (the category already exists).
-- **Apostle followers, temple quests, pantheon politics and story branches by god** need towns, NPCs and quests (Phases 10, 12 and 14). The Trial of Apostleship is three fights for now; Phase 12 can wrap it in a questline with the same unlock rule.
+- **Apostle followers** (the god's NPCs as allies) and the rest of **pantheon politics** (rivalries that shift with your choices) come with Twilight of the Gods in Phase 14. God questlines, two politics choices and per-god story chapters arrived in Phase 12.
 - **Two apostles at once** (Defender path, NG+3+) comes with Twilight of the Gods in Phase 14.
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
-- **God quests and pantheon politics** (world events, god-specific story chapters) come with quests and the story (Phases 12 and 14). **The Nameless One** is discovered in NG+ (Phase 14).
-- **Class trial quests:** the trials are fights in the town arena; Phase 12 wraps them in short quests.
-- **Faction questlines and quest boards** come with quests in Phase 12. **Companions and Order allies** in Phase 12. **Forbidden items** for the Black Market come with heresies in Phase 14, and **Rift Maps** (a gold sink) in Phase 15.
+- **The Nameless One** is discovered in NG+ (Phase 14); the story foreshadows it.
+- **Forbidden items** for the Black Market come with heresies in Phase 14, and **Rift Maps** (a gold sink) in Phase 15.
 - **Elite affixes, the bestiary (with its damage bonuses) and roaming-elite variety** come in Phase 13. Roaming elites and champion packs already appear on the maps.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 12: quests and story. Quest types (kill, collect, deliver, escort, talk, defend, puzzle, boss, timed, choice), a quest log with tracking and map markers, quest boards, data-driven branching dialogue with conditions, the main story across the 8 zones (branching on apostleship, with 3+ endings), 30+ side quests, god questlines (leading to the apostle trials), class, hybrid and faction questlines, and companions with personal quests.
+- Phase 13: bosses with scripted phases, telegraphs and enrage timers (the story bosses are ready to receive them), elite affixes and champions, the bestiary with its damage bonuses, 75+ achievements, titles on display and the codex.

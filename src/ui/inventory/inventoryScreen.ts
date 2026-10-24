@@ -29,7 +29,7 @@ const FILTER_CATEGORIES: Record<Exclude<Filter, 'all'>, ItemCategory[]> = {
   consumables: ['consumable'],
   socketables: ['gem', 'rune'],
   materials: ['material'],
-  other: ['curiosity', 'book', 'recipe'],
+  other: ['curiosity', 'book', 'recipe', 'quest'],
 };
 
 /** Paper-doll layout: [slot, grid column, grid row]. */

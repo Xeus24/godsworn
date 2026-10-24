@@ -99,3 +99,18 @@ export const TIER_SCALING: Record<string, { hp: number; damage: number; xp: numb
   worldBoss: { hp: 18, damage: 1.7, xp: 30 },
   punisher: { hp: 6, damage: 1.6, xp: 12 },
 };
+
+/**
+ * Party scaling. The world is tuned for a hero alone; each companion
+ * fighting beside you makes every enemy tougher, and companions fight a
+ * little below a hero's strength, so a full party is stronger than going
+ * alone but does not trivialize fights.
+ */
+export const PARTY_SCALING = {
+  /** Enemy max HP, percent "more" per companion. */
+  enemyHpPerCompanion: 150,
+  /** Enemy damage bonus (flat percent) per companion. */
+  enemyDamagePerCompanion: 12,
+  /** Companions' attack, magic and divine power, percent "more" (negative = less). */
+  companionPower: -30,
+};

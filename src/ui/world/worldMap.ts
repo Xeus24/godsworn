@@ -30,6 +30,9 @@ export class WorldMapOverlay {
     const w = s.state.world;
     const here = s.world.zone.id;
     const cost = FAST_TRAVEL_GOLD_PER_LEVEL * s.player.level;
+    // Quest markers by zone (a dungeon's markers count for its zone).
+    const markers = s.quests.markers();
+    const zoneOfMap = (map: string): string => content.dungeons.find(map)?.zone ?? map;
     const zones = content.zones.all().sort((a, b) => a.order - b.order).map((z) => {
       const map = mapFor(z.id);
       const share = exploredShare(w, map);
@@ -59,6 +62,7 @@ export class WorldMapOverlay {
             ]
           : [el('div', { class: 'dim small' }, z.description)]),
         el('div', { class: 'small' }, w.waypoints.includes(z.id) ? 'Waypoint attuned' : 'Waypoint not found'),
+        ...[...new Set(markers.filter((m) => zoneOfMap(m.map) === z.id).map((m) => m.quest))].map((q) => el('div', { class: `small map-quest${q === s.state.quests.tracked ? ' tracked' : ''}` }, `${q === s.state.quests.tracked ? '◆' : '!'} ${content.quests.get(q).name}`)),
         travel,
       );
     });

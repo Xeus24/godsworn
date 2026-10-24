@@ -105,6 +105,7 @@ export class GeneralActions {
   rest(): void {
     const p = this.s.player;
     restoreFull(p);
+    this.s.party.restoreAll();
     this.s.advanceTime(this.restMinutes());
     const camping = utilityRank(p, 'camping');
     if (camping > 0) {

@@ -26,7 +26,11 @@ export type DeedEvent =
   | 'rest'
   | 'itemBroken'
   | 'craft'
-  | 'gamble';
+  | 'gamble'
+  /** Finishing a quest that helps someone. */
+  | 'questDone'
+  /** Sparing a foe who could have been killed. */
+  | 'mercy';
 
 /**
  * A like (positive amount) or dislike (negative). Kill deeds can filter by
@@ -43,6 +47,8 @@ export interface FavorDeed {
   tag?: string;
   timeOfDay?: 'day' | 'night';
   cap?: number;
+  /** Never issued as a Divine Edict (deeds that only quests can provide). */
+  noEdict?: boolean;
 }
 
 /** How much favor an offering is worth: gold per favor point, and multipliers on item value. */

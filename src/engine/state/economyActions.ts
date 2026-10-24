@@ -79,6 +79,7 @@ export class EconomyActions {
     if (!this.town()) return fail('Shops are in towns.');
     const item = this.s.state.inventory.slots[index];
     if (!item) return fail('Nothing to sell.');
+    if (content.items.get(item.baseId).category === 'quest') return fail('You need that for a quest.');
     const price = sellPrice(item, this.p);
     this.s.state.inventory.slots[index] = null;
     this.s.addGold(price, 'sell');

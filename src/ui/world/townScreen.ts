@@ -6,6 +6,9 @@ import { studyTerms, bookSkill } from '../../engine/skills/general';
 import { nextRank, rankOf, repOf } from '../../engine/world/factions';
 import { roomCost, roomLevel } from '../../engine/world/housing';
 import type { FactionDef } from '../../engine/world/types';
+import type { NpcDef } from '../../engine/quests/types';
+import type { Conversation } from '../../engine/state/conversation';
+import { rewardText } from '../quests/questLog';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 import { WorldMapOverlay } from './worldMap';
@@ -16,6 +19,8 @@ export interface TownNav {
   market: () => void;
   workshop: () => void;
   leave: () => void;
+  /** Opens a conversation with someone in town. */
+  talk: (conv: Conversation) => void;
 }
 
 /**
@@ -68,6 +73,28 @@ export class TownScreen implements Screen {
     return el('section', { class: 'panel town-card' }, el('h3', {}, title), ...children);
   }
 
+  /** A person to talk to, marked ! (a new quest) or ? (something to hand in). */
+  private npcRow(npc: NpcDef): HTMLElement {
+    const mark = this.session.quests.npcMark(npc.id);
+    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}`)));
+    b.addEventListener('click', () => {
+      const conv = this.session.quests.talkTo(npc.id);
+      if (conv) this.town.talk(conv);
+    });
+    return b;
+  }
+
+  private boardCard(): HTMLElement {
+    const s = this.session;
+    const posted = s.quests.board(this.townId);
+    const rows = posted.map((q) => {
+      const take = el('button', { class: 'tab' }, 'Take it');
+      take.addEventListener('click', () => this.say(s.quests.start(q.id)));
+      return el('div', { class: 'board-row' }, el('b', {}, `${q.name} (level ${q.level})`), el('div', { class: 'small' }, q.summary), el('div', { class: 'dim small' }, `Reward: ${rewardText(q)}`), take);
+    });
+    return this.card('Quest Board', ...(rows.length ? rows : [el('p', { class: 'dim small' }, 'Nothing posted right now. Bounties return each day.')]));
+  }
+
   private factionCard(f: FactionDef): HTMLElement {
     const p = this.session.player;
     const rep = repOf(p, f.id);
@@ -98,10 +125,13 @@ export class TownScreen implements Screen {
         this.btn(`Rent a room (${s.world.innCost()}g)`, () => this.say(s.world.stayAtInn()), s.state.gold < s.world.innCost(), 'primary'),
       ),
     );
+    const people = s.quests.townNpcs(this.townId);
+    cards.push(this.card('People', ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n))), this.boardCard());
     cards.push(
       this.card(
         'Temple',
         el('p', { class: 'small' }, `Honors ${t.temple.map((g) => content.gods.get(g).name).join(' and ')}: pray, make offerings, receive blessings and face Trials of Apostleship.`),
+        ...people.filter((n) => n.place === 'temple').map((n) => this.npcRow(n)),
         this.btn('Enter the temple', () => this.nav.pantheon(), false, 'primary'),
       ),
     );

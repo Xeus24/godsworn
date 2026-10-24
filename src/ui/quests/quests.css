@@ -1,0 +1,352 @@
+/* ---------- Dialogue ---------- */
+
+.dialogue-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 3, 10, 0.6);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 60;
+  padding: 16px;
+}
+
+.dialogue {
+  width: min(760px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 1px #000, 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.dialogue-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dialogue-portrait {
+  width: 72px;
+  height: 72px;
+  border: 2px solid var(--border-hi);
+  border-radius: 4px;
+  flex: none;
+}
+
+.dialogue-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--gold-hi);
+}
+
+.dialogue-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.dialogue.narrator .dialogue-text {
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+.dialogue-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dialogue-choice {
+  text-align: left;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.dialogue-choice:disabled {
+  opacity: 0.55;
+}
+
+.dialogue-key {
+  color: var(--gold);
+  min-width: 1.2em;
+}
+
+.dialogue-mark {
+  font-weight: bold;
+  color: var(--gold);
+}
+
+.dialogue-choice.mark-turnin .dialogue-mark {
+  color: var(--ok);
+}
+
+.ending {
+  width: min(760px, 100%);
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-color: var(--gold);
+}
+
+.ending h2 {
+  font-family: var(--font-display);
+  color: var(--gold-hi);
+  margin: 0;
+}
+
+.ending-overlay {
+  align-items: center;
+  background: rgba(5, 3, 10, 0.85);
+}
+
+/* ---------- Quest log ---------- */
+
+.quest-body,
+.party-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) 1fr;
+  gap: 10px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.quest-list,
+.party-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quest-detail,
+.party-detail {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quest-detail h2,
+.party-detail h2 {
+  margin: 0;
+  font-family: var(--font-display);
+}
+
+.quest-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quest-group h3 {
+  margin: 6px 0 2px;
+}
+
+.quest-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+}
+
+.quest-row.active {
+  border-color: var(--gold);
+  color: var(--gold-hi);
+}
+
+.quest-objectives {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.obj.done {
+  color: var(--ok);
+}
+
+.quest-turnin {
+  color: var(--ok);
+}
+
+.done-list {
+  margin: 4px 0;
+  padding-left: 18px;
+}
+
+/* ---------- Towns: people and the quest board ---------- */
+
+.npc-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  text-align: left;
+}
+
+.npc-mark {
+  min-width: 1em;
+  font-weight: bold;
+  color: var(--text-dim);
+}
+
+.npc-mark.new {
+  color: var(--gold);
+}
+
+.npc-mark.turnin {
+  color: var(--ok);
+}
+
+button.marked {
+  border-color: var(--gold);
+}
+
+.board-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 0;
+  border-top: 1px solid #2a2038;
+}
+
+/* ---------- World ---------- */
+
+.tracked-quest {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px;
+  border: 1px solid var(--gold-lo);
+  border-radius: 6px;
+}
+
+.map-quest {
+  color: var(--gold);
+}
+
+.map-quest.tracked {
+  color: var(--gold-hi);
+  font-weight: bold;
+}
+
+/* ---------- Party ---------- */
+
+.party-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
+}
+
+.party-card.active {
+  border-color: var(--gold);
+}
+
+.party-card.left {
+  opacity: 0.6;
+}
+
+.approval-bar {
+  position: relative;
+  width: 180px;
+  height: 14px;
+  margin-top: 3px;
+  background: #2a2038;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.approval-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a83a3a, #c8a050 50%, #6fbf73);
+}
+
+.approval-bar span {
+  position: absolute;
+  inset: 0;
+  font-size: 0.7rem;
+  line-height: 14px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+}
+
+.party-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.bond-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.bond-tier.locked {
+  opacity: 0.55;
+}
+
+.bond-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.bond-node {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.bond-node.chosen {
+  border-color: var(--gold);
+  color: var(--gold-hi);
+  opacity: 1;
+}
+
+.bond-node.oath {
+  margin-top: 4px;
+}
+
+.party-gear {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.party-gear-row {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.party-gear-row.bag {
+  grid-template-columns: 1fr auto;
+}
+
+@media (max-width: 720px) {
+  .quest-body,
+  .party-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .bond-options {
+    grid-template-columns: 1fr;
+  }
+}

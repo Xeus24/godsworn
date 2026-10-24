@@ -83,6 +83,8 @@ export interface EncounterDef {
   isBoss?: boolean;
   /** Extra HP and damage (percent) for every enemy (zone threat). */
   threat?: number;
+  /** Quest fights that can come at any level (gods' tests): enemies match the hero's level. */
+  scalesToHero?: boolean;
 }
 
 // ---------------------------------------------------------------- runtime

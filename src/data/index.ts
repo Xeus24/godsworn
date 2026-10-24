@@ -55,6 +55,8 @@ import { SHOPS } from './economy/shops';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
+import { COMPANIONS, DIALOGUES, ENDINGS, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
+import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
 const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
@@ -87,7 +89,7 @@ export const content = {
   mechanics: new ContentTable('mechanic', MECHANICS),
   rarities: new ContentTable('rarity', RARITY_DEFS),
   qualities: new ContentTable('quality', QUALITY_DEFS),
-  items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES)]),
+  items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES), ...QUEST_ITEMS]),
   uniques: new ContentTable('unique item', [...UNIQUE_ITEMS, ...DIVINE_WEAPONS]),
   itemSets: new ContentTable('item set', ITEM_SETS),
   runewords: new ContentTable('runeword', RUNEWORDS),
@@ -99,9 +101,9 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS]),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES]),
   summons: new ContentTable('summon', SUMMONS),
-  encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS]),
+  encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS, ...QUEST_ENCOUNTERS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
   specializations: new ContentTable('specialization', SPECIALIZATIONS),
   generalSkills: new ContentTable('general skill', ALL_GENERAL),
@@ -122,6 +124,11 @@ export const content = {
   recipes: new ContentTable('recipe', RECIPES),
   shops: new ContentTable('shop', SHOPS),
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
+  quests: new ContentTable('quest', QUESTS),
+  npcs: new ContentTable('npc', NPCS),
+  dialogues: new ContentTable('dialogue', DIALOGUES),
+  companions: new ContentTable('companion', COMPANIONS),
+  endings: new ContentTable('ending', ENDINGS),
 };
 
 export type Content = typeof content;
@@ -496,5 +503,198 @@ export function validateContent(c: Content = content): void {
     for (const n of tree.nodes) for (const p of n.parents) v.check(ids.has(p), `tree node ${n.id}: unknown parent ${p}`);
   }
 
+  // ---- Quests, dialogue, NPCs and companions ----
+  validateStory(v, c);
+
   v.throwIfInvalid();
+}
+
+/** Every reference a condition makes. */
+function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, where: string): void {
+  if (!cond) return;
+  switch (cond.kind) {
+    case 'class':
+      return v.ref(c.classes, cond.classId, where);
+    case 'race':
+      return v.ref(c.races, cond.raceId, where);
+    case 'favor':
+    case 'trialStage':
+      return v.ref(c.gods, cond.god, where);
+    case 'apostle':
+      if (cond.god) v.ref(c.gods, cond.god, where);
+      return;
+    case 'rep':
+      return v.ref(c.factions, cond.faction, where);
+    case 'item':
+      return v.ref(c.items, cond.itemId, where);
+    case 'quest':
+      return v.ref(c.quests, cond.quest, where);
+    case 'companion':
+      return v.ref(c.companions, cond.companion, where);
+    case 'trialWon':
+      return v.ref(c.encounters, cond.encounter, where);
+    case 'hybridOpen':
+      return v.ref(c.hybrids, cond.hybrid, where);
+    case 'dungeonCleared':
+      return v.ref(c.dungeons, cond.dungeon, where);
+    case 'all':
+    case 'any':
+      for (const x of cond.conds) checkCond(v, c, x, where);
+      return;
+    case 'not':
+      return checkCond(v, c, cond.cond, where);
+    default:
+      return;
+  }
+}
+
+function checkActions(v: ContentValidator, c: Content, actions: readonly ActionDef[] | undefined, where: string): void {
+  for (const a of actions ?? []) {
+    if (a.kind === 'startQuest' || a.kind === 'failQuest' || a.kind === 'turnIn') v.ref(c.quests, a.quest, where);
+    if (a.kind === 'giveItem' || a.kind === 'takeItem') v.ref(c.items, a.itemId, where);
+    if (a.kind === 'favor') v.ref(c.gods, a.god, where);
+    if (a.kind === 'rep') v.ref(c.factions, a.faction, where);
+    if (a.kind === 'approval' || a.kind === 'recruit' || a.kind === 'oath') v.ref(c.companions, a.companion, where);
+    if (a.kind === 'fight') v.ref(c.encounters, a.encounter, where);
+    if (a.kind === 'ending') v.ref(c.endings, a.ending, where);
+    if (a.kind === 'completeObjective' || a.kind === 'deliver') v.ref(c.quests, a.quest, where);
+  }
+}
+
+/** A marker's map must exist (whether its anchor is on the map is checked by the quest tests). */
+function checkSpot(v: ContentValidator, c: Content, spot: Spot, where: string): void {
+  v.check(c.zones.has(spot.map) || c.dungeons.has(spot.map), `${where}: unknown map "${spot.map}"`);
+  if (typeof spot.near === 'object' && spot.near.ref) {
+    const ref = spot.near.ref;
+    if (spot.near.kind === 'shrine') v.ref(c.gods, ref, where);
+    if (spot.near.kind === 'dungeon') v.check(c.dungeons.find(ref)?.zone === spot.map, `${where}: dungeon ${ref} is not on ${spot.map}`);
+    if (spot.near.kind === 'town') v.check(c.towns.find(ref)?.zone === spot.map, `${where}: town ${ref} is not on ${spot.map}`);
+    if (spot.near.kind === 'shrine') v.check(c.zones.find(spot.map)?.shrines.includes(ref) === true, `${where}: no shrine of ${ref} on ${spot.map}`);
+  }
+}
+
+function checkObjective(v: ContentValidator, c: Content, o: ObjectiveDef, where: string): void {
+  switch (o.kind) {
+    case 'kill':
+      if (o.enemyId) v.ref(c.enemies, o.enemyId, where);
+      if (o.zone) v.ref(c.zones, o.zone, where);
+      v.check(o.count > 0, `${where}: count must be positive`);
+      return;
+    case 'collect':
+      return v.ref(c.items, o.itemId, where);
+    case 'deliver':
+      v.ref(c.items, o.itemId, where);
+      v.ref(c.npcs, o.npc, where);
+      v.check(c.npcs.find(o.npc)?.place !== 'field', `${where}: deliveries go to NPCs you can visit`);
+      return;
+    case 'talk':
+      v.ref(c.npcs, o.npc, where);
+      if (o.dialogue) v.ref(c.dialogues, o.dialogue, where);
+      if (o.at) checkSpot(v, c, o.at, where);
+      else v.check(c.npcs.find(o.npc)?.place !== 'field', `${where}: field NPCs need a marker`);
+      return;
+    case 'visit':
+      return checkSpot(v, c, o.at, where);
+    case 'fight':
+      v.ref(c.encounters, o.encounter, where);
+      if (o.at) checkSpot(v, c, o.at, where);
+      return;
+    case 'escort':
+      v.ref(c.enemies, o.guest, where);
+      return checkSpot(v, c, o.to, where);
+    case 'clear':
+      return v.ref(c.dungeons, o.dungeon, where);
+    case 'runes':
+      v.ref(c.dungeons, o.dungeon, where);
+      v.check(c.dungeons.find(o.dungeon)?.puzzle === true, `${where}: ${o.dungeon} has no rune puzzle`);
+      return;
+    case 'sequence':
+      for (const s of o.stones) checkSpot(v, c, s, where);
+      v.check(o.order.every((i) => i >= 0 && i < o.stones.length), `${where}: sequence order out of range`);
+      return;
+    case 'deed':
+      if (o.deed.tag) v.ref(c.skillTags, o.deed.tag, where);
+      return;
+    case 'state':
+      return checkCond(v, c, o.cond, where);
+  }
+}
+
+function checkDialogue(v: ContentValidator, c: Content, d: DialogueDef): void {
+  const where = `dialogue ${d.id}`;
+  v.check(d.nodes[d.start] !== undefined, `${where}: no start node ${d.start}`);
+  for (const [id, n] of Object.entries(d.nodes)) {
+    const w = `${where} node ${id}`;
+    if (n.speaker && n.speaker !== 'hero' && n.speaker !== 'narrator') v.ref(c.npcs, n.speaker, w);
+    if (n.next) v.check(d.nodes[n.next] !== undefined, `${w}: unknown next ${n.next}`);
+    checkActions(v, c, n.actions, w);
+    for (const ch of n.choices ?? []) {
+      if (ch.next) v.check(d.nodes[ch.next] !== undefined, `${w}: choice "${ch.text}" goes to unknown node ${ch.next}`);
+      checkCond(v, c, ch.cond, w);
+      checkActions(v, c, ch.actions, w);
+    }
+  }
+}
+
+function validateStory(v: ContentValidator, c: Content): void {
+  for (const q of c.quests.all()) {
+    const where = `quest ${q.id}`;
+    if (q.giver) v.ref(c.npcs, q.giver, where);
+    if (q.board) v.ref(c.towns, q.board, where);
+    if (q.zone) v.ref(c.zones, q.zone, where);
+    v.check(q.stages.length > 0, `${where}: no stages`);
+    v.check(q.auto === true || q.giver !== undefined || q.board !== undefined, `${where}: needs a giver, a board or auto`);
+    checkCond(v, c, q.requires, where);
+    const stages = new Set(q.stages.map((s) => s.id));
+    v.check(stages.size === q.stages.length, `${where}: duplicate stage ids`);
+    for (const st of q.stages) {
+      const w = `${where} stage ${st.id}`;
+      const ids = new Set(st.objectives.map((o) => o.id));
+      v.check(ids.size === st.objectives.length, `${w}: duplicate objective ids`);
+      for (const o of st.objectives) checkObjective(v, c, o, `${w} objective ${o.id}`);
+      if (st.turnIn) v.ref(c.npcs, st.turnIn, w);
+      if (typeof st.next === 'string' && st.next !== 'complete') v.check(stages.has(st.next), `${w}: unknown next stage ${st.next}`);
+      if (Array.isArray(st.next)) for (const b of st.next) {
+        v.check(stages.has(b.stage), `${w}: unknown branch stage ${b.stage}`);
+        checkCond(v, c, b.cond, w);
+      }
+      checkActions(v, c, st.onStart, w);
+      checkActions(v, c, st.onComplete, w);
+    }
+    for (const it of q.rewards.items ?? []) v.ref(c.items, it.itemId, where);
+    for (const g of Object.keys(q.rewards.favor ?? {})) v.ref(c.gods, g, where);
+    for (const f of Object.keys(q.rewards.rep ?? {})) v.ref(c.factions, f, where);
+    if (q.rewards.gear) v.ref(c.rarities, q.rewards.gear.rarity, where);
+  }
+  for (const d of c.dialogues.all()) checkDialogue(v, c, d);
+  for (const n of c.npcs.all()) {
+    const where = `npc ${n.id}`;
+    if (n.town) v.ref(c.towns, n.town, where);
+    v.ref(c.races, n.race, where);
+    v.check(n.place === 'field' || n.place === 'arena' || n.town !== undefined, `${where}: needs a town`);
+    if (n.companion) v.ref(c.companions, n.companion, where);
+    for (const t of n.topics ?? []) {
+      v.ref(c.dialogues, t.dialogue, where);
+      checkCond(v, c, t.cond, where);
+    }
+  }
+  for (const comp of c.companions.all()) {
+    const where = `companion ${comp.id}`;
+    v.ref(c.races, comp.raceId, where);
+    v.ref(c.classes, comp.classId, where);
+    v.ref(c.birthSigns, comp.birthSignId, where);
+    v.ref(c.gods, comp.god, where);
+    v.ref(c.towns, comp.town, where);
+    v.ref(c.quests, comp.recruitQuest, where);
+    v.ref(c.quests, comp.personalQuest, where);
+    v.ref(c.npcs, comp.id, where);
+    v.check(c.specializations.find(comp.specialization)?.classId === comp.classId, `${where}: specialization ${comp.specialization} is not a ${comp.classId} specialization`);
+    v.check(comp.bond.length === 4, `${where}: needs 4 bond tiers`);
+    for (const node of [...comp.bond.flatMap((t) => t.options), comp.oath]) {
+      checkModifiers(v, node.modifiers ?? [], `${where} bond ${node.id}`);
+      checkTriggers(v, c, node.triggers, `${where} bond ${node.id}`);
+      checkFlags(v, c, node.flags, `${where} bond ${node.id}`);
+    }
+    for (const d of [...comp.likes, ...comp.dislikes]) if (d.tag) v.ref(c.skillTags, d.tag, where);
+  }
 }

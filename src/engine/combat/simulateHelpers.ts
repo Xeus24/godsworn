@@ -8,19 +8,11 @@ import type { Character } from '../character/types';
 import { equipFromInventory } from '../items/equipment';
 import { createItem } from '../items/generate';
 import { addItem, createInventory } from '../items/inventory';
-import { GEAR_TIERS } from '../../data/items/materialTiers';
+import { autoSpendTree, tierForLevel } from '../character/autoBuild';
 import { MULTICLASS } from '../../data/progression';
 import { learnGeneral } from '../skills/general';
 import { chooseSpec, SPEC_LEVEL, specializationsFor } from '../skills/specs';
-import { allocate, availablePoints, canAllocate, treeOf } from '../skills/tree';
 import { PRIMARY_STATS, type PrimaryStat } from '../stats/types';
-
-/** Highest gear tier available at a level. */
-export function tierForLevel(level: number): number {
-  let tier = 1;
-  for (const t of GEAR_TIERS) if (t.level <= level) tier = t.tier;
-  return tier;
-}
 
 /**
  * A "typical" hero for balance tests: level-appropriate common gear in
@@ -103,20 +95,4 @@ export function benchmarkMulticlass(primary: string, secondary: string, level: n
   return hero;
 }
 
-const AUTO_PRIORITY: Record<string, number> = { active: 6, capstone: 5, notable: 4, minor: 3, modifier: 2, choice: 2, keystone: -1 };
-
-/**
- * A simple, sensible build: keep spending in the branches already invested
- * in, preferring skills, capstones and notables. Skips keystones (their
- * downsides suit deliberate builds) and takes the first option of choices.
- */
-export function autoSpendTree(hero: Character, classId: string, c: Content = content): void {
-  const tree = treeOf(classId, c);
-  const branchOrder = tree.branches.map((b) => b.id);
-  for (let guard = 0; guard < 200 && availablePoints(hero, classId) > 0; guard++) {
-    const options = tree.nodes.filter((n) => (AUTO_PRIORITY[n.kind] ?? 0) >= 0 && !(n.kind === 'choice' && n.id.endsWith('.c2')) && canAllocate(hero, classId, n.id, c).ok);
-    if (options.length === 0) break;
-    options.sort((a, b) => branchOrder.indexOf(a.branch) - branchOrder.indexOf(b.branch) || (AUTO_PRIORITY[b.kind] ?? 0) - (AUTO_PRIORITY[a.kind] ?? 0) || a.tier - b.tier);
-    allocate(hero, classId, (options[0] as (typeof options)[number]).id, c);
-  }
-}
+export { autoSpendTree, tierForLevel };

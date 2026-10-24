@@ -48,7 +48,7 @@ export type ArmorSlot = (typeof ARMOR_SLOTS)[number];
 
 export type AccessoryKind = 'ring' | 'amulet' | 'earring' | 'trinket' | 'holySymbol';
 
-export type ItemCategory = 'weapon' | 'armor' | 'accessory' | 'relic' | 'gem' | 'rune' | 'consumable' | 'material' | 'curiosity' | 'book' | 'recipe';
+export type ItemCategory = 'weapon' | 'armor' | 'accessory' | 'relic' | 'gem' | 'rune' | 'consumable' | 'material' | 'curiosity' | 'book' | 'recipe' | 'quest';
 
 /** Which affix pool a gear item draws from. */
 export type AffixTarget = 'weapon' | 'armor' | 'jewelry';
@@ -181,6 +181,11 @@ export interface CuriosityDef extends BaseCommon {
   lovedBy?: string[];
 }
 
+/** Quest items: carried for a quest, never sold, salvaged or dropped by enemies. */
+export interface QuestItemDef extends BaseCommon {
+  category: 'quest';
+}
+
 /** Skillbooks and Grimoires: read to learn (or rank up) a general skill. */
 export interface BookDef extends BaseCommon {
   category: 'book';
@@ -208,7 +213,8 @@ export type ItemBaseDef =
   | MaterialDef
   | CuriosityDef
   | BookDef
-  | RecipeScrollDef;
+  | RecipeScrollDef
+  | QuestItemDef;
 
 export type GearBaseDef = WeaponBaseDef | ArmorBaseDef | AccessoryBaseDef | RelicBaseDef;
 

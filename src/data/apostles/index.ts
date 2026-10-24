@@ -103,8 +103,9 @@ export const APOSTLE_TRIALS: EncounterDef[] = GODS.filter((g) => !g.hidden).flat
  * times within 20 battles (about 12 favor's worth of the deed, 1-20 times).
  */
 export const EDICTS: EdictDef[] = PANTHEON.flatMap((p) =>
-  p.likes.map((like, i): EdictDef => {
+  p.likes.flatMap((like, i): EdictDef[] => {
+    if (like.noEdict) return [];
     const count = Math.max(1, Math.min(20, Math.round(12 / like.amount)));
-    return { id: `${p.id}-edict-${i}`, god: p.id, text: `${like.text}: ${count} time${count === 1 ? '' : 's'}`, deed: like, count, battles: 20 };
+    return [{ id: `${p.id}-edict-${i}`, god: p.id, text: `${like.text}: ${count} time${count === 1 ? '' : 's'}`, deed: like, count, battles: 20 }];
   }),
 );

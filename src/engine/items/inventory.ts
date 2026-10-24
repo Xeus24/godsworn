@@ -142,7 +142,7 @@ export function expandInventory(inv: Inventory, slots: number, max = INVENTORY_M
 
 export type SortMode = 'category' | 'rarity' | 'level' | 'name';
 
-const CATEGORY_ORDER: ItemCategory[] = ['weapon', 'armor', 'accessory', 'relic', 'consumable', 'gem', 'rune', 'material', 'curiosity'];
+const CATEGORY_ORDER: ItemCategory[] = ['weapon', 'armor', 'accessory', 'relic', 'consumable', 'gem', 'rune', 'material', 'curiosity', 'quest'];
 
 /** Merges stacks, then sorts items to the front. Junk always goes last. */
 export function sortInventory(inv: Inventory, mode: SortMode, c: Content = content): void {

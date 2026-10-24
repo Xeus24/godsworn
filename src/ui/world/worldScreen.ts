@@ -11,6 +11,19 @@ import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 import { entityIcon, minimapColor, tileImage } from './tileArt';
 import { WorldMapOverlay } from './worldMap';
+import type { Conversation } from '../../engine/state/conversation';
+import { objectiveLine } from '../../engine/state/conversation';
+import type { QuestMarker } from '../../engine/quests/quests';
+import { objectiveDone, stageOf } from '../../engine/quests/quests';
+import { objectiveWhere } from '../quests/questLog';
+
+const MARKER_STYLE: Record<QuestMarker['kind'], { color: string; glyph: string }> = {
+  talk: { color: '#ffd84a', glyph: '!' },
+  visit: { color: '#ffd84a', glyph: '★' },
+  fight: { color: '#ff5a3a', glyph: '⚔' },
+  escort: { color: '#6af0a0', glyph: '⚑' },
+  stone: { color: '#9ad8ff', glyph: '◆' },
+};
 
 const KEYS: Record<string, [number, number]> = {
   w: [0, -1],
@@ -48,6 +61,7 @@ export class WorldScreen implements Screen {
     private readonly nav: Nav,
     private readonly fight: (encounter: EncounterDef, level: number) => void,
     private readonly enterTown: (town: string) => void,
+    private readonly talk: (conv: Conversation) => void,
   ) {}
 
   mount(root: HTMLElement): void {
@@ -116,6 +130,12 @@ export class WorldScreen implements Screen {
       this.enterTown(r.town);
       return;
     }
+    if (r.kind === 'talk') {
+      const conv = this.session.quests.talkAtMarker(r.marker);
+      if (conv) this.talk(conv);
+      this.draw();
+      return;
+    }
     if (r.kind !== 'blocked' || r.message) this.say(r.message);
     this.draw();
   }
@@ -123,6 +143,11 @@ export class WorldScreen implements Screen {
   /** Uses what you are standing on again (enter a town, read a shrine...). */
   private useHere(): void {
     const s = this.session;
+    const marker = s.world.markerHere();
+    if (marker) {
+      this.handle(s.world.useMarker(marker));
+      return;
+    }
     const e = s.world.here();
     if (!e) return;
     if (e.kind === 'town' && e.ref) this.enterTown(e.ref);
@@ -236,6 +261,27 @@ export class WorldScreen implements Screen {
         g.fillRect(ox + e.x * TILE + TILE / 2 - 4, oy + e.y * TILE - TILE * 0.35, 8, 3);
       }
     }
+    // Quest markers (shown even through the fog, so you know where to go).
+    const tracked = s.state.quests.tracked;
+    for (const m of s.quests.markers(map.id)) {
+      const st = MARKER_STYLE[m.kind];
+      const cx = ox + m.x * TILE + TILE / 2;
+      const cy = oy + m.y * TILE + TILE / 2;
+      g.globalAlpha = m.quest === tracked ? 1 : 0.75;
+      g.fillStyle = '#1a1226';
+      g.beginPath();
+      g.arc(cx, cy, TILE * 0.38, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = st.color;
+      g.lineWidth = 2;
+      g.stroke();
+      g.fillStyle = st.color;
+      g.font = `bold ${Math.round(TILE * 0.45)}px ui-monospace, monospace`;
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText(st.glyph, cx, cy + 1);
+      g.globalAlpha = 1;
+    }
     // Out-of-sight areas are remembered, but dim.
     g.fillStyle = 'rgba(5,3,10,0.5)';
     for (let y = y0; y <= y1; y++) {
@@ -291,8 +337,41 @@ export class WorldScreen implements Screen {
       const color = { town: '#ffd84a', dungeon: '#b070ff', shrine: content.gods.find(e.ref ?? '')?.color ?? '#fff', waypoint: '#6af0ff', worldBoss: '#ff3a3a', boss: '#ff3a3a', exit: '#ffffff', chest: '#c8a040', enemies: '#e06030' }[e.kind as string];
       if (color) dot(e.x, e.y, color);
     }
+    for (const m of this.session.quests.markers(map.id)) dot(m.x, m.y, m.quest === this.session.state.quests.tracked ? '#ffd84a' : '#c08a3a');
     const p = w.position;
     dot(p.x, p.y, '#ffffff');
+  }
+
+  /** The tracked quest: its current objectives and where they are. */
+  private trackedPanel(): HTMLElement[] {
+    const s = this.session;
+    const id = s.state.quests.tracked;
+    const prog = id ? s.state.quests.active[id] : undefined;
+    if (!id || !prog) return [];
+    const q = s.quests.def(id);
+    const st = stageOf(q, prog.stage);
+    const lines = st.objectives.map((o) => {
+      const done = objectiveDone(s.state, prog, o);
+      const line = objectiveLine(s, q.id, o.id);
+      const where = done ? '' : objectiveWhere(s, q, o);
+      return el('div', { class: done ? 'obj done small' : 'obj small' }, `${done ? '✓' : '○'} ${o.text}${line && line !== 'done' ? ` ${line}` : ''}`, ...(where ? [el('div', { class: 'dim small' }, where)] : []));
+    });
+    const turnIn = st.turnIn && st.objectives.every((o) => objectiveDone(s.state, prog, o)) ? content.npcs.get(st.turnIn) : undefined;
+    const log = el('button', { class: 'tab' }, 'Quest log (J)');
+    log.addEventListener('click', () => this.nav.quests());
+    const guests = s.quests.guests();
+    return [
+      el(
+        'div',
+        { class: 'tracked-quest' },
+        el('b', {}, q.name),
+        el('div', { class: 'small' }, st.text),
+        ...lines,
+        ...(turnIn ? [el('div', { class: 'small quest-turnin' }, `Return to ${turnIn.name}.`)] : []),
+        ...(guests.length ? [el('div', { class: 'small' }, `Escorting: ${guests.map((g) => content.enemies.get(g.enemyId).name).join(', ')}`)] : []),
+        log,
+      ),
+    ];
   }
 
   private drawSide(map: TileMap): void {
@@ -309,6 +388,8 @@ export class WorldScreen implements Screen {
     const actions: HTMLElement[] = [btn('World map (M)', () => this.openMap())];
     if (here?.kind === 'town' && here.ref) actions.unshift(btn(`Enter ${content.towns.get(here.ref).name} (E)`, () => this.enterTown(here.ref as string), 'primary'));
     if (here?.kind === 'shrine') actions.unshift(btn('Pray at the shrine (E)', () => this.nav.pantheon(), 'primary'));
+    const marker = s.world.markerHere();
+    if (marker) actions.unshift(btn(`${marker.label} (E)`, () => this.useHere(), 'primary'));
     if (!s.world.inTown() && !dungeon) {
       const minutes = s.general.restMinutes();
       actions.push(btn(`Make camp (${Math.floor(minutes / 60)}h)`, () => {
@@ -324,6 +405,7 @@ export class WorldScreen implements Screen {
       el('div', { class: 'small' }, `${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
       ...(weather && !dungeon && weather.id !== 'clear' ? [el('div', { class: 'dim small' }, weather.description)] : []),
       this.minimap,
+      ...this.trackedPanel(),
       el('div', { class: 'world-actions' }, ...actions),
       el('div', { class: 'world-log small' }, ...this.log.map((line) => el('div', {}, line))),
       el('p', { class: 'dim small' }, 'WASD or arrows to move. Walk into things to use them. E uses what you stand on. Cracked walls hide secrets.'),

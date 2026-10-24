@@ -30,6 +30,7 @@ export const PANTHEON: PantheonDef[] = [
       { event: 'kill', enemyType: 'cultist', amount: 3, text: 'Ending cultists' },
       { event: 'skillTag', tag: 'Holy', amount: 0.5, cap: 3, text: 'Wielding holy light' },
       { event: 'battleWon', timeOfDay: 'day', amount: 1, text: 'Victories under the sun' },
+      { event: 'questDone', amount: 4, text: 'Helping people in need' },
     ],
     dislikes: [
       { event: 'summon', amount: -2, cap: -6, text: 'Raising the dead' },
@@ -161,6 +162,7 @@ export const PANTHEON: PantheonDef[] = [
       { event: 'heal', amount: 0.5, cap: 4, text: 'Healing' },
       { event: 'rest', amount: 3, text: 'Resting and caring for yourself' },
       { event: 'skillTag', tag: 'Heal', amount: 0.5, cap: 3, text: 'Healing magic' },
+      { event: 'mercy', amount: 10, noEdict: true, text: 'Sparing a beaten foe' },
     ],
     dislikes: [
       { event: 'kill', enemyType: 'humanoid', amount: -0.5, cap: -3, text: 'Killing people' },

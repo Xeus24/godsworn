@@ -22,12 +22,16 @@ import { ItemActions } from './itemActions';
 import { MulticlassActions } from './multiclassActions';
 import { TreeActions } from './treeActions';
 import { WorldActions } from './worldActions';
+import { QuestActions } from './questActions';
+import { PartyActions } from './partyActions';
+import { createQuestState, type QuestState } from '../quests/types';
+import { createPartyState, type PartyState } from '../party/types';
 import type { WorldState } from '../world/types';
 import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 10;
+export const SAVE_VERSION = 11;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -74,6 +78,10 @@ export interface GameState {
   world: WorldState;
   /** Shop purchases today and the buyback list. */
   economy: EconomyState;
+  /** Quests taken, done and failed, and the story's ending. */
+  quests: QuestState;
+  /** Companions recruited, their approval, bonds and gear. */
+  party: PartyState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -95,6 +103,8 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     gameOver: false,
     world: createWorldState(),
     economy: { bought: {}, buyback: [] },
+    quests: createQuestState(),
+    party: createPartyState(),
   };
 }
 
@@ -114,6 +124,8 @@ export class GameSession {
   readonly devotion: DevotionActions;
   readonly world: WorldActions;
   readonly economy: EconomyActions;
+  readonly quests: QuestActions;
+  readonly party: PartyActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -126,6 +138,8 @@ export class GameSession {
     this.devotion = new DevotionActions(this);
     this.world = new WorldActions(this);
     this.economy = new EconomyActions(this);
+    this.party = new PartyActions(this);
+    this.quests = new QuestActions(this);
     this.world.look();
   }
 
@@ -139,6 +153,8 @@ export class GameSession {
       if (!result.ok) throw new Error(`Starting kit failed: ${result.reason}`);
     }
     session.bus.emit('gameStarted', { seed: session.state.seed });
+    // The story begins at once.
+    session.quests.refresh();
     return session;
   }
 
@@ -180,6 +196,7 @@ export class GameSession {
     const total = Math.floor(amount * (1 + bonus / 100));
     const result = grantXp(p, total, this.state.levelCap);
     this.bus.emit('xpGained', { characterId: p.id, amount: total });
+    this.party.shareXp(total);
     for (const level of result.levels) this.bus.emit('levelUp', { characterId: p.id, level });
     if (result.levels.length > 0) {
       // One toast per grant, however many levels it covered.

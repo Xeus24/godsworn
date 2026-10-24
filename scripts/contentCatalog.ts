@@ -307,7 +307,34 @@ function economySection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection };
+function storySection(): string {
+  const out: string[] = [];
+  const kinds: [string, string][] = [['main', 'Main story'], ['side', 'Side quests'], ['faction', 'Faction questlines'], ['companion', 'Companion quests'], ['god', 'God questlines'], ['class', 'Class trials'], ['hybrid', 'Hybrid trials'], ['bounty', 'Bounties (repeatable daily)']];
+  out.push(`${content.quests.size} quests, ${content.npcs.size} NPCs, ${content.dialogues.size} dialogues, ${content.companions.size} companions, ${content.endings.size} endings.`, '');
+  for (const [kind, title] of kinds) {
+    const list = content.quests.filter((q) => q.kind === kind);
+    out.push(`### ${title} (${list.length})`, '', '| Quest | Lvl | From | Objectives |', '|---|---|---|---|');
+    for (const q of list) {
+      const from = q.giver ? content.npcs.get(q.giver).name : q.board ? `${content.towns.get(q.board).name} board` : 'starts by itself';
+      const objs = q.stages.flatMap((st) => st.objectives.map((o) => `${o.text} (${o.kind})`)).join('; ');
+      out.push(`| **${q.name}** | ${q.level} | ${cell(from)} | ${cell(objs)}${q.stages.some((st) => st.hours) ? ' · timed' : ''} |`);
+    }
+    out.push('');
+  }
+  out.push('### Endings', '');
+  for (const e of content.endings.all()) out.push(`- **${e.name}** (title “${e.title ?? ''}”)${e.godText ? ', with a paragraph for each god’s Apostle' : ''}: ${e.text}`);
+  out.push('', '### Companions', '');
+  for (const c of content.companions.all()) {
+    out.push(`- **${c.name}**, ${c.title}: ${content.races.get(c.raceId).name} ${content.classes.get(c.classId).name} (${content.specializations.get(c.specialization).name}), follows ${content.gods.get(c.god).name}, met in ${content.towns.get(c.town).name}. Likes ${c.likes.map((d) => d.text.toLowerCase()).join(', ')}; dislikes ${c.dislikes.map((d) => d.text.toLowerCase()).join(', ')}.`);
+    out.push(`  - Bond: ${c.bond.map((t) => `${t.approval}: ${t.options.map((o) => `${o.name} (${o.description})`).join(' or ')}`).join(' · ')} · Oath: ${c.oath.name} (${c.oath.description})`);
+  }
+  out.push('', '### People', '');
+  for (const t of content.towns.all()) out.push(`- **${t.name}:** ${content.npcs.filter((n) => n.town === t.id).map((n) => `${n.name} (${n.title})`).join(', ')}`);
+  out.push(`- **Every arena:** ${content.npcs.filter((n) => n.place === 'arena').map((n) => n.name).join(', ')}`);
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

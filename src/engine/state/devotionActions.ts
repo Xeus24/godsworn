@@ -88,6 +88,8 @@ export class DevotionActions {
     const changes = this.apply(deltas, reason, false, quiet);
     this.advanceEdict(occurrences);
     this.s.world.factionDeeds(occurrences);
+    this.s.quests.onDeeds(occurrences);
+    this.s.party.onDeeds(occurrences);
     return changes;
   }
 
