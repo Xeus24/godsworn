@@ -191,7 +191,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, classes, this.reputation(), skills, paragon),
+          el('div', { class: 'sheet-col' }, this.titles(), classes, this.reputation(), skills, paragon),
         ),
       ),
     );
@@ -222,6 +222,27 @@ export class CharacterScreen implements Screen {
   }
 
   /** Faction standing (and house, if any). */
+  /** Pick the earned title shown beside your name. */
+  private titles(): HTMLElement {
+    const s = this.session;
+    const owned = s.achievements.titles();
+    const pick = el('select', { 'aria-label': 'Title' }) as HTMLSelectElement;
+    pick.append(el('option', { value: '' }, '(no title)'), ...owned.map((t) => el('option', { value: t }, t)));
+    pick.value = s.player.title ?? '';
+    pick.disabled = owned.length === 0;
+    pick.addEventListener('change', () => {
+      s.achievements.setTitle(pick.value || undefined);
+      this.render();
+    });
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Title'),
+      pick,
+      el('div', { class: 'dim small' }, owned.length ? `${owned.length} title${owned.length === 1 ? '' : 's'} earned. Earn more from achievements, quests and Apostleship (Codex, B).` : 'Earn titles from achievements, quests and Apostleship (Codex, B).'),
+    );
+  }
+
   private reputation(): HTMLElement {
     const p = this.session.player;
     const rows = content.factions.all().map((f) => {

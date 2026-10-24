@@ -22,6 +22,7 @@ const EVENT_DELAY: Partial<Record<BattleEvent['type'], number>> = {
   miss: 220,
   death: 300,
   break: 300,
+  boss: 650,
   combo: 300,
   summon: 300,
   skip: 400,
@@ -154,12 +155,12 @@ export class CombatScreen implements Screen {
     this.playing = true;
     this.scene.applyEvent(e);
     const line = this.describe(e);
-    if (line) this.addLog(line);
+    if (line) this.addLog(line, e.type === 'boss');
     if (e.type === 'turn') this.scene.actorId = e.actorId;
     const delay = (EVENT_DELAY[e.type] ?? 90) / this.speed;
     this.timer = window.setTimeout(() => {
       this.playing = false;
-      if (e.type === 'action' || e.type === 'death' || e.type === 'summon' || e.type === 'turn') this.renderPanels();
+      if (e.type === 'action' || e.type === 'death' || e.type === 'summon' || e.type === 'turn' || e.type === 'boss') this.renderPanels();
       this.step();
     }, delay);
   }
@@ -469,6 +470,8 @@ export class CombatScreen implements Screen {
         return e.success ? 'You escape!' : 'You fail to escape!';
       case 'log':
         return e.text;
+      case 'boss':
+        return e.moment === 'phase' ? `— ${this.name(e.actorId)}: ${e.title} — ${e.text}` : e.text;
       case 'end':
         return e.outcome === 'victory' ? 'Victory!' : e.outcome === 'defeat' ? 'Defeat…' : 'The battle is over.';
       default:
@@ -476,10 +479,10 @@ export class CombatScreen implements Screen {
     }
   }
 
-  private addLog(line: string): void {
+  private addLog(line: string, important = false): void {
     this.logLines.push(line);
     if (this.logLines.length > 200) this.logLines.shift();
-    const row = el('div', {}, line);
+    const row = el('div', important ? { class: 'log-boss' } : {}, line);
     this.logNode.append(row);
     while (this.logNode.children.length > 200) this.logNode.firstElementChild?.remove();
     this.logNode.scrollTop = this.logNode.scrollHeight;

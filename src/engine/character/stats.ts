@@ -1,3 +1,4 @@
+import { slayerModifiers } from '../bestiary/bestiary';
 import { content, type Content } from '../../data';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
@@ -60,6 +61,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...divineModifiers(char, characterBaseStats(char, c), c));
   mods.push(...factionModifiers(char, c), ...houseModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
+  mods.push(...slayerModifiers(char, c));
   return mods;
 }
 

@@ -1,5 +1,6 @@
 import { COMBAT } from '../../data/combat';
 import type { Battle } from './battle';
+import { bossActed, bossTurnStart, bossWindUp, initBoss } from './bosses';
 import { applyEffects, fireTrigger, summon } from './effects';
 import { gainResource, healTarget, kill } from './hits';
 import { BASIC_ATTACK_ID, foesOf, useSkill } from './skills';
@@ -19,6 +20,7 @@ export function startBattle(b: Battle): BattleEvent[] {
   for (const x of b.combatants) {
     const stats = b.stats(x);
     if (x.side === 'enemy') {
+      initBoss(b, x);
       const share = x.tier === 'boss' || x.tier === 'worldBoss' || x.tier === 'miniboss' ? COMBAT.staggerBossHpShare : COMBAT.staggerBarHpShare;
       x.stagger = { value: 0, max: Math.max(10, stats.maxHp * share), brokenTurns: 0 };
     }
@@ -31,6 +33,9 @@ export function startBattle(b: Battle): BattleEvent[] {
   }
   for (const x of [...b.combatants]) fireTrigger(b, x, 'onCombatStart');
   b.log('Battle start!');
+  for (const x of b.alive('enemy')) {
+    if (x.affixes?.length) b.log(`${x.name}: ${x.affixes.map((id) => b.c.eliteAffixes.get(id).description).join(' ')}`);
+  }
   return b.drain();
 }
 
@@ -91,6 +96,10 @@ export function advance(b: Battle): BattleEvent[] {
       endTurn(b, x);
       continue;
     }
+    if (bossWindUp(b, x)) {
+      endTurn(b, x);
+      continue;
+    }
     b.current = x;
   }
   return b.drain();
@@ -101,6 +110,7 @@ function beginTurn(b: Battle, x: Combatant): void {
   if (x.side === 'enemy') b.chain = { count: 0, lastSide: 'enemy' };
   tickStatusesAtTurnStart(b, x);
   if (!x.alive) return;
+  bossTurnStart(b, x);
   const stats = b.stats(x);
   if (stats.hpRegen > 0) healTarget(b, x, x, stats.hpRegen);
   if (stats.hpRegen < 0) x.hp = Math.max(1, x.hp + stats.hpRegen);
@@ -155,6 +165,7 @@ export function perform(b: Battle, action: Action): { ok: true; events: BattleEv
   const x = b.current;
   if (!x || x.id !== action.actorId) return { ok: false, reason: 'Not your turn.' };
   const done = (): { ok: true; events: BattleEvent[] } => {
+    bossActed(b, x);
     endTurn(b, x);
     return { ok: true, events: b.drain() };
   };

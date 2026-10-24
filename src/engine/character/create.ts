@@ -51,6 +51,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     devotion: createDevotion(),
     world: { reputation: {}, trophies: {} },
     crafting: { professions: {}, gathering: {}, recipes: [] },
+    bestiary: {},
     allocated: emptyPrimaryStats(),
     attributePoints: 0,
     paragonLevel: 0,

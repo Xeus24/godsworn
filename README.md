@@ -43,6 +43,7 @@ Then open http://localhost:5173.
 | L | General skills and their slots |
 | J | Quest log: active quests, objectives, where to go, rewards, tracking |
 | O | Party: companions, approval, bond perks, their gear, talking to them |
+| B | Codex: bestiary and Slayer ranks, achievements and titles, lore, statistics |
 | P | Pantheon: favor, shrines, offerings and blessings (in battle: Pray) |
 | G | The world (WASD or arrows to walk, E to use, M for the world map) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
@@ -112,6 +113,10 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 
 **Companions (O):** six people can join you (Brother Aldric, Fenn, Korga, Ilyra, Sable and Marisol), and up to three fight beside you; the rest wait in reserve. They level with you and spend their own points, but you choose their gear (equip from your bags on the Party screen). Each follows a god and has likes and dislikes: **approval** rises and falls with what you do, which gods you please, and your choices in conversations. At 20/40/60/80 approval you pick one of two **bond perks**; at 30 they share a **personal quest**, which earns an **oath** perk. At −50 they leave you, and wait in their town until you make amends. Enemies grow tougher with every companion in the fight, and each class is tuned as a companion so that none is a wasted slot: healers and pets fight weaker than you, lone strikers and casters stronger.
 
+**Bosses and elites:** bosses fight in **phases** (at HP thresholds they change, heal, call in adds) and **telegraph** their biggest attacks: when a boss is **Winding Up**, Break its stagger bar to interrupt it, or Defend to halve the hit. Drag a fight out too long and the boss **enrages**, growing stronger every few turns. **Elites** carry one affix and **champion packs** share two (Swift, Vampiric, Molten, Volatile...), shown in their names and in the battle log.
+
+**The Codex (B):** every enemy you meet goes into the **bestiary**; killing more of them reveals their stats, resistances, skills and boss battle plans. Kills of each creature type earn **Slayer ranks** (+2% damage against that type per rank). **Achievements** (101) reward points, gold and **titles**; pick the title to show under your name on the Character screen. The Codex also keeps the **lore** pages you found and your lifetime **statistics**.
+
 More screens and controls are documented here as each phase lands.
 
 ## Project layout
@@ -131,6 +136,8 @@ src/
     economy/    shops, pricing, crafting, professions, gear services
     quests/     quest and dialogue types, conditions, progress, marker placement
     party/      companions: creation, approval, bond perks
+    bestiary/   bestiary knowledge and Slayer ranks
+    achievements/ achievement types (checked in state/achievementActions.ts)
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -395,6 +402,12 @@ dialogue('d-bees', {
 ```
 
 Objective kinds: `kill`, `collect`, `deliver`, `talk` (in town, or at a marker with `at`), `visit`, `fight` (an encounter, at a marker or started from dialogue, optionally in `waves`), `escort`, `clear`, `runes`, `sequence`, `deed` (anything the gods can notice) and `state` (any condition). Stages can be timed (`hours`), handed in (`turnIn`), branch (`next: [{ cond, stage }]`) and run actions when they start or finish. Choices can need conditions (`check(...)`, shown as **[WIS 15]**) and run actions: start quests, set flags, give items or gold, change favor, reputation or a companion's approval, recruit, start a fight or reach an ending. Markers are placed a few steps from an anchor (an entity on the map) and never move; `npm test` checks every marker lands on reachable ground, and startup validation checks every reference.
+
+### Example: a boss script
+Add a `BossScriptDef` to `BOSS_SCRIPTS` in `src/data/bestiary/bossScripts.ts`, keyed by the boss's enemy id: `phases` (HP threshold, name, text, and any of `modifiers`, `effects`, `adds`, `skills`), `telegraphs` (a skill, how many of its turns apart, the warning line) and optionally its own `enrageTurns`. Telegraph skills go in `BOSS_SKILLS`. Check it with `npm run sim -- --only zones` and `npm run sim:party`.
+
+### Example: an elite affix or an achievement
+An affix is an `EliteAffixDef` in `src/data/bestiary/affixes.ts` (name prefix, description, modifiers, triggers, flags, `notFor` creature types). An achievement is an `AchievementDef` in `src/data/achievements.ts`: a category, points and a `check` condition (any quest condition, e.g. `{ kind: 'lifetime', stat: 'bossesKilled', min: 25 }` or `{ kind: 'slayer', enemyType: 'undead', rank: 3 }`), optionally `hidden`, a `title` or `gold`.
 
 ### Example: a companion
 Add a `CompanionDef` to `COMPANIONS` in `src/data/story/companions.ts` (race, class, specialization, god, home town, likes, dislikes, four bond tiers of two perks, an oath perk) and its recruitment and personal quests. Their NPC is generated from the definition; recruit them with the `recruit` action.

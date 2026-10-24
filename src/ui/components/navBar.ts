@@ -14,10 +14,11 @@ export interface Nav {
   pantheon: () => void;
   quests: () => void;
   party: () => void;
+  codex: () => void;
   world: () => void;
 }
 
-export type NavTab = 'character' | 'inventory' | 'skills' | 'general' | 'pantheon' | 'quests' | 'party' | 'world';
+export type NavTab = 'character' | 'inventory' | 'skills' | 'general' | 'pantheon' | 'quests' | 'party' | 'codex' | 'world';
 
 function bar(fraction: number, cls: string, label: string): HTMLElement {
   const pct = Math.max(0, Math.min(1, fraction)) * 100;
@@ -53,7 +54,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
     el(
       'div',
       { class: 'sheet-ident' },
-      el('div', { class: 'sheet-name' }, p.name, p.hardcore ? el('span', { class: 'badge danger' }, 'Hardcore') : ''),
+      el('div', { class: 'sheet-name' }, p.name, p.title ? el('span', { class: 'sheet-title' }, p.title) : '', p.hardcore ? el('span', { class: 'badge danger' }, 'Hardcore') : ''),
       el('div', { class: 'dim', title: identity }, identity),
       ...(extra ? [extra] : []),
     ),
@@ -64,7 +65,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
       bar(p.mp / Math.max(1, stats.maxMp), 'mp', `MP ${p.mp} / ${stats.maxMp}`),
     ),
     el('div', { class: 'sheet-gold' }, `${session.state.gold} gold`),
-    el('nav', { class: 'tabs' }, tab('character', 'Character (C)', nav.character), tab('inventory', 'Inventory (I)', nav.inventory), tab('skills', 'Skills (K)', nav.skills), tab('general', 'General (L)', nav.general), tab('pantheon', 'Pantheon (P)', nav.pantheon), tab('quests', 'Quests (J)', nav.quests), tab('party', 'Party (O)', nav.party), tab('world', 'World (G)', nav.world)),
+    el('nav', { class: 'tabs' }, tab('character', 'Character (C)', nav.character), tab('inventory', 'Inventory (I)', nav.inventory), tab('skills', 'Skills (K)', nav.skills), tab('general', 'General (L)', nav.general), tab('pantheon', 'Pantheon (P)', nav.pantheon), tab('quests', 'Quests (J)', nav.quests), tab('party', 'Party (O)', nav.party), tab('codex', 'Codex (B)', nav.codex), tab('world', 'World (G)', nav.world)),
     title,
   );
 }

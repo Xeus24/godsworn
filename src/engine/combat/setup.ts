@@ -10,6 +10,7 @@ import type { BattleEvent, Combatant, EncounterDef } from './types';
 import type { CompanionExtras } from '../party/party';
 import { withSource } from '../stats/modifiers';
 import { PARTY_SCALING } from '../../data/combat';
+import { affixCount, applyAffixes, rollAffixes } from './affixes';
 
 /**
  * A companion as a combatant: their character plus bond perks and class
@@ -80,6 +81,8 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   const c = opts.c ?? content;
   const party = [createHero(hero, 'hero', c), ...(opts.companions ?? []).map((m) => createCompanionCombatant(m.char, m.extras, c))];
   for (const g of opts.guests ?? []) party.push(createGuest(g.id, g.enemyId, hero.level, c));
+  // Champion packs share one roll of affixes; each elite rolls its own.
+  let packAffixes: string[] | undefined;
   const enemies = encounter.enemies.map((e, i) => {
     const base = c.enemies.get(e.enemyId);
     // Encounter entries may promote an enemy (roaming elites, champion packs).
@@ -87,6 +90,11 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const enemy = createEnemy(def, `enemy-${i + 1}`, opts.level ?? e.level ?? encounter.level, e.row ?? def.row, c);
     if (encounter.threat) applyThreat(enemy, encounter.threat);
     const mates = opts.companions?.length ?? 0;
+    const n = affixCount(def.tier);
+    if (n > 0) {
+      const ids = def.tier === 'champion' ? (packAffixes ??= rollAffixes(opts.rng, def.types, n, c)) : rollAffixes(opts.rng, def.types, n, c);
+      applyAffixes(enemy, ids, c);
+    }
     if (mates > 0) applyThreat(enemy, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
     return enemy;
   });

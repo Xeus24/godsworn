@@ -9,7 +9,10 @@ import { WEAPON_STAGES } from '../src/data/apostles';
 import { APOSTLESHIP, DEVOTION } from '../src/data/devotion';
 import { UPGRADE_CHANCE } from '../src/engine/economy/enchanting';
 import { MULTICLASS } from '../src/data/progression';
-import { PARTY_SCALING } from '../src/data/combat';
+import { BOSS, PARTY_SCALING } from '../src/data/combat';
+import { ACHIEVEMENT_CATEGORIES } from '../src/data/achievements';
+import { ELITE_AFFIX_RULES } from '../src/data/bestiary/affixes';
+import { BESTIARY, KNOWLEDGE_NAMES } from '../src/data/bestiary/bestiary';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
 
@@ -342,7 +345,37 @@ function storySection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection };
+function codexSection(): string {
+  const out: string[] = [];
+  const pct = (n: number): string => `${Math.round(n * 100)}%`;
+  out.push('### Bosses', '');
+  out.push(`Every miniboss, boss and world boss enrages after ${Object.entries(BOSS.enrageTurns).map(([t, n]) => `${n} of its own turns (${t})`).join(', ')}, and grows angrier every ${BOSS.enrageStackEvery} turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.`, '');
+  out.push(`${content.bossScripts.size} scripted bosses:`, '', '| Boss | Phases | Telegraphs |', '|---|---|---|');
+  for (const sc of content.bossScripts.all()) {
+    const phases = sc.phases.map((ph) => `${ph.hpPct}%: **${ph.name}**${ph.adds?.length ? ` (adds ${ph.adds.map((a) => content.enemies.get(a).name).join(', ')})` : ''}${ph.modifiers?.length ? ` (${ph.modifiers.map(mod).join(', ')})` : ''}${ph.effects?.length ? ' (heals or shields)' : ''}`).join('; ');
+    const tels = sc.telegraphs.map((t) => `${content.skills.get(t.skillId).name} every ${t.every} turns${t.fromPhase ? ` from phase ${t.fromPhase + 1}` : ''}`).join('; ');
+    out.push(`| ${content.enemies.get(sc.id).name}${sc.enrageTurns ? ` (enrages at ${sc.enrageTurns})` : ''} | ${cell(phases) || '-'} | ${cell(tels) || '-'} |`);
+  }
+  out.push('', 'Telegraphed attacks:', '');
+  for (const id of new Set(content.bossScripts.all().flatMap((sc) => sc.telegraphs.map((t) => t.skillId)))) {
+    const sk = content.skills.get(id);
+    out.push(`- **${sk.name}** (${sk.targeting === 'enemy' ? 'one target' : 'whole party'}, ${pct(sk.damage?.multiplier ?? 0)} ${sk.damage?.stat === 'magicAttack' ? 'MAG' : 'ATK'} ${content.elements.get(sk.element).name}): ${sk.description}`);
+  }
+  out.push('', '### Elite affixes', '');
+  out.push(`Elites roll ${ELITE_AFFIX_RULES.perTier.elite} affix, champion packs ${ELITE_AFFIX_RULES.perTier.champion} (shared by the pack). Each affix adds ${ELITE_AFFIX_RULES.xpPerAffix}% XP and prefixes the name.`, '', '| Affix | Effect | Never on |', '|---|---|---|');
+  for (const a of content.eliteAffixes.all()) out.push(`| ${a.name} | ${a.description} | ${a.notFor?.join(', ') ?? '-'} |`);
+  out.push('', '### Bestiary', '');
+  out.push(`- Knowledge per enemy at ${BESTIARY.knowledge.join(' / ')} kills (bosses ${BESTIARY.bossKnowledge.join(' / ')}): ${KNOWLEDGE_NAMES.slice(1).join(', ')}.`);
+  out.push(`- Slayer ranks per creature type at ${BESTIARY.slayerRanks.join(' / ')} kills: +${BESTIARY.slayerDamagePerRank}% damage against that type per rank.`, '');
+  out.push(`### Achievements (${content.achievements.size}, ${content.achievements.all().filter((a) => a.title).length} titles)`, '');
+  for (const cat of ACHIEVEMENT_CATEGORIES) {
+    const list = content.achievements.filter((a) => a.category === cat.id);
+    out.push(`**${cat.name}** (${list.length}): ${list.map((a) => `${a.name}${a.hidden ? ' (hidden)' : ''} (${a.description.replace(/\.$/, '')}; ${a.points} pts${a.title ? `; title “${a.title}”` : ''}${a.gold ? `; ${a.gold} gold` : ''})`).join(' · ')}`, '');
+  }
+  return out.join('\n').trimEnd();
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

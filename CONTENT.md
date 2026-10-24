@@ -452,7 +452,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (21)
+### Status effects (23)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -476,6 +476,8 @@ Generated from the data files by `npm run content:md`.
 | **Berserk** | buff | +30% damage and +10% crit, but takes 15% more damage. |
 | **Divine Protection** | buff | Takes 50% less damage. |
 | **Taunt** | buff | Goading the enemy: their single-target attacks must hit you. |
+| **Winding Up** | buff | Winding up a devastating attack for its next turn. Break its stagger bar to interrupt it, or Defend. |
+| **Enraged** | buff | The fight has gone on too long: +40% damage and 10% more speed per stack, growing over time. |
 | **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
 
 ### Class ultimates (8)
@@ -1561,11 +1563,11 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Class | Power | Extra |
 |---|---|---|
 | Warrior | +5% | 40% more Max HP, 20% less Damage Taken |
-| Mage | +60% | 50% more Max HP |
-| Rogue | -55% | - |
-| Cleric | -85% | +100% Damage Bonus |
+| Mage | +50% | 50% more Max HP |
+| Rogue | -40% | - |
+| Cleric | -75% | +100% Damage Bonus |
 | Ranger | -72% | - |
-| Necromancer | +105% | 50% more Max HP |
+| Necromancer | +95% | 50% more Max HP |
 | Monk | -15% | - |
 | Bard | +30% | 60% more Max HP, 20% less Damage Taken |
 
@@ -1591,3 +1593,127 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue
 <!-- story:end -->
+
+## Bosses, elites, bestiary and achievements
+
+<!-- codex:start -->
+### Bosses
+
+Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss), 50 of its own turns (boss), 60 of its own turns (worldBoss), and grows angrier every 4 turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.
+
+43 scripted bosses:
+
+| Boss | Phases | Telegraphs |
+|---|---|---|
+| Grukk the Goblin King | 50%: **Call the Warband** (adds Goblin Cutthroat) | Crushing Blow every 4 turns |
+| The Broodmother | 60%: **The Clutch Hatches** (adds Whisperwood Spider); 30%: **Frenzy** (15% more Speed) | Blight Bloom every 5 turns |
+| The Bone Lord | 66%: **Rise** (adds Skeleton Soldier, Skeleton Soldier); 33%: **Death’s Embrace** (+25% Damage Bonus) (heals or shields) | Grave Toll every 4 turns |
+| The Tide Hag | 50%: **The Drowned Answer** (adds Drowned Sailor, Drowned Sailor) | Tidal Wave every 4 turns |
+| The Withered Sun-King | 50%: **The Sun Sets** (adds Restless Mummy) (+20% Damage Bonus) (heals or shields) | Doom Mark every 4 turns |
+| The Frost Queen | 60%: **Court of Ice** (adds Ice Elemental); 30%: **Absolute Zero** (+15% Damage Bonus) | Glacial Tomb every 4 turns |
+| Captain Redfang | 50%: **All Hands!** (adds Corsair, Corsair) | Broadside every 4 turns |
+| Leviathan Spawn | 50%: **Surfacing** (+25% Damage Bonus, -20% increased Defense) | Tidal Wave every 4 turns |
+| The Magma Titan | 66%: **Eruption** (adds Magma Elemental); 33%: **Molten Core** (+20% Damage Bonus, -30% increased Defense) | Inferno every 5 turns |
+| Commander of the Black Throne | 66%: **Reinforcements** (adds Void Knight); 33%: **No Retreat** (+20% Damage Bonus) | Unmaking every 5 turns |
+| Bramblehorn | 50%: **Stampede** (+10% Damage Bonus) | Earthshatter every 6 turns |
+| Gnarlroot the Elder | 50%: **The Grove Wakes** (adds Treant Sapling) | Blight Bloom every 6 turns |
+| The Abyssal Crab | 50%: **Shell Cracks** (-30% increased Defense, +30% Damage Bonus) | Crushing Blow every 6 turns |
+| The Sandworm Colossus | 60%: **Nest** (adds Sand Scorpion) | Earthshatter every 6 turns |
+| Skaldr the Frost Wyrm | 50%: **Wings Unfurled** (+15% Damage Bonus) | Glacial Tomb every 6 turns |
+| The Storm Roc | 50%: **Eye of the Storm** (15% more Speed) | Thunderstorm every 6 turns |
+| The Ember Matriarch | 30%: **Ashfall** (+25% Damage Bonus) | Inferno every 6 turns |
+| The Unwritten Herald | 50%: **Erasing** (+20% Damage Bonus) | Unmaking every 6 turns |
+| Deacon Mott | 50%: **Unanswered Prayer** (heals or shields) | Doom Mark every 5 turns |
+| Varn the Hollow | 50%: **The Pack** (adds Dire Wolf) | Piercing Volley every 4 turns |
+| The Shard-Warden | 50%: **Fracture** (adds Crystal Golem) | Shard Storm every 4 turns |
+| Captain Idris Kaur | 50%: **Paid in Full** (adds Desert Raider) (+15% Damage Bonus) | Crushing Blow every 4 turns |
+| The Wight of Saint Orren | 60%: **The Saint Remembers** (heals or shields); 30%: **Last Rites** (+25% Damage Bonus) | Grave Toll every 4 turns |
+| Admiral Vey of the Black Tide | 50%: **Boarders Away** (adds Corsair) | Thunderstorm every 4 turns |
+| The Severance Engine | 66%: **Overclock** (25% more Speed); 33%: **Breach** (adds Void Wraith) (+20% Damage Bonus) | Unmaking every 4 turns |
+| Seryth the Oathbreaker | 70%: **Oathbreaker** (+20% Damage Bonus); 35%: **What Answered** (adds Hollow Knight) (15% more Speed) | Doom Mark every 4 turns; Unmaking every 5 turns from phase 2 |
+| Shadow of the Unwritten | 66%: **The Margins** (adds Void Wraith); 33%: **Erasure** (+30% Damage Bonus) | Unmaking every 4 turns |
+| Korga Ironhide | 50%: **Blood Up** (+25% Damage Bonus) | Crushing Blow every 4 turns |
+| Legion Champion | 50%: **The Crowd Roars** (15% more Speed, +15% Damage Bonus) | Crushing Blow every 4 turns |
+| The Bone Priest | 50%: **Unholy Rite** (adds Skeleton Soldier) | Grave Toll every 5 turns |
+| Warchief Gorza | 50%: **Warband** (adds Desert Raider) (+15% Damage Bonus) | Earthshatter every 4 turns |
+| The Unwritten Page | 50%: **Blank Verse** (+25% Damage Bonus) | Shard Storm every 4 turns |
+| The Drowned Choir | 50%: **Second Verse** (adds Drowned Sailor) | Tidal Wave every 4 turns |
+| Aspect of Solenne (enrages at 80) | - | - |
+| Aspect of Morrath (enrages at 80) | - | - |
+| Aspect of Kael (enrages at 80) | - | - |
+| Aspect of Ysolde (enrages at 80) | - | - |
+| Aspect of Vex (enrages at 80) | - | - |
+| Aspect of Thalor (enrages at 80) | - | - |
+| Aspect of Nymira (enrages at 80) | - | - |
+| Aspect of Aurelis (enrages at 80) | - | - |
+| Aspect of Hesha (enrages at 80) | - | - |
+| Aspect of Grimvald (enrages at 80) | - | - |
+
+Telegraphed attacks:
+
+- **Crushing Blow** (one target, 255% ATK Physical): A colossal blow on one target.
+- **Blight Bloom** (whole party, 110% MAG Nature): Poison flowers burst open around the party.
+- **Grave Toll** (whole party, 136% MAG Shadow): A bell only the dead should hear.
+- **Tidal Wave** (whole party, 144% MAG Ice): A wall of black water.
+- **Doom Mark** (one target, 272% MAG Shadow): A killing curse on one target.
+- **Glacial Tomb** (whole party, 136% MAG Ice): Ice closes over the whole party.
+- **Broadside** (whole party, 153% ATK Physical): Every gun fires at once.
+- **Inferno** (whole party, 153% MAG Fire): A firestorm over the whole party.
+- **Unmaking** (whole party, 161% MAG Void): Reality comes apart around the party.
+- **Earthshatter** (whole party, 144% ATK Physical): Splits the ground under the whole party.
+- **Thunderstorm** (whole party, 153% MAG Lightning): Lightning falls on everyone.
+- **Piercing Volley** (whole party, 127% ATK Physical): Arrows through the whole party.
+- **Shard Storm** (whole party, 144% MAG Arcane): A storm of razor crystal.
+
+### Elite affixes
+
+Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% XP and prefixes the name.
+
+| Affix | Effect | Never on |
+|---|---|---|
+| Swift | 30% more speed. | - |
+| Brutal | +30% damage. | - |
+| Ironclad | +50% defense and +25% magic resistance. | - |
+| Hulking | 60% more max HP. | - |
+| Vampiric | Heals for 20% of the damage it deals. | - |
+| Deadly | +20% crit chance and +50% crit damage. | - |
+| Molten | Its hits may Burn; resists fire. | plant |
+| Frostbound | Its hits may Slow; resists ice. | - |
+| Venomous | Its hits Poison. | construct, elemental |
+| Hexing | Its hits may Curse. | - |
+| Thorned | Hurts whoever hits it. | - |
+| Shielded | Starts the fight behind a shield of 30% of its max HP. | - |
+| Regenerating | Heals 4% of its max HP each turn. | construct |
+| Volatile | Explodes when it dies, burning the whole party. | - |
+| Vengeful | Goes Berserk when badly hurt. | - |
+| Unstoppable | Cannot be Stunned, Frozen or Feared. | - |
+| Warded | +60% magic resistance and +40 status resistance. | - |
+| Necromantic | Raises a bone servant when badly hurt. | construct |
+
+### Bestiary
+
+- Knowledge per enemy at 1 / 5 / 15 / 40 kills (bosses 1 / 1 / 2 / 3): Stats, Resistances, Skills, Mastered.
+- Slayer ranks per creature type at 10 / 50 / 150 / 400 / 1000 kills: +2% damage against that type per rank.
+
+### Achievements (101, 31 titles)
+
+**Combat** (21): First Blood (Win your first battle; 5 pts) · Battle-Hardened (Win 100 battles; 10 pts) · Veteran (Win 500 battles; 20 pts; title “the Veteran”) · Warlord (Win 2,000 battles; 40 pts; title “Warlord”) · Hundred-Slayer (Slay 100 enemies; 10 pts) · Thousand-Slayer (Slay 1,000 enemies; 20 pts) · The Relentless (Slay 5,000 enemies; 40 pts; title “the Relentless”) · Heavy Hitter (Deal 1,000 damage in one hit; 10 pts) · Mountain-Splitter (Deal 10,000 damage in one hit; 20 pts) · Worldbreaker (Deal 50,000 damage in one hit; 40 pts; title “Worldbreaker”) · Critical Thinker (Land 500 critical hits; 10 pts) · Precision (Land 5,000 critical hits; 20 pts; title “the Precise”) · Elite Hunter (Slay 10 elites; 10 pts) · Bane of Elites (Slay 100 elites; 25 pts; title “Elitebane”) · Champion Hunter (Slay 10 champions; 10 pts) · Breaker of Champions (Slay 100 champions; 25 pts; title “Championbreaker”) · Not So Fast (Break a boss while it winds up an attack; 10 pts) · Spellbreaker (Interrupt 25 boss wind-ups; 25 pts; title “Spellbreaker”) · Well Supplied (Use 100 consumables in battle; 10 pts) · Not Today… Oh. (hidden) (Fall in battle for the first time; 5 pts) · Discretion (hidden) (Escape from 10 battles; 5 pts)
+
+**Bosses** (11): Bossfight (Defeat a miniboss or boss; 10 pts) · Boss Hunter (Defeat 25 minibosses and bosses; 20 pts) · The Undaunted (Defeat 100 minibosses and bosses; 40 pts; title “the Undaunted”) · Giant-Killer (Slay a world boss; 15 pts) · Titan-Slayer (Slay all eight world bosses; 50 pts; title “Titan-Slayer”; 5000 gold) · Into the Fire (Defeat a boss after it has enraged; 15 pts) · Godsdefier (Defeat a herald a god sent to punish you; 20 pts; title “Godsdefier”) · Delver (Clear a dungeon; 10 pts) · Master Delver (Clear all ten dungeons; 40 pts; title “the Delver”; 3000 gold) · Long Live the King? (Defeat the Goblin King; 10 pts) · Into the Dark (Defeat the Void Commander in the Dark Citadel; 30 pts)
+
+**Bestiary** (13): Field Notes (Meet 10 kinds of enemy; 5 pts) · Naturalist (Meet 50 kinds of enemy; 15 pts) · Encyclopedist (Meet 100 kinds of enemy; 30 pts; title “the Naturalist”) · Know Thy Enemy (Master a bestiary entry; 10 pts) · Monster Scholar (Master 25 bestiary entries; 30 pts; title “Monster Scholar”) · Slayer (Earn a Slayer rank against any creature type; 5 pts) · Seasoned Slayer (Reach Slayer rank 3 against any creature type; 15 pts) · Grand Slayer (Reach Slayer rank 5 against any creature type; 40 pts; title “the Slayer”) · Gravewarden (Reach Slayer rank 3 against the undead; 20 pts; title “Gravewarden”) · Beastmaster (Reach Slayer rank 3 against beasts; 20 pts; title “the Hunter”) · Voidbane (Reach Slayer rank 3 against the void-touched; 20 pts; title “Voidbane”) · Dragonslayer (Reach Slayer rank 1 against dragons; 25 pts; title “Dragonslayer”) · Man-Hunter (Reach Slayer rank 3 against humanoids; 15 pts)
+
+**Story & Quests** (13): The Oath Begins (Finish the first chapter of the story; 10 pts) · Halfway Home (Finish the fourth chapter; 20 pts) · The Charge (Finish the seventh chapter; 30 pts) · It Is Written (Reach an ending of the story; 50 pts) · Sworn to the Gods (hidden) (Reach the Godsworn ending; 20 pts) · Mercy (hidden) (Reach the Redeemed ending; 20 pts) · No Gods, No Masters (hidden) (Reach the Unsworn ending; 20 pts) · Free Blade (hidden) (Reach the Free Blade ending; 20 pts) · Helping Hand (Complete 10 quests; 10 pts) · Hero of the Realm (Complete 50 quests; 25 pts; title “Hero of the Realm”) · Odd Jobs (Complete 20 side quests; 15 pts) · Bounty Hunter (Complete 10 bounties; 10 pts; title “Bounty Hunter”) · Loyal (Complete 5 faction quests; 15 pts)
+
+**The Gods** (7): Noticed (Be Acknowledged by a god; 5 pts) · Many Altars (Be Favored by three gods at once; 15 pts) · Devoted (Become Devoted to a god; 15 pts) · Exalted (Become Exalted by a god; 25 pts) · Chosen (Become an Apostle; 40 pts) · Saved by Grace (Be saved from death by divine intervention; 15 pts) · Errands of Heaven (Complete 10 god quests; 20 pts)
+
+**Hero** (12): Getting Started (Reach level 10; 5 pts) · Seasoned (Reach level 25; 10 pts) · Renowned (Reach level 40; 20 pts) · Legend (Reach level 60; 40 pts; title “the Legendary”) · Beyond Mortal (Reach Paragon level 10; 20 pts) · Specialist (Choose a specialization; 10 pts) · Dual-Trained (Take a second class; 15 pts) · Jack of All Trades (Take a third class; 30 pts; title “the Versatile”) · Prestige (Unlock a hybrid prestige class; 25 pts) · Practice Makes Perfect (Master a skill; 10 pts) · Virtuoso (Master 10 skills; 25 pts; title “the Virtuoso”) · Artisan (Reach level 25 in a crafting profession; 15 pts)
+
+**Exploration** (7): Wanderer (Set foot in four zones; 10 pts) · Cartographer (Set foot in all eight zones; 25 pts; title “the Wayfarer”) · Well Traveled (Attune every waypoint; 15 pts) · Curious (Find 5 lore pages; 10 pts) · Lorekeeper (Find all 16 lore pages; 30 pts; title “Lorekeeper”) · Home Sweet Home (Buy a house; 15 pts) · Living Legend (Reach Legend rank with a faction; 30 pts)
+
+**Wealth & Loot** (9): Pocket Money (Earn 1,000 gold in total; 5 pts) · Merchant Prince (Earn 100,000 gold in total; 20 pts) · Tycoon (Earn 1,000,000 gold in total; 40 pts; title “the Tycoon”) · Big Spender (Spend 50,000 gold; 15 pts) · Packrat (Pick up 1,000 items; 15 pts) · Legendary (Find a legendary item; 15 pts) · Matching Set (Find a set item; 15 pts) · Myth Made Real (Find a mythic item; 25 pts) · Hoard of Legends (Find 25 legendary items; 30 pts; title “the Hoarder”)
+
+**Companions** (4): Fellowship (Recruit a companion; 10 pts) · The Whole Company (Have all six companions with you; 30 pts; title “the Captain”) · Trusted Friend (Reach 80 approval with a companion; 20 pts) · Their Stories (Complete 6 companion quests; 25 pts)
+
+**Challenges** (4): Living Dangerously (Reach level 20 in Hardcore; 25 pts) · The Undying (Reach level 60 in Hardcore; 50 pts; title “the Undying”) · Achiever (Earn 25 achievements; 10 pts) · Completionist (Earn 60 achievements; 30 pts; title “the Completionist”)
+<!-- codex:end -->

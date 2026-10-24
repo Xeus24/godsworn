@@ -15,7 +15,7 @@ function grp(weight: number, ids: string[], opts: Pick<EncounterGroup, 'time' | 
   };
 }
 const elite = (id: string): string => `elite:${id}`;
-const champions = (id: string, n = 3): string[] => Array.from({ length: n }, () => `champion:${id}`);
+const champions = (id: string, n = 2): string[] => Array.from({ length: n }, () => `champion:${id}`);
 
 /** The eight zones along the road from the Meadowlands to the Dark Citadel. */
 export const ZONES: ZoneDef[] = [
@@ -29,7 +29,7 @@ export const ZONES: ZoneDef[] = [
       grp(3, ['goblin-cutthroat', 'goblin-cutthroat', '^goblin-shaman']), grp(2, ['scarecrow', 'scarecrow'], { time: 'night' }),
       grp(2, ['bandit-thug', '^bandit-archer']),
     ],
-    roaming: [grp(1, [elite('goblin-warchief'), 'goblin-cutthroat']), grp(1, champions('meadow-wolf'))],
+    roaming: [grp(1, [elite('goblin-warchief'), 'goblin-cutthroat']), grp(1, champions('meadow-wolf', 3))],
     lore: ['lore-first-oath', 'lore-brightwater'],
   },
   {
@@ -42,7 +42,7 @@ export const ZONES: ZoneDef[] = [
       grp(3, ['skeleton-soldier', 'skeleton-soldier', '^restless-ghost'], { time: 'night' }), grp(2, ['skeleton-soldier', '^dark-cultist']),
       grp(2, ['wyld-boar', 'wyld-boar']), grp(2, ['^will-o-wisp', '^will-o-wisp', '^will-o-wisp'], { weather: ['fog'] }),
     ],
-    roaming: [grp(1, [elite('alpha-wolf'), 'dire-wolf']), grp(1, champions('skeleton-soldier'))],
+    roaming: [grp(1, [elite('alpha-wolf'), 'dire-wolf']), grp(1, champions('skeleton-soldier', 3))],
     lore: ['lore-whisper', 'lore-old-battle'],
   },
   {

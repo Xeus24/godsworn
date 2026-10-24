@@ -62,6 +62,10 @@ export interface Character {
   world: WorldProgress;
   /** Professions, gathering skills and known recipes. */
   crafting: CraftingState;
+  /** The earned title shown beside the name. */
+  title?: string;
+  /** Enemies met (enemy id -> kills; 0 = seen but never killed). */
+  bestiary: Record<string, number>;
 
   /** Attribute points the player has spent, per stat. */
   allocated: PrimaryStats;

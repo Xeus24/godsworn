@@ -95,7 +95,7 @@ export const ENEMY_LATE_GROWTH = {
 export const TIER_SCALING: Record<string, { hp: number; damage: number; xp: number }> = {
   normal: { hp: 1, damage: 1, xp: 1 },
   elite: { hp: 2.5, damage: 1.25, xp: 3 },
-  champion: { hp: 3.5, damage: 1.35, xp: 5 },
+  champion: { hp: 2.2, damage: 1.2, xp: 4 },
   miniboss: { hp: 5, damage: 1.4, xp: 8 },
   boss: { hp: 9, damage: 1.5, xp: 15 },
   worldBoss: { hp: 18, damage: 1.7, xp: 30 },
@@ -122,10 +122,10 @@ export const PARTY_SCALING = {
    */
   companionPower: {
     warrior: 5,
-    mage: 60,
-    rogue: -55,
-    cleric: -85,
-    ranger: -72,
+    mage: 50,
+    rogue: -45,
+    cleric: -75,
+    ranger: -65,
     necromancer: 105,
     monk: -15,
     bard: 30,
@@ -141,4 +141,12 @@ export const PARTY_SCALING = {
     necromancer: [{ stat: 'maxHp', type: 'more', value: 50 }],
     bard: [{ stat: 'maxHp', type: 'more', value: 60 }, { stat: 'damageTaken', type: 'more', value: -20 }],
   } as Record<string, ModifierSpec[]>,
+};
+
+/** Scripted boss fights (scripts live in `bestiary/bossScripts.ts`). */
+export const BOSS = {
+  /** Own turns before a boss enrages, by tier (a script may set its own). */
+  enrageTurns: { miniboss: 40, boss: 50, worldBoss: 60 } as Record<string, number>,
+  /** After enraging it grows angrier: one more Enraged stack this many own turns apart. */
+  enrageStackEvery: 4,
 };

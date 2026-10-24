@@ -16,8 +16,8 @@
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | **Done** |
 | 11 | Economy | **Done** |
 | 12 | Quests, dialogue, main story, companions | **Done** |
-| 13 | Bosses, elites, bestiary, achievements, codex | Next |
-| 14 | New Game+ and Twilight of the Gods | |
+| 13 | Bosses, elites, bestiary, achievements, codex | **Done** |
+| 14 | New Game+ and Twilight of the Gods | Next |
 | 15 | Endgame activities, challenge modes, Ascended/Primordial items | |
 | 16 | Save system, settings, audio, polish, balance, playtest | |
 
@@ -422,6 +422,25 @@
 - **Balance** (story fights with benchmark heroes, `scripts/.scratch` sims): ordinary quest fights 63–100% solo; story bosses 34–75% solo for the hero alone and about 45–100% with companions depending on who they are (a cleric or a ranger's wolf helps most); the final Shadow of the Unwritten 17% alone, 46% with two companions.
 - 381 unit tests.
 
+### Phase 13: bosses, elites, the bestiary, achievements and the codex
+- **Scripted bosses** (`engine/combat/bosses.ts`, scripts in `data/bestiary/bossScripts.ts`): 43 scripts covering every dungeon boss (10), world boss (8), story boss and miniboss (15) and Aspect (10).
+  - **Phases** at HP thresholds: permanent stat changes, one-time effects (heals, shields), new skills and **adds** (enemies that join mid-fight, scaled like the boss, with no XP or loot of their own). Several thresholds crossed by one hit are entered in order.
+  - **Telegraphed attacks** (13 new boss skills: Crushing Blow, Earthshatter, Inferno, Glacial Tomb, Unmaking...): the boss spends a turn **winding up** (a "Winding Up" status and a warning line), then must unleash it on its next turn. **Breaking** its stagger bar in between interrupts it; **Defend** halves it. Telegraph skills are never used unannounced. The party's auto-battle AI braces (Defends) when hurt and a wind-up is coming.
+  - **Enrage:** every miniboss, boss and world boss enrages after 40 / 50 / 60 of its own turns (Aspects 80), then gains another Enraged stack every 4 turns (+40% damage, 10% more speed each). This also ends the endless stalls found in the party pass (two healers against a regenerating boss).
+  - New `boss` battle event: the combat screen floats "Winding up: …", phase names, ENRAGED and INTERRUPTED over the boss and highlights them in the log.
+- **Elite affixes** (`engine/combat/affixes.ts`, 18 in `data/bestiary/affixes.ts`): Swift, Brutal, Ironclad, Hulking, Vampiric, Deadly, Molten, Frostbound, Venomous, Hexing, Thorned, Shielded, Regenerating, Volatile, Vengeful, Unstoppable, Warded, Necromantic. Elites roll one, champion packs two shared by the whole pack; affixes respect creature types (no venomous constructs), prefix the name ("Swift Brutal Frost Wolf"), add 25% XP each, and are listed in the log when the fight starts. All are modifiers, triggers and flags.
+- **Bestiary** (`engine/bestiary/`, kept on the character): every enemy you meet gets an entry; kills reveal its stats (1), resistances (5), skills and boss battle plan (15) and mastery (40); bosses teach at 1/1/2/3. **Slayer ranks** per creature type at 10/50/150/400/1,000 kills give +2% damage per rank against that type (a conditional modifier through `calculateStats`). New knowledge and ranks are announced.
+- **Lifetime statistics:** elites, champions, bosses, world bosses, punishers and enraged bosses slain, interrupts, crits, divine interventions, gold earned and spent, items looted (and by rarity), consumables used.
+- **Achievements** (`state/achievementActions.ts`, 101 in `data/achievements.ts`, 10 categories): each is a condition over the game state, checked whenever the state changes, worth points, sometimes hidden, sometimes granting a **title** (31) or gold. 22 new condition kinds (lifetime stats, bestiary, kills of an enemy, Slayer ranks, quests done by kind, endings, gods at a favor tier, classes, hybrids, paragon, mastered skills, companions, dungeons, waypoints, zones, house, rarities found, profession level, achievements earned, Hardcore) are shared with quests and dialogue.
+- **Titles:** choose one of your earned titles (achievements, quests, factions, Apostleship) on the Character screen; it shows under your name in the top bar.
+- **The Codex (B):** Bestiary (entries by level with a creature-type filter, what you know of the selected enemy, Slayer ranks), Achievements (by category, points, titles, earn dates; hidden ones as ???), Lore (pages found by zone) and Statistics.
+- **Balance** (`npm run sim -- --only zones` and `npm run sim:party`, after tuning):
+  - Champion tier eased (HP ×2.2 and damage ×1.2, from ×3.5 and ×1.35) and packs are two champions (three in the first two zones), because affixes now make each one harder. Roaming champion packs win 29–88% solo, roaming elites 48–98%.
+  - Dungeon bosses 35–83% solo (before: 40–87%), world bosses 23–50% (25–60%). The world bosses of Frostspire, the Stormcoast and the Dark Citadel are party fights now: alone, a hero only beat them in stalls of 80+ of the boss's turns, which enrage ends.
+  - Trials of Apostleship unchanged except the Aspects of Solenne and Hesha (46/50% → 33/30%), which clerics used to win in 300-turn stalls.
+  - Companion classes stay even with the new fights: 77.7–81.3% averaged over fight types (3.6-point spread; the hero alone 64.8%). Companion power retuned: rogue −45%, cleric −75%, ranger −65%, necromancer +105%, mage +50%.
+- 401 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -513,6 +532,12 @@
 - **Party scaling over separate party balance.** The world was tuned for a hero alone, so rather than retune every encounter, enemies scale with the number of companions in the fight.
 - **Escorted NPCs fight on your side under AI control** (as summons without an owner), at your level with extra HP. Losing the battle or losing them fails the escort.
 - **Endings are recorded, not final:** the world stays open after the epilogue, and the ending (with your god, if any) is saved for New Game+ in Phase 14.
+- **Bosses are scripted in data,** keyed by enemy id; the engine knows phases, telegraphs and enrage, never specific bosses. A boss without a script still enrages.
+- **Telegraphs are answered with the existing tools** (Break and Defend) rather than a new dodge action, so every class can counter them.
+- **Adds give nothing**, so a boss can't be farmed through its phases.
+- **The bestiary lives on the character** (like reputation), so Slayer bonuses flow through `characterModifiers` and `calculateStats` like every other bonus. Companions don't keep one.
+- **Achievements reuse the quest condition language** instead of a separate tracker: one evaluator serves quests, dialogue choices and achievements, and adding an achievement is a data entry.
+- **Titles are a list of strings on the character** (earned from quests, factions, Apostleship and achievements), and one can be displayed.
 
 ## Known bugs
 - None known.
@@ -520,11 +545,9 @@
 ## Cut / deferred
 - **Companions' class trees** are auto-built; the skill tree screen edits only your own trees (Phase 16 polish could open companions' trees too). Companion gear is managed on the Party screen, not by dragging onto a paper doll.
 - **Party balance:** companion classes are evened out (see the balance pass under Phase 12). Still for Phase 16: the companion numbers make up for weak *hero* classes too (necromancer, mage, bard and warrior heroes are 42–50% alone in `sim:party`), so they need retuning after the class pass; full three-companion parties win 92–100% against dungeon bosses (65% alone), so party-size scaling may need to grow with the third companion; and pairs of low-damage classes (two clerics, two necromancers) still stall against regenerating world bosses. The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
-- **Titles** (section 8) move to Phase 13 with feats and achievements. Apostle titles are already earned and stored (and shown on the Pantheon); the title display and other titles come then.
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
 - **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
-- Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
 - **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
 - **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
@@ -534,9 +557,11 @@
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
 - **The Nameless One** is discovered in NG+ (Phase 14); the story foreshadows it.
 - **Forbidden items** for the Black Market come with heresies in Phase 14, and **Rift Maps** (a gold sink) in Phase 15.
-- **Elite affixes, the bestiary (with its damage bonuses) and roaming-elite variety** come in Phase 13. Roaming elites and champion packs already appear on the maps.
+- **Boss balance by hand:** some late world bosses (Frostspire, Stormcoast, Dark Citadel) are 23–25% for a hero alone; they are meant for a party, but the Phase 16 pass may soften them. Solo healer heroes (clerics) lose more often to bosses now that enrage ends stalls; their damage is a Phase 16 class-balance question.
+- **Codex extras:** no item compendium or god/class pages in the Codex yet (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites. Phase 16 polish.
+- **Achievement rewards** are titles and gold; cosmetic rewards (portrait frames, transmog) come with transmog in Phase 15.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
-- **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
+- **Treasure maps, Rift Maps, keys, pets, mounts and transmog** arrive with the systems that use them (Phase 15). Lore pages are collected (Phase 10) and read in the Codex.
 
 ## Next steps
-- Phase 13: bosses with scripted phases, telegraphs and enrage timers (the story bosses are ready to receive them), elite affixes and champions, the bestiary with its damage bonuses, 75+ achievements, titles on display and the codex.
+- Phase 14: New Game+ and Twilight of the Gods (heresies, the Nameless One, pantheon politics, apostle followers).

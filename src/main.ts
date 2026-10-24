@@ -37,6 +37,8 @@ import type { Conversation, ConversationOutcome } from './engine/state/conversat
 import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
 import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
+import { CodexScreen } from './ui/codex/codexScreen';
+import './ui/codex/codex.css';
 
 validateContent();
 
@@ -64,6 +66,7 @@ const nav: Nav = {
   pantheon: showPantheon,
   quests: showQuests,
   party: showParty,
+  codex: showCodex,
   world: showWorld,
 };
 
@@ -97,7 +100,7 @@ function showEnding(): void {
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showWorld });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 12: quests and companions`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 13: bosses, bestiary and achievements`));
 }
 
 function showCreation(): void {
@@ -134,6 +137,10 @@ function showQuests(): void {
 
 function showParty(): void {
   if (session) screens.show(new PartyScreen(session, nav, talk));
+}
+
+function showCodex(): void {
+  if (session) screens.show(new CodexScreen(session, nav));
 }
 
 function showPantheon(): void {
@@ -213,6 +220,7 @@ window.addEventListener('keydown', (e) => {
   if (key === 'l') showGeneral();
   if (key === 'j') showQuests();
   if (key === 'o') showParty();
+  if (key === 'b') showCodex();
   if (key === 'p') showPantheon();
 });
 

@@ -3,6 +3,7 @@ import type { DeedEvent, DevotionTier, FavorDeed } from '../gods/types';
 import type { RarityId } from '../items/types';
 import type { PrimaryStat } from '../stats/types';
 import type { EntityKind } from '../world/types';
+import type { LifetimeStat } from '../state/gameState';
 
 // ---------------------------------------------------------------- conditions
 
@@ -33,6 +34,39 @@ export type Cond =
   | { kind: 'dungeonCleared'; dungeon: string }
   | { kind: 'lore'; count: number }
   | { kind: 'time'; time: 'day' | 'night' }
+  /** A lifetime counter (kills, bosses slain, gold earned...) is at least `min`. */
+  | { kind: 'lifetime'; stat: LifetimeStat; min: number }
+  /** Bestiary entries met, or mastered. */
+  | { kind: 'bestiary'; seen?: number; mastered?: number }
+  /** Kills of one enemy (from the bestiary). */
+  | { kind: 'killed'; enemy: string; min?: number }
+  /** A Slayer rank against a creature type, or against any type when omitted. */
+  | { kind: 'slayer'; enemyType?: string; rank: number }
+  /** Quests completed (repeats count), optionally of one kind. */
+  | { kind: 'questsDone'; questKind?: QuestKind; min: number }
+  /** The story reached an ending (a particular one, or any). */
+  | { kind: 'ending'; ending?: string }
+  /** Gods at or above a favor tier. */
+  | { kind: 'favorCount'; tier: DevotionTier; min: number }
+  | { kind: 'classes'; min: number }
+  | { kind: 'hybrids'; min: number }
+  | { kind: 'specialization' }
+  | { kind: 'paragon'; min: number }
+  /** Skills at full mastery. */
+  | { kind: 'mastered'; min: number }
+  /** Companions recruited (and still with you), optionally at an approval. */
+  | { kind: 'companions'; min: number; minApproval?: number }
+  | { kind: 'dungeons'; min: number }
+  | { kind: 'waypoints'; min: number }
+  /** Zones set foot in. */
+  | { kind: 'zones'; min: number }
+  | { kind: 'house' }
+  /** Items of a rarity found. */
+  | { kind: 'rarity'; rarity: RarityId; min?: number }
+  /** Any crafting profession at a level. */
+  | { kind: 'profession'; level: number }
+  | { kind: 'achievements'; min: number }
+  | { kind: 'hardcore' }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };

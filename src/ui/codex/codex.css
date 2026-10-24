@@ -1,0 +1,63 @@
+/* ---------- Codex ---------- */
+
+.codex-tabs {
+  margin: 0 0 8px;
+}
+
+.codex-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.codex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+.codex-stats {
+  line-height: 1.6;
+}
+
+.codex-mastered {
+  color: var(--gold-hi);
+}
+
+.codex-slayer {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.codex-achievement {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0.6;
+}
+
+.codex-achievement.earned {
+  opacity: 1;
+}
+
+.codex-achievement.earned .codex-check {
+  color: var(--gold-hi);
+}
+
+.codex-lore p {
+  margin: 2px 0 8px;
+}
+
+.codex-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}

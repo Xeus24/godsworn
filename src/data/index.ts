@@ -43,6 +43,9 @@ import { CLASS_TRIALS, HYBRIDS, MENTOR_SKILLS, MENTORS, TRIAL_ENCOUNTERS } from 
 import { SONGS } from './songs';
 import { DEEP_ENEMIES } from './bestiary/enemies';
 import { DEEP_ENEMY_SKILLS } from './bestiary/skills';
+import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
+import { ELITE_AFFIXES } from './bestiary/affixes';
+import { ACHIEVEMENTS } from './achievements';
 import { FACTIONS } from './world/factions';
 import { HOUSE_ROOMS } from './world/housing';
 import { LORE } from './world/lore';
@@ -58,7 +61,7 @@ import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { COMPANIONS, DIALOGUES, ENDINGS, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS];
 
@@ -103,6 +106,8 @@ export const content = {
   stances: new ContentTable('stance', STANCES),
   enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES]),
   summons: new ContentTable('summon', SUMMONS),
+  bossScripts: new ContentTable('boss script', BOSS_SCRIPTS),
+  eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),
   encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS, ...QUEST_ENCOUNTERS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
   specializations: new ContentTable('specialization', SPECIALIZATIONS),
@@ -129,6 +134,7 @@ export const content = {
   dialogues: new ContentTable('dialogue', DIALOGUES),
   companions: new ContentTable('companion', COMPANIONS),
   endings: new ContentTable('ending', ENDINGS),
+  achievements: new ContentTable('achievement', ACHIEVEMENTS),
 };
 
 export type Content = typeof content;
@@ -343,6 +349,34 @@ export function validateContent(c: Content = content): void {
     checkFlags(v, c, e.flags, where);
   }
   for (const s of c.summons.all()) for (const sk of s.skills) v.ref(c.skills, sk.id, `summon ${s.id}`);
+  for (const a of c.achievements.all()) {
+    checkCond(v, c, a.check, `achievement ${a.id}`);
+    v.check(a.points > 0, `achievement ${a.id}: needs points`);
+  }
+  for (const a of c.eliteAffixes.all()) {
+    const where = `elite affix ${a.id}`;
+    checkModifiers(v, a.modifiers ?? [], where);
+    checkTriggers(v, c, a.triggers, where);
+    checkFlags(v, c, a.flags, where);
+  }
+  for (const script of c.bossScripts.all()) {
+    const where = `boss script ${script.id}`;
+    const boss = c.enemies.find(script.id);
+    v.check(boss !== undefined && ['miniboss', 'boss', 'worldBoss'].includes(boss.tier), `${where}: must name a miniboss, boss or world boss`);
+    let last = 100;
+    for (const ph of script.phases) {
+      v.check(ph.hpPct > 0 && ph.hpPct < last, `${where}: phases must go down in HP order`);
+      last = ph.hpPct;
+      for (const id of ph.adds ?? []) v.ref(c.enemies, id, where);
+      for (const sk of ph.skills ?? []) v.ref(c.skills, sk.id, where);
+      checkModifiers(v, ph.modifiers ?? [], where);
+      checkEffects(v, c, ph.effects ?? [], where);
+    }
+    for (const t of script.telegraphs) {
+      v.ref(c.skills, t.skillId, where);
+      v.check(t.every >= 2, `${where}: telegraphs need at least 2 turns apart`);
+    }
+  }
   for (const enc of c.encounters.all()) {
     v.check(enc.enemies.length > 0 && enc.enemies.length <= 6, `encounter ${enc.id}: needs 1-6 enemies`);
     for (const e of enc.enemies) v.ref(c.enemies, e.enemyId, `encounter ${enc.id}`);
@@ -537,6 +571,13 @@ function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, wher
       return v.ref(c.hybrids, cond.hybrid, where);
     case 'dungeonCleared':
       return v.ref(c.dungeons, cond.dungeon, where);
+    case 'killed':
+      return v.ref(c.enemies, cond.enemy, where);
+    case 'ending':
+      if (cond.ending) v.ref(c.endings, cond.ending, where);
+      return;
+    case 'rarity':
+      return v.ref(c.rarities, cond.rarity, where);
     case 'all':
     case 'any':
       for (const x of cond.conds) checkCond(v, c, x, where);
