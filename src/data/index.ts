@@ -35,6 +35,7 @@ import { buildBooks } from './general/books';
 import { grimoireSkills, GRIMOIRES } from './general/grimoires';
 import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
 import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
+import { FORBIDDEN_COMBAT_SKILLS, FORBIDDEN_SKILLS } from './general/forbidden';
 import { BLESSINGS } from './blessings';
 import { PANTHEON } from './pantheon';
 import { PUNISHER_SKILLS, PUNISHERS } from './punishers';
@@ -46,6 +47,8 @@ import { DEEP_ENEMY_SKILLS } from './bestiary/skills';
 import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
 import { ELITE_AFFIXES } from './bestiary/affixes';
 import { ACHIEVEMENTS } from './achievements';
+import { FOLLOWERS } from './followers';
+import { HERESY } from './heresy';
 import { FACTIONS } from './world/factions';
 import { HOUSE_ROOMS } from './world/housing';
 import { LORE } from './world/lore';
@@ -58,12 +61,12 @@ import { SHOPS } from './economy/shops';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
-import { COMPANIONS, DIALOGUES, ENDINGS, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
+import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
-const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS];
+const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
 
 /**
  * The game's content, assembled from the data files in this folder. Engine
@@ -104,7 +107,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES]),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS]),
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', BOSS_SCRIPTS),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),
@@ -133,7 +136,7 @@ export const content = {
   npcs: new ContentTable('npc', NPCS),
   dialogues: new ContentTable('dialogue', DIALOGUES),
   companions: new ContentTable('companion', COMPANIONS),
-  endings: new ContentTable('ending', ENDINGS),
+  endings: new ContentTable('ending', ALL_ENDINGS),
   achievements: new ContentTable('achievement', ACHIEVEMENTS),
 };
 
@@ -349,6 +352,12 @@ export function validateContent(c: Content = content): void {
     checkFlags(v, c, e.flags, where);
   }
   for (const s of c.summons.all()) for (const sk of s.skills) v.ref(c.skills, sk.id, `summon ${s.id}`);
+  for (const b of c.items.all()) {
+    if (b.forbidden !== undefined) v.check(b.forbidden >= 0 && b.forbidden < HERESY.tiers.length, `item ${b.id}: forbidden tier out of range`);
+  }
+  for (const g of c.generalSkills.all()) {
+    if (g.heresy !== undefined) v.check(g.category === 'forbidden' && g.heresy < HERESY.tiers.length, `general skill ${g.id}: heresy needs a forbidden skill and a real tier`);
+  }
   for (const a of c.achievements.all()) {
     checkCond(v, c, a.check, `achievement ${a.id}`);
     v.check(a.points > 0, `achievement ${a.id}: needs points`);
@@ -599,6 +608,10 @@ function checkActions(v: ContentValidator, c: Content, actions: readonly ActionD
     if (a.kind === 'fight') v.ref(c.encounters, a.encounter, where);
     if (a.kind === 'ending') v.ref(c.endings, a.ending, where);
     if (a.kind === 'completeObjective' || a.kind === 'deliver') v.ref(c.quests, a.quest, where);
+    if (a.kind === 'politics') {
+      v.ref(c.gods, a.a, where);
+      v.ref(c.gods, a.b, where);
+    }
   }
 }
 

@@ -95,6 +95,9 @@ export interface BlessingDef {
 }
 
 /** A character's relationship with the pantheon. */
+/** How two gods stand after your choices: new rivals, allies, or a feud set aside. */
+export type GodRelation = 'rival' | 'ally' | 'peace';
+
 export interface Devotion {
   /** Favor per god (-100..1200). */
   favor: Record<string, number>;
@@ -124,6 +127,14 @@ export interface Devotion {
   hunt?: { god: string; battles: number };
   /** Permanent titles (e.g. "Apostle of Solenne"). */
   titles: string[];
+  /** Devotion to the Nameless One (0..150); see data/heresy.ts. */
+  heresy: number;
+  /** The Defender path (NG+3+): a second god an Apostle also serves. */
+  defender?: string;
+  /** Whether your god's follower answers your call in battle (Apostles). */
+  followerCalled?: boolean;
+  /** Pantheon politics: relations your choices changed, by god pair (`a|b`, sorted). */
+  politics: Record<string, GodRelation>;
 }
 
 /** Being a god's Apostle. */

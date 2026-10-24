@@ -178,6 +178,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
   if (!s) return;
   inBattle = true;
   const punisher = s.devotion.punisherForFight();
+  const follower = s.devotion.follower();
   const battle = createEncounterBattle(s.player, encounter, {
     rng: s.rng,
     hooks: inventoryHooks(s),
@@ -185,7 +186,8 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
     weather: s.world.weatherNow(),
     punisher,
     companions: s.party.battleMembers(),
-    guests: s.quests.guests(),
+    guests: [...s.quests.guests(), ...(follower ? [{ id: 'follower', enemyId: follower, ally: true }] : [])],
+    ngPlus: s.state.ngPlus,
     ...(level !== undefined ? { level } : {}),
   });
   currentBattle = battle;

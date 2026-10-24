@@ -9,6 +9,7 @@ const BOOK_TIERS: Partial<Record<RarityId, { value: number; level: number }>> = 
   epic: { value: 1000, level: 14 },
   legendary: { value: 2500, level: 20 },
   divine: { value: 5000, level: 25 },
+  relic: { value: 6000, level: 40 },
 };
 
 /** One book per general skill (and Grimoire). Duplicates raise the skill's rank. */
@@ -16,7 +17,7 @@ export function buildBooks(skills: readonly GeneralSkillDef[]): BookDef[] {
   return skills.map((g) => {
     const tier = BOOK_TIERS[g.rarity] ?? { value: 100, level: 1 };
     const grimoire = g.category === 'grimoire';
-    const prefix = g.category === 'divine' ? 'Scripture' : 'Skillbook';
+    const prefix = g.category === 'divine' ? 'Scripture' : g.category === 'forbidden' ? 'Forbidden Tome' : 'Skillbook';
     return {
       id: `book-${g.id}`,
       name: grimoire ? `Grimoire: ${g.name.replace(' (Grimoire)', '')}` : `${prefix}: ${g.name}`,
@@ -28,6 +29,7 @@ export function buildBooks(skills: readonly GeneralSkillDef[]): BookDef[] {
       stack: 10,
       description: grimoire ? `Teaches ${g.name.replace(' (Grimoire)', '')} at reduced power.` : `Teaches ${g.name}, or raises its rank by 1.`,
       ...(grimoire ? { grimoire: true } : {}),
+      ...(g.heresy !== undefined ? { forbidden: g.heresy } : {}),
     };
   });
 }

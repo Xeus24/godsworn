@@ -1,3 +1,5 @@
+import { HERESY } from '../../data/heresy';
+import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
 import { characterBaseStats } from '../character/stats';
 import { blessedBy } from '../gods/blessings';
@@ -52,6 +54,7 @@ export function canLearnGeneral(char: Character, id: string, c: Content = conten
     }
   }
   if (def.god && !blessedBy(char, def.god, c)) return fail(`Only those blessed by ${c.gods.get(def.god).name} may learn this.`);
+  if (def.heresy !== undefined && heresyTier(char) < def.heresy) return fail(`Only a ${HERESY.tiers[def.heresy]?.name ?? 'heretic'} of the Nameless One may learn this.`);
   const grimoire = c.grimoires.find(id);
   if (grimoire && char.classes.some((p) => p.classId === grimoire.classId)) {
     return fail('You already know this skill through your class.');

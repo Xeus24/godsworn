@@ -13,6 +13,7 @@ export const ACHIEVEMENT_CATEGORIES: { id: AchievementCategory; name: string }[]
   { id: 'wealth', name: 'Wealth & Loot' },
   { id: 'companions', name: 'Companions' },
   { id: 'challenge', name: 'Challenges' },
+  { id: 'twilight', name: 'New Game+ & Twilight' },
 ];
 
 type Extra = Pick<AchievementDef, 'hidden' | 'title' | 'gold'>;
@@ -29,6 +30,7 @@ const exploration = ach('exploration');
 const wealth = ach('wealth');
 const companions = ach('companions');
 const challenge = ach('challenge');
+const twilight = ach('twilight');
 
 const WORLD_BOSSES = ['bramblehorn', 'gnarlroot', 'abyssal-crab', 'sandworm', 'frost-wyrm', 'storm-roc', 'ember-matriarch', 'unwritten-herald'];
 
@@ -152,6 +154,19 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   // ---------------- Challenges ----------------
   challenge('hardcore-20', 'Living Dangerously', 'Reach level 20 in Hardcore.', 25, { kind: 'all', conds: [{ kind: 'hardcore' }, { kind: 'level', min: 20 }] }),
   challenge('hardcore-60', 'The Undying', 'Reach level 60 in Hardcore.', 50, { kind: 'all', conds: [{ kind: 'hardcore' }, { kind: 'level', min: 60 }] }, { title: 'the Undying' }),
+  // ---------------- New Game+ and Twilight of the Gods ----------------
+  twilight('ng-1', 'Once More, With Feeling', 'Begin New Game+.', 20, { kind: 'ngPlus', min: 1 }),
+  twilight('ng-3', 'The Wheel Turns', 'Reach New Game+3.', 30, { kind: 'ngPlus', min: 3 }, { title: 'the Returning' }),
+  twilight('ng-10', 'Endless', 'Reach New Game+10.', 50, { kind: 'ngPlus', min: 10 }, { title: 'the Eternal' }),
+  twilight('twilight-ch1', 'The Silence', 'Hear the Nameless One for the first time.', 15, { kind: 'quest', quest: 'twilight-1', state: 'complete' }),
+  twilight('twilight-dawn', 'Twilight-Bringer', 'Give the Nameless One back its name.', 50, { kind: 'ending', ending: 'twilight-dawn' }),
+  twilight('twilight-unwritten', 'The Unwritten Crown', 'Take the Nameless One’s crown.', 50, { kind: 'ending', ending: 'twilight-unwritten' }, { hidden: true }),
+  twilight('peacemaker', 'Peace in Heaven', 'End every old feud of the pantheon.', 30, { kind: 'flag', flag: 'twilight-court', value: 'peace' }, { title: 'the Peacemaker' }),
+  twilight('heresy-1', 'Whispered', 'Become Whispered by the Nameless One.', 15, { kind: 'heresy', min: 10 }, { hidden: true }),
+  twilight('heresy-3', 'Unwritten', 'Reach the deepest heresy.', 30, { kind: 'heresy', min: 100 }, { hidden: true }),
+  twilight('defender', 'Defender of the Pantheon', 'Defend a second god beside your own.', 40, { kind: 'defender' }, { title: 'Defender of the Pantheon' }),
+  twilight('all-endings', 'Every Story Told', 'Reach all six endings across your playthroughs.', 60, { kind: 'endingsSeen', min: 6 }, { title: 'the Storyteller' }),
+
   challenge('achievements-25', 'Achiever', 'Earn 25 achievements.', 10, { kind: 'achievements', min: 25 }),
   challenge('achievements-60', 'Completionist', 'Earn 60 achievements.', 30, { kind: 'achievements', min: 60 }, { title: 'the Completionist' }),
 ];

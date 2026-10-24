@@ -8,9 +8,11 @@ import { content } from '../src/data';
 import { WEAPON_STAGES } from '../src/data/apostles';
 import { APOSTLESHIP, DEVOTION } from '../src/data/devotion';
 import { UPGRADE_CHANCE } from '../src/engine/economy/enchanting';
-import { MULTICLASS } from '../src/data/progression';
+import { MULTICLASS, PROGRESSION } from '../src/data/progression';
 import { BOSS, PARTY_SCALING } from '../src/data/combat';
 import { ACHIEVEMENT_CATEGORIES } from '../src/data/achievements';
+import { HERESY } from '../src/data/heresy';
+import { NG_PLUS } from '../src/data/ngPlus';
 import { ELITE_AFFIX_RULES } from '../src/data/bestiary/affixes';
 import { BESTIARY, KNOWLEDGE_NAMES } from '../src/data/bestiary/bestiary';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
@@ -313,7 +315,7 @@ function economySection(): string {
 
 function storySection(): string {
   const out: string[] = [];
-  const kinds: [string, string][] = [['main', 'Main story'], ['side', 'Side quests'], ['faction', 'Faction questlines'], ['companion', 'Companion quests'], ['god', 'God questlines'], ['class', 'Class trials'], ['hybrid', 'Hybrid trials'], ['bounty', 'Bounties (repeatable daily)']];
+  const kinds: [string, string][] = [['main', 'Main story'], ['twilight', 'Twilight of the Gods (New Game+)'], ['side', 'Side quests'], ['faction', 'Faction questlines'], ['companion', 'Companion quests'], ['god', 'God questlines'], ['class', 'Class trials'], ['hybrid', 'Hybrid trials'], ['bounty', 'Bounties (repeatable daily)']];
   out.push(`${content.quests.size} quests, ${content.npcs.size} NPCs, ${content.dialogues.size} dialogues, ${content.companions.size} companions, ${content.endings.size} endings.`, '');
   for (const [kind, title] of kinds) {
     const list = content.quests.filter((q) => q.kind === kind);
@@ -375,7 +377,22 @@ function codexSection(): string {
   return out.join('\n').trimEnd();
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection };
+function ngPlusSection(): string {
+  const out: string[] = [];
+  out.push(`- **New Game+** (up to NG+${NG_PLUS.maxTier}) after any ending: the hero, gear, bags, stash, gold, companions, achievements, statistics and lore pages carry over; the story, quests, map, calendar and shops start again. The level cap rises to ${PROGRESSION.ngPlusLevelCap}, world levels 1–${NG_PLUS.levelFrom} stretch over ${NG_PLUS.levelFrom}–${NG_PLUS.levelTo}, and each tier past the first adds +${NG_PLUS.threatPerTier}% enemy HP and damage.`);
+  out.push(`- **Heresy** (0–${HERESY.max}): each point costs ${HERESY.favorCostPerPoint} favor with every god; atonement at a temple costs ${HERESY.atoneGoldPerPointPerLevel} gold × level per point. The Nameless One rewards: ${HERESY.deeds.map((d) => `${d.text.toLowerCase()} (+${d.amount})`).join(', ')}.`, '');
+  out.push('| Heresy tier | From | Effect |', '|---|---|---|');
+  for (const t of HERESY.tiers) out.push(`| ${t.name} | ${t.min} | ${t.description} |`);
+  out.push('', `**Forbidden skills** (${content.generalSkills.filter((g) => g.category === 'forbidden').length}, tomes sold only by the Black Market to heretics of the tier):`, '');
+  for (const g of content.generalSkills.filter((x) => x.category === 'forbidden')) out.push(`- **${g.name}** (${HERESY.tiers[g.heresy ?? 0]?.name}): ${g.description}${g.combatSkill ? ` ${content.skills.get(g.combatSkill).description}` : ''}`);
+  out.push('', '**Forbidden goods:**', '');
+  for (const b of content.items.filter((x) => x.forbidden !== undefined && x.category !== 'book')) out.push(`- **${b.name}** (${HERESY.tiers[b.forbidden ?? 0]?.name}): ${b.description ?? ''}`);
+  out.push('', `**Apostle followers** (an Apostle calls one from the Pantheon; it counts as ${PARTY_SCALING.followerShare} of a companion for enemy scaling): ${content.enemies.filter((e) => e.types.includes('follower')).map((e) => e.name).join(', ')}.`, '');
+  out.push(`**The Defender path** (NG+${APOSTLESHIP.defenderNgPlus}+): an Apostle who has passed a second, non-rival god's trial may defend that god too: its Divine blessing in one more slot, the Apostle tier with it, and the title "Defender of X".`);
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection, ngplus: ngPlusSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

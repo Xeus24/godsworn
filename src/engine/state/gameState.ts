@@ -32,7 +32,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 12;
+export const SAVE_VERSION = 13;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -126,6 +126,8 @@ export interface GameState {
   achievements: Record<string, number>;
   /** Items found per rarity. */
   rarityFound: Record<string, number>;
+  /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
+  legacy: { endings: string[] };
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -151,6 +153,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     party: createPartyState(),
     achievements: {},
     rarityFound: {},
+    legacy: { endings: [] },
   };
 }
 

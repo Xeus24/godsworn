@@ -1,3 +1,4 @@
+import { setRelation } from '../gods/devotion';
 import { content } from '../../data';
 import { restoreFull } from '../character/stats';
 import type { Battle } from '../combat/battle';
@@ -17,6 +18,7 @@ import {
   objectiveDone,
   progressOf,
   questGold,
+  questLevel,
   questXp,
   required,
   stageOf,
@@ -174,7 +176,7 @@ export class QuestActions {
     this.q.failed = this.q.failed.filter((f) => f !== q.id);
     if (!this.q.tracked) this.q.tracked = q.id;
     this.s.bus.emit('questStarted', { questId: q.id });
-    this.toast('quest', `${q.kind === 'main' ? 'Story' : 'New quest'}: ${q.name}`);
+    this.toast('quest', `${q.kind === 'main' || q.kind === 'twilight' ? 'Story' : 'New quest'}: ${q.name}`);
     this.runActions(first.onStart ?? []);
   }
 
@@ -182,7 +184,7 @@ export class QuestActions {
   abandon(id: string): QuestResult {
     const q = this.def(id);
     if (!this.q.active[id]) return fail('You are not on that quest.');
-    if (q.kind === 'main') return fail('The story cannot be abandoned.');
+    if (q.kind === 'main' || q.kind === 'twilight') return fail('The story cannot be abandoned.');
     delete this.q.active[id];
     if (this.q.tracked === id) this.q.tracked = Object.keys(this.q.active)[0];
     this.s.bus.emit('stateChanged', { reason: 'quest' });
@@ -370,12 +372,12 @@ export class QuestActions {
     if (this.q.tracked === q.id) this.q.tracked = Object.keys(this.q.active)[0];
     const r = q.rewards;
     const parts: string[] = [];
-    const xp = questXp(q);
+    const xp = questXp(q, s.state.ngPlus);
     if (xp > 0) {
       s.grantXp(xp);
       parts.push(`${xp} XP`);
     }
-    const gold = questGold(q);
+    const gold = questGold(q, s.state.ngPlus);
     if (gold > 0) {
       s.addGold(gold, 'quest');
       parts.push(`${gold} gold`);
@@ -386,7 +388,7 @@ export class QuestActions {
     }
     for (let i = 0; i < (r.gear?.count ?? (r.gear ? 1 : 0)); i++) {
       const p = s.player;
-      const item = generateGear({ rng: s.rng, itemLevel: q.level, newUid: () => s.newUid(), ngPlus: s.state.ngPlus, favorClassId: p.classes[0]?.classId, favorTiers: favorTiers(p) }, { rarity: r.gear?.rarity ?? 'rare', categories: ['weapon', 'armor', 'accessory'] });
+      const item = generateGear({ rng: s.rng, itemLevel: questLevel(q, s.state.ngPlus), newUid: () => s.newUid(), ngPlus: s.state.ngPlus, favorClassId: p.classes[0]?.classId, favorTiers: favorTiers(p) }, { rarity: r.gear?.rarity ?? 'rare', categories: ['weapon', 'armor', 'accessory'] });
       s.items.give(item);
       parts.push(`${content.rarities.get(item.rarity).name} gear`);
     }
@@ -492,6 +494,15 @@ export class QuestActions {
         case 'title':
           if (!s.player.devotion.titles.includes(a.title)) s.player.devotion.titles.push(a.title);
           break;
+        case 'heresy':
+          s.devotion.addHeresy(a.amount, 'quest');
+          break;
+        case 'politics': {
+          setRelation(s.player, a.a, a.b, a.relation);
+          const [x, y] = [content.gods.get(a.a).name, content.gods.get(a.b).name];
+          this.toast('info', a.relation === 'rival' ? `${x} and ${y} are now rivals.` : a.relation === 'ally' ? `${x} and ${y} now stand together.` : `${x} and ${y} set their feud aside.`);
+          break;
+        }
         case 'restore':
           restoreFull(s.player);
           s.party.restoreAll();
@@ -522,11 +533,12 @@ export class QuestActions {
     return out;
   }
 
-  /** The story ends: recorded for New Game+, with its title. */
+  /** The story ends: recorded for New Game+ (and in the legacy of every playthrough), with its title. */
   reachEnding(id: string): void {
     const def = content.endings.get(id);
     const god = this.s.player.devotion.apostle?.god;
     this.q.ending = { id, day: this.s.state.clock.day, seen: false, ...(god ? { god } : {}) };
+    this.s.state.legacy.endings.push(god ? `${id}:${god}` : id);
     this.s.setFlag('storyComplete', true);
     if (def.title && !this.s.player.devotion.titles.includes(def.title)) this.s.player.devotion.titles.push(def.title);
     this.toast('quest', `The story ends: ${def.name}`);

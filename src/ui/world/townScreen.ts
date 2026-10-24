@@ -1,3 +1,4 @@
+import { questLevel } from '../../engine/quests/quests';
 import { content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
@@ -90,7 +91,7 @@ export class TownScreen implements Screen {
     const rows = posted.map((q) => {
       const take = el('button', { class: 'tab' }, 'Take it');
       take.addEventListener('click', () => this.say(s.quests.start(q.id)));
-      return el('div', { class: 'board-row' }, el('b', {}, `${q.name} (level ${q.level})`), el('div', { class: 'small' }, q.summary), el('div', { class: 'dim small' }, `Reward: ${rewardText(q)}`), take);
+      return el('div', { class: 'board-row' }, el('b', {}, `${q.name} (level ${questLevel(q, s.state.ngPlus)})`), el('div', { class: 'small' }, q.summary), el('div', { class: 'dim small' }, `Reward: ${rewardText(q, s.state.ngPlus)}`), take);
     });
     return this.card('Quest Board', ...(rows.length ? rows : [el('p', { class: 'dim small' }, 'Nothing posted right now. Bounties return each day.')]));
   }

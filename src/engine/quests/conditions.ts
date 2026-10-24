@@ -125,6 +125,14 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return Object.keys(state.achievements).length >= cond.min;
     case 'hardcore':
       return p.hardcore;
+    case 'ngPlus':
+      return state.ngPlus >= cond.min;
+    case 'defender':
+      return p.devotion.defender !== undefined;
+    case 'endingsSeen':
+      return new Set(state.legacy.endings.map((e) => e.split(':')[0])).size >= cond.min;
+    case 'heresy':
+      return p.devotion.heresy >= (cond.min ?? 0) && (cond.max === undefined || p.devotion.heresy < cond.max);
     case 'all':
       return cond.conds.every((x) => evaluate(state, x, c));
     case 'any':

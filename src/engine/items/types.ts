@@ -66,6 +66,8 @@ interface BaseCommon {
   description?: string;
   /** Max stack size; 1 (or omitted) means it does not stack. */
   stack?: number;
+  /** Forbidden goods: sold only by the Black Market, to those at this heresy tier (index). */
+  forbidden?: number;
 }
 
 export interface WeaponBaseDef extends BaseCommon {

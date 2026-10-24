@@ -1,5 +1,5 @@
 import type { EnemyTier } from '../combat/types';
-import type { DeedEvent, DevotionTier, FavorDeed } from '../gods/types';
+import type { DeedEvent, DevotionTier, FavorDeed, GodRelation } from '../gods/types';
 import type { RarityId } from '../items/types';
 import type { PrimaryStat } from '../stats/types';
 import type { EntityKind } from '../world/types';
@@ -67,6 +67,14 @@ export type Cond =
   | { kind: 'profession'; level: number }
   | { kind: 'achievements'; min: number }
   | { kind: 'hardcore' }
+  /** Defending a second god (the Defender path). */
+  | { kind: 'defender' }
+  /** Different endings reached across all playthroughs. */
+  | { kind: 'endingsSeen'; min: number }
+  /** A New Game+ tier at least `min`. */
+  | { kind: 'ngPlus'; min: number }
+  /** Heresy at least `min` (or below `max`). */
+  | { kind: 'heresy'; min?: number; max?: number }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };
@@ -156,7 +164,11 @@ export type ActionDef =
   /** Hands in a stage at its turn-in NPC (used by the generated quest dialogue). */
   | { kind: 'turnIn'; quest: string }
   /** Hands over a delivery (used by the generated quest dialogue). */
-  | { kind: 'deliver'; quest: string; objective: string };
+  | { kind: 'deliver'; quest: string; objective: string }
+  /** Heresy toward the Nameless One (negative forgives it). */
+  | { kind: 'heresy'; amount: number }
+  /** Pantheon politics: two gods become rivals, allies, or set their feud aside. */
+  | { kind: 'politics'; a: string; b: string; relation: GodRelation };
 
 // ---------------------------------------------------------------- quests
 
@@ -179,7 +191,7 @@ export interface StageDef {
   onComplete?: ActionDef[];
 }
 
-export type QuestKind = 'main' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty';
+export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty';
 
 export interface RewardDef {
   /** Share of the quest level's XP-to-next-level (0.3 = 30% of a level). */

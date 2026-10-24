@@ -40,9 +40,9 @@ const STAT_ROWS: [LifetimeStat, string][] = [
   ['goldSpent', 'Gold spent'],
 ];
 
-/** Enemies the bestiary lists: everything you could fight, mentors and summons aside. */
+/** Enemies the bestiary lists: everything you could fight, mentors, followers and summons aside. */
 function listedEnemies(): EnemyDef[] {
-  return content.enemies.filter((e) => !e.types.includes('mentor')).sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+  return content.enemies.filter((e) => !e.types.includes('mentor') && !e.types.includes('follower')).sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
 }
 
 /**

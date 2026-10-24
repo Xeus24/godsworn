@@ -1,3 +1,4 @@
+import { worldLevel } from '../ngplus/ngplus';
 import { content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { characterStats, restoreFull } from '../character/stats';
@@ -335,7 +336,7 @@ export class WorldActions {
       }
     }
     this.world.used[key] = this.day;
-    const level = map.level[1];
+    const level = worldLevel(map.level[1], this.s.state.ngPlus);
     const stats = characterStats(p);
     const loot = rollLoot('chest', { rng: this.s.rng, itemLevel: level, newUid: () => this.s.newUid(), magicFind: stats.magicFind, goldFind: stats.goldFind, ngPlus: this.s.state.ngPlus, sourceTier: 'chest', favorTiers: favorTiers(p) });
     const got = this.s.items.receiveLoot(loot.items, loot.gold);

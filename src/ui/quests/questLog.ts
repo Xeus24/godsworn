@@ -1,5 +1,5 @@
 import { content } from '../../data';
-import { activeMarkers, minutesLeft, objectiveDone, questGold, questXp, stageOf } from '../../engine/quests/quests';
+import { activeMarkers, minutesLeft, objectiveDone, questGold, questLevel, questXp, stageOf } from '../../engine/quests/quests';
 import type { ObjectiveDef, QuestDef, QuestKind } from '../../engine/quests/types';
 import { objectiveLine } from '../../engine/state/conversation';
 import type { GameSession } from '../../engine/state/gameState';
@@ -7,8 +7,8 @@ import { mapFor } from '../../engine/world/mapgen';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-const KIND_ORDER: QuestKind[] = ['main', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'bounty'];
-const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', bounty: 'Bounties' };
+const KIND_ORDER: QuestKind[] = ['main', 'twilight', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'bounty'];
+const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', twilight: 'Twilight of the Gods', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', bounty: 'Bounties' };
 
 /** Where an objective points you: a marker's place, an NPC's town, a zone. */
 export function objectiveWhere(s: GameSession, q: QuestDef, o: ObjectiveDef): string {
@@ -25,11 +25,11 @@ export function objectiveWhere(s: GameSession, q: QuestDef, o: ObjectiveDef): st
   return '';
 }
 
-export function rewardText(q: QuestDef): string {
+export function rewardText(q: QuestDef, ngPlus = 0): string {
   const r = q.rewards;
   const parts: string[] = [];
-  if (questXp(q)) parts.push(`${questXp(q)} XP`);
-  if (questGold(q)) parts.push(`${questGold(q)} gold`);
+  if (questXp(q, ngPlus)) parts.push(`${questXp(q, ngPlus)} XP`);
+  if (questGold(q, ngPlus)) parts.push(`${questGold(q, ngPlus)} gold`);
   for (const it of r.items ?? []) parts.push(`${it.qty ?? 1}× ${content.items.get(it.itemId).name}`);
   if (r.gear) parts.push(`${r.gear.count ?? 1}× ${content.rarities.get(r.gear.rarity).name} gear`);
   for (const [g, n] of Object.entries(r.favor ?? {})) parts.push(`+${n} favor with ${content.gods.get(g).name}`);
@@ -95,7 +95,7 @@ export class QuestLogScreen implements Screen {
     return el(
       'section',
       { class: 'panel quest-detail' },
-      el('div', { class: 'dim small' }, `${KIND_NAMES[q.kind]} · level ${q.level}${q.zone ? ` · ${content.zones.get(q.zone).name}` : ''}${giver ? ` · from ${giver.name}` : q.board ? ` · ${content.towns.get(q.board).name} quest board` : ''}`),
+      el('div', { class: 'dim small' }, `${KIND_NAMES[q.kind]} · level ${questLevel(q, s.state.ngPlus)}${q.zone ? ` · ${content.zones.get(q.zone).name}` : ''}${giver ? ` · from ${giver.name}` : q.board ? ` · ${content.towns.get(q.board).name} quest board` : ''}`),
       el('h2', {}, q.name),
       el('p', { class: 'small' }, q.summary),
       ...(st
@@ -108,8 +108,8 @@ export class QuestLogScreen implements Screen {
           ]
         : []),
       el('h3', {}, 'Rewards'),
-      el('p', { class: 'small' }, rewardText(q) || 'The satisfaction of a job well done.'),
-      ...(prog ? [el('div', { class: 'row wrap' }, track, ...(q.kind === 'main' ? [] : [abandon]))] : []),
+      el('p', { class: 'small' }, rewardText(q, s.state.ngPlus) || 'The satisfaction of a job well done.'),
+      ...(prog ? [el('div', { class: 'row wrap' }, track, ...(q.kind === 'main' || q.kind === 'twilight' ? [] : [abandon]))] : []),
     );
   }
 
@@ -127,7 +127,7 @@ export class QuestLogScreen implements Screen {
         { class: 'quest-group' },
         el('h3', {}, `${KIND_NAMES[kind]} (${list.length})`),
         ...list.map((q) => {
-          const b = el('button', { class: `quest-row${selected?.id === q.id ? ' active' : ''}` }, el('span', {}, `${s.state.quests.tracked === q.id ? '◆ ' : ''}${q.name}`), el('span', { class: 'dim small' }, `Lv ${q.level}`));
+          const b = el('button', { class: `quest-row${selected?.id === q.id ? ' active' : ''}` }, el('span', {}, `${s.state.quests.tracked === q.id ? '◆ ' : ''}${q.name}`), el('span', { class: 'dim small' }, `Lv ${questLevel(q, s.state.ngPlus)}`));
           b.addEventListener('click', () => {
             this.selected = q.id;
             this.render();

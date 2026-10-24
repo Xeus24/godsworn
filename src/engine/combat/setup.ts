@@ -11,6 +11,7 @@ import type { CompanionExtras } from '../party/party';
 import { withSource } from '../stats/modifiers';
 import { PARTY_SCALING } from '../../data/combat';
 import { affixCount, applyAffixes, rollAffixes } from './affixes';
+import { ngThreat, worldLevel } from '../ngplus/ngplus';
 
 /**
  * A companion as a combatant: their character plus bond perks and class
@@ -62,8 +63,10 @@ export interface EncounterOptions {
   weather?: string;
   /** Companions fighting beside the hero, with their bond perks. */
   companions?: { char: Character; extras: CompanionExtras }[];
-  /** NPCs being escorted: AI-controlled allies built from enemy definitions. */
-  guests?: { id: string; enemyId: string }[];
+  /** New Game+ tier: enemy levels follow the world's NG+ levels, and later tiers add threat. */
+  ngPlus?: number;
+  /** NPCs being escorted or fighting beside you: AI-controlled allies built from enemy definitions. `ally` ones (apostle followers) count as part of a companion for party scaling. */
+  guests?: { id: string; enemyId: string; ally?: boolean }[];
   c?: Content;
 }
 
@@ -81,15 +84,17 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   const c = opts.c ?? content;
   const party = [createHero(hero, 'hero', c), ...(opts.companions ?? []).map((m) => createCompanionCombatant(m.char, m.extras, c))];
   for (const g of opts.guests ?? []) party.push(createGuest(g.id, g.enemyId, hero.level, c));
+  const ng = opts.ngPlus ?? 0;
   // Champion packs share one roll of affixes; each elite rolls its own.
   let packAffixes: string[] | undefined;
   const enemies = encounter.enemies.map((e, i) => {
     const base = c.enemies.get(e.enemyId);
     // Encounter entries may promote an enemy (roaming elites, champion packs).
     const def = e.tier ? { ...base, tier: e.tier } : base;
-    const enemy = createEnemy(def, `enemy-${i + 1}`, opts.level ?? e.level ?? encounter.level, e.row ?? def.row, c);
+    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng), e.row ?? def.row, c);
     if (encounter.threat) applyThreat(enemy, encounter.threat);
-    const mates = opts.companions?.length ?? 0;
+    if (ngThreat(ng) > 0) applyThreat(enemy, ngThreat(ng), ngThreat(ng), 'ngPlus');
+    const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
     const n = affixCount(def.tier);
     if (n > 0) {
       const ids = def.tier === 'champion' ? (packAffixes ??= rollAffixes(opts.rng, def.types, n, c)) : rollAffixes(opts.rng, def.types, n, c);
@@ -100,8 +105,9 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   });
   if (opts.punisher) {
     const def = c.enemies.get(`punisher-${opts.punisher}`);
-    const punisher = createEnemy(def, 'punisher', (opts.level ?? encounter.level) + 2, def.row, c);
-    const mates = opts.companions?.length ?? 0;
+    const punisher = createEnemy(def, 'punisher', worldLevel(opts.level ?? encounter.level, ng) + 2, def.row, c);
+    if (ngThreat(ng) > 0) applyThreat(punisher, ngThreat(ng), ngThreat(ng), 'ngPlus');
+    const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
     if (mates > 0) applyThreat(punisher, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
     enemies.push(punisher);
   }

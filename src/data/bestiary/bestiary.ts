@@ -13,7 +13,7 @@ export const BESTIARY = {
   /** Damage bonus (percent) against that type per Slayer rank. */
   slayerDamagePerRank: 2,
   /** Types that never earn Slayer ranks. */
-  noSlayer: ['summon', 'mentor'],
+  noSlayer: ['summon', 'mentor', 'follower'],
 };
 
 /** What each part of a bestiary entry is called. */

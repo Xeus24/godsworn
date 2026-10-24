@@ -62,7 +62,7 @@ function spawnAdd(b: Battle, boss: Combatant, enemyId: string): void {
   const add = createEnemy(def, b.newId('add'), boss.level, def.row, b.c);
   add.xp = 0;
   delete add.lootTable;
-  const scaling = boss.statInput.modifiers.filter((m) => m.source === 'party' || m.source === 'threat');
+  const scaling = boss.statInput.modifiers.filter((m) => m.source === 'party' || m.source === 'threat' || m.source === 'ngPlus');
   add.statInput = { ...add.statInput, modifiers: [...add.statInput.modifiers, ...scaling] };
   const stats = calculateStats(add.statInput);
   add.maxHp = stats.maxHp;

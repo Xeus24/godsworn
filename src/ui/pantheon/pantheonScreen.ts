@@ -1,5 +1,7 @@
+import { HERESY } from '../../data/heresy';
+import { atoneCost, heresyTierDef } from '../../engine/gods/heresy';
 import { content } from '../../data';
-import { DEVOTION } from '../../data/devotion';
+import { APOSTLESHIP, DEVOTION } from '../../data/devotion';
 import type { PantheonDef } from '../../data/pantheon';
 import { activeMinors, blessingSlotCount, isActive } from '../../engine/gods/blessings';
 import { interventionChance, interveningGod } from '../../engine/gods/combat';
@@ -11,7 +13,7 @@ import { itemName } from '../../engine/items/naming';
 import type { GameSession } from '../../engine/state/gameState';
 import { WEAPON_STAGES } from '../../data/apostles';
 import type { EncounterDef } from '../../engine/combat/types';
-import { apostleTreeId, canAscend, canAttemptTrial, currentEdict, trialEncounterId, trialLevel, weaponStage } from '../../engine/gods/apostle';
+import { apostleTreeId, canAscend, canAttemptTrial, canDefend, currentEdict, trialEncounterId, trialLevel, weaponStage } from '../../engine/gods/apostle';
 import { availablePoints } from '../../engine/skills/tree';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
@@ -250,6 +252,7 @@ export class PantheonScreen implements Screen {
       const edict = currentEdict(p);
       const e = apostle.edict;
       const weapon = def.weapon.names[weaponStage(p.level) - 1];
+      const follower = content.enemies.get(`follower-${god}`);
       const renounce = this.btn(this.confirmRenounce ? 'Click again: renounce forever?' : 'Renounce (apostasy)', () => {
         if (!this.confirmRenounce) {
           this.confirmRenounce = true;
@@ -268,9 +271,15 @@ export class PantheonScreen implements Screen {
         edict && e
           ? el('div', { class: `edict${apostle.neglected ? ' neglected' : ''}` }, el('b', {}, edict.text), el('div', { class: 'small' }, `Progress ${e.progress}/${edict.count} · ${e.battlesLeft} battle${e.battlesLeft === 1 ? '' : 's'} left · ${apostle.edictsDone} fulfilled`), ...(apostle.neglected ? [el('div', { class: 'tip-bad small' }, 'Neglected: apostle passives at 75% until you fulfil an edict.')] : []))
           : el('p', { class: 'dim small' }, 'No edict right now.'),
+        el('h3', {}, 'Follower'),
+        el('p', { class: 'small' }, `${follower.name}: ${follower.description} It fights beside you when called; enemies grow a little tougher for it.`),
+        this.btn(p.devotion.followerCalled ? `Dismiss ${follower.name}` : `Call ${follower.name}`, () => this.say(s.devotion.callFollower(!p.devotion.followerCalled))),
         el('p', { class: 'dim small' }, `Fulfilling an edict earns favor and gold; ignoring one costs favor and weakens your apostle powers. Renouncing ${name} makes them Hated, stores your weapon and apostle tree, and their heralds will hunt you.`),
         renounce,
       ];
+    }
+    if (p.devotion.defender === god) {
+      return [el('h3', {}, `Defender of ${name}`), el('p', { class: 'small' }, `You serve ${name} beside ${content.gods.get(apostle?.god ?? god).name}: their Divine blessing is yours (in its own slot), and they count you as their Apostle. The Defender path ends if you renounce your Apostleship.`)];
     }
     if (!atLeast(p, god, 'exalted') && (p.devotion.trialStage[god] ?? 0) === 0) {
       return [el('h3', {}, 'Trial of Apostleship'), el('p', { class: 'dim small' }, `Reach Exalted favor (${DEVOTION.tierFloors.exalted}) to face ${name}'s trial and become their Apostle.`)];
@@ -294,14 +303,52 @@ export class PantheonScreen implements Screen {
       el('p', { class: 'dim small' }, `Three stages, fought at your level. Apostles gain a 20-node apostle tree, a Divine Avatar, a god-bound weapon, a Divine blessing (with its own slot) and a title. You may serve only one god as Apostle.`),
       el('div', { class: 'trial-grid' }, ...stages),
       ...(done >= 3 ? [this.btn(`Ascend as Apostle of ${name}`, () => this.say(s.devotion.ascend(god)), !ascend.ok, 'primary'), ...(!ascend.ok ? [el('div', { class: 'dim small' }, ascend.reason)] : [])] : []),
+      ...(done >= 3 && apostle ? this.defenderSection(god) : []),
     ];
+  }
+
+  /** The Defender path (NG+3+): serve a second god beside your own. */
+  private defenderSection(god: string): HTMLElement[] {
+    const s = this.session;
+    const check = canDefend(s.player, god, s.state.ngPlus);
+    return [
+      el('h3', {}, 'The Defender path'),
+      el('p', { class: 'dim small' }, `From New Game+${APOSTLESHIP.defenderNgPlus}, an Apostle may also defend a second god who is not their own god's rival: its Divine blessing (in one more slot), the Apostle tier with it, and a title.`),
+      this.btn(`Defend ${content.gods.get(god).name}`, () => this.say(s.devotion.defend(god)), !check.ok, 'primary'),
+      ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),
+    ];
+  }
+
+  /** Heresy toward the Nameless One, atonement, and how pantheon politics have shifted. */
+  private heresy(): HTMLElement | undefined {
+    const s = this.session;
+    const p = s.player;
+    const shifts = Object.entries(p.devotion.politics);
+    if (p.devotion.heresy <= 0 && shifts.length === 0) return undefined;
+    const tier = heresyTierDef(p);
+    const next = HERESY.tiers.find((t) => t.min > p.devotion.heresy);
+    const parts: HTMLElement[] = [];
+    if (p.devotion.heresy > 0) {
+      const cost = atoneCost(p);
+      parts.push(
+        el('h3', {}, `Heresy: ${tier?.name ?? 'Stirring'} (${Math.floor(p.devotion.heresy)})`),
+        el('p', { class: 'small' }, tier ? tier.description : 'The Nameless One has noticed you, no more.'),
+        el('p', { class: 'dim small' }, `${next ? `Next: ${next.name} at ${next.min}. ` : ''}Each point costs ${HERESY.favorCostPerPoint} favor with every god. Slaying the gods’ heralds and wielding the void feed it. Heretics may learn Forbidden skills and buy from the Black Market’s back room.`),
+        this.btn(`Atone at the temple (${cost} gold)`, () => this.say(s.devotion.atone()), !s.world.inTown() || s.state.gold < cost),
+      );
+    }
+    if (shifts.length) {
+      const label = { rival: 'are now rivals', ally: 'stand together', peace: 'set their feud aside' } as const;
+      parts.push(el('h3', {}, 'Pantheon politics'), ...shifts.map(([pair, rel]) => el('div', { class: 'small' }, `${pair.split('|').map((g) => content.gods.get(g).name).join(' and ')} ${label[rel]}.`)));
+    }
+    return el('section', { class: 'panel' }, ...parts);
   }
 
   render = (): void => {
     if (!this.root) return;
     hideTooltip();
     this.root.replaceChildren(
-      el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'pantheon'), el('div', { class: 'pantheon-body' }, el('div', { class: 'pantheon-left' }, this.summary(), this.godList()), this.details())),
+      el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'pantheon'), el('div', { class: 'pantheon-body' }, el('div', { class: 'pantheon-left' }, this.summary(), ...[this.heresy()].filter((x): x is HTMLElement => x !== undefined), this.godList()), this.details())),
     );
   };
 }

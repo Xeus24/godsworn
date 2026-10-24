@@ -17,8 +17,8 @@
 | 11 | Economy | **Done** |
 | 12 | Quests, dialogue, main story, companions | **Done** |
 | 13 | Bosses, elites, bestiary, achievements, codex | **Done** |
-| 14 | New Game+ and Twilight of the Gods | Next |
-| 15 | Endgame activities, challenge modes, Ascended/Primordial items | |
+| 14 | New Game+ and Twilight of the Gods | **Done** |
+| 15 | Endgame activities, challenge modes, Ascended/Primordial items | Next |
 | 16 | Save system, settings, audio, polish, balance, playtest | |
 
 ## Completed features
@@ -441,6 +441,28 @@
   - Companion classes stay even with the new fights: 77.7–81.3% averaged over fight types (3.6-point spread; the hero alone 64.8%). Companion power retuned: rogue −45%, cleric −75%, ranger −65%, necromancer +105%, mage +50%.
 - 401 unit tests.
 
+### Phase 14: New Game+ and Twilight of the Gods
+- **New Game+** (`engine/ngplus/`, `data/ngPlus.ts`): after any ending, begin NG+ from the **Legacy** panel on the Character screen (two clicks), up to NG+10.
+  - Kept: the hero (levels, classes, trees, gear, gods, reputation, house, bestiary, titles), bags, stash, gold, companions (their recruitment is not asked again), achievements, statistics and lore pages read. Reset: the story and every quest, the map (fog, waypoints, cleared dungeons), the calendar, shops and story flags (`legacy:` flags survive).
+  - The level cap rises to 80 and the world rises with it: levels 1–60 are stretched over 60–80 (the Meadowlands are 60–62, the Dark Citadel 77–80) for every fight, chest and quest reward; levels already at 60+ stay. Each tier past the first adds +25% enemy HP and damage. Zone and dungeon levels on the world map, the sidebar, the quest log and the quest board show the NG+ levels.
+  - Every ending reached is kept in the save's legacy (shown on the Character screen).
+- **Twilight of the Gods** (`data/story/twilight.ts`): a 5-chapter New Game+ arc, paced by the main story (chapters open after main chapters 3, 5, 7 and 8), with 5 new enemies, 8 encounters and 2 new endings.
+  1. *The Gods Fall Silent*: the Hollow Choir at Solenne's shrine, and a voice that remembers your last playthrough.
+  2. *Names in the Margins*: Loremaster Ivo and the Erased on the Spire; the Nameless One is named.
+  3. *War in Heaven*: **pantheon politics.** The council of heralds asks you to end all five old feuds (WIS 30, Apostleship or Legend rank with the Order), or to side with the Court of Dawn or of Dusk, which starts new rivalries; then you fight whoever objects.
+  4. *The Nameless Offer*: accept (**heresy** +40, the title Heretic) or refuse (favor with every god).
+  5. *Twilight of the Gods*: the Nameless One (a scripted boss), or for a heretic the Last Light (all ten gods in one shape); then the ending **The Twilight Ends** (Twilight-Bringer) or **The Unwritten Crown** (the Unwritten).
+- **Pantheon politics** (`rivalsOf`, `setRelation`): your choices can make two gods rivals, allies or end their feud; rival favor penalties and blessing clashes follow the changed relations. The Pantheon lists the changes.
+- **Heresy** (`engine/gods/heresy.ts`, `data/heresy.ts`): devotion to the Nameless One, 0–150. Every point costs 1.5 favor with every god. Three tiers (Whispered 10, Heretic 40, Unwritten 100) grant void damage and resistance and, deeper, damage, at the cost of healing received and Favor Gain. Once you have answered it, the Nameless One rewards slaying the gods' heralds and wielding the void. **Atone** at any temple for 2 gold × level per point.
+  - **8 Forbidden general skills** (4 battle skills: Void Pact, Unmake, Devour Name, Blasphemy; 4 passives), each with a drawback. Only a heretic of their tier may learn them; their **Forbidden Tomes** never drop.
+  - **Forbidden goods** in the Black Market's back room (heretics only): the tomes, plus the Void Draught, the Unwritten Salve and the Tear of a Dead God.
+- **Apostle followers** (`data/followers.ts`): each god's follower (Sunguard of Solenne, Raven of Morrath, Einherjar of Kael...) fights beside its Apostle when called from the Pantheon. It counts as 0.4 of a companion for enemy scaling. Sim (levels 28–60, every class): 64–78% wins with a follower against 69% alone; Hesha's healer helps most.
+- **The Defender path** (NG+3+): an Apostle who has passed a second, non-rival god's trial may **defend** that god too: its Divine blessing (one more slot), the Apostle tier with it, and the title "Defender of X". It ends if you renounce your Apostleship.
+- **UI:** the Legacy panel (Character screen), the heresy and politics panel, follower call and Defender buttons (Pantheon), the Twilight quests in the quest log, NG+ levels on the map; the ending screen points to New Game+.
+- **Achievements:** 11 more (101 → 112) in a new New Game+ & Twilight category: NG+1/3/10, both Twilight endings, Peace in Heaven, heresy tiers, Defender of the Pantheon and Every Story Told (all six endings across playthroughs).
+- **Balance** (solo benchmark heroes at each fight's level, NG+1): Twilight fights 58–98%; the Nameless One 31% (Seryth is 31%), the Last Light 40%.
+- 421 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -538,6 +560,12 @@
 - **The bestiary lives on the character** (like reputation), so Slayer bonuses flow through `characterModifiers` and `calculateStats` like every other bonus. Companions don't keep one.
 - **Achievements reuse the quest condition language** instead of a separate tracker: one evaluator serves quests, dialogue choices and achievements, and adding an achievement is a data entry.
 - **Titles are a list of strings on the character** (earned from quests, factions, Apostleship and achievements), and one can be displayed.
+- **NG+ stretches levels instead of adding a flat offset,** so the first zone is still the easiest and the world still climbs to the new cap (80); fights already at 60+ (Apostle trials, hero-scaled tests) are left alone. Later tiers add threat, not levels.
+- **NG+ starts from the Character screen, not the ending screen,** so you can finish side content in the old world first.
+- **Heresy is a track of its own, not an 11th god's favor,** because the Nameless One is not a member of the pantheon: it has no prayers, blessings or punisher, and every gain is paid for with every god's favor.
+- **Politics change relations, not the gods.** The pantheon data stays fixed; the save records which pairs became rivals, allies or made peace, and every rival lookup goes through `rivalsOf`.
+- **Followers count as part of a companion** (0.4) for enemy scaling: as a full companion they were a net loss (the enemies' extra HP outweighed them), and without any scaling they were worth a whole companion for free.
+- **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
 ## Known bugs
 - None known.
@@ -549,14 +577,11 @@
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
 - **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
-- **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
 - **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
-- **Forbidden** general skills arrive with heresies in Phase 14 (the category already exists).
-- **Apostle followers** (the god's NPCs as allies) and the rest of **pantheon politics** (rivalries that shift with your choices) come with Twilight of the Gods in Phase 14. God questlines, two politics choices and per-god story chapters arrived in Phase 12.
-- **Two apostles at once** (Defender path, NG+3+) comes with Twilight of the Gods in Phase 14.
+- **The Defender path** gives the second god's blessing, tier and title, not a second apostle tree, avatar, weapon or edicts (see Design decisions).
+- **Twilight of the Gods** is the same five chapters in every NG+ tier; tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
-- **The Nameless One** is discovered in NG+ (Phase 14); the story foreshadows it.
-- **Forbidden items** for the Black Market come with heresies in Phase 14, and **Rift Maps** (a gold sink) in Phase 15.
+- **Rift Maps** (a gold sink) come in Phase 15.
 - **Boss balance by hand:** some late world bosses (Frostspire, Stormcoast, Dark Citadel) are 23–25% for a hero alone; they are meant for a party, but the Phase 16 pass may soften them. Solo healer heroes (clerics) lose more often to bosses now that enrage ends stalls; their damage is a Phase 16 class-balance question.
 - **Codex extras:** no item compendium or god/class pages in the Codex yet (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites. Phase 16 polish.
 - **Achievement rewards** are titles and gold; cosmetic rewards (portrait frames, transmog) come with transmog in Phase 15.
@@ -564,4 +589,4 @@
 - **Treasure maps, Rift Maps, keys, pets, mounts and transmog** arrive with the systems that use them (Phase 15). Lore pages are collected (Phase 10) and read in the Codex.
 
 ## Next steps
-- Phase 14: New Game+ and Twilight of the Gods (heresies, the Nameless One, pantheon politics, apostle followers).
+- Phase 15: endgame activities, challenge modes, Ascended and Primordial items.

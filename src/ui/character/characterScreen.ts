@@ -1,3 +1,4 @@
+import { canStartNgPlus, startNgPlus } from '../../engine/ngplus/ngplus';
 import { content } from '../../data';
 import { allocatedTotal, respecCost } from '../../engine/character/attributes';
 import { paragonRank } from '../../engine/character/paragon';
@@ -36,6 +37,7 @@ function splitPresets(count: number): number[][] {
 export class CharacterScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
+  private confirmNgPlus = false;
 
   constructor(
     private readonly session: GameSession,
@@ -191,7 +193,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, this.titles(), classes, this.reputation(), skills, paragon),
+          el('div', { class: 'sheet-col' }, this.titles(), this.legacy(), classes, this.reputation(), skills, paragon),
         ),
       ),
     );
@@ -222,6 +224,36 @@ export class CharacterScreen implements Screen {
   }
 
   /** Faction standing (and house, if any). */
+  /** New Game+: your tier, endings reached, and starting the next playthrough (two clicks). */
+  private legacy(): HTMLElement {
+    const s = this.session;
+    const check = canStartNgPlus(s);
+    const label = check.ok ? `Begin New Game+${check.tier}` : 'Begin New Game+';
+    const begin = el('button', { class: 'primary' }, label);
+    begin.disabled = !check.ok;
+    begin.title = check.ok ? 'The story starts over. You keep your hero, gear, companions and achievements; the world rises to levels 60-80.' : check.reason;
+    begin.addEventListener('click', () => {
+      if (!this.confirmNgPlus) {
+        this.confirmNgPlus = true;
+        begin.textContent = `Really begin NG+${check.ok ? check.tier : ''}? Click again`;
+        return;
+      }
+      this.confirmNgPlus = false;
+      startNgPlus(s);
+      this.render();
+    });
+    const endings = s.state.legacy.endings.map((e) => content.endings.find(e.split(':')[0] ?? '')?.name ?? e);
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Legacy'),
+      el('div', { class: 'small' }, s.state.ngPlus > 0 ? `New Game+${s.state.ngPlus} · level cap ${s.state.levelCap}` : 'First playthrough'),
+      ...(endings.length ? [el('div', { class: 'dim small' }, `Endings reached before: ${endings.join(', ')}`)] : []),
+      begin,
+      ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),
+    );
+  }
+
   /** Pick the earned title shown beside your name. */
   private titles(): HTMLElement {
     const s = this.session;

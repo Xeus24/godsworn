@@ -117,6 +117,8 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 
 **The Codex (B):** every enemy you meet goes into the **bestiary**; killing more of them reveals their stats, resistances, skills and boss battle plans. Kills of each creature type earn **Slayer ranks** (+2% damage against that type per rank). **Achievements** (101) reward points, gold and **titles**; pick the title to show under your name on the Character screen. The Codex also keeps the **lore** pages you found and your lifetime **statistics**.
 
+**New Game+ and Twilight of the Gods:** after any ending, begin **New Game+** from the Legacy panel on the Character screen. Your hero, gear, gold, companions and achievements come with you; the story starts again, and the world rises to levels 60–80 (later tiers make enemies tougher still). In New Game+ the **Twilight of the Gods** unfolds beside the main story: the gods fall silent, their old feuds turn to war (end them, or pick a side and make new enemies), and the Nameless One, the god the pantheon wrote out of the world, makes you an offer. Accept it and you walk the road of **heresy**: void power, Forbidden skills and the Black Market's back room, paid for with every god's favor (a temple will hear your atonement). An **Apostle** can call their god's **follower** into battle from the Pantheon, and from NG+3 may become **Defender** of a second god.
+
 More screens and controls are documented here as each phase lands.
 
 ## Project layout
@@ -137,6 +139,7 @@ src/
     quests/     quest and dialogue types, conditions, progress, marker placement
     party/      companions: creation, approval, bond perks
     bestiary/   bestiary knowledge and Slayer ranks
+    ngplus/     New Game+: starting a new playthrough, NG+ levels and threat
     achievements/ achievement types (checked in state/achievementActions.ts)
     state/      saved game state, session, clock
     content/    content tables and validation

@@ -1,10 +1,29 @@
 import { content, type Content } from '../../data';
 import { DEVOTION } from '../../data/devotion';
 import type { Character } from '../character/types';
-import { DEVOTION_TIERS, type DeedEvent, type Devotion, type DevotionTier, type FavorDeed } from './types';
+import { DEVOTION_TIERS, type DeedEvent, type Devotion, type DevotionTier, type FavorDeed, type GodRelation } from './types';
 
 export function createDevotion(): Devotion {
-  return { favor: {}, discovered: [], lastPrayer: {}, majors: [], slotted: [], offers: {}, offeredTier: {}, interventionReady: true, trialStage: {}, reliquary: [], titles: [] };
+  return { favor: {}, discovered: [], lastPrayer: {}, majors: [], slotted: [], offers: {}, offeredTier: {}, interventionReady: true, trialStage: {}, reliquary: [], titles: [], heresy: 0, politics: {} };
+}
+
+const pairKey = (a: string, b: string): string => [a, b].sort().join('|');
+
+/** A god's rivals as your choices have left them: the pantheon's feuds, plus or minus pantheon politics. */
+export function rivalsOf(char: Character, god: string, c: Content = content): string[] {
+  const base = new Set(c.pantheon.find(god)?.rivals ?? []);
+  for (const g of c.gods.ids()) {
+    if (g === god) continue;
+    const rel = char.devotion.politics[pairKey(god, g)];
+    if (rel === 'rival') base.add(g);
+    else if (rel === 'ally' || rel === 'peace') base.delete(g);
+  }
+  return [...base];
+}
+
+/** Sets how two gods stand toward each other from now on. */
+export function setRelation(char: Character, a: string, b: string, relation: GodRelation): void {
+  char.devotion.politics[pairKey(a, b)] = relation;
 }
 
 export function favorOf(char: Character, god: string): number {
@@ -24,7 +43,7 @@ export function tierIndex(tier: DevotionTier): number {
 
 /** A god's tier for this character: Apostle if you serve it, else by favor. */
 export function tierOf(char: Character, god: string): DevotionTier {
-  if (char.devotion.apostle?.god === god) return 'apostle';
+  if (char.devotion.apostle?.god === god || char.devotion.defender === god) return 'apostle';
   return tierFor(favorOf(char, god));
 }
 
@@ -143,7 +162,7 @@ export function applyFavor(char: Character, deltas: Record<string, number>, favo
   for (const [god, amount] of Object.entries(deltas)) {
     const gain = amount > 0 && !raw ? amount * favorMultiplier(char, god, favorGain, c) : amount;
     add(god, gain);
-    if (gain > 0) for (const rival of c.pantheon.find(god)?.rivals ?? []) add(rival, -gain * DEVOTION.rivalShare);
+    if (gain > 0) for (const rival of rivalsOf(char, god, c)) add(rival, -gain * DEVOTION.rivalShare);
   }
   const changes: FavorChange[] = [];
   for (const [god, amount] of totals) {

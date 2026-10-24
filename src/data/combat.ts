@@ -113,6 +113,8 @@ export const PARTY_SCALING = {
   enemyHpPerCompanion: 150,
   /** Enemy damage bonus (flat percent) per companion. */
   enemyDamagePerCompanion: 12,
+  /** An apostle's follower counts as this share of a companion for the two numbers above. */
+  followerShare: 0.4,
   /**
    * Companions' attack, magic and divine power by class, percent "more"
    * (negative = less). Classes differ a lot as companions (a healer or a

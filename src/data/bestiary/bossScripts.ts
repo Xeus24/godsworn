@@ -23,6 +23,7 @@ export const BOSS_SKILLS: SkillDef[] = [
   enemy({ id: 'grave-toll', name: 'Grave Toll', description: 'A bell only the dead should hear.', tags: ['Spell', 'Shadow', 'AoE'], element: 'shadow', targeting: 'allEnemies', damage: { stat: 'magicAttack', multiplier: 1.36, perRank: 0.1 }, effects: [st('weaken', 2)] }),
   enemy({ id: 'shard-storm', name: 'Shard Storm', description: 'A storm of razor crystal.', tags: ['Spell', 'Arcane', 'AoE'], element: 'arcane', targeting: 'allEnemies', damage: { stat: 'magicAttack', multiplier: 1.44, perRank: 0.1 }, effects: [st('bleed', 2, 40)] }),
   enemy({ id: 'doom-mark', name: 'Doom Mark', description: 'A killing curse on one target.', tags: ['Spell', 'Shadow', 'Curse'], element: 'shadow', targeting: 'enemy', damage: { stat: 'magicAttack', multiplier: 2.72, perRank: 0.15 }, effects: [st('curse', 3)] }),
+  enemy({ id: 'final-judgment', name: 'Final Judgment', description: 'Ten gods pass sentence at once.', tags: ['Spell', 'Holy', 'AoE'], element: 'holy', targeting: 'allEnemies', damage: { stat: 'magicAttack', multiplier: 1.6, perRank: 0.1 }, effects: [st('weaken', 2)] }),
   enemy({ id: 'unmaking', name: 'Unmaking', description: 'Reality comes apart around the party.', tags: ['Spell', 'Void', 'AoE'], element: 'void', targeting: 'allEnemies', damage: { stat: 'magicAttack', multiplier: 1.61, perRank: 0.1 }, effects: [st('vulnerable', 2)] }),
 ];
 
@@ -80,4 +81,7 @@ export const BOSS_SCRIPTS: BossScriptDef[] = [
   // ---------------- Aspects (Trials of Apostleship) ----------------
   // Gods' Aspects are long, careful fights; they enrage late.
   ...['solenne', 'morrath', 'kael', 'ysolde', 'vex', 'thalor', 'nymira', 'aurelis', 'hesha', 'grimvald'].map((god): BossScriptDef => ({ id: `aspect-${god}`, phases: [], telegraphs: [], enrageTurns: 80, enrageText: 'The Aspect’s patience ends. Its full divinity bears down on you.' })),
+  // ---------------- Twilight of the Gods ----------------
+  { id: 'the-nameless-one', phases: [phase(66, 'The Blank Page', 'The Nameless One turns a page that is not there. False heralds step out of it.', { adds: ['false-herald'] }), phase(33, 'Unwriting', 'It begins to erase you, letter by letter.', { modifiers: [dmg(25)] })], telegraphs: [tel('unmaking', 5, 'The Nameless One opens its hands, and the world between them goes blank…'), tel('doom-mark', 5, 'It reads your name aloud, slowly…', 1)], enrageText: 'The Nameless One stops pretending to be patient.' },
+  { id: 'the-last-light', phases: [phase(60, 'Ten Voices', 'The Last Light splits into ten voices, all of them furious.', { modifiers: [speed(15)] }), phase(30, 'Last Rites', 'The pantheon throws everything it has left at you.', { modifiers: [dmg(25)], effects: [shield(15)] })], telegraphs: [tel('final-judgment', 4, 'The Last Light raises ten hands in judgment…')] },
 ];

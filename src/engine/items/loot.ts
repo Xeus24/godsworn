@@ -23,7 +23,8 @@ export function rollGold(ctx: LootContext, mult: number): number {
 }
 
 export function poolCandidates(pool: Extract<LootEntry, { kind: 'pool' }>['pool'], itemLevel: number, c: Content): ItemBaseDef[] {
-  const atLevel = (b: ItemBaseDef): boolean => b.level <= itemLevel && !POOL_EXCLUDED.has(b.id);
+  // Forbidden goods never drop: the Black Market sells them to heretics.
+  const atLevel = (b: ItemBaseDef): boolean => b.level <= itemLevel && !POOL_EXCLUDED.has(b.id) && b.forbidden === undefined;
   switch (pool) {
     case 'potion':
       return c.items.filter((b) => b.category === 'consumable' && b.kind === 'potion' && atLevel(b));

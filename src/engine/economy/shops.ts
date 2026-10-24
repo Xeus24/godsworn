@@ -1,3 +1,4 @@
+import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
 import type { Character } from '../character/types';
 import { Rng } from '../core/rng';
@@ -112,6 +113,12 @@ export function shopStock(shop: ShopDef, town: string, day: number, char: Charac
           item.identified = true;
           items.push(item);
         }
+        break;
+      }
+      case 'forbidden': {
+        const tier = heresyTier(char);
+        const goods = c.items.filter((b) => b.forbidden !== undefined && b.forbidden <= tier && b.level <= level + 5 && !(b.category === 'book' && (char.generalSkills[b.teaches]?.rank ?? 0) >= (c.generalSkills.find(b.teaches)?.maxRank ?? 0)));
+        for (let i = 0; i < rule.count && goods.length; i++) items.push(createItem(goods.splice(rng.int(0, goods.length - 1), 1)[0]?.id as string, 1, uid, c));
         break;
       }
       case 'uniques': {
