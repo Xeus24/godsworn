@@ -1556,6 +1556,19 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 
 ### Companions
 
+Each companion in a fight gives every enemy 150% more HP (regeneration still heals as if alone) and +12% damage. Companions' attack, magic and divine power, and extra stats, by class (tuned with `npm run sim:party` so every class is worth about the same):
+
+| Class | Power | Extra |
+|---|---|---|
+| Warrior | +5% | 40% more Max HP, 20% less Damage Taken |
+| Mage | +60% | 50% more Max HP |
+| Rogue | -55% | - |
+| Cleric | -85% | +100% Damage Bonus |
+| Ranger | -72% | - |
+| Necromancer | +105% | 50% more Max HP |
+| Monk | -15% | - |
+| Bard | +30% | 60% more Max HP, 20% less Damage Taken |
+
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
 - **Fenn Ashwhistle**, Lone Hunter: Beastkin Ranger (Beastmaster), follows Ysolde, met in Thornwick. Likes hunting poachers and bandits, nature magic, sleeping under the stars; dislikes waste, leaving the pack behind.

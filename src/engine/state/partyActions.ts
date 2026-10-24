@@ -166,7 +166,7 @@ export class PartyActions {
     return this.members().map((comp) => ({ char: comp.character, extras: companionExtras(this.def(comp.id), comp) }));
   }
 
-  /** HP and MP carry over; the fallen get back up after a victory; a defeat sends everyone home patched up. */
+  /** HP and MP carry over (as a share of the maximum); the fallen get back up after a victory; a defeat sends everyone home patched up. */
   afterBattle(b: Battle): void {
     for (const comp of this.members()) {
       const x = b.combatants.find((c) => c.id === `companion:${comp.id}`);
@@ -176,8 +176,9 @@ export class PartyActions {
         restoreFull(char);
         continue;
       }
-      char.hp = Math.max(x.alive ? 1 : 0, x.hp);
-      char.mp = Math.max(0, x.mp);
+      const own = characterStats(char);
+      char.hp = Math.max(x.alive ? 1 : 0, Math.round((x.hp / Math.max(1, x.maxHp)) * own.maxHp));
+      char.mp = Math.max(0, Math.round((x.mp / Math.max(1, x.maxMp)) * own.maxMp));
       if (char.hp <= 0) char.hp = 1;
       clampVitals(char);
     }

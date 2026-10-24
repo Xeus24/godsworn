@@ -25,6 +25,7 @@ Then open http://localhost:5173.
 | `npm run build` | Type-check and production build to `dist/` |
 | `npm run preview` | Serve the production build |
 | `npm run sim` | Simulate fights per class and level; print win rates, turns and damage per turn |
+| `npm run sim:party` | Simulate every hero class beside every companion class across each zone's fights; print win rates and the spread between companion classes |
 | `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 
@@ -109,7 +110,7 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 - **The main story** runs through all eight zones, against the Unsworn and Seryth the Oathbreaker. Mercy, what you do with the Severance Shard, Saint Orren's ring and whether you are an Apostle change how it ends: there are four endings, one with a different epilogue for each god. An Apostle also answers their own god's charge in chapter 7.
 - **Every god** has a questline from its temple priest that leads to its Trial of Apostleship; **class trainers** give a short errand before their trial (the arena only lets you fight a trial once its quest is at that stage); **hybrid trials** ask you to consult each mentor first; each **faction** has three quests that end in a title.
 
-**Companions (O):** six people can join you (Brother Aldric, Fenn, Korga, Ilyra, Sable and Marisol), and up to three fight beside you; the rest wait in reserve. They level with you and spend their own points, but you choose their gear (equip from your bags on the Party screen). Each follows a god and has likes and dislikes: **approval** rises and falls with what you do, which gods you please, and your choices in conversations. At 20/40/60/80 approval you pick one of two **bond perks**; at 30 they share a **personal quest**, which earns an **oath** perk. At −50 they leave you, and wait in their town until you make amends. Enemies grow tougher with every companion in the fight.
+**Companions (O):** six people can join you (Brother Aldric, Fenn, Korga, Ilyra, Sable and Marisol), and up to three fight beside you; the rest wait in reserve. They level with you and spend their own points, but you choose their gear (equip from your bags on the Party screen). Each follows a god and has likes and dislikes: **approval** rises and falls with what you do, which gods you please, and your choices in conversations. At 20/40/60/80 approval you pick one of two **bond perks**; at 30 they share a **personal quest**, which earns an **oath** perk. At −50 they leave you, and wait in their town until you make amends. Enemies grow tougher with every companion in the fight, and each class is tuned as a companion so that none is a wasted slot: healers and pets fight weaker than you, lone strikers and casters stronger.
 
 More screens and controls are documented here as each phase lands.
 

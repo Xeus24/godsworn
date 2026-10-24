@@ -9,6 +9,7 @@ import { WEAPON_STAGES } from '../src/data/apostles';
 import { APOSTLESHIP, DEVOTION } from '../src/data/devotion';
 import { UPGRADE_CHANCE } from '../src/engine/economy/enchanting';
 import { MULTICLASS } from '../src/data/progression';
+import { PARTY_SCALING } from '../src/data/combat';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
 
@@ -324,6 +325,13 @@ function storySection(): string {
   out.push('### Endings', '');
   for (const e of content.endings.all()) out.push(`- **${e.name}** (title “${e.title ?? ''}”)${e.godText ? ', with a paragraph for each god’s Apostle' : ''}: ${e.text}`);
   out.push('', '### Companions', '');
+  out.push(`Each companion in a fight gives every enemy ${PARTY_SCALING.enemyHpPerCompanion}% more HP (regeneration still heals as if alone) and +${PARTY_SCALING.enemyDamagePerCompanion}% damage. Companions' attack, magic and divine power, and extra stats, by class (tuned with \`npm run sim:party\` so every class is worth about the same):`, '');
+  out.push('| Class | Power | Extra |', '|---|---|---|');
+  for (const cls of content.classes.all()) {
+    const power = PARTY_SCALING.companionPower[cls.id] ?? PARTY_SCALING.companionPowerDefault;
+    out.push(`| ${cls.name} | ${power >= 0 ? '+' : ''}${power}% | ${(PARTY_SCALING.companionStats[cls.id] ?? []).map(mod).join(', ') || '-'} |`);
+  }
+  out.push('');
   for (const c of content.companions.all()) {
     out.push(`- **${c.name}**, ${c.title}: ${content.races.get(c.raceId).name} ${content.classes.get(c.classId).name} (${content.specializations.get(c.specialization).name}), follows ${content.gods.get(c.god).name}, met in ${content.towns.get(c.town).name}. Likes ${c.likes.map((d) => d.text.toLowerCase()).join(', ')}; dislikes ${c.dislikes.map((d) => d.text.toLowerCase()).join(', ')}.`);
     out.push(`  - Bond: ${c.bond.map((t) => `${t.approval}: ${t.options.map((o) => `${o.name} (${o.description})`).join(' or ')}`).join(' · ')} · Oath: ${c.oath.name} (${c.oath.description})`);

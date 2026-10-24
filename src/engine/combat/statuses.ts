@@ -69,7 +69,7 @@ export function tickStatusesAtTurnStart(b: Battle, x: Combatant): void {
       const amount = s.stacks * (s.power * def.dot.powerRatio + (x.maxHp * (def.dot.percentMaxHp ?? 0)) / 100);
       dealDamage(b, source, x, { element: def.dot.element, power: amount, isDot: true, label: def.name });
     }
-    if (def.hot) healTarget(b, x, x, (x.maxHp * def.hot.percentMaxHp) / 100, { label: def.name });
+    if (def.hot) healTarget(b, x, x, (x.maxHp * def.hot.percentMaxHp) / 100 / (x.healScale ?? 1), { label: def.name });
   }
 }
 

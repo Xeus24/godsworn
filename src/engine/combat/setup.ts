@@ -11,20 +11,27 @@ import type { CompanionExtras } from '../party/party';
 import { withSource } from '../stats/modifiers';
 import { PARTY_SCALING } from '../../data/combat';
 
-/** A companion as a combatant: their character plus bond perks, controlled by the player. */
+/**
+ * A companion as a combatant: their character plus bond perks and class
+ * tuning, controlled by the player. Those can raise max HP and MP, so the
+ * character's HP and MP carry in as a share of their maximum.
+ */
 export function createCompanionCombatant(char: Character, extras: CompanionExtras, c: Content = content): Combatant {
   const x = createHero(char, `companion:${char.id}`, c);
+  const hpShare = x.hp / Math.max(1, x.maxHp);
+  const mpShare = x.mp / Math.max(1, x.maxMp);
   x.kind = 'companion';
-  const power = PARTY_SCALING.companionPower;
-  const weaker = withSource([{ stat: 'physicalAttack', type: 'more', value: power }, { stat: 'magicAttack', type: 'more', value: power }, { stat: 'divinePower', type: 'more', value: power }], 'companion');
+  const classId = char.classes[0]?.classId ?? '';
+  const power = PARTY_SCALING.companionPower[classId] ?? PARTY_SCALING.companionPowerDefault;
+  const weaker = withSource([{ stat: 'physicalAttack', type: 'more', value: power }, { stat: 'magicAttack', type: 'more', value: power }, { stat: 'divinePower', type: 'more', value: power }, ...(PARTY_SCALING.companionStats[classId] ?? [])], 'companion');
   x.statInput = { ...x.statInput, modifiers: [...x.statInput.modifiers, ...extras.modifiers, ...weaker] };
   x.triggers = [...x.triggers, ...extras.triggers];
   x.flags = [...new Set([...x.flags, ...extras.flags])];
   const stats = calculateStats(x.statInput);
   x.maxHp = stats.maxHp;
   x.maxMp = stats.maxMp;
-  x.hp = Math.max(1, Math.min(char.hp, x.maxHp));
-  x.mp = Math.min(char.mp, x.maxMp);
+  x.hp = Math.max(1, Math.round(hpShare * x.maxHp));
+  x.mp = Math.round(mpShare * x.maxMp);
   return x;
 }
 
@@ -65,6 +72,7 @@ function applyThreat(x: Combatant, threat: number, damage = threat, source = 'th
   const stats = calculateStats(x.statInput);
   x.maxHp = stats.maxHp;
   x.hp = stats.maxHp;
+  if (source === 'party') x.healScale = (x.healScale ?? 1) * (1 + threat / 100);
 }
 
 /** Builds a battle between the hero (with companions and escorted NPCs) and an encounter's enemies; enemies scale with the party's size. */

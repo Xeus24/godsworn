@@ -409,7 +409,8 @@
   - **Approval** (−100 to 100) moves with their likes and dislikes (judged like a god's), with favor you earn with their god (and its rival), and with dialogue choices. At −50 they leave and wait in their town (make amends for gold).
   - **Bond tree:** at 20/40/60/80 approval, pick one of two perks (modifiers, triggers). **Personal quests** open at 30 approval and earn an **oath** perk. 6 recruitment-or-story quests and 6 personal quests.
   - Up to three fight beside you, controlled by you (or auto-battle); HP carries over and the fallen get up after a win.
-- **Party scaling** (`PARTY_SCALING` in `data/combat.ts`): each companion in a fight gives every enemy +150% HP and +12% damage, and companions fight at 70% attack power, so a full party is stronger than a hero alone without trivializing fights.
+- **Party scaling** (`PARTY_SCALING` in `data/combat.ts`): each companion in a fight gives every enemy +150% HP and +12% damage, so a full party is stronger than a hero alone without trivializing fights. Regeneration (percent-of-max-HP heals) is measured against the enemy's HP before party scaling, so a bigger party makes enemies tougher, not faster to heal.
+- **Party balance pass** (after Phase 12): companions' power and extra stats are set **per class** (`companionPower`, `companionStats`), tuned with the new `npm run sim:party`. It pits every hero class beside one companion of every class (no bond perks) against each zone's packs, dungeon bosses, story bosses and world boss. Before: rogue, cleric and ranger companions won 89–91% averaged over fight types, warrior, mage, bard and necromancer 66–71% (no better than the hero alone at 69%), a 25.6-point spread. After: every class 81.2–83.6% (2.3-point spread). Healers and pets were cut (the cleric's heals hardest, with some damage given back), lone strikers and casters raised, and the fragile back row and the warrior's front line got toughness. Classes keep some identity by fight type: rangers and necromancers lead against packs (100%), rogues and clerics against lone world bosses (60–64%, versus 45–46% for rangers and necromancers). Companions' HP and MP now carry in and out of battle as a share of their maximum, so perks and class stats that raise max HP no longer start them wounded.
 - **UI:**
   - Dialogue window (portraits, keys 1–9, Esc to leave) and an ending screen.
   - Quest log (J): quests by kind, the current stage, objectives with progress and where to go, time left, rewards, Track and Abandon, completed and failed lists.
@@ -419,7 +420,7 @@
   - General skills moved from J to **L** (J is the quest log, as the spec asks).
   - Developer panel: start or advance quests, mark the story's first seven chapters done, reach any ending, recruit companions, change approval.
 - **Balance** (story fights with benchmark heroes, `scripts/.scratch` sims): ordinary quest fights 63–100% solo; story bosses 34–75% solo for the hero alone and about 45–100% with companions depending on who they are (a cleric or a ranger's wolf helps most); the final Shadow of the Unwritten 17% alone, 46% with two companions.
-- 378 unit tests.
+- 381 unit tests.
 
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
@@ -518,7 +519,7 @@
 
 ## Cut / deferred
 - **Companions' class trees** are auto-built; the skill tree screen edits only your own trees (Phase 16 polish could open companions' trees too). Companion gear is managed on the Party screen, not by dragging onto a paper doll.
-- **Party balance** (companions vary a lot by class) gets its full pass with the balance simulation in Phase 16. The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
+- **Party balance:** companion classes are evened out (see the balance pass under Phase 12). Still for Phase 16: the companion numbers make up for weak *hero* classes too (necromancer, mage, bard and warrior heroes are 42–50% alone in `sim:party`), so they need retuning after the class pass; full three-companion parties win 92–100% against dungeon bosses (65% alone), so party-size scaling may need to grow with the third companion; and pairs of low-damage classes (two clerics, two necromancers) still stall against regenerating world bosses. The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
 - **Titles** (section 8) move to Phase 13 with feats and achievements. Apostle titles are already earned and stored (and shown on the Pantheon); the title display and other titles come then.
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.

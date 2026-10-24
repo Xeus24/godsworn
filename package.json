@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "sim:loot": "tsx scripts/simulateLoot.ts",
     "content:md": "tsx scripts/contentCatalog.ts",
-    "sim": "tsx scripts/simulate.ts"
+    "sim": "tsx scripts/simulate.ts",
+    "sim:party": "tsx scripts/simulateParty.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

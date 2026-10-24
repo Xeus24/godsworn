@@ -1,3 +1,5 @@
+import type { ModifierSpec } from '../engine/stats/modifiers';
+
 /** Combat tuning numbers. The rules that use them live in src/engine/combat/. */
 export const COMBAT = {
   /** Damage is randomized by +/- this share (0.1 = 0.9x..1.1x). */
@@ -111,6 +113,32 @@ export const PARTY_SCALING = {
   enemyHpPerCompanion: 150,
   /** Enemy damage bonus (flat percent) per companion. */
   enemyDamagePerCompanion: 12,
-  /** Companions' attack, magic and divine power, percent "more" (negative = less). */
-  companionPower: -30,
+  /**
+   * Companions' attack, magic and divine power by class, percent "more"
+   * (negative = less). Classes differ a lot as companions (a healer or a
+   * pet doubles a hero's staying power, a lone striker only adds damage
+   * the enemies' extra HP soaks up), so each is tuned until every class is
+   * worth about the same beside every hero (`npm run sim:party`).
+   */
+  companionPower: {
+    warrior: 5,
+    mage: 60,
+    rogue: -55,
+    cleric: -85,
+    ranger: -72,
+    necromancer: 105,
+    monk: -15,
+    bard: 30,
+  } as Record<string, number>,
+  /** Power for a class missing from the table. */
+  companionPowerDefault: -30,
+  /** Extra stats by companion class, e.g. toughness for a front-liner whose worth is taking hits. */
+  companionStats: {
+    warrior: [{ stat: 'maxHp', type: 'more', value: 40 }, { stat: 'damageTaken', type: 'more', value: -20 }],
+    mage: [{ stat: 'maxHp', type: 'more', value: 50 }],
+    // Heals stay light, but part of the damage comes back so a cleric still helps finish a fight.
+    cleric: [{ stat: 'damageBonus', type: 'flat', value: 100 }],
+    necromancer: [{ stat: 'maxHp', type: 'more', value: 50 }],
+    bard: [{ stat: 'maxHp', type: 'more', value: 60 }, { stat: 'damageTaken', type: 'more', value: -20 }],
+  } as Record<string, ModifierSpec[]>,
 };

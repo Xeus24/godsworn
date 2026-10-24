@@ -120,6 +120,12 @@ export interface Combatant {
   /** Last computed maximums (refreshed whenever stats are computed). */
   maxHp: number;
   maxMp: number;
+  /**
+   * Percent-of-max-HP heals (regeneration) are divided by this. Party
+   * scaling multiplies enemy HP to make them tougher, not to make them
+   * regenerate faster.
+   */
+  healScale?: number;
   shield: number;
   /** Class resource and any others (rage, combo...). */
   resources: Record<string, number>;
