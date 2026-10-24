@@ -198,6 +198,7 @@ export class ItemActions {
 
   /** Moves between inventory and stash slots (merging stacks or swapping). */
   move(from: ItemLocation, to: ItemLocation): Result {
+    if ((from.where === 'stash' || to.where === 'stash') && !this.s.world.inTown()) return fail('The stash is kept in towns.');
     const grid = (loc: ItemLocation): Inventory | undefined =>
       loc.where === 'inventory' ? this.inv : loc.where === 'stash' ? this.s.state.stash.tabs[loc.tab] : undefined;
     const a = grid(from);
@@ -215,6 +216,7 @@ export class ItemActions {
   }
 
   buyStashTab(): Result {
+    if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
     const cost = nextStashTabCost(this.s.state.stash);
     if (cost === undefined) return fail('You own every stash tab.');
     if (!this.s.spendGold(cost, 'stash tab')) return fail(`A new tab costs ${cost} gold.`);

@@ -11,6 +11,8 @@ import { HYBRID_TRIAL_LEVEL } from '../src/data/multiclass';
 import { MULTICLASS } from '../src/data/progression';
 import { isTrialEncounter } from '../src/engine/character/multiclass';
 import { benchmarkHero, benchmarkMulticlass } from '../src/engine/combat/simulateHelpers';
+import type { EncounterDef } from '../src/engine/combat/types';
+import { groupEncounter } from '../src/engine/world/world';
 
 function arg(name: string, fallback: string): string {
   const i = process.argv.indexOf(`--${name}`);
@@ -33,7 +35,7 @@ console.log(header);
 console.log(' '.repeat(18) + LEVELS.map(() => '  win%  turns dpt'.padStart(16)).join(''));
 
 const overall: number[] = [];
-for (const classId of arg('only', '') === 'trials' ? [] : CLASSES) {
+for (const classId of arg('only', '') === '' ? CLASSES : []) {
   const cells: string[] = [];
   for (const level of LEVELS) {
     // Encounters within 2 levels of the benchmark, fought at the hero's level.
@@ -69,8 +71,9 @@ for (const classId of arg('only', '') === 'trials' ? [] : CLASSES) {
   console.log(classId.padEnd(18) + cells.join(''));
 }
 const avg = overall.reduce((a, b) => a + b, 0) / Math.max(1, overall.length);
-console.log(`\nAverage win rate: ${avg.toFixed(1)}% (target 85-95% vs normal encounters at equal level)`);
+if (overall.length) console.log(`\nAverage win rate: ${avg.toFixed(1)}% (target 85-95% vs normal encounters at equal level)`);
 
+if (arg('only', '') === '' || arg('only', '') === 'trials') {
 // Trials: every class against each class trial at level 15, and each hybrid's
 // own pair (both classes at 25, character level 35) against its trial.
 const TRIAL_FIGHTS = Math.max(10, Math.round(FIGHTS / 4));
@@ -100,7 +103,7 @@ for (const h of content.hybrids.all()) {
   trialRow(h.name, h.trial, () => [benchmarkMulticlass(a, b, 35, MULTICLASS.hybridLevel), benchmarkMulticlass(b, a, 35, MULTICLASS.hybridLevel)]);
 }
 
-// Trials of Apostleship: every class at level 35 against each god's three stages (fought at 35, 36 and 38).
+// Trials of Apostleship: every class at level 35 against each god's three stages (fought at 35, 36 and 37).
 console.log('\nTrials of Apostleship (all classes at level 35; stages 1-2 target 60-90%, the Aspect 40-70%)');
 for (const g of content.pantheon.all()) {
   const cells: string[] = [];
@@ -111,7 +114,7 @@ for (const g of content.pantheon.all()) {
     for (let i = 0; i < TRIAL_FIGHTS; i++) {
       for (const cls of content.classes.ids()) {
         const hero = benchmarkHero(cls, 35);
-        const b = createEncounterBattle(hero, content.encounters.get(`apostle-trial-${g.id}-${stage}`), { rng, level: 35 + ([0, 1, 3][stage - 1] ?? 0) });
+        const b = createEncounterBattle(hero, content.encounters.get(`apostle-trial-${g.id}-${stage}`), { rng, level: 35 + ([0, 1, 2][stage - 1] ?? 0) });
         runAutoBattle(b);
         fights++;
         if (b.outcome === 'victory') wins++;
@@ -120,4 +123,36 @@ for (const g of content.pantheon.all()) {
     cells.push(`${((wins / Math.max(1, fights)) * 100).toFixed(1).padStart(6)}%`);
   }
   console.log(`${content.gods.get(g.id).name.padEnd(12)} ${cells.join('  ')}`);
+}
+}
+
+// Zones: each class at a zone's middle level against its random encounters, dungeon bosses and world boss.
+if (arg('only', '') === 'zones' || arg('only', '') === '') {
+  console.log('\nZones (all classes at the zone midpoint; encounters 85-95%, dungeon bosses 50-80%, world bosses 30-60%)');
+  console.log('zone'.padEnd(18) + 'level  encounters  dungeon bosses  world boss');
+  const ZONE_FIGHTS = Math.max(5, Math.round(FIGHTS / 8));
+  const rate = (make: () => { enc: EncounterDef; level: number }, cls: string, level: number, seed: number): number => {
+    let wins = 0;
+    const rng = new Rng(seed);
+    for (let i = 0; i < ZONE_FIGHTS; i++) {
+      const { enc, level: lvl } = make();
+      const b = createEncounterBattle(benchmarkHero(cls, level), enc, { rng, level: lvl });
+      runAutoBattle(b);
+      if (b.outcome === 'victory') wins++;
+    }
+    return wins / ZONE_FIGHTS;
+  };
+  for (const z of content.zones.all()) {
+    const level = Math.round((z.levels[0] + z.levels[1]) / 2);
+    const rng = new Rng(z.order);
+    const avg = (f: (cls: string) => number): string => `${((content.classes.ids().reduce((s, c) => s + f(c), 0) / content.classes.size) * 100).toFixed(0)}%`;
+    const enc = avg((cls) => rate(() => ({ enc: groupEncounter(rng.weighted(z.encounters, (g) => g.weight), 'sim', z.name, level, { threat: z.threat ?? 0 }), level }), cls, level, z.order * 7));
+    const bosses = z.dungeons.map((d) => {
+      const def = content.dungeons.get(d);
+      return avg((cls) => rate(() => ({ enc: groupEncounter({ weight: 1, enemies: [{ enemyId: def.boss }, ...(def.encounters[0]?.enemies.slice(0, 1) ?? [])] }, 'sim', def.name, def.level, { isBoss: true }), level: def.level }), cls, def.level, def.level));
+    });
+    const wb = content.enemies.get(z.worldBoss);
+    const world = avg((cls) => rate(() => ({ enc: groupEncounter({ weight: 1, enemies: [{ enemyId: wb.id }] }, 'sim', wb.name, wb.level, { isBoss: true }), level: wb.level }), cls, Math.max(level, wb.level - 2), wb.level));
+    console.log(`${z.name.padEnd(18)}${String(level).padStart(5)}  ${enc.padStart(10)}  ${bosses.join(' / ').padStart(14)}  ${world.padStart(10)}`);
+  }
 }

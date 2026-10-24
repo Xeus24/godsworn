@@ -16,7 +16,7 @@ import { createItem, uniquePool } from '../src/engine/items/generate';
 import { canLearnGeneral } from '../src/engine/skills/general';
 import { settleBattle } from '../src/engine/state/battleResults';
 import { GameSession } from '../src/engine/state/gameState';
-import { makeHero } from './helpers';
+import { atShrine, makeHero } from './helpers';
 
 const withFavor = (char: Character, favor: Record<string, number>): Character => {
   Object.assign(char.devotion.favor, favor);
@@ -112,6 +112,8 @@ describe('the session: shrines, minor blessings, scriptures', () => {
 
   it('a minor blessing costs favor and lasts a number of battles', () => {
     const s = GameSession.newGame(2, withFavor(makeHero(), { kael: 50 }));
+    expect(s.devotion.receiveMinor('kael-fury').ok).toBe(false);
+    atShrine(s, 'kael');
     const before = characterStats(s.player).damageBonus;
     expect(s.devotion.receiveMinor('kael-fury').ok).toBe(true);
     expect(s.player.devotion.favor.kael).toBe(30);
@@ -121,6 +123,7 @@ describe('the session: shrines, minor blessings, scriptures', () => {
 
   it('Divine skills need the god’s blessing; scriptures cost favor at Favored', () => {
     const s = GameSession.newGame(3, withFavor(makeHero(), { aurelis: 300 }));
+    atShrine(s, 'aurelis');
     expect(canLearnGeneral(s.player, 'rite-of-knowing').ok).toBe(false);
     expect(s.devotion.buyScripture('aurelis').ok).toBe(true);
     expect(s.state.inventory.slots.some((i) => i?.baseId === 'book-rite-of-knowing')).toBe(true);

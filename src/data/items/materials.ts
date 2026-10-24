@@ -50,6 +50,7 @@ export const MATERIALS: MaterialDef[] = SPECS.map(([id, name, kind, tier, value,
 /** Useless but charming. Sell them, or offer them to a god who likes them. */
 export const CURIOSITIES: CuriosityDef[] = [
   { id: 'loaded-dice', name: 'Loaded Dice', category: 'curiosity', level: 1, value: 25, stack: 99, lovedBy: ['vex'], description: 'They always roll a six. Almost always.' },
+  { id: 'skeleton-key', name: 'Skeleton Key', category: 'curiosity', level: 1, value: 40, stack: 99, lovedBy: ['vex'], description: 'Opens any locked chest, once. Then it snaps.' },
   { id: 'two-headed-coin', name: 'Two-Headed Coin', category: 'curiosity', level: 1, value: 30, stack: 99, lovedBy: ['vex', 'grimvald'], description: 'Heads you win. Heads I lose.' },
   { id: 'rubber-chicken', name: 'Rubber Chicken', category: 'curiosity', level: 1, value: 8, stack: 99, lovedBy: ['vex'], description: 'Of no conceivable use. It squeaks.' },
   { id: 'bent-horseshoe', name: 'Bent Horseshoe', category: 'curiosity', level: 1, value: 6, stack: 99, lovedBy: ['thalor'], description: 'Someone was very strong, or very angry.' },

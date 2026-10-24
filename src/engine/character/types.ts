@@ -4,6 +4,7 @@ import type { GeneralSkillProgress } from '../skills/generalTypes';
 import type { ClassTreeState } from '../skills/treeTypes';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
+import type { WorldProgress } from '../world/types';
 import type { XpMode } from './multiclassTypes';
 
 /** A buff that lasts a number of battles (elixirs, food, minor blessings). */
@@ -56,6 +57,8 @@ export interface Character {
   trialsWon: string[];
   /** Favor, patron, blessings and divine intervention. */
   devotion: Devotion;
+  /** Faction reputation, house and world boss trophies. */
+  world: WorldProgress;
 
   /** Attribute points the player has spent, per stat. */
   allocated: PrimaryStats;

@@ -74,6 +74,21 @@ export const ENEMY_GROWTH = {
   speed: 0.015,
 } as const;
 
+/**
+ * Past level 15 heroes grow faster than linearly (gear tiers multiply
+ * weapon damage), so enemies gain an extra term there:
+ * growth x (level - 15)^power on top of the linear growth.
+ */
+export const ENEMY_LATE_GROWTH = {
+  from: 15,
+  power: 1.6,
+  hp: 0.075,
+  attack: 0.035,
+  magic: 0.035,
+  defense: 0.015,
+  magicResist: 0.015,
+} as const;
+
 /** Extra multipliers per enemy tier. */
 export const TIER_SCALING: Record<string, { hp: number; damage: number; xp: number }> = {
   normal: { hp: 1, damage: 1, xp: 1 },

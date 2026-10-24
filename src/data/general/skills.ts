@@ -125,6 +125,8 @@ export const GENERAL_SKILLS: GeneralSkillDef[] = [
   C({ id: 'treasure-hunter', name: 'Treasure Hunter', category: 'utility', rarity: 'rare', description: 'Passive: +3% gold find and +2% magic find per rank.', passive: [flat('goldFind', 3), flat('magicFind', 2)] }),
   C({ id: 'lucky-star', name: 'Lucky Star', category: 'utility', rarity: 'uncommon', description: 'Passive: +1 LUK per rank.', passive: [flat('luk', 1)] }),
   C({ id: 'fast-learner', name: 'Fast Learner', category: 'utility', rarity: 'rare', description: 'Passive: +2% XP per rank.', passive: [flat('xpGain', 2)] }),
+  C({ id: 'lockpicking', name: 'Lockpicking', category: 'utility', rarity: 'uncommon', description: 'Open locked chests without a key: 10% chance per rank (100% at rank 10); a failed attempt can be retried after a battle.', utility: { kind: 'lockpicking', perRank: 10 } }),
+  C({ id: 'detect-traps', name: 'Detect Traps', category: 'utility', description: 'Spot and disarm chest traps: 10% chance per rank.', utility: { kind: 'detectTraps', perRank: 10 } }),
   C({ id: 'scavenging', name: 'Scavenging', category: 'utility', description: 'After a victory, 6% chance per rank to scavenge extra materials.', utility: { kind: 'scavenging', perRank: 6 } }),
   C({ id: 'tinkering', name: 'Tinkering', category: 'utility', rarity: 'uncommon', description: 'Gear has an 8% chance per rank to take no wear in a battle.', utility: { kind: 'tinkering', perRank: 8 } }),
   C({ id: 'quick-hands', name: 'Quick Hands', category: 'utility', rarity: 'uncommon', description: 'Passive: +0.5% cooldown reduction per rank.', passive: [flat('cooldownReduction', 0.5)] }),

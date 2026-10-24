@@ -440,7 +440,7 @@ Generated from the data files by `npm run content:md`.
 
 **Materials (30):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment
 
-**Curiosities (12):** Loaded Dice, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap
+**Curiosities (13):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap
 
 **Mechanic flags (18):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
 <!-- items:end -->
@@ -493,7 +493,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
 
-### Enemies (46)
+### Enemies (94)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -515,6 +515,54 @@ Generated from the data files by `npm run content:md`.
 | **Dark Cultist** | 13 | normal | humanoid, cultist | back | summoner | Dark Pact, Shadow Bolt | shadow +30%, holy -20% |
 | **Wyld Boar** | 14 | normal | beast | front | aggressive | Gore Charge |  |
 | **Alpha of the Whisperwood** | 15 | elite | beast | front | aggressive | Savage Bite, Pack Howl, War Cry |  |
+| **Cave Bat** | 16 | normal | beast | back | aggressive | Screech, Dive Bomb |  |
+| **Crystal Golem** | 18 | normal | construct | front | aggressive | Crystal Shard, Harden | physical +30%, lightning -20% |
+| **Drowned Sailor** | 19 | normal | undead | front | aggressive | Drown, Cutlass Flurry | ice +30%, holy -30% |
+| **Cave Serpent** | 20 | normal | beast, reptile | front | aggressive | Constrict, Venom Fang |  |
+| **Myconid Shambler** | 21 | normal | plant | back | caster | Spore Cloud, Crude Mending | nature +40%, fire -40% |
+| **Sand Scorpion** | 24 | normal | beast, insect | front | aggressive | Venom Sting |  |
+| **Desert Raider** | 25 | normal | humanoid, bandit | front | aggressive | Cutlass Flurry, Dirty Stab |  |
+| **Dust Elemental** | 27 | normal | elemental | back | caster | Sandstorm | physical +30% |
+| **Restless Mummy** | 28 | normal | undead | front | aggressive | Curse of Ages, Grave Chill | shadow +30%, fire -40% |
+| **Sand Drake** | 30 | normal | dragon, reptile | front | aggressive | Flame Breath, Savage Bite | fire +30% |
+| **Frost Wolf** | 32 | normal | beast | front | aggressive | Savage Bite, Pack Howl | ice +50%, fire -30% |
+| **Ice Elemental** | 34 | normal | elemental | back | caster | Ice Lance, Frost Breath | ice +80%, fire -50% |
+| **Yeti** | 35 | normal | beast | front | aggressive | Boulder Throw, War Cry | ice +40% |
+| **Frost Giant** | 37 | normal | giant | front | aggressive | Tremor, Boulder Throw | ice +50%, fire -30% |
+| **Ice Witch** | 38 | normal | humanoid, cultist | back | caster | Ice Lance, Curse of Ages, Crude Mending | ice +50% |
+| **Siren** | 40 | normal | spirit | back | caster | Siren Song, Drown |  |
+| **Corsair** | 41 | normal | humanoid, bandit | front | aggressive | Cutlass Flurry, Volley |  |
+| **Storm Elemental** | 43 | normal | elemental | back | caster | Arc Lightning | lightning +80%, ice -20% |
+| **Sea Serpent** | 45 | normal | beast, reptile | front | aggressive | Constrict, Drown | ice +30%, lightning -30% |
+| **Harpy** | 46 | normal | beast | back | aggressive | Dive Bomb, Screech |  |
+| **Magma Elemental** | 48 | normal | elemental | front | aggressive | Magma Burst, Harden | fire +80%, ice -40% |
+| **Fire Imp** | 49 | normal | demon | back | caster | Hellfire Bolt | fire +60%, holy -30% |
+| **Lava Hound** | 50 | normal | beast, demon | front | aggressive | Flame Breath, Savage Bite | fire +60%, ice -30% |
+| **Obsidian Golem** | 52 | normal | construct | front | aggressive | Tremor, Harden | physical +30%, fire +50% |
+| **Cultist of Ash** | 53 | normal | humanoid, cultist | back | summoner | Hellfire Bolt, Dark Pact | fire +40%, holy -20% |
+| **Void Knight** | 55 | normal | humanoid, void | front | aggressive | Dark Cleave, Shield Bash | void +50%, holy -20% |
+| **Shadow Fiend** | 56 | normal | demon | back | caster | Shadow Bolt, Curse of Ages | shadow +60%, holy -40% |
+| **Fallen Paladin** | 57 | normal | humanoid, undead | front | aggressive | Dark Cleave, Crude Mending, Curse of Ages | holy +30%, shadow +30% |
+| **Bone Dragon** | 58 | normal | undead, dragon | front | aggressive | Frost Breath, Savage Bite | shadow +50%, holy -40% |
+| **Void Wraith** | 59 | normal | spirit, void | back | caster | Void Rend, Corruption Wave | void +60%, physical +30% |
+| **Grukk the Goblin King** | 8 | miniboss | humanoid, goblin | front | aggressive | Cleave, War Cry, Goblin Hex |  |
+| **The Broodmother** | 14 | miniboss | beast, insect | front | aggressive | Venom Fang, Web Spit, Pack Howl |  |
+| **The Bone Lord** | 16 | boss | undead | front | aggressive | Dark Pact, Grave Chill, Dark Cleave | shadow +40%, holy -30% |
+| **The Tide Hag** | 23 | boss | spirit | back | caster | Drown, Siren Song, Spore Cloud | ice +50% |
+| **The Withered Sun-King** | 31 | boss | undead | front | aggressive | Curse of Ages, Sandstorm, Enrage | fire -30%, shadow +40% |
+| **The Frost Queen** | 39 | boss | humanoid, elemental | back | caster | Frost Breath, Ice Lance, Harden | ice +80%, fire -40% |
+| **Captain Redfang** | 44 | miniboss | humanoid, bandit | front | aggressive | Cutlass Flurry, Volley, Enrage |  |
+| **Leviathan Spawn** | 47 | boss | beast, reptile | front | aggressive | Constrict, Drown, Tremor | ice +40%, lightning -30% |
+| **The Magma Titan** | 54 | boss | elemental, giant | front | aggressive | Magma Burst, Tremor, Harden | fire +80%, ice -40% |
+| **Commander of the Black Throne** | 60 | boss | humanoid, void | front | aggressive | Dark Cleave, Void Rend, Corruption Wave, Enrage | void +60%, holy -20% |
+| **Bramblehorn** | 9 | worldBoss | beast | front | aggressive | Gore Charge, War Cry |  |
+| **Gnarlroot the Elder** | 17 | worldBoss | plant | front | aggressive | Root Lash, Barkskin, Spore Cloud | nature +50%, fire -40% |
+| **The Abyssal Crab** | 25 | worldBoss | beast | front | aggressive | Constrict, Harden, Tremor | physical +30%, lightning -30% |
+| **The Sandworm Colossus** | 33 | worldBoss | beast | front | aggressive | Tremor, Sandstorm, Constrict |  |
+| **Skaldr the Frost Wyrm** | 41 | worldBoss | dragon | front | aggressive | Frost Breath, Savage Bite, Enrage | ice +80%, fire -30% |
+| **The Storm Roc** | 49 | worldBoss | beast, elemental | front | aggressive | Arc Lightning, Dive Bomb, Screech | lightning +80% |
+| **The Ember Matriarch** | 56 | worldBoss | dragon | front | aggressive | Flame Breath, Magma Burst, Enrage | fire +80%, ice -30% |
+| **The Unwritten Herald** | 62 | worldBoss | spirit, void | front | aggressive | Corruption Wave, Void Rend, Curse of Ages | void +80%, holy -20% |
 | **Sword-Master Bram** | 15 | miniboss | humanoid, mentor | front | aggressive | Master’s Riposte, Shield Bash, War Cry |  |
 | **Archmage Velis** | 15 | miniboss | humanoid, mentor | back | caster | Lesson in Fire, Dazzle, Goblin Hex | fire +30%, ice +30% |
 | **Nell the Knife** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
@@ -572,48 +620,48 @@ Generated from the data files by `npm run content:md`.
 | **Trial: The Pale Tutor** | 15 | The Pale Tutor, Skeleton Soldier |
 | **Trial: Master Ren** | 15 | Master Ren |
 | **Trial: Lyra Silvertongue** | 15 | Lyra Silvertongue, Bandit Thug |
-| **Trial of the Spellblade** | 40 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
-| **Trial of the Warpriest** | 40 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
-| **Trial of the Deathknight** | 40 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
-| **Trial of the Beastlord** | 40 | Sword-Master Bram, Bandit Thug, Warden Sylas, Dire Wolf |
-| **Trial of the Templar Ascetic** | 40 | Mother Aurelie, Skeleton Soldier, Master Ren |
-| **Trial of the Stormfist** | 40 | Master Ren, Archmage Velis, Will-o'-Wisp |
-| **Trial of the Shadow Reaper** | 40 | Nell the Knife, Goblin Cutthroat, The Pale Tutor, Skeleton Soldier |
-| **Trial of the Spellthief** | 40 | Nell the Knife, Goblin Cutthroat, Archmage Velis, Will-o'-Wisp |
-| **Trial of the Blade Dancer** | 40 | Nell the Knife, Goblin Cutthroat, Lyra Silvertongue, Bandit Thug |
-| **Trial of the Wildsinger** | 40 | Warden Sylas, Dire Wolf, Lyra Silvertongue, Bandit Thug |
-| **Trial of the Arcane Archer** | 40 | Warden Sylas, Dire Wolf, Archmage Velis, Will-o'-Wisp |
-| **Trial of the Plague Doctor** | 40 | Mother Aurelie, Skeleton Soldier, The Pale Tutor, Skeleton Soldier |
-| **Trial of the Sun Knight** | 40 | Sword-Master Bram, Bandit Thug, Herald of Solenne, Herald of Solenne |
-| **Trial of Solenne: the Ordeal** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne |
-| **Trial of Solenne: the Gauntlet** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne, Herald of Solenne |
+| **Trial of the Spellblade** | 36 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Warpriest** | 36 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
+| **Trial of the Deathknight** | 36 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Beastlord** | 36 | Sword-Master Bram, Bandit Thug, Warden Sylas, Dire Wolf |
+| **Trial of the Templar Ascetic** | 36 | Mother Aurelie, Skeleton Soldier, Master Ren |
+| **Trial of the Stormfist** | 36 | Master Ren, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Shadow Reaper** | 36 | Nell the Knife, Goblin Cutthroat, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Spellthief** | 36 | Nell the Knife, Goblin Cutthroat, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Blade Dancer** | 36 | Nell the Knife, Goblin Cutthroat, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Wildsinger** | 36 | Warden Sylas, Dire Wolf, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Arcane Archer** | 36 | Warden Sylas, Dire Wolf, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Plague Doctor** | 36 | Mother Aurelie, Skeleton Soldier, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Sun Knight** | 36 | Sword-Master Bram, Bandit Thug, Herald of Solenne, Herald of Solenne |
+| **Trial of Solenne: the Ordeal** | 30 | Herald of Solenne, Herald of Solenne |
+| **Trial of Solenne: the Gauntlet** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne |
 | **Trial of Solenne: the Aspect** | 30 | Aspect of Solenne, Herald of Solenne |
-| **Trial of Morrath: the Ordeal** | 30 | Herald of Morrath, Herald of Morrath, Herald of Morrath |
-| **Trial of Morrath: the Gauntlet** | 30 | Herald of Morrath, Herald of Morrath, Herald of Morrath, Herald of Morrath |
+| **Trial of Morrath: the Ordeal** | 30 | Herald of Morrath, Herald of Morrath |
+| **Trial of Morrath: the Gauntlet** | 30 | Herald of Morrath, Herald of Morrath, Herald of Morrath |
 | **Trial of Morrath: the Aspect** | 30 | Aspect of Morrath, Herald of Morrath |
-| **Trial of Kael: the Ordeal** | 30 | Herald of Kael, Herald of Kael, Herald of Kael |
-| **Trial of Kael: the Gauntlet** | 30 | Herald of Kael, Herald of Kael, Herald of Kael, Herald of Kael |
+| **Trial of Kael: the Ordeal** | 30 | Herald of Kael, Herald of Kael |
+| **Trial of Kael: the Gauntlet** | 30 | Herald of Kael, Herald of Kael, Herald of Kael |
 | **Trial of Kael: the Aspect** | 30 | Aspect of Kael, Herald of Kael |
-| **Trial of Ysolde: the Ordeal** | 30 | Herald of Ysolde, Herald of Ysolde, Herald of Ysolde |
-| **Trial of Ysolde: the Gauntlet** | 30 | Herald of Ysolde, Herald of Ysolde, Herald of Ysolde, Herald of Ysolde |
+| **Trial of Ysolde: the Ordeal** | 30 | Herald of Ysolde, Herald of Ysolde |
+| **Trial of Ysolde: the Gauntlet** | 30 | Herald of Ysolde, Herald of Ysolde, Herald of Ysolde |
 | **Trial of Ysolde: the Aspect** | 30 | Aspect of Ysolde, Herald of Ysolde |
-| **Trial of Vex: the Ordeal** | 30 | Herald of Vex, Herald of Vex, Herald of Vex |
-| **Trial of Vex: the Gauntlet** | 30 | Herald of Vex, Herald of Vex, Herald of Vex, Herald of Vex |
+| **Trial of Vex: the Ordeal** | 30 | Herald of Vex, Herald of Vex |
+| **Trial of Vex: the Gauntlet** | 30 | Herald of Vex, Herald of Vex, Herald of Vex |
 | **Trial of Vex: the Aspect** | 30 | Aspect of Vex, Herald of Vex |
-| **Trial of Thalor: the Ordeal** | 30 | Herald of Thalor, Herald of Thalor, Herald of Thalor |
-| **Trial of Thalor: the Gauntlet** | 30 | Herald of Thalor, Herald of Thalor, Herald of Thalor, Herald of Thalor |
+| **Trial of Thalor: the Ordeal** | 30 | Herald of Thalor, Herald of Thalor |
+| **Trial of Thalor: the Gauntlet** | 30 | Herald of Thalor, Herald of Thalor, Herald of Thalor |
 | **Trial of Thalor: the Aspect** | 30 | Aspect of Thalor, Herald of Thalor |
-| **Trial of Nymira: the Ordeal** | 30 | Herald of Nymira, Herald of Nymira, Herald of Nymira |
-| **Trial of Nymira: the Gauntlet** | 30 | Herald of Nymira, Herald of Nymira, Herald of Nymira, Herald of Nymira |
+| **Trial of Nymira: the Ordeal** | 30 | Herald of Nymira, Herald of Nymira |
+| **Trial of Nymira: the Gauntlet** | 30 | Herald of Nymira, Herald of Nymira, Herald of Nymira |
 | **Trial of Nymira: the Aspect** | 30 | Aspect of Nymira, Herald of Nymira |
-| **Trial of Aurelis: the Ordeal** | 30 | Herald of Aurelis, Herald of Aurelis, Herald of Aurelis |
-| **Trial of Aurelis: the Gauntlet** | 30 | Herald of Aurelis, Herald of Aurelis, Herald of Aurelis, Herald of Aurelis |
+| **Trial of Aurelis: the Ordeal** | 30 | Herald of Aurelis, Herald of Aurelis |
+| **Trial of Aurelis: the Gauntlet** | 30 | Herald of Aurelis, Herald of Aurelis, Herald of Aurelis |
 | **Trial of Aurelis: the Aspect** | 30 | Aspect of Aurelis, Herald of Aurelis |
-| **Trial of Hesha: the Ordeal** | 30 | Herald of Hesha, Herald of Hesha, Herald of Hesha |
-| **Trial of Hesha: the Gauntlet** | 30 | Herald of Hesha, Herald of Hesha, Herald of Hesha, Herald of Hesha |
+| **Trial of Hesha: the Ordeal** | 30 | Herald of Hesha, Herald of Hesha |
+| **Trial of Hesha: the Gauntlet** | 30 | Herald of Hesha, Herald of Hesha, Herald of Hesha |
 | **Trial of Hesha: the Aspect** | 30 | Aspect of Hesha, Herald of Hesha |
-| **Trial of Grimvald: the Ordeal** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
-| **Trial of Grimvald: the Gauntlet** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
+| **Trial of Grimvald: the Ordeal** | 30 | Herald of Grimvald, Herald of Grimvald |
+| **Trial of Grimvald: the Gauntlet** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Aspect** | 30 | Aspect of Grimvald, Herald of Grimvald |
 <!-- combat:end -->
 
@@ -791,7 +839,7 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 ## General skills (81)
 
 <!-- general:start -->
-81 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+83 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -838,6 +886,8 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | **Treasure Hunter** | utility | Rare |  | Passive: +3% gold find and +2% magic find per rank. |
 | **Lucky Star** | utility | Uncommon |  | Passive: +1 LUK per rank. |
 | **Fast Learner** | utility | Rare |  | Passive: +2% XP per rank. |
+| **Lockpicking** | utility | Uncommon |  | Open locked chests without a key: 10% chance per rank (100% at rank 10); a failed attempt can be retried after a battle. |
+| **Detect Traps** | utility | Common |  | Spot and disarm chest traps: 10% chance per rank. |
 | **Scavenging** | utility | Common |  | After a victory, 6% chance per rank to scavenge extra materials. |
 | **Tinkering** | utility | Uncommon |  | Gear has an 8% chance per rank to take no wear in a battle. |
 | **Quick Hands** | utility | Uncommon |  | Passive: +0.5% cooldown reduction per rank. |
@@ -1030,3 +1080,80 @@ Each like of your god becomes an edict: do it a number of times within 20 battle
 - **Hesha:** Healing: 20 times; Resting and caring for yourself: 4 times; Healing magic: 20 times
 - **Grimvald:** Earning gold (per 100): 12 times; Profitable work: 20 times
 <!-- apostles:end -->
+
+## The World
+
+<!-- world:start -->
+Eight zones along one road, each a generated tile map with a town or not, dungeons, a world boss, god shrines, a waypoint, chests, lore and a hidden alcove behind a cracked wall. Enemy levels follow yours within the zone's range; `threat` adds HP and damage to a zone's rank and file.
+
+| Zone | Levels | Town | Dungeons (boss) | World boss | Shrines | Weather | Threat |
+|---|---|---|---|---|---|---|---|
+| **The Meadowlands** | 1-8 | Brightwater | The Goblin Warren (Grukk the Goblin King, lv 8) | Bramblehorn | Solenne, Hesha | Clear, Rain, Fog | 0% |
+| **The Whisperwood** | 8-16 | Thornwick | Spider Hollow (The Broodmother, lv 14); The Old Crypt (The Bone Lord, lv 16) | Gnarlroot the Elder | Ysolde, Morrath | Clear, Rain, Fog | 0% |
+| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira | Clear, Fog | 110% |
+| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne | Clear, Heatwave, Sandstorm | 70% |
+| **Frostspire** | 32-40 | Frosthold | The Ice Palace (The Frost Queen, lv 39) | Skaldr the Frost Wyrm | Aurelis, Thalor | Snow, Clear, Fog | 60% |
+| **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald | Thunderstorm, Rain, Clear | 45% |
+| **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael | Ashfall, Heatwave, Clear | 5% |
+| **The Dark Citadel** | 55-60 | - | The Black Throne (Commander of the Black Throne, lv 60) | The Unwritten Herald | Morrath, Vex | Blood Moon, Fog, Clear | 0% |
+
+### Zone enemies
+
+- **The Meadowlands:** Green Slime, Giant Rat, Meadow Wolf, Goblin Cutthroat, Goblin Shaman, Hollow Scarecrow, Bandit Thug, Bandit Archer
+- **The Whisperwood:** Dire Wolf, Whisperwood Spider, Treant Sapling, Will-o'-Wisp, Skeleton Soldier, Restless Ghost, Dark Cultist, Wyld Boar
+- **The Sunken Caves:** Cave Bat, Crystal Golem, Drowned Sailor, Cave Serpent, Myconid Shambler
+- **The Ashen Desert:** Sand Scorpion, Desert Raider, Restless Mummy, Sand Drake, Dust Elemental
+- **Frostspire:** Frost Wolf, Yeti, Ice Elemental, Frost Giant, Ice Witch
+- **The Stormcoast:** Corsair, Sea Serpent, Harpy, Siren, Storm Elemental
+- **The Volcanic Rift:** Lava Hound, Magma Elemental, Fire Imp, Obsidian Golem, Cultist of Ash
+- **The Dark Citadel:** Void Knight, Fallen Paladin, Shadow Fiend, Bone Dragon, Void Wraith
+
+### Towns
+
+| Town | Zone | Temple | Faction hall | Housing |
+|---|---|---|---|---|
+| **Brightwater** | The Meadowlands | Solenne, Hesha | Order of the Dawn | yes |
+| **Thornwick** | The Whisperwood | Ysolde, Vex | Wardens of the Wild | - |
+| **Sandhaven** | The Ashen Desert | Kael, Thalor | The Iron Legion | - |
+| **Frosthold** | Frostspire | Aurelis, Morrath | The Mages’ Guild | - |
+| **Saltmere** | The Stormcoast | Nymira, Grimvald | The Thieves’ Den | yes |
+
+### Weather
+
+| Weather | Encounters | Effect |
+|---|---|---|
+| **Clear** | x1 | Fine weather. |
+| **Rain** | x0.9 | Fire burns low (-15%) and lightning crackles (+10%). |
+| **Thunderstorm** | x1.2 | Lightning +25%, accuracy -5. More enemies are about. |
+| **Fog** | x1.3 | Accuracy -10, dodge +5. Things creep up on you. |
+| **Snow** | x0.9 | Ice +20%, speed -5%. |
+| **Heatwave** | x0.9 | Fire +20%, ice -20%. |
+| **Sandstorm** | x1.2 | Accuracy -10. The dust elementals love it. |
+| **Ashfall** | x1.1 | Fire +15%, HP regeneration -3. |
+| **Blood Moon** | x1.3 | Everyone deals 15% more damage. The Citadel is restless. |
+
+### Factions
+
+| Faction | Hall | God | Likes | Rank bonuses (Member / Veteran / Champion / Legend) |
+|---|---|---|---|---|
+| **Order of the Dawn** | Brightwater | Solenne | Slaying the undead; Ending cultists; Holy magic | +5 Holy Damage / +10 Holy Damage, +3% Max HP / +15 Holy Damage, +5% Max HP / +20 Holy Damage, +8% Max HP, +10 Status Resist |
+| **Wardens of the Wild** | Thornwick | Ysolde | Culling beasts; Felling blighted trees; Nature magic | +5 Nature Damage / +10 Nature Damage, +2 Dodge / +15 Nature Damage, +4 Dodge / +20 Nature Damage, +6 Dodge, +5 HP Regen |
+| **The Iron Legion** | Sandhaven | Kael | Winning fights; Hunting bandits; Beating champions | +3% Defense / +6% Defense, +5 Crit Damage / +9% Defense, +10 Crit Damage / +12% Defense, +15 Crit Damage, +5 Damage Bonus |
+| **The Mages’ Guild** | Frosthold | Aurelis | Spellcasting; Reading skillbooks; Identifying artifacts | +3 Magic Attack / +4% Magic Attack, +5% Max MP / +7% Magic Attack, +8% Max MP / +10% Magic Attack, +12% Max MP, +3 Cooldown Reduction |
+| **The Thieves’ Den** | Saltmere | Vex | Stealing; Clean, precise work; Turning a profit (per 100 gold) | +5 Gold Find / +10 Gold Find, +2 Crit Chance / +15 Gold Find, +4 Crit Chance / +25 Gold Find, +6 Crit Chance, +10 Magic Find |
+
+### House rooms
+
+| Room | Cost per level | Effect |
+|---|---|---|
+| **Bedroom** | 500 | Rest at home for free and wake Well Rested (+5% damage, 3 battles). |
+| **Forge** | 1500 / 4000 / 10000 | Repairs all your gear for free when you visit; +5% defense per level. |
+| **Alchemy Lab** | 1200 / 3500 / 9000 | Brews potions each day (1/2/3 per level); +5 healing power per level. |
+| **Shrine Room** | 2000 / 5000 / 12000 | Pray to your patron at home (counts as a shrine); +5% favor gain per level. |
+| **Trophy Room** | 3000 | Displays world boss trophies: +2% damage per different world boss slain. |
+| **Vault** | 2500 / 7000 | An extra stash tab, and +5% gold find per level. |
+
+### Lore pages (16)
+
+**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel)
+<!-- world:end -->

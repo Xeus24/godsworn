@@ -41,12 +41,23 @@ Then open http://localhost:5173.
 | K | Skill trees, specializations, builds and hotbar |
 | J | General skills and their slots |
 | P | Pantheon: favor, shrines, offerings and blessings (in battle: Pray) |
-| G | Proving Grounds (battles and resting) |
+| G | The world (WASD or arrows to walk, E to use, M for the world map) |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
 
-You start at the **Proving Grounds**. Pick an encounter to fight, or rest at camp to recover (8 hours pass, less with the Camping skill).
+You start in **Brightwater**, a town in the Meadowlands. **Leave town** to walk the world:
+
+- **Eight zones** run along one road, from the Meadowlands (levels 1–8) to the Dark Citadel (55–60). Walk off a map's east or west edge to reach the next zone. Enemies match your level within each zone's range.
+- **Random encounters** strike as you walk: more often at night, in fog and storms, and off the road. **Roaming elites**, **champion packs** and each zone's **world boss** stand on the map; walk into them to fight.
+- **Dungeons** (10) hold packs, treasure, often a **rune-stone puzzle** that opens the boss room, and a boss. They restock each new day.
+- **Chests:** some are locked (use a Skeleton Key or the Lockpicking skill) and some trapped (Detect Traps spots them). **Lore pages** and **cracked walls** hiding secret alcoves are waiting to be found.
+- **Waypoints** let you fast travel (world map, M) for a little gold. **Shrines** let you worship a god away from town. **Weather** changes every few hours and affects battles (rain dampens fire, storms boost lightning...).
+- **Make camp** in the wild to rest (8 hours, shorter with Camping). Defeat sends you back to the last town you visited.
+
+**Towns** (5) have an **inn**, a **temple** (worship its gods), the **arena** (practice fights and class trainers), a **Library**, your **stash**, sometimes a **faction hall**, and in Brightwater and Saltmere a **house for sale**. Build rooms in your house: a Bedroom (free rest), Forge (repairs your gear), Alchemy Lab (daily potions), Shrine Room (worship your patron at home), Trophy Room (world boss trophies boost your damage) and Vault (an extra stash tab).
+
+**Factions** (5) like and dislike deeds just as the gods do. Rising through their ranks (Associate to Legend) grants lasting bonuses and a little favor with their god; rival factions resent it.
 
 In battle:
 
@@ -69,7 +80,7 @@ In battle:
 - **Mastery:** the more you use a skill, the stronger it gets.
 - **Specializations:** at class level 20, choose one of three (in the sidebar). It adds a fifth branch and replaces your ultimate. Before then you can preview each branch. The first choice is free; switching costs 100 gold × level and refunds the old branch.
 
-**Multiclassing:** at level 15 you can take a second class. Beat its mentor in a **trial** (Class Trainers, at the Proving Grounds), then take up the class. It starts at level 1 with its own skills, tree, resource and specialization. Set how class XP is shared on the character sheet (presets or **Focus**, which feeds your lowest class). Keystones and capstones in a secondary tree also need a **Mastery Point** (one per 10 levels of that class). Armor only your secondary class allows slows you a little, unless you learn **Armor Training**.
+**Multiclassing:** at level 15 you can take a second class. Beat its mentor in a **trial** (at the arena of any town), then take up the class. It starts at level 1 with its own skills, tree, resource and specialization. Set how class XP is shared on the character sheet (presets or **Focus**, which feeds your lowest class). Keystones and capstones in a secondary tree also need a **Mastery Point** (one per 10 levels of that class). Armor only your secondary class allows slows you a little, unless you learn **Armor Training**.
 
 **Hybrid prestige classes:** some class pairs (Warrior + Mage = Spellblade, Rogue + Necromancer = Shadow Reaper, and 10 more) unlock a hidden hybrid tree once both classes reach level 25 and you win the pair's trial. Hybrid trees show up as ✧ tabs on the Skills screen.
 
@@ -102,6 +113,7 @@ src/
     combat/     battles: damage, statuses, skills, turns, AI, combatants
     skills/     skill trees, modifiers (patches), mastery, general skills, specializations
     gods/       favor, devotion tiers, blessings, prayer and intervention
+    world/      map generation, movement, encounters, weather, factions, housing
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -282,6 +294,20 @@ Specializations live in `src/data/trees/specsMartial.ts` and `specsArcane.ts`, o
 
 ### Example: an apostle tree
 Each god's apostleship lives in `src/data/apostles/apostlesA.ts` or `apostlesB.ts`: two tree skills (`rite(...)`), the Divine Avatar (`avatar(...)`), the divine weapon's type and stage names, its Divine blessing (`divineBlessing(...)`), and an `ApostleSpec` (skills, modifiers, notables, choice, keystone, capstone). The minors, the Devotion lane, the weapon stages, the trial fights and the edicts are generated in `src/data/apostles/index.ts`.
+
+### Example: a zone
+Add a `ZoneDef` to `ZONES` in `src/data/world/zones.ts` (give it the next `order`), with its encounter groups, roaming packs, weather, shrines, world boss and lore. Its map is generated from its id (`src/engine/world/mapgen.ts`), and the road links it to its neighbors:
+
+```ts
+{ id: 'sunken-caves', name: 'The Sunken Caves', order: 3, levels: [16, 24], biome: 'cave', threat: 110,
+  encounterRate: 0.08, dungeons: ['drowned-grotto'], worldBoss: 'abyssal-crab', shrines: ['nymira'],
+  weather: [{ id: 'clear', weight: 3 }, { id: 'fog', weight: 1 }],
+  encounters: [grp(4, ['^cave-bat', '^cave-bat', '^cave-bat']), grp(3, ['crystal-golem', '^cave-bat'])],
+  roaming: [grp(1, [elite('crystal-golem'), 'crystal-golem'])], lore: ['lore-sunken', 'lore-crystal'],
+  description: '...' }
+```
+
+Tune a zone's difficulty with `threat` and `npm run sim -- --only zones`.
 
 ### Example: a blessing
 Add a `minor(...)` or `major(...)` entry to `BLESSINGS` in `src/data/blessings.ts`. Majors need a `minTier`; minors a duration and favor cost (the helper fills defaults):

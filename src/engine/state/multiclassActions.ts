@@ -13,6 +13,7 @@ export class MulticlassActions {
   }
 
   addClass(classId: string): MulticlassResult {
+    if (!this.s.world.inTown()) return { ok: false, reason: 'Class trainers are in towns.' };
     const result = addClass(this.s.player, classId, this.s.state.ngPlus);
     if (result.ok) {
       const name = content.classes.get(classId).name;
@@ -31,6 +32,7 @@ export class MulticlassActions {
   }
 
   unlockHybrid(hybridId: string): MulticlassResult {
+    if (!this.s.world.inTown()) return { ok: false, reason: 'Class trainers are in towns.' };
     const result = unlockHybrid(this.s.player, hybridId);
     if (result.ok) this.s.bus.emit('toast', { kind: 'level', text: `Hybrid unlocked: ${content.hybrids.get(hybridId).name}! Its tree is in the Skills screen.` });
     return this.done(result, 'hybrid');

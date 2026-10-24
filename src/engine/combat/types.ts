@@ -78,9 +78,11 @@ export interface EncounterDef {
   name: string;
   description: string;
   level: number;
-  enemies: { enemyId: string; row?: Row; level?: number }[];
+  enemies: { enemyId: string; row?: Row; level?: number; tier?: EnemyTier }[];
   canFlee: boolean;
   isBoss?: boolean;
+  /** Extra HP and damage (percent) for every enemy (zone threat). */
+  threat?: number;
 }
 
 // ---------------------------------------------------------------- runtime

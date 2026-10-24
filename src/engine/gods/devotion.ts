@@ -83,6 +83,23 @@ export interface DeedResult {
 }
 
 /**
+ * Sums a list of likes and dislikes against a batch of occurrences, each
+ * capped by its `cap`. Calls `hit` for every deed that triggered.
+ */
+export function judgeDeedList(list: readonly FavorDeed[], occurrences: readonly DeedOccurrence[], hit?: (index: number) => void): number {
+  let total = 0;
+  list.forEach((d, i) => {
+    let sum = 0;
+    for (const o of occurrences) if (matches(d, o)) sum += d.amount * (o.count ?? 1);
+    if (sum === 0) return;
+    if (d.cap !== undefined) sum = d.cap > 0 ? Math.min(sum, d.cap) : Math.max(sum, d.cap);
+    total += sum;
+    hit?.(i);
+  });
+  return total;
+}
+
+/**
  * Sums what every god thinks of a batch of occurrences. Each like or
  * dislike is capped per batch (one battle, or one action) by its `cap`.
  */
@@ -90,19 +107,9 @@ export function judgeDeeds(occurrences: readonly DeedOccurrence[], c: Content = 
   const deltas: Record<string, number> = {};
   const discovered: string[] = [];
   for (const god of c.pantheon.all()) {
-    let total = 0;
-    const judge = (list: readonly FavorDeed[], kind: 'like' | 'dislike'): void => {
-      list.forEach((d, i) => {
-        let sum = 0;
-        for (const o of occurrences) if (matches(d, o)) sum += d.amount * (o.count ?? 1);
-        if (sum === 0) return;
-        if (d.cap !== undefined) sum = d.cap > 0 ? Math.min(sum, d.cap) : Math.max(sum, d.cap);
-        total += sum;
-        discovered.push(`${god.id}:${kind}:${i}`);
-      });
-    };
-    judge(god.likes, 'like');
-    judge(god.dislikes, 'dislike');
+    const total =
+      judgeDeedList(god.likes, occurrences, (i) => discovered.push(`${god.id}:like:${i}`)) +
+      judgeDeedList(god.dislikes, occurrences, (i) => discovered.push(`${god.id}:dislike:${i}`));
     if (total !== 0) deltas[god.id] = total;
   }
   return { deltas, discovered };

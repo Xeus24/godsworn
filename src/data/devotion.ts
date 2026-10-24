@@ -36,7 +36,7 @@ export const DEVOTION = {
 export const APOSTLESHIP = {
   /** Trial of Apostleship: three stages fought at max(minLevel, your level) + offset. */
   trialMinLevel: 30,
-  trialLevelOffsets: [0, 1, 3],
+  trialLevelOffsets: [0, 1, 2],
   /** Apostle tree points: base + 1 per character level after ascension + 1 per 2 paragon levels. */
   basePoints: 10,
   /** Apostles get one extra blessing slot (for their Divine blessing). */

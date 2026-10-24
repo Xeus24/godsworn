@@ -62,6 +62,7 @@ export class GeneralActions {
 
   /** Library: pay gold and spend days studying a book you own, without consuming it. */
   study(index: number): GeneralResult {
+    if (!this.s.world.inTown()) return fail('Libraries are in towns.');
     const book = this.bookAt(index);
     const skill = book ? bookSkill(book.baseId) : undefined;
     if (!book || !skill) return fail('That is not a skillbook.');

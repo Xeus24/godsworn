@@ -4,6 +4,7 @@ import { paragonRank } from '../../engine/character/paragon';
 import { levelProgress, xpToNext } from '../../engine/character/progression';
 import { characterStatsDetailed } from '../../engine/character/stats';
 import { MULTICLASS } from '../../data/progression';
+import { rankOf, repOf } from '../../engine/world/factions';
 import { masteryPointsEarned } from '../../engine/skills/treeOwners';
 import { availablePoints, earnedPoints, knownSkills, masteryPointsLeft } from '../../engine/skills/tree';
 import type { GameSession } from '../../engine/state/gameState';
@@ -190,7 +191,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, classes, skills, paragon),
+          el('div', { class: 'sheet-col' }, classes, this.reputation(), skills, paragon),
         ),
       ),
     );
@@ -217,6 +218,24 @@ export class CharacterScreen implements Screen {
       el('h3', {}, 'Class XP split'),
       el('div', { class: 'dim small' }, `${names.join(' / ')}. Character level always gets all XP.`),
       el('div', { class: 'tabs' }, ...buttons, focusBtn),
+    );
+  }
+
+  /** Faction standing (and house, if any). */
+  private reputation(): HTMLElement {
+    const p = this.session.player;
+    const rows = content.factions.all().map((f) => {
+      const rep = repOf(p, f.id);
+      const rank = rep < 0 ? 'Hostile' : (rankOf(f, rep)?.name ?? 'Stranger');
+      return el('div', { class: 'class-row small' }, el('b', {}, f.name), ` · ${rank} (${Math.floor(rep)})`);
+    });
+    const house = p.world.house;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Reputation'),
+      ...rows,
+      el('div', { class: 'dim small' }, house ? `House in ${content.towns.get(house.town).name}` : 'No house yet.'),
     );
   }
 }

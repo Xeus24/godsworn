@@ -9,9 +9,8 @@ import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
 /**
- * Training fights against every encounter in the game so far, plus a camp
- * to rest at. Zones and random encounters replace this as the main way to
- * fight in Phase 10; the Proving Grounds then live in towns.
+ * The town arena: practice fights against the early road's encounters,
+ * plus the class trainers (trials, new classes, hybrid trials).
  */
 export class ProvingGroundsScreen implements Screen {
   private root: HTMLElement | undefined;
@@ -22,6 +21,7 @@ export class ProvingGroundsScreen implements Screen {
     private readonly session: GameSession,
     private readonly nav: Nav,
     private readonly fight: (encounter: EncounterDef) => void,
+    private readonly back: () => void,
   ) {}
 
   mount(root: HTMLElement): void {
@@ -40,10 +40,8 @@ export class ProvingGroundsScreen implements Screen {
     const s = this.session;
     const p = s.player;
     const stats = characterStats(p);
-    const minutes = s.general.restMinutes();
-    const rest = el('button', {}, `Rest at camp (${Math.floor(minutes / 60)}h${minutes % 60 ? ` ${minutes % 60}m` : ''})`);
-    rest.disabled = p.hp >= stats.maxHp && p.mp >= stats.maxMp && !p.generalSlots.includes('camping');
-    rest.addEventListener('click', () => s.general.rest());
+    const rest = el('button', {}, 'Back to the world');
+    rest.addEventListener('click', () => this.back());
 
     const cards = content.encounters.filter((enc) => !isTrialEncounter(enc.id) && !enc.id.startsWith('apostle-trial-')).map((enc) => {
       const diff = enc.level - p.level;
@@ -65,15 +63,15 @@ export class ProvingGroundsScreen implements Screen {
       el(
         'div',
         { class: 'sheet' },
-        navBar(s, this.nav, 'battle'),
+        navBar(s, this.nav, 'world'),
         el(
           'div',
           { class: 'grounds-body' },
           el(
             'section',
             { class: 'panel grounds-intro' },
-            el('h2', {}, 'The Proving Grounds'),
-            el('p', {}, 'Test your skills against the beasts and brigands of the Meadowlands and the Whisperwood. Victories earn experience, gold and loot.'),
+            el('h2', {}, 'The Arena'),
+            el('p', {}, 'Practice fights against the beasts and brigands of the early road, and the class trainers’ trials. Victories earn experience, gold and loot.'),
             el('p', { class: 'dim small' }, `${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night: the dark is more dangerous, and some powers grow stronger.' : 'Day'}`),
             el('p', { class: 'small' }, `HP ${p.hp}/${stats.maxHp} · MP ${p.mp}/${stats.maxMp}`),
             rest,

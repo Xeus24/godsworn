@@ -258,7 +258,35 @@ function apostlesSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection };
+function worldSection(): string {
+  const out: string[] = [];
+  out.push('Eight zones along one road, each a generated tile map with a town or not, dungeons, a world boss, god shrines, a waypoint, chests, lore and a hidden alcove behind a cracked wall. Enemy levels follow yours within the zone\'s range; `threat` adds HP and damage to a zone\'s rank and file.', '');
+  out.push('| Zone | Levels | Town | Dungeons (boss) | World boss | Shrines | Weather | Threat |', '|---|---|---|---|---|---|---|---|');
+  for (const z of content.zones.all().sort((a, b) => a.order - b.order)) {
+    const dungeons = z.dungeons.map((d) => `${content.dungeons.get(d).name} (${content.enemies.get(content.dungeons.get(d).boss).name}, lv ${content.dungeons.get(d).level})`).join('; ');
+    out.push(`| **${z.name}** | ${z.levels[0]}-${z.levels[1]} | ${z.town ? content.towns.get(z.town).name : '-'} | ${cell(dungeons)} | ${content.enemies.get(z.worldBoss).name} | ${z.shrines.map((g) => content.gods.get(g).name).join(', ')} | ${z.weather.map((w) => content.weather.get(w.id).name).join(', ')} | ${z.threat ?? 0}% |`);
+  }
+  out.push('', '### Zone enemies', '');
+  for (const z of content.zones.all().sort((a, b) => a.order - b.order)) {
+    const ids = [...new Set(z.encounters.flatMap((g) => g.enemies.map((e) => e.enemyId)))];
+    out.push(`- **${z.name}:** ${ids.map((id) => content.enemies.get(id).name).join(', ')}`);
+  }
+  out.push('', '### Towns', '', '| Town | Zone | Temple | Faction hall | Housing |', '|---|---|---|---|---|');
+  for (const t of content.towns.all()) out.push(`| **${t.name}** | ${content.zones.get(t.zone).name} | ${t.temple.map((g) => content.gods.get(g).name).join(', ')} | ${t.faction ? content.factions.get(t.faction).name : '-'} | ${t.housing ? 'yes' : '-'} |`);
+  out.push('', '### Weather', '', '| Weather | Encounters | Effect |', '|---|---|---|');
+  for (const w of content.weather.all()) out.push(`| **${w.name}** | x${w.encounterMult} | ${cell(w.description)} |`);
+  out.push('', '### Factions', '', '| Faction | Hall | God | Likes | Rank bonuses (Member / Veteran / Champion / Legend) |', '|---|---|---|---|---|');
+  for (const f of content.factions.all()) {
+    const bonus = f.ranks.filter((r) => r.modifiers.length).map((r) => r.modifiers.map((m) => `${m.value > 0 ? '+' : ''}${m.value}${m.type === 'percent' ? '%' : ''} ${content.stats.find(m.stat)?.name ?? m.stat}`).join(', ')).join(' / ');
+    out.push(`| **${f.name}** | ${content.towns.get(f.hall).name} | ${content.gods.get(f.god).name} | ${cell(f.likes.map((d) => d.text).join('; '))} | ${cell(bonus)} |`);
+  }
+  out.push('', '### House rooms', '', '| Room | Cost per level | Effect |', '|---|---|---|');
+  for (const r of content.houseRooms.all()) out.push(`| **${r.name}** | ${r.costs.join(' / ')} | ${cell(r.description)} |`);
+  out.push('', `### Lore pages (${content.lore.size})`, '', content.lore.all().map((l) => `**${l.title}** (${content.zones.get(l.zone).name})`).join(', '));
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

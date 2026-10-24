@@ -21,6 +21,8 @@ export interface BattleSetup {
   canFlee: boolean;
   isBoss?: boolean;
   timeOfDay?: 'day' | 'night';
+  /** Weather id: its modifiers apply to everyone, and weather conditions see it. */
+  weather?: string;
   hooks?: BattleHooks;
   c?: Content;
 }
@@ -39,6 +41,7 @@ export class Battle {
   readonly canFlee: boolean;
   readonly isBoss: boolean;
   readonly timeOfDay: 'day' | 'night';
+  readonly weather: string | undefined;
   readonly hooks: BattleHooks;
   outcome: BattleOutcome = 'ongoing';
   /** Initiative clock: the time of the most recent turn. */
@@ -64,6 +67,7 @@ export class Battle {
     this.canFlee = setup.canFlee;
     this.isBoss = setup.isBoss ?? false;
     this.timeOfDay = setup.timeOfDay ?? 'day';
+    this.weather = setup.weather;
     this.hooks = setup.hooks ?? {};
     this.triggers = new TriggerSystem(this.rng);
     for (const x of this.combatants) this.registerTriggers(x);
@@ -122,6 +126,7 @@ export class Battle {
     const songs = new Set<string>();
     for (const ally of this.alive(x.side)) for (const song of ally.songs) songs.add(song);
     for (const song of songs) for (const m of this.c.songs.get(song).aura) mods.push({ ...m, source: `song:${song}` });
+    for (const m of (this.weather ? this.c.weather.find(this.weather)?.modifiers : undefined) ?? []) mods.push({ ...m, source: `weather:${this.weather}` });
     return mods;
   }
 
@@ -134,6 +139,7 @@ export class Battle {
       stance: x.stance,
       resources: x.resources,
       timeOfDay: this.timeOfDay,
+      ...(this.weather ? { weather: this.weather } : {}),
       weaponTypes: x.weaponTypes,
       ...(x.patron ? { patron: x.patron } : {}),
       ...extra,

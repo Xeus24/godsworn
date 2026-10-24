@@ -26,6 +26,9 @@ import { PantheonScreen } from './ui/pantheon/pantheonScreen';
 import { ScreenManager } from './ui/screen';
 import { TitleScreen } from './ui/title/titleScreen';
 import { TreeScreen } from './ui/tree/treeScreen';
+import { TownScreen } from './ui/world/townScreen';
+import { WorldScreen } from './ui/world/worldScreen';
+import './ui/world/world.css';
 
 validateContent();
 
@@ -50,13 +53,13 @@ const nav: Nav = {
   skills: showSkills,
   general: showGeneral,
   pantheon: showPantheon,
-  battle: showGrounds,
+  world: showWorld,
 };
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
-  if (session) items.unshift({ label: 'Resume', onSelect: showGrounds });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 8: gods & blessings`));
+  if (session) items.unshift({ label: 'Resume', onSelect: showWorld });
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 10: the overworld`));
 }
 
 function showCreation(): void {
@@ -68,7 +71,7 @@ function startGame(hero: Character): void {
   session.bus.on('toast', ({ kind, text }) => toasts.show(kind, text));
   session.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
   toasts.show('info', `${hero.name} swears the oath.`);
-  showGrounds();
+  showTown(session.world.inTown() ?? 'brightwater');
 }
 
 function showCharacter(): void {
@@ -92,11 +95,24 @@ function showPantheon(): void {
 }
 
 function showGrounds(): void {
-  if (session) screens.show(new ProvingGroundsScreen(session, nav, startFight));
+  if (session) screens.show(new ProvingGroundsScreen(session, nav, (enc) => startFight(enc), showWorld));
 }
 
-/** Starts a fight; `level` overrides enemy levels (apostle trials scale to the hero). */
-function startFight(encounter: EncounterDef, level?: number): void {
+/** The overworld, or the town screen when you are standing in a town you just entered. */
+function showWorld(): void {
+  if (session) screens.show(new WorldScreen(session, nav, (enc, level) => startFight(enc, level, true), showTown));
+}
+
+function showTown(town: string): void {
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, leave: showWorld }, town));
+}
+
+/**
+ * Starts a fight; `level` overrides enemy levels (world fights and apostle
+ * trials scale to the hero). World fights use the zone's weather and cannot
+ * be replayed.
+ */
+function startFight(encounter: EncounterDef, level?: number, world = false): void {
   const s = session;
   if (!s) return;
   inBattle = true;
@@ -105,6 +121,7 @@ function startFight(encounter: EncounterDef, level?: number): void {
     rng: s.rng,
     hooks: inventoryHooks(s),
     timeOfDay: timeOfDay(s.state.clock),
+    weather: s.world.weatherNow(),
     punisher,
     ...(level !== undefined ? { level } : {}),
   });
@@ -119,9 +136,9 @@ function startFight(encounter: EncounterDef, level?: number): void {
         if (s.state.gameOver) {
           session = undefined;
           showTitle();
-        } else showGrounds();
+        } else showWorld();
       },
-      onRematch: () => startFight(encounter, level),
+      ...(world ? {} : { onRematch: () => startFight(encounter, level) }),
     }),
   );
 }
@@ -132,7 +149,7 @@ window.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
   if (key === 'c') showCharacter();
   if (key === 'i') showInventory();
-  if (key === 'g') showGrounds();
+  if (key === 'g') showWorld();
   if (key === 'k') showSkills();
   if (key === 'j') showGeneral();
   if (key === 'p') showPantheon();

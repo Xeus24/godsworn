@@ -20,7 +20,7 @@ import { availablePoints, earnedPoints, treeModifiers, treeOf, allocate } from '
 import { ownsTree } from '../src/engine/skills/treeOwners';
 import { settleBattle } from '../src/engine/state/battleResults';
 import { GameSession } from '../src/engine/state/gameState';
-import { makeHero } from './helpers';
+import { atShrine, makeHero } from './helpers';
 
 const STATS = { str: 999, dex: 999, int: 999, vit: 999, wis: 999, luk: 999, fai: 999 };
 
@@ -53,7 +53,7 @@ describe('the Trial of Apostleship', () => {
     expect(canAttemptTrial(p, 'kael', 2).ok).toBe(false);
     expect(canAttemptTrial(p, 'solenne', 1).ok).toBe(false);
     expect(trialLevel(p, 1)).toBe(32);
-    expect(trialLevel(p, 3)).toBe(35);
+    expect(trialLevel(p, 3)).toBe(34);
     p.level = 10;
     expect(trialLevel(p, 1)).toBe(APOSTLESHIP.trialMinLevel);
   });
@@ -83,6 +83,7 @@ describe('ascension', () => {
   function apostle(god = 'kael', classId = 'mage', level = 32): GameSession {
     const s = exalted(god, classId, level);
     completeTrial(s, god);
+    atShrine(s, god);
     expect(s.devotion.ascend(god).ok).toBe(true);
     return s;
   }
@@ -158,6 +159,7 @@ describe('Divine Edicts', () => {
   function apostleWithEdict(id: string): GameSession {
     const s = exalted('kael', 'warrior');
     completeTrial(s, 'kael');
+    atShrine(s, 'kael');
     s.devotion.ascend('kael');
     const edict = content.edicts.get(id);
     (s.player.devotion.apostle as NonNullable<Character['devotion']['apostle']>).edict = { id, progress: 0, battlesLeft: edict.battles };
@@ -197,6 +199,7 @@ describe('apostasy', () => {
   it('the god turns Hated, the weapon is stored, the tree lost, and heralds hunt you', () => {
     const s = exalted('kael', 'warrior');
     completeTrial(s, 'kael');
+    atShrine(s, 'kael');
     s.devotion.ascend('kael');
     const p = s.player;
     expect(s.devotion.renounce().ok).toBe(true);
@@ -218,10 +221,12 @@ describe('apostasy', () => {
   it('returning to a god later restores the stored weapon', () => {
     const s = exalted('kael', 'warrior');
     completeTrial(s, 'kael');
+    atShrine(s, 'kael');
     s.devotion.ascend('kael');
     const uid = s.state.inventory.slots.find((i) => i && divineWeaponOf(i))?.uid;
     s.devotion.renounce();
     s.player.devotion.favor.kael = 900;
+    atShrine(s, 'kael');
     expect(s.devotion.ascend('kael').ok).toBe(true);
     expect(s.state.inventory.slots.find((i) => i && divineWeaponOf(i))?.uid).toBe(uid);
     expect(s.player.devotion.reliquary).toHaveLength(0);
@@ -237,6 +242,7 @@ describe('the Sun Knight', () => {
     p.classes[0] = { ...(p.classes[0] as Character['classes'][number]), specialization: 'paladin' };
     expect(hybridTrialOpen(p, 'sun-knight').ok).toBe(false);
     completeTrial(s, 'solenne');
+    atShrine(s, 'solenne');
     s.devotion.ascend('solenne');
     expect(hybridTrialOpen(p, 'sun-knight').ok).toBe(true);
     expect(createHero(p).flags.length).toBeGreaterThanOrEqual(0);

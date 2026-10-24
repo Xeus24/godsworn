@@ -1,7 +1,7 @@
 import { content } from '../../data';
 import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
-import { drawPortrait } from '../art/portraits';
+import { portraitCanvas } from '../art/portraits';
 import { creatureSprite } from './creatureSprites';
 
 export const SCENE_W = 960;
@@ -36,18 +36,6 @@ const ELEMENT_COLORS: Record<string, string> = {
   arcane: '#ff8af0',
   void: '#b04aff',
 };
-
-const portraitCache = new Map<string, HTMLCanvasElement>();
-function portraitCanvas(raceId: string, variant: number, color: string): HTMLCanvasElement {
-  const key = `${raceId}|${variant}|${color}`;
-  let c = portraitCache.get(key);
-  if (!c) {
-    c = document.createElement('canvas');
-    drawPortrait(c, raceId, variant, `${color}55`);
-    portraitCache.set(key, c);
-  }
-  return c;
-}
 
 /**
  * Canvas renderer for a battle. It draws from the battle state, except HP,

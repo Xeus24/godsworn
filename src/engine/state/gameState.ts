@@ -19,10 +19,13 @@ import { GeneralActions } from './generalActions';
 import { ItemActions } from './itemActions';
 import { MulticlassActions } from './multiclassActions';
 import { TreeActions } from './treeActions';
+import { WorldActions } from './worldActions';
+import type { WorldState } from '../world/types';
+import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -65,6 +68,8 @@ export interface GameState {
   stats: GameStats;
   /** Set when a Hardcore hero dies; the save can no longer be played. */
   gameOver: boolean;
+  /** Where you are and what you have seen and done in the world. */
+  world: WorldState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -84,6 +89,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     lootFilter: { ...DEFAULT_LOOT_FILTER },
     stats: createGameStats(),
     gameOver: false,
+    world: createWorldState(),
   };
 }
 
@@ -101,6 +107,7 @@ export class GameSession {
   readonly general: GeneralActions;
   readonly multiclass: MulticlassActions;
   readonly devotion: DevotionActions;
+  readonly world: WorldActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -111,6 +118,8 @@ export class GameSession {
     this.general = new GeneralActions(this);
     this.multiclass = new MulticlassActions(this);
     this.devotion = new DevotionActions(this);
+    this.world = new WorldActions(this);
+    this.world.look();
   }
 
   /** Starts a new game and hands the hero their class's starting kit. */

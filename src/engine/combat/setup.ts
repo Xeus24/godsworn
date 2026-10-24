@@ -5,7 +5,8 @@ import { chooseAction } from './ai';
 import { Battle, type BattleHooks } from './battle';
 import { createEnemy, createHero } from './combatants';
 import { advance, perform, startBattle } from './turns';
-import type { BattleEvent, EncounterDef } from './types';
+import { calculateStats } from '../stats/calculate';
+import type { BattleEvent, Combatant, EncounterDef } from './types';
 
 export interface EncounterOptions {
   rng: Rng;
@@ -15,7 +16,16 @@ export interface EncounterOptions {
   level?: number;
   /** A hated god's punisher joins the fight (god id). */
   punisher?: string;
+  weather?: string;
   c?: Content;
+}
+
+/** Zone threat: more HP and damage, through the normal modifier pipeline. */
+function applyThreat(x: Combatant, threat: number): void {
+  x.statInput = { ...x.statInput, modifiers: [...x.statInput.modifiers, { stat: 'maxHp', type: 'more', value: threat, source: 'threat' }, { stat: 'damageBonus', type: 'flat', value: threat, source: 'threat' }] };
+  const stats = calculateStats(x.statInput);
+  x.maxHp = stats.maxHp;
+  x.hp = stats.maxHp;
 }
 
 /** Builds a battle between the hero (plus companions later) and an encounter's enemies. */
@@ -23,8 +33,12 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   const c = opts.c ?? content;
   const party = [createHero(hero, 'hero', c)];
   const enemies = encounter.enemies.map((e, i) => {
-    const def = c.enemies.get(e.enemyId);
-    return createEnemy(def, `enemy-${i + 1}`, opts.level ?? e.level ?? encounter.level, e.row ?? def.row, c);
+    const base = c.enemies.get(e.enemyId);
+    // Encounter entries may promote an enemy (roaming elites, champion packs).
+    const def = e.tier ? { ...base, tier: e.tier } : base;
+    const enemy = createEnemy(def, `enemy-${i + 1}`, opts.level ?? e.level ?? encounter.level, e.row ?? def.row, c);
+    if (encounter.threat) applyThreat(enemy, encounter.threat);
+    return enemy;
   });
   if (opts.punisher) {
     const def = c.enemies.get(`punisher-${opts.punisher}`);
@@ -48,6 +62,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     canFlee: encounter.canFlee,
     isBoss: encounter.isBoss,
     timeOfDay: opts.timeOfDay,
+    ...(opts.weather ? { weather: opts.weather } : {}),
     hooks: opts.hooks,
     c,
   });

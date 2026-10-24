@@ -13,8 +13,8 @@
 | 7 | Multiclassing, hybrid prestige classes | **Done** |
 | 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | **Done** |
 | 9 | Apostleship | **Done** |
-| 10 | Overworld, zones, towns, day/night, weather, factions, housing | Next |
-| 11 | Economy | |
+| 10 | Overworld, zones, towns, day/night, weather, factions, housing | **Done** |
+| 11 | Economy | Next |
 | 12 | Quests, dialogue, main story, companions | |
 | 13 | Bosses, elites, bestiary, achievements, codex | |
 | 14 | New Game+ and Twilight of the Gods | |
@@ -311,6 +311,52 @@
 - `npm run sim` reports trial win rates for every god: Ordeal 85–99%, Gauntlet 62–85%, Aspect 58–78% for level-35 benchmark heroes.
 - 304 unit tests.
 
+### Phase 10: the overworld
+- **A tile-based overworld** (Canvas, WASD or arrows, or the on-screen pad):
+  - Eight zones along one road: the Meadowlands (1–8), the Whisperwood (8–16), the Sunken Caves (16–24), the Ashen Desert (24–32), Frostspire (32–40), the Stormcoast (40–48), the Volcanic Rift (48–55) and the Dark Citadel (55–60).
+  - Each zone is a 60×36 map generated from its id (the same every time): scenery grown by cellular automata, lakes, and a meandering road between its east and west exits.
+  - On every map: its town (if any), 1–2 dungeons, god shrines, a waypoint, chests (some locked or trapped), lore pages, roaming elites and champion packs, a world boss, and a hidden alcove behind a cracked wall.
+  - **Fog of war with line of sight** (trees do not block it; walls and thickets do), a minimap, and a **world map** (M) with exploration, waypoints, dungeons cleared, trophies and a lore journal.
+- **Random encounters** on open ground: more often at night and in bad weather, half as often on the road, with a grace period after each fight. Groups can be night- or weather-only (scarecrows and undead by night, wisps in fog, storm elementals in storms). Enemy levels follow yours within the zone's range.
+- **10 dungeons** (rooms and corridors), each with packs, chests, a closet behind a cracked wall, a boss (with a guard), and in 8 of them a **rune-stone puzzle**: light three stones to open the sealed boss door. Dungeons restock when you enter on a new day; clearing one is remembered.
+- **8 world bosses**, one per zone. Slaying one gives a trophy, and they return after 3 days.
+- **Treasure:**
+  - Chests roll the chest loot table at the zone's level.
+  - Locked chests need a **Skeleton Key** (a new curiosity) or the new **Lockpicking** general skill (10% per rank; retry after an hour).
+  - Trapped chests cost 15% HP unless **Detect Traps** (10% per rank) spots them.
+- **Day and night** (the clock moves 2 minutes per step, 8 hours per rest, 2 hours per fast travel), and **weather** per zone, rerolled every 6 hours from the zone's list: clear, rain, storm, fog, snow, heatwave, sandstorm, ashfall, blood moon. Weather changes the encounter rate and applies modifiers to everyone in battle (rain −15% fire / +10% lightning, storm +25% lightning...).
+- **5 towns** (Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere):
+  - an **inn** (full rest and Well Rested for gold), a **temple** honoring two gods (Trials of Apostleship are faced there)
+  - the **arena** (the old Proving Grounds, with the class trainers), the **Library**, the **stash**
+  - **faction halls**, and **houses** for sale in Brightwater and Saltmere
+  - Defeat sends you back to the last town you visited.
+- **Location matters now:**
+  - You worship a god at its shrines or temples (or your patron at home with a Shrine Room).
+  - The stash, the Library and class trainers are in towns.
+  - You can make camp anywhere outside towns and dungeons.
+- **5 factions:** the Order of the Dawn, Wardens of the Wild, the Iron Legion, the Mages' Guild and the Thieves' Den.
+  - Reputation from liked and disliked deeds, the same system as the gods.
+  - 6 ranks from Stranger to Legend, with growing stat bonuses.
+  - The Iron Legion and the Thieves' Den are rivals (half of any gain lost with the other).
+  - Each faction serves a god, which gains 10% of your reputation gains as favor.
+- **Housing:** buy a house (2,000 gold) and build six rooms:
+  - Bedroom: free rest
+  - Forge: repairs gear on each visit, +defense
+  - Alchemy Lab: up to 3 potions a day, +healing power
+  - Shrine Room: worship at home, +favor gain
+  - Trophy Room: +2% damage per distinct world boss slain
+  - Vault: an extra stash tab, +gold find
+- **Content:**
+  - 31 new enemies (5 per new zone), 10 dungeon bosses, 8 world bosses, 23 new enemy skills
+  - 6 new creature sprite families (bird, golem, elemental, serpent, drake, demon)
+  - procedural tile art for 9 biomes, 16 lore pages
+  - two utility general skills: Lockpicking and Detect Traps
+- **Balance:** a new late-game growth term for enemies above level 15 (stat × (level − 15)^1.6), and a per-zone **threat** dial (extra HP and damage). With them, `npm run sim -- --only zones` gives:
+  - random encounters: 83–100% (the Meadowlands stays easy)
+  - dungeon bosses: 40–87%
+  - world bosses: 25–60%
+- 330 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -348,7 +394,7 @@
 - **Armor tiers scale more gently** (×1 to ×5.5 across tiers, versus ×31 for weapon damage), because 100/(100+defense) makes each armor point worth more as it grows.
 - **Dexterity classes scale through finesse weapons:** daggers, rapiers and throwing knives give +1 Physical Attack per DEX, bows +1.2, crossbows +1, claws +1 and spears +0.5. This keeps the spec's formula (STR×2 + weapon) while letting Rogues and Rangers grow.
 - **Back row:** 25% less physical damage taken, but melee attacks (without Movement or Reach) must target the enemy front row while it stands.
-- **Defeat outside Hardcore** puts you back at full HP (no towns yet). From Phase 10 you respawn in the last town.
+- **Defeat outside Hardcore** puts you back at full HP in the last town you visited (from Phase 10).
 - **Balance at Phase 4** (`npm run sim`, 60 fights per class × level, solo hero, benchmark gear): 94.7% average wins against equal-level encounters. Every class is at 100% at levels 1–3. The weakest spots are Necromancer 66% at level 15, Mage 71% at level 15, and Warrior 73% at level 12 (against back-row casters). The full balance pass is Phase 16, once companions, skill trees and gear progression are in.
 - **Every branch uses one 16-node template** (the builder assigns tiers, lanes, parents and positions), so all trees are consistent and a new class only declares content. The spec asks for 50–70 nodes per class; this gives 64.
 - **Starting class skills are tree roots:** they begin at rank 1 for free, and their node adds ranks 2–5. Racial skills, Tiger Stance and the Song of Valor (single-rank skills) stay outside the trees.
@@ -361,7 +407,7 @@
 - **General skills train by use, not by XP.** This follows the spec's "use-based training" and rewards slotting what you actually use. Passive skills have no use to count, so they train on victories while slotted.
 - **Specialization branches gate at 4 points per tier** (not 5), since they have 5 tiers and about 20 points of nodes. Every spec branch shares the fifth column, and only the chosen one is shown.
 - **The 12th spec node is a shared "Signature Mastery"** (+8% Ultimate Charge per rank, 3 ranks). It ties each branch to its new ultimate without inventing 24 more unique minors.
-- **The Library is reached from the inventory** until towns exist (Phase 10), which then move it to town Libraries.
+- **The Library is in towns** (from Phase 10): study books from the town screen.
 - **Balance after Phase 6:** 96.6% average wins (the encounters only reach level 15, so specializations do not show up there yet). Spec balance needs the higher-level zones of Phase 10; the full pass is Phase 16.
 - **Apostle trees are class-independent** and scale mostly with Divine Power (FAI), so any class can serve any god. The Devotion lane (Divine Power, FAI, Blessing Power, then Ultimate Charge for the Avatar) is shared; each tree's minors come from its god's element and favored stats.
 - **The Divine Avatar shares the Ultimate gauge** (the spec: the gauge "enables class ultimates or the Divine Avatar"): using either empties it, and the Avatar works once per battle.
@@ -373,7 +419,12 @@
 - **Blessing Power uses base FAI** (FAI × 1%) to scale blessings, so blessings never feed back into the stat that sizes them.
 - **Prayer costs 15 favor** and is limited to 3 per battle, so it is a real spend rather than a free spell.
 - **Favor is kept to one decimal** so small per-battle likes (0.25–1) still add up.
-- **Trials instead of trial quests (for now).** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor at the Proving Grounds. Phase 12 can wrap these fights in quests without changing the unlock rules.
+- **Maps are generated, not hand-drawn.** Each zone and dungeon map is generated from its id with a seeded RNG, so it is identical for every player and every load (no map data to save), and adding a zone only needs data. Connectivity is guaranteed by carving a path from every point of interest to the road (a test checks every entity is reachable).
+- **Towns are menus, not walkable maps.** A town is a gate on its zone map that opens the town screen; walking around a town would add little until NPCs and quests exist (Phase 12).
+- **Enemy late growth and zone threat.** Heroes grow faster than linearly past level 15 (gear tiers multiply weapon damage up to ×31), while enemy stats grew linearly. Enemies now gain growth × (level − 15)^1.6 on top, and each zone has a `threat` dial (percent HP and damage) for fine tuning. Levels 1–15 are unchanged.
+- **Trial levels after the late growth:** apostle trials are fought at your level +0/+1/+2 against 2 heralds, 3 heralds, then the Aspect (Ordeal 79–94%, Gauntlet 46–56%, Aspect 35–45% for level-35 heroes), and hybrid trials at level 36.
+- **Divine Intervention recharges when you rest** (inn, home or camp). You cannot camp in dungeons, so in practice it is once per delve, as the spec asks.
+- **Trials instead of trial quests (for now).** The spec asks for "a short trial quest" at a class trainer in town. Quests arrive in Phase 12 and towns in Phase 10; until then the trial is a fight against that class's mentor in the town arena. Phase 12 can wrap these fights in quests without changing the unlock rules.
 - **12 class-pair hybrids, plus the Sun Knight.** The spec asks for at least 10. The Sun Knight (Warrior with the Paladin specialization + Apostle of Solenne) arrived with apostleship in Phase 9; hybrids can now require a specialization or an Apostleship.
 - **A hybrid tree is one standard 16-node branch** (the same template as class branches), inside the spec's 15–20 range. It gates at 3 points per tier so its capstone is reachable at about 15 points.
 - **Hybrid points come from both classes' levels above 25**, so a hybrid grows with the pair rather than with either class alone, and needs no separate XP track.
@@ -393,22 +444,21 @@
 - **The Dwarf crafting discount** takes effect with crafting (Phase 11).
 - **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
 - Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
-- **The Proving Grounds are the way to fight until Phase 10** adds zones and random encounters. After that they remain as a training option in towns.
 - **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
-- **The stash is reachable from anywhere** until towns exist (Phase 10), which then restricts it to towns.
-- **Class trainers in towns and trial quests:** the trainers live at the Proving Grounds until towns arrive (Phase 10), and the trial fights become short quests in Phase 12.
 - **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
-- **Mid-level balance** (levels 15–40, where multiclassing and hybrid trials happen) waits for the zones and encounters of Phase 10; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 because the auto-battler spends turns on a level-1 mage's spells.
+- **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
 - **Forbidden** general skills arrive with heresies in Phase 14 (the category already exists).
 - **Apostle followers, temple quests, pantheon politics and story branches by god** need towns, NPCs and quests (Phases 10, 12 and 14). The Trial of Apostleship is three fights for now; Phase 12 can wrap it in a questline with the same unlock rule.
 - **Two apostles at once** (Defender path, NG+3+) comes with Twilight of the Gods in Phase 14.
-- **Temples, temple merchants and temple discounts** need towns (Phase 10) and shops (Phase 11). Until then every god's shrine is reached from the Pantheon screen, and the 30-minute prayer stands in for travel.
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
 - **God quests and pantheon politics** (world events, god-specific story chapters) come with quests and the story (Phases 12 and 14). **The Nameless One** is discovered in NG+ (Phase 14).
-- **Divine Intervention is once per rest**, not once per dungeon, until dungeons exist (Phase 10).
-- **General skills that act on the overworld** (Lockpicking, Detect Traps, Haggle, Cooking, Sprint on the map) come with zones, towns and shops in Phases 10–11. Their stat and battle versions already work.
+- **Haggle, Cooking and other shop/crafting general skills** come with the economy in Phase 11. Lockpicking and Detect Traps arrived with chests in Phase 10.
+- **Class trial quests:** the trials are fights in the town arena; Phase 12 wraps them in short quests.
+- **Temple merchants, temple discounts, faction vendors and the Black Market** (night only) are shops, so they come in Phase 11. **Faction questlines and quest boards** come with quests in Phase 12. **Companions and Order allies** in Phase 12.
+- **Elite affixes, the bestiary (with its damage bonuses) and roaming-elite variety** come in Phase 13. Roaming elites and champion packs already appear on the maps.
+- **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 10: the overworld. 8 zones (Meadowlands to the Dark Citadel) with their own enemies, dungeons, world bosses and god shrines; towns with services (trainers, temples, Library, stash); the day/night cycle and weather affecting encounters; 4–5 factions with reputation; and player housing. After Phase 10 is committed, `main` is pushed to GitHub.
+- Phase 11: the economy. Shops in towns (Blacksmith, Armorer, Alchemist, General Store, Magic Shop, Library stock, Temple Merchants by favor, faction vendors, the Black Market at night, the Gambler), selling and buying (with Haggle), repairs, crafting and professions (Cooking among them), enchanting and rerolls, and the remaining gold sinks.

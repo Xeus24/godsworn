@@ -41,11 +41,19 @@ import { PUNISHER_SKILLS, PUNISHERS } from './punishers';
 import { APOSTLE_BLESSINGS, APOSTLE_TRIALS, APOSTLES, ASPECT_SKILLS, ASPECTS, DIVINE_WEAPONS, EDICTS } from './apostles';
 import { CLASS_TRIALS, HYBRIDS, MENTOR_SKILLS, MENTORS, TRIAL_ENCOUNTERS } from './multiclass';
 import { SONGS } from './songs';
+import { DEEP_ENEMIES } from './bestiary/enemies';
+import { DEEP_ENEMY_SKILLS } from './bestiary/skills';
+import { FACTIONS } from './world/factions';
+import { HOUSE_ROOMS } from './world/housing';
+import { LORE } from './world/lore';
+import { DUNGEONS, TOWNS } from './world/places';
+import { WEATHER } from './world/weather';
+import { ZONES } from './world/zones';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS];
 
@@ -88,7 +96,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS]),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS]),
   summons: new ContentTable('summon', SUMMONS),
   encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
@@ -100,6 +108,13 @@ export const content = {
   blessings: new ContentTable('blessing', [...BLESSINGS, ...APOSTLE_BLESSINGS]),
   apostles: new ContentTable('apostle', APOSTLES.map((a) => ({ ...a, id: a.god }))),
   edicts: new ContentTable('edict', EDICTS),
+  zones: new ContentTable('zone', ZONES),
+  towns: new ContentTable('town', TOWNS),
+  dungeons: new ContentTable('dungeon', DUNGEONS),
+  weather: new ContentTable('weather', WEATHER),
+  factions: new ContentTable('faction', FACTIONS),
+  houseRooms: new ContentTable('house room', HOUSE_ROOMS),
+  lore: new ContentTable('lore page', LORE),
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
 };
 
@@ -372,6 +387,48 @@ export function validateContent(c: Content = content): void {
   }
   for (const u of c.uniques.all()) if (u.requirements?.favor) v.ref(c.gods, u.requirements.favor.god, `unique ${u.id}`);
   for (const g of c.generalSkills.all()) v.check((g.category === 'divine') === (g.god !== undefined), `general skill ${g.id}: divine skills need a god (and only they)`);
+
+  // ---- World ----
+  const groups = (where: string, list: readonly { enemies: { enemyId: string }[]; weather?: string[] }[]): void => {
+    for (const gr of list) {
+      v.check(gr.enemies.length > 0 && gr.enemies.length <= 6, `${where}: groups need 1-6 enemies`);
+      for (const e of gr.enemies) v.ref(c.enemies, e.enemyId, where);
+      for (const w of gr.weather ?? []) v.ref(c.weather, w, where);
+    }
+  };
+  const orders = c.zones.all().map((z) => z.order).sort((a, b) => a - b);
+  v.check(orders.every((o, i) => o === i + 1), 'zones: orders must run 1..n');
+  for (const z of c.zones.all()) {
+    const where = `zone ${z.id}`;
+    groups(where, z.encounters);
+    groups(`${where} roaming`, z.roaming);
+    if (z.town) v.check(c.towns.find(z.town)?.zone === z.id, `${where}: town ${z.town} is not in this zone`);
+    for (const d of z.dungeons) v.check(c.dungeons.find(d)?.zone === z.id, `${where}: dungeon ${d} is not in this zone`);
+    v.ref(c.enemies, z.worldBoss, where);
+    v.check(c.enemies.find(z.worldBoss)?.tier === 'worldBoss', `${where}: ${z.worldBoss} is not a world boss`);
+    for (const s of z.shrines) v.ref(c.pantheon, s, where);
+    for (const w of z.weather) v.ref(c.weather, w.id, where);
+    for (const l of z.lore) v.check(c.lore.find(l)?.zone === z.id, `${where}: lore ${l} is not in this zone`);
+  }
+  for (const d of c.dungeons.all()) {
+    groups(`dungeon ${d.id}`, d.encounters);
+    v.ref(c.enemies, d.boss, `dungeon ${d.id}`);
+    v.check(d.rooms >= 4 && d.rooms <= 8, `dungeon ${d.id}: 4-8 rooms`);
+  }
+  for (const t of c.towns.all()) {
+    for (const god of t.temple) v.ref(c.pantheon, god, `town ${t.id}`);
+    if (t.faction) v.check(c.factions.find(t.faction)?.hall === t.id, `town ${t.id}: faction hall mismatch`);
+  }
+  for (const f of c.factions.all()) {
+    const where = `faction ${f.id}`;
+    v.ref(c.towns, f.hall, where);
+    v.ref(c.pantheon, f.god, where);
+    for (const r of f.rivals) v.check(c.factions.find(r)?.rivals.includes(f.id) === true, `${where}: rival ${r} not mutual`);
+    for (const r of f.ranks) checkModifiers(v, r.modifiers, where);
+    for (const d of [...f.likes, ...f.dislikes]) if (d.tag) v.ref(c.skillTags, d.tag, where);
+  }
+  for (const w of c.weather.all()) checkModifiers(v, w.modifiers, `weather ${w.id}`);
+  for (const r of c.houseRooms.all()) for (const lvl of r.modifiers ?? []) checkModifiers(v, lvl, `house room ${r.id}`);
 
   // ---- Multiclassing ----
   for (const cls of c.classes.all()) {

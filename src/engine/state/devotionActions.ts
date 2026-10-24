@@ -87,6 +87,7 @@ export class DevotionActions {
     discover(this.p, discovered);
     const changes = this.apply(deltas, reason, false, quiet);
     this.advanceEdict(occurrences);
+    this.s.world.factionDeeds(occurrences);
     return changes;
   }
 
@@ -94,6 +95,8 @@ export class DevotionActions {
 
   /** Ascends as the god's Apostle; the divine weapon goes into your bags. */
   ascend(god: string): DevotionResult {
+    const at = this.worshipCheck(god);
+    if (!at.ok) return at;
     const probe = forgeDivineWeapon(god, 1, this.s.rng, () => 'probe');
     if (!canAdd(this.s.state.inventory, probe)) return fail('Make room in your bags for your divine weapon.');
     const result = ascend(this.p, god, this.s.rng, () => this.s.newUid());
@@ -182,8 +185,15 @@ export class DevotionActions {
     return { ok: true };
   }
 
+  /** You must be at a shrine or temple of the god (see WorldActions.shrineGods). */
+  private worshipCheck(god: string): DevotionResult {
+    return this.s.world.canWorship(god) ? { ok: true } : fail(`Visit a shrine or temple of ${content.gods.get(god).name}.`);
+  }
+
   /** Shrine prayer: once per in-game day per god, takes half an hour. */
   prayAtShrine(god: string): DevotionResult {
+    const at = this.worshipCheck(god);
+    if (!at.ok) return at;
     const day = this.s.state.clock.day;
     if (this.p.devotion.lastPrayer[god] === day) return fail('You have already prayed to this god today.');
     if (tierFor(favorOf(this.p, god)) === 'hated') return fail(`${content.gods.get(god).name} does not hear you.`);
@@ -194,6 +204,8 @@ export class DevotionActions {
   }
 
   offerGold(god: string, gold: number): DevotionResult {
+    const at = this.worshipCheck(god);
+    if (!at.ok) return at;
     const amount = Math.floor(gold);
     if (amount <= 0) return fail('Offer some gold.');
     if (!this.s.spendGold(amount, 'offering')) return fail('Not enough gold.');
@@ -203,6 +215,8 @@ export class DevotionActions {
 
   /** Offers one of the item in an inventory slot. */
   offerItem(god: string, index: number): DevotionResult {
+    const at = this.worshipCheck(god);
+    if (!at.ok) return at;
     const item = this.s.state.inventory.slots[index];
     if (!item) return fail('Nothing to offer.');
     const favor = itemOfferingFavor(god, item.baseId, itemValue(item));
@@ -215,6 +229,8 @@ export class DevotionActions {
 
   /** Spends favor on a minor blessing (a timed buff, scaled by Blessing Power). */
   receiveMinor(id: string): BlessingResult {
+    const at = this.worshipCheck(content.blessings.find(id)?.god ?? '');
+    if (!at.ok) return at;
     const check = canReceiveMinor(this.p, id);
     if (!check.ok) return check;
     const b = content.blessings.get(id);
@@ -250,6 +266,8 @@ export class DevotionActions {
 
   /** Buys the god's Divine scripture (skillbook) with favor. */
   buyScripture(god: string): DevotionResult {
+    const at = this.worshipCheck(god);
+    if (!at.ok) return at;
     const skill = content.generalSkills.all().find((g) => g.god === god);
     if (!skill) return fail('This god keeps no scripture.');
     if (!atLeast(this.p, god, DEVOTION.scriptureTier)) return fail(`Requires ${tierName(DEVOTION.scriptureTier)} devotion.`);
@@ -322,6 +340,7 @@ export class DevotionActions {
     }
     this.advanceEdict(occ);
     this.tickEdicts();
+    this.s.world.factionDeeds(occ);
     const hunt = this.p.devotion.hunt;
     if (hunt && --hunt.battles <= 0) delete this.p.devotion.hunt;
     return changes;

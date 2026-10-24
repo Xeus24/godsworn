@@ -167,6 +167,7 @@ export class PantheonScreen implements Screen {
     const patron = p.devotion.patron === g.id;
     panel.append(
       el('h3', {}, g.shrine),
+      el('p', { class: s.world.canWorship(g.id) ? 'tip-good small' : 'dim small' }, s.world.canWorship(g.id) ? `You can worship ${god.name} here.` : `To pray, make offerings or receive blessings, visit ${god.name}'s shrines (${content.zones.filter((z) => z.shrines.includes(g.id)).map((z) => z.name).join(', ')}) or a temple (${content.towns.filter((t) => t.temple.includes(g.id)).map((t) => t.name).join(', ') || 'none'}).`),
       el(
         'div',
         { class: 'row wrap' },

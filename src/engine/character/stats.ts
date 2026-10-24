@@ -4,6 +4,8 @@ import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
 import { divineModifiers } from '../gods/blessings';
 import { generalFlags, generalModifiers } from '../skills/general';
 import { treeFlags, treeModifiers } from '../skills/tree';
+import { factionModifiers } from '../world/factions';
+import { houseModifiers } from '../world/housing';
 import { calculateStats, calculateStatsDetailed, type StatResult } from '../stats/calculate';
 import type { ConditionContext } from '../stats/conditions';
 import { withSource, type Modifier } from '../stats/modifiers';
@@ -36,7 +38,7 @@ export function characterBaseStats(char: Character, c: Content = content): Prima
   return out;
 }
 
-/** Every modifier the character currently has: race, birth sign, paragon, gear, skill trees, general skills, blessings and curses, timed buffs. */
+/** Every modifier the character currently has: race, birth sign, paragon, gear, skill trees, general skills, blessings and curses, faction ranks, house rooms, timed buffs. */
 export function characterModifiers(char: Character, c: Content = content): Modifier[] {
   const race = c.races.get(char.raceId);
   const sign = c.birthSigns.get(char.birthSignId);
@@ -56,6 +58,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...generalModifiers(char, c));
   mods.push(...offClassArmorModifiers(char, c));
   mods.push(...divineModifiers(char, characterBaseStats(char, c), c));
+  mods.push(...factionModifiers(char, c), ...houseModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
   return mods;
 }

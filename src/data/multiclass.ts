@@ -81,10 +81,10 @@ const trialSupport: Record<string, EncounterDef['enemies']> = {
 
 const mentorOf = (classId: string): string => `mentor-${classId}`;
 
-/** Hybrid trials are fixed at level 40: a hero who reaches both classes at 25 around level 35 can try early or come back stronger. */
-export const HYBRID_TRIAL_LEVEL = 40;
+/** Hybrid trials are fixed at level 36: a hero who reaches both classes at 25 around level 35 can try early or come back stronger. */
+export const HYBRID_TRIAL_LEVEL = 36;
 
-/** Class trials (level 15: mentor plus a helper) and hybrid trials (both mentors and their helpers at level 40). */
+/** Class trials (level 15: mentor plus a helper) and hybrid trials (both mentors and their helpers at level 36). */
 export const TRIAL_ENCOUNTERS: EncounterDef[] = [
   ...CLASS_TRIALS.map((t): EncounterDef => {
     const name = MENTORS.find((m) => m.id === mentorOf(t.classId))?.name ?? t.classId;

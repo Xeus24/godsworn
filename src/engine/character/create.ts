@@ -49,6 +49,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     hybrids: [],
     trialsWon: [],
     devotion: createDevotion(),
+    world: { reputation: {}, trophies: {} },
     allocated: emptyPrimaryStats(),
     attributePoints: 0,
     paragonLevel: 0,

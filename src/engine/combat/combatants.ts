@@ -1,5 +1,5 @@
 import { content, type Content } from '../../data';
-import { ENEMY_GROWTH, TIER_SCALING } from '../../data/combat';
+import { ENEMY_GROWTH, ENEMY_LATE_GROWTH, TIER_SCALING } from '../../data/combat';
 import { characterBaseStats, characterModifiers } from '../character/stats';
 import type { Character } from '../character/types';
 import { blessingFlags, blessingTriggers } from '../gods/blessings';
@@ -35,16 +35,21 @@ export interface ScaledStats {
   speed: number;
 }
 
-/** Level-1 numbers grown to `level`: stat x (1 + growth x (level - 1)), then tier multipliers. */
+/**
+ * Level-1 numbers grown to `level`: stat x (1 + growth x (level - 1) +
+ * late growth x (level - 15)^1.6 past level 15), then tier multipliers.
+ */
 export function scaleCombatStats(def: CombatStatsDef, level: number, tier: EnemyTier = 'normal'): ScaledStats {
   const l = Math.max(0, level - 1);
+  const late = Math.max(0, level - ENEMY_LATE_GROWTH.from) ** ENEMY_LATE_GROWTH.power;
   const t = TIER_SCALING[tier] ?? { hp: 1, damage: 1, xp: 1 };
+  const grow = (k: 'hp' | 'attack' | 'magic' | 'defense' | 'magicResist'): number => 1 + ENEMY_GROWTH[k] * l + ENEMY_LATE_GROWTH[k] * late;
   return {
-    hp: Math.round(def.hp * (1 + ENEMY_GROWTH.hp * l) * t.hp),
-    attack: Math.round(def.attack * (1 + ENEMY_GROWTH.attack * l) * t.damage),
-    magic: Math.round(def.magic * (1 + ENEMY_GROWTH.magic * l) * t.damage),
-    defense: Math.round(def.defense * (1 + ENEMY_GROWTH.defense * l)),
-    magicResist: Math.round(def.magicResist * (1 + ENEMY_GROWTH.magicResist * l)),
+    hp: Math.round(def.hp * grow('hp') * t.hp),
+    attack: Math.round(def.attack * grow('attack') * t.damage),
+    magic: Math.round(def.magic * grow('magic') * t.damage),
+    defense: Math.round(def.defense * grow('defense')),
+    magicResist: Math.round(def.magicResist * grow('magicResist')),
     speed: Math.round(def.speed * (1 + ENEMY_GROWTH.speed * l)),
   };
 }

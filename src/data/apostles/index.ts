@@ -93,8 +93,8 @@ export const ASPECT_SKILLS: SkillDef[] = GODS.filter((g) => !g.hidden).map((g) =
 
 /** The three stages of each god's Trial of Apostleship (levels scale to the hero when fought). */
 export const APOSTLE_TRIALS: EncounterDef[] = GODS.filter((g) => !g.hidden).flatMap((g): EncounterDef[] => [
-  { id: `apostle-trial-${g.id}-1`, name: `Trial of ${g.name}: the Ordeal`, description: `Three heralds test whether ${g.name} chose well.`, level: 30, canFlee: true, enemies: [{ enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }] },
-  { id: `apostle-trial-${g.id}-2`, name: `Trial of ${g.name}: the Gauntlet`, description: 'Four heralds, one after another, all at once.', level: 30, canFlee: true, enemies: [{ enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }] },
+  { id: `apostle-trial-${g.id}-1`, name: `Trial of ${g.name}: the Ordeal`, description: `Two heralds test whether ${g.name} chose well.`, level: 30, canFlee: true, enemies: [{ enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }] },
+  { id: `apostle-trial-${g.id}-2`, name: `Trial of ${g.name}: the Gauntlet`, description: 'Three heralds, one after another, all at once.', level: 30, canFlee: true, enemies: [{ enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }, { enemyId: `punisher-${g.id}` }] },
   { id: `apostle-trial-${g.id}-3`, name: `Trial of ${g.name}: the Aspect`, description: `${g.name} comes in person. Kneel afterwards, not before.`, level: 30, canFlee: false, isBoss: true, enemies: [{ enemyId: `aspect-${g.id}` }, { enemyId: `punisher-${g.id}` }] },
 ]);
 

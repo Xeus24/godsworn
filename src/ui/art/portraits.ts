@@ -203,3 +203,17 @@ export function drawPortrait(canvas: HTMLCanvasElement, raceId: string, variant:
   }
   ctx.drawImage(layer, 0, 0);
 }
+
+const portraitCache = new Map<string, HTMLCanvasElement>();
+
+/** A cached portrait canvas on a tinted background (battle and overworld sprites). */
+export function portraitCanvas(raceId: string, variant: number, color: string): HTMLCanvasElement {
+  const key = `${raceId}|${variant}|${color}`;
+  let c = portraitCache.get(key);
+  if (!c) {
+    c = document.createElement('canvas');
+    drawPortrait(c, raceId, variant, `${color}55`);
+    portraitCache.set(key, c);
+  }
+  return c;
+}

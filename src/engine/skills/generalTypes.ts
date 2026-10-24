@@ -9,7 +9,7 @@ export type GeneralCategory = 'combat' | 'elemental' | 'utility' | 'survival' | 
  * Out-of-combat effects some general skills have. Each scales with rank;
  * `perRank` is the step per rank (see engine/skills/general.ts for use).
  */
-export type UtilityKind = 'appraise' | 'camping' | 'foraging' | 'scavenging' | 'tinkering';
+export type UtilityKind = 'appraise' | 'camping' | 'foraging' | 'scavenging' | 'tinkering' | 'lockpicking' | 'detectTraps';
 
 /** A class-agnostic skill anyone can learn from a skillbook. Ranks 1-10. */
 export interface GeneralSkillDef {
