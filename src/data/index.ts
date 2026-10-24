@@ -49,6 +49,9 @@ import { LORE } from './world/lore';
 import { DUNGEONS, TOWNS } from './world/places';
 import { WEATHER } from './world/weather';
 import { ZONES } from './world/zones';
+import { PROFESSIONS, RECIPES } from './economy/recipes';
+import { buildRecipeScrolls } from './economy/scrolls';
+import { SHOPS } from './economy/shops';
 import { STANCES } from './stances';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
@@ -84,7 +87,7 @@ export const content = {
   mechanics: new ContentTable('mechanic', MECHANICS),
   rarities: new ContentTable('rarity', RARITY_DEFS),
   qualities: new ContentTable('quality', QUALITY_DEFS),
-  items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL)]),
+  items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES)]),
   uniques: new ContentTable('unique item', [...UNIQUE_ITEMS, ...DIVINE_WEAPONS]),
   itemSets: new ContentTable('item set', ITEM_SETS),
   runewords: new ContentTable('runeword', RUNEWORDS),
@@ -115,6 +118,9 @@ export const content = {
   factions: new ContentTable('faction', FACTIONS),
   houseRooms: new ContentTable('house room', HOUSE_ROOMS),
   lore: new ContentTable('lore page', LORE),
+  professions: new ContentTable('profession', PROFESSIONS),
+  recipes: new ContentTable('recipe', RECIPES),
+  shops: new ContentTable('shop', SHOPS),
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
 };
 
@@ -409,6 +415,7 @@ export function validateContent(c: Content = content): void {
     for (const s of z.shrines) v.ref(c.pantheon, s, where);
     for (const w of z.weather) v.ref(c.weather, w.id, where);
     for (const l of z.lore) v.check(c.lore.find(l)?.zone === z.id, `${where}: lore ${l} is not in this zone`);
+    for (const id of [...z.gather.mining, ...z.gather.herbalism, ...z.gather.fishing]) v.ref(c.items, id, where);
   }
   for (const d of c.dungeons.all()) {
     groups(`dungeon ${d.id}`, d.encounters);
@@ -429,6 +436,20 @@ export function validateContent(c: Content = content): void {
   }
   for (const w of c.weather.all()) checkModifiers(v, w.modifiers, `weather ${w.id}`);
   for (const r of c.houseRooms.all()) for (const lvl of r.modifiers ?? []) checkModifiers(v, lvl, `house room ${r.id}`);
+
+  // ---- Economy ----
+  for (const r of c.recipes.all()) {
+    const where = `recipe ${r.id}`;
+    v.ref(c.professions, r.profession, where);
+    v.check(c.professions.find(r.profession)?.kind === 'crafting', `${where}: not a crafting profession`);
+    for (const i of r.inputs) v.ref(c.items, i.itemId, where);
+    if (r.output.kind === 'item') v.ref(c.items, r.output.itemId, where);
+    v.check(r.starter === true || c.items.has(`recipe-${r.id}`), `${where}: no recipe scroll`);
+  }
+  for (const p of c.professions.all()) if (p.kind === 'crafting') v.check(c.recipes.filter((r) => r.profession === p.id && r.starter === true).length > 0, `profession ${p.id}: no starter recipes`);
+  for (const s of c.shops.all()) {
+    for (const rule of s.stock) if (rule.kind === 'items') for (const id of rule.ids) v.ref(c.items, id, `shop ${s.id}`);
+  }
 
   // ---- Multiclassing ----
   for (const cls of c.classes.all()) {

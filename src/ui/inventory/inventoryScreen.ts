@@ -29,7 +29,7 @@ const FILTER_CATEGORIES: Record<Exclude<Filter, 'all'>, ItemCategory[]> = {
   consumables: ['consumable'],
   socketables: ['gem', 'rune'],
   materials: ['material'],
-  other: ['curiosity', 'book'],
+  other: ['curiosity', 'book', 'recipe'],
 };
 
 /** Paper-doll layout: [slot, grid column, grid row]. */
@@ -151,6 +151,7 @@ export class InventoryScreen implements Screen {
     }
     if (isGear(item)) return this.say(this.actions.equip(loc.index));
     if (bookSkill(item.baseId)) return this.say(this.session.general.readBook(loc.index));
+    if (baseOf(item).category === 'recipe') return this.say(this.session.economy.readRecipe(loc.index));
     if (this.actions.isUsable(loc.index)) return this.say(this.actions.use(loc.index));
     this.say({ ok: false, reason: 'Drag gems and runes onto gear to socket them.' });
   }
@@ -297,6 +298,7 @@ export class InventoryScreen implements Screen {
     if (loc.where === 'equipment') btn('Unequip', () => this.say(this.actions.unequip(loc.slot)));
     if (loc.where === 'inventory' && gear) btn('Equip', () => this.say(this.actions.equip(loc.index)));
     if (loc.where === 'inventory' && this.actions.isUsable(loc.index)) btn('Use', () => this.say(this.actions.use(loc.index)));
+    if (loc.where === 'inventory' && baseOf(item).category === 'recipe') btn('Learn recipe', () => this.say(this.session.economy.readRecipe(loc.index)));
     if (loc.where === 'inventory' && bookSkill(item.baseId)) {
       const terms = studyTerms(item.baseId);
       btn('Read (consumes the book)', () => this.say(this.session.general.readBook(loc.index)));

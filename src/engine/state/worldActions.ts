@@ -2,6 +2,7 @@ import { content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { characterStats, restoreFull } from '../character/stats';
 import type { EncounterDef } from '../combat/types';
+import { gainGatheringXp, gatherYield, gatheringLevel } from '../economy/crafting';
 import { favorTiers, type DeedOccurrence } from '../gods/devotion';
 import { createItem } from '../items/generate';
 import { addItem, canAdd, countOf, createInventory, STASH_TAB_SIZE, takeQuantity } from '../items/inventory';
@@ -248,11 +249,32 @@ export class WorldActions {
       }
       case 'enemies':
         return this.fight(e, isDungeon(map.id) ? 'pack' : 'roaming');
+      case 'node':
+        return { kind: 'moved', message: this.gather(e) };
       case 'worldBoss':
         return this.fight(e, 'worldBoss');
       case 'boss':
         return this.fight(e, 'boss');
     }
+  }
+
+  /** Mining, Herbalism and Fishing: open to everyone, better yields with practice. Nodes refill each day. */
+  private gather(e: MapEntity): string {
+    const skill = e.gather;
+    if (!skill) return '';
+    const map = this.map;
+    const pool = this.zone.gather[skill];
+    const itemId = this.s.rng.pick(pool);
+    const qty = gatherYield(gatheringLevel(this.s.player, skill), this.s.rng);
+    const item = createItem(itemId, qty, () => this.s.newUid());
+    if (!canAdd(this.s.state.inventory, item)) return 'Your bags are full.';
+    addItem(this.s.state.inventory, item);
+    this.world.used[usedKey(map.id, e.id)] = this.day;
+    this.s.advanceTime(20);
+    const up = gainGatheringXp(this.s.player, skill);
+    if (up) this.toast('info', `${content.professions.get(skill).name} rises to ${up}.`);
+    this.changed('gather');
+    return `${e.label}: ${qty}× ${content.items.get(itemId).name}.`;
   }
 
   /** Opens a chest: locked chests need a Skeleton Key or Lockpicking; traps hurt unless detected. */

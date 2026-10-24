@@ -24,7 +24,9 @@ export type DeedEvent =
   | 'socket'
   | 'identify'
   | 'rest'
-  | 'itemBroken';
+  | 'itemBroken'
+  | 'craft'
+  | 'gamble';
 
 /**
  * A like (positive amount) or dislike (negative). Kill deeds can filter by

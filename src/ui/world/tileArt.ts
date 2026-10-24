@@ -212,6 +212,23 @@ export function entityIcon(kind: string, tint = '#ffd84a', state = ''): HTMLCanv
       px('#5a4a3a', 3, 6, 5, 1);
       px('#5a4a3a', 3, 8, 4, 1);
       break;
+    case 'node':
+      if (state === 'mining') {
+        px('#6a6a72', 1, 4, 10, 7);
+        px('#8a8a92', 3, 3, 5, 2);
+        px('#c8a040', 4, 6, 2, 2);
+        px('#d0d0e0', 7, 8, 2, 1);
+      } else if (state === 'herbalism') {
+        px('#2f7a2a', 2, 5, 8, 6);
+        px('#e05080', 3, 3, 2, 2);
+        px('#f0d050', 7, 4, 2, 2);
+        px('#e05080', 5, 6, 2, 2);
+      } else {
+        px('#a07040', 5, 1, 1, 9);
+        px('#e8e8e8', 6, 2, 1, 6);
+        px('#ffffff', 4, 9, 3, 1);
+      }
+      break;
     case 'rune':
       px('#5a5a62', 2, 2, 8, 9);
       px(state === 'lit' ? '#6af0ff' : '#2a2a32', 4, 4, 4, 1);

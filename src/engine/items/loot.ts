@@ -22,7 +22,7 @@ export function rollGold(ctx: LootContext, mult: number): number {
   return Math.max(1, Math.round(base * ctx.rng.float(0.7, 1.3)));
 }
 
-function poolCandidates(pool: Extract<LootEntry, { kind: 'pool' }>['pool'], itemLevel: number, c: Content): ItemBaseDef[] {
+export function poolCandidates(pool: Extract<LootEntry, { kind: 'pool' }>['pool'], itemLevel: number, c: Content): ItemBaseDef[] {
   const atLevel = (b: ItemBaseDef): boolean => b.level <= itemLevel && !POOL_EXCLUDED.has(b.id);
   switch (pool) {
     case 'potion':
@@ -44,7 +44,7 @@ function poolCandidates(pool: Extract<LootEntry, { kind: 'pool' }>['pool'], item
 }
 
 /** Weight inside a pool: newer (higher-level) items are favored; high runes are rare. */
-function poolWeight(b: ItemBaseDef, itemLevel: number): number {
+export function poolWeight(b: ItemBaseDef, itemLevel: number): number {
   if (b.category === 'rune') return 1 / Math.pow(b.rank, 1.3);
   if (b.category === 'book') return BOOK_DROP_WEIGHT[b.rarity] ?? 0;
   if (b.category === 'gem') return b.level >= itemLevel - 20 ? 3 : 1;

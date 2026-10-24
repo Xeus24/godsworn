@@ -20,7 +20,7 @@ const champions = (id: string, n = 3): string[] => Array.from({ length: n }, () 
 /** The eight zones along the road from the Meadowlands to the Dark Citadel. */
 export const ZONES: ZoneDef[] = [
   {
-    id: 'meadowlands', name: 'The Meadowlands', order: 1, levels: [1, 8], biome: 'meadow', town: 'brightwater',
+    id: 'meadowlands', gather: { mining: ['iron-ore'], herbalism: ['healroot', 'manabloom'], fishing: ['river-trout'] }, name: 'The Meadowlands', order: 1, levels: [1, 8], biome: 'meadow', town: 'brightwater',
     description: 'Rolling farmland where the road begins. Goblins raid the outlying farms.',
     encounterRate: 0.06, dungeons: ['goblin-warren'], worldBoss: 'bramblehorn', shrines: ['solenne', 'hesha'],
     weather: [{ id: 'clear', weight: 5 }, { id: 'rain', weight: 2 }, { id: 'fog', weight: 1 }],
@@ -33,7 +33,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-first-oath', 'lore-brightwater'],
   },
   {
-    id: 'whisperwood', name: 'The Whisperwood', order: 2, levels: [8, 16], biome: 'forest', town: 'thornwick',
+    id: 'whisperwood', gather: { mining: ['iron-ore'], herbalism: ['healroot', 'manabloom', 'fireweed'], fishing: ['river-trout'] }, name: 'The Whisperwood', order: 2, levels: [8, 16], biome: 'forest', town: 'thornwick',
     description: 'An old forest that talks in its sleep. The dead walk on the old battlefield.',
     encounterRate: 0.07, dungeons: ['spider-hollow', 'old-crypt'], worldBoss: 'gnarlroot', shrines: ['ysolde', 'morrath'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'rain', weight: 2 }, { id: 'fog', weight: 2 }],
@@ -46,7 +46,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-whisper', 'lore-old-battle'],
   },
   {
-    id: 'sunken-caves', threat: 110, name: 'The Sunken Caves', order: 3, levels: [16, 24], biome: 'cave',
+    id: 'sunken-caves', gather: { mining: ['mithril-ore', 'iron-ore'], herbalism: ['fireweed', 'manabloom'], fishing: ['river-trout', 'silverfin'] }, threat: 110, name: 'The Sunken Caves', order: 3, levels: [16, 24], biome: 'cave',
     description: 'Flooded caverns under the hills, glittering with crystal and full of things that like the dark.',
     encounterRate: 0.08, dungeons: ['drowned-grotto'], worldBoss: 'abyssal-crab', shrines: ['nymira'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'fog', weight: 1 }],
@@ -58,7 +58,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-sunken', 'lore-crystal'],
   },
   {
-    id: 'ashen-desert', threat: 70, name: 'The Ashen Desert', order: 4, levels: [24, 32], biome: 'desert', town: 'sandhaven',
+    id: 'ashen-desert', gather: { mining: ['mithril-ore'], herbalism: ['fireweed', 'frostleaf'], fishing: ['silverfin'] }, threat: 70, name: 'The Ashen Desert', order: 4, levels: [24, 32], biome: 'desert', town: 'sandhaven',
     description: 'Grey dunes over a buried empire. The sun is merciless, and so are the raiders.',
     encounterRate: 0.07, dungeons: ['sun-king-tomb'], worldBoss: 'sandworm', shrines: ['kael', 'solenne'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'heatwave', weight: 3 }, { id: 'sandstorm', weight: 2 }],
@@ -70,7 +70,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-sun-king', 'lore-sandhaven'],
   },
   {
-    id: 'frostspire', threat: 60, name: 'Frostspire', order: 5, levels: [32, 40], biome: 'snow', town: 'frosthold',
+    id: 'frostspire', gather: { mining: ['adamant-ore', 'mithril-ore'], herbalism: ['frostleaf', 'sunpetal'], fishing: ['silverfin'] }, threat: 60, name: 'Frostspire', order: 5, levels: [32, 40], biome: 'snow', town: 'frosthold',
     description: 'The mountains where the giants built a spire of ice. It never stops snowing.',
     encounterRate: 0.07, dungeons: ['ice-palace'], worldBoss: 'frost-wyrm', shrines: ['aurelis', 'thalor'],
     weather: [{ id: 'snow', weight: 4 }, { id: 'clear', weight: 2 }, { id: 'fog', weight: 1 }],
@@ -82,7 +82,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-giants', 'lore-spire'],
   },
   {
-    id: 'stormcoast', threat: 45, name: 'The Stormcoast', order: 6, levels: [40, 48], biome: 'coast', town: 'saltmere',
+    id: 'stormcoast', gather: { mining: ['adamant-ore'], herbalism: ['sunpetal', 'frostleaf'], fishing: ['silverfin', 'ember-eel'] }, threat: 45, name: 'The Stormcoast', order: 6, levels: [40, 48], biome: 'coast', town: 'saltmere',
     description: 'Cliffs, wrecks and pirate coves under a sky that is always about to break.',
     encounterRate: 0.07, dungeons: ['leviathan-wreck', 'smugglers-den'], worldBoss: 'storm-roc', shrines: ['nymira', 'grimvald'],
     weather: [{ id: 'storm', weight: 3 }, { id: 'rain', weight: 3 }, { id: 'clear', weight: 2 }],
@@ -94,7 +94,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-saltmere', 'lore-leviathan'],
   },
   {
-    id: 'volcanic-rift', threat: 5, name: 'The Volcanic Rift', order: 7, levels: [48, 55], biome: 'volcanic',
+    id: 'volcanic-rift', gather: { mining: ['starmetal-ore', 'adamant-ore'], herbalism: ['sunpetal', 'dreamleaf'], fishing: ['ember-eel'] }, threat: 5, name: 'The Volcanic Rift', order: 7, levels: [48, 55], biome: 'volcanic',
     description: 'The world split open here. The fire underneath is still awake.',
     encounterRate: 0.08, dungeons: ['fallen-forge'], worldBoss: 'ember-matriarch', shrines: ['thalor', 'kael'],
     weather: [{ id: 'ashfall', weight: 4 }, { id: 'heatwave', weight: 2 }, { id: 'clear', weight: 1 }],
@@ -106,7 +106,7 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-rift', 'lore-forge-gods'],
   },
   {
-    id: 'dark-citadel', name: 'The Dark Citadel', order: 8, levels: [55, 60], biome: 'citadel',
+    id: 'dark-citadel', gather: { mining: ['starmetal-ore'], herbalism: ['dreamleaf'], fishing: ['ember-eel'] }, name: 'The Dark Citadel', order: 8, levels: [55, 60], biome: 'citadel',
     description: 'A fortress of black stone where the sky has the wrong color. Something unwritten waits inside.',
     encounterRate: 0.09, dungeons: ['black-throne'], worldBoss: 'unwritten-herald', shrines: ['morrath', 'vex'],
     weather: [{ id: 'blood-moon', weight: 2 }, { id: 'fog', weight: 2 }, { id: 'clear', weight: 1 }],

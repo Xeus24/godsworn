@@ -176,3 +176,138 @@
   margin: 0;
   padding-left: 18px;
 }
+
+/* ---------- Market and workshop ---------- */
+
+.market-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.market-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.market-head h2 {
+  margin: 0;
+}
+
+.market-message {
+  color: var(--gold);
+}
+
+.market-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .market-grid {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+.market-shop,
+.market-sell,
+.workshop-recipes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.market-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.market-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) 70px auto;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 2px 4px;
+  border-bottom: 1px solid #2a2038;
+}
+
+.market-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.market-price {
+  text-align: right;
+  color: var(--gold);
+}
+
+.tab.dim {
+  opacity: 0.55;
+}
+
+.workshop-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.prof-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 0;
+  border-top: 1px solid #2a2038;
+}
+
+.prof-desc {
+  grid-column: 1 / -1;
+}
+
+.recipe-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 8px;
+  align-items: center;
+  padding: 5px 0;
+  border-top: 1px solid #2a2038;
+}
+
+.recipe-row .recipe-inputs,
+.recipe-row select {
+  grid-column: 1 / -1;
+}
+
+.recipe-row.unavailable b {
+  opacity: 0.6;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 4px 0;
+}
+
+.service-item {
+  padding: 4px 6px;
+  border: 1px dashed #4a3a5a;
+  border-radius: 4px;
+  cursor: help;
+}

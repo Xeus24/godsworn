@@ -30,6 +30,8 @@ export interface ZoneDef {
   encounterRate: number;
   /** Extra HP and damage (percent) for this zone's random encounters and roaming packs: a balance dial. */
   threat?: number;
+  /** What its gathering nodes yield: ore veins (Mining), herb patches (Herbalism), fishing spots (Fishing). */
+  gather: { mining: string[]; herbalism: string[]; fishing: string[] };
   /** Weather this zone can roll, weighted. */
   weather: { id: string; weight: number }[];
   town?: string;
@@ -55,6 +57,8 @@ export interface TownDef {
   housing?: boolean;
   /** Inn price per character level. */
   innCostPerLevel: number;
+  /** Shops beyond the usual ones (the Gambler, the Black Market). */
+  extraShops?: string[];
 }
 
 export interface DungeonDef {
@@ -140,7 +144,8 @@ export type EntityKind =
   | 'enemies'
   | 'worldBoss'
   | 'boss'
-  | 'rune';
+  | 'rune'
+  | 'node';
 
 /** Something on a map: a door to elsewhere, a chest, a fight waiting to happen... */
 export interface MapEntity {
@@ -158,6 +163,8 @@ export interface MapEntity {
   hidden?: boolean;
   /** Enemy groups. */
   group?: EncounterGroup;
+  /** Gathering nodes: the skill used. */
+  gather?: 'mining' | 'herbalism' | 'fishing';
   label?: string;
 }
 

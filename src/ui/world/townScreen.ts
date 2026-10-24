@@ -13,6 +13,8 @@ import { WorldMapOverlay } from './worldMap';
 /** Extra navigation the town needs: the arena (Proving Grounds and class trainers) and leaving. */
 export interface TownNav {
   arena: () => void;
+  market: () => void;
+  workshop: () => void;
   leave: () => void;
 }
 
@@ -102,6 +104,16 @@ export class TownScreen implements Screen {
         el('p', { class: 'small' }, `Honors ${t.temple.map((g) => content.gods.get(g).name).join(' and ')}: pray, make offerings, receive blessings and face Trials of Apostleship.`),
         this.btn('Enter the temple', () => this.nav.pantheon(), false, 'primary'),
       ),
+    );
+    const night = s.timeOfDay === 'night';
+    const extras = (t.extraShops ?? []).map((id) => content.shops.get(id).name).join(', ');
+    cards.push(
+      this.card(
+        'Market',
+        el('p', { class: 'small' }, `Blacksmith, Armorer, Alchemist, General Store, Magic Shop, Library and Temple Merchant${t.faction ? ', the faction quartermaster' : ''}${extras ? `, ${extras}` : ''}. Sell, buy back and repair here.${(t.extraShops ?? []).includes('black-market') ? (night ? ' The Black Market is open tonight.' : ' A Black Market opens after dark.') : ''}`),
+        this.btn('Go to the market', () => this.town.market(), false, 'primary'),
+      ),
+      this.card('Workshop', el('p', { class: 'small' }, 'Learn professions, craft, upgrade gear, reroll affixes, add sockets and raise quality.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
     );
     cards.push(this.card('Arena & Class Trainers', el('p', { class: 'small' }, 'Spar against the beasts of the land in the arena, or train in a new class.'), this.btn('Go to the arena', () => this.town.arena(), false, 'primary')));
 

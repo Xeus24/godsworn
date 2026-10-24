@@ -158,6 +158,17 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
     const p = spot(...span(i, 4));
     add({ id: `chest-${i}`, kind: 'chest', x: p[0], y: p[1], locked: rng.chance(0.3), trapped: rng.chance(0.25) });
   }
+  // Gathering nodes: two ore veins, two herb patches and a fishing pond.
+  for (const [skill, n] of [['mining', 2], ['herbalism', 2], ['fishing', 1]] as const) {
+    for (let i = 0; i < n; i++) {
+      const p = spot(...span(rng.int(0, 3), 4));
+      if (skill === 'fishing') {
+        // Dig a small pond beside the spot.
+        for (const [dx, dy] of [[1, -1], [2, -1], [1, 0], [2, 0]] as const) if (g.get(p[0] + dx, p[1] + dy) !== '=' && !used.has(`${p[0] + dx},${p[1] + dy}`)) g.set(p[0] + dx, p[1] + dy, '~');
+      }
+      add({ id: `node-${skill}-${i}`, kind: 'node', x: p[0], y: p[1], gather: skill, label: skill === 'mining' ? 'Ore vein' : skill === 'herbalism' ? 'Herb patch' : 'Fishing spot' });
+    }
+  }
   const [loreOpen, loreHidden] = zone.lore;
   if (loreOpen) {
     const p = spot(...span(2, 4));

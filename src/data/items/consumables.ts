@@ -70,6 +70,8 @@ const BUFFS: BuffConsumable[] = [
   { id: 'hearty-stew', name: 'Hearty Stew', kind: 'food', level: 1, value: 25, mods: [{ stat: 'maxHp', type: 'percent', value: 8 }, { stat: 'hpRegen', type: 'flat', value: 3 }], battles: 5, desc: '+8% max HP, +3 HP regen for 5 battles.' },
   { id: 'spiced-fish', name: 'Spiced Fish', kind: 'food', level: 8, value: 40, mods: [{ stat: 'speed', type: 'flat', value: 2 }, { stat: 'critChance', type: 'flat', value: 2 }], battles: 5, desc: '+2 speed, +2% crit for 5 battles.' },
   { id: 'honeyed-bread', name: 'Honeyed Bread', kind: 'food', level: 4, value: 30, mods: [{ stat: 'mpRegen', type: 'flat', value: 3 }, { stat: 'maxMp', type: 'percent', value: 8 }], battles: 5, desc: '+8% max MP, +3 MP regen for 5 battles.' },
+  { id: 'silverfin-platter', name: 'Silverfin Platter', kind: 'food', level: 18, value: 70, mods: [{ stat: 'critDamage', type: 'flat', value: 12 }, { stat: 'accuracy', type: 'flat', value: 4 }], battles: 6, desc: '+12% crit damage, +4 accuracy for 6 battles.' },
+  { id: 'feast-of-heroes', name: 'Feast of Heroes', kind: 'food', level: 40, value: 250, mods: [{ stat: 'damageBonus', type: 'flat', value: 10 }, { stat: 'maxHp', type: 'percent', value: 10 }, { stat: 'xpGain', type: 'flat', value: 10 }], battles: 10, desc: '+10% damage, +10% max HP and +10% XP for 10 battles.' },
   { id: 'dragon-pepper-roast', name: 'Dragon-Pepper Roast', kind: 'food', level: 30, value: 120, mods: [{ stat: 'fireDamage', type: 'flat', value: 15 }, { stat: 'fireResist', type: 'flat', value: 15 }], battles: 8, desc: '+15% fire damage and resist for 8 battles.' },
 ];
 

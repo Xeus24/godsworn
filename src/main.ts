@@ -26,7 +26,9 @@ import { PantheonScreen } from './ui/pantheon/pantheonScreen';
 import { ScreenManager } from './ui/screen';
 import { TitleScreen } from './ui/title/titleScreen';
 import { TreeScreen } from './ui/tree/treeScreen';
+import { MarketScreen } from './ui/world/marketScreen';
 import { TownScreen } from './ui/world/townScreen';
+import { WorkshopScreen } from './ui/world/workshopScreen';
 import { WorldScreen } from './ui/world/worldScreen';
 import './ui/world/world.css';
 
@@ -59,7 +61,7 @@ const nav: Nav = {
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
   if (session) items.unshift({ label: 'Resume', onSelect: showWorld });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 10: the overworld`));
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 11: the economy`));
 }
 
 function showCreation(): void {
@@ -104,7 +106,15 @@ function showWorld(): void {
 }
 
 function showTown(town: string): void {
-  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, leave: showWorld }, town));
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), leave: showWorld }, town));
+}
+
+function showMarket(town: string): void {
+  if (session) screens.show(new MarketScreen(session, nav, town, () => showTown(town)));
+}
+
+function showWorkshop(town: string): void {
+  if (session) screens.show(new WorkshopScreen(session, nav, () => showTown(town)));
 }
 
 /**

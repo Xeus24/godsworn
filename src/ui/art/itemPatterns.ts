@@ -65,6 +65,7 @@ export const ITEM_PATTERNS: Record<string, string[]> = {
   essence: ['...e...', '..eee..', '.eewee.', 'eewwwee', '.eewee.', '..eee..', '...e...'],
   shard: ['....yw', '...ywy', '..ywy.', '.yey..', 'yey...', 'ey....'],
   fragment: ['..kkk..', '.kkekk.', 'kkeeekk', 'kkeweek', '.kkeek.', '..kkk..'],
+  fish: ['..........', '....mm....', '.mmmmmmm.m', 'mkmmmmmmmm', 'mmmmmmmm.m', '.ddddddd..', '..........'],
   fang: ['ww......', 'wwww....', '.wwwww..', '..wwwww.', '...wwwwd', '.....wdd'],
   curiosity: ['.wwwww.', 'wkwwwkw', 'wwwwwww', 'wwwkwww', 'wwwwwww', 'wkwwwkw', '.wwwww.'],
 };

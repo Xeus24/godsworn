@@ -15,6 +15,8 @@ import { SPEC_LEVEL } from '../skills/specs';
 import type { PrimaryStat } from '../stats/types';
 import { advanceClock, createClock, hourOf, timeOfDay, type GameClock } from './clock';
 import { DevotionActions } from './devotionActions';
+import { EconomyActions } from './economyActions';
+import type { EconomyState } from '../economy/types';
 import { GeneralActions } from './generalActions';
 import { ItemActions } from './itemActions';
 import { MulticlassActions } from './multiclassActions';
@@ -25,7 +27,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 9;
+export const SAVE_VERSION = 10;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -70,6 +72,8 @@ export interface GameState {
   gameOver: boolean;
   /** Where you are and what you have seen and done in the world. */
   world: WorldState;
+  /** Shop purchases today and the buyback list. */
+  economy: EconomyState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -90,6 +94,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     stats: createGameStats(),
     gameOver: false,
     world: createWorldState(),
+    economy: { bought: {}, buyback: [] },
   };
 }
 
@@ -108,6 +113,7 @@ export class GameSession {
   readonly multiclass: MulticlassActions;
   readonly devotion: DevotionActions;
   readonly world: WorldActions;
+  readonly economy: EconomyActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -119,6 +125,7 @@ export class GameSession {
     this.multiclass = new MulticlassActions(this);
     this.devotion = new DevotionActions(this);
     this.world = new WorldActions(this);
+    this.economy = new EconomyActions(this);
     this.world.look();
   }
 

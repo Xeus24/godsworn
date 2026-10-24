@@ -94,7 +94,8 @@ export const PANTHEON: PantheonDef[] = [
     likes: [
       { event: 'crit', amount: 1, cap: 4, text: 'Lucky strikes' },
       { event: 'goldStolen', amount: 2, cap: 6, text: 'Stealing' },
-      { event: 'identify', amount: 1, text: 'Gambling on the unknown' },
+      { event: 'identify', amount: 1, text: 'Uncovering the unknown' },
+      { event: 'gamble', amount: 3, text: 'Gambling' },
     ],
     dislikes: [
       { event: 'rest', amount: -2, text: 'Boring caution' },
@@ -109,6 +110,7 @@ export const PANTHEON: PantheonDef[] = [
     shrine: 'Anvil Shrine', temple: 'The Great Forge',
     likes: [
       { event: 'socket', amount: 4, text: 'Improving your gear' },
+      { event: 'craft', amount: 2, cap: 6, text: 'Crafting' },
       { event: 'salvage', amount: 1, text: 'Reclaiming metal' },
       { event: 'skillTag', tag: 'Fire', amount: 0.5, cap: 3, text: 'Fire' },
     ],

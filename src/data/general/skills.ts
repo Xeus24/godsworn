@@ -115,7 +115,7 @@ export const GENERAL_SKILLS: GeneralSkillDef[] = [
   C({ id: 'ember-rain', name: 'Ember Rain', category: 'elemental', rarity: 'rare', description: 'Fire rains on random foes.', combatSkill: 'g-ember-rain' }),
   C({ id: 'thornburst', name: 'Thornburst', category: 'elemental', rarity: 'uncommon', description: 'Thorns under the front row.', combatSkill: 'g-thornburst' }),
   C({ id: 'elemental-affinity', name: 'Elemental Affinity', category: 'elemental', rarity: 'epic', description: 'Passive: +2% fire, ice and lightning damage per rank.', passive: [flat('fireDamage', 2), flat('iceDamage', 2), flat('lightningDamage', 2)], requirements: { level: 15 } }),
-  // ---- Utility (14) ----
+  // ---- Utility (17) ----
   C({ id: 'appraise', name: 'Appraise', category: 'utility', rarity: 'uncommon', description: 'Identify items without scrolls. Higher ranks identify rarer items (Epic at rank 1, Legendary at 2, Mythic at 6, Relic at 10). Passive: +1% magic find per rank.', passive: [flat('magicFind', 1)], utility: { kind: 'appraise', perRank: 1 } }),
   C({ id: 'pickpocket', name: 'Pickpocket', category: 'utility', description: 'Steal gold from enemies in battle.', combatSkill: 'g-pickpocket' }),
   C({ id: 'sprint', name: 'Sprint', category: 'utility', description: 'A burst of speed in battle. Passive: +0.5 speed per rank.', combatSkill: 'g-sprint', passive: [flat('speed', 0.5)] }),
@@ -125,6 +125,7 @@ export const GENERAL_SKILLS: GeneralSkillDef[] = [
   C({ id: 'treasure-hunter', name: 'Treasure Hunter', category: 'utility', rarity: 'rare', description: 'Passive: +3% gold find and +2% magic find per rank.', passive: [flat('goldFind', 3), flat('magicFind', 2)] }),
   C({ id: 'lucky-star', name: 'Lucky Star', category: 'utility', rarity: 'uncommon', description: 'Passive: +1 LUK per rank.', passive: [flat('luk', 1)] }),
   C({ id: 'fast-learner', name: 'Fast Learner', category: 'utility', rarity: 'rare', description: 'Passive: +2% XP per rank.', passive: [flat('xpGain', 2)] }),
+  C({ id: 'haggle', name: 'Haggle', category: 'utility', description: 'Buy for 1% less and sell for 2% more per rank.', utility: { kind: 'haggle', perRank: 1 } }),
   C({ id: 'lockpicking', name: 'Lockpicking', category: 'utility', rarity: 'uncommon', description: 'Open locked chests without a key: 10% chance per rank (100% at rank 10); a failed attempt can be retried after a battle.', utility: { kind: 'lockpicking', perRank: 10 } }),
   C({ id: 'detect-traps', name: 'Detect Traps', category: 'utility', description: 'Spot and disarm chest traps: 10% chance per rank.', utility: { kind: 'detectTraps', perRank: 10 } }),
   C({ id: 'scavenging', name: 'Scavenging', category: 'utility', description: 'After a victory, 6% chance per rank to scavenge extra materials.', utility: { kind: 'scavenging', perRank: 6 } }),

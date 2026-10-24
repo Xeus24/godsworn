@@ -50,6 +50,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     trialsWon: [],
     devotion: createDevotion(),
     world: { reputation: {}, trophies: {} },
+    crafting: { professions: {}, gathering: {}, recipes: [] },
     allocated: emptyPrimaryStats(),
     attributePoints: 0,
     paragonLevel: 0,

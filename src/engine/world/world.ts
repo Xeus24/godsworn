@@ -64,14 +64,15 @@ export function runesDone(world: WorldState, map: TileMap): boolean {
 
 /**
  * Whether an entity is still there. Chests, lore, runes and waypoints are
- * one-time; roaming packs return each new day; world bosses after 3 days.
+ * one-time; roaming packs and gathering nodes return each new day; world
+ * bosses after 3 days.
  * Dungeon contents reset when you enter on a new day (see enterDungeon).
  */
 export function entityActive(world: WorldState, map: TileMap, e: MapEntity, day: number): boolean {
   const usedDay = world.used[usedKey(map.id, e.id)];
   if (usedDay === undefined) return true;
   if (e.kind === 'worldBoss') return day - usedDay >= WORLD_BOSS_RESPAWN_DAYS;
-  if (e.kind === 'enemies' && !isDungeon(map.id)) return day > usedDay;
+  if ((e.kind === 'enemies' && !isDungeon(map.id)) || e.kind === 'node') return day > usedDay;
   if (e.kind === 'town' || e.kind === 'dungeon' || e.kind === 'exit' || e.kind === 'shrine' || e.kind === 'waypoint') return true;
   return false;
 }

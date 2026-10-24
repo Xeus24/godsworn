@@ -1,4 +1,5 @@
 import type { EquipSlot, ItemInstance } from '../items/types';
+import type { CraftingState } from '../economy/types';
 import type { Devotion } from '../gods/types';
 import type { GeneralSkillProgress } from '../skills/generalTypes';
 import type { ClassTreeState } from '../skills/treeTypes';
@@ -59,6 +60,8 @@ export interface Character {
   devotion: Devotion;
   /** Faction reputation, house and world boss trophies. */
   world: WorldProgress;
+  /** Professions, gathering skills and known recipes. */
+  crafting: CraftingState;
 
   /** Attribute points the player has spent, per stat. */
   allocated: PrimaryStats;

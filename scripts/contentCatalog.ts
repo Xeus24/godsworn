@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { content } from '../src/data';
 import { WEAPON_STAGES } from '../src/data/apostles';
 import { APOSTLESHIP, DEVOTION } from '../src/data/devotion';
+import { UPGRADE_CHANCE } from '../src/engine/economy/enchanting';
 import { MULTICLASS } from '../src/data/progression';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
@@ -286,7 +287,27 @@ function worldSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection };
+function economySection(): string {
+  const out: string[] = [];
+  out.push('Every town has the core shops; stock rolls daily at your level. Shops pay 25% of value. Prices: value x markup, less Haggle (1%/rank), temple favor (5-20%) and faction rank (5% per rank above Member).', '');
+  out.push('| Shop | Markup | Sells | Where |', '|---|---|---|---|');
+  for (const s of content.shops.all()) {
+    const where = content.towns.filter((t) => (t.extraShops ?? []).includes(s.id)).map((t) => t.name).join(', ') || (s.kind === 'faction' ? 'Towns with a faction hall (members only)' : 'Every town');
+    out.push(`| **${s.name}**${s.night ? ' (night)' : ''} | x${s.markup} | ${cell(s.description)} | ${where} |`);
+  }
+  out.push('', '### Professions', '', 'Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gathering is open to everyone.', '');
+  for (const p of content.professions.all()) out.push(`- **${p.name}** (${p.kind}): ${p.description}`);
+  out.push('', `### Recipes (${content.recipes.size})`, '', '| Recipe | Profession (level) | Inputs | Makes | Starter |', '|---|---|---|---|---|');
+  for (const r of content.recipes.all()) {
+    const inputs = r.inputs.map((i) => `${i.qty} ${content.items.get(i.itemId).name}`).join(', ') + (r.gold ? `, ${r.gold}g` : '');
+    const makes = r.output.kind === 'item' ? `${r.output.qty}x ${content.items.get(r.output.itemId).name}` : `tier ${r.output.tier} ${r.output.category} (uncommon-epic)`;
+    out.push(`| ${r.name} | ${content.professions.get(r.profession).name} (${r.level}) | ${cell(inputs)} | ${makes} | ${r.starter ? 'yes' : 'scroll'} |`);
+  }
+  out.push('', '### Gear services', '', `- **Upgrade** +1 to +15: success ${UPGRADE_CHANCE.map((c) => `${Math.round(c * 100)}%`).join(' / ')}; past +10 a failure drops a level. Enchanting adds 0.5% per level.`, '- **Reroll** one affix, **add a socket** (up to the base maximum), **raise quality** (Damaged > Normal > Superior > Masterwork), **ascend** (NG+: Legendary or Mythic becomes Ascended). Corrupted items cannot be modified.');
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

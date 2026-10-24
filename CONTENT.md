@@ -401,7 +401,7 @@ Generated from the data files by `npm run content:md`.
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (34)
+### Consumables (36)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -426,6 +426,8 @@ Generated from the data files by `npm run content:md`.
 - Hearty Stew: +8% max HP, +3 HP regen for 5 battles.
 - Spiced Fish: +2 speed, +2% crit for 5 battles.
 - Honeyed Bread: +8% max MP, +3 MP regen for 5 battles.
+- Silverfin Platter: +12% crit damage, +4 accuracy for 6 battles.
+- Feast of Heroes: +10% damage, +10% max HP and +10% XP for 10 battles.
 - Dragon-Pepper Roast: +15% fire damage and resist for 8 battles.
 - Fire Bomb: Deals fire damage to all enemies and may Burn them.
 - Frost Bomb: Deals ice damage to all enemies and may Freeze them.
@@ -438,7 +440,7 @@ Generated from the data files by `npm run content:md`.
 - Tome of Insight: Grants 1 skill point to your primary class.
 - Traveler's Pack: Permanently adds 8 inventory slots (up to 96).
 
-**Materials (30):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment
+**Materials (35):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment
 
 **Curiosities (13):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap
 
@@ -839,7 +841,7 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 ## General skills (81)
 
 <!-- general:start -->
-83 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+84 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -886,6 +888,7 @@ Zones, quests, specializations, general skills, blessings, bosses, the remaining
 | **Treasure Hunter** | utility | Rare |  | Passive: +3% gold find and +2% magic find per rank. |
 | **Lucky Star** | utility | Uncommon |  | Passive: +1 LUK per rank. |
 | **Fast Learner** | utility | Rare |  | Passive: +2% XP per rank. |
+| **Haggle** | utility | Common |  | Buy for 1% less and sell for 2% more per rank. |
 | **Lockpicking** | utility | Uncommon |  | Open locked chests without a key: 10% chance per rank (100% at rank 10); a failed attempt can be retried after a battle. |
 | **Detect Traps** | utility | Common |  | Spot and disarm chest traps: 10% chance per rank. |
 | **Scavenging** | utility | Common |  | After a victory, 6% chance per rank to scavenge extra materials. |
@@ -1007,8 +1010,8 @@ Favor runs from -100 to 1200. Tiers: Hated (-50 or less), Distrusted, Neutral (0
 | **Morrath**, Death & Endings | Solenne / Vex | Felling mighty foes (+5); Raising the dead (+2); Shadow arts (+0.5); Victories by night (+1) | Cheating death with healing (-0.25); Holy light (-0.5) | Collects the strange things the dead leave behind. | **Death’s Toll**: Curse and Weaken every enemy for 2 turns. (15 favor) | **Not Yet**: Morrath turns you away from the Last Door, and the shadows take payment from your foes. |
 | **Kael**, War & Glory | Hesha / Thalor | Winning battles (+2); Defeating champions (+4); Mighty blows (+0.5) | Cowardice (-5); Defeat (-3) | Loves good weapons above all things. | **Battle Cry**: +25% damage for you for 3 turns, and you gain Haste. (15 favor) | **Not Like This**: Kael refuses you a coward’s death: you rise in a red rage. |
 | **Ysolde**, Nature & the Hunt | Thalor / Nymira | Hunting beasts (+2); Nature magic (+0.5); The bow (+0.25) | Wasteful salvaging (-1); Wildfire (-0.25) | Accepts herbs, hides and food with joy. | **Huntress’s Mark**: Mark every enemy Vulnerable and Slow them for 2 turns. (15 favor) | **The Green Hour**: Vines bind your foes as the forest closes your wounds. |
-| **Vex**, Trickery & Luck | Grimvald / Morrath | Lucky strikes (+1); Stealing (+2); Gambling on the unknown (+1) | Boring caution (-2); Losing (badly) (-1) | Will take anything shiny. Especially gold. | **Loaded Dice**: +30 crit chance and +15 dodge for 3 turns. (15 favor) | **Double or Nothing**: Vex flips a coin for your life. It lands on its edge. |
-| **Thalor**, Forge & Craft | Ysolde / Kael | Improving your gear (+4); Reclaiming metal (+1); Fire (+0.5) | Neglecting your gear (-3); Cold that cracks steel (-0.25) | Loves rare ores and well-made armor. | **Forge-Blessed**: A shield of 20% max HP and +30% defense for 3 turns. (15 favor) | **Tempered**: Thalor reforges you in the heat of battle. |
+| **Vex**, Trickery & Luck | Grimvald / Morrath | Lucky strikes (+1); Stealing (+2); Uncovering the unknown (+1); Gambling (+3) | Boring caution (-2); Losing (badly) (-1) | Will take anything shiny. Especially gold. | **Loaded Dice**: +30 crit chance and +15 dodge for 3 turns. (15 favor) | **Double or Nothing**: Vex flips a coin for your life. It lands on its edge. |
+| **Thalor**, Forge & Craft | Ysolde / Kael | Improving your gear (+4); Crafting (+2); Reclaiming metal (+1); Fire (+0.5) | Neglecting your gear (-3); Cold that cracks steel (-0.25) | Loves rare ores and well-made armor. | **Forge-Blessed**: A shield of 20% max HP and +30% defense for 3 turns. (15 favor) | **Tempered**: Thalor reforges you in the heat of battle. |
 | **Nymira**, Seas & Storms | Aurelis / Ysolde | Storm-struck kills (+2); Lightning (+0.5); Frost (+0.5) | Fire (-0.5); Staying ashore (-1) | Pearls, gems and things from the deep. | **Call the Storm**: Lightning strikes every enemy (50% Divine Power) and soaks them Wet. (15 favor) | **The Tide Turns**: A wave of cold water lifts you to your feet and drags your foes under. |
 | **Aurelis**, Knowledge & Magic | Nymira / Grimvald | Reading skillbooks (+10); Uncovering secrets (+2); Arcane study (+0.5) | Abandoning an experiment (-1); Destroying craftsmanship (-0.5) | Books, scrolls and curiosities. | **Arcane Insight**: Restore 40 MP and reduce your cooldowns by 2. (15 favor) | **Footnote**: Aurelis amends the record: you did not die after all. |
 | **Hesha**, Hearth & Mercy | Kael / Solenne | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
@@ -1065,7 +1068,7 @@ Exalted favor plus the god's three-stage Trial of Apostleship (two rounds of her
 | **Hesha** | **Avatar of the Hearth**: Become the Keeper of the Hearth for 3 turns: take 40% less damage and gain +30 healing power; every enemy takes 150% Divine Power holy damage, and you heal fully. | Hearthstaff → Hearthstaff, Kindled → Hearthstaff, Ever-Lit → Hearthstaff, Keeper of the Hearth (Staff) | **Hearthbound**: Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. | **Mercy of the Hearth**: Heal the party for 120% Divine Power and remove Poison and Bleed.<br>**Gentle Rebuke**: 130% Divine Power holy damage that Weakens; heal 8% of max HP. | Keystone: +40 healing power, -20% damage. / Hearth Eternal |
 | **Grimvald** | **Avatar of Wealth**: Become the Golden Scale for 3 turns: +40% damage and a golden shield; every enemy takes 160% Divine Power and you gain 50 gold. | Ledger’s Edge → Ledger’s Edge, Audited → Ledger’s Edge, Compounded → Ledger’s Edge, the Golden Scale (Axe) | **Goldbound**: Kills grant 15 gold; +50% gold find and +30% magic find. | **Golden Rebuke**: A strike of solid gold for 120% ATK + 60% Divine Power; steal 10 gold.<br>**Audit**: Every enemy is Weakened and Vulnerable for 2 turns; you gain a shield of 20% max HP. | Keystone: +60% gold find and +20% damage, but take 10% more damage. / The Golden Scale: Start every battle with a shield of 20% max HP. |
 
-### Divine Edicts (31)
+### Divine Edicts (33)
 
 Each like of your god becomes an edict: do it a number of times within 20 battles. Fulfilled: +40 favor and gold. Ignored: -30 favor and apostle passives at 75% until the next edict is fulfilled.
 
@@ -1073,8 +1076,8 @@ Each like of your god becomes an edict: do it a number of times within 20 battle
 - **Morrath:** Felling mighty foes: 2 times; Raising the dead: 6 times; Shadow arts: 20 times; Victories by night: 12 times
 - **Kael:** Winning battles: 6 times; Defeating champions: 3 times; Mighty blows: 20 times
 - **Ysolde:** Hunting beasts: 6 times; Nature magic: 20 times; The bow: 20 times
-- **Vex:** Lucky strikes: 12 times; Stealing: 6 times; Gambling on the unknown: 12 times
-- **Thalor:** Improving your gear: 3 times; Reclaiming metal: 12 times; Fire: 20 times
+- **Vex:** Lucky strikes: 12 times; Stealing: 6 times; Uncovering the unknown: 12 times; Gambling: 4 times
+- **Thalor:** Improving your gear: 3 times; Crafting: 6 times; Reclaiming metal: 12 times; Fire: 20 times
 - **Nymira:** Storm-struck kills: 6 times; Lightning: 20 times; Frost: 20 times
 - **Aurelis:** Reading skillbooks: 1 time; Uncovering secrets: 6 times; Arcane study: 20 times
 - **Hesha:** Healing: 20 times; Resting and caring for yourself: 4 times; Healing magic: 20 times
@@ -1157,3 +1160,124 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 
 **The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel)
 <!-- world:end -->
+
+## The Economy
+
+<!-- economy:start -->
+Every town has the core shops; stock rolls daily at your level. Shops pay 25% of value. Prices: value x markup, less Haggle (1%/rank), temple favor (5-20%) and faction rank (5% per rank above Member).
+
+| Shop | Markup | Sells | Where |
+|---|---|---|---|
+| **Blacksmith** | x1 | Weapons, repairs and ore. | Every town |
+| **Armorer** | x1 | Armor and jewelry. | Every town |
+| **Alchemist** | x1 | Potions, elixirs, bombs, herbs and alchemy recipes. | Every town |
+| **General Store** | x1 | Food, scrolls, keys, bags and cooking recipes. | Every town |
+| **Magic Shop** | x1.1 | Gems, runes, staves and wands, and enchanting and jewelcrafting recipes. | Every town |
+| **Library** | x1.2 | Skillbooks for sale (or study one you own). | Every town |
+| **Temple Merchant** | x1.5 | Divine goods for the faithful: each god’s Divine items (at the devotion they ask) and holy wares. Discounts grow with your favor. | Every town |
+| **Faction Quartermaster** | x1.2 | Members only: better gear, cheaper the higher your rank. | Towns with a faction hall (members only) |
+| **Gambler** | x1 | Buy unidentified gear sight unseen. Usually a dud. Sometimes a legend. | Sandhaven, Saltmere |
+| **Black Market** (night) | x2.5 | Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly. | Thornwick, Saltmere |
+
+### Professions
+
+Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gathering is open to everyone.
+
+- **Blacksmithing** (crafting): Forge weapons and armor from ore, hide and cloth. Raises item quality more cheaply.
+- **Alchemy** (crafting): Brew potions, elixirs and bombs from herbs.
+- **Cooking** (crafting): Cook hearty food from fish, herbs and hunted game.
+- **Enchanting** (crafting): Better odds and prices on upgrades and affix rerolls; refine essences.
+- **Jewelcrafting** (crafting): Cut gems into finer grades, make rings, amulets and earrings, and add sockets cheaply.
+- **Mining** (gathering): Work ore veins in the wild. Higher levels yield more.
+- **Herbalism** (gathering): Pick herbs from patches in the wild. Higher levels yield more.
+- **Fishing** (gathering): Fish at fishing spots by the water. Higher levels yield more.
+
+### Recipes (79)
+
+| Recipe | Profession (level) | Inputs | Makes | Starter |
+|---|---|---|---|---|
+| Minor Health Potion ×2 | Alchemy (1) | 2 Healroot | 2x Minor Health Potion | yes |
+| Minor Mana Potion ×2 | Alchemy (1) | 2 Manabloom | 2x Minor Mana Potion | yes |
+| Lesser Health Potion ×2 | Alchemy (8) | 2 Healroot, 1 Fireweed | 2x Lesser Health Potion | scroll |
+| Lesser Mana Potion ×2 | Alchemy (8) | 2 Manabloom, 1 Fireweed | 2x Lesser Mana Potion | scroll |
+| Greater Health Potion ×2 | Alchemy (18) | 2 Healroot, 1 Frostleaf | 2x Greater Health Potion | scroll |
+| Greater Mana Potion ×2 | Alchemy (18) | 2 Manabloom, 1 Frostleaf | 2x Greater Mana Potion | scroll |
+| Major Health Potion ×2 | Alchemy (30) | 2 Healroot, 1 Sunpetal | 2x Major Health Potion | scroll |
+| Major Mana Potion ×2 | Alchemy (30) | 2 Manabloom, 1 Sunpetal | 2x Major Mana Potion | scroll |
+| Supreme Health Potion ×2 | Alchemy (42) | 2 Healroot, 1 Dreamleaf | 2x Supreme Health Potion | scroll |
+| Supreme Mana Potion ×2 | Alchemy (42) | 2 Manabloom, 1 Dreamleaf | 2x Supreme Mana Potion | scroll |
+| Fire Bomb ×2 | Alchemy (3) | 2 Fireweed, 1 Slime Gel | 2x Fire Bomb | yes |
+| Frost Bomb ×2 | Alchemy (12) | 2 Frostleaf, 1 Slime Gel | 2x Frost Bomb | scroll |
+| Holy Water ×2 | Alchemy (6) | 1 Healroot, 2 Bone Dust | 2x Holy Water | scroll |
+| Oil Flask ×2 | Alchemy (4) | 1 Fireweed, 1 Beast Fang | 2x Oil Flask | scroll |
+| Cleansing Salts | Alchemy (10) | 1 Frostleaf, 2 Faint Essence | 1x Cleansing Salts | scroll |
+| Elixir of Might | Alchemy (15) | 2 Fireweed, 1 Lesser Essence | 1x Elixir of Might | scroll |
+| Elixir of the Mind | Alchemy (15) | 2 Manabloom, 1 Lesser Essence | 1x Elixir of the Mind | scroll |
+| Elixir of Iron | Alchemy (20) | 2 Frostleaf, 2 Iron Ore, 1 Lesser Essence | 1x Elixir of Iron Skin | scroll |
+| Elixir of Fortune | Alchemy (25) | 1 Sunpetal, 1 Greater Essence | 1x Elixir of Fortune | scroll |
+| Elixir of Wisdom | Alchemy (25) | 1 Dreamleaf, 1 Greater Essence | 1x Elixir of Wisdom | scroll |
+| Phoenix Feather | Alchemy (35) | 2 Harpy Feather, 2 Sunpetal, 1 Radiant Essence | 1x Phoenix Feather | scroll |
+| Hearty Stew ×2 | Cooking (1) | 1 Beast Fang, 1 Healroot | 2x Hearty Stew | yes |
+| Honeyed Bread ×2 | Cooking (3) | 2 Manabloom | 2x Honeyed Bread | yes |
+| Spiced Fish ×2 | Cooking (8) | 2 River Trout, 1 Fireweed | 2x Spiced Fish | scroll |
+| Dragon-Pepper Roast | Cooking (30) | 1 Ember Eel, 2 Fireweed, 1 Thick Hide | 1x Dragon-Pepper Roast | scroll |
+| Silverfin Platter ×2 | Cooking (18) | 2 Silverfin, 1 Frostleaf | 2x Silverfin Platter | scroll |
+| Feast of Heroes | Cooking (40) | 2 Ember Eel, 2 Sunpetal, 1 Dreamleaf | 1x Feast of Heroes | scroll |
+| Flawed Ruby | Jewelcrafting (1) | 3 Chipped Ruby, 20g | 1x Flawed Ruby | yes |
+| Clear Ruby | Jewelcrafting (10) | 3 Flawed Ruby, 80g | 1x Clear Ruby | scroll |
+| Flawless Ruby | Jewelcrafting (22) | 3 Clear Ruby, 250g | 1x Flawless Ruby | scroll |
+| Perfect Ruby | Jewelcrafting (35) | 3 Flawless Ruby, 700g | 1x Perfect Ruby | scroll |
+| Flawed Sapphire | Jewelcrafting (1) | 3 Chipped Sapphire, 20g | 1x Flawed Sapphire | yes |
+| Clear Sapphire | Jewelcrafting (10) | 3 Flawed Sapphire, 80g | 1x Clear Sapphire | scroll |
+| Flawless Sapphire | Jewelcrafting (22) | 3 Clear Sapphire, 250g | 1x Flawless Sapphire | scroll |
+| Perfect Sapphire | Jewelcrafting (35) | 3 Flawless Sapphire, 700g | 1x Perfect Sapphire | scroll |
+| Flawed Topaz | Jewelcrafting (1) | 3 Chipped Topaz, 20g | 1x Flawed Topaz | yes |
+| Clear Topaz | Jewelcrafting (10) | 3 Flawed Topaz, 80g | 1x Clear Topaz | scroll |
+| Flawless Topaz | Jewelcrafting (22) | 3 Clear Topaz, 250g | 1x Flawless Topaz | scroll |
+| Perfect Topaz | Jewelcrafting (35) | 3 Flawless Topaz, 700g | 1x Perfect Topaz | scroll |
+| Flawed Emerald | Jewelcrafting (1) | 3 Chipped Emerald, 20g | 1x Flawed Emerald | yes |
+| Clear Emerald | Jewelcrafting (10) | 3 Flawed Emerald, 80g | 1x Clear Emerald | scroll |
+| Flawless Emerald | Jewelcrafting (22) | 3 Clear Emerald, 250g | 1x Flawless Emerald | scroll |
+| Perfect Emerald | Jewelcrafting (35) | 3 Flawless Emerald, 700g | 1x Perfect Emerald | scroll |
+| Flawed Diamond | Jewelcrafting (1) | 3 Chipped Diamond, 20g | 1x Flawed Diamond | yes |
+| Clear Diamond | Jewelcrafting (10) | 3 Flawed Diamond, 80g | 1x Clear Diamond | scroll |
+| Flawless Diamond | Jewelcrafting (22) | 3 Clear Diamond, 250g | 1x Flawless Diamond | scroll |
+| Perfect Diamond | Jewelcrafting (35) | 3 Flawless Diamond, 700g | 1x Perfect Diamond | scroll |
+| Flawed Amethyst | Jewelcrafting (1) | 3 Chipped Amethyst, 20g | 1x Flawed Amethyst | yes |
+| Clear Amethyst | Jewelcrafting (10) | 3 Flawed Amethyst, 80g | 1x Clear Amethyst | scroll |
+| Flawless Amethyst | Jewelcrafting (22) | 3 Clear Amethyst, 250g | 1x Flawless Amethyst | scroll |
+| Perfect Amethyst | Jewelcrafting (35) | 3 Flawless Amethyst, 700g | 1x Perfect Amethyst | scroll |
+| Flawed Onyx | Jewelcrafting (1) | 3 Chipped Onyx, 20g | 1x Flawed Onyx | yes |
+| Clear Onyx | Jewelcrafting (10) | 3 Flawed Onyx, 80g | 1x Clear Onyx | scroll |
+| Flawless Onyx | Jewelcrafting (22) | 3 Clear Onyx, 250g | 1x Flawless Onyx | scroll |
+| Perfect Onyx | Jewelcrafting (35) | 3 Flawless Onyx, 700g | 1x Perfect Onyx | scroll |
+| Forge a Weapon (tier 1) | Blacksmithing (1) | 5 Iron Ore, 1 Ashwood Plank, 1 Faint Essence, 20g | tier 1 weapon (uncommon-epic) | yes |
+| Forge Armor (tier 1) | Blacksmithing (1) | 3 Iron Ore, 2 Rough Hide, 2 Linen Scrap, 1 Faint Essence, 20g | tier 1 armor (uncommon-epic) | yes |
+| Craft Jewelry (tier 1) | Jewelcrafting (1) | 3 Iron Ore, 2 Faint Essence, 20g | tier 1 accessory (uncommon-epic) | yes |
+| Forge a Weapon (tier 2) | Blacksmithing (8) | 6 Iron Ore, 1 Ashwood Plank, 1 Faint Essence, 60g | tier 2 weapon (uncommon-epic) | scroll |
+| Forge Armor (tier 2) | Blacksmithing (8) | 4 Iron Ore, 2 Rough Hide, 2 Linen Scrap, 1 Faint Essence, 60g | tier 2 armor (uncommon-epic) | scroll |
+| Craft Jewelry (tier 2) | Jewelcrafting (8) | 4 Iron Ore, 2 Faint Essence, 60g | tier 2 accessory (uncommon-epic) | scroll |
+| Forge a Weapon (tier 3) | Blacksmithing (16) | 7 Mithril Ore, 1 Ashwood Plank, 1 Lesser Essence, 150g | tier 3 weapon (uncommon-epic) | scroll |
+| Forge Armor (tier 3) | Blacksmithing (16) | 5 Mithril Ore, 2 Thick Hide, 2 Silk Bolt, 1 Lesser Essence, 150g | tier 3 armor (uncommon-epic) | scroll |
+| Craft Jewelry (tier 3) | Jewelcrafting (16) | 5 Mithril Ore, 2 Lesser Essence, 150g | tier 3 accessory (uncommon-epic) | scroll |
+| Forge a Weapon (tier 4) | Blacksmithing (26) | 8 Adamant Ore, 1 Ashwood Plank, 1 Greater Essence, 400g | tier 4 weapon (uncommon-epic) | scroll |
+| Forge Armor (tier 4) | Blacksmithing (26) | 6 Adamant Ore, 2 Thick Hide, 2 Silk Bolt, 1 Greater Essence, 400g | tier 4 armor (uncommon-epic) | scroll |
+| Craft Jewelry (tier 4) | Jewelcrafting (26) | 6 Adamant Ore, 2 Greater Essence, 400g | tier 4 accessory (uncommon-epic) | scroll |
+| Forge a Weapon (tier 5) | Blacksmithing (36) | 9 Starmetal Ore, 1 Ashwood Plank, 1 Greater Essence, 900g | tier 5 weapon (uncommon-epic) | scroll |
+| Forge Armor (tier 5) | Blacksmithing (36) | 7 Starmetal Ore, 2 Drake Scale, 2 Moonsilk, 1 Greater Essence, 900g | tier 5 armor (uncommon-epic) | scroll |
+| Craft Jewelry (tier 5) | Jewelcrafting (36) | 7 Starmetal Ore, 2 Greater Essence, 900g | tier 5 accessory (uncommon-epic) | scroll |
+| Forge a Weapon (tier 6) | Blacksmithing (46) | 10 Starmetal Ore, 1 Ashwood Plank, 1 Radiant Essence, 2000g | tier 6 weapon (uncommon-epic) | scroll |
+| Forge Armor (tier 6) | Blacksmithing (46) | 8 Starmetal Ore, 2 Drake Scale, 2 Moonsilk, 1 Radiant Essence, 2000g | tier 6 armor (uncommon-epic) | scroll |
+| Craft Jewelry (tier 6) | Jewelcrafting (46) | 8 Starmetal Ore, 2 Radiant Essence, 2000g | tier 6 accessory (uncommon-epic) | scroll |
+| Refine Lesser Essence | Enchanting (1) | 3 Faint Essence, 10g | 1x Lesser Essence | yes |
+| Refine Greater Essence | Enchanting (12) | 3 Lesser Essence, 50g | 1x Greater Essence | scroll |
+| Refine Radiant Essence | Enchanting (25) | 3 Greater Essence, 200g | 1x Radiant Essence | scroll |
+| Refine Mythic Essence | Enchanting (40) | 3 Radiant Essence, 800g | 1x Mythic Essence | scroll |
+| Scroll of Identify ×2 | Enchanting (3) | 1 Faint Essence, 1 Linen Scrap | 2x Scroll of Identify | yes |
+| Scroll of Escape | Enchanting (10) | 1 Lesser Essence, 2 Linen Scrap | 1x Scroll of Escape | scroll |
+
+### Gear services
+
+- **Upgrade** +1 to +15: success 100% / 100% / 100% / 100% / 100% / 90% / 80% / 70% / 60% / 50% / 40% / 33% / 26% / 20% / 15%; past +10 a failure drops a level. Enchanting adds 0.5% per level.
+- **Reroll** one affix, **add a socket** (up to the base maximum), **raise quality** (Damaged > Normal > Superior > Masterwork), **ascend** (NG+: Legendary or Mythic becomes Ascended). Corrupted items cannot be modified.
+<!-- economy:end -->

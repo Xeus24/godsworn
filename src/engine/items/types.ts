@@ -48,7 +48,7 @@ export type ArmorSlot = (typeof ARMOR_SLOTS)[number];
 
 export type AccessoryKind = 'ring' | 'amulet' | 'earring' | 'trinket' | 'holySymbol';
 
-export type ItemCategory = 'weapon' | 'armor' | 'accessory' | 'relic' | 'gem' | 'rune' | 'consumable' | 'material' | 'curiosity' | 'book';
+export type ItemCategory = 'weapon' | 'armor' | 'accessory' | 'relic' | 'gem' | 'rune' | 'consumable' | 'material' | 'curiosity' | 'book' | 'recipe';
 
 /** Which affix pool a gear item draws from. */
 export type AffixTarget = 'weapon' | 'armor' | 'jewelry';
@@ -167,7 +167,7 @@ export interface ConsumableDef extends BaseCommon {
   action: ConsumableAction;
 }
 
-export type MaterialKind = 'ore' | 'leather' | 'cloth' | 'herb' | 'essence' | 'monster' | 'divine' | 'void' | 'wood';
+export type MaterialKind = 'ore' | 'leather' | 'cloth' | 'herb' | 'essence' | 'monster' | 'divine' | 'void' | 'wood' | 'fish';
 
 export interface MaterialDef extends BaseCommon {
   category: 'material';
@@ -190,6 +190,13 @@ export interface BookDef extends BaseCommon {
   grimoire?: boolean;
 }
 
+/** A recipe scroll: read it to learn a crafting recipe. */
+export interface RecipeScrollDef extends BaseCommon {
+  category: 'recipe';
+  teaches: string;
+  rarity: RarityId;
+}
+
 export type ItemBaseDef =
   | WeaponBaseDef
   | ArmorBaseDef
@@ -200,7 +207,8 @@ export type ItemBaseDef =
   | ConsumableDef
   | MaterialDef
   | CuriosityDef
-  | BookDef;
+  | BookDef
+  | RecipeScrollDef;
 
 export type GearBaseDef = WeaponBaseDef | ArmorBaseDef | AccessoryBaseDef | RelicBaseDef;
 

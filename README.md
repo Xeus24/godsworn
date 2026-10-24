@@ -57,6 +57,8 @@ You start in **Brightwater**, a town in the Meadowlands. **Leave town** to walk 
 
 **Towns** (5) have an **inn**, a **temple** (worship its gods), the **arena** (practice fights and class trainers), a **Library**, your **stash**, sometimes a **faction hall**, and in Brightwater and Saltmere a **house for sale**. Build rooms in your house: a Bedroom (free rest), Forge (repairs your gear), Alchemy Lab (daily potions), Shrine Room (worship your patron at home), Trophy Room (world boss trophies boost your damage) and Vault (an extra stash tab).
 
+**Markets and workshops:** every town has a market (Blacksmith, Armorer, Alchemist, General Store, Magic Shop, Library, Temple Merchant), plus faction quartermasters, a Gambler or a Black Market (at night) in some towns. Stock changes every day. Sell from the right-hand panel (Sell all junk, buy back mistakes), repair at the Blacksmith. In the **Workshop**, pick two professions (Blacksmithing, Alchemy, Cooking, Enchanting, Jewelcrafting) and craft from your recipes; recipe scrolls teach more. Anyone can gather at ore veins, herb patches and fishing spots in the wild. The Workshop also upgrades gear up to +15 (the odds fall after +5, and past +10 a failure costs a level), rerolls affixes, adds sockets and raises quality.
+
 **Factions** (5) like and dislike deeds just as the gods do. Rising through their ranks (Associate to Legend) grants lasting bonuses and a little favor with their god; rival factions resent it.
 
 In battle:
@@ -114,6 +116,7 @@ src/
     skills/     skill trees, modifiers (patches), mastery, general skills, specializations
     gods/       favor, devotion tiers, blessings, prayer and intervention
     world/      map generation, movement, encounters, weather, factions, housing
+    economy/    shops, pricing, crafting, professions, gear services
     state/      saved game state, session, clock
     content/    content tables and validation
   data/       all game content and balance numbers
@@ -294,6 +297,17 @@ Specializations live in `src/data/trees/specsMartial.ts` and `specsArcane.ts`, o
 
 ### Example: an apostle tree
 Each god's apostleship lives in `src/data/apostles/apostlesA.ts` or `apostlesB.ts`: two tree skills (`rite(...)`), the Divine Avatar (`avatar(...)`), the divine weapon's type and stage names, its Divine blessing (`divineBlessing(...)`), and an `ApostleSpec` (skills, modifiers, notables, choice, keystone, capstone). The minors, the Devotion lane, the weapon stages, the trial fights and the edicts are generated in `src/data/apostles/index.ts`.
+
+### Example: a recipe
+Add a `RecipeDef` to `src/data/economy/recipes.ts`. A recipe scroll is generated for it automatically (unless it is a `starter` recipe, known as soon as you learn the profession):
+
+```ts
+r({ id: 'brew-frost-bomb', name: 'Frost Bomb ×2', profession: 'alchemy', level: 12,
+    inputs: [{ itemId: 'frostleaf', qty: 2 }, { itemId: 'slime-gel', qty: 1 }],
+    output: { kind: 'item', itemId: 'frost-bomb', qty: 2 }, xp: 10 }),
+```
+
+Shops are `ShopDef`s in `src/data/economy/shops.ts`, built from stock rules (fixed items, loot pools, gear by rarity, recipe scrolls, Divine items, uniques).
 
 ### Example: a zone
 Add a `ZoneDef` to `ZONES` in `src/data/world/zones.ts` (give it the next `order`), with its encounter groups, roaming packs, weather, shrines, world boss and lore. Its map is generated from its id (`src/engine/world/mapgen.ts`), and the road links it to its neighbors:

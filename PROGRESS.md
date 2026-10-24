@@ -14,8 +14,8 @@
 | 8 | Gods: favor, shrines, offerings, blessings, intervention, Pantheon UI | **Done** |
 | 9 | Apostleship | **Done** |
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | **Done** |
-| 11 | Economy | Next |
-| 12 | Quests, dialogue, main story, companions | |
+| 11 | Economy | **Done** |
+| 12 | Quests, dialogue, main story, companions | Next |
 | 13 | Bosses, elites, bestiary, achievements, codex | |
 | 14 | New Game+ and Twilight of the Gods | |
 | 15 | Endgame activities, challenge modes, Ascended/Primordial items | |
@@ -357,6 +357,38 @@
   - world bosses: 25–60%
 - 330 unit tests.
 
+### Phase 11: the economy
+- **Markets in every town:**
+  - Core shops: Blacksmith (weapons, ore, repairs), Armorer (armor and jewelry), Alchemist (potions, herbs, bombs, recipes), General Store (food, scrolls, Skeleton Keys, Traveler's Packs, cooking recipes), Magic Shop (gems, runes, magic weapons, enchanting and jewelcrafting recipes), Library (skillbooks, recipes) and a Temple Merchant.
+  - Plus each faction's Quartermaster (members only), a **Gambler** (Sandhaven, Saltmere) and a **Black Market** (Thornwick, Saltmere; at night only; Legendaries, Mythics and epics at 2.5×).
+  - Stock rolls each in-game day at your level, from a seed of (town, shop, day, NG+), so it needs no saving.
+- **Buying and selling:**
+  - Prices are item value × the shop's markup, less discounts: Haggle (a new utility general skill, 1% per rank), temple favor (5–20% from Favored to Apostle with the town's gods), and faction rank (5% per rank above Member).
+  - Shops pay 25% of value (+2% per Haggle rank).
+  - Sell all junk, and a **buyback** list of your last 12 sales.
+  - **Repairs** at the blacksmith.
+- **The Gambler** sells unidentified gear (weapon, armor or accessory; at least Uncommon, rolled with +100% Magic Find) for 25–40 gold × level. Vex likes gambling.
+- **Professions:**
+  - Pick 2 of 5 (Blacksmithing, Alchemy, Cooking, Enchanting, Jewelcrafting), levels 1–50, raised by crafting and services. Dropping one costs 100 gold × its level.
+  - **Gathering** is open to everyone: Mining, Herbalism and Fishing at ore veins, herb patches and fishing spots (5 per zone, refilling daily; yields grow with level).
+- **79 recipes:**
+  - Alchemy: 21 (10 potions, plus bombs, holy water, salts, 5 elixirs and phoenix feathers)
+  - Cooking: 6 dishes (2 new)
+  - Jewelcrafting: 34 (28 gem cuts, 3 gems into 1 of the next grade, plus tier 1–6 jewelry)
+  - Blacksmithing: 12 (tier 1–6 weapons and armor, uncommon to epic, rarer with skill; you pick the base)
+  - Enchanting: 6 (essence refining and scrolls)
+  - Each profession knows its starter recipes; the rest come from **recipe scrolls** (a new item category) in shops.
+- **Gear services at the Workshop:**
+  - **upgrades** +1 to +15 (100% up to +5, then 90%… down to 15%; past +10 a failure drops a level; Enchanting adds up to +25%)
+  - **affix rerolls**, **extra sockets** (up to the base's maximum)
+  - **quality** (Damaged → Masterwork)
+  - **ascension** (NG+ only: a Legendary or Mythic becomes Ascended)
+  - Costs are gold plus essences or ore. The matching profession discounts them (0.6% per level), and so does the Dwarf racial (15%). Corrupted items cannot be modified.
+- New materials: 2 herbs (Sunpetal, Dreamleaf) and 3 fish. Thalor now likes crafting.
+- **Prices against income:** a rare weapon costs about 4–10 fights' worth of gold early, about 10 at levels 20–40, and 25–35 at the cap. Potions cost a few fights.
+- **UI:** a Market screen (shop tabs, stock with tooltips, sell panel, buyback, repairs, the Gambler) and a Workshop screen (professions, gathering levels, recipes with have/need counts, forge base picker, gear services with odds and costs). You can read recipe scrolls from your bags. Gathering nodes are drawn on the map.
+- 352 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -383,7 +415,7 @@
 - **Unidentified items** show only base stats and cannot be equipped.
 - **Off-hand weapons** add 50% of their damage. Tomes, orbs and shields are off-hand-only and add their full stats.
 - **Runewords** only form in non-unique gear, with the exact runes in order filling every socket.
-- **Corrupted items** still accept gems and runes. "Cannot be modified" applies to crafting (upgrades, rerolls, adding sockets) in Phase 11.
+- **Corrupted items** still accept gems and runes, but cannot be upgraded, rerolled, given sockets or raised in quality (Phase 11).
 - **Combat is initiative-based** (a CTB-style timeline): each action costs 100/Speed time units, so twice the speed means twice the turns. This makes Speed buffs and debuffs visibly shift the timeline, as the spec asks.
 - **Status durations count the bearer's own turns.** Damage over time ticks at turn start; durations drop at turn end.
 - **Spells never miss; attacks roll accuracy minus dodge** (clamped 5–100%). Damage-over-time can crit only with `dotsCanCrit`.
@@ -419,6 +451,10 @@
 - **Blessing Power uses base FAI** (FAI × 1%) to scale blessings, so blessings never feed back into the stat that sizes them.
 - **Prayer costs 15 favor** and is limited to 3 per battle, so it is a real spend rather than a free spell.
 - **Favor is kept to one decimal** so small per-battle likes (0.25–1) still add up.
+- **Shop stock is seeded, not stored.** Each shop's stock is a pure function of (town, shop, day, NG+ tier, your level), so only what you bought today is saved.
+- **Gear services are open to everyone; professions make them cheaper and better.** The spec lists upgrades, rerolls and sockets under crafting; making them profession-only would lock out three of five builds. Instead the matching profession discounts them and (for upgrades) raises the odds.
+- **Crafting works anywhere; services, shops, trainers and the Library need a town.** You can brew a potion at camp, but you need a town to forge with a smith's help or to sell.
+- **Upgrade odds:** 100% to +5, then 90/80/70/60/50/40/33/26/20/15%. Failing past +10 drops a level, as the spec asks. Each level adds 6% base stats and 10% value.
 - **Maps are generated, not hand-drawn.** Each zone and dungeon map is generated from its id with a seeded RNG, so it is identical for every player and every load (no map data to save), and adding a zone only needs data. Connectivity is guaranteed by carving a path from every point of interest to the road (a test checks every entity is reachable).
 - **Towns are menus, not walkable maps.** A town is a gate on its zone map that opens the town screen; walking around a town would add little until NPCs and quests exist (Phase 12).
 - **Enemy late growth and zone threat.** Heroes grow faster than linearly past level 15 (gear tiers multiply weapon damage up to ×31), while enemy stats grew linearly. Enemies now gain growth × (level − 15)^1.6 on top, and each zone has a `threat` dial (percent HP and damage) for fine tuning. Levels 1–15 are unchanged.
@@ -441,10 +477,8 @@
 - **Titles** (section 8) move to Phase 13 with feats and achievements. Apostle titles are already earned and stored (and shown on the Pantheon); the title display and other titles come then.
 - **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
 - **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
-- **The Dwarf crafting discount** takes effect with crafting (Phase 11).
 - **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
 - Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
-- **Selling, buying, repairing, gambling and "Sell all junk"** come with shops in Phase 11. Item values and repair costs are already computed and shown.
 - **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
 - **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
 - **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
@@ -453,12 +487,11 @@
 - **Two apostles at once** (Defender path, NG+3+) comes with Twilight of the Gods in Phase 14.
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
 - **God quests and pantheon politics** (world events, god-specific story chapters) come with quests and the story (Phases 12 and 14). **The Nameless One** is discovered in NG+ (Phase 14).
-- **Haggle, Cooking and other shop/crafting general skills** come with the economy in Phase 11. Lockpicking and Detect Traps arrived with chests in Phase 10.
 - **Class trial quests:** the trials are fights in the town arena; Phase 12 wraps them in short quests.
-- **Temple merchants, temple discounts, faction vendors and the Black Market** (night only) are shops, so they come in Phase 11. **Faction questlines and quest boards** come with quests in Phase 12. **Companions and Order allies** in Phase 12.
+- **Faction questlines and quest boards** come with quests in Phase 12. **Companions and Order allies** in Phase 12. **Forbidden items** for the Black Market come with heresies in Phase 14, and **Rift Maps** (a gold sink) in Phase 15.
 - **Elite affixes, the bestiary (with its damage bonuses) and roaming-elite variety** come in Phase 13. Roaming elites and champion packs already appear on the maps.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
 - **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
 
 ## Next steps
-- Phase 11: the economy. Shops in towns (Blacksmith, Armorer, Alchemist, General Store, Magic Shop, Library stock, Temple Merchants by favor, faction vendors, the Black Market at night, the Gambler), selling and buying (with Haggle), repairs, crafting and professions (Cooking among them), enchanting and rerolls, and the remaining gold sinks.
+- Phase 12: quests and story. Quest types (kill, collect, deliver, escort, talk, defend, puzzle, boss, timed, choice), a quest log with tracking and map markers, quest boards, data-driven branching dialogue with conditions, the main story across the 8 zones (branching on apostleship, with 3+ endings), 30+ side quests, god questlines (leading to the apostle trials), class, hybrid and faction questlines, and companions with personal quests.

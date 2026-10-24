@@ -1,0 +1,19 @@
+import type { ShopDef } from '../../engine/economy/types';
+
+/**
+ * Shop kinds. Every town has the core shops; temples, faction halls, the
+ * Gambler and the Black Market depend on the town (see TownDef.shops).
+ * Stock is rolled fresh each in-game day at your level.
+ */
+export const SHOPS: ShopDef[] = [
+  { id: 'blacksmith', name: 'Blacksmith', kind: 'blacksmith', description: 'Weapons, repairs and ore.', markup: 1, buys: ['weapon', 'material'], stock: [{ kind: 'gear', categories: ['weapon'], rarities: ['common', 'uncommon', 'rare'], count: 8 }, { kind: 'items', ids: ['iron-ore', 'ashwood-plank', 'mithril-ore'] }] },
+  { id: 'armorer', name: 'Armorer', kind: 'armorer', description: 'Armor and jewelry.', markup: 1, buys: ['armor', 'accessory', 'material'], stock: [{ kind: 'gear', categories: ['armor'], rarities: ['common', 'uncommon', 'rare'], count: 8 }, { kind: 'gear', categories: ['accessory'], rarities: ['uncommon', 'rare'], count: 3 }, { kind: 'items', ids: ['rough-hide', 'linen-scrap'] }] },
+  { id: 'alchemist', name: 'Alchemist', kind: 'alchemist', description: 'Potions, elixirs, bombs, herbs and alchemy recipes.', markup: 1, buys: ['consumable', 'material'], stock: [{ kind: 'pool', pool: 'potion', count: 6 }, { kind: 'items', ids: ['healroot', 'manabloom', 'fireweed', 'fire-bomb', 'holy-water'] }, { kind: 'recipes', professions: ['alchemy'], count: 3 }] },
+  { id: 'general', name: 'General Store', kind: 'general', description: 'Food, scrolls, keys, bags and cooking recipes.', markup: 1, stock: [{ kind: 'items', ids: ['hearty-stew', 'honeyed-bread', 'scroll-of-identify', 'scroll-of-escape', 'skeleton-key', 'travelers-pack', 'river-trout'] }, { kind: 'pool', pool: 'consumable', count: 3 }, { kind: 'recipes', professions: ['cooking'], count: 2 }] },
+  { id: 'magic', name: 'Magic Shop', kind: 'magic', description: 'Gems, runes, staves and wands, and enchanting and jewelcrafting recipes.', markup: 1.1, buys: ['gem', 'rune', 'weapon', 'book', 'recipe'], stock: [{ kind: 'pool', pool: 'gem', count: 5 }, { kind: 'pool', pool: 'rune', count: 3 }, { kind: 'gear', categories: ['weapon', 'accessory'], rarities: ['uncommon', 'rare', 'epic'], count: 3 }, { kind: 'recipes', professions: ['enchanting', 'jewelcrafting'], count: 3 }] },
+  { id: 'library', name: 'Library', kind: 'library', description: 'Skillbooks for sale (or study one you own).', markup: 1.2, buys: ['book', 'recipe'], stock: [{ kind: 'pool', pool: 'book', count: 6 }, { kind: 'recipes', professions: ['blacksmithing', 'alchemy', 'cooking', 'enchanting', 'jewelcrafting'], count: 2 }] },
+  { id: 'temple', name: 'Temple Merchant', kind: 'temple', description: 'Divine goods for the faithful: each god’s Divine items (at the devotion they ask) and holy wares. Discounts grow with your favor.', markup: 1.5, buys: ['curiosity'], stock: [{ kind: 'divine' }, { kind: 'items', ids: ['holy-water', 'cleansing-salts', 'phoenix-feather'] }] },
+  { id: 'faction', name: 'Faction Quartermaster', kind: 'faction', description: 'Members only: better gear, cheaper the higher your rank.', markup: 1.2, stock: [{ kind: 'gear', categories: ['weapon', 'armor', 'accessory'], rarities: ['rare', 'epic'], count: 6 }] },
+  { id: 'gambler', name: 'Gambler', kind: 'gambler', description: 'Buy unidentified gear sight unseen. Usually a dud. Sometimes a legend.', markup: 1, stock: [] },
+  { id: 'black-market', name: 'Black Market', kind: 'blackMarket', night: true, description: 'Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly.', markup: 2.5, stock: [{ kind: 'uniques', rarities: ['legendary', 'mythic'], count: 2 }, { kind: 'gear', categories: ['weapon', 'armor', 'accessory'], rarities: ['epic'], count: 3 }, { kind: 'items', ids: ['skeleton-key', 'tome-of-insight'] }] },
+];

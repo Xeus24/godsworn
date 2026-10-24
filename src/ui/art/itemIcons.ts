@@ -108,6 +108,7 @@ export function iconSpec(item: ItemInstance): IconSpec {
         monster: ['fang', '#e8e0d0'],
         divine: ['shard', '#ffd54a'],
         void: ['fragment', '#2b1b3d'],
+        fish: ['fish', tierColor('jewel', base.tier + 1)],
       };
       const [pattern, main] = byKind[base.kind] ?? ['ore', '#9aa3ad'];
       const essenceColors = ['#d8d8d8', '#4fd36b', '#4a8dff', '#ff9a1f', '#ff3b3b', '#ff7ff0'];
@@ -118,6 +119,8 @@ export function iconSpec(item: ItemInstance): IconSpec {
     case 'book':
       // Skillbooks are bound in their rarity's color; Grimoires in black leather.
       return { pattern: 'tome', main: base.grimoire ? '#2a2030' : rarityColor === '#f2f2f2' ? '#8a6a4a' : rarityColor, energy: base.grimoire ? '#c02a4a' : '#ffe08a' };
+    case 'recipe':
+      return { pattern: 'scroll', main: '#e8dcb8', energy: rarityColor };
   }
 }
 

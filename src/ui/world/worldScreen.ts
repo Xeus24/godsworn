@@ -179,6 +179,8 @@ export class WorldScreen implements Screen {
         return entityIcon('waypoint', '', w.waypoints.includes(map.id) ? 'on' : '');
       case 'chest':
         return entityIcon('chest', '', e.locked ? 'locked' : '');
+      case 'node':
+        return entityIcon('node', '', e.gather);
       case 'rune':
         return entityIcon('rune', '', w.used[usedKey(map.id, e.id)] !== undefined ? 'lit' : '');
       default:
