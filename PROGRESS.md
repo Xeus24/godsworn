@@ -609,6 +609,10 @@
 - **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
+### Achievement point milestones (added after Phase 16)
+- Achievement points used to be only a score. Eight milestones (100 to 2,900 of the 2,985 points) now each give a permanent bonus: XP, Magic Find, gold find, max HP, damage, favor, crit and finally all resistances. They stack and are kept on the hero (`achievementPoints`, rebuilt from earned achievements for older saves; save version 16).
+- The Codex Achievements tab has a "What points do" panel listing every milestone, which are active and how far the next one is. A toast announces each milestone as it is passed.
+
 ### Endgame stays hidden until endgame (added after Phase 16)
 - `engine/endgame/unlocked.ts`: endgame opens when the hero reaches the level cap, finishes the story, or is in New Game+. Until then the UI hides the Rift Gate and Boss Rush, the Stables (unless you own a mount), the Pet & Mount and Legacy (New Game+) panels, the Paragon board, the workshop's Ascend, and the Defender path. A popup (`UnlockOverlay`) explains what opened up, once per legend, and another pops up for each New Game+ race you unlock.
 - On the creation screen, challenge modes and the New Game+ races stay hidden until any of your heroes has reached endgame (kept in the browser profile, `ui/profile.ts`).

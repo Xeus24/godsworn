@@ -47,6 +47,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     challenges: [...(opts.challenges ?? [])],
     stable: { pets: [], mounts: [] },
     difficulty: opts.difficulty ?? DEFAULT_DIFFICULTY,
+    achievementPoints: 0,
     level: 1,
     xp: 0,
     classes: [{ classId: opts.classId, slot: 'primary', level: 1, xp: 0, skillPoints: 0 }],

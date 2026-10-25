@@ -1,5 +1,6 @@
 import { grantMount, grantPet } from '../character/stable';
 import { content } from '../../data';
+import { ACHIEVEMENT_MILESTONES } from '../../data/achievements';
 import type { AchievementDef } from '../achievements/types';
 import { evaluate } from '../quests/conditions';
 import type { GameSession } from './gameState';
@@ -60,6 +61,11 @@ export class AchievementActions {
     const s = this.s;
     s.state.achievements[def.id] = s.state.clock.day;
     const p = s.player;
+    const before = p.achievementPoints ?? 0;
+    p.achievementPoints = before + def.points;
+    for (const m of ACHIEVEMENT_MILESTONES) {
+      if (before < m.points && p.achievementPoints >= m.points) s.bus.emit('toast', { kind: 'level', text: `Achievement milestone, ${m.points} points: ${m.description}` });
+    }
     if (def.title && !p.devotion.titles.includes(def.title)) p.devotion.titles.push(def.title);
     if (def.gold) s.addGold(def.gold, 'achievement');
     if (def.pet && grantPet(p, def.pet)) s.bus.emit('toast', { kind: 'loot', text: `A new pet: ${content.pets.get(def.pet).name}!` });

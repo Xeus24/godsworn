@@ -1,5 +1,6 @@
 import type { AchievementCategory, AchievementDef } from '../engine/achievements/types';
 import type { Cond } from '../engine/quests/types';
+import type { ModifierSpec } from '../engine/stats/modifiers';
 import type { LifetimeStat } from '../engine/state/gameState';
 
 export const ACHIEVEMENT_CATEGORIES: { id: AchievementCategory; name: string }[] = [
@@ -15,6 +16,24 @@ export const ACHIEVEMENT_CATEGORIES: { id: AchievementCategory; name: string }[]
   { id: 'challenge', name: 'Challenges' },
   { id: 'twilight', name: 'New Game+ & Twilight' },
   { id: 'endgame', name: 'Rifts & Boss Rush' },
+];
+
+/** Achievement points are a running score; every milestone passed gives your hero a permanent bonus (all of them stack). */
+export interface AchievementMilestone {
+  points: number;
+  description: string;
+  modifiers: ModifierSpec[];
+}
+
+export const ACHIEVEMENT_MILESTONES: AchievementMilestone[] = [
+  { points: 100, description: '+2% XP gain', modifiers: [{ stat: 'xpGain', type: 'flat', value: 2 }] },
+  { points: 300, description: '+5% Magic Find and +5% gold find', modifiers: [{ stat: 'magicFind', type: 'flat', value: 5 }, { stat: 'goldFind', type: 'flat', value: 5 }] },
+  { points: 600, description: '+3% max HP', modifiers: [{ stat: 'maxHp', type: 'percent', value: 3 }] },
+  { points: 1000, description: '+3% damage', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 3 }] },
+  { points: 1500, description: '+5% favor gain and +3% XP gain', modifiers: [{ stat: 'favorGain', type: 'flat', value: 5 }, { stat: 'xpGain', type: 'flat', value: 3 }] },
+  { points: 2000, description: '+5% max HP and +2% crit chance', modifiers: [{ stat: 'maxHp', type: 'percent', value: 5 }, { stat: 'critChance', type: 'flat', value: 2 }] },
+  { points: 2500, description: '+5% damage and +10% Magic Find', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 5 }, { stat: 'magicFind', type: 'flat', value: 10 }] },
+  { points: 2900, description: 'Legend of the Age: +5% to all resistances and +5% damage', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 5 }, { stat: 'physicalResist', type: 'flat', value: 5 }, { stat: 'fireResist', type: 'flat', value: 5 }, { stat: 'iceResist', type: 'flat', value: 5 }, { stat: 'lightningResist', type: 'flat', value: 5 }, { stat: 'natureResist', type: 'flat', value: 5 }, { stat: 'arcaneResist', type: 'flat', value: 5 }, { stat: 'holyResist', type: 'flat', value: 5 }, { stat: 'shadowResist', type: 'flat', value: 5 }, { stat: 'voidResist', type: 'flat', value: 5 }] },
 ];
 
 type Extra = Pick<AchievementDef, 'hidden' | 'title' | 'gold' | 'pet' | 'mount'>;

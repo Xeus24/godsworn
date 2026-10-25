@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { ACHIEVEMENT_MILESTONES } from '../../data/achievements';
 import { ACHIEVEMENT_CATEGORIES } from '../../data/achievements';
 import { BESTIARY } from '../../data/bestiary/bestiary';
 import { killsByType, knowledgeLevel, knowledgeName, knowledgeThresholds, slayerRank, slayerTypes, typeName } from '../../engine/bestiary/bestiary';
@@ -211,8 +212,25 @@ export class CodexScreen implements Screen {
     return el(
       'div',
       { class: 'codex-scroll' },
+      this.milestones(),
       el('section', { class: 'panel' }, el('h2', {}, 'Achievements'), el('div', {}, `${earned.length} of ${all.length} earned · ${s.achievements.points()} points · ${s.achievements.titles().length} titles (choose one on the Character screen)`)),
       el('div', { class: 'codex-grid' }, ...groups),
+    );
+  }
+
+  /** What achievement points do: the milestone bonuses, which are reached and which is next. */
+  private milestones(): HTMLElement {
+    const pts = this.session.player.achievementPoints ?? 0;
+    const next = ACHIEVEMENT_MILESTONES.find((m) => pts < m.points);
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'What points do'),
+      el('div', { class: 'dim small' }, `Every achievement gives points. Reach a milestone and you keep its bonus for good (they all stack). You have ${pts} points${next ? `; the next milestone is at ${next.points}.` : ', every milestone reached.'}`),
+      ...ACHIEVEMENT_MILESTONES.map((m) => {
+        const got = pts >= m.points;
+        return el('div', { class: `codex-achievement${got ? ' earned' : ''}` }, el('span', { class: 'codex-check' }, got ? '★' : '☆'), el('div', {}, el('b', {}, `${m.points} points`), el('div', { class: 'small' }, m.description)), el('span', { class: 'dim small' }, got ? 'Active' : `${m.points - pts} to go`));
+      }),
     );
   }
 

@@ -80,11 +80,14 @@ export function migrate(raw: Json): Json {
   p.stable ??= { pets: [], mounts: [] };
   // Version 15: difficulty tiers.
   p.difficulty ??= 'medium';
+  // Version 16: achievement points on the hero (they unlock milestone bonuses).
+  p.achievementPoints ??= Object.keys(obj(state.achievements)).reduce((sum, id) => sum + (content.achievements.find(id)?.points ?? 0), 0);
   // Companions are characters too.
   for (const comp of Object.values(obj(obj(state.party).companions))) {
     const ch = obj(obj(comp).character);
     ch.bestiary ??= {};
     ch.difficulty ??= 'medium';
+    ch.achievementPoints ??= 0;
     ch.challenges ??= [];
     ch.stable ??= { pets: [], mounts: [] };
     const cd = obj(ch.devotion);

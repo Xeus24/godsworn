@@ -3,6 +3,7 @@ import { challengeHeroModifiers } from './challenges';
 import { heresyModifiers } from '../gods/heresy';
 import { slayerModifiers } from '../bestiary/bestiary';
 import { content, type Content } from '../../data';
+import { ACHIEVEMENT_MILESTONES } from '../../data/achievements';
 import { getDifficulty } from '../../data/difficulty';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
@@ -59,6 +60,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
     }
   }
   mods.push(...withSource(getDifficulty(char.difficulty).bonuses, `difficulty:${char.difficulty}`));
+  for (const m of ACHIEVEMENT_MILESTONES) if ((char.achievementPoints ?? 0) >= m.points) mods.push(...withSource(m.modifiers, `achievements:${m.points}`));
   mods.push(...equipmentModifiers(char, c));
   mods.push(...treeModifiers(char, c));
   mods.push(...generalModifiers(char, c));

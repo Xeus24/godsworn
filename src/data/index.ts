@@ -46,7 +46,7 @@ import { DEEP_ENEMIES } from './bestiary/enemies';
 import { DEEP_ENEMY_SKILLS } from './bestiary/skills';
 import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
 import { ELITE_AFFIXES } from './bestiary/affixes';
-import { ACHIEVEMENTS } from './achievements';
+import { ACHIEVEMENTS, ACHIEVEMENT_MILESTONES } from './achievements';
 import { FOLLOWERS } from './followers';
 import { RIFT_AFFIXES } from './rifts';
 import { CHALLENGES } from './challenges';
@@ -225,6 +225,8 @@ export function validateContent(c: Content = content): void {
     v.check(skill.maxRank >= 1, `${where}: maxRank must be at least 1`);
     checkEffects(v, c, skill.effects ?? [], where);
   }
+
+  for (const m of ACHIEVEMENT_MILESTONES) checkModifiers(v, m.modifiers, `achievement milestone ${m.points}`);
 
   for (const race of c.races.all()) {
     const where = `race ${race.id}`;
