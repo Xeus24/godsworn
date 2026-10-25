@@ -126,6 +126,19 @@ export class HelpOverlay extends Overlay {
   }
 }
 
+// ---------------------------------------------------------------- unlocks
+
+/** "Something new opened up": a title, what it is, and where to find it. */
+export class UnlockOverlay extends Overlay {
+  constructor(private readonly title: string, private readonly lines: string[], onClose?: () => void) {
+    super(title, onClose);
+  }
+
+  protected render(): void {
+    this.panel.replaceChildren(el('h2', {}, this.title), ...this.lines.map((l) => el('p', {}, l)), button('Continue', () => this.close(), false, 'primary'));
+  }
+}
+
 // ---------------------------------------------------------------- pause menu
 
 export interface PauseActions {

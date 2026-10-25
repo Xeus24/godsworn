@@ -6,7 +6,7 @@ import './ui/general/general.css';
 import './ui/pantheon/pantheon.css';
 import { content, validateContent } from './data';
 import { endgameUnlocked } from './engine/endgame/unlocked';
-import { highestNgPlus, recordEndgame, recordNgPlus } from './ui/profile';
+import { endgameSeen, highestNgPlus, recordEndgame, recordNgPlus } from './ui/profile';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
@@ -40,7 +40,7 @@ import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
 import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
 import { AUTOSAVE_SLOT, SaveSlots, serialize, type SaveStore } from './engine/state/save';
-import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay } from './ui/menu/menus';
+import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay, UnlockOverlay } from './ui/menu/menus';
 import { applySettings, settings } from './ui/settings';
 import './ui/menu/menu.css';
 import { audio } from './ui/audio/audio';
@@ -183,13 +183,17 @@ function attach(s: GameSession): void {
     else if (kind === 'warning') audio().play('warning');
   });
   s.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
+  s.bus.on('levelUp', () => checkEndgame(s, true));
   s.bus.on('stateChanged', ({ reason }) => {
     checkEndgame(s, true);
     if (reason === 'ngPlus') {
       const before = highestNgPlus();
       recordNgPlus(s.state.ngPlus);
       for (const race of content.races.all()) {
-        if (race.unlock && race.unlock.ngPlus > before && race.unlock.ngPlus <= s.state.ngPlus) toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
+        if (race.unlock && race.unlock.ngPlus > before && race.unlock.ngPlus <= s.state.ngPlus) {
+          toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
+          new UnlockOverlay(`New race unlocked: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose it when you create a new hero.']).open();
+        }
       }
     }
     if (reason === 'battle' || reason === 'ngPlus' || reason === 'quest') autosave(reason === 'battle' ? 0 : AUTOSAVE_EVERY_MS);
@@ -199,11 +203,20 @@ function attach(s: GameSession): void {
 /** Notices when the hero reaches endgame: remembers it for the player and (once per legend) announces what opened up. */
 function checkEndgame(s: GameSession, announce: boolean): void {
   if (!endgameUnlocked(s.state)) return;
+  const first0 = !endgameSeen();
   recordEndgame();
   const key = 'legacy:endgameAnnounced';
   if (s.state.flags[key]) return;
   s.state.flags[key] = true;
-  if (announce) toasts.show('level', 'Endgame reached! Rifts, the Boss Rush, mounts, pets and New Game+ are now open.');
+  if (!announce) return;
+  toasts.show('level', 'Endgame reached!');
+  new UnlockOverlay('Endgame unlocked', [
+    'You have reached the endgame. New things have opened up:',
+    'Rift Gate & Boss Rush: visit any town to open Rifts, or fight every dungeon boss in a row.',
+    'Stables, the Paragon board, item Ascension and the Defender path are now open.',
+    s.state.quests.ending ? 'New Game+ is ready: begin it from the Legacy panel on your Character sheet.' : 'Finish the story to unlock New Game+ (the Legacy panel on your Character sheet).',
+    ...(first0 ? ['New heroes can now take Challenge modes at creation, and the New Game+ races will show as you earn them.'] : []),
+  ]).open();
 }
 
 const AUTOSAVE_EVERY_MS = 5 * 60 * 1000;
