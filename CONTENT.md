@@ -2,7 +2,7 @@
 
 A review list of all game content. It is updated each phase as content lands.
 
-## Races (6)
+## Races (11)
 
 | Race | Stat bonus | Passive | Active skill |
 |---|---|---|---|
@@ -12,6 +12,16 @@ A review list of all game content. It is updated each phase as content lands.
 | Orc | STR +3, VIT +1, INT −2 | **Bloodfury**: +20% resource gain, +5% physical damage | **Bloodlust**: heal 15% HP, +20% physical damage for 3 turns (6 cd) |
 | Beastkin | DEX +3, LUK +1, WIS −1 | **Feral Reflexes**: +3 speed, +5% dodge | **Pounce**: 130% ATK to any row, Bleed (4 cd) |
 | Nephilim | FAI +3, WIS +1, VIT −1 | **Celestial Heritage**: +15% favor gain, +10% holy damage, −15% shadow resist | **Radiant Wings**: 90% DIV holy damage to all enemies (6 cd) |
+
+**New Game+ races** (one per two NG+ tiers; unlocked for new heroes once any of your heroes reaches the tier, on any save; no penalties, and each is stronger than the last):
+
+| Race | Unlock | Stat bonus | Passive | Active skill |
+|---|---|---|---|---|
+| Gnome | NG+2 | INT +3, DEX +2, LUK +3 | **Tinker's Luck**: +15% Magic Find and gold find, +3% crit, +5% XP, 25% crafting discount | **Overclock**: +25% damage, +10 speed for 3 turns (5 cd) |
+| Fae | NG+4 | DEX +3, INT +3, WIS +3, LUK +2 | **Glamour**: +8% dodge, +15 magic resist, +10% arcane damage, +10% max MP | **Fey Veil**: party +20% dodge, 15% less damage for 3 turns (6 cd) |
+| Giant | NG+6 | STR +5, VIT +5, FAI +2, WIS +2 | **Titan's Frame**: +20% max HP, +10% defense, +12% physical damage | **Earthshaker**: 150% ATK to all enemies, Slow (5 cd) |
+| Dragon | NG+8 | STR +4, INT +4, VIT +4, FAI +3, DEX +2 | **Wyrm's Blood**: +15% max HP and defense, +20% fire damage, +40% fire resist, +15% crit damage | **Dragon's Breath**: 220% MAG fire damage to all enemies, Burn (5 cd) |
+| Primordial | NG+10 | STR +4, INT +4, VIT +5, DEX/WIS/LUK/FAI +3 | **Before the Gods**: +25% max HP, +20% favor, +15% XP and damage, +10% all resists, 10% less damage taken, +1 skill point every 5 levels | **Primordial Unmaking**: 300% MAG void damage to all enemies, Corruption (5 cd) |
 
 ## Birth signs (6)
 
@@ -65,7 +75,7 @@ Rage (100, decays 5/turn), Combo Points (5), Faith (100, starts 20), Focus (5), 
 | Discordant Note | Bard | 5 MP | 0 | 145% MAG arcane | 25% Silence, +20 Verse |
 | Song of Valor | Bard | 8 MP | 0 | | starts the Valor song |
 
-**Racial (6):** Rally, Moonlit Step, Stoneform, Bloodlust, Pounce, Radiant Wings (see Races).
+**Racial (11):** Rally, Moonlit Step, Stoneform, Bloodlust, Pounce, Radiant Wings, Overclock, Fey Veil, Earthshaker, Dragon's Breath, Primordial Unmaking (see Races).
 
 ## Gods (10 + 1 hidden)
 Solenne (Sun & Justice, holy), Morrath (Death & Endings, shadow), Kael (War & Glory, physical), Ysolde (Nature & the Hunt, nature), Vex (Trickery & Luck, arcane), Thalor (Forge & Craft, fire), Nymira (Seas & Storms, lightning), Aurelis (Knowledge & Magic, arcane), Hesha (Hearth & Mercy, holy), Grimvald (Wealth & Trade, physical). Hidden: **The Nameless One** (Corruption & the Void, void). Favor rules, blessings and divine items are in *Gods, favor and blessings* below.
@@ -1884,5 +1894,5 @@ NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosse
 | **Medium** | x1 | x1 | x1 | x1 | +0 / +0 | +0 | 0.25 | x1 | x1 | x1 | - |
 | **Hard** | x2.2 | x1.6 | x1.15 | x1.05 | +6 / +4 | +0 | 0.5 | x1.4 | x1.4 | x1.25 | magicFind +20, goldFind +10, favorGain +10, xpGain +5 |
 | **Legendary** | x5.5 | x3 | x1.4 | x1.12 | +14 / +10 | +2 | 0.8 | x2.2 | x2.2 | x1.75 | magicFind +60, goldFind +30, favorGain +30, xpGain +15, maxHp +10%, damageBonus +5 |
-| **Impossible** | x8.3 | x4 | x1.53 | x1.15 | +18 / +13 | +3 | 0.87 | x3.5 | x3.5 | x2.5 | magicFind +150, goldFind +75, favorGain +60, xpGain +30, maxHp +25%, damageBonus +15, critDamage +25, lifesteal +3 |
+| **Impossible** | x11.5 | x5.1 | x1.68 | x1.19 | +22 / +17 | +4 | 0.94 | x3.5 | x3.5 | x2.5 | magicFind +150, goldFind +75, favorGain +60, xpGain +30, maxHp +25%, damageBonus +15, critDamage +25, lifesteal +3 |
 <!-- difficulty:end -->

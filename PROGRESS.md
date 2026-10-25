@@ -609,11 +609,15 @@
 - **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
+### New Game+ races (added after Phase 16)
+- Five races, one per two NG+ tiers (NG+2 Gnome, NG+4 Fae, NG+6 Giant, NG+8 Dragon, NG+10 Primordial). No stat penalties; stat points rise 8, 11, 14, 17, 25 and passives and actives grow with them. The Dragon is deliberately not the strongest: the Primordial is.
+- Unlocks are per player, not per save: the highest NG+ tier any of your heroes reaches is kept in browser storage (`ui/profile.ts`), so a new character can pick a race once you have reached its tier. Locked races show greyed out on the creation screen. New portraits, lore and a racial active skill for each.
+
 ### Difficulty (added after Phase 12)
 - Six tiers chosen at character creation: Noob, Easy, Medium (the baseline, unchanged balance), Hard, Legendary, Impossible. Data lives in `src/data/difficulty.ts`.
 - Enemy HP, damage, defense, resist, speed, accuracy, crit chance and level scale per tier through the normal modifier pipeline (`engine/combat/difficulty.ts`); enemy AI focuses fire and drops its randomness as sharpness rises. Noob also buffs the hero (x2 damage, half damage taken).
 - Harder tiers pay more: XP, gold and paragon XP multipliers, permanent hero bonuses (Magic Find, gold find, favor, XP, HP, damage, crit damage, lifesteal) and six difficulty-gated paragon nodes.
-- Balance check with the auto-battler (benchmark gear, no strategy): Noob/Easy about 100% wins, Medium about 95%, Hard about 50%, Legendary about 3%, Impossible 0.5% (12 of 2,304 fights; Impossible is tuned to this on purpose). Companions get the hero's permanent difficulty bonuses too. The last two are meant to need real play: buffs, gods, combos, consumables.
+- Balance check with the auto-battler (benchmark gear, no strategy): Noob/Easy about 100% wins, Medium about 95%, Hard about 50%, Legendary about 3%, Impossible 0.01% (1 of 10,080 fights; Impossible is tuned to this on purpose). Companions get the hero's permanent difficulty bonuses too. The last two are meant to need real play: buffs, gods, combos, consumables.
 - Shown in character creation (with a summary panel) and as a badge on the sheet header. `npm run sim -- --difficulty <id>` simulates a tier.
 
 ## Known bugs

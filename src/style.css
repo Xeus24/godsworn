@@ -755,3 +755,8 @@ body.reduce-motion *::after {
   animation: none !important;
   transition: none !important;
 }
+
+.choice-card.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

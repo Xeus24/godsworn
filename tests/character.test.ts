@@ -60,7 +60,7 @@ describe('character creation', () => {
   });
 
   it('rejects unknown content ids', () => {
-    expect(() => makeHero({ raceId: 'dragon' })).toThrow(/unknown id "dragon"/);
+    expect(() => makeHero({ raceId: 'lizardfolk' })).toThrow(/unknown id "lizardfolk"/);
     expect(() => makeHero({ classId: 'pirate' })).toThrow();
     expect(() => makeHero({ birthSignId: 'nope' })).toThrow();
   });

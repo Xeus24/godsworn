@@ -1,5 +1,5 @@
 import type { ModifierSpec } from '../engine/stats/modifiers';
-import type { PrimaryStats } from '../engine/stats/types';
+import { ELEMENTS, type PrimaryStats } from '../engine/stats/types';
 
 export interface RacialPassive {
   name: string;
@@ -21,6 +21,8 @@ export interface RaceDef {
   bonusSkillPointEvery?: number;
   /** Discount on crafting costs, 0..100 (Dwarf). */
   craftingDiscount?: number;
+  /** Hidden until a hero of yours has reached this New Game+ tier (on any save). */
+  unlock?: { ngPlus: number };
 }
 
 export const RACES: RaceDef[] = [
@@ -140,5 +142,125 @@ export const RACES: RaceDef[] = [
       ],
     },
     activeSkill: 'radiant-wings',
+  },
+  // Unlocked by New Game+: one race for every two tiers, each stronger than the last.
+  {
+    id: 'gnome',
+    name: 'Gnome',
+    description: 'Tinkerers and treasure-hunters whose luck is half invention. Unlocked at NG+2.',
+    flavor: {
+      homeland: 'The workshops of Brightwater and the Sunken Caves',
+      lore: 'Gnomes never finished anything in their lives, they only reached a good stopping point. They build clocks that tell the weather, locks that argue back, and luck charms they swear are not luck charms. They stay small, loud, and unaccountably fortunate, and the gods have stopped asking why.',
+      saying: '“It was working a minute ago. It will be working again in a minute.”',
+    },
+    unlock: { ngPlus: 2 },
+    statBonus: { int: 3, dex: 2, luk: 3 },
+    passive: {
+      name: "Tinker's Luck",
+      description: '+15% Magic Find and gold find, +3% crit chance, +5% XP gain. 25% discount on crafting.',
+      modifiers: [
+        { stat: 'magicFind', type: 'flat', value: 15 },
+        { stat: 'goldFind', type: 'flat', value: 15 },
+        { stat: 'critChance', type: 'flat', value: 3 },
+        { stat: 'xpGain', type: 'flat', value: 5 },
+      ],
+    },
+    activeSkill: 'overclock',
+    craftingDiscount: 25,
+  },
+  {
+    id: 'fae',
+    name: 'Fae',
+    description: 'Wild, bright and half-there, the Fae are glamour wrapped around a wish. Unlocked at NG+4.',
+    flavor: {
+      homeland: 'The Whisperwood, in the hours between hours',
+      lore: 'The Fae were here before the elves named the forest, and they will be here after the last tree is felled. They keep bargains to the letter and promises not at all, and every one of their kindnesses has a price written small. Mortals who travel with them come home with strange luck and stranger debts.',
+      saying: '“Everything is a gift. Nothing is free. Read the small print.”',
+    },
+    unlock: { ngPlus: 4 },
+    statBonus: { dex: 3, int: 3, wis: 3, luk: 2 },
+    passive: {
+      name: 'Glamour',
+      description: '+8% dodge, +15 magic resist, +10% arcane damage, +10% max MP.',
+      modifiers: [
+        { stat: 'dodge', type: 'flat', value: 8 },
+        { stat: 'magicResist', type: 'flat', value: 15 },
+        { stat: 'arcaneDamage', type: 'flat', value: 10 },
+        { stat: 'maxMp', type: 'percent', value: 10 },
+      ],
+    },
+    activeSkill: 'fey-veil',
+  },
+  {
+    id: 'giant',
+    name: 'Giant',
+    description: 'Mountain-tall and mountain-patient, Giants carry whole battles on their shoulders. Unlocked at NG+6.',
+    flavor: {
+      homeland: 'The Stormcoast cliffs and the roots of Frostspire',
+      lore: 'Giants are what is left when a mountain decides to walk. They are slow to anger, slower to forgive, and there is no door in the world built for them. Their oldest songs tell of the war when they held up the sky for a day and a night, and nobody thanked them. They have not asked again.',
+      saying: '“I have carried bigger things than you. I have set them down, too.”',
+    },
+    unlock: { ngPlus: 6 },
+    statBonus: { str: 5, vit: 5, fai: 2, wis: 2 },
+    passive: {
+      name: "Titan's Frame",
+      description: '+20% max HP, +10% defense, +12% physical damage.',
+      modifiers: [
+        { stat: 'maxHp', type: 'percent', value: 20 },
+        { stat: 'defense', type: 'percent', value: 10 },
+        { stat: 'physicalDamage', type: 'flat', value: 12 },
+      ],
+    },
+    activeSkill: 'earthshaker',
+  },
+  {
+    id: 'dragon',
+    name: 'Dragon',
+    description: 'A wyrm in mortal shape: scale, fire and an ancient hunger for hoards. Unlocked at NG+8.',
+    flavor: {
+      homeland: 'The Volcanic Rift, where the first fire never went out',
+      lore: 'Dragons were the first thing the gods were afraid of, and the gods have never forgiven them for it. This one has folded itself into a mortal shape and walks the roads as a guest, but the scales under the skin and the furnace behind the eyes were never asked to leave. Even so, there are things older than dragons.',
+      saying: '“I was old when your gods were young. Be careful what you call a monster.”',
+    },
+    unlock: { ngPlus: 8 },
+    statBonus: { str: 4, int: 4, vit: 4, fai: 3, dex: 2 },
+    passive: {
+      name: "Wyrm's Blood",
+      description: '+15% max HP and defense, +20% fire damage, +40% fire resist, +15% crit damage.',
+      modifiers: [
+        { stat: 'maxHp', type: 'percent', value: 15 },
+        { stat: 'defense', type: 'percent', value: 15 },
+        { stat: 'fireDamage', type: 'flat', value: 20 },
+        { stat: 'fireResist', type: 'flat', value: 40 },
+        { stat: 'critDamage', type: 'flat', value: 15 },
+      ],
+    },
+    activeSkill: 'dragons-breath',
+  },
+  {
+    id: 'primordial',
+    name: 'Primordial',
+    description: 'Older than the gods, the Primordials are what the world was before it was named. Unlocked at NG+10.',
+    flavor: {
+      homeland: 'The Nameless dark before the first dawn',
+      lore: 'Before Solenne lit the first sun, before Morrath counted the first death, the world was a vast and patient thing without a name, and the Primordials were its thoughts. They carry no patron, because there was nobody before them to pray to. The pantheon speaks of them rarely, and always lowers its voice.',
+      saying: '“I was not born. I was remembered into being.”',
+    },
+    unlock: { ngPlus: 10 },
+    statBonus: { str: 4, dex: 3, int: 4, vit: 5, wis: 3, luk: 3, fai: 3 },
+    passive: {
+      name: 'Before the Gods',
+      description: '+25% max HP, +20% favor gain, +15% XP gain and damage, +10% to all resistances, take 10% less damage. +1 skill point every 5 levels.',
+      modifiers: [
+        { stat: 'maxHp', type: 'percent', value: 25 },
+        { stat: 'favorGain', type: 'flat', value: 20 },
+        { stat: 'xpGain', type: 'flat', value: 15 },
+        { stat: 'damageBonus', type: 'flat', value: 15 },
+        { stat: 'damageTaken', type: 'more', value: -10 },
+        ...ELEMENTS.map((e): ModifierSpec => ({ stat: `${e}Resist`, type: 'flat', value: 10 })),
+      ],
+    },
+    activeSkill: 'primordial-unmaking',
+    bonusSkillPointEvery: 5,
   },
 ];

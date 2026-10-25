@@ -5,6 +5,7 @@ import './ui/tree/tree.css';
 import './ui/general/general.css';
 import './ui/pantheon/pantheon.css';
 import { content, validateContent } from './data';
+import { highestNgPlus, recordNgPlus } from './ui/profile';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
@@ -171,6 +172,7 @@ function loadSlot(slot: string): string | undefined {
 function attach(s: GameSession): void {
   session = s;
   lastAutosave = Date.now();
+  recordNgPlus(s.state.ngPlus);
   s.bus.on('toast', ({ kind, text }) => {
     toasts.show(kind, text);
     if (kind === 'level') audio().play('levelUp');
@@ -180,6 +182,13 @@ function attach(s: GameSession): void {
   });
   s.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
   s.bus.on('stateChanged', ({ reason }) => {
+    if (reason === 'ngPlus') {
+      const before = highestNgPlus();
+      recordNgPlus(s.state.ngPlus);
+      for (const race of content.races.all()) {
+        if (race.unlock && race.unlock.ngPlus > before && race.unlock.ngPlus <= s.state.ngPlus) toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
+      }
+    }
     if (reason === 'battle' || reason === 'ngPlus' || reason === 'quest') autosave(reason === 'battle' ? 0 : AUTOSAVE_EVERY_MS);
   });
 }

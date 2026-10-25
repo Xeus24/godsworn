@@ -1,4 +1,6 @@
 import { content } from '../../data';
+import { raceUnlocked, raceUnlockText } from '../../engine/character/races';
+import { highestNgPlus } from '../profile';
 import { DEFAULT_DIFFICULTY, DIFFICULTIES, type DifficultyId } from '../../data/difficulty';
 import { createCharacter, NAME_MAX_LENGTH, validateName } from '../../engine/character/create';
 import type { Character } from '../../engine/character/types';
@@ -113,7 +115,7 @@ export class CreationScreen implements Screen {
     this.choice = {
       name: pickRandom(RANDOM_NAMES),
       portrait: Math.floor(Math.random() * PORTRAIT_VARIANTS),
-      raceId: pickRandom(content.races.ids()),
+      raceId: pickRandom(content.races.all().filter((r) => raceUnlocked(r, highestNgPlus())).map((r) => r.id)),
       classId: pickRandom(content.classes.ids()),
       birthSignId: pickRandom(content.birthSigns.ids()),
       hardcore: this.choice.hardcore,
@@ -147,7 +149,14 @@ export class CreationScreen implements Screen {
         (d) => [d.name, `Enemies x${d.enemy.hp} HP, x${d.enemy.damage} damage`],
         (id) => (this.choice.difficulty = id as DifficultyId),
       ),
-      this.group('Race', content.races.all(), this.choice.raceId, (r) => [r.name, r.passive.name], (id) => (this.choice.raceId = id)),
+      this.group(
+        'Race',
+        content.races.all(),
+        this.choice.raceId,
+        (r) => [r.name, raceUnlocked(r, highestNgPlus()) ? r.passive.name : `Locked: ${raceUnlockText(r)}`],
+        (id) => (this.choice.raceId = id),
+        (r) => !raceUnlocked(r, highestNgPlus()),
+      ),
       this.group(
         'Class',
         content.classes.all(),
@@ -175,6 +184,7 @@ export class CreationScreen implements Screen {
     selected: string,
     label: (item: T) => [string, string],
     select: (id: string) => void,
+    locked?: (item: T) => boolean,
   ): HTMLElement {
     const cards = items.map((item) => {
       const [name, sub] = label(item);
@@ -184,6 +194,10 @@ export class CreationScreen implements Screen {
         el('span', { class: 'choice-name' }, name),
         el('span', { class: 'choice-sub' }, sub),
       );
+      if (locked?.(item)) {
+        card.disabled = true;
+        card.classList.add('locked');
+      }
       card.addEventListener('click', () => {
         select(item.id);
         this.refresh();
