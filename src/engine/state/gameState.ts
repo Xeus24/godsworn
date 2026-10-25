@@ -3,7 +3,7 @@ import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
 import { spendParagonPoint } from '../character/paragon';
 import { grantXp, type XpResult } from '../character/progression';
-import { characterStats } from '../character/stats';
+import { characterStats, restoreFull } from '../character/stats';
 import type { Character } from '../character/types';
 import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
@@ -24,6 +24,9 @@ import { TreeActions } from './treeActions';
 import { WorldActions } from './worldActions';
 import { QuestActions } from './questActions';
 import { PartyActions } from './partyActions';
+import { AchievementActions } from './achievementActions';
+import { EndgameActions } from './endgameActions';
+import { createEndgameState, type EndgameState } from '../endgame/types';
 import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
 import type { WorldState } from '../world/types';
@@ -31,7 +34,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 11;
+export const SAVE_VERSION = 14;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -40,7 +43,7 @@ export interface SaveMeta {
   playTimeMs: number;
 }
 
-/** Lifetime counters for the stats screen and achievements. */
+/** Lifetime counters for the statistics page and achievements. */
 export interface GameStats {
   kills: number;
   battlesWon: number;
@@ -48,10 +51,49 @@ export interface GameStats {
   battlesFled: number;
   deaths: number;
   highestHit: number;
+  elitesKilled: number;
+  championsKilled: number;
+  /** Minibosses and bosses. */
+  bossesKilled: number;
+  worldBossesKilled: number;
+  punishersKilled: number;
+  /** Bosses slain after they enraged. */
+  enragedKilled: number;
+  /** Boss wind-ups broken before they landed. */
+  interrupts: number;
+  crits: number;
+  interventions: number;
+  goldEarned: number;
+  goldSpent: number;
+  itemsLooted: number;
+  consumablesUsed: number;
 }
 
+/** Counters that hold numbers (every one of them, today). */
+export type LifetimeStat = keyof GameStats;
+
 export function createGameStats(): GameStats {
-  return { kills: 0, battlesWon: 0, battlesLost: 0, battlesFled: 0, deaths: 0, highestHit: 0 };
+  return {
+    kills: 0,
+    battlesWon: 0,
+    battlesLost: 0,
+    battlesFled: 0,
+    deaths: 0,
+    highestHit: 0,
+    elitesKilled: 0,
+    championsKilled: 0,
+    bossesKilled: 0,
+    worldBossesKilled: 0,
+    punishersKilled: 0,
+    enragedKilled: 0,
+    interrupts: 0,
+    crits: 0,
+    interventions: 0,
+    goldEarned: 0,
+    goldSpent: 0,
+    itemsLooted: 0,
+    consumablesUsed: 0,
+  };
 }
 
 /** Everything that is saved. Plain JSON data only. */
@@ -82,6 +124,14 @@ export interface GameState {
   quests: QuestState;
   /** Companions recruited, their approval, bonds and gear. */
   party: PartyState;
+  /** Achievements earned: id -> in-game day. */
+  achievements: Record<string, number>;
+  /** Items found per rarity. */
+  rarityFound: Record<string, number>;
+  /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
+  legacy: { endings: string[] };
+  /** Rifts and the Boss Rush: the run in progress and your records. */
+  endgame: EndgameState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -105,6 +155,10 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     economy: { bought: {}, buyback: [] },
     quests: createQuestState(),
     party: createPartyState(),
+    achievements: {},
+    rarityFound: {},
+    legacy: { endings: [] },
+    endgame: createEndgameState(),
   };
 }
 
@@ -126,6 +180,8 @@ export class GameSession {
   readonly economy: EconomyActions;
   readonly quests: QuestActions;
   readonly party: PartyActions;
+  readonly achievements: AchievementActions;
+  readonly endgame: EndgameActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -140,7 +196,17 @@ export class GameSession {
     this.economy = new EconomyActions(this);
     this.party = new PartyActions(this);
     this.quests = new QuestActions(this);
+    this.achievements = new AchievementActions(this);
+    this.endgame = new EndgameActions(this);
     this.world.look();
+    this.bus.on('goldChanged', ({ amount, reason }) => {
+      if (amount > 0) this.state.stats.goldEarned += amount;
+      else if (reason !== 'defeat') this.state.stats.goldSpent -= amount;
+    });
+    this.bus.on('itemLooted', ({ rarity }) => {
+      this.state.stats.itemsLooted++;
+      this.state.rarityFound[rarity] = (this.state.rarityFound[rarity] ?? 0) + 1;
+    });
   }
 
   /** Starts a new game and hands the hero their class's starting kit. */
@@ -152,6 +218,8 @@ export class GameSession {
       const result = applyStartingKit(player, session.state.inventory, kit, () => session.newUid());
       if (!result.ok) throw new Error(`Starting kit failed: ${result.reason}`);
     }
+    // Begin at full HP and MP with the starting gear on.
+    restoreFull(session.player);
     session.bus.emit('gameStarted', { seed: session.state.seed });
     // The story begins at once.
     session.quests.refresh();

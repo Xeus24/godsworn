@@ -1,3 +1,4 @@
+import { worldLevel } from '../../engine/ngplus/ngplus';
 import { content } from '../../data';
 import type { EncounterDef } from '../../engine/combat/types';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
@@ -398,7 +399,8 @@ export class WorldScreen implements Screen {
         this.draw();
       }));
     }
-    const levels = dungeon ? `Level ${dungeon.level}` : `Levels ${zone.levels[0]}-${zone.levels[1]}`;
+    const ng = s.state.ngPlus;
+    const levels = dungeon ? `Level ${worldLevel(dungeon.level, ng)}` : `Levels ${worldLevel(zone.levels[0], ng)}-${worldLevel(zone.levels[1], ng)}${ng ? ` · NG+${ng}` : ''}`;
     this.side.replaceChildren(
       el('h2', {}, map.name),
       el('div', { class: 'dim small' }, `${levels}${dungeon && s.state.world.dungeonsCleared.includes(dungeon.id) ? ' · cleared' : ''}`),

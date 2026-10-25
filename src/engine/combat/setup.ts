@@ -8,23 +8,33 @@ import { advance, perform, startBattle } from './turns';
 import { calculateStats } from '../stats/calculate';
 import type { BattleEvent, Combatant, EncounterDef } from './types';
 import type { CompanionExtras } from '../party/party';
-import { withSource } from '../stats/modifiers';
+import { withSource, type ModifierSpec } from '../stats/modifiers';
 import { PARTY_SCALING } from '../../data/combat';
+import { affixCount, applyAffixes, rollAffixes } from './affixes';
+import { ngThreat, worldLevel } from '../ngplus/ngplus';
+import { challengeEnemyModifiers } from '../character/challenges';
 
-/** A companion as a combatant: their character plus bond perks, controlled by the player. */
+/**
+ * A companion as a combatant: their character plus bond perks and class
+ * tuning, controlled by the player. Those can raise max HP and MP, so the
+ * character's HP and MP carry in as a share of their maximum.
+ */
 export function createCompanionCombatant(char: Character, extras: CompanionExtras, c: Content = content): Combatant {
   const x = createHero(char, `companion:${char.id}`, c);
+  const hpShare = x.hp / Math.max(1, x.maxHp);
+  const mpShare = x.mp / Math.max(1, x.maxMp);
   x.kind = 'companion';
-  const power = PARTY_SCALING.companionPower;
-  const weaker = withSource([{ stat: 'physicalAttack', type: 'more', value: power }, { stat: 'magicAttack', type: 'more', value: power }, { stat: 'divinePower', type: 'more', value: power }], 'companion');
+  const classId = char.classes[0]?.classId ?? '';
+  const power = PARTY_SCALING.companionPower[classId] ?? PARTY_SCALING.companionPowerDefault;
+  const weaker = withSource([{ stat: 'physicalAttack', type: 'more', value: power }, { stat: 'magicAttack', type: 'more', value: power }, { stat: 'divinePower', type: 'more', value: power }, ...(PARTY_SCALING.companionStats[classId] ?? [])], 'companion');
   x.statInput = { ...x.statInput, modifiers: [...x.statInput.modifiers, ...extras.modifiers, ...weaker] };
   x.triggers = [...x.triggers, ...extras.triggers];
   x.flags = [...new Set([...x.flags, ...extras.flags])];
   const stats = calculateStats(x.statInput);
   x.maxHp = stats.maxHp;
   x.maxMp = stats.maxMp;
-  x.hp = Math.max(1, Math.min(char.hp, x.maxHp));
-  x.mp = Math.min(char.mp, x.maxMp);
+  x.hp = Math.max(1, Math.round(hpShare * x.maxHp));
+  x.mp = Math.round(mpShare * x.maxMp);
   return x;
 }
 
@@ -54,9 +64,25 @@ export interface EncounterOptions {
   weather?: string;
   /** Companions fighting beside the hero, with their bond perks. */
   companions?: { char: Character; extras: CompanionExtras }[];
-  /** NPCs being escorted: AI-controlled allies built from enemy definitions. */
-  guests?: { id: string; enemyId: string }[];
+  /** Extra modifiers on every enemy and on every party member (Rift affixes, challenge modes). */
+  enemyModifiers?: ModifierSpec[];
+  partyModifiers?: ModifierSpec[];
+  /** New Game+ tier: enemy levels follow the world's NG+ levels, and later tiers add threat. */
+  ngPlus?: number;
+  /** NPCs being escorted or fighting beside you: AI-controlled allies built from enemy definitions. `ally` ones (apostle followers) count as part of a companion for party scaling. */
+  guests?: { id: string; enemyId: string; ally?: boolean }[];
   c?: Content;
+}
+
+/** Adds modifiers to a combatant's base stats and refreshes its maximums (HP stays at the same share). */
+function addModifiers(x: Combatant, mods: readonly ModifierSpec[], source: string): void {
+  const share = x.hp / Math.max(1, x.maxHp);
+  x.statInput = { ...x.statInput, modifiers: [...x.statInput.modifiers, ...mods.map((m) => ({ ...m, source }))] };
+  const stats = calculateStats(x.statInput);
+  x.maxHp = stats.maxHp;
+  x.maxMp = stats.maxMp;
+  x.hp = Math.max(1, Math.round(share * x.maxHp));
+  x.mp = Math.min(x.mp, x.maxMp);
 }
 
 /** Zone threat (and party size): more HP and damage, through the normal modifier pipeline. */
@@ -65,6 +91,7 @@ function applyThreat(x: Combatant, threat: number, damage = threat, source = 'th
   const stats = calculateStats(x.statInput);
   x.maxHp = stats.maxHp;
   x.hp = stats.maxHp;
+  if (source === 'party') x.healScale = (x.healScale ?? 1) * (1 + threat / 100);
 }
 
 /** Builds a battle between the hero (with companions and escorted NPCs) and an encounter's enemies; enemies scale with the party's size. */
@@ -72,20 +99,34 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   const c = opts.c ?? content;
   const party = [createHero(hero, 'hero', c), ...(opts.companions ?? []).map((m) => createCompanionCombatant(m.char, m.extras, c))];
   for (const g of opts.guests ?? []) party.push(createGuest(g.id, g.enemyId, hero.level, c));
+  const ng = opts.ngPlus ?? 0;
+  const hardMode = challengeEnemyModifiers(hero, c);
+  // Champion packs share one roll of affixes; each elite rolls its own.
+  let packAffixes: string[] | undefined;
   const enemies = encounter.enemies.map((e, i) => {
     const base = c.enemies.get(e.enemyId);
     // Encounter entries may promote an enemy (roaming elites, champion packs).
     const def = e.tier ? { ...base, tier: e.tier } : base;
-    const enemy = createEnemy(def, `enemy-${i + 1}`, opts.level ?? e.level ?? encounter.level, e.row ?? def.row, c);
+    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng), e.row ?? def.row, c);
     if (encounter.threat) applyThreat(enemy, encounter.threat);
-    const mates = opts.companions?.length ?? 0;
+    if (ngThreat(ng) > 0) applyThreat(enemy, ngThreat(ng), ngThreat(ng), 'ngPlus');
+    const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
+    const n = affixCount(def.tier);
+    if (n > 0) {
+      const ids = def.tier === 'champion' ? (packAffixes ??= rollAffixes(opts.rng, def.types, n, c)) : rollAffixes(opts.rng, def.types, n, c);
+      applyAffixes(enemy, ids, c);
+    }
     if (mates > 0) applyThreat(enemy, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
+    if (opts.enemyModifiers?.length) addModifiers(enemy, opts.enemyModifiers, 'rift');
+    if (hardMode.length) addModifiers(enemy, hardMode, 'challenge');
     return enemy;
   });
+  if (opts.partyModifiers?.length) for (const x of party) addModifiers(x, opts.partyModifiers, 'rift');
   if (opts.punisher) {
     const def = c.enemies.get(`punisher-${opts.punisher}`);
-    const punisher = createEnemy(def, 'punisher', (opts.level ?? encounter.level) + 2, def.row, c);
-    const mates = opts.companions?.length ?? 0;
+    const punisher = createEnemy(def, 'punisher', worldLevel(opts.level ?? encounter.level, ng) + 2, def.row, c);
+    if (ngThreat(ng) > 0) applyThreat(punisher, ngThreat(ng), ngThreat(ng), 'ngPlus');
+    const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
     if (mates > 0) applyThreat(punisher, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
     enemies.push(punisher);
   }

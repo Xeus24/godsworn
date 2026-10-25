@@ -5,6 +5,7 @@ import { chooseAction } from '../src/engine/combat/ai';
 import { Battle } from '../src/engine/combat/battle';
 import { createEnemy, createHero, scaleCombatStats } from '../src/engine/combat/combatants';
 import { computeDamage, defenseMultiplier, hitChance, resistMultiplier } from '../src/engine/combat/damage';
+import { affixPool, applyAffixes } from '../src/engine/combat/affixes';
 import { startSong, summon } from '../src/engine/combat/effects';
 import { applyDamage, dealDamage } from '../src/engine/combat/hits';
 import { createEncounterBattle, runAutoBattle } from '../src/engine/combat/setup';
@@ -376,5 +377,116 @@ describe('full battles', () => {
       runAutoBattle(b);
       expect(b.outcome, cls).toBe('victory');
     }
+  });
+});
+
+describe('scripted bosses', () => {
+  const bossBattle = (id: string, level = 20): Battle => {
+    const b = battleWith('warrior', [id], level);
+    startBattle(b);
+    return b;
+  };
+
+  it('enter phases at their HP thresholds, with adds and new stats', () => {
+    const b = bossBattle('bone-lord');
+    const boss = enemy(b);
+    const hero = heroOf(b);
+    const before = b.combatants.length;
+    applyDamage(b, hero, boss, Math.ceil(boss.maxHp * 0.4), { element: 'physical', crit: false, dot: true });
+    expect(boss.boss?.phase).toBe(1);
+    expect(b.combatants.length).toBe(before + 2);
+    const adds = b.combatants.slice(before);
+    expect(adds.every((a) => a.side === 'enemy' && a.xp === 0 && a.lootTable === undefined)).toBe(true);
+    const events = b.drain();
+    expect(events.some((e) => e.type === 'boss' && e.moment === 'phase')).toBe(true);
+    // Both remaining thresholds at once: phases are entered in order.
+    applyDamage(b, hero, boss, Math.ceil(boss.maxHp * 0.3), { element: 'physical', crit: false, dot: true });
+    expect(boss.boss?.phase).toBe(2);
+    expect(boss.statInput.modifiers.some((m) => m.source === 'phase:Death’s Embrace')).toBe(true);
+  });
+
+  it('wind up telegraphed attacks, then must unleash them', () => {
+    const b = bossBattle('goblin-king', 8);
+    const boss = enemy(b);
+    boss.turnsTaken = 3; // its 4th turn is a wind-up
+    for (const x of b.combatants) x.nextAt = x === boss ? 0 : 1000;
+    advance(b);
+    expect(boss.boss?.charging).toBe('crushing-blow');
+    expect(b.hasStatus(boss, 'charging')).toBe(true);
+    const forced = chooseAction(b, boss);
+    expect(forced).toMatchObject({ kind: 'skill', skillId: 'crushing-blow' });
+  });
+
+  it('never use telegraph skills unannounced', () => {
+    const b = bossBattle('goblin-king', 8);
+    const boss = enemy(b);
+    for (let i = 0; i < 50; i++) {
+      const a = chooseAction(b, boss);
+      expect(a.kind === 'skill' && a.skillId === 'crushing-blow').toBe(false);
+    }
+  });
+
+  it('are interrupted by a Break', () => {
+    const b = bossBattle('goblin-king', 8);
+    const boss = enemy(b);
+    boss.turnsTaken = 3;
+    for (const x of b.combatants) x.nextAt = x === boss ? 0 : 1000;
+    advance(b);
+    expect(boss.boss?.charging).toBeDefined();
+    const st = boss.stagger as NonNullable<Combatant['stagger']>;
+    applyDamage(b, heroOf(b), boss, Math.ceil(st.max * 1.5), { element: 'physical', crit: false });
+    expect(boss.boss?.charging).toBeUndefined();
+    expect(b.hasStatus(boss, 'charging')).toBe(false);
+  });
+
+  it('enrage when the fight drags on, and keep growing angrier', () => {
+    const b = bossBattle('goblin-king', 8);
+    const boss = enemy(b);
+    boss.turnsTaken = 40;
+    for (const x of b.combatants) x.nextAt = x === boss ? 0 : 1000;
+    advance(b);
+    expect(boss.boss?.enraged).toBe(true);
+    expect(boss.statuses.find((s) => s.id === 'enraged')?.stacks).toBe(1);
+  });
+
+  it('leave ordinary enemies alone', () => {
+    const b = battleWith('warrior', ['green-slime'], 5);
+    startBattle(b);
+    expect(enemy(b).boss).toBeUndefined();
+  });
+});
+
+describe('elite affixes', () => {
+  const roaming = (tier: 'elite' | 'champion', n: number) => ({ id: 'r', name: 'r', description: '', level: 10, canFlee: true, enemies: Array.from({ length: n }, () => ({ enemyId: 'dire-wolf', tier })) });
+
+  it('elites roll one, champion packs share two', () => {
+    const elite = createEncounterBattle(benchmarkHero('warrior', 10), roaming('elite', 1), { rng: new Rng(2) });
+    const e = elite.combatants.find((x) => x.side === 'enemy') as Combatant;
+    expect(e.affixes).toHaveLength(1);
+    expect(e.name.endsWith('Dire Wolf')).toBe(true);
+    expect(e.name).toContain(content.eliteAffixes.get(e.affixes?.[0] as string).name);
+    const pack = createEncounterBattle(benchmarkHero('warrior', 10), roaming('champion', 3), { rng: new Rng(2) });
+    const wolves = pack.combatants.filter((x) => x.side === 'enemy');
+    expect(wolves.every((w) => w.affixes?.length === 2 && w.affixes.join() === wolves[0]?.affixes?.join())).toBe(true);
+  });
+
+  it('change the enemy through modifiers and triggers, and give more XP', () => {
+    const b = battleWith('warrior', ['dire-wolf', 'dire-wolf'], 10);
+    const [plain, hulk] = [enemy(b, 0), enemy(b, 1)];
+    const xp = hulk.xp;
+    applyAffixes(hulk, ['hulking', 'molten'], content);
+    expect(hulk.maxHp).toBeGreaterThan(plain.maxHp * 1.5);
+    expect(hulk.triggers.some((t) => t.source === 'affix:molten')).toBe(true);
+    expect(hulk.xp).toBeGreaterThan(xp);
+  });
+
+  it('respect creature types', () => {
+    expect(affixPool(['construct'], content)).not.toContain('venomous');
+    expect(affixPool(['beast'], content)).toContain('venomous');
+  });
+
+  it('ordinary enemies and bosses have none', () => {
+    const b = createEncounterBattle(benchmarkHero('warrior', 10), content.encounters.get('q-varn'), { rng: new Rng(1) });
+    expect(b.combatants.some((x) => x.affixes?.length)).toBe(false);
   });
 });

@@ -1,3 +1,4 @@
+import { worldLevel } from '../../engine/ngplus/ngplus';
 import { content } from '../../data';
 import { FAST_TRAVEL_GOLD_PER_LEVEL, exploredShare } from '../../engine/world/world';
 import { mapFor } from '../../engine/world/mapgen';
@@ -52,7 +53,7 @@ export class WorldMapOverlay {
         'div',
         { class: `map-zone${z.id === here ? ' here' : ''}${known ? '' : ' unknown'}` },
         el('b', {}, known ? z.name : '???'),
-        el('div', { class: 'dim small' }, `Levels ${z.levels[0]}-${z.levels[1]} · ${Math.round(share * 100)}% explored`),
+        el('div', { class: 'dim small' }, `Levels ${worldLevel(z.levels[0], s.state.ngPlus)}-${worldLevel(z.levels[1], s.state.ngPlus)} · ${Math.round(share * 100)}% explored`),
         ...(known
           ? [
               el('div', { class: 'small' }, z.town ? `Town: ${content.towns.get(z.town).name}` : 'No town'),

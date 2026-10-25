@@ -1,3 +1,4 @@
+import { hasRule } from '../character/challenges';
 import { content } from '../../data';
 import { clampVitals, characterStats } from '../character/stats';
 import { canCraft, craft, FORGET_COST_PER_LEVEL, forgetProfession, gainProfessionXp, learnProfession, learnRecipe, professionLevel, recipeGold } from '../economy/crafting';
@@ -55,6 +56,7 @@ export class EconomyActions {
   }
 
   buy(shopId: string, line: number): EconomyResult {
+    if (hasRule(this.p, 'noShopping')) return fail('Ironman: no merchant will sell to you.');
     const town = this.town();
     if (!town) return fail('Shops are in towns.');
     const shop = content.shops.get(shopId);
@@ -106,6 +108,7 @@ export class EconomyActions {
   }
 
   buyBack(index: number): EconomyResult {
+    if (hasRule(this.p, 'noShopping')) return fail('Ironman: no merchant will sell to you.');
     const entry = this.s.state.economy.buyback[index];
     if (!entry) return fail('Nothing there.');
     if (!canAdd(this.s.state.inventory, entry.item)) return fail('Your bags are full.');
@@ -132,6 +135,7 @@ export class EconomyActions {
   }
 
   gamble(category: keyof typeof GAMBLE_PRICE): EconomyResult {
+    if (hasRule(this.p, 'noShopping')) return fail('Ironman: no merchant will sell to you.');
     const town = this.town();
     if (!town || !shopsIn(town).some((s) => s.kind === 'gambler')) return fail('There is no gambler here.');
     const price = gamblePrice(category, this.p);

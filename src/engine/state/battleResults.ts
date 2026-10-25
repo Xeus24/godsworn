@@ -1,5 +1,6 @@
 import { content } from '../../data';
 import { COMBAT } from '../../data/combat';
+import { recordBattle } from '../bestiary/bestiary';
 import { killXp } from '../character/progression';
 import { characterStats, restoreFull } from '../character/stats';
 import type { Battle } from '../combat/battle';
@@ -91,8 +92,20 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
 
   for (const kill of b.tally.kills) {
     stats.kills++;
+    if (kill.tier === 'elite') stats.elitesKilled++;
+    if (kill.tier === 'champion') stats.championsKilled++;
+    if (kill.tier === 'miniboss' || kill.tier === 'boss') stats.bossesKilled++;
+    if (kill.tier === 'worldBoss') stats.worldBossesKilled++;
+    if (kill.tier === 'punisher') stats.punishersKilled++;
+    if (kill.enraged) stats.enragedKilled++;
     s.bus.emit('enemyKilled', { enemyId: kill.enemyId, tier: kill.tier });
   }
+  stats.crits += b.tally.partyCrits;
+  stats.interrupts += b.tally.interrupts;
+  stats.consumablesUsed += Object.values(b.tally.itemsUsed).reduce((a, n) => a + n, 0);
+  if (b.tally.intervention) stats.interventions++;
+  const seen = b.combatants.flatMap((x) => (x.side === 'enemy' && x.enemyId ? [x.enemyId] : []));
+  for (const news of recordBattle(p, seen, b.tally.kills.map((k) => k.enemyId))) s.bus.emit('toast', { kind: 'info', text: news });
 
   if (b.outcome === 'victory') {
     stats.battlesWon++;
@@ -173,6 +186,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   if (!rewards.permadeath) rewards.favor = s.devotion.settle(b, rewards.gold, rewards.brokenItems.length);
   s.party.afterBattle(b);
   s.quests.afterBattle(b);
+  s.endgame.afterBattle(b);
 
   s.bus.emit('combatEnded', { encounterId: b.encounterId, result: b.outcome === 'ongoing' ? 'fled' : b.outcome });
   s.bus.emit('stateChanged', { reason: 'battle' });

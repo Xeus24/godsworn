@@ -66,6 +66,8 @@ interface BaseCommon {
   description?: string;
   /** Max stack size; 1 (or omitted) means it does not stack. */
   stack?: number;
+  /** Forbidden goods: sold only by the Black Market, to those at this heresy tier (index). */
+  forbidden?: number;
 }
 
 export interface WeaponBaseDef extends BaseCommon {
@@ -145,7 +147,8 @@ export type ConsumableKind =
   | 'revive'
   | 'cleanse'
   | 'tome'
-  | 'bag';
+  | 'bag'
+  | 'key';
 
 /** What using a consumable does. */
 export type ConsumableAction =
@@ -157,7 +160,9 @@ export type ConsumableAction =
   | { kind: 'skillPoint' }
   | { kind: 'expandInventory'; slots: number }
   | { kind: 'escape' }
-  | { kind: 'revive'; hpPct: number };
+  | { kind: 'revive'; hpPct: number }
+  /** Opens something somewhere else (a Rift Map at a town's Rift Gate). */
+  | { kind: 'key'; text: string };
 
 export interface ConsumableDef extends BaseCommon {
   category: 'consumable';

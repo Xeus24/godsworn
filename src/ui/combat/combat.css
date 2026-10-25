@@ -315,3 +315,9 @@
   gap: 12px;
   min-width: 0;
 }
+
+/* Boss moments: wind-ups, phases, enrage, interrupts. */
+.combat-log div.log-boss {
+  color: #ff9a6a;
+  font-weight: bold;
+}

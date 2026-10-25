@@ -6,7 +6,7 @@ import type { Rng } from '../core/rng';
 import type { TriggeredEffect } from '../effects/types';
 import type { Modifier } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
-import { atLeast, tierIndex, tierOf } from './devotion';
+import { atLeast, rivalsOf, tierIndex, tierOf } from './devotion';
 import type { BlessingDef } from './types';
 
 export type BlessingResult = { ok: true } | { ok: false; reason: string };
@@ -14,7 +14,7 @@ const fail = (reason: string): BlessingResult => ({ ok: false, reason });
 
 /** Major blessing slots: 1, plus one at each level in DEVOTION.blessingSlotLevels, plus one for an Apostle. */
 export function blessingSlotCount(char: Character): number {
-  return 1 + DEVOTION.blessingSlotLevels.filter((l) => char.level >= l).length + (char.devotion.apostle ? APOSTLESHIP.extraBlessingSlots : 0);
+  return 1 + DEVOTION.blessingSlotLevels.filter((l) => char.level >= l).length + (char.devotion.apostle ? APOSTLESHIP.extraBlessingSlots : 0) + (char.devotion.defender ? APOSTLESHIP.extraBlessingSlots : 0);
 }
 
 /** Whether a slotted major blessing is active: its god's tier must still meet its minimum. */
@@ -79,7 +79,7 @@ export function canSlot(char: Character, id: string, c: Content = content): Bles
   if (!char.devotion.majors.includes(id)) return fail('You have not received that blessing.');
   if (char.devotion.slotted.includes(id)) return fail('Already slotted.');
   if (char.devotion.slotted.length >= blessingSlotCount(char)) return fail('No free blessing slot.');
-  const rivals = c.pantheon.get(b.god).rivals;
+  const rivals = rivalsOf(char, b.god, c);
   const clash = char.devotion.slotted.map((s) => c.blessings.get(s)).find((s) => rivals.includes(s.god));
   if (clash) return fail(`${c.gods.get(clash.god).name} will not share you with ${c.gods.get(b.god).name}.`);
   return { ok: true };

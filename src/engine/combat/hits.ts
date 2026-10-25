@@ -1,3 +1,4 @@
+import { checkBossPhase, interruptCharge } from './bosses';
 import { COMBAT } from '../../data/combat';
 import { DEVOTION } from '../../data/devotion';
 import type { Element } from '../stats/types';
@@ -161,6 +162,7 @@ export function applyDamage(
   if (!info.dot) addStagger(b, source, target, dealt, info.element, info.staggerMult ?? 1);
 
   if (target.hp > 0) {
+    if (target.boss) checkBossPhase(b, target);
     if (source !== target) fireTrigger(b, target, 'onDamageTaken', source);
     const pct = (target.hp / Math.max(1, target.maxHp)) * 100;
     if (!target.lowHpFired && pct < COMBAT.lowHpPct) {
@@ -202,6 +204,7 @@ function addStagger(b: Battle, source: Combatant, target: Combatant, dealt: numb
   st.brokenTurns = COMBAT.brokenTurns;
   b.emit({ type: 'break', targetId: target.id });
   b.log(`${target.name} is BROKEN!`);
+  interruptCharge(b, target);
   applyStatus(b, source, target, 'stun', { duration: 1, unresistable: true });
 }
 
@@ -225,6 +228,7 @@ export function kill(b: Battle, target: Combatant, killer: Combatant, element?: 
       xp: target.xp,
       lootTable: target.lootTable,
       ...(element ? { element } : {}),
+      ...(target.boss?.enraged ? { enraged: true } : {}),
     });
   }
   if (b.chain.targetId === target.id) b.chain = { count: 0 };

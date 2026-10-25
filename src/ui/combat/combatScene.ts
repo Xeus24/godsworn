@@ -181,6 +181,9 @@ export class CombatScene {
       case 'break':
         float(e.targetId, 'BREAK!', '#ffd84a', true);
         return;
+      case 'boss':
+        float(e.actorId, e.moment === 'windUp' ? `Winding up: ${e.title}` : e.title, e.moment === 'interrupt' ? '#ffd84a' : '#ff6a3a', true);
+        return;
       case 'combo':
         float(e.targetId, `${e.name.toUpperCase()}!`, e.name === 'Shatter' ? '#8fe3ff' : '#ffe14a', true);
         return;

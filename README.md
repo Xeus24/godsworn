@@ -4,7 +4,7 @@ A turn-based fantasy RPG for the browser: classes and multiclassing, sprawling s
 
 Built with TypeScript and Vite. There is no game engine: HTML/CSS for menus and Canvas for the world and combat.
 
-> **Status:** in development, phase by phase. See [PROGRESS.md](PROGRESS.md) for what works today and [CONTENT.md](CONTENT.md) for the content list.
+> **Status:** all 16 phases are built: the full story, New Game+ and the endgame, with saves, settings and sound. See [PROGRESS.md](PROGRESS.md) for what is in and what was cut, and [CONTENT.md](CONTENT.md) for the content list.
 
 ## Run it
 
@@ -25,13 +25,15 @@ Then open http://localhost:5173.
 | `npm run build` | Type-check and production build to `dist/` |
 | `npm run preview` | Serve the production build |
 | `npm run sim` | Simulate fights per class and level; print win rates, turns and damage per turn |
+| `npm run sim:party` | Simulate every hero class beside every companion class across each zone's fights; print win rates and the spread between companion classes |
 | `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
+| `npm run playtest` | Play the main story to an ending with every class, using real auto-battles (`npm run playtest -- mage` logs every fight of one class) |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 
 ## Play
 
-1. Choose **New Game** on the title screen.
-2. Name your hero, pick a portrait, a race, a class and a birth sign. The right-hand panel previews your stats, playstyle and starting skills. Tick **Hardcore** if you want death to be permanent.
+1. Choose **New Game** on the title screen (or **Continue** your latest save, or **Load Game**).
+2. Name your hero, pick a portrait, a race, a class and a birth sign. The right-hand panel previews your stats, playstyle, your class's mechanic and **trait** (a passive of your first class) and starting skills. Tick **Hardcore** if you want death to be permanent.
 3. Choose **Swear your oath** to begin.
 
 | Key | Action |
@@ -42,8 +44,11 @@ Then open http://localhost:5173.
 | L | General skills and their slots |
 | J | Quest log: active quests, objectives, where to go, rewards, tracking |
 | O | Party: companions, approval, bond perks, their gear, talking to them |
+| B | Codex: bestiary and Slayer ranks, achievements and titles, lore, statistics |
 | P | Pantheon: favor, shrines, offerings and blessings (in battle: Pray) |
 | G | The world (WASD or arrows to walk, E to use, M for the world map) |
+| Esc | Menu: save, load, settings, keyboard list, quit to title (on screens with their own Esc, it goes back first; not in battle) |
+| ? | Keyboard list |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
@@ -109,9 +114,19 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 - **The main story** runs through all eight zones, against the Unsworn and Seryth the Oathbreaker. Mercy, what you do with the Severance Shard, Saint Orren's ring and whether you are an Apostle change how it ends: there are four endings, one with a different epilogue for each god. An Apostle also answers their own god's charge in chapter 7.
 - **Every god** has a questline from its temple priest that leads to its Trial of Apostleship; **class trainers** give a short errand before their trial (the arena only lets you fight a trial once its quest is at that stage); **hybrid trials** ask you to consult each mentor first; each **faction** has three quests that end in a title.
 
-**Companions (O):** six people can join you (Brother Aldric, Fenn, Korga, Ilyra, Sable and Marisol), and up to three fight beside you; the rest wait in reserve. They level with you and spend their own points, but you choose their gear (equip from your bags on the Party screen). Each follows a god and has likes and dislikes: **approval** rises and falls with what you do, which gods you please, and your choices in conversations. At 20/40/60/80 approval you pick one of two **bond perks**; at 30 they share a **personal quest**, which earns an **oath** perk. At −50 they leave you, and wait in their town until you make amends. Enemies grow tougher with every companion in the fight.
+**Companions (O):** six people can join you (Brother Aldric, Fenn, Korga, Ilyra, Sable and Marisol), and up to three fight beside you; the rest wait in reserve. They level with you and spend their own points, but you choose their gear (equip from your bags on the Party screen). Each follows a god and has likes and dislikes: **approval** rises and falls with what you do, which gods you please, and your choices in conversations. At 20/40/60/80 approval you pick one of two **bond perks**; at 30 they share a **personal quest**, which earns an **oath** perk. At −50 they leave you, and wait in their town until you make amends. Enemies grow tougher with every companion in the fight, and each class is tuned as a companion so that none is a wasted slot: healers and pets fight weaker than you, lone strikers and casters stronger.
 
-More screens and controls are documented here as each phase lands.
+**Bosses and elites:** bosses fight in **phases** (at HP thresholds they change, heal, call in adds) and **telegraph** their biggest attacks: when a boss is **Winding Up**, Break its stagger bar to interrupt it, or Defend to halve the hit. Drag a fight out too long and the boss **enrages**, growing stronger every few turns. **Elites** carry one affix and **champion packs** share two (Swift, Vampiric, Molten, Volatile...), shown in their names and in the battle log.
+
+**The Codex (B):** every enemy you meet goes into the **bestiary**; killing more of them reveals their stats, resistances, skills and boss battle plans. Kills of each creature type earn **Slayer ranks** (+2% damage against that type per rank). **Achievements** (126) reward points, gold and **titles**; pick the title to show under your name on the Character screen. The Codex also keeps the **lore** pages you found and your lifetime **statistics**.
+
+**New Game+ and Twilight of the Gods:** after any ending, begin **New Game+** from the Legacy panel on the Character screen. Your hero, gear, gold, companions and achievements come with you; the story starts again, and the world rises to levels 60–80 (later tiers make enemies tougher still). In New Game+ the **Twilight of the Gods** unfolds beside the main story: the gods fall silent, their old feuds turn to war (end them, or pick a side and make new enemies), and the Nameless One, the god the pantheon wrote out of the world, makes you an offer. Accept it and you walk the road of **heresy**: void power, Forbidden skills and the Black Market's back room, paid for with every god's favor (a temple will hear your atonement). An **Apostle** can call their god's **follower** into battle from the Pantheon, and from NG+3 may become **Defender** of a second god.
+
+**Endgame:** from level 50, take a **Rift Map** (the Black Market sells them) to any town's **Rift Gate**: three waves and a Rift Guardian, back to back, with tougher tiers (1–20), Rift affixes and better loot the deeper you go, including **Primordial** items from tier 10. The **Boss Rush** pits you against every dungeon boss in a row. **Challenge modes** (Ironman, Lone Wolf, Godless, Glass Cannon, Nightmare) are chosen when you create your hero, alongside Hardcore. Collect **pets** (small bonuses) and **mounts** (faster, safer travel; sold at town stables) and choose them on the Character screen.
+
+**Saving:** the game **autosaves** after battles, quest steps and New Game+, every few minutes, and when you close or hide the tab. The menu (Esc) saves to three manual slots; the title screen and the menu load any of them. Each slot can be **exported** to a file and **imported** back (to keep a save safe or move it to another browser). Saves live in your browser's storage and older saves are upgraded when loaded. A Hardcore hero who falls loses every save.
+
+**Settings** (title screen or Esc): master, music and sound effect volumes, mute, default battle speed and auto-battle, autosave on or off, reduce motion and text size. **Sound** is made on the fly: sound effects for hits, crits, heals, loot, level-ups and achievements, and music that changes with the town, the wild, dungeons, battles and bosses (it starts on your first click or key press).
 
 ## Project layout
 
@@ -130,11 +145,15 @@ src/
     economy/    shops, pricing, crafting, professions, gear services
     quests/     quest and dialogue types, conditions, progress, marker placement
     party/      companions: creation, approval, bond perks
-    state/      saved game state, session, clock
+    bestiary/   bestiary knowledge and Slayer ranks
+    ngplus/     New Game+: starting a new playthrough, NG+ levels and threat
+    endgame/    Rift and Boss Rush run state (run by state/endgameActions.ts)
+    achievements/ achievement types (checked in state/achievementActions.ts)
+    state/      game state, session, clock, saving and loading (save.ts)
     content/    content tables and validation
   data/       all game content and balance numbers
-  ui/         rendering and input only
-tests/        Vitest unit tests
+  ui/         rendering and input only (menus, settings and audio in ui/menu, ui/settings.ts, ui/audio)
+tests/        Vitest unit tests (tests/playthrough.ts plays the story; npm run playtest reuses it)
 scripts/      simulations and content tools (run with tsx)
 ```
 
@@ -394,6 +413,12 @@ dialogue('d-bees', {
 ```
 
 Objective kinds: `kill`, `collect`, `deliver`, `talk` (in town, or at a marker with `at`), `visit`, `fight` (an encounter, at a marker or started from dialogue, optionally in `waves`), `escort`, `clear`, `runes`, `sequence`, `deed` (anything the gods can notice) and `state` (any condition). Stages can be timed (`hours`), handed in (`turnIn`), branch (`next: [{ cond, stage }]`) and run actions when they start or finish. Choices can need conditions (`check(...)`, shown as **[WIS 15]**) and run actions: start quests, set flags, give items or gold, change favor, reputation or a companion's approval, recruit, start a fight or reach an ending. Markers are placed a few steps from an anchor (an entity on the map) and never move; `npm test` checks every marker lands on reachable ground, and startup validation checks every reference.
+
+### Example: a boss script
+Add a `BossScriptDef` to `BOSS_SCRIPTS` in `src/data/bestiary/bossScripts.ts`, keyed by the boss's enemy id: `phases` (HP threshold, name, text, and any of `modifiers`, `effects`, `adds`, `skills`), `telegraphs` (a skill, how many of its turns apart, the warning line) and optionally its own `enrageTurns`. Telegraph skills go in `BOSS_SKILLS`. Check it with `npm run sim -- --only zones` and `npm run sim:party`.
+
+### Example: an elite affix or an achievement
+An affix is an `EliteAffixDef` in `src/data/bestiary/affixes.ts` (name prefix, description, modifiers, triggers, flags, `notFor` creature types). An achievement is an `AchievementDef` in `src/data/achievements.ts`: a category, points and a `check` condition (any quest condition, e.g. `{ kind: 'lifetime', stat: 'bossesKilled', min: 25 }` or `{ kind: 'slayer', enemyType: 'undead', rank: 3 }`), optionally `hidden`, a `title` or `gold`.
 
 ### Example: a companion
 Add a `CompanionDef` to `COMPANIONS` in `src/data/story/companions.ts` (race, class, specialization, god, home town, likes, dislikes, four bond tiers of two perks, an oath perk) and its recruitment and personal quests. Their NPC is generated from the definition; recruit them with the `recruit` action.

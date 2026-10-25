@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
+import { PARTY_SCALING } from '../src/data/combat';
+import { characterStats } from '../src/engine/character/stats';
+import type { Character } from '../src/engine/character/types';
 import { applyDamage } from '../src/engine/combat/hits';
 import { createEncounterBattle } from '../src/engine/combat/setup';
+import { applyStatus, tickStatusesAtTurnStart } from '../src/engine/combat/statuses';
 import { startBattle } from '../src/engine/combat/turns';
 import type { Combatant } from '../src/engine/combat/types';
 import { createItem } from '../src/engine/items/generate';
@@ -114,7 +118,7 @@ describe('quest flow', () => {
     const s = newSession();
     expect(s.state.quests.active['main-1']).toBeDefined();
     expect(s.state.quests.tracked).toBe('main-1');
-    expect(SAVE_VERSION).toBe(11);
+    expect(SAVE_VERSION).toBe(14);
   });
 
   it('talking, markers, a branch on mercy and a recruit carry chapter one through', () => {
@@ -387,6 +391,52 @@ describe('companions', () => {
     const x = b.combatants.find((c) => c.id === 'companion:korga');
     expect(x?.kind).toBe('companion');
     expect(b.isPlayerControlled(x as Combatant)).toBe(true);
+  });
+
+  it('fight at their class’s companion power, with its extra stats', () => {
+    const s = newSession();
+    s.grantXp(20000, true);
+    s.party.recruit('korga');
+    const b = createEncounterBattle(s.player, content.encounters.get('slime-puddle'), { rng: s.rng, companions: s.party.battleMembers() });
+    const x = b.combatants.find((c) => c.id === 'companion:korga') as Combatant;
+    const mods = x.statInput.modifiers.filter((m) => m.source === 'companion');
+    expect(mods).toContainEqual({ stat: 'physicalAttack', type: 'more', value: PARTY_SCALING.companionPower.warrior, source: 'companion' });
+    for (const m of PARTY_SCALING.companionStats.warrior ?? []) expect(mods).toContainEqual({ ...m, source: 'companion' });
+  });
+
+  it('carry HP in and out of battle as a share of their maximum', () => {
+    const s = newSession();
+    s.party.recruit('korga');
+    const korga = s.state.party.companions.korga?.character as Character;
+    const own = characterStats(korga).maxHp;
+    const battle = () => createEncounterBattle(s.player, content.encounters.get('slime-puddle'), { rng: s.rng, companions: s.party.battleMembers() });
+    let b = battle();
+    let x = b.combatants.find((c) => c.id === 'companion:korga') as Combatant;
+    expect(x.maxHp).toBeGreaterThan(own);
+    expect(x.hp).toBe(x.maxHp);
+    x.hp = Math.round(x.maxHp / 2);
+    s.party.afterBattle(b);
+    expect(Math.abs(korga.hp - own / 2)).toBeLessThanOrEqual(1);
+    b = battle();
+    x = b.combatants.find((c) => c.id === 'companion:korga') as Combatant;
+    expect(Math.abs(x.hp - x.maxHp / 2)).toBeLessThanOrEqual(1);
+  });
+
+  it('make enemies tougher, but not faster to regenerate', () => {
+    const s = newSession();
+    s.party.recruit('korga');
+    const regenOf = (companions: ReturnType<typeof s.party.battleMembers>): { heal: number; maxHp: number } => {
+      const b = createEncounterBattle(s.player, content.encounters.get('slime-puddle'), { rng: s.rng, companions });
+      const enemy = b.combatants.find((c) => c.side === 'enemy') as Combatant;
+      enemy.hp = 1;
+      applyStatus(b, enemy, enemy, 'regen', { duration: 3 });
+      tickStatusesAtTurnStart(b, enemy);
+      return { heal: enemy.hp - 1, maxHp: enemy.maxHp };
+    };
+    const solo = regenOf([]);
+    const party = regenOf(s.party.battleMembers());
+    expect(party.maxHp).toBeGreaterThan(solo.maxHp * 2);
+    expect(Math.abs(party.heal - solo.heal)).toBeLessThanOrEqual(1);
   });
 
   it('level up alongside you', () => {

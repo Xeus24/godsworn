@@ -84,11 +84,14 @@ const mentorOf = (classId: string): string => `mentor-${classId}`;
 /** Hybrid trials are fixed at level 36: a hero who reaches both classes at 25 around level 35 can try early or come back stronger. */
 export const HYBRID_TRIAL_LEVEL = 36;
 
+/** Extra HP and damage (percent) for the class trials' foes: heroes carry class traits since Phase 16, and a trial should still be a test. */
+const CLASS_TRIAL_THREAT = 60;
+
 /** Class trials (level 15: mentor plus a helper) and hybrid trials (both mentors and their helpers at level 36). */
 export const TRIAL_ENCOUNTERS: EncounterDef[] = [
   ...CLASS_TRIALS.map((t): EncounterDef => {
     const name = MENTORS.find((m) => m.id === mentorOf(t.classId))?.name ?? t.classId;
-    return { id: t.encounter, name: `Trial: ${name}`, description: t.quote, level: 15, canFlee: true, enemies: [{ enemyId: mentorOf(t.classId) }, ...(trialSupport[t.classId] ?? []).map((e) => ({ ...e, level: 15 }))] };
+    return { id: t.encounter, name: `Trial: ${name}`, description: t.quote, level: 15, canFlee: true, threat: CLASS_TRIAL_THREAT, enemies: [{ enemyId: mentorOf(t.classId) }, ...(trialSupport[t.classId] ?? []).map((e) => ({ ...e, level: 15 }))] };
   }),
   ...HYBRIDS.map((h): EncounterDef => ({
     id: h.trial,

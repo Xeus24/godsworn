@@ -401,7 +401,7 @@ Generated from the data files by `npm run content:md`.
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (36)
+### Consumables (40)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -438,6 +438,10 @@ Generated from the data files by `npm run content:md`.
 - Phoenix Feather: Revives a fallen ally with 30% HP.
 - Cleansing Salts: Removes Poison, Burn, Bleed and Curse.
 - Tome of Insight: Grants 1 skill point to your primary class.
+- Void Draught: +25% void damage and +8% damage, but 10% less max HP, for 8 battles.
+- Unwritten Salve: Heals 50% of max HP at once, but leaves you Vulnerable for 2 turns.
+- Tear of a Dead God: Unmakes the air: heavy void damage to every enemy, Corrupting them.
+- Rift Map: A map of a place that is not there. Open it at any town’s Rift Gate.
 - Traveler's Pack: Permanently adds 8 inventory slots (up to 96).
 
 **Materials (35):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment
@@ -452,7 +456,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (21)
+### Status effects (23)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -476,26 +480,28 @@ Generated from the data files by `npm run content:md`.
 | **Berserk** | buff | +30% damage and +10% crit, but takes 15% more damage. |
 | **Divine Protection** | buff | Takes 50% less damage. |
 | **Taunt** | buff | Goading the enemy: their single-target attacks must hit you. |
+| **Winding Up** | buff | Winding up a devastating attack for its next turn. Break its stagger bar to interrupt it, or Defend. |
+| **Enraged** | buff | The fight has gone on too long: +40% damage and 10% more speed per stack, growing over time. |
 | **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
 
-### Class ultimates (8)
+### Class ultimates and traits (8)
 
-| Class | Ultimate | Effect |
-|---|---|---|
-| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. |
-| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. |
-| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |
-| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. |
-| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |
-| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. |
-| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |
-| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. |
+| Class | Ultimate | Effect | Trait (primary class) |
+|---|---|---|---|
+| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. | **Battle-Hardened**: 35% more max HP, 15% less damage taken and 30% more physical attack. |
+| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. | **Arcane Mastery**: 45% more magic attack, 35% more max HP and 15% less damage taken. |
+| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |  |
+| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +30% damage. |
+| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
+| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, 35% more max HP, 10% less damage taken and 8% lifesteal. |
+| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
+| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +45% damage, 35% more max HP and 10% less damage taken. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
 **Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
 
-### Enemies (121)
+### Enemies (136)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -620,10 +626,25 @@ Generated from the data files by `npm run content:md`.
 | **Brannoc the Sled-Driver** | 34 | normal | humanoid | front | aggressive | Shield Bash |  |
 | **Marisol Tidesong** | 42 | normal | humanoid | back | support | Crude Mending |  |
 | **Caravan Master Oduya** | 26 | normal | humanoid | front | aggressive | Crushing Swing |  |
+| **Hollow Chorister** | 62 | normal | humanoid, cultist, void | back | caster | Corruption Wave, Shadow Bolt | void +30%, holy -20% |
+| **Erased Knight** | 64 | normal | humanoid, void | front | aggressive | Dark Cleave, Harden | void +40% |
+| **False Herald** | 66 | elite | spirit, void, divine | front | caster | Void Rend, Curse of Ages | void +50%, holy +20% |
+| **The Nameless One** | 80 | boss | spirit, void, divine | front | caster | Corruption Wave, Void Rend, Curse of Ages | void +80%, shadow +40%, holy -20% |
+| **The Last Light** | 80 | boss | spirit, divine | front | caster | Arc Lightning, Curse of Ages, Harden | holy +70%, void -30% |
+| **Sunguard of Solenne** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Solenne | holy +40% |
+| **Raven of Morrath** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Morrath | shadow +40% |
+| **Einherjar of Kael** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Kael | physical +40% |
+| **Wolf of Ysolde** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Ysolde | nature +40% |
+| **Shade of Vex** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Vex | arcane +40% |
+| **Forge-Thrall of Thalor** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Thalor | fire +40% |
+| **Tide-Singer of Nymira** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Nymira | lightning +40% |
+| **Scribe of Aurelis** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Aurelis | arcane +40% |
+| **Hearth-Keeper of Hesha** | 1 | elite | spirit, divine, follower | back | healer | Crude Mending, Wrath of Hesha | holy +40% |
+| **Coin-Golem of Grimvald** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Grimvald | physical +40% |
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
-### Encounters (119)
+### Encounters (127)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -703,8 +724,8 @@ Generated from the data files by `npm run content:md`.
 | **Black Tide Raiders** | 43 | Corsair, Hollow Knight, Oathburner |
 | **Admiral Vey** | 46 | Corsair, Admiral Vey of the Black Tide, Siren |
 | **The Severance Engine** | 53 | Hollow Knight, The Severance Engine, Oathburner |
-| **Seryth the Oathbreaker** | 60 | Hollow Knight, Seryth the Oathbreaker, Oathburner |
-| **Shadow of the Unwritten** | 60 | Shadow of the Unwritten, Void Wraith |
+| **Seryth the Oathbreaker** | 60 | Hollow Knight, Seryth the Oathbreaker |
+| **Shadow of the Unwritten** | 60 | Shadow of the Unwritten |
 | **Solenne’s Chained Herald** | 50 | Herald of Solenne, Hollow Knight, Oathburner |
 | **Morrath’s Chained Herald** | 50 | Herald of Morrath, Hollow Knight, Oathburner |
 | **Kael’s Chained Herald** | 50 | Herald of Kael, Hollow Knight, Oathburner |
@@ -715,6 +736,14 @@ Generated from the data files by `npm run content:md`.
 | **Aurelis’s Chained Herald** | 50 | Herald of Aurelis, Hollow Knight, Oathburner |
 | **Hesha’s Chained Herald** | 50 | Herald of Hesha, Hollow Knight, Oathburner |
 | **Grimvald’s Chained Herald** | 50 | Herald of Grimvald, Hollow Knight, Oathburner |
+| **The Hollow Choir** | 62 | Erased Knight, Hollow Chorister, Hollow Chorister |
+| **The Erased** | 66 | Erased Knight, Erased Knight, False Herald |
+| **Heralds of the Dusk** | 72 | Herald of Morrath, Herald of Vex |
+| **Heralds of the Dawn** | 72 | Herald of Solenne, Herald of Kael |
+| **The False Heralds** | 72 | False Herald, Erased Knight, False Herald |
+| **Guardians of the Margin** | 76 | Erased Knight, False Herald, Hollow Chorister |
+| **The Nameless One** | 80 | The Nameless One |
+| **The Last Light** | 80 | The Last Light |
 | **Ardath’s Honor Guard** | 15 | Skeleton Soldier, Skeleton Soldier, Restless Ghost |
 | **Wolves at the Gate** | 12 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
 | **The Mirage’s Anger** | 28 | Dust Elemental, Mirage Keeper, Dust Elemental |
@@ -922,7 +951,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## General skills (81)
 
 <!-- general:start -->
-84 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+92 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -1010,6 +1039,14 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Rite of Knowing** | divine | Divine | Revelation | Revelation in battle. Passive: +1 INT per rank. |
 | **Rite of Mercy** | divine | Divine | Hearthlight | Hearthlight in battle. Passive: +3 healing power per rank. |
 | **Rite of Tithes** | divine | Divine | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
+| **Void Pact** | forbidden | Relic | Void Pact | Void Pact in battle. Passive: +3% void damage per rank. |
+| **Margin Walker** | forbidden | Relic |  | Passive: +1 dodge and +4 void resistance per rank, but 3% less Favor Gain per rank. |
+| **Unmake** | forbidden | Relic | Unmake | Unmake in battle. Passive: +2% damage per rank, but 2% less healing received per rank. |
+| **Devour Name** | forbidden | Relic | Devour Name | Devour Name in battle. Passive: +1% lifesteal per rank. |
+| **Godless** | forbidden | Relic |  | Passive: +3% damage per rank, but 6% less Favor Gain and 3% less Blessing Power per rank. |
+| **Blasphemy** | forbidden | Relic | Blasphemy | Blasphemy in battle. Passive: +4 status chance per rank. |
+| **Unwritten Flesh** | forbidden | Relic |  | Passive: +4% max HP and +2 status resistance per rank, but 3% less healing received per rank. |
+| **Crown of Nothing** | forbidden | Relic |  | Passive: +5% crit damage and +1% crit chance per rank, but 2% more damage taken per rank. |
 <!-- general:end -->
 
 ## Multiclassing (8 trials, 13 hybrids)
@@ -1258,7 +1295,7 @@ Every town has the core shops; stock rolls daily at your level. Shops pay 25% of
 | **Temple Merchant** | x1.5 | Divine goods for the faithful: each god’s Divine items (at the devotion they ask) and holy wares. Discounts grow with your favor. | Every town |
 | **Faction Quartermaster** | x1.2 | Members only: better gear, cheaper the higher your rank. | Towns with a faction hall (members only) |
 | **Gambler** | x1 | Buy unidentified gear sight unseen. Usually a dud. Sometimes a legend. | Sandhaven, Saltmere |
-| **Black Market** (night) | x2.5 | Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly. | Thornwick, Saltmere |
+| **Black Market** (night) | x2.5 | Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly. Heretics of the Nameless One are shown the back room. | Thornwick, Saltmere |
 
 ### Professions
 
@@ -1366,7 +1403,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-139 quests, 68 NPCs, 62 dialogues, 6 companions, 4 endings.
+144 quests, 69 NPCs, 70 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -1380,6 +1417,16 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Black Tide** | 43 | starts by itself | Speak with Harbormaster Quill in Saltmere (talk); Repel the Black Tide raiders (fight); Defeat Admiral Vey (fight); Report to Harbormaster Quill (talk) · timed |
 | **The Forge of Severance** | 51 | starts by itself | Reach the edge of the Rift (visit); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Find the last of the Fallen Smiths (talk); Destroy the Severance Engine (fight) |
 | **The Unsworn King** | 58 | starts by itself | Reach the Citadel gates (visit); Defeat the Commander of the Black Throne (clear); Face Seryth (talk); Defeat Seryth the Oathbreaker (fight); Destroy the Shadow of the Unwritten (fight); Stand before the Black Throne (talk) |
+
+### Twilight of the Gods (New Game+) (5)
+
+| Quest | Lvl | From | Objectives |
+|---|---|---|---|
+| **The Gods Fall Silent** | 62 | starts by itself | Speak with High Lector Amara in Brightwater (talk); Silence the Hollow Choir (fight); Listen at the silent shrine (talk); Report to High Lector Amara (talk) |
+| **Names in the Margins** | 66 | starts by itself | Speak with Loremaster Ivo in Frosthold (talk); Destroy the Erased (fight); Report to Loremaster Ivo (talk) |
+| **War in Heaven** | 72 | starts by itself | Stand before the council of heralds (talk); Defeat the heralds of the Dusk (fight); Defeat the heralds of the Dawn (fight); Unmask the False Heralds (fight); Leave the council grounds (visit) |
+| **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
+| **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
 ### Side quests (34)
 
@@ -1553,8 +1600,23 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **The Mended Oath** (title “Oathmender”): The Shadow of the Unwritten unravels, and Seryth kneels in the ash where the throne stood, holding Saint Orren’s ring. He does not ask to be forgiven. He goes west instead, alone, to every shrine he and his followers broke, and lights them again by hand, one by one. The gods do not speak to him. He does not need them to. People say that the mercy you showed on the road taught an Oathbreaker how to keep his word.
 - **The Unsworn Crown** (title “the Unsworn”): The Shadow is gone, and the Severance is yours: a seed of nothing in your palm. You could plant it. You could cut every thread between the world and its gods with a thought. For now you only hold it, and the gods, for the first time in their long lives, are afraid of a mortal. Seryth sits at your right hand on the Black Throne, and the shrines of the world burn a little dimmer, waiting to learn what you will do.
 - **The Free Blade** (title “Free Blade”): Seryth falls, and the Severance with him. No god guided your hand; you did it with steel, stubbornness and friends. The shrines light again, the priests give thanks to the heavens, and you let them. You know who walked the road. The gods know too. Some of them, perhaps, are a little embarrassed.
+- **The Twilight Ends** (title “Twilight-Bringer”), with a paragraph for each god’s Apostle: You speak the name. It is short, and old, and it sounds like a door closing gently. The Nameless One stops being nameless, and what has a name can be mourned, and what is mourned can rest. The gods do not thank you; gods rarely do. But the next morning every shrine in the land is burning, and in the margins of the oldest books, where the scraping was, someone has written one small word in a hand nobody recognizes.
+- **The Unwritten Crown** (title “the Unwritten”): The Last Light breaks, and ten gods scatter like startled birds. You sit on the Black Throne and pick up a crown that is not there. The Nameless One is beside you, and then it is inside you, and then there is no difference. The shrines stay lit; the priests still pray. But every prayer, now, passes your desk first. Somewhere in the oldest book there is a hole the shape of your name, and nothing shows through it at all.
 
 ### Companions
+
+Each companion in a fight gives every enemy 150% more HP (regeneration still heals as if alone) and +12% damage. Companions' attack, magic and divine power, and extra stats, by class (tuned with `npm run sim:party` so every class is worth about the same):
+
+| Class | Power | Extra |
+|---|---|---|
+| Warrior | -5% | 40% more Max HP, 20% less Damage Taken |
+| Mage | +30% | 50% more Max HP |
+| Rogue | -40% | - |
+| Cleric | -82% | +100% Damage Bonus |
+| Ranger | -55% | - |
+| Necromancer | +65% | 50% more Max HP |
+| Monk | +30% | - |
+| Bard | +5% | 60% more Max HP, 20% less Damage Taken |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
@@ -1578,3 +1640,236 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue
 <!-- story:end -->
+
+## Bosses, elites, bestiary and achievements
+
+<!-- codex:start -->
+### Bosses
+
+Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss), 50 of its own turns (boss), 60 of its own turns (worldBoss), and grows angrier every 4 turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.
+
+45 scripted bosses:
+
+| Boss | Phases | Telegraphs |
+|---|---|---|
+| Grukk the Goblin King | 50%: **Call the Warband** (adds Goblin Cutthroat) | Crushing Blow every 4 turns |
+| The Broodmother | 60%: **The Clutch Hatches** (adds Whisperwood Spider); 30%: **Frenzy** (15% more Speed) | Blight Bloom every 5 turns |
+| The Bone Lord | 66%: **Rise** (adds Skeleton Soldier, Skeleton Soldier); 33%: **Death’s Embrace** (+25% Damage Bonus) (heals or shields) | Grave Toll every 4 turns |
+| The Tide Hag | 50%: **The Drowned Answer** (adds Drowned Sailor, Drowned Sailor) | Tidal Wave every 4 turns |
+| The Withered Sun-King | 50%: **The Sun Sets** (adds Restless Mummy) (+20% Damage Bonus) (heals or shields) | Doom Mark every 4 turns |
+| The Frost Queen | 60%: **Court of Ice** (adds Ice Elemental); 30%: **Absolute Zero** (+15% Damage Bonus) | Glacial Tomb every 4 turns |
+| Captain Redfang | 50%: **All Hands!** (adds Corsair, Corsair) | Broadside every 4 turns |
+| Leviathan Spawn | 50%: **Surfacing** (+25% Damage Bonus, -20% increased Defense) | Tidal Wave every 4 turns |
+| The Magma Titan | 66%: **Eruption** (adds Magma Elemental); 33%: **Molten Core** (+20% Damage Bonus, -30% increased Defense) | Inferno every 5 turns |
+| Commander of the Black Throne (enrages at 75) | 66%: **Reinforcements** (adds Void Knight); 33%: **No Retreat** (+20% Damage Bonus) | Unmaking every 5 turns |
+| Bramblehorn | 50%: **Stampede** (+10% Damage Bonus) | Earthshatter every 6 turns |
+| Gnarlroot the Elder | 50%: **The Grove Wakes** (adds Treant Sapling) | Blight Bloom every 6 turns |
+| The Abyssal Crab | 50%: **Shell Cracks** (-30% increased Defense, +30% Damage Bonus) | Crushing Blow every 6 turns |
+| The Sandworm Colossus | 60%: **Nest** (adds Sand Scorpion) | Earthshatter every 6 turns |
+| Skaldr the Frost Wyrm | 50%: **Wings Unfurled** (+15% Damage Bonus) | Glacial Tomb every 6 turns |
+| The Storm Roc | 50%: **Eye of the Storm** (15% more Speed) | Thunderstorm every 6 turns |
+| The Ember Matriarch | 30%: **Ashfall** (+25% Damage Bonus) | Inferno every 6 turns |
+| The Unwritten Herald | 50%: **Erasing** (+20% Damage Bonus) | Unmaking every 6 turns |
+| Deacon Mott | 50%: **Unanswered Prayer** (heals or shields) | Doom Mark every 5 turns |
+| Varn the Hollow | 50%: **The Pack** (adds Dire Wolf) | Piercing Volley every 4 turns |
+| The Shard-Warden | 50%: **Fracture** (adds Crystal Golem) | Shard Storm every 4 turns |
+| Captain Idris Kaur | 50%: **Paid in Full** (adds Desert Raider) (+15% Damage Bonus) | Crushing Blow every 4 turns |
+| The Wight of Saint Orren | 60%: **The Saint Remembers** (heals or shields); 30%: **Last Rites** (+25% Damage Bonus) | Grave Toll every 4 turns |
+| Admiral Vey of the Black Tide | 50%: **Boarders Away** (adds Corsair) | Thunderstorm every 4 turns |
+| The Severance Engine (enrages at 75) | 66%: **Overclock** (25% more Speed); 33%: **Breach** (adds Void Wraith) (+20% Damage Bonus) | Unmaking every 5 turns |
+| Seryth the Oathbreaker (enrages at 75) | 70%: **Oathbreaker** (+20% Damage Bonus); 35%: **What Answered** (adds Hollow Knight) (15% more Speed) | Doom Mark every 5 turns; Unmaking every 6 turns from phase 2 |
+| Shadow of the Unwritten (enrages at 75) | 66%: **The Margins** (adds Void Wraith); 33%: **Erasure** (+30% Damage Bonus) | Unmaking every 5 turns |
+| Korga Ironhide | 50%: **Blood Up** (+25% Damage Bonus) | Crushing Blow every 4 turns |
+| Legion Champion | 50%: **The Crowd Roars** (15% more Speed, +15% Damage Bonus) | Crushing Blow every 4 turns |
+| The Bone Priest | 50%: **Unholy Rite** (adds Skeleton Soldier) | Grave Toll every 5 turns |
+| Warchief Gorza | 50%: **Warband** (adds Desert Raider) (+15% Damage Bonus) | Earthshatter every 4 turns |
+| The Unwritten Page | 50%: **Blank Verse** (+25% Damage Bonus) | Shard Storm every 4 turns |
+| The Drowned Choir | 50%: **Second Verse** (adds Drowned Sailor) | Tidal Wave every 4 turns |
+| Aspect of Solenne (enrages at 80) | - | - |
+| Aspect of Morrath (enrages at 80) | - | - |
+| Aspect of Kael (enrages at 80) | - | - |
+| Aspect of Ysolde (enrages at 80) | - | - |
+| Aspect of Vex (enrages at 80) | - | - |
+| Aspect of Thalor (enrages at 80) | - | - |
+| Aspect of Nymira (enrages at 80) | - | - |
+| Aspect of Aurelis (enrages at 80) | - | - |
+| Aspect of Hesha (enrages at 80) | - | - |
+| Aspect of Grimvald (enrages at 80) | - | - |
+| The Nameless One | 66%: **The Blank Page** (adds False Herald); 33%: **Unwriting** (+25% Damage Bonus) | Unmaking every 5 turns; Doom Mark every 5 turns from phase 2 |
+| The Last Light | 60%: **Ten Voices** (15% more Speed); 30%: **Last Rites** (+25% Damage Bonus) (heals or shields) | Final Judgment every 4 turns |
+
+Telegraphed attacks:
+
+- **Crushing Blow** (one target, 255% ATK Physical): A colossal blow on one target.
+- **Blight Bloom** (whole party, 110% MAG Nature): Poison flowers burst open around the party.
+- **Grave Toll** (whole party, 136% MAG Shadow): A bell only the dead should hear.
+- **Tidal Wave** (whole party, 144% MAG Ice): A wall of black water.
+- **Doom Mark** (one target, 272% MAG Shadow): A killing curse on one target.
+- **Glacial Tomb** (whole party, 136% MAG Ice): Ice closes over the whole party.
+- **Broadside** (whole party, 153% ATK Physical): Every gun fires at once.
+- **Inferno** (whole party, 153% MAG Fire): A firestorm over the whole party.
+- **Unmaking** (whole party, 161% MAG Void): Reality comes apart around the party.
+- **Earthshatter** (whole party, 144% ATK Physical): Splits the ground under the whole party.
+- **Thunderstorm** (whole party, 153% MAG Lightning): Lightning falls on everyone.
+- **Piercing Volley** (whole party, 127% ATK Physical): Arrows through the whole party.
+- **Shard Storm** (whole party, 144% MAG Arcane): A storm of razor crystal.
+- **Final Judgment** (whole party, 160% MAG Holy): Ten gods pass sentence at once.
+
+### Elite affixes
+
+Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% XP and prefixes the name.
+
+| Affix | Effect | Never on |
+|---|---|---|
+| Swift | 30% more speed. | - |
+| Brutal | +30% damage. | - |
+| Ironclad | +50% defense and +25% magic resistance. | - |
+| Hulking | 60% more max HP. | - |
+| Vampiric | Heals for 20% of the damage it deals. | - |
+| Deadly | +20% crit chance and +50% crit damage. | - |
+| Molten | Its hits may Burn; resists fire. | plant |
+| Frostbound | Its hits may Slow; resists ice. | - |
+| Venomous | Its hits Poison. | construct, elemental |
+| Hexing | Its hits may Curse. | - |
+| Thorned | Hurts whoever hits it. | - |
+| Shielded | Starts the fight behind a shield of 30% of its max HP. | - |
+| Regenerating | Heals 4% of its max HP each turn. | construct |
+| Volatile | Explodes when it dies, burning the whole party. | - |
+| Vengeful | Goes Berserk when badly hurt. | - |
+| Unstoppable | Cannot be Stunned, Frozen or Feared. | - |
+| Warded | +60% magic resistance and +40 status resistance. | - |
+| Necromantic | Raises a bone servant when badly hurt. | construct |
+
+### Bestiary
+
+- Knowledge per enemy at 1 / 5 / 15 / 40 kills (bosses 1 / 1 / 2 / 3): Stats, Resistances, Skills, Mastered.
+- Slayer ranks per creature type at 10 / 50 / 150 / 400 / 1000 kills: +2% damage against that type per rank.
+
+### Achievements (126, 45 titles)
+
+**Combat** (21): First Blood (Win your first battle; 5 pts) · Battle-Hardened (Win 100 battles; 10 pts) · Veteran (Win 500 battles; 20 pts; title “the Veteran”) · Warlord (Win 2,000 battles; 40 pts; title “Warlord”) · Hundred-Slayer (Slay 100 enemies; 10 pts) · Thousand-Slayer (Slay 1,000 enemies; 20 pts) · The Relentless (Slay 5,000 enemies; 40 pts; title “the Relentless”) · Heavy Hitter (Deal 1,000 damage in one hit; 10 pts) · Mountain-Splitter (Deal 10,000 damage in one hit; 20 pts) · Worldbreaker (Deal 50,000 damage in one hit; 40 pts; title “Worldbreaker”) · Critical Thinker (Land 500 critical hits; 10 pts) · Precision (Land 5,000 critical hits; 20 pts; title “the Precise”) · Elite Hunter (Slay 10 elites; 10 pts) · Bane of Elites (Slay 100 elites; 25 pts; title “Elitebane”) · Champion Hunter (Slay 10 champions; 10 pts) · Breaker of Champions (Slay 100 champions; 25 pts; title “Championbreaker”) · Not So Fast (Break a boss while it winds up an attack; 10 pts) · Spellbreaker (Interrupt 25 boss wind-ups; 25 pts; title “Spellbreaker”) · Well Supplied (Use 100 consumables in battle; 10 pts) · Not Today… Oh. (hidden) (Fall in battle for the first time; 5 pts) · Discretion (hidden) (Escape from 10 battles; 5 pts)
+
+**Bosses** (11): Bossfight (Defeat a miniboss or boss; 10 pts) · Boss Hunter (Defeat 25 minibosses and bosses; 20 pts) · The Undaunted (Defeat 100 minibosses and bosses; 40 pts; title “the Undaunted”) · Giant-Killer (Slay a world boss; 15 pts) · Titan-Slayer (Slay all eight world bosses; 50 pts; title “Titan-Slayer”; 5000 gold) · Into the Fire (Defeat a boss after it has enraged; 15 pts) · Godsdefier (Defeat a herald a god sent to punish you; 20 pts; title “Godsdefier”) · Delver (Clear a dungeon; 10 pts) · Master Delver (Clear all ten dungeons; 40 pts; title “the Delver”; 3000 gold) · Long Live the King? (Defeat the Goblin King; 10 pts) · Into the Dark (Defeat the Void Commander in the Dark Citadel; 30 pts)
+
+**Bestiary** (13): Field Notes (Meet 10 kinds of enemy; 5 pts) · Naturalist (Meet 50 kinds of enemy; 15 pts) · Encyclopedist (Meet 100 kinds of enemy; 30 pts; title “the Naturalist”) · Know Thy Enemy (Master a bestiary entry; 10 pts) · Monster Scholar (Master 25 bestiary entries; 30 pts; title “Monster Scholar”) · Slayer (Earn a Slayer rank against any creature type; 5 pts) · Seasoned Slayer (Reach Slayer rank 3 against any creature type; 15 pts) · Grand Slayer (Reach Slayer rank 5 against any creature type; 40 pts; title “the Slayer”) · Gravewarden (Reach Slayer rank 3 against the undead; 20 pts; title “Gravewarden”) · Beastmaster (Reach Slayer rank 3 against beasts; 20 pts; title “the Hunter”) · Voidbane (Reach Slayer rank 3 against the void-touched; 20 pts; title “Voidbane”) · Dragonslayer (Reach Slayer rank 1 against dragons; 25 pts; title “Dragonslayer”) · Man-Hunter (Reach Slayer rank 3 against humanoids; 15 pts)
+
+**Story & Quests** (13): The Oath Begins (Finish the first chapter of the story; 10 pts) · Halfway Home (Finish the fourth chapter; 20 pts) · The Charge (Finish the seventh chapter; 30 pts) · It Is Written (Reach an ending of the story; 50 pts) · Sworn to the Gods (hidden) (Reach the Godsworn ending; 20 pts) · Mercy (hidden) (Reach the Redeemed ending; 20 pts) · No Gods, No Masters (hidden) (Reach the Unsworn ending; 20 pts) · Free Blade (hidden) (Reach the Free Blade ending; 20 pts) · Helping Hand (Complete 10 quests; 10 pts) · Hero of the Realm (Complete 50 quests; 25 pts; title “Hero of the Realm”) · Odd Jobs (Complete 20 side quests; 15 pts) · Bounty Hunter (Complete 10 bounties; 10 pts; title “Bounty Hunter”) · Loyal (Complete 5 faction quests; 15 pts)
+
+**The Gods** (7): Noticed (Be Acknowledged by a god; 5 pts) · Many Altars (Be Favored by three gods at once; 15 pts) · Devoted (Become Devoted to a god; 15 pts) · Exalted (Become Exalted by a god; 25 pts) · Chosen (Become an Apostle; 40 pts) · Saved by Grace (Be saved from death by divine intervention; 15 pts) · Errands of Heaven (Complete 10 god quests; 20 pts)
+
+**Hero** (12): Getting Started (Reach level 10; 5 pts) · Seasoned (Reach level 25; 10 pts) · Renowned (Reach level 40; 20 pts) · Legend (Reach level 60; 40 pts; title “the Legendary”) · Beyond Mortal (Reach Paragon level 10; 20 pts) · Specialist (Choose a specialization; 10 pts) · Dual-Trained (Take a second class; 15 pts) · Jack of All Trades (Take a third class; 30 pts; title “the Versatile”) · Prestige (Unlock a hybrid prestige class; 25 pts) · Practice Makes Perfect (Master a skill; 10 pts) · Virtuoso (Master 10 skills; 25 pts; title “the Virtuoso”) · Artisan (Reach level 25 in a crafting profession; 15 pts)
+
+**Exploration** (7): Wanderer (Set foot in four zones; 10 pts) · Cartographer (Set foot in all eight zones; 25 pts; title “the Wayfarer”) · Well Traveled (Attune every waypoint; 15 pts) · Curious (Find 5 lore pages; 10 pts) · Lorekeeper (Find all 16 lore pages; 30 pts; title “Lorekeeper”) · Home Sweet Home (Buy a house; 15 pts) · Living Legend (Reach Legend rank with a faction; 30 pts)
+
+**Wealth & Loot** (9): Pocket Money (Earn 1,000 gold in total; 5 pts) · Merchant Prince (Earn 100,000 gold in total; 20 pts) · Tycoon (Earn 1,000,000 gold in total; 40 pts; title “the Tycoon”) · Big Spender (Spend 50,000 gold; 15 pts) · Packrat (Pick up 1,000 items; 15 pts) · Legendary (Find a legendary item; 15 pts) · Matching Set (Find a set item; 15 pts) · Myth Made Real (Find a mythic item; 25 pts) · Hoard of Legends (Find 25 legendary items; 30 pts; title “the Hoarder”)
+
+**Companions** (4): Fellowship (Recruit a companion; 10 pts) · The Whole Company (Have all six companions with you; 30 pts; title “the Captain”) · Trusted Friend (Reach 80 approval with a companion; 20 pts) · Their Stories (Complete 6 companion quests; 25 pts)
+
+**Challenges** (10): Living Dangerously (Reach level 20 in Hardcore; 25 pts) · The Undying (Reach level 60 in Hardcore; 50 pts; title “the Undying”) · Iron Will (Reach an ending in the Iron Will challenge mode; 40 pts; title “the Iron”) · Lone Wolf (Reach an ending in the Lone Wolf challenge mode; 40 pts; title “the Lone Wolf”) · Godless (Reach an ending in the Godless challenge mode; 40 pts; title “the Godless”) · Glass Cannon (Reach an ending in the Glass Cannon challenge mode; 40 pts; title “the Glass Cannon”) · Nightmare (Reach an ending in the Nightmare challenge mode; 40 pts; title “Nightmare-Walker”) · Masochist (Reach an ending with Hardcore and two challenge modes at once; 60 pts; title “the Unbreakable”) · Achiever (Earn 25 achievements; 10 pts) · Completionist (Earn 60 achievements; 30 pts; title “the Completionist”)
+
+**New Game+ & Twilight** (11): Once More, With Feeling (Begin New Game+; 20 pts) · The Wheel Turns (Reach New Game+3; 30 pts; title “the Returning”) · Endless (Reach New Game+10; 50 pts; title “the Eternal”) · The Silence (Hear the Nameless One for the first time; 15 pts) · Twilight-Bringer (Give the Nameless One back its name; 50 pts) · The Unwritten Crown (hidden) (Take the Nameless One’s crown; 50 pts) · Peace in Heaven (End every old feud of the pantheon; 30 pts; title “the Peacemaker”) · Whispered (hidden) (Become Whispered by the Nameless One; 15 pts) · Unwritten (hidden) (Reach the deepest heresy; 30 pts) · Defender of the Pantheon (Defend a second god beside your own; 40 pts; title “Defender of the Pantheon”) · Every Story Told (Reach all six endings across your playthroughs; 60 pts; title “the Storyteller”)
+
+**Rifts & Boss Rush** (8): Through the Rift (Clear a tier 1 Rift; 15 pts) · Riftwalker (Clear a tier 5 Rift; 25 pts; title “Riftwalker”) · Into the Deep (Clear a tier 10 Rift; 40 pts) · Edge of Nothing (Clear a tier 15 Rift; 50 pts) · Rift Lord (Clear a tier 20 Rift; 80 pts; title “Rift Lord”) · Warming Up (Beat 5 bosses in one Boss Rush; 15 pts) · Boss Rush (Clear the Boss Rush; 40 pts; title “the Relentless Champion”) · Older Than the Gods (hidden) (Find a Primordial item; 50 pts)
+<!-- codex:end -->
+
+## New Game+, heresy and the Defender path
+
+<!-- ngplus:start -->
+- **New Game+** (up to NG+10) after any ending: the hero, gear, bags, stash, gold, companions, achievements, statistics and lore pages carry over; the story, quests, map, calendar and shops start again. The level cap rises to 80, world levels 1–60 stretch over 60–80, and each tier past the first adds +25% enemy HP and damage.
+- **Heresy** (0–150): each point costs 1.5 favor with every god; atonement at a temple costs 2 gold × level per point. The Nameless One rewards: slaying the gods’ heralds (+3), wielding the void (+0.4), unmaking what the void made (+0.5).
+
+| Heresy tier | From | Effect |
+|---|---|---|
+| Whispered | 10 | The Unwritten knows your name: +8% void damage and +10 void resistance. |
+| Heretic | 40 | +15% void damage, +20 void resistance and +5% damage, but 10% less healing received. |
+| Unwritten | 100 | +30% void damage, +35 void resistance and +12% damage, but 20% less healing received and 15% less Favor Gain. |
+
+**Forbidden skills** (8, tomes sold only by the Black Market to heretics of the tier):
+
+- **Void Pact** (Whispered): Void Pact in battle. Passive: +3% void damage per rank. Pay 12% of your max HP: 240% MAG void damage to one enemy, which becomes Vulnerable.
+- **Margin Walker** (Whispered): Passive: +1 dodge and +4 void resistance per rank, but 3% less Favor Gain per rank.
+- **Unmake** (Heretic): Unmake in battle. Passive: +2% damage per rank, but 2% less healing received per rank. 120% MAG void damage to every enemy, Corrupting them; you are Weakened for 2 turns.
+- **Devour Name** (Heretic): Devour Name in battle. Passive: +1% lifesteal per rank. 170% ATK void damage; heal 12% of your max HP. Pay 8% of your max HP to use.
+- **Godless** (Heretic): Passive: +3% damage per rank, but 6% less Favor Gain and 3% less Blessing Power per rank.
+- **Blasphemy** (Unwritten): Blasphemy in battle. Passive: +4 status chance per rank. Curse and Silence every enemy for 2 turns; you are Cursed for 2 turns too.
+- **Unwritten Flesh** (Unwritten): Passive: +4% max HP and +2 status resistance per rank, but 3% less healing received per rank.
+- **Crown of Nothing** (Unwritten): Passive: +5% crit damage and +1% crit chance per rank, but 2% more damage taken per rank.
+
+**Forbidden goods:**
+
+- **Void Draught** (Whispered): +25% void damage and +8% damage, but 10% less max HP, for 8 battles.
+- **Unwritten Salve** (Heretic): Heals 50% of max HP at once, but leaves you Vulnerable for 2 turns.
+- **Tear of a Dead God** (Unwritten): Unmakes the air: heavy void damage to every enemy, Corrupting them.
+
+**Apostle followers** (an Apostle calls one from the Pantheon; it counts as 0.4 of a companion for enemy scaling): Sunguard of Solenne, Raven of Morrath, Einherjar of Kael, Wolf of Ysolde, Shade of Vex, Forge-Thrall of Thalor, Tide-Singer of Nymira, Scribe of Aurelis, Hearth-Keeper of Hesha, Coin-Golem of Grimvald.
+
+**The Defender path** (NG+3+): an Apostle who has passed a second, non-rival god's trial may defend that god too: its Divine blessing in one more slot, the Apostle tier with it, and the title "Defender of X".
+<!-- ngplus:end -->
+
+## Endgame: Rifts, the Boss Rush, challenge modes, Primordials, pets and mounts
+
+<!-- endgame:start -->
+### Rifts
+
+Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every zone, then a Rift Guardian (a dungeon boss; world bosses too from tier 10). Tiers 1–20: enemies at your level -3 +1 per 3 tiers, +8% HP and damage per tier, 35% of HP and MP back between waves. Affixes from tiers 3 / 8 / 14. Rewards: 6 gold × level × tier per wave (×3 for the Guardian), 1 elite loot roll per wave and 3 boss rolls for the Guardian, +15% Magic Find per tier; Primordials from tier 10; a Rift pet at 3% + 0.4% per tier.
+
+| Rift affix | Effect | Bounty |
+|---|---|---|
+| Bloodlust | Enemies deal 20% more damage. | - |
+| Bulwark | Enemies have 30% more HP. | - |
+| Haste | Enemies are 15% faster. | - |
+| Warded | Enemies resist every element by 25. | - |
+| Deadly | Enemies have +15% crit chance. | - |
+| Fragile | You and your party have 15% less max HP. | +20% gold and MF |
+| Parched | Healing on your party is 30% weaker. | +20% gold and MF |
+| Drained | Your party has 25% less max MP. | +15% gold and MF |
+| Empowered | Your party deals 15% more damage, and so do enemies (25%). | - |
+| Gilded | Enemies have 20% more HP, but drop much more gold and better loot. | +50% gold and MF |
+
+### The Boss Rush
+
+At any town (level 30+): all 10 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
+
+### Challenge modes
+
+- **Ironman:** No merchant will sell to you (selling, crafting and quest rewards are fine), and waypoints will not carry you.
+- **Lone Wolf:** Companions and followers will not fight beside you.
+- **Godless:** The gods never warm to you: you gain no favor (you can still lose it), so no blessings, prayers or interventions.
+- **Glass Cannon:** Half your max HP, but you deal 30% more damage.
+- **Nightmare:** Every enemy has 50% more HP and deals 40% more damage; you find far more (+100% Magic Find and Gold Find).
+
+### Primordial items (10)
+
+NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosses, item level 70+.
+
+- **The First Word** (Godforged Greatsword): Deal 25% more damage to bosses; Critical hits ignore half of the target’s defense; Attacks against enemies below 20% HP always crit.
+- **The Unmade Crown** (Godweave Hood): 20% chance for spells to cast a second time; Spells have a 25% chance to make their target Vulnerable; +10% cooldown reduction.
+- **World-Anchor** (Godforged Shield): Once per battle, survive a killing blow with 1 HP; Immune to Stun and Freeze; +25 status resistance.
+- **Starborn** (Worldtree Bow): Always act first in the opening round; Critical hits rain starlight on every enemy (80% ATK arcane); +15% crit chance.
+- **Root of Ages** (Worldtree Staff): Heal the party for 4% of max HP at the start of each of your turns; Half of all overhealing becomes a shield; +40 healing power.
+- **Tidebreaker** (Godforged Spear): Strike the back row from the front; 30% chance on hit to make the target Wet; Ice damage against Burning enemies always Shatters.
+- **Ember of Creation** (Godseye Orb): 40% chance on hit to Burn; Burning enemies spread Burn when they die; Damage over time can critically strike.
+- **The Shadow Before Light** (Godforged Dagger): Begin every battle in Stealth; Attacks against enemies below 20% HP always crit; +10 dodge.
+- **Heartstring** (Worldtree Lute): Two songs can play at once; The party deals 15% more damage on each of your turns; +30% resource gain.
+- **Seal of the Unwritten** (Divine Amulet): Deal 25% more damage to bosses; Kills grant a shield of 10% of max HP; +25% ultimate gain.
+
+### Pets
+
+- **Lucky Ferret:** +5% Gold Find and +5% Magic Find. (Achievement: Pocket Money)
+- **Ember Sprite:** +5% fire damage. (Achievement: Bossfight)
+- **Owlet of Aurelis:** +5% XP gain. (Achievement: Curious)
+- **Stone Tortoise:** +4% defense. (Achievement: Delver)
+- **Hearth Cat:** +5 healing received. (Achievement: Fellowship)
+- **Grave Moth:** +5% shadow damage. (Achievement: Slayer)
+- **Rift Wisp:** +3% damage and +5% void resistance. (A Rift Guardian, rarely)
+- **Void Kitten:** +3% crit chance. It is not entirely there. (A Rift Guardian, rarely)
+- **Primordial Hatchling:** +4% damage, +4% max HP. It hatched from something older than the world. (Achievement: Rift Lord)
+
+### Mounts
+
+- **Farm Pony:** 1.5 min per step, 10% fewer ambushes. Slow, steady and unbothered. (800 gold at the stables)
+- **Warhorse:** 1 min per step, 25% fewer ambushes. Trained for battle; most bandits think twice. (6000 gold at the stables)
+- **Sand Strider:** 1 min per step, 40% fewer ambushes. A long-legged desert bird that never gets lost. (15000 gold at the stables)
+- **Spectral Stag:** 0.75 min per step, 50% fewer ambushes. Ysolde’s gift: it walks between the trees, and the beasts do not see it. (Achievement: Cartographer)
+- **Rift-Strider:** 0.5 min per step, 60% fewer ambushes. It steps through the margins of the world. Nothing follows. (Achievement: Riftwalker)
+<!-- endgame:end -->

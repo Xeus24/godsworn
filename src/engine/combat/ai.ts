@@ -1,4 +1,5 @@
 import type { SkillDef } from '../skills/types';
+import { bossForcedAction, isTelegraphOnly } from './bosses';
 import type { Battle } from './battle';
 import { canUseSkill, foesOf, friendsOf, needsTarget, skillOptions, validTargets } from './skills';
 import type { Action, AiProfile, Combatant } from './types';
@@ -50,6 +51,11 @@ function alreadyApplied(b: Battle, skill: SkillDef, targets: Combatant[]): boole
  * same logic.
  */
 export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai): Action {
+  const forced = bossForcedAction(x, (skillId) => {
+    const skill = b.c.skills.get(skillId);
+    return needsTarget(skill) ? pickFoe(b, x, skill, profile)?.id : undefined;
+  });
+  if (forced) return forced;
   const options: Option[] = [];
   const foes = foesOf(b, x);
   const friends = friendsOf(b, x);
@@ -58,7 +64,7 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
   if (x.summonId) for (const s of b.c.summons.get(x.summonId).skills) weights.set(s.id, s.weight ?? 1);
 
   for (const { skill, rank, check } of skillOptions(b, x)) {
-    if (!check.ok || !canUseSkill(b, x, skill).ok) continue;
+    if (!check.ok || !canUseSkill(b, x, skill).ok || isTelegraphOnly(b, x, skill.id)) continue;
     const w = weights.get(skill.id) ?? 1;
     const jitter = b.rng.float(0.8, 1.2);
     const kind = skill.id === 'basic-attack' ? 'attack' : 'skill';
@@ -106,6 +112,10 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
     options.push({ action: act(target?.id), score: 1.4 * supportBias * w * jitter });
   }
 
+  // A boss is winding up a big attack: brace for it when hurt.
+  if (foes.some((f) => f.boss?.charging) && hpShare(x) < 0.6) {
+    options.push({ action: { kind: 'defend', actorId: x.id }, score: 3 * (1.2 - hpShare(x)) });
+  }
   if (hpShare(x) < 0.3 && (profile === 'defensive' || profile === 'healer')) {
     options.push({ action: { kind: 'defend', actorId: x.id }, score: 2.2 });
   }

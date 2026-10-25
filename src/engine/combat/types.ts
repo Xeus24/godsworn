@@ -56,6 +56,59 @@ export interface EnemyDef {
   palette: { main: string; accent: string };
 }
 
+/** An elite affix: extra stats and tricks rolled onto elites and champion packs. */
+export interface EliteAffixDef {
+  id: string;
+  /** Prefixed to the enemy's name ("Swift Dire Wolf"). */
+  name: string;
+  description: string;
+  modifiers?: ModifierSpec[];
+  triggers?: TriggeredEffect[];
+  flags?: string[];
+  /** Never rolled onto enemies of these types. */
+  notFor?: string[];
+}
+
+/** One stage of a scripted boss fight, entered when its HP falls to `hpPct`. */
+export interface BossPhaseDef {
+  hpPct: number;
+  name: string;
+  /** Told in the log as the phase begins. */
+  text: string;
+  /** Permanent stat changes from this phase on. */
+  modifiers?: ModifierSpec[];
+  /** Applied once as the phase begins; untargeted effects hit the party. */
+  effects?: EffectSpec[];
+  /** Enemies that join the fight (no XP or loot of their own). */
+  adds?: string[];
+  /** Skills it can use from this phase on. */
+  skills?: EnemySkillRef[];
+}
+
+/**
+ * A telegraphed attack: the boss spends a turn winding up (the party sees
+ * it coming), then unleashes the skill on its next turn. Breaking its
+ * stagger bar in between interrupts it; Defending halves the hit.
+ */
+export interface BossTelegraphDef {
+  skillId: string;
+  /** Winds up on every Nth turn of its own. */
+  every: number;
+  /** First phase (index, 0 = the opening) it does this in. */
+  fromPhase?: number;
+  warning: string;
+}
+
+/** A boss's script, keyed by its enemy id. Bosses without one still enrage on the default timer. */
+export interface BossScriptDef {
+  id: string;
+  phases: BossPhaseDef[];
+  telegraphs: BossTelegraphDef[];
+  /** Own turns before it enrages (default by tier, `BOSS.enrageTurns`). */
+  enrageTurns?: number;
+  enrageText?: string;
+}
+
 /** Allies summoned in battle (skeletons, the ranger's pet, spirit animals). Scale with the summoner. */
 export interface SummonDef {
   id: string;
@@ -120,6 +173,12 @@ export interface Combatant {
   /** Last computed maximums (refreshed whenever stats are computed). */
   maxHp: number;
   maxMp: number;
+  /**
+   * Percent-of-max-HP heals (regeneration) are divided by this. Party
+   * scaling multiplies enemy HP to make them tougher, not to make them
+   * regenerate faster.
+   */
+  healScale?: number;
   shield: number;
   /** Class resource and any others (rage, combo...). */
   resources: Record<string, number>;
@@ -144,6 +203,10 @@ export interface Combatant {
   types: string[];
   tier: EnemyTier | 'party';
   ai: AiProfile;
+  /** Scripted boss state: phase reached, the telegraphed skill being wound up, enrage. */
+  boss?: { phase: number; charging?: string; enraged: boolean };
+  /** Elite affixes rolled for this enemy. */
+  affixes?: string[];
   /** Initiative: the combatant with the lowest value acts next. */
   nextAt: number;
   defending: boolean;
@@ -207,13 +270,17 @@ export type BattleEvent =
   | { type: 'resource'; targetId: string }
   | { type: 'flee'; success: boolean }
   | { type: 'log'; text: string }
+  /** A scripted boss moment: winding up, a new phase, enraging, an interrupted attack. */
+  | { type: 'boss'; actorId: string; moment: 'windUp' | 'phase' | 'enrage' | 'interrupt'; title: string; text: string }
   | { type: 'end'; outcome: BattleOutcome };
 
 export type BattleOutcome = 'ongoing' | 'victory' | 'defeat' | 'fled';
 
 /** What the battle tracked, for rewards, relic deeds and stats. */
 export interface BattleTally {
-  kills: { enemyId: string; level: number; tier: EnemyTier; types: string[]; xp: number; lootTable?: string; element?: Element }[];
+  kills: { enemyId: string; level: number; tier: EnemyTier; types: string[]; xp: number; lootTable?: string; element?: Element; enraged?: boolean }[];
+  /** Boss wind-ups the party broke. */
+  interrupts: number;
   partyCrits: number;
   partyHeals: number;
   highestHit: number;

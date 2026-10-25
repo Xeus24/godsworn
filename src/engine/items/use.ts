@@ -72,6 +72,8 @@ export function useConsumableInField(char: Character, inv: Inventory, index: num
     case 'escape':
     case 'revive':
       return fail('That can only be used in battle.');
+    case 'key':
+      return fail(action.text);
   }
   consumeOne(inv, index);
   return { ok: true, message };

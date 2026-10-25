@@ -1,3 +1,4 @@
+import { rivalsOf } from './devotion';
 import { content, type Content } from '../../data';
 import { WEAPON_STAGES } from '../../data/apostles';
 import { APOSTLESHIP, DEVOTION } from '../../data/devotion';
@@ -48,6 +49,44 @@ export function canAscend(char: Character, god: string, c: Content = content): A
   if (!atLeast(char, god, 'exalted')) return fail(`Requires Exalted favor with ${c.gods.get(god).name}.`);
   if ((char.devotion.trialStage[god] ?? 0) < 3) return fail('Complete all three stages of the Trial of Apostleship.');
   return { ok: true };
+}
+
+// ---------------------------------------------------------------- the Defender path
+
+/** From NG+3, an Apostle who has passed a second god's trial may defend that god too (not a rival of their own). */
+export function canDefend(char: Character, god: string, ngPlus: number, c: Content = content): ApostleResult {
+  const a = char.devotion.apostle;
+  if (ngPlus < APOSTLESHIP.defenderNgPlus) return fail(`The Defender path opens in New Game+${APOSTLESHIP.defenderNgPlus}.`);
+  if (!a) return fail('Only an Apostle may defend a second god.');
+  if (a.god === god) return fail('You are already this god’s Apostle.');
+  if (char.devotion.defender) return fail(`You already defend ${c.gods.get(char.devotion.defender).name}.`);
+  if (rivalsOf(char, a.god, c).includes(god)) return fail(`${c.gods.get(a.god).name} will not share you with a rival.`);
+  if (!atLeast(char, god, 'exalted')) return fail(`Requires Exalted favor with ${c.gods.get(god).name}.`);
+  if ((char.devotion.trialStage[god] ?? 0) < 3) return fail('Complete all three stages of that god’s Trial of Apostleship.');
+  return { ok: true };
+}
+
+/** Becomes Defender of a second god: its Divine blessing (in one more slot), the Apostle tier with it, and a title. */
+export function defend(char: Character, god: string, ngPlus: number, c: Content = content): ApostleResult {
+  const check = canDefend(char, god, ngPlus, c);
+  if (!check.ok) return check;
+  char.devotion.defender = god;
+  const title = `Defender of ${c.gods.get(god).name}`;
+  if (!char.devotion.titles.includes(title)) char.devotion.titles.push(title);
+  const blessing = `${god}-divine`;
+  if (!char.devotion.majors.includes(blessing)) char.devotion.majors.push(blessing);
+  if (!char.devotion.slotted.includes(blessing)) char.devotion.slotted.push(blessing);
+  return { ok: true };
+}
+
+// ---------------------------------------------------------------- followers
+
+/** The follower your god sends (if you are an Apostle and have called it). */
+export function followerOf(char: Character, c: Content = content): string | undefined {
+  const a = char.devotion.apostle;
+  if (!a || !char.devotion.followerCalled) return undefined;
+  const id = `follower-${a.god}`;
+  return c.enemies.has(id) ? id : undefined;
 }
 
 /** The divine weapon stage for a character level (1-4). */
@@ -173,6 +212,13 @@ export function renounce(char: Character): { ok: true; god: string } | { ok: fal
   delete char.devotion.apostle;
   char.devotion.favor[a.god] = DEVOTION.minFavor;
   char.devotion.slotted = char.devotion.slotted.filter((id) => id !== `${a.god}-divine`);
+  // The Defender path rests on Apostleship.
+  const defended = char.devotion.defender;
+  if (defended) {
+    delete char.devotion.defender;
+    char.devotion.slotted = char.devotion.slotted.filter((id) => id !== `${defended}-divine`);
+  }
+  delete char.devotion.followerCalled;
   char.devotion.hunt = { god: a.god, battles: APOSTLESHIP.huntBattles };
   return { ok: true, god: a.god };
 }

@@ -1,3 +1,4 @@
+import { canStartNgPlus, startNgPlus } from '../../engine/ngplus/ngplus';
 import { content } from '../../data';
 import { allocatedTotal, respecCost } from '../../engine/character/attributes';
 import { paragonRank } from '../../engine/character/paragon';
@@ -36,6 +37,7 @@ function splitPresets(count: number): number[][] {
 export class CharacterScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
+  private confirmNgPlus = false;
 
   constructor(
     private readonly session: GameSession,
@@ -143,6 +145,7 @@ export class CharacterScreen implements Screen {
           el('div', {}, el('b', { style: `color:${cls.color}` }, cls.name), ` · ${cp.slot} · level ${cp.level}`),
           bar(cp.level >= s.state.levelCap ? 1 : cp.xp / xpToNext(cp.level), 'xp thin', `${availablePoints(p, cp.classId)} of ${cp.skillPoints} skill points unspent`),
           el('div', { class: 'dim small' }, cls.mechanic.name + ': ' + cls.mechanic.description),
+          ...(cp.slot === 'primary' && cls.trait ? [el('div', { class: 'dim small' }, `Trait, ${cls.trait.name}: ${cls.trait.description}`)] : []),
           ...(cp.slot !== 'primary' ? [el('div', { class: 'small' }, `${masteryPointsLeft(p, cp.classId)} of ${masteryPointsEarned(p, cp.classId)} Mastery Points free (for keystones and capstones)`)] : []),
         );
       }),
@@ -191,7 +194,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, classes, this.reputation(), skills, paragon),
+          el('div', { class: 'sheet-col' }, this.titles(), this.stable(), this.legacy(), classes, this.reputation(), skills, paragon),
         ),
       ),
     );
@@ -222,6 +225,85 @@ export class CharacterScreen implements Screen {
   }
 
   /** Faction standing (and house, if any). */
+  /** New Game+: your tier, endings reached, and starting the next playthrough (two clicks). */
+  private legacy(): HTMLElement {
+    const s = this.session;
+    const check = canStartNgPlus(s);
+    const label = check.ok ? `Begin New Game+${check.tier}` : 'Begin New Game+';
+    const begin = el('button', { class: 'primary' }, label);
+    begin.disabled = !check.ok;
+    begin.title = check.ok ? 'The story starts over. You keep your hero, gear, companions and achievements; the world rises to levels 60-80.' : check.reason;
+    begin.addEventListener('click', () => {
+      if (!this.confirmNgPlus) {
+        this.confirmNgPlus = true;
+        begin.textContent = `Really begin NG+${check.ok ? check.tier : ''}? Click again`;
+        return;
+      }
+      this.confirmNgPlus = false;
+      startNgPlus(s);
+      this.render();
+    });
+    const endings = s.state.legacy.endings.map((e) => content.endings.find(e.split(':')[0] ?? '')?.name ?? e);
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Legacy'),
+      el('div', { class: 'small' }, s.state.ngPlus > 0 ? `New Game+${s.state.ngPlus} · level cap ${s.state.levelCap}` : 'First playthrough'),
+      ...(endings.length ? [el('div', { class: 'dim small' }, `Endings reached before: ${endings.join(', ')}`)] : []),
+      begin,
+      ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),
+    );
+  }
+
+  /** The pet out with you and the mount you ride. */
+  private stable(): HTMLElement {
+    const s = this.session;
+    const st = s.player.stable;
+    const pick = (label: string, owned: string[], current: string | undefined, name: (id: string) => string, set: (id: string | undefined) => void): HTMLSelectElement => {
+      const sel = el('select', { 'aria-label': label }) as HTMLSelectElement;
+      sel.append(el('option', { value: '' }, `(no ${label.toLowerCase()})`), ...owned.map((id) => el('option', { value: id }, name(id))));
+      sel.value = current ?? '';
+      sel.disabled = owned.length === 0;
+      sel.addEventListener('change', () => {
+        set(sel.value || undefined);
+        this.render();
+      });
+      return sel;
+    };
+    const pet = st.pet ? content.pets.get(st.pet) : undefined;
+    const mount = st.mount ? content.mounts.get(st.mount) : undefined;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Pet & Mount'),
+      pick('Pet', st.pets, st.pet, (id) => content.pets.get(id).name, (id) => s.world.setPet(id)),
+      el('div', { class: 'dim small' }, pet ? pet.description : 'Pets come from achievements and, rarely, from Rift Guardians.'),
+      pick('Mount', st.mounts, st.mount, (id) => content.mounts.get(id).name, (id) => s.world.setMount(id)),
+      el('div', { class: 'dim small' }, mount ? `${mount.description} ${mount.stepMinutes} min per step, ${Math.round((1 - mount.encounterMult) * 100)}% fewer ambushes.` : 'Buy a mount at a town’s stables, or earn one.'),
+    );
+  }
+
+  /** Pick the earned title shown beside your name. */
+  private titles(): HTMLElement {
+    const s = this.session;
+    const owned = s.achievements.titles();
+    const pick = el('select', { 'aria-label': 'Title' }) as HTMLSelectElement;
+    pick.append(el('option', { value: '' }, '(no title)'), ...owned.map((t) => el('option', { value: t }, t)));
+    pick.value = s.player.title ?? '';
+    pick.disabled = owned.length === 0;
+    pick.addEventListener('change', () => {
+      s.achievements.setTitle(pick.value || undefined);
+      this.render();
+    });
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Title'),
+      pick,
+      el('div', { class: 'dim small' }, owned.length ? `${owned.length} title${owned.length === 1 ? '' : 's'} earned. Earn more from achievements, quests and Apostleship (Codex, B).` : 'Earn titles from achievements, quests and Apostleship (Codex, B).'),
+    );
+  }
+
   private reputation(): HTMLElement {
     const p = this.session.player;
     const rows = content.factions.all().map((f) => {

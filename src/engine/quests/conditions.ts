@@ -3,6 +3,8 @@ import { hybridTrialOpen } from '../character/multiclass';
 import { characterBaseStats } from '../character/stats';
 import { atLeast, tierName } from '../gods/devotion';
 import { countOf } from '../items/inventory';
+import { killsByType, knowledgeLevel, slayerRank } from '../bestiary/bestiary';
+import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
 import type { GameState } from '../state/gameState';
 import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
@@ -68,6 +70,75 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return state.world.lore.length >= cond.count;
     case 'time':
       return timeOfDay(state.clock) === cond.time;
+    case 'lifetime':
+      return state.stats[cond.stat] >= cond.min;
+    case 'bestiary': {
+      const ids = Object.keys(p.bestiary);
+      if (cond.seen !== undefined && ids.length < cond.seen) return false;
+      if (cond.mastered !== undefined) {
+        const mastered = ids.filter((id) => { const def = c.enemies.find(id); return def !== undefined && knowledgeLevel(p, def) >= 4; }).length;
+        if (mastered < cond.mastered) return false;
+      }
+      return true;
+    }
+    case 'killed':
+      return (p.bestiary[cond.enemy] ?? 0) >= (cond.min ?? 1);
+    case 'slayer': {
+      const kills = killsByType(p, c);
+      const types = cond.enemyType ? [cond.enemyType] : Object.keys(kills);
+      return types.some((t) => slayerRank(kills[t] ?? 0) >= cond.rank);
+    }
+    case 'questsDone': {
+      let n = 0;
+      for (const [id, times] of Object.entries(state.quests.completed)) if (!cond.questKind || c.quests.find(id)?.kind === cond.questKind) n += times;
+      return n >= cond.min;
+    }
+    case 'ending':
+      return state.quests.ending !== undefined && (cond.ending === undefined || state.quests.ending.id === cond.ending);
+    case 'favorCount':
+      return c.gods.ids().filter((g) => atLeast(p, g, cond.tier)).length >= cond.min;
+    case 'classes':
+      return p.classes.length >= cond.min;
+    case 'hybrids':
+      return p.hybrids.length >= cond.min;
+    case 'specialization':
+      return p.classes.some((x) => x.specialization !== undefined);
+    case 'paragon':
+      return p.paragonLevel >= cond.min;
+    case 'mastered':
+      return Object.values(p.mastery).filter((xp) => masteryLevel(xp) >= MAX_MASTERY).length >= cond.min;
+    case 'companions':
+      return Object.values(state.party.companions).filter((x) => !x.left && (cond.minApproval === undefined || x.approval >= cond.minApproval)).length >= cond.min;
+    case 'dungeons':
+      return state.world.dungeonsCleared.length >= cond.min;
+    case 'waypoints':
+      return state.world.waypoints.length >= cond.min;
+    case 'zones':
+      return c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length >= cond.min;
+    case 'house':
+      return p.world.house !== undefined;
+    case 'rarity':
+      return (state.rarityFound[cond.rarity] ?? 0) >= (cond.min ?? 1);
+    case 'profession':
+      return Object.values(p.crafting.professions).some((x) => (x?.level ?? 0) >= cond.level);
+    case 'achievements':
+      return Object.keys(state.achievements).length >= cond.min;
+    case 'hardcore':
+      return p.hardcore;
+    case 'ngPlus':
+      return state.ngPlus >= cond.min;
+    case 'challenge':
+      return p.challenges.includes(cond.challenge);
+    case 'riftTier':
+      return state.endgame.riftTier >= cond.min;
+    case 'bossRush':
+      return state.endgame.bossRush.clears >= (cond.clears ?? 0) && state.endgame.bossRush.best >= (cond.best ?? 0);
+    case 'defender':
+      return p.devotion.defender !== undefined;
+    case 'endingsSeen':
+      return new Set(state.legacy.endings.map((e) => e.split(':')[0])).size >= cond.min;
+    case 'heresy':
+      return p.devotion.heresy >= (cond.min ?? 0) && (cond.max === undefined || p.devotion.heresy < cond.max);
     case 'all':
       return cond.conds.every((x) => evaluate(state, x, c));
     case 'any':

@@ -1,3 +1,5 @@
+import type { ModifierSpec } from '../engine/stats/modifiers';
+
 /** Combat tuning numbers. The rules that use them live in src/engine/combat/. */
 export const COMBAT = {
   /** Damage is randomized by +/- this share (0.1 = 0.9x..1.1x). */
@@ -93,7 +95,7 @@ export const ENEMY_LATE_GROWTH = {
 export const TIER_SCALING: Record<string, { hp: number; damage: number; xp: number }> = {
   normal: { hp: 1, damage: 1, xp: 1 },
   elite: { hp: 2.5, damage: 1.25, xp: 3 },
-  champion: { hp: 3.5, damage: 1.35, xp: 5 },
+  champion: { hp: 2.2, damage: 1.2, xp: 4 },
   miniboss: { hp: 5, damage: 1.4, xp: 8 },
   boss: { hp: 9, damage: 1.5, xp: 15 },
   worldBoss: { hp: 18, damage: 1.7, xp: 30 },
@@ -111,6 +113,42 @@ export const PARTY_SCALING = {
   enemyHpPerCompanion: 150,
   /** Enemy damage bonus (flat percent) per companion. */
   enemyDamagePerCompanion: 12,
-  /** Companions' attack, magic and divine power, percent "more" (negative = less). */
-  companionPower: -30,
+  /** An apostle's follower counts as this share of a companion for the two numbers above. */
+  followerShare: 0.4,
+  /**
+   * Companions' attack, magic and divine power by class, percent "more"
+   * (negative = less). Classes differ a lot as companions (a healer or a
+   * pet doubles a hero's staying power, a lone striker only adds damage
+   * the enemies' extra HP soaks up), so each is tuned until every class is
+   * worth about the same beside every hero (`npm run sim:party`).
+   */
+  companionPower: {
+    warrior: -5,
+    mage: 30,
+    rogue: -40,
+    cleric: -82,
+    ranger: -55,
+    necromancer: 65,
+    monk: 30,
+    bard: 5,
+  } as Record<string, number>,
+  /** Power for a class missing from the table. */
+  companionPowerDefault: -30,
+  /** Extra stats by companion class, e.g. toughness for a front-liner whose worth is taking hits. */
+  companionStats: {
+    warrior: [{ stat: 'maxHp', type: 'more', value: 40 }, { stat: 'damageTaken', type: 'more', value: -20 }],
+    mage: [{ stat: 'maxHp', type: 'more', value: 50 }],
+    // Heals stay light, but part of the damage comes back so a cleric still helps finish a fight.
+    cleric: [{ stat: 'damageBonus', type: 'flat', value: 100 }],
+    necromancer: [{ stat: 'maxHp', type: 'more', value: 50 }],
+    bard: [{ stat: 'maxHp', type: 'more', value: 60 }, { stat: 'damageTaken', type: 'more', value: -20 }],
+  } as Record<string, ModifierSpec[]>,
+};
+
+/** Scripted boss fights (scripts live in `bestiary/bossScripts.ts`). */
+export const BOSS = {
+  /** Own turns before a boss enrages, by tier (a script may set its own). */
+  enrageTurns: { miniboss: 40, boss: 50, worldBoss: 60 } as Record<string, number>,
+  /** After enraging it grows angrier: one more Enraged stack this many own turns apart. */
+  enrageStackEvery: 4,
 };

@@ -1,3 +1,4 @@
+import { worldLevel } from '../ngplus/ngplus';
 import { content, type Content } from '../../data';
 import { xpToNext } from '../character/progression';
 import { countOf } from '../items/inventory';
@@ -92,12 +93,17 @@ export function nextStageId(state: GameState, q: QuestDef, st: StageDef, c: Cont
 }
 
 /** XP a quest pays before the XP Gain stat. */
-export function questXp(q: QuestDef): number {
-  return Math.round(xpToNext(Math.max(1, q.level)) * (q.rewards.xp ?? 0));
+/** A quest's level in the current playthrough (NG+ raises it with the world). */
+export function questLevel(q: QuestDef, ngPlus = 0): number {
+  return worldLevel(q.level, ngPlus);
 }
 
-export function questGold(q: QuestDef): number {
-  return Math.round((q.rewards.gold ?? 0) * Math.max(1, q.level));
+export function questXp(q: QuestDef, ngPlus = 0): number {
+  return Math.round(xpToNext(Math.max(1, questLevel(q, ngPlus))) * (q.rewards.xp ?? 0));
+}
+
+export function questGold(q: QuestDef, ngPlus = 0): number {
+  return Math.round((q.rewards.gold ?? 0) * Math.max(1, questLevel(q, ngPlus)));
 }
 
 // ---------------------------------------------------------------- markers

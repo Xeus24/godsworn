@@ -67,7 +67,7 @@ export function uniquePool(rarity: RarityId, ctx: GenerateContext): UniqueItemDe
       wanted.includes(u.rarity) &&
       !u.noDrop &&
       u.level <= ctx.itemLevel &&
-      (u.rarity !== 'mythic' || mythicsOk) &&
+      ((u.rarity !== 'mythic' && u.rarity !== 'primordial') || mythicsOk) &&
       // Divine items only drop for heroes with the devotion they ask for.
       (u.requirements?.favor === undefined || (ctx.favorTiers?.[u.requirements.favor.god] ?? -1) >= tierIndex(u.requirements.favor.tier as DevotionTier)),
   );

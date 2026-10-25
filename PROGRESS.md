@@ -16,10 +16,10 @@
 | 10 | Overworld, zones, towns, day/night, weather, factions, housing | **Done** |
 | 11 | Economy | **Done** |
 | 12 | Quests, dialogue, main story, companions | **Done** |
-| 13 | Bosses, elites, bestiary, achievements, codex | Next |
-| 14 | New Game+ and Twilight of the Gods | |
-| 15 | Endgame activities, challenge modes, Ascended/Primordial items | |
-| 16 | Save system, settings, audio, polish, balance, playtest | |
+| 13 | Bosses, elites, bestiary, achievements, codex | **Done** |
+| 14 | New Game+ and Twilight of the Gods | **Done** |
+| 15 | Endgame activities, challenge modes, Ascended/Primordial items | **Done** |
+| 16 | Save system, settings, audio, polish, balance, playtest | **Done** |
 
 ## Completed features
 
@@ -409,7 +409,8 @@
   - **Approval** (−100 to 100) moves with their likes and dislikes (judged like a god's), with favor you earn with their god (and its rival), and with dialogue choices. At −50 they leave and wait in their town (make amends for gold).
   - **Bond tree:** at 20/40/60/80 approval, pick one of two perks (modifiers, triggers). **Personal quests** open at 30 approval and earn an **oath** perk. 6 recruitment-or-story quests and 6 personal quests.
   - Up to three fight beside you, controlled by you (or auto-battle); HP carries over and the fallen get up after a win.
-- **Party scaling** (`PARTY_SCALING` in `data/combat.ts`): each companion in a fight gives every enemy +150% HP and +12% damage, and companions fight at 70% attack power, so a full party is stronger than a hero alone without trivializing fights.
+- **Party scaling** (`PARTY_SCALING` in `data/combat.ts`): each companion in a fight gives every enemy +150% HP and +12% damage, so a full party is stronger than a hero alone without trivializing fights. Regeneration (percent-of-max-HP heals) is measured against the enemy's HP before party scaling, so a bigger party makes enemies tougher, not faster to heal.
+- **Party balance pass** (after Phase 12): companions' power and extra stats are set **per class** (`companionPower`, `companionStats`), tuned with the new `npm run sim:party`. It pits every hero class beside one companion of every class (no bond perks) against each zone's packs, dungeon bosses, story bosses and world boss. Before: rogue, cleric and ranger companions won 89–91% averaged over fight types, warrior, mage, bard and necromancer 66–71% (no better than the hero alone at 69%), a 25.6-point spread. After: every class 81.2–83.6% (2.3-point spread). Healers and pets were cut (the cleric's heals hardest, with some damage given back), lone strikers and casters raised, and the fragile back row and the warrior's front line got toughness. Classes keep some identity by fight type: rangers and necromancers lead against packs (100%), rogues and clerics against lone world bosses (60–64%, versus 45–46% for rangers and necromancers). Companions' HP and MP now carry in and out of battle as a share of their maximum, so perks and class stats that raise max HP no longer start them wounded.
 - **UI:**
   - Dialogue window (portraits, keys 1–9, Esc to leave) and an ending screen.
   - Quest log (J): quests by kind, the current stage, objectives with progress and where to go, time left, rewards, Track and Abandon, completed and failed lists.
@@ -419,7 +420,84 @@
   - General skills moved from J to **L** (J is the quest log, as the spec asks).
   - Developer panel: start or advance quests, mark the story's first seven chapters done, reach any ending, recruit companions, change approval.
 - **Balance** (story fights with benchmark heroes, `scripts/.scratch` sims): ordinary quest fights 63–100% solo; story bosses 34–75% solo for the hero alone and about 45–100% with companions depending on who they are (a cleric or a ranger's wolf helps most); the final Shadow of the Unwritten 17% alone, 46% with two companions.
-- 378 unit tests.
+- 381 unit tests.
+
+### Phase 13: bosses, elites, the bestiary, achievements and the codex
+- **Scripted bosses** (`engine/combat/bosses.ts`, scripts in `data/bestiary/bossScripts.ts`): 43 scripts covering every dungeon boss (10), world boss (8), story boss and miniboss (15) and Aspect (10).
+  - **Phases** at HP thresholds: permanent stat changes, one-time effects (heals, shields), new skills and **adds** (enemies that join mid-fight, scaled like the boss, with no XP or loot of their own). Several thresholds crossed by one hit are entered in order.
+  - **Telegraphed attacks** (13 new boss skills: Crushing Blow, Earthshatter, Inferno, Glacial Tomb, Unmaking...): the boss spends a turn **winding up** (a "Winding Up" status and a warning line), then must unleash it on its next turn. **Breaking** its stagger bar in between interrupts it; **Defend** halves it. Telegraph skills are never used unannounced. The party's auto-battle AI braces (Defends) when hurt and a wind-up is coming.
+  - **Enrage:** every miniboss, boss and world boss enrages after 40 / 50 / 60 of its own turns (Aspects 80), then gains another Enraged stack every 4 turns (+40% damage, 10% more speed each). This also ends the endless stalls found in the party pass (two healers against a regenerating boss).
+  - New `boss` battle event: the combat screen floats "Winding up: …", phase names, ENRAGED and INTERRUPTED over the boss and highlights them in the log.
+- **Elite affixes** (`engine/combat/affixes.ts`, 18 in `data/bestiary/affixes.ts`): Swift, Brutal, Ironclad, Hulking, Vampiric, Deadly, Molten, Frostbound, Venomous, Hexing, Thorned, Shielded, Regenerating, Volatile, Vengeful, Unstoppable, Warded, Necromantic. Elites roll one, champion packs two shared by the whole pack; affixes respect creature types (no venomous constructs), prefix the name ("Swift Brutal Frost Wolf"), add 25% XP each, and are listed in the log when the fight starts. All are modifiers, triggers and flags.
+- **Bestiary** (`engine/bestiary/`, kept on the character): every enemy you meet gets an entry; kills reveal its stats (1), resistances (5), skills and boss battle plan (15) and mastery (40); bosses teach at 1/1/2/3. **Slayer ranks** per creature type at 10/50/150/400/1,000 kills give +2% damage per rank against that type (a conditional modifier through `calculateStats`). New knowledge and ranks are announced.
+- **Lifetime statistics:** elites, champions, bosses, world bosses, punishers and enraged bosses slain, interrupts, crits, divine interventions, gold earned and spent, items looted (and by rarity), consumables used.
+- **Achievements** (`state/achievementActions.ts`, 101 in `data/achievements.ts`, 10 categories): each is a condition over the game state, checked whenever the state changes, worth points, sometimes hidden, sometimes granting a **title** (31) or gold. 22 new condition kinds (lifetime stats, bestiary, kills of an enemy, Slayer ranks, quests done by kind, endings, gods at a favor tier, classes, hybrids, paragon, mastered skills, companions, dungeons, waypoints, zones, house, rarities found, profession level, achievements earned, Hardcore) are shared with quests and dialogue.
+- **Titles:** choose one of your earned titles (achievements, quests, factions, Apostleship) on the Character screen; it shows under your name in the top bar.
+- **The Codex (B):** Bestiary (entries by level with a creature-type filter, what you know of the selected enemy, Slayer ranks), Achievements (by category, points, titles, earn dates; hidden ones as ???), Lore (pages found by zone) and Statistics.
+- **Balance** (`npm run sim -- --only zones` and `npm run sim:party`, after tuning):
+  - Champion tier eased (HP ×2.2 and damage ×1.2, from ×3.5 and ×1.35) and packs are two champions (three in the first two zones), because affixes now make each one harder. Roaming champion packs win 29–88% solo, roaming elites 48–98%.
+  - Dungeon bosses 35–83% solo (before: 40–87%), world bosses 23–50% (25–60%). The world bosses of Frostspire, the Stormcoast and the Dark Citadel are party fights now: alone, a hero only beat them in stalls of 80+ of the boss's turns, which enrage ends.
+  - Trials of Apostleship unchanged except the Aspects of Solenne and Hesha (46/50% → 33/30%), which clerics used to win in 300-turn stalls.
+  - Companion classes stay even with the new fights: 77.7–81.3% averaged over fight types (3.6-point spread; the hero alone 64.8%). Companion power retuned: rogue −45%, cleric −75%, ranger −65%, necromancer +105%, mage +50%.
+- 401 unit tests.
+
+### Phase 14: New Game+ and Twilight of the Gods
+- **New Game+** (`engine/ngplus/`, `data/ngPlus.ts`): after any ending, begin NG+ from the **Legacy** panel on the Character screen (two clicks), up to NG+10.
+  - Kept: the hero (levels, classes, trees, gear, gods, reputation, house, bestiary, titles), bags, stash, gold, companions (their recruitment is not asked again), achievements, statistics and lore pages read. Reset: the story and every quest, the map (fog, waypoints, cleared dungeons), the calendar, shops and story flags (`legacy:` flags survive).
+  - The level cap rises to 80 and the world rises with it: levels 1–60 are stretched over 60–80 (the Meadowlands are 60–62, the Dark Citadel 77–80) for every fight, chest and quest reward; levels already at 60+ stay. Each tier past the first adds +25% enemy HP and damage. Zone and dungeon levels on the world map, the sidebar, the quest log and the quest board show the NG+ levels.
+  - Every ending reached is kept in the save's legacy (shown on the Character screen).
+- **Twilight of the Gods** (`data/story/twilight.ts`): a 5-chapter New Game+ arc, paced by the main story (chapters open after main chapters 3, 5, 7 and 8), with 5 new enemies, 8 encounters and 2 new endings.
+  1. *The Gods Fall Silent*: the Hollow Choir at Solenne's shrine, and a voice that remembers your last playthrough.
+  2. *Names in the Margins*: Loremaster Ivo and the Erased on the Spire; the Nameless One is named.
+  3. *War in Heaven*: **pantheon politics.** The council of heralds asks you to end all five old feuds (WIS 30, Apostleship or Legend rank with the Order), or to side with the Court of Dawn or of Dusk, which starts new rivalries; then you fight whoever objects.
+  4. *The Nameless Offer*: accept (**heresy** +40, the title Heretic) or refuse (favor with every god).
+  5. *Twilight of the Gods*: the Nameless One (a scripted boss), or for a heretic the Last Light (all ten gods in one shape); then the ending **The Twilight Ends** (Twilight-Bringer) or **The Unwritten Crown** (the Unwritten).
+- **Pantheon politics** (`rivalsOf`, `setRelation`): your choices can make two gods rivals, allies or end their feud; rival favor penalties and blessing clashes follow the changed relations. The Pantheon lists the changes.
+- **Heresy** (`engine/gods/heresy.ts`, `data/heresy.ts`): devotion to the Nameless One, 0–150. Every point costs 1.5 favor with every god. Three tiers (Whispered 10, Heretic 40, Unwritten 100) grant void damage and resistance and, deeper, damage, at the cost of healing received and Favor Gain. Once you have answered it, the Nameless One rewards slaying the gods' heralds and wielding the void. **Atone** at any temple for 2 gold × level per point.
+  - **8 Forbidden general skills** (4 battle skills: Void Pact, Unmake, Devour Name, Blasphemy; 4 passives), each with a drawback. Only a heretic of their tier may learn them; their **Forbidden Tomes** never drop.
+  - **Forbidden goods** in the Black Market's back room (heretics only): the tomes, plus the Void Draught, the Unwritten Salve and the Tear of a Dead God.
+- **Apostle followers** (`data/followers.ts`): each god's follower (Sunguard of Solenne, Raven of Morrath, Einherjar of Kael...) fights beside its Apostle when called from the Pantheon. It counts as 0.4 of a companion for enemy scaling. Sim (levels 28–60, every class): 64–78% wins with a follower against 69% alone; Hesha's healer helps most.
+- **The Defender path** (NG+3+): an Apostle who has passed a second, non-rival god's trial may **defend** that god too: its Divine blessing (one more slot), the Apostle tier with it, and the title "Defender of X". It ends if you renounce your Apostleship.
+- **UI:** the Legacy panel (Character screen), the heresy and politics panel, follower call and Defender buttons (Pantheon), the Twilight quests in the quest log, NG+ levels on the map; the ending screen points to New Game+.
+- **Achievements:** 11 more (101 → 112) in a new New Game+ & Twilight category: NG+1/3/10, both Twilight endings, Peace in Heaven, heresy tiers, Defender of the Pantheon and Every Story Told (all six endings across playthroughs).
+- **Balance** (solo benchmark heroes at each fight's level, NG+1): Twilight fights 58–98%; the Nameless One 31% (Seryth is 31%), the Last Light 40%.
+- 421 unit tests.
+
+### Phase 15: endgame activities, challenge modes, Ascended and Primordial items
+- **Rifts** (`state/endgameActions.ts`, `data/rifts.ts`): the tiered endgame gauntlet, opened with a **Rift Map** (Black Market; rare loot from level 50) at any town's **Rift Gate**, from level 50.
+  - A run is 3 waves drawn from every zone, then a **Rift Guardian** (a dungeon boss; world bosses too from tier 10), fought back to back. HP and MP carry over, with a 35% respite between waves. Falling or fleeing closes the Rift and spends the map.
+  - **Tiers 1–20:** enemies at your level −3, +1 level every 3 tiers and +8% HP and damage per tier. Clearing a tier opens the next.
+  - **Rift affixes** (10): one from tier 3, two from tier 8, three from tier 14. Bloodlust, Bulwark, Haste, Warded and Deadly toughen enemies; Fragile, Parched and Drained weaken your party for a bounty of more gold and Magic Find; Empowered and Gilded cut both ways.
+  - **Rewards:** gold per wave (×3 for the Guardian), an elite loot roll per wave and three boss rolls for the Guardian, +15% Magic Find per tier, Primordials from the Guardian at tier 10+, and sometimes a Rift pet.
+- **The Boss Rush** (any town, level 30+): all 10 dungeon bosses in road order at your level, back to back. Your best run and fastest full clear are kept; a clear pays 40 gold × level.
+- Rift and Boss Rush fights are set at your level, so NG+ does not stretch them. A run in progress is shown at the Rift Gate (town card) and survives leaving the screen.
+- **Challenge modes** (`data/challenges.ts`), chosen at creation (any combination, with Hardcore): **Ironman** (no buying, no fast travel), **Lone Wolf** (no companions or followers in battle), **Godless** (favor can only fall), **Glass Cannon** (half max HP, +30% damage) and **Nightmare** (enemies +50% HP and +40% damage, you +100% Magic and Gold Find). They show as badges under your name. Rules are enforced in the engine (shops, waypoints, party, favor) and the modifiers flow through `calculateStats`.
+- **Primordial items** (10, `data/items/primordials.ts`): three effects each (The First Word, the Unmade Crown, World-Anchor, Starborn...). Item level 70+, NG+5 or later (or a tier 10+ Rift Guardian), and only from elites, champions and bosses: about 0.06–0.09% of elite and boss drops at NG+5. **Ascended** items (Phase 3) still come from upgrading legendaries and mythics in NG+.
+- **Pets** (9) and **mounts** (5) (`data/pets.ts`, `character/stable.ts`): one pet out at a time for a small bonus (from achievements and, rarely, Rift Guardians); one mount at a time for faster overworld travel (0.5–1.5 minutes a step instead of 2) and fewer ambushes. Three mounts are sold at every town's **Stables**; two are earned (Cartographer, Riftwalker). Pick both on the Character screen.
+- **Achievements:** 14 more (112 → 126, 45 titles): finishing the story in each challenge mode (with titles), Masochist (Hardcore plus two challenges), Rift tiers 1/5/10/15/20, the Boss Rush, and finding a Primordial. Some achievements now bring a pet or mount.
+- **Balance** (scratch sim, every class at 60 with benchmark gear, alone, no potions): full Rift clears 50% at tier 1, 48% at tier 5, 19% at tier 10 and 6% at tier 20. By class at tier 1: rogue, ranger and monk 100%, cleric 83%, bard 17%, and warrior, mage and necromancer 0%. Those three are the weak solo classes from earlier phases; with companions and potions they clear. Fixing them is Phase 16's class pass.
+- 433 unit tests.
+
+### Phase 16: saves, settings, audio, the class pass and the playtest
+- **Saving** (`engine/state/save.ts`): an autosave slot and three manual slots in browser storage (the engine takes a plain key-value store, so tests use a Map). A save is the game state as JSON with the time it was written.
+  - **Versioned migrations:** every field added since the save system began (bestiary, achievements, lifetime stats, legacy, heresy and politics, endgame, challenges, pets and mounts, and the same for companions) gets its default, so older saves load. Saves from a newer version are refused, and a few checks (hero, race, classes, inventory, world, quests, party, clock) turn a damaged save into a message instead of a broken game.
+  - **Autosave** after battles, quest steps and New Game+, every few minutes of play, and when the tab is hidden or closed (it can be turned off). **Export** a slot to a file and **import** it into a slot (checked first). A fallen Hardcore hero's saves are all deleted, and a fallen hero can't be loaded.
+  - The title screen has **Continue** (the newest save), **Load Game**, **New Game** and **Settings**; the Save/Load screen shows each slot's hero, level, classes, NG+ tier, day and play time.
+- **Settings** (`ui/settings.ts`, kept in browser storage): master, music and sound volumes, mute, default battle speed (1×/2×/4×) and auto-battle, autosave, reduce motion and text size.
+- **The menu** (Esc, `ui/menu/menus.ts`): resume, save, load, settings, the keyboard list (also on ?) and quit to title. Screens that use Esc to go back (town, market, workshop) keep it, and in battle Esc only cancels targeting.
+- **Audio** (`ui/audio/audio.ts`): all sound is synthesized with WebAudio, no files. 14 sound effects (hits, crits, misses, heals, deaths, breaks, boss moments, level-ups, loot, achievements, victory, defeat, warnings) and procedural music for six moods (title, town, wild, dungeon, battle, boss), each a pad, bass line and arpeggio over its own chord progression.
+- **Class traits** (`ClassDef.trait`, applied in `characterModifiers` for the primary class only): the class pass that earlier phases left for here. Warrior, mage, necromancer and bard trailed rogue, ranger and monk alone (38–43% average over every zone's packs, dungeon, story and world fights against 84–98%), and cleric lacked boss damage.
+  - **Battle-Hardened** (warrior): 35% more max HP, 15% less damage taken, 30% more physical attack. **Arcane Mastery** (mage): 45% more magic attack, 35% more max HP, 15% less damage taken. **Unholy Vigor** (necromancer): 40% more magic attack, 35% more max HP, 10% less damage taken, 8% lifesteal. **Heroic Presence** (bard): +45% damage, 35% more max HP, 10% less damage taken. **Righteous Wrath** (cleric): +30% damage. Rogue, ranger and monk have none.
+  - Alone, the four now average 69–73% (cleric 79%, monk 85%, rogue 96%, ranger 98%). Traits show at creation and on the Character screen, and in CONTENT.md.
+  - **Companion powers retuned** after the traits (companions are characters, so they gain traits too): every companion class wins 87.5–90.4% overall in `sim:party` (spread 2.3 points; solo 81.2%, up from 79).
+  - **Class trials** got +60% threat to stay a test (63–85% for the other classes at level 15; before the traits 69–90%).
+- **The playtest** (`tests/playthrough.ts`): a driver that plays the main story the way a player would (talking to people in their towns, walking to markers, lighting rune stones, hunting, delivering, fighting) and tries a different reply when a riddle goes wrong.
+  - `tests/story.test.ts` plays it to an ending with a save and reload after every step, and down two different dialogue paths to two different endings.
+  - `npm run playtest` plays it with **every class and real auto-battles**: the hero is caught up to each chapter's level with benchmark gear, companions level along, and the party rests and repairs before each fight. All eight classes reach an ending (13–16 fights, 0–1 lost).
+  - It found that the **story's last four fights were a wall**: the Severance Engine, the Commander of the Black Throne, Seryth and the Shadow of the Unwritten were 0% for four classes beside Aldric, while every earlier chapter was 75–100%. The Engine, Seryth and the Shadow lost 15–30% of their HP and some damage, the two final encounters lost their extra add (the phase adds stay), their telegraphs come a turn later, the Commander lost a sixth of his HP, and the four **enrage at 75 turns** instead of 50 so slow, steady parties can finish. Now 50–100% for every class (the cleric 13% against Seryth on auto-battle, where it heals too little).
+  - It also found that a new hero began with MP short of full when the starting weapon adds MP; a new game now starts at full HP and MP.
+- **Balance after the pass** (`npm run sim`): zones' dungeon bosses 52–100% solo (were 35–83%), world bosses 22–92%, apostle trials 75–100% / 49–59% for the Aspect, normal encounters 98.8% (above the 85–95% band: the early game is gentle). Rifts (scratch sim, every class at 60 alone): full clears 88% at tier 1, 66% at tier 5, 25% at tier 10 and 6% at tier 20 (were 50/48/19/6).
+- 444 unit tests.
 
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
@@ -512,30 +590,43 @@
 - **Party scaling over separate party balance.** The world was tuned for a hero alone, so rather than retune every encounter, enemies scale with the number of companions in the fight.
 - **Escorted NPCs fight on your side under AI control** (as summons without an owner), at your level with extra HP. Losing the battle or losing them fails the escort.
 - **Endings are recorded, not final:** the world stays open after the epilogue, and the ending (with your god, if any) is saved for New Game+ in Phase 14.
+- **Bosses are scripted in data,** keyed by enemy id; the engine knows phases, telegraphs and enrage, never specific bosses. A boss without a script still enrages.
+- **Telegraphs are answered with the existing tools** (Break and Defend) rather than a new dodge action, so every class can counter them.
+- **Adds give nothing**, so a boss can't be farmed through its phases.
+- **The bestiary lives on the character** (like reputation), so Slayer bonuses flow through `characterModifiers` and `calculateStats` like every other bonus. Companions don't keep one.
+- **Achievements reuse the quest condition language** instead of a separate tracker: one evaluator serves quests, dialogue choices and achievements, and adding an achievement is a data entry.
+- **Titles are a list of strings on the character** (earned from quests, factions, Apostleship and achievements), and one can be displayed.
+- **NG+ stretches levels instead of adding a flat offset,** so the first zone is still the easiest and the world still climbs to the new cap (80); fights already at 60+ (Apostle trials, hero-scaled tests) are left alone. Later tiers add threat, not levels.
+- **NG+ starts from the Character screen, not the ending screen,** so you can finish side content in the old world first.
+- **Heresy is a track of its own, not an 11th god's favor,** because the Nameless One is not a member of the pantheon: it has no prayers, blessings or punisher, and every gain is paid for with every god's favor.
+- **Politics change relations, not the gods.** The pantheon data stays fixed; the save records which pairs became rivals, allies or made peace, and every rival lookup goes through `rivalsOf`.
+- **Followers count as part of a companion** (0.4) for enemy scaling: as a full companion they were a net loss (the enemies' extra HP outweighed them), and without any scaling they were worth a whole companion for free.
+- **Rifts and the Boss Rush share one gauntlet engine:** a run is a saved list of fights; `settleBattle` reports each result back, and the run decides what comes next. Fights are pre-rolled when the run opens, so a run can be left and resumed.
+- **Challenge modes are data with rules and modifiers,** so most of what they do goes through `calculateStats` and the battle setup; the few rules that stop actions (shops, waypoints, companions, favor) are checked where those actions happen.
+- **Mounts change step time, not movement,** so the map and fog work unchanged; fractional minutes carry over between steps.
+- **Saves go through a store interface,** so the engine never touches localStorage; migrations fill defaults by field rather than by version step, which keeps any old save loadable with one function.
+- **Class traits are modifiers on the primary class,** not new skills: they go through `calculateStats` like every other bonus, are data on the class, and a second class doesn't stack another trait.
+- **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
+- **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
 ## Known bugs
 - None known.
 
 ## Cut / deferred
-- **Companions' class trees** are auto-built; the skill tree screen edits only your own trees (Phase 16 polish could open companions' trees too). Companion gear is managed on the Party screen, not by dragging onto a paper doll.
-- **Party balance** (companions vary a lot by class) gets its full pass with the balance simulation in Phase 16. The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
-- **Titles** (section 8) move to Phase 13 with feats and achievements. Apostle titles are already earned and stored (and shown on the Pantheon); the title display and other titles come then.
-- **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
-- **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
-- **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
-- Elite affixes, champions, bosses with scripted phases, and the bestiary come in Phase 13. Party companions arrive in Phase 12; the engine already supports multiple party members.
-- **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
-- **The third class slot** works now (level 40, NG+2), but NG+ itself arrives in Phase 14.
-- **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
-- **Forbidden** general skills arrive with heresies in Phase 14 (the category already exists).
-- **Apostle followers** (the god's NPCs as allies) and the rest of **pantheon politics** (rivalries that shift with your choices) come with Twilight of the Gods in Phase 14. God questlines, two politics choices and per-god story chapters arrived in Phase 12.
-- **Two apostles at once** (Defender path, NG+3+) comes with Twilight of the Gods in Phase 14.
+- **Companions' class trees** are auto-built; the skill tree screen edits only your own trees. Companion gear is managed on the Party screen, not by dragging onto a paper doll.
+- **Party balance:** companion classes are even (2.3 points apart, Phase 16). Party-size scaling does not grow with the third companion, so full parties win nearly every fight; and a cleric hero beside a cleric companion still loses to world bosses (two healers can't outdamage the enrage). The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
+- **Hybrid trial balance** depends heavily on the class pair (6–100% for benchmark pairs at level 35 against level-36 mentors; the Plague Doctor's pair is the outlier) because the auto-battler plays some two-class kits badly. It was left as is: a player plays the kit by hand and can level up and return. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
+- **The Defender path** gives the second god's blessing, tier and title, not a second apostle tree, avatar, weapon or edicts (see Design decisions).
+- **Twilight of the Gods** is the same five chapters in every NG+ tier; tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
-- **The Nameless One** is discovered in NG+ (Phase 14); the story foreshadows it.
-- **Forbidden items** for the Black Market come with heresies in Phase 14, and **Rift Maps** (a gold sink) in Phase 15.
-- **Elite affixes, the bestiary (with its damage bonuses) and roaming-elite variety** come in Phase 13. Roaming elites and champion packs already appear on the maps.
+- **Late world bosses** (Frostspire, Stormcoast, Volcanic Rift, Dark Citadel) stay 22–32% for a hero alone: they are party fights. The auto-battler's cleric heals too little against heavy bursts (13% against Seryth with Aldric); played by hand it does better.
+- **Codex extras:** no item compendium or god/class pages in the Codex (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites.
+- **Achievement rewards** are titles, gold, pets and mounts. Portrait frames and **transmog** were cut: items have no visual variants to swap.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
-- **Treasure maps, Rift Maps, keys, pets, mounts, transmog and lore pages** arrive with the systems that use them (Phases 10, 13 and 15).
+- **Treasure maps** were cut: Rift Maps and the dungeons' chests fill that role. Lore pages are collected (Phase 10) and read in the Codex.
+- **Rift leaderboards:** there are none beyond your own best tier and Boss Rush times (no server).
+- **Cloud saves:** saves stay in the browser; export and import move them by hand.
+- **Music** is procedural and short-looped; there are no composed tracks or ambient soundscapes per zone.
 
 ## Next steps
-- Phase 13: bosses with scripted phases, telegraphs and enrage timers (the story bosses are ready to receive them), elite affixes and champions, the bestiary with its damage bonuses, 75+ achievements, titles on display and the codex.
+- All 16 phases are done. Further work would start from the Cut / deferred list: party-size scaling for full parties, hybrid trial tuning, the Codex extras and a companions' skill tree editor.

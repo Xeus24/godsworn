@@ -1,8 +1,9 @@
 import type { EnemyTier } from '../combat/types';
-import type { DeedEvent, DevotionTier, FavorDeed } from '../gods/types';
+import type { DeedEvent, DevotionTier, FavorDeed, GodRelation } from '../gods/types';
 import type { RarityId } from '../items/types';
 import type { PrimaryStat } from '../stats/types';
 import type { EntityKind } from '../world/types';
+import type { LifetimeStat } from '../state/gameState';
 
 // ---------------------------------------------------------------- conditions
 
@@ -33,6 +34,53 @@ export type Cond =
   | { kind: 'dungeonCleared'; dungeon: string }
   | { kind: 'lore'; count: number }
   | { kind: 'time'; time: 'day' | 'night' }
+  /** A lifetime counter (kills, bosses slain, gold earned...) is at least `min`. */
+  | { kind: 'lifetime'; stat: LifetimeStat; min: number }
+  /** Bestiary entries met, or mastered. */
+  | { kind: 'bestiary'; seen?: number; mastered?: number }
+  /** Kills of one enemy (from the bestiary). */
+  | { kind: 'killed'; enemy: string; min?: number }
+  /** A Slayer rank against a creature type, or against any type when omitted. */
+  | { kind: 'slayer'; enemyType?: string; rank: number }
+  /** Quests completed (repeats count), optionally of one kind. */
+  | { kind: 'questsDone'; questKind?: QuestKind; min: number }
+  /** The story reached an ending (a particular one, or any). */
+  | { kind: 'ending'; ending?: string }
+  /** Gods at or above a favor tier. */
+  | { kind: 'favorCount'; tier: DevotionTier; min: number }
+  | { kind: 'classes'; min: number }
+  | { kind: 'hybrids'; min: number }
+  | { kind: 'specialization' }
+  | { kind: 'paragon'; min: number }
+  /** Skills at full mastery. */
+  | { kind: 'mastered'; min: number }
+  /** Companions recruited (and still with you), optionally at an approval. */
+  | { kind: 'companions'; min: number; minApproval?: number }
+  | { kind: 'dungeons'; min: number }
+  | { kind: 'waypoints'; min: number }
+  /** Zones set foot in. */
+  | { kind: 'zones'; min: number }
+  | { kind: 'house' }
+  /** Items of a rarity found. */
+  | { kind: 'rarity'; rarity: RarityId; min?: number }
+  /** Any crafting profession at a level. */
+  | { kind: 'profession'; level: number }
+  | { kind: 'achievements'; min: number }
+  | { kind: 'hardcore' }
+  /** Playing under a challenge mode. */
+  | { kind: 'challenge'; challenge: string }
+  /** Highest Rift tier cleared. */
+  | { kind: 'riftTier'; min: number }
+  /** Boss Rush: full clears, or bosses beaten in one run. */
+  | { kind: 'bossRush'; clears?: number; best?: number }
+  /** Defending a second god (the Defender path). */
+  | { kind: 'defender' }
+  /** Different endings reached across all playthroughs. */
+  | { kind: 'endingsSeen'; min: number }
+  /** A New Game+ tier at least `min`. */
+  | { kind: 'ngPlus'; min: number }
+  /** Heresy at least `min` (or below `max`). */
+  | { kind: 'heresy'; min?: number; max?: number }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };
@@ -122,7 +170,11 @@ export type ActionDef =
   /** Hands in a stage at its turn-in NPC (used by the generated quest dialogue). */
   | { kind: 'turnIn'; quest: string }
   /** Hands over a delivery (used by the generated quest dialogue). */
-  | { kind: 'deliver'; quest: string; objective: string };
+  | { kind: 'deliver'; quest: string; objective: string }
+  /** Heresy toward the Nameless One (negative forgives it). */
+  | { kind: 'heresy'; amount: number }
+  /** Pantheon politics: two gods become rivals, allies, or set their feud aside. */
+  | { kind: 'politics'; a: string; b: string; relation: GodRelation };
 
 // ---------------------------------------------------------------- quests
 
@@ -145,7 +197,7 @@ export interface StageDef {
   onComplete?: ActionDef[];
 }
 
-export type QuestKind = 'main' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty';
+export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty';
 
 export interface RewardDef {
   /** Share of the quest level's XP-to-next-level (0.3 = 30% of a level). */

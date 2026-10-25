@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
 import { allocateAttribute, respecAttributes, respecCost } from '../src/engine/character/attributes';
 import { createCharacter, startingSkillIds, validateName } from '../src/engine/character/create';
-import { characterBaseStats, characterStats } from '../src/engine/character/stats';
+import { characterBaseStats, characterModifiers, characterStats } from '../src/engine/character/stats';
 import { GameSession } from '../src/engine/state/gameState';
 import { makeHero } from './helpers';
 
@@ -16,10 +16,25 @@ describe('character creation', () => {
   it('starts at full HP and MP', () => {
     const hero = makeHero();
     const stats = characterStats(hero);
-    // 50 + VIT 9 x 10 + level 1 x 5
-    expect(stats.maxHp).toBe(145);
-    expect(hero.hp).toBe(145);
+    // (50 + VIT 9 x 10 + level 1 x 5) x 1.35 for the Warrior's Battle-Hardened trait
+    expect(stats.maxHp).toBe(195);
+    expect(hero.hp).toBe(195);
     expect(hero.mp).toBe(stats.maxMp);
+  });
+
+  it('a new game begins at full HP and MP, with the starting gear on', () => {
+    for (const classId of content.classes.ids()) {
+      const s = GameSession.newGame(1, makeHero({ classId }));
+      const st = characterStats(s.player);
+      expect([s.player.hp, s.player.mp]).toEqual([st.maxHp, st.maxMp]);
+    }
+  });
+
+  it('gets the primary class trait, if the class has one', () => {
+    const sources = (classId: string) => characterModifiers(makeHero({ classId })).map((m) => m.source);
+    expect(sources('warrior')).toContain('trait:warrior');
+    expect(sources('rogue').some((src) => src.startsWith('trait:'))).toBe(false);
+    for (const cl of content.classes.all()) if (cl.trait) expect(cl.trait.modifiers.length).toBeGreaterThan(0);
   });
 
   it('knows the class starting skills and the racial active', () => {

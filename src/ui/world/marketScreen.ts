@@ -30,7 +30,10 @@ export class MarketScreen implements Screen {
     this.root = root;
     this.offs.push(this.session.bus.on('stateChanged', () => this.render()));
     const onKey = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape') this.back();
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this.back();
+      }
     };
     window.addEventListener('keydown', onKey);
     this.offs.push(() => window.removeEventListener('keydown', onKey));

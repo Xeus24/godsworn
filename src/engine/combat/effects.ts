@@ -76,7 +76,7 @@ export function applyEffect(b: Battle, owner: Combatant, e: EffectSpec, defaults
     case 'heal': {
       const stats = b.stats(owner);
       for (const t of resolveEffectTargets(b, owner, supportive(e.target), defaults)) {
-        const amount = (e.base ?? 0) + (e.scaling ? stats[e.scaling.stat] * e.scaling.ratio : 0) + (t.maxHp * (e.percentMaxHp ?? 0)) / 100;
+        const amount = (e.base ?? 0) + (e.scaling ? stats[e.scaling.stat] * e.scaling.ratio : 0) + (t.maxHp * (e.percentMaxHp ?? 0)) / 100 / (t.healScale ?? 1);
         healTarget(b, owner, t, amount);
       }
       return;

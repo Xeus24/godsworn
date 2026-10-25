@@ -8,7 +8,15 @@ import { content } from '../src/data';
 import { WEAPON_STAGES } from '../src/data/apostles';
 import { APOSTLESHIP, DEVOTION } from '../src/data/devotion';
 import { UPGRADE_CHANCE } from '../src/engine/economy/enchanting';
-import { MULTICLASS } from '../src/data/progression';
+import { MULTICLASS, PROGRESSION } from '../src/data/progression';
+import { BOSS, PARTY_SCALING } from '../src/data/combat';
+import { ACHIEVEMENT_CATEGORIES } from '../src/data/achievements';
+import { HERESY } from '../src/data/heresy';
+import { NG_PLUS } from '../src/data/ngPlus';
+import { RIFTS } from '../src/data/rifts';
+import { BOSS_RUSH } from '../src/engine/state/endgameActions';
+import { ELITE_AFFIX_RULES } from '../src/data/bestiary/affixes';
+import { BESTIARY, KNOWLEDGE_NAMES } from '../src/data/bestiary/bestiary';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
 import type { ModifierSpec } from '../src/engine/stats/modifiers';
 
@@ -102,10 +110,10 @@ function combatSection(): string {
   const out: string[] = [];
   out.push(`### Status effects (${content.statuses.size})`, '', '| Status | Kind | Effect |', '|---|---|---|');
   for (const st of content.statuses.all()) out.push(`| **${st.name}** | ${st.kind} | ${cell(st.description)} |`);
-  out.push('', `### Class ultimates (${content.classes.size})`, '', '| Class | Ultimate | Effect |', '|---|---|---|');
+  out.push('', `### Class ultimates and traits (${content.classes.size})`, '', '| Class | Ultimate | Effect | Trait (primary class) |', '|---|---|---|---|');
   for (const cls of content.classes.all()) {
     const u = content.skills.get(cls.ultimate);
-    out.push(`| ${cls.name} | **${u.name}** | ${cell(u.description)} |`);
+    out.push(`| ${cls.name} | **${u.name}** | ${cell(u.description)} | ${cls.trait ? `**${cls.trait.name}**: ${cell(cls.trait.description)}` : ''} |`);
   }
   out.push('', `**Songs (${content.songs.size}):** ${content.songs.all().map((s) => `${s.name} (${s.description} Crescendo: ${s.crescendo.description})`).join(' · ')}`);
   out.push('', `**Stances (${content.stances.size}):** ${content.stances.all().map((s) => `${s.name} (${s.description})`).join(' · ')}`, '');
@@ -309,7 +317,7 @@ function economySection(): string {
 
 function storySection(): string {
   const out: string[] = [];
-  const kinds: [string, string][] = [['main', 'Main story'], ['side', 'Side quests'], ['faction', 'Faction questlines'], ['companion', 'Companion quests'], ['god', 'God questlines'], ['class', 'Class trials'], ['hybrid', 'Hybrid trials'], ['bounty', 'Bounties (repeatable daily)']];
+  const kinds: [string, string][] = [['main', 'Main story'], ['twilight', 'Twilight of the Gods (New Game+)'], ['side', 'Side quests'], ['faction', 'Faction questlines'], ['companion', 'Companion quests'], ['god', 'God questlines'], ['class', 'Class trials'], ['hybrid', 'Hybrid trials'], ['bounty', 'Bounties (repeatable daily)']];
   out.push(`${content.quests.size} quests, ${content.npcs.size} NPCs, ${content.dialogues.size} dialogues, ${content.companions.size} companions, ${content.endings.size} endings.`, '');
   for (const [kind, title] of kinds) {
     const list = content.quests.filter((q) => q.kind === kind);
@@ -324,6 +332,13 @@ function storySection(): string {
   out.push('### Endings', '');
   for (const e of content.endings.all()) out.push(`- **${e.name}** (title “${e.title ?? ''}”)${e.godText ? ', with a paragraph for each god’s Apostle' : ''}: ${e.text}`);
   out.push('', '### Companions', '');
+  out.push(`Each companion in a fight gives every enemy ${PARTY_SCALING.enemyHpPerCompanion}% more HP (regeneration still heals as if alone) and +${PARTY_SCALING.enemyDamagePerCompanion}% damage. Companions' attack, magic and divine power, and extra stats, by class (tuned with \`npm run sim:party\` so every class is worth about the same):`, '');
+  out.push('| Class | Power | Extra |', '|---|---|---|');
+  for (const cls of content.classes.all()) {
+    const power = PARTY_SCALING.companionPower[cls.id] ?? PARTY_SCALING.companionPowerDefault;
+    out.push(`| ${cls.name} | ${power >= 0 ? '+' : ''}${power}% | ${(PARTY_SCALING.companionStats[cls.id] ?? []).map(mod).join(', ') || '-'} |`);
+  }
+  out.push('');
   for (const c of content.companions.all()) {
     out.push(`- **${c.name}**, ${c.title}: ${content.races.get(c.raceId).name} ${content.classes.get(c.classId).name} (${content.specializations.get(c.specialization).name}), follows ${content.gods.get(c.god).name}, met in ${content.towns.get(c.town).name}. Likes ${c.likes.map((d) => d.text.toLowerCase()).join(', ')}; dislikes ${c.dislikes.map((d) => d.text.toLowerCase()).join(', ')}.`);
     out.push(`  - Bond: ${c.bond.map((t) => `${t.approval}: ${t.options.map((o) => `${o.name} (${o.description})`).join(' or ')}`).join(' · ')} · Oath: ${c.oath.name} (${c.oath.description})`);
@@ -334,7 +349,69 @@ function storySection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection };
+function codexSection(): string {
+  const out: string[] = [];
+  const pct = (n: number): string => `${Math.round(n * 100)}%`;
+  out.push('### Bosses', '');
+  out.push(`Every miniboss, boss and world boss enrages after ${Object.entries(BOSS.enrageTurns).map(([t, n]) => `${n} of its own turns (${t})`).join(', ')}, and grows angrier every ${BOSS.enrageStackEvery} turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.`, '');
+  out.push(`${content.bossScripts.size} scripted bosses:`, '', '| Boss | Phases | Telegraphs |', '|---|---|---|');
+  for (const sc of content.bossScripts.all()) {
+    const phases = sc.phases.map((ph) => `${ph.hpPct}%: **${ph.name}**${ph.adds?.length ? ` (adds ${ph.adds.map((a) => content.enemies.get(a).name).join(', ')})` : ''}${ph.modifiers?.length ? ` (${ph.modifiers.map(mod).join(', ')})` : ''}${ph.effects?.length ? ' (heals or shields)' : ''}`).join('; ');
+    const tels = sc.telegraphs.map((t) => `${content.skills.get(t.skillId).name} every ${t.every} turns${t.fromPhase ? ` from phase ${t.fromPhase + 1}` : ''}`).join('; ');
+    out.push(`| ${content.enemies.get(sc.id).name}${sc.enrageTurns ? ` (enrages at ${sc.enrageTurns})` : ''} | ${cell(phases) || '-'} | ${cell(tels) || '-'} |`);
+  }
+  out.push('', 'Telegraphed attacks:', '');
+  for (const id of new Set(content.bossScripts.all().flatMap((sc) => sc.telegraphs.map((t) => t.skillId)))) {
+    const sk = content.skills.get(id);
+    out.push(`- **${sk.name}** (${sk.targeting === 'enemy' ? 'one target' : 'whole party'}, ${pct(sk.damage?.multiplier ?? 0)} ${sk.damage?.stat === 'magicAttack' ? 'MAG' : 'ATK'} ${content.elements.get(sk.element).name}): ${sk.description}`);
+  }
+  out.push('', '### Elite affixes', '');
+  out.push(`Elites roll ${ELITE_AFFIX_RULES.perTier.elite} affix, champion packs ${ELITE_AFFIX_RULES.perTier.champion} (shared by the pack). Each affix adds ${ELITE_AFFIX_RULES.xpPerAffix}% XP and prefixes the name.`, '', '| Affix | Effect | Never on |', '|---|---|---|');
+  for (const a of content.eliteAffixes.all()) out.push(`| ${a.name} | ${a.description} | ${a.notFor?.join(', ') ?? '-'} |`);
+  out.push('', '### Bestiary', '');
+  out.push(`- Knowledge per enemy at ${BESTIARY.knowledge.join(' / ')} kills (bosses ${BESTIARY.bossKnowledge.join(' / ')}): ${KNOWLEDGE_NAMES.slice(1).join(', ')}.`);
+  out.push(`- Slayer ranks per creature type at ${BESTIARY.slayerRanks.join(' / ')} kills: +${BESTIARY.slayerDamagePerRank}% damage against that type per rank.`, '');
+  out.push(`### Achievements (${content.achievements.size}, ${content.achievements.all().filter((a) => a.title).length} titles)`, '');
+  for (const cat of ACHIEVEMENT_CATEGORIES) {
+    const list = content.achievements.filter((a) => a.category === cat.id);
+    out.push(`**${cat.name}** (${list.length}): ${list.map((a) => `${a.name}${a.hidden ? ' (hidden)' : ''} (${a.description.replace(/\.$/, '')}; ${a.points} pts${a.title ? `; title “${a.title}”` : ''}${a.gold ? `; ${a.gold} gold` : ''})`).join(' · ')}`, '');
+  }
+  return out.join('\n').trimEnd();
+}
+
+function ngPlusSection(): string {
+  const out: string[] = [];
+  out.push(`- **New Game+** (up to NG+${NG_PLUS.maxTier}) after any ending: the hero, gear, bags, stash, gold, companions, achievements, statistics and lore pages carry over; the story, quests, map, calendar and shops start again. The level cap rises to ${PROGRESSION.ngPlusLevelCap}, world levels 1–${NG_PLUS.levelFrom} stretch over ${NG_PLUS.levelFrom}–${NG_PLUS.levelTo}, and each tier past the first adds +${NG_PLUS.threatPerTier}% enemy HP and damage.`);
+  out.push(`- **Heresy** (0–${HERESY.max}): each point costs ${HERESY.favorCostPerPoint} favor with every god; atonement at a temple costs ${HERESY.atoneGoldPerPointPerLevel} gold × level per point. The Nameless One rewards: ${HERESY.deeds.map((d) => `${d.text.toLowerCase()} (+${d.amount})`).join(', ')}.`, '');
+  out.push('| Heresy tier | From | Effect |', '|---|---|---|');
+  for (const t of HERESY.tiers) out.push(`| ${t.name} | ${t.min} | ${t.description} |`);
+  out.push('', `**Forbidden skills** (${content.generalSkills.filter((g) => g.category === 'forbidden').length}, tomes sold only by the Black Market to heretics of the tier):`, '');
+  for (const g of content.generalSkills.filter((x) => x.category === 'forbidden')) out.push(`- **${g.name}** (${HERESY.tiers[g.heresy ?? 0]?.name}): ${g.description}${g.combatSkill ? ` ${content.skills.get(g.combatSkill).description}` : ''}`);
+  out.push('', '**Forbidden goods:**', '');
+  for (const b of content.items.filter((x) => x.forbidden !== undefined && x.category !== 'book')) out.push(`- **${b.name}** (${HERESY.tiers[b.forbidden ?? 0]?.name}): ${b.description ?? ''}`);
+  out.push('', `**Apostle followers** (an Apostle calls one from the Pantheon; it counts as ${PARTY_SCALING.followerShare} of a companion for enemy scaling): ${content.enemies.filter((e) => e.types.includes('follower')).map((e) => e.name).join(', ')}.`, '');
+  out.push(`**The Defender path** (NG+${APOSTLESHIP.defenderNgPlus}+): an Apostle who has passed a second, non-rival god's trial may defend that god too: its Divine blessing in one more slot, the Apostle tier with it, and the title "Defender of X".`);
+  return out.join('\n');
+}
+
+function endgameSection(): string {
+  const out: string[] = [];
+  out.push(`### Rifts`, '', `Open with a Rift Map at a town's Rift Gate (level ${RIFTS.minLevel}+): ${RIFTS.waves} waves drawn from every zone, then a Rift Guardian (a dungeon boss; world bosses too from tier ${RIFTS.worldBossTier}). Tiers 1–${RIFTS.maxTier}: enemies at your level ${RIFTS.levelOffset} +1 per ${RIFTS.tiersPerLevel} tiers, +${RIFTS.threatPerTier}% HP and damage per tier, ${RIFTS.respitePct}% of HP and MP back between waves. Affixes from tiers ${RIFTS.affixTiers.join(' / ')}. Rewards: ${RIFTS.goldPerLevelPerTier} gold × level × tier per wave (×3 for the Guardian), ${RIFTS.waveLootRolls} elite loot roll per wave and ${RIFTS.guardianLootRolls} boss rolls for the Guardian, +${RIFTS.magicFindPerTier}% Magic Find per tier; Primordials from tier ${RIFTS.primordialTier}; a Rift pet at ${RIFTS.petChance * 100}% + ${RIFTS.petChancePerTier * 100}% per tier.`, '');
+  out.push('| Rift affix | Effect | Bounty |', '|---|---|---|');
+  for (const a of content.riftAffixes.all()) out.push(`| ${a.name} | ${a.description} | ${a.bounty ? `+${a.bounty}% gold and MF` : '-'} |`);
+  out.push('', `### The Boss Rush`, '', `At any town (level ${BOSS_RUSH.minLevel}+): all ${content.dungeons.size} dungeon bosses in road order at your level, HP carried over. A full clear pays ${BOSS_RUSH.goldPerLevel} gold × level; best run and fastest clear are kept.`, '');
+  out.push('### Challenge modes', '');
+  for (const ch of content.challenges.all()) out.push(`- **${ch.name}:** ${ch.description}`);
+  out.push('', `### Primordial items (${content.uniques.filter((u) => u.rarity === 'primordial').length})`, '', 'NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosses, item level 70+.', '');
+  for (const u of content.uniques.filter((x) => x.rarity === 'primordial')) out.push(`- **${u.name}** (${content.items.get(u.baseId).name}): ${u.effectText.join('; ')}.`);
+  out.push('', '### Pets', '');
+  for (const p of content.pets.all()) out.push(`- **${p.name}:** ${p.description} (${p.source})`);
+  out.push('', '### Mounts', '');
+  for (const m of content.mounts.all()) out.push(`- **${m.name}:** ${m.stepMinutes} min per step, ${Math.round((1 - m.encounterMult) * 100)}% fewer ambushes. ${m.description} (${m.price ? `${m.price} gold at the stables` : m.source})`);
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection, ngplus: ngPlusSection, endgame: endgameSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

@@ -1,3 +1,7 @@
+import { petModifiers } from './stable';
+import { challengeHeroModifiers } from './challenges';
+import { heresyModifiers } from '../gods/heresy';
+import { slayerModifiers } from '../bestiary/bestiary';
 import { content, type Content } from '../../data';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
@@ -60,6 +64,11 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...divineModifiers(char, characterBaseStats(char, c), c));
   mods.push(...factionModifiers(char, c), ...houseModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
+  mods.push(...slayerModifiers(char, c), ...heresyModifiers(char), ...challengeHeroModifiers(char, c), ...petModifiers(char, c));
+  // The primary class's trait.
+  const primaryClass = char.classes.find((p) => p.slot === 'primary') ?? char.classes[0];
+  const trait = primaryClass ? c.classes.get(primaryClass.classId).trait : undefined;
+  if (trait && primaryClass) mods.push(...withSource(trait.modifiers, `trait:${primaryClass.classId}`));
   return mods;
 }
 

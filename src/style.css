@@ -443,6 +443,12 @@ input.num {
   border-color: var(--danger);
 }
 
+.toast-achievement {
+  border-color: var(--gold-hi);
+  color: var(--gold-hi);
+  font-weight: bold;
+}
+
 @keyframes toast-in {
   from {
     transform: translateY(-8px);
@@ -734,4 +740,18 @@ input.num {
   .sheet-header {
     flex-wrap: wrap;
   }
+}
+
+.sheet-title {
+  display: block;
+  color: var(--gold-hi);
+  font-size: 0.7em;
+}
+
+/* Reduce motion: no animations or transitions anywhere. */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
 }

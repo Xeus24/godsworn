@@ -1,3 +1,6 @@
+import { hasRule } from '../character/challenges';
+import { HERESY } from '../../data/heresy';
+import { atoneCost, heresyFavorCost, heresyTier } from '../gods/heresy';
 import { content } from '../../data';
 import { APOSTLESHIP, DEVOTION } from '../../data/devotion';
 import { characterBaseStats, characterStats, clampVitals } from '../character/stats';
@@ -26,6 +29,7 @@ import {
   favorOf,
   goldOfferingFavor,
   itemOfferingFavor,
+  judgeDeedList,
   judgeDeeds,
   tierFor,
   tierIndex,
@@ -33,7 +37,7 @@ import {
   type DeedOccurrence,
   type FavorChange,
 } from '../gods/devotion';
-import { ascend, currentEdict, divineWeaponOf, evolveDivineWeapon, forgeDivineWeapon, issueEdict, progressEdict, recordTrialStage, renounce, tickEdict } from '../gods/apostle';
+import { ascend, currentEdict, defend, divineWeaponOf, evolveDivineWeapon, followerOf, forgeDivineWeapon, issueEdict, progressEdict, recordTrialStage, renounce, tickEdict } from '../gods/apostle';
 import { punisherGod, rollPunisher } from '../gods/punishers';
 import type { DeedEvent } from '../gods/types';
 import type { GameSession } from './gameState';
@@ -59,6 +63,8 @@ export class DevotionActions {
    * announces tier changes and new blessing offers, and returns the changes.
    */
   apply(deltas: Record<string, number>, reason: string, raw = false, quiet = false): FavorChange[] {
+    // Godless: favor can only fall.
+    if (hasRule(this.p, 'noFavor')) deltas = Object.fromEntries(Object.entries(deltas).filter(([, v]) => v < 0));
     const changes = applyFavor(this.p, deltas, characterStats(this.p).favorGain, raw);
     for (const ch of changes) {
       this.s.bus.emit('favorChanged', { god: ch.god, previous: ch.before, current: ch.after, reason });
@@ -93,6 +99,34 @@ export class DevotionActions {
     return changes;
   }
 
+  // ------------------------------------------------------------ heresy
+
+  /** Gains (or loses) heresy. Every point gained costs favor with every god. Announces new tiers. */
+  addHeresy(amount: number, reason: string): void {
+    const d = this.p.devotion;
+    const before = heresyTier(this.p);
+    const next = Math.max(0, Math.min(HERESY.max, d.heresy + amount));
+    const gained = next - d.heresy;
+    d.heresy = Math.round(next * 10) / 10;
+    if (gained > 0) this.apply(heresyFavorCost(gained), reason, true, true);
+    const after = heresyTier(this.p);
+    if (after > before) this.s.bus.emit('toast', { kind: 'warning', text: `Heresy: ${HERESY.tiers[after]?.name}. ${HERESY.tiers[after]?.description ?? ''}` });
+    if (after < before) this.s.bus.emit('toast', { kind: 'favor', text: after < 0 ? 'The Nameless One no longer knows your name.' : `Heresy: ${HERESY.tiers[after]?.name}.` });
+    this.changed('heresy');
+  }
+
+  /** Atone at a temple: all heresy forgiven, for gold. Favor already lost stays lost. */
+  atone(): DevotionResult {
+    if (this.p.devotion.heresy <= 0) return { ok: false, reason: 'You have nothing to atone for.' };
+    const town = this.s.world.inTown();
+    if (!town) return { ok: false, reason: 'Atone at a town’s temple.' };
+    const cost = atoneCost(this.p);
+    if (!this.s.spendGold(cost, 'atonement')) return { ok: false, reason: `Atonement costs ${cost} gold.` };
+    this.addHeresy(-this.p.devotion.heresy, 'atonement');
+    this.s.bus.emit('toast', { kind: 'favor', text: 'The priests hear your atonement. The whispers stop.' });
+    return { ok: true };
+  }
+
   // ------------------------------------------------------------ apostleship
 
   /** Ascends as the god's Apostle; the divine weapon goes into your bags. */
@@ -111,6 +145,29 @@ export class DevotionActions {
     if (edict) this.s.bus.emit('toast', { kind: 'quest', text: `Divine Edict: ${edict.text}` });
     this.changed('apostle');
     return { ok: true };
+  }
+
+  /** The Defender path (NG+3+): an Apostle also takes up a second god's cause. */
+  defend(god: string): DevotionResult {
+    const result = defend(this.p, god, this.s.state.ngPlus);
+    if (!result.ok) return result;
+    this.s.bus.emit('toast', { kind: 'blessing', text: `You are the Defender of ${content.gods.get(god).name}! Its Divine blessing is yours as well.` });
+    this.changed('defender');
+    return { ok: true };
+  }
+
+  /** Calls (or dismisses) your god's follower: it fights beside you, and enemies grow tougher as for a companion. */
+  callFollower(on: boolean): DevotionResult {
+    if (!this.p.devotion.apostle) return fail('Only an Apostle has a follower.');
+    this.p.devotion.followerCalled = on;
+    this.changed('follower');
+    return { ok: true };
+  }
+
+  /** The follower to bring into the next fight, if any. */
+  follower(): string | undefined {
+    if (hasRule(this.p, 'noCompanions')) return undefined;
+    return followerOf(this.p);
   }
 
   /** Renounces Apostleship: the god turns Hated, its weapon goes to the reliquary, its heralds hunt you. */
@@ -343,6 +400,11 @@ export class DevotionActions {
     this.advanceEdict(occ);
     this.tickEdicts();
     this.s.world.factionDeeds(occ);
+    // The Nameless One notices only those who have answered it.
+    if (this.p.devotion.heresy > 0) {
+      const heresy = judgeDeedList(HERESY.deeds, occ);
+      if (heresy > 0) this.addHeresy(heresy, 'heresy');
+    }
     const hunt = this.p.devotion.hunt;
     if (hunt && --hunt.battles <= 0) delete this.p.devotion.hunt;
     return changes;

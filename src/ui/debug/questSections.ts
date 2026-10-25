@@ -95,4 +95,30 @@ export function registerQuestSections(panel: DebugPanel, getSession: () => GameS
       );
     },
   });
+
+  panel.addSection({
+    title: 'Codex',
+    render: (refresh, log) => {
+      const s = getSession();
+      if (!s) return noGame();
+      return el(
+        'div',
+        {},
+        el('pre', {}, `achievements ${Object.keys(s.state.achievements).length}/${content.achievements.size} · bestiary ${Object.keys(s.player.bestiary).length} · titles ${s.player.devotion.titles.length}`),
+        el('div', { class: 'row' }, debugButton('Bestiary: +10 kills of everything', () => {
+          for (const e of content.enemies.all()) s.player.bestiary[e.id] = (s.player.bestiary[e.id] ?? 0) + 10;
+          s.achievements.check();
+          log('bestiary +10');
+          refresh();
+        }), debugButton('Earn all achievements', () => {
+          for (const a of content.achievements.all()) {
+            s.state.achievements[a.id] ??= s.state.clock.day;
+            if (a.title && !s.player.devotion.titles.includes(a.title)) s.player.devotion.titles.push(a.title);
+          }
+          log('all achievements');
+          refresh();
+        })),
+      );
+    },
+  });
 }

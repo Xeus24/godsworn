@@ -29,6 +29,8 @@ export interface GeneralSkillDef {
   utility?: { kind: UtilityKind; perRank: number };
   /** Divine skills: the god whose blessing is needed to learn them. */
   god?: string;
+  /** Forbidden skills: the heresy tier (index into HERESY.tiers) needed to learn them. */
+  heresy?: number;
   /** Mechanic flags granted while slotted (e.g. armorTraining). */
   flags?: string[];
   requirements?: { level?: number; stats?: Partial<PrimaryStats> };

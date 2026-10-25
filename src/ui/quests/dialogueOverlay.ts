@@ -107,7 +107,8 @@ export class EndingOverlay {
         el('h2', {}, def?.name ?? ''),
         el('p', {}, def?.text ?? ''),
         ...(godText && ending?.god ? [el('p', { style: `color:${content.gods.get(ending.god).color}` }, godText)] : []),
-        ...(def?.title ? [el('p', { class: 'dim small' }, `Title earned: ${def.title}. The world is still yours to explore; what comes after the twilight is another story.`)] : []),
+        ...(def?.title ? [el('p', { class: 'dim small' }, `Title earned: ${def.title}.`)] : []),
+        el('p', { class: 'dim small' }, `The world is still yours to explore. When you are ready, begin New Game+${session.state.ngPlus + 1} from the Character screen: the story starts over with your hero, and what comes after the twilight is another story.`),
         done,
       ),
     );

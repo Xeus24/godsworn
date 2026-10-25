@@ -41,6 +41,8 @@ export type StockRule =
   | { kind: 'gear'; categories: ('weapon' | 'armor' | 'accessory')[]; rarities: RarityId[]; count: number }
   | { kind: 'recipes'; professions: CraftingProfession[]; count: number }
   | { kind: 'divine' }
+  /** Forbidden goods for heretics (heresy tier at least the item's). */
+  | { kind: 'forbidden'; count: number }
   | { kind: 'uniques'; rarities: RarityId[]; count: number };
 
 export interface ShopDef {

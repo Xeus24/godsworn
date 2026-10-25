@@ -49,4 +49,6 @@ export const APOSTLESHIP = {
   /** Apostasy: the old god becomes Hated and its heralds hunt you this many battles, at this chance. */
   huntBattles: 15,
   huntChance: 0.5,
+  /** The Defender path: from this NG+ tier an Apostle may also defend a second (non-rival) god. */
+  defenderNgPlus: 3,
 } as const;

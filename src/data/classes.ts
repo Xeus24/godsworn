@@ -1,3 +1,4 @@
+import type { ModifierSpec } from '../engine/stats/modifiers';
 import type { PrimaryStats } from '../engine/stats/types';
 
 export interface ClassDef {
@@ -12,6 +13,8 @@ export interface ClassDef {
   color: string;
   /** The class's unique mechanic. */
   mechanic: { name: string; description: string };
+  /** A passive trait of the primary class (tuned so every class holds its own alone). */
+  trait?: { name: string; description: string; modifiers: ModifierSpec[] };
   /** Class resource id; omitted for classes that run purely on MP. */
   resource?: string;
   /** Level 1 primaries before race bonuses. */
@@ -43,6 +46,7 @@ export const CLASSES: ClassDef[] = [
     difficulty: 1,
     color: '#c0392b',
     mechanic: { name: 'Rage', description: 'Builds when you deal or take damage. Spend it on powerful strikes.' },
+    trait: { name: 'Battle-Hardened', description: '35% more max HP, 15% less damage taken and 30% more physical attack.', modifiers: [{ stat: 'maxHp', type: 'more', value: 35 }, { stat: 'damageTaken', type: 'more', value: -15 }, { stat: 'physicalAttack', type: 'more', value: 30 }] },
     resource: 'rage',
     baseStats: { str: 9, dex: 5, int: 2, vit: 8, wis: 3, luk: 4, fai: 3 },
     growth: { str: 2, dex: 0.5, int: 0.1, vit: 1.5, wis: 0.3, luk: 0.3, fai: 0.3 },
@@ -67,6 +71,7 @@ export const CLASSES: ClassDef[] = [
       name: 'Elemental Combos',
       description: 'Burn + Ice = Shatter (burst damage). Wet + Lightning = Conduct (chains to all enemies).',
     },
+    trait: { name: 'Arcane Mastery', description: '45% more magic attack, 35% more max HP and 15% less damage taken.', modifiers: [{ stat: 'magicAttack', type: 'more', value: 45 }, { stat: 'maxHp', type: 'more', value: 35 }, { stat: 'damageTaken', type: 'more', value: -15 }] },
     baseStats: { str: 2, dex: 4, int: 10, vit: 4, wis: 7, luk: 4, fai: 3 },
     growth: { str: 0.1, dex: 0.3, int: 2, vit: 0.6, wis: 1.3, luk: 0.3, fai: 0.4 },
     weapons: ['staff', 'wand', 'tome', 'orb', 'dagger'],
@@ -107,6 +112,7 @@ export const CLASSES: ClassDef[] = [
     difficulty: 1,
     color: '#e8c84a',
     mechanic: { name: 'Faith & Overheal', description: 'Healing and smiting build Faith. Overhealing turns into a damage shield.' },
+    trait: { name: 'Righteous Wrath', description: '+30% damage.', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 30 }] },
     resource: 'faith',
     baseStats: { str: 4, dex: 3, int: 4, vit: 6, wis: 6, luk: 3, fai: 8 },
     growth: { str: 0.4, dex: 0.2, int: 0.4, vit: 1, wis: 1.2, luk: 0.2, fai: 1.6 },
@@ -148,6 +154,7 @@ export const CLASSES: ClassDef[] = [
     difficulty: 3,
     color: '#6b3fa0',
     mechanic: { name: 'Corpses & Soul Shards', description: 'Fallen enemies leave corpses that power summons. Soul Shards fuel dark magic.' },
+    trait: { name: 'Unholy Vigor', description: '40% more magic attack, 35% more max HP, 10% less damage taken and 8% lifesteal.', modifiers: [{ stat: 'magicAttack', type: 'more', value: 40 }, { stat: 'maxHp', type: 'more', value: 35 }, { stat: 'damageTaken', type: 'more', value: -10 }, { stat: 'lifesteal', type: 'flat', value: 8 }] },
     resource: 'soulShards',
     baseStats: { str: 2, dex: 3, int: 9, vit: 5, wis: 8, luk: 3, fai: 4 },
     growth: { str: 0.1, dex: 0.3, int: 1.8, vit: 0.8, wis: 1.4, luk: 0.2, fai: 0.4 },
@@ -189,6 +196,7 @@ export const CLASSES: ClassDef[] = [
     difficulty: 2,
     color: '#c45bb0',
     mechanic: { name: 'Songs & Crescendo', description: 'One song aura at a time buffs the party. Switching songs triggers a Crescendo.' },
+    trait: { name: 'Heroic Presence', description: '+45% damage, 35% more max HP and 10% less damage taken.', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 45 }, { stat: 'maxHp', type: 'more', value: 35 }, { stat: 'damageTaken', type: 'more', value: -10 }] },
     resource: 'verse',
     baseStats: { str: 3, dex: 6, int: 6, vit: 5, wis: 5, luk: 6, fai: 3 },
     growth: { str: 0.3, dex: 1, int: 0.9, vit: 0.8, wis: 0.7, luk: 1, fai: 0.3 },

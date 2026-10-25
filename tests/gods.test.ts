@@ -179,7 +179,8 @@ describe('major blessings', () => {
   });
 
   it('Hated gods curse you with more damage taken', () => {
-    const hero = makeHero();
+    // A rogue: no class trait scaling damage taken.
+    const hero = makeHero({ classId: 'rogue' });
     const before = characterStats(hero).damageTaken;
     hero.devotion.favor.vex = -80;
     expect(characterStats(hero).damageTaken).toBe(before + DEVOTION.hatedCurse);
