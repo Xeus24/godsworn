@@ -57,6 +57,10 @@ export function renderPreview(char: Character, hardcore: boolean): HTMLElement {
     ...Object.keys(char.skills).map((id) => skillCard(content.skills.get(id))),
     el('h3', {}, `Racial Passive: ${race.passive.name}`),
     el('p', {}, race.passive.description),
+    el('h3', {}, `${race.name} Lore`),
+    el('p', { class: 'dim small' }, `Homeland: ${race.flavor.homeland}`),
+    el('p', {}, race.flavor.lore),
+    el('p', { class: 'dim' }, race.flavor.saying),
     el('h3', {}, sign.name),
     el('p', {}, el('span', { style: `color:${god.color}` }, `${god.name}, ${god.domain}. `), sign.description),
   );
