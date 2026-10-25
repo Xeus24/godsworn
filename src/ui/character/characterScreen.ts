@@ -1,5 +1,6 @@
 import { canStartNgPlus, startNgPlus } from '../../engine/ngplus/ngplus';
 import { content } from '../../data';
+import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { difficultyIndex } from '../../data/difficulty';
 import { allocatedTotal, respecCost } from '../../engine/character/attributes';
 import { paragonRank } from '../../engine/character/paragon';
@@ -157,6 +158,8 @@ export class CharacterScreen implements Screen {
       ...(p.classes.length > 1 ? [this.xpSplitPanel()] : []),
     );
 
+    const late = endgameUnlocked(s.state);
+    const own = s.player.stable.pets.length + s.player.stable.mounts.length > 0;
     const skills = el(
       'section',
       { class: 'panel' },
@@ -196,7 +199,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, this.titles(), this.stable(), this.legacy(), classes, this.reputation(), skills, paragon),
+          el('div', { class: 'sheet-col' }, this.titles(), ...(late || own ? [this.stable()] : []), ...(late ? [this.legacy()] : []), classes, this.reputation(), skills, ...(late ? [paragon] : [])),
         ),
       ),
     );

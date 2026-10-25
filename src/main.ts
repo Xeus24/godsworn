@@ -5,7 +5,8 @@ import './ui/tree/tree.css';
 import './ui/general/general.css';
 import './ui/pantheon/pantheon.css';
 import { content, validateContent } from './data';
-import { highestNgPlus, recordNgPlus } from './ui/profile';
+import { endgameUnlocked } from './engine/endgame/unlocked';
+import { highestNgPlus, recordEndgame, recordNgPlus } from './ui/profile';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
@@ -173,6 +174,7 @@ function attach(s: GameSession): void {
   session = s;
   lastAutosave = Date.now();
   recordNgPlus(s.state.ngPlus);
+  checkEndgame(s, false);
   s.bus.on('toast', ({ kind, text }) => {
     toasts.show(kind, text);
     if (kind === 'level') audio().play('levelUp');
@@ -182,6 +184,7 @@ function attach(s: GameSession): void {
   });
   s.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
   s.bus.on('stateChanged', ({ reason }) => {
+    checkEndgame(s, true);
     if (reason === 'ngPlus') {
       const before = highestNgPlus();
       recordNgPlus(s.state.ngPlus);
@@ -191,6 +194,16 @@ function attach(s: GameSession): void {
     }
     if (reason === 'battle' || reason === 'ngPlus' || reason === 'quest') autosave(reason === 'battle' ? 0 : AUTOSAVE_EVERY_MS);
   });
+}
+
+/** Notices when the hero reaches endgame: remembers it for the player and (once per legend) announces what opened up. */
+function checkEndgame(s: GameSession, announce: boolean): void {
+  if (!endgameUnlocked(s.state)) return;
+  recordEndgame();
+  const key = 'legacy:endgameAnnounced';
+  if (s.state.flags[key]) return;
+  s.state.flags[key] = true;
+  if (announce) toasts.show('level', 'Endgame reached! Rifts, the Boss Rush, mounts, pets and New Game+ are now open.');
 }
 
 const AUTOSAVE_EVERY_MS = 5 * 60 * 1000;

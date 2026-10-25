@@ -1,3 +1,4 @@
+import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { content } from '../../data';
 import { canCraft, forgeBases, gatheringLevel, MAX_PROFESSIONS, professionLevel, recipeGold, XP_PER_LEVEL } from '../../engine/economy/crafting';
 import { ASCEND_COST, maxSockets, qualityCost, rerollCost, socketCost, upgradeChance, upgradeCost, type ServiceCost } from '../../engine/economy/enchanting';
@@ -189,7 +190,7 @@ export class WorkshopScreen implements Screen {
       ...(affixes.length ? [el('div', { class: 'small dim' }, `Reroll an affix: ${this.costText(rerollCost(p, item))}`), el('div', { class: 'tabs wrap' }, ...affixes)] : []),
       el('div', { class: 'service' }, this.btn(`Add a socket (${item.sockets.length}/${maxSockets(item)})`, () => this.say(s.economy.addSocket(loc)), item.sockets.length >= maxSockets(item)), el('span', { class: 'small dim' }, this.costText(socketCost(p, item)))),
       el('div', { class: 'service' }, this.btn(`Raise quality (${content.qualities.get(item.quality).name})`, () => this.say(s.economy.raiseQuality(loc)), item.quality === 'masterwork'), el('span', { class: 'small dim' }, this.costText(qualityCost(p, item)))),
-      el('div', { class: 'service' }, this.btn('Ascend', () => this.say(s.economy.ascend(loc)), s.state.ngPlus < 1), el('span', { class: 'small dim' }, s.state.ngPlus < 1 ? 'New Game+ only.' : this.costText(ASCEND_COST))),
+      ...(endgameUnlocked(s.state) ? [el('div', { class: 'service' }, this.btn('Ascend', () => this.say(s.economy.ascend(loc)), s.state.ngPlus < 1), el('span', { class: 'small dim' }, s.state.ngPlus < 1 ? 'New Game+ only.' : this.costText(ASCEND_COST)))] : []),
     );
     return panel;
   }

@@ -1,6 +1,6 @@
 import { content } from '../../data';
 import { raceUnlocked, raceUnlockText } from '../../engine/character/races';
-import { highestNgPlus } from '../profile';
+import { endgameSeen, highestNgPlus } from '../profile';
 import { DEFAULT_DIFFICULTY, DIFFICULTIES, type DifficultyId } from '../../data/difficulty';
 import { createCharacter, NAME_MAX_LENGTH, validateName } from '../../engine/character/create';
 import type { Character } from '../../engine/character/types';
@@ -84,7 +84,7 @@ export class CreationScreen implements Screen {
         hardcore,
         el('span', {}, 'Hardcore: death is permanent'),
       ),
-      el(
+      ...(!endgameSeen() ? [] : [el(
         'details',
         { class: 'small' },
         el('summary', {}, 'Challenge modes'),
@@ -95,7 +95,7 @@ export class CreationScreen implements Screen {
           });
           return el('label', { class: 'checkbox', for: `challenge-${ch.id}`, title: ch.description }, box, el('span', {}, `${ch.name}: ${ch.description}`));
         }),
-      ),
+      )]),
       el('div', { class: 'creation-actions' }, this.beginButton, randomize, back),
     );
 
@@ -151,7 +151,7 @@ export class CreationScreen implements Screen {
       ),
       this.group(
         'Race',
-        content.races.all(),
+        content.races.all().filter((r) => !r.unlock || endgameSeen()),
         this.choice.raceId,
         (r) => [r.name, raceUnlocked(r, highestNgPlus()) ? r.passive.name : `Locked: ${raceUnlockText(r)}`],
         (id) => (this.choice.raceId = id),

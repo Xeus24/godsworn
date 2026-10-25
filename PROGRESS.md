@@ -609,6 +609,10 @@
 - **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
+### Endgame stays hidden until endgame (added after Phase 16)
+- `engine/endgame/unlocked.ts`: endgame opens when the hero reaches the level cap, finishes the story, or is in New Game+. Until then the UI hides the Rift Gate and Boss Rush, the Stables (unless you own a mount), the Pet & Mount and Legacy (New Game+) panels, the Paragon board, the workshop's Ascend, and the Defender path. A toast announces it once.
+- On the creation screen, challenge modes and the New Game+ races stay hidden until any of your heroes has reached endgame (kept in the browser profile, `ui/profile.ts`).
+
 ### New Game+ races (added after Phase 16)
 - Five races, one per two NG+ tiers (NG+2 Gnome, NG+4 Fae, NG+6 Giant, NG+8 Dragon, NG+10 Primordial). No stat penalties; stat points rise 8, 11, 14, 17, 25 and passives and actives grow with them. The Dragon is deliberately not the strongest: the Primordial is.
 - Unlocks are per player, not per save: the highest NG+ tier any of your heroes reaches is kept in browser storage (`ui/profile.ts`), so a new character can pick a race once you have reached its tier. Locked races show greyed out on the creation screen. New portraits, lore and a racial active skill for each.

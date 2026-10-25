@@ -1,3 +1,4 @@
+import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { HERESY } from '../../data/heresy';
 import { atoneCost, heresyTierDef } from '../../engine/gods/heresy';
 import { content } from '../../data';
@@ -303,7 +304,7 @@ export class PantheonScreen implements Screen {
       el('p', { class: 'dim small' }, `Three stages, fought at your level. Apostles gain a 20-node apostle tree, a Divine Avatar, a god-bound weapon, a Divine blessing (with its own slot) and a title. You may serve only one god as Apostle.`),
       el('div', { class: 'trial-grid' }, ...stages),
       ...(done >= 3 ? [this.btn(`Ascend as Apostle of ${name}`, () => this.say(s.devotion.ascend(god)), !ascend.ok, 'primary'), ...(!ascend.ok ? [el('div', { class: 'dim small' }, ascend.reason)] : [])] : []),
-      ...(done >= 3 && apostle ? this.defenderSection(god) : []),
+      ...(done >= 3 && apostle && endgameUnlocked(s.state) ? this.defenderSection(god) : []),
     ];
   }
 

@@ -1,28 +1,50 @@
-/** Progress that belongs to the player rather than to one save: the highest New Game+ tier reached on any hero. */
+/** Progress that belongs to the player rather than to one save: the highest New Game+ tier reached on any hero, and whether any hero has reached endgame. */
 const KEY = 'godsworn:profile';
-let highest = read();
 
-function read(): number {
+interface Profile {
+  highestNgPlus: number;
+  endgame: boolean;
+}
+
+function read(): Profile {
   try {
     const raw = localStorage.getItem(KEY);
-    const n = raw ? Number((JSON.parse(raw) as { highestNgPlus?: number }).highestNgPlus) : 0;
-    return Number.isFinite(n) ? n : 0;
+    const p = raw ? (JSON.parse(raw) as Partial<Profile>) : {};
+    const n = Number(p.highestNgPlus);
+    return { highestNgPlus: Number.isFinite(n) ? n : 0, endgame: p.endgame === true || n > 0 };
   } catch {
-    return 0;
+    return { highestNgPlus: 0, endgame: false };
+  }
+}
+
+let profile = read();
+
+function store(): void {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(profile));
+  } catch {
+    // Storage may be unavailable: the record lasts this session.
   }
 }
 
 export function highestNgPlus(): number {
-  return highest;
+  return profile.highestNgPlus;
+}
+
+/** True once any hero of yours has reached endgame: challenge modes and the New Game+ races then show on the creation screen. */
+export function endgameSeen(): boolean {
+  return profile.endgame;
+}
+
+export function recordEndgame(): void {
+  if (profile.endgame) return;
+  profile = { ...profile, endgame: true };
+  store();
 }
 
 /** Remembers a tier (only ever raises the record). */
 export function recordNgPlus(tier: number): void {
-  if (tier <= highest) return;
-  highest = tier;
-  try {
-    localStorage.setItem(KEY, JSON.stringify({ highestNgPlus: highest }));
-  } catch {
-    // Storage may be unavailable: the record lasts this session.
-  }
+  if (tier <= profile.highestNgPlus) return;
+  profile = { highestNgPlus: tier, endgame: true };
+  store();
 }
