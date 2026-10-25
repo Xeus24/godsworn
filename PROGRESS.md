@@ -609,6 +609,11 @@
 - **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
+### Battle effect tooltips, stats window and town layout (added after Phase 16)
+- Hover any buff or status in battle (the icons under each unit and the chips under your party's bars) to see what it does right now: description, damage or healing per turn, stat changes, stacks, turns left and who applied it (`ui/combat/effectText.ts`).
+- A movable, resizable **stats window** (Stats button or T in battle, or the setting in Settings) lists every stat of any unit in the fight (attributes, offense, defense, utility, all nine elements), live with buffs and effects; green is above the unit's out-of-combat value, red below. Its position and size are remembered.
+- **Town layout:** "Rearrange layout" in any town lets you drag the cards (or use the arrows) into any order; the layout is saved and shared by every town, with a reset button.
+
 ### Achievement point milestones (added after Phase 16)
 - Achievement points used to be only a score. Eight milestones (100 to 2,900 of the 2,985 points) now each give a permanent bonus: XP, Magic Find, gold find, max HP, damage, favor, crit and finally all resistances. They stack and are kept on the hero (`achievementPoints`, rebuilt from earned achievements for older saves; save version 16).
 - The Codex Achievements tab has a "What points do" panel listing every milestone, which are active and how far the next one is. A toast announces each milestone as it is passed.

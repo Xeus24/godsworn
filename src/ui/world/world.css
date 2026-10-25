@@ -311,3 +311,17 @@
   border-radius: 4px;
   cursor: help;
 }
+
+.town-grid.arranging .town-card.movable {
+  cursor: grab;
+  outline: 2px dashed #6a5a8a;
+}
+
+.town-card.dragging {
+  opacity: 0.4;
+}
+
+.card-mover {
+  justify-content: flex-end;
+  gap: 4px;
+}

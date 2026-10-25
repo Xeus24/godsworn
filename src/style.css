@@ -760,3 +760,11 @@ body.reduce-motion *::after {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+.tip-good {
+  color: #6fdc8a;
+}
+
+.tip-bad {
+  color: #e8715a;
+}

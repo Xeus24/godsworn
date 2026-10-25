@@ -64,7 +64,7 @@ export class SettingsOverlay extends Overlay {
       input.addEventListener('input', () => updateSettings({ [key]: Number(input.value) / 100 } as Partial<Settings>));
       return el('label', { class: 'setting-row' }, el('span', {}, label), input);
     };
-    const check = (label: string, key: 'muted' | 'autoBattle' | 'autosave' | 'reduceMotion'): HTMLElement => {
+    const check = (label: string, key: 'muted' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion'): HTMLElement => {
       const input = el('input', { type: 'checkbox' }) as HTMLInputElement;
       input.checked = s[key];
       input.addEventListener('change', () => updateSettings({ [key]: input.checked } as Partial<Settings>));
@@ -87,6 +87,7 @@ export class SettingsOverlay extends Overlay {
       el('h3', {}, 'Battle'),
       select<number>('Battle speed', [[1, '1×'], [2, '2×'], [4, '4×']], s.battleSpeed, (v) => updateSettings({ battleSpeed: v as 1 | 2 | 4 })),
       check('Start battles on auto-battle', 'autoBattle'),
+      check('Show the movable stats window in battles (also the Stats button or T)', 'statsWindow'),
       el('h3', {}, 'Game'),
       check('Autosave (after battles, in towns and every few minutes)', 'autosave'),
       check('Reduce motion (no animations)', 'reduceMotion'),
@@ -111,6 +112,7 @@ export const KEYS: [string, string][] = [
   ['G', 'World'],
   ['WASD / arrows', 'Walk; E to use; M for the world map'],
   ['1–9', 'Battle: skills; dialogue: choices'],
+  ['T', 'Battle: the movable stats window'],
   ['Esc', 'Menu (save, load, settings)'],
   ['?', 'This list'],
   ['`', 'Developer panel'],

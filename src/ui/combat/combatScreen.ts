@@ -11,10 +11,12 @@ import { itemName } from '../../engine/items/naming';
 import { settleBattle, type BattleRewards } from '../../engine/state/battleResults';
 import type { GameSession } from '../../engine/state/gameState';
 import { itemIconUrl } from '../art/itemIcons';
-import { attachTooltip, hideTooltip } from '../components/tooltip';
+import { attachTooltip, hideTooltip, showTooltip } from '../components/tooltip';
 import { skillCostText } from '../format';
 import { el, type Screen } from '../screen';
 import { CombatScene } from './combatScene';
+import { effectsOf, effectTooltip } from './effectText';
+import { StatsWindow } from './statsWindow';
 
 /** Base delay per event type at 1x speed, in ms. */
 const EVENT_DELAY: Partial<Record<BattleEvent['type'], number>> = {
@@ -63,6 +65,7 @@ export class CombatScreen implements Screen {
   private logLines: string[] = [];
   private finished = false;
   private rewards: BattleRewards | undefined;
+  private statsWin: StatsWindow | undefined;
   private keyHandler = (e: KeyboardEvent): void => this.onKey(e);
 
   private timelineNode = el('div', { class: 'combat-timeline' });
@@ -76,7 +79,24 @@ export class CombatScreen implements Screen {
     this.battle = opts.battle;
     this.scene = new CombatScene(this.battle);
     this.scene.onClick = (id) => this.pickTarget(id);
+    this.scene.onEffectHover = (e, unit, fx) => showTooltip(e, effectTooltip(this.battle, unit, fx));
+    this.scene.onEffectLeave = hideTooltip;
   }
+
+  /** Opens or closes the movable stats window (and remembers the choice). */
+  private toggleStats(on = !this.statsWin): void {
+    if (on && !this.statsWin) {
+      this.statsWin = new StatsWindow(this.battle, () => this.toggleStats(false));
+      document.body.append(this.statsWin.element);
+    } else if (!on && this.statsWin) {
+      this.statsWin.element.remove();
+      this.statsWin = undefined;
+    }
+    updateSettings({ statsWindow: on });
+    this.statsBtn?.classList.toggle('active', on);
+  }
+
+  private statsBtn: HTMLElement | undefined;
 
   mount(root: HTMLElement): void {
     const speedBtns = [1, 2, 4].map((n) => {
@@ -96,23 +116,29 @@ export class CombatScreen implements Screen {
       autoBtn.classList.toggle('active', this.auto);
       if (this.auto && this.battle.current && !this.playing) this.step();
     });
+    this.statsBtn = el('button', { class: `tab${settings().statsWindow ? ' active' : ''}`, title: 'A movable window with every stat and effect (T)' }, 'Stats (T)');
+    this.statsBtn.addEventListener('click', () => this.toggleStats());
     const stage = el('div', { class: 'combat-stage' }, this.scene.canvas, this.overlay);
     root.append(
       el(
         'div',
         { class: 'combat-screen' },
-        el('div', { class: 'combat-top' }, this.timelineNode, el('div', { class: 'tabs combat-controls' }, ...speedBtns, autoBtn)),
+        el('div', { class: 'combat-top' }, this.timelineNode, el('div', { class: 'tabs combat-controls' }, ...speedBtns, autoBtn, this.statsBtn)),
         stage,
         el('div', { class: 'combat-bottom' }, this.partyNode, this.commandNode, this.logNode),
       ),
     );
     window.addEventListener('keydown', this.keyHandler);
+    if (settings().statsWindow) this.toggleStats(true);
     this.scene.start();
     this.enqueue(startBattle(this.battle));
     this.step();
   }
 
   unmount(): void {
+    this.statsWin?.element.remove();
+    this.statsWin = undefined;
+    hideTooltip();
     this.scene.stop();
     clearTimeout(this.timer);
     window.removeEventListener('keydown', this.keyHandler);
@@ -165,7 +191,7 @@ export class CombatScreen implements Screen {
     const delay = (EVENT_DELAY[e.type] ?? 90) / this.speed;
     this.timer = window.setTimeout(() => {
       this.playing = false;
-      if (e.type === 'action' || e.type === 'death' || e.type === 'summon' || e.type === 'turn' || e.type === 'boss') this.renderPanels();
+      if (e.type === 'action' || e.type === 'status' || e.type === 'death' || e.type === 'summon' || e.type === 'turn' || e.type === 'boss') this.renderPanels();
       this.step();
     }, delay);
   }
@@ -203,6 +229,10 @@ export class CombatScreen implements Screen {
   // ---------------------------------------------------------- input
 
   private onKey(e: KeyboardEvent): void {
+    if ((e.key === 't' || e.key === 'T') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      this.toggleStats();
+      return;
+    }
     if (this.finished || !this.battle.current || !this.battle.isPlayerControlled(this.battle.current) || this.playing) return;
     if (e.key === 'Escape') {
       e.preventDefault();
@@ -288,6 +318,7 @@ export class CombatScreen implements Screen {
   }
 
   private renderPanels(): void {
+    this.statsWin?.refresh();
     const members = this.battle.combatants.filter((x) => x.side === 'party' && (x.kind === 'hero' || x.kind === 'companion'));
     this.partyNode.replaceChildren(
       ...members.map((x) => {
@@ -307,6 +338,11 @@ export class CombatScreen implements Screen {
           bar('mp', x.mp, x.maxMp, `MP ${x.mp}/${x.maxMp}`),
           ...(res ? [bar('thin', x.resources[res.id] ?? 0, res.max, `${res.name} ${Math.floor(x.resources[res.id] ?? 0)}/${res.max}`, res.color)] : []),
           bar('thin', x.ultimate, 100, x.ultimate >= 100 ? 'ULTIMATE READY' : `Ultimate ${Math.floor(x.ultimate)}%`, x.ultimate >= 100 ? '#ffd84a' : '#8a6bb0'),
+          el('div', { class: 'pm-effects' }, ...effectsOf(x).map((f) => {
+            const chip = el('span', { class: 'pm-effect', style: `background:${f.color}` }, f.glyph, ...(f.stacks > 1 ? [el('sup', {}, String(f.stacks))] : []));
+            attachTooltip(chip, () => effectTooltip(this.battle, x, f));
+            return chip;
+          })),
         );
       }),
     );

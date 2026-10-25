@@ -8,6 +8,8 @@ export interface Settings {
   /** Battle playback speed and auto-battle, as new battles start. */
   battleSpeed: 1 | 2 | 4;
   autoBattle: boolean;
+  /** Show the movable stats window during battles. */
+  statsWindow: boolean;
   autosave: boolean;
   /** Fewer animations and floating numbers. */
   reduceMotion: boolean;
@@ -22,6 +24,7 @@ export const DEFAULT_SETTINGS: Settings = {
   muted: false,
   battleSpeed: 1,
   autoBattle: false,
+  statsWindow: false,
   autosave: true,
   reduceMotion: false,
   textScale: 1,

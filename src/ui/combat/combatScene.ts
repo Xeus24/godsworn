@@ -3,6 +3,7 @@ import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
 import { portraitCanvas } from '../art/portraits';
 import { creatureSprite } from './creatureSprites';
+import { effectsOf, type EffectView } from './effectText';
 
 export const SCENE_W = 960;
 export const SCENE_H = 540;
@@ -41,6 +42,8 @@ const ELEMENT_COLORS: Record<string, string> = {
  * Canvas renderer for a battle. It draws from the battle state, except HP,
  * which follows the event stream so bars drop in time with the hits.
  */
+const MAX_ICONS = 8;
+
 export class CombatScene {
   readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
@@ -53,6 +56,9 @@ export class CombatScene {
   targets = new Set<string>();
   actorId: string | undefined;
   onClick: ((id: string) => void) | undefined;
+  /** Called while the mouse is over a buff or status icon (and with undefined when it leaves). */
+  onEffectHover: ((e: MouseEvent, unit: Combatant, effect: EffectView) => void) | undefined;
+  onEffectLeave: (() => void) | undefined;
 
   constructor(private readonly battle: Battle) {
     this.canvas = document.createElement('canvas');
@@ -69,7 +75,11 @@ export class CombatScene {
     });
     this.canvas.addEventListener('mousemove', (e) => {
       this.canvas.style.cursor = this.hitTest(e) && this.targets.size ? 'pointer' : 'default';
+      const hit = this.effectAt(e);
+      if (hit) this.onEffectHover?.(e, hit.unit, hit.effect);
+      else this.onEffectLeave?.();
     });
+    this.canvas.addEventListener('mouseleave', () => this.onEffectLeave?.());
     this.syncAll();
   }
 
@@ -87,6 +97,28 @@ export class CombatScene {
       if (!unit || !this.targets.has(id)) continue;
       const rect = this.rectFor(unit, p.x, p.y);
       if (x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h) return id;
+    }
+    return undefined;
+  }
+
+  /** The buff or status icon under the mouse, if any. */
+  private effectAt(e: MouseEvent): { unit: Combatant; effect: EffectView } | undefined {
+    const r = this.canvas.getBoundingClientRect();
+    const scale = Math.min(r.width / SCENE_W, r.height / SCENE_H);
+    const left = r.left + (r.width - SCENE_W * scale) / 2;
+    const top = r.top + (r.height - SCENE_H * scale) / 2;
+    const x = (e.clientX - left) / scale;
+    const y = (e.clientY - top) / scale;
+    for (const [id, p] of this.positions()) {
+      const unit = this.battle.get(id);
+      if (!unit || !unit.alive) continue;
+      const bw = Math.max(70, this.unitSize(unit));
+      const iy = p.y + 10 + 30;
+      const icons = effectsOf(unit).slice(0, MAX_ICONS);
+      for (let i = 0; i < icons.length; i++) {
+        const ix = p.x - bw / 2 + i * 15;
+        if (x >= ix && x <= ix + 14 && y >= iy && y <= iy + 14) return { unit, effect: icons[i] as EffectView };
+      }
     }
     return undefined;
   }
@@ -429,8 +461,8 @@ export class CombatScene {
         g.fillRect(cx - bw / 2, by + 23, bw * Math.min(1, share), 3);
       }
       // Status icons.
-      const icons = [...x.statuses.map((s) => ({ glyph: content.statuses.get(s.id).glyph, color: content.statuses.get(s.id).color, n: s.stacks, turns: s.turns })), ...x.buffs.map(() => ({ glyph: '+', color: '#6fdc8a', n: 1, turns: 0 }))];
-      icons.slice(0, 7).forEach((icon, i) => {
+      const icons = effectsOf(x).map((fx) => ({ glyph: fx.glyph, color: fx.color, n: fx.stacks, turns: fx.turns }));
+      icons.slice(0, MAX_ICONS).forEach((icon, i) => {
         const ix = cx - bw / 2 + i * 15;
         const iy = by + 30;
         g.fillStyle = '#120c18';

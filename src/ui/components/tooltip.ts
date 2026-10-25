@@ -39,6 +39,14 @@ export function attachTooltip(target: HTMLElement, render: () => HTMLElement | s
   target.addEventListener('mouseleave', hideTooltip);
 }
 
+/** Shows the shared tooltip at the mouse (for things that are not DOM elements, like icons painted on a canvas). */
+export function showTooltip(e: MouseEvent, content: HTMLElement | string): void {
+  const node = tooltipNode();
+  node.replaceChildren(typeof content === 'string' ? document.createTextNode(content) : content);
+  node.classList.add('visible');
+  place(e);
+}
+
 export function hideTooltip(): void {
   tip?.classList.remove('visible');
 }

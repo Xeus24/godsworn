@@ -13,6 +13,7 @@ import type { Conversation } from '../../engine/state/conversation';
 import { rewardText } from '../quests/questLog';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
+import { loadLayout, moveCard, orderCards, resetLayout, saveLayout } from './townLayout';
 import { WorldMapOverlay } from './worldMap';
 
 /** Extra navigation the town needs: the arena (Proving Grounds and class trainers) and leaving. */
@@ -36,6 +37,7 @@ export class TownScreen implements Screen {
   private offs: (() => void)[] = [];
   private message = '';
   private overlay: WorldMapOverlay | undefined;
+  private arranging = false;
 
   constructor(
     private readonly session: GameSession,
@@ -77,7 +79,7 @@ export class TownScreen implements Screen {
   }
 
   private card(title: string, ...children: (Node | string)[]): HTMLElement {
-    return el('section', { class: 'panel town-card' }, el('h3', {}, title), ...children);
+    return el('section', { class: 'panel town-card', 'data-card': title }, el('h3', {}, title), ...children);
   }
 
   /** A person to talk to, marked ! (a new quest) or ? (something to hand in). */
@@ -116,6 +118,45 @@ export class TownScreen implements Screen {
       el('div', { class: 'dim small' }, `Serves ${content.gods.get(f.god).name}: reputation also earns a little of their favor.${f.rivals.length ? ` Rivals: ${f.rivals.map((r) => content.factions.get(r).name).join(', ')}.` : ''}`),
       el('ul', { class: 'small rank-list' }, ...rows),
     );
+  }
+
+  /** The card grid in the player's saved order; in arranging mode cards can be dragged (or nudged with arrows) and the order is saved. */
+  private arrangedGrid(cards: HTMLElement[]): HTMLElement {
+    const byId = new Map(cards.map((c) => [c.dataset.card ?? '', c]));
+    const defaults = [...byId.keys()];
+    let order = orderCards(defaults, loadLayout());
+    const grid = el('div', { class: `town-grid${this.arranging ? ' arranging' : ''}` });
+    const commit = (next: string[]): void => {
+      order = next;
+      saveLayout(order);
+      this.render();
+    };
+    for (const id of order) {
+      const card = byId.get(id);
+      if (!card) continue;
+      if (this.arranging) {
+        card.draggable = true;
+        card.classList.add('movable');
+        const left = el('button', { class: 'tab tiny', 'aria-label': `Move ${id} earlier` }, '◀');
+        const right = el('button', { class: 'tab tiny', 'aria-label': `Move ${id} later` }, '▶');
+        left.addEventListener('click', () => commit(moveCard(order, id, order.indexOf(id) - 1)));
+        right.addEventListener('click', () => commit(moveCard(order, id, order.indexOf(id) + 1)));
+        card.prepend(el('div', { class: 'row card-mover' }, left, right));
+        card.addEventListener('dragstart', (e) => {
+          e.dataTransfer?.setData('text/plain', id);
+          card.classList.add('dragging');
+        });
+        card.addEventListener('dragend', () => card.classList.remove('dragging'));
+        card.addEventListener('dragover', (e) => e.preventDefault());
+        card.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const from = e.dataTransfer?.getData('text/plain');
+          if (from && from !== id) commit(moveCard(order, from, order.indexOf(id)));
+        });
+      }
+      grid.append(card);
+    }
+    return grid;
   }
 
   private render = (): void => {
@@ -209,6 +250,15 @@ export class TownScreen implements Screen {
       this.root?.append(this.overlay.element);
     });
     const leave = this.btn('Leave town (Esc)', () => this.town.leave(), false, 'primary');
+    const arrange = this.btn(this.arranging ? 'Done arranging' : 'Rearrange layout', () => {
+      this.arranging = !this.arranging;
+      this.render();
+    }, false, this.arranging ? 'tab active' : 'tab');
+    const reset = this.btn('Reset layout', () => {
+      resetLayout();
+      this.render();
+    }, false, 'tab');
+    const grid = this.arrangedGrid(cards);
     this.root.replaceChildren(
       el(
         'div',
@@ -224,9 +274,10 @@ export class TownScreen implements Screen {
             el('p', {}, t.description),
             el('div', { class: 'dim small' }, `${content.zones.get(t.zone).name} · ${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}`),
             ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-            el('div', { class: 'row wrap' }, leave, mapBtn),
+            el('div', { class: 'row wrap' }, leave, mapBtn, arrange, ...(this.arranging ? [reset] : [])),
+            ...(this.arranging ? [el('div', { class: 'dim small' }, 'Drag a card to where you want it, or use the arrows. Your layout is saved.')] : []),
           ),
-          el('div', { class: 'town-grid' }, ...cards),
+          grid,
         ),
       ),
     );
