@@ -613,7 +613,7 @@
 - Six tiers chosen at character creation: Noob, Easy, Medium (the baseline, unchanged balance), Hard, Legendary, Impossible. Data lives in `src/data/difficulty.ts`.
 - Enemy HP, damage, defense, resist, speed, accuracy, crit chance and level scale per tier through the normal modifier pipeline (`engine/combat/difficulty.ts`); enemy AI focuses fire and drops its randomness as sharpness rises. Noob also buffs the hero (x2 damage, half damage taken).
 - Harder tiers pay more: XP, gold and paragon XP multipliers, permanent hero bonuses (Magic Find, gold find, favor, XP, HP, damage, crit damage, lifesteal) and six difficulty-gated paragon nodes.
-- Balance check with the auto-battler (benchmark gear, no strategy): Noob/Easy about 100% wins, Medium about 95%, Hard about 50%, Legendary about 3%, Impossible 0%. The last two are meant to need real play: buffs, gods, combos, consumables.
+- Balance check with the auto-battler (benchmark gear, no strategy): Noob/Easy about 100% wins, Medium about 95%, Hard about 50%, Legendary about 3%, Impossible 0.5% (12 of 2,304 fights; Impossible is tuned to this on purpose). Companions get the hero's permanent difficulty bonuses too. The last two are meant to need real play: buffs, gods, combos, consumables.
 - Shown in character creation (with a summary panel) and as a badge on the sheet header. `npm run sim -- --difficulty <id>` simulates a tier.
 
 ## Known bugs

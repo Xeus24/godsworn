@@ -100,7 +100,7 @@ export const DIFFICULTIES: readonly DifficultyDef[] = [
     name: 'Impossible',
     color: '#c0302f',
     blurb: 'Absurd stats and ruthless enemies. Every fight needs a plan, a synergy and a little luck. Hours of strategy to clear.',
-    enemy: { hp: 14, damage: 6, defense: 1.8, magicResist: 1.8, speed: 1.22, accuracy: 25, critChance: 20, levelBonus: 5, aiSharpness: 1 },
+    enemy: { hp: 8.3, damage: 4, defense: 1.53, magicResist: 1.53, speed: 1.15, accuracy: 18, critChance: 13, levelBonus: 3, aiSharpness: 0.87 },
     hero: { damage: 1, damageTaken: 100, healing: 0.5 },
     reward: { xp: 3.5, gold: 3.5, paragonXp: 2.5 },
     bonuses: [{ stat: 'magicFind', type: 'flat', value: 150 }, { stat: 'goldFind', type: 'flat', value: 75 }, { stat: 'favorGain', type: 'flat', value: 60 }, { stat: 'xpGain', type: 'flat', value: 30 }, { stat: 'maxHp', type: 'percent', value: 25 }, { stat: 'damageBonus', type: 'flat', value: 15 }, { stat: 'critDamage', type: 'flat', value: 25 }, { stat: 'lifesteal', type: 'flat', value: 3 }],

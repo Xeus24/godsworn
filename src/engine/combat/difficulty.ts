@@ -47,8 +47,14 @@ export function applyEnemyDifficulty(x: Combatant, difficultyId: string | undefi
   refresh(x);
 }
 
+/**
+ * Applies the hero-side changes to a party member. Companions are separate
+ * characters, so they also get the permanent stat bonuses the hero already
+ * has from `characterModifiers`.
+ */
 export function applyHeroDifficulty(x: Combatant, difficultyId: string | undefined): void {
-  const mods = heroDifficultyModifiers(getDifficulty(difficultyId));
+  const d = getDifficulty(difficultyId);
+  const mods = [...heroDifficultyModifiers(d), ...(x.kind === 'companion' ? d.bonuses : [])];
   if (mods.length === 0) return;
   const hpShare = x.hp / Math.max(1, x.maxHp);
   x.statInput = { ...x.statInput, modifiers: [...x.statInput.modifiers, ...withSource(mods, 'difficulty')] };

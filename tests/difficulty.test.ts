@@ -62,4 +62,18 @@ describe('difficulty', () => {
     expect(spendParagonPoint(hero, 'grit').ok).toBe(true);
     expect(difficultyIndex('hard')).toBeLessThan(difficultyIndex('legendary'));
   });
+
+  it('gives companions the permanent bonuses and the hero-side combat changes', () => {
+    const companionHp = (id: Parameters<typeof fight>[0]) => {
+      const hero = makeHero({ classId: 'warrior' });
+      hero.difficulty = id;
+      const mate = makeHero({ classId: 'cleric', id: 'mate', name: 'Mate' });
+      const b = createEncounterBattle(hero, content.encounters.get('slime-puddle'), {
+        rng: new Rng(1),
+        companions: [{ char: mate, extras: { modifiers: [], triggers: [], flags: [] } }],
+      });
+      return b.combatants.find((x) => x.kind === 'companion')?.maxHp ?? 0;
+    };
+    expect(companionHp('impossible')).toBeGreaterThan(companionHp('medium'));
+  });
 });
