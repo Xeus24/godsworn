@@ -1,3 +1,4 @@
+import type { DifficultyId } from '../../data/difficulty';
 import type { EquipSlot, ItemInstance } from '../items/types';
 import type { CraftingState } from '../economy/types';
 import type { Devotion } from '../gods/types';
@@ -44,6 +45,8 @@ export interface Character {
   challenges: string[];
   /** Pets and mounts owned, and the ones out with you. */
   stable: { pets: string[]; mounts: string[]; pet?: string; mount?: string };
+  /** Chosen at creation; scales enemies, rewards and unlocks paragon nodes. */
+  difficulty: DifficultyId;
 
   /** Character level: drives HP/MP formulas, attribute points and the cap. */
   level: number;

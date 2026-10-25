@@ -53,6 +53,8 @@ Then open http://localhost:5173.
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
 
+Pick a **difficulty** at character creation: Noob (spam one move and win), Easy, Medium (the baseline), Hard, Legendary and Impossible (absurd enemy stats and sharper AI). Each step up multiplies enemy HP and damage by roughly 2-3x, and pays back with bigger XP, gold and paragon XP, permanent hero bonuses and difficulty-locked paragon nodes. Tunable in `src/data/difficulty.ts`.
+
 You start in **Brightwater**, a town in the Meadowlands. **Leave town** to walk the world:
 
 - **Eight zones** run along one road, from the Meadowlands (levels 1–8) to the Dark Citadel (55–60). Walk off a map's east or west edge to reach the next zone. Enemies match your level within each zone's range.

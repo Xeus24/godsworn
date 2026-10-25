@@ -1,5 +1,6 @@
 import { canStartNgPlus, startNgPlus } from '../../engine/ngplus/ngplus';
 import { content } from '../../data';
+import { difficultyIndex } from '../../data/difficulty';
 import { allocatedTotal, respecCost } from '../../engine/character/attributes';
 import { paragonRank } from '../../engine/character/paragon';
 import { levelProgress, xpToNext } from '../../engine/character/progression';
@@ -173,12 +174,13 @@ export class CharacterScreen implements Screen {
       for (const node of content.paragon.all()) {
         const rank = paragonRank(p, node.id);
         const plus = el('button', { class: 'tiny', 'aria-label': `Spend a point on ${node.name}` }, '+');
-        plus.disabled = p.paragonPoints <= 0 || rank >= node.maxRank;
+        const locked = node.minDifficulty !== undefined && difficultyIndex(p.difficulty) < difficultyIndex(node.minDifficulty);
+        plus.disabled = locked || p.paragonPoints <= 0 || rank >= node.maxRank;
         plus.addEventListener('click', () => {
           s.spendParagon(node.id);
           this.render();
         });
-        const row = el('div', { class: 'stat-row attr' }, el('span', {}, node.name), el('b', {}, `${rank}/${node.maxRank}`), el('span', {}, ''), plus);
+        const row = el('div', { class: locked ? 'stat-row attr dim' : 'stat-row attr' }, el('span', {}, locked ? `${node.name} 🔒` : node.name), el('b', {}, `${rank}/${node.maxRank}`), el('span', {}, ''), plus);
         attachTooltip(row, () => node.description);
         paragon.append(row);
       }

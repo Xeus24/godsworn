@@ -24,6 +24,8 @@ export interface BattleSetup {
   /** Weather id: its modifiers apply to everyone, and weather conditions see it. */
   weather?: string;
   hooks?: BattleHooks;
+  /** 0..1: how sharply enemies pick targets and skills (set by difficulty). */
+  aiSharpness?: number;
   c?: Content;
 }
 
@@ -43,6 +45,7 @@ export class Battle {
   readonly timeOfDay: 'day' | 'night';
   readonly weather: string | undefined;
   readonly hooks: BattleHooks;
+  readonly aiSharpness: number;
   outcome: BattleOutcome = 'ongoing';
   /** Initiative clock: the time of the most recent turn. */
   time = 0;
@@ -69,6 +72,7 @@ export class Battle {
     this.timeOfDay = setup.timeOfDay ?? 'day';
     this.weather = setup.weather;
     this.hooks = setup.hooks ?? {};
+    this.aiSharpness = setup.aiSharpness ?? 0.25;
     this.triggers = new TriggerSystem(this.rng);
     for (const x of this.combatants) this.registerTriggers(x);
   }

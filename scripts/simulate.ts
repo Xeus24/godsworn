@@ -5,6 +5,7 @@
  * at equal level. Run with `npm run sim` (options: --fights 200 --levels 1,5,10,15).
  */
 import { content } from '../src/data';
+import type { DifficultyId } from '../src/data/difficulty';
 import { Rng } from '../src/engine/core/rng';
 import { createEncounterBattle, runAutoBattle } from '../src/engine/combat/setup';
 import { HYBRID_TRIAL_LEVEL } from '../src/data/multiclass';
@@ -24,9 +25,13 @@ const LEVELS = arg('levels', '1,3,6,9,12,15').split(',').map(Number);
 /** Classes to test; "a+b" is a multiclass hero (primary + secondary, from level 15). */
 const CLASSES = arg('classes', [...content.classes.ids(), 'warrior+mage', 'rogue+necromancer', 'cleric+monk', 'ranger+bard'].join(',')).split(',');
 
+const DIFFICULTY = arg('difficulty', 'medium') as DifficultyId;
+
 function heroFor(spec: string, level: number) {
   const [primary, secondary] = spec.split('+') as [string, string | undefined];
-  return secondary ? benchmarkMulticlass(primary, secondary, level) : benchmarkHero(primary, level);
+  const hero = secondary ? benchmarkMulticlass(primary, secondary, level) : benchmarkHero(primary, level);
+  hero.difficulty = DIFFICULTY;
+  return hero;
 }
 
 console.log(`Godsworn battle simulation: ${FIGHTS} fights per class x encounter, benchmark gear and attributes\n`);

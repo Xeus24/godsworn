@@ -609,10 +609,18 @@
 - **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
+### Difficulty (added after Phase 12)
+- Six tiers chosen at character creation: Noob, Easy, Medium (the baseline, unchanged balance), Hard, Legendary, Impossible. Data lives in `src/data/difficulty.ts`.
+- Enemy HP, damage, defense, resist, speed, accuracy, crit chance and level scale per tier through the normal modifier pipeline (`engine/combat/difficulty.ts`); enemy AI focuses fire and drops its randomness as sharpness rises. Noob also buffs the hero (x2 damage, half damage taken).
+- Harder tiers pay more: XP, gold and paragon XP multipliers, permanent hero bonuses (Magic Find, gold find, favor, XP, HP, damage, crit damage, lifesteal) and six difficulty-gated paragon nodes.
+- Balance check with the auto-battler (benchmark gear, no strategy): Noob/Easy about 100% wins, Medium about 95%, Hard about 50%, Legendary about 3%, Impossible 0%. The last two are meant to need real play: buffs, gods, combos, consumables.
+- Shown in character creation (with a summary panel) and as a badge on the sheet header. `npm run sim -- --difficulty <id>` simulates a tier.
+
 ## Known bugs
 - None known.
 
 ## Cut / deferred
+- **Difficulty** is fixed at creation; changing it mid-game and per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are auto-built; the skill tree screen edits only your own trees. Companion gear is managed on the Party screen, not by dragging onto a paper doll.
 - **Party balance:** companion classes are even (2.3 points apart, Phase 16). Party-size scaling does not grow with the third companion, so full parties win nearly every fight; and a cleric hero beside a cleric companion still loses to world bosses (two healers can't outdamage the enrage). The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
 - **Hybrid trial balance** depends heavily on the class pair (6–100% for benchmark pairs at level 35 against level-36 mentors; the Plague Doctor's pair is the outlier) because the auto-battler plays some two-class kits badly. It was left as is: a player plays the kit by hand and can level up and return. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).

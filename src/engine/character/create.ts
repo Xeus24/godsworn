@@ -1,4 +1,5 @@
 import { content, type Content } from '../../data';
+import { DEFAULT_DIFFICULTY, type DifficultyId } from '../../data/difficulty';
 import { createDevotion } from '../gods/devotion';
 import { emptyPrimaryStats } from '../stats/types';
 import { addToHotbar, treeState } from '../skills/tree';
@@ -15,6 +16,7 @@ export interface NewCharacterOptions {
   birthSignId: string;
   hardcore?: boolean;
   challenges?: string[];
+  difficulty?: DifficultyId;
   id?: string;
 }
 
@@ -44,6 +46,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     hardcore: opts.hardcore ?? false,
     challenges: [...(opts.challenges ?? [])],
     stable: { pets: [], mounts: [] },
+    difficulty: opts.difficulty ?? DEFAULT_DIFFICULTY,
     level: 1,
     xp: 0,
     classes: [{ classId: opts.classId, slot: 'primary', level: 1, xp: 0, skillPoints: 0 }],

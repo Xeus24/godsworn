@@ -3,6 +3,7 @@
  * the catalogue never drifts from the game. Run with `npm run content:md`.
  * Each section lives between `<!-- name:start -->` and `<!-- name:end -->`.
  */
+import { DIFFICULTIES } from '../src/data/difficulty';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { content } from '../src/data';
 import { WEAPON_STAGES } from '../src/data/apostles';
@@ -349,6 +350,17 @@ function storySection(): string {
   return out.join('\n');
 }
 
+function difficultySection(): string {
+  const out = ['| Difficulty | Enemy HP | Enemy damage | Defense | Speed | Accuracy / crit | Levels | AI | XP | Gold | Paragon XP | Hero bonuses |', '|---|---|---|---|---|---|---|---|---|---|---|---|'];
+  for (const d of DIFFICULTIES) {
+    const e = d.enemy;
+    const bonus = d.bonuses.map((m) => `${m.stat} ${m.value > 0 ? '+' : ''}${m.value}${m.type === 'percent' ? '%' : ''}`).join(', ') || '-';
+    const hero = d.hero.damage !== 1 || d.hero.damageTaken !== 100 ? ` Hero: x${d.hero.damage} damage, ${d.hero.damageTaken}% damage taken, x${d.hero.healing} healing.` : '';
+    out.push(`| **${d.name}** | x${e.hp} | x${e.damage} | x${e.defense} | x${e.speed} | +${e.accuracy} / +${e.critChance} | +${e.levelBonus} | ${e.aiSharpness} | x${d.reward.xp} | x${d.reward.gold} | x${d.reward.paragonXp} | ${bonus}${hero} |`);
+  }
+  return out.join('\n');
+}
+
 function codexSection(): string {
   const out: string[] = [];
   const pct = (n: number): string => `${Math.round(n * 100)}%`;
@@ -411,7 +423,7 @@ function endgameSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection, ngplus: ngPlusSection, endgame: endgameSection };
+const SECTIONS: Record<string, () => string> = { difficulty: difficultySection, items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection, ngplus: ngPlusSection, endgame: endgameSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

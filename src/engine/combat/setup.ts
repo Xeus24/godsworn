@@ -13,6 +13,8 @@ import { PARTY_SCALING } from '../../data/combat';
 import { affixCount, applyAffixes, rollAffixes } from './affixes';
 import { ngThreat, worldLevel } from '../ngplus/ngplus';
 import { challengeEnemyModifiers } from '../character/challenges';
+import { getDifficulty } from '../../data/difficulty';
+import { applyEnemyDifficulty, applyHeroDifficulty } from './difficulty';
 
 /**
  * A companion as a combatant: their character plus bond perks and class
@@ -98,6 +100,8 @@ function applyThreat(x: Combatant, threat: number, damage = threat, source = 'th
 export function createEncounterBattle(hero: Character, encounter: EncounterDef, opts: EncounterOptions): Battle {
   const c = opts.c ?? content;
   const party = [createHero(hero, 'hero', c), ...(opts.companions ?? []).map((m) => createCompanionCombatant(m.char, m.extras, c))];
+  for (const member of party) applyHeroDifficulty(member, hero.difficulty);
+  const difficulty = getDifficulty(hero.difficulty);
   for (const g of opts.guests ?? []) party.push(createGuest(g.id, g.enemyId, hero.level, c));
   const ng = opts.ngPlus ?? 0;
   const hardMode = challengeEnemyModifiers(hero, c);
@@ -107,7 +111,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const base = c.enemies.get(e.enemyId);
     // Encounter entries may promote an enemy (roaming elites, champion packs).
     const def = e.tier ? { ...base, tier: e.tier } : base;
-    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng), e.row ?? def.row, c);
+    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng) + difficulty.enemy.levelBonus, e.row ?? def.row, c);
     if (encounter.threat) applyThreat(enemy, encounter.threat);
     if (ngThreat(ng) > 0) applyThreat(enemy, ngThreat(ng), ngThreat(ng), 'ngPlus');
     const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
@@ -119,15 +123,17 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     if (mates > 0) applyThreat(enemy, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
     if (opts.enemyModifiers?.length) addModifiers(enemy, opts.enemyModifiers, 'rift');
     if (hardMode.length) addModifiers(enemy, hardMode, 'challenge');
+    applyEnemyDifficulty(enemy, hero.difficulty);
     return enemy;
   });
   if (opts.partyModifiers?.length) for (const x of party) addModifiers(x, opts.partyModifiers, 'rift');
   if (opts.punisher) {
     const def = c.enemies.get(`punisher-${opts.punisher}`);
-    const punisher = createEnemy(def, 'punisher', worldLevel(opts.level ?? encounter.level, ng) + 2, def.row, c);
+    const punisher = createEnemy(def, 'punisher', worldLevel(opts.level ?? encounter.level, ng) + 2 + difficulty.enemy.levelBonus, def.row, c);
     if (ngThreat(ng) > 0) applyThreat(punisher, ngThreat(ng), ngThreat(ng), 'ngPlus');
     const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
     if (mates > 0) applyThreat(punisher, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
+    applyEnemyDifficulty(punisher, hero.difficulty);
     enemies.push(punisher);
   }
   // Number duplicate names: "Green Slime A", "Green Slime B".
@@ -150,6 +156,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     timeOfDay: opts.timeOfDay,
     ...(opts.weather ? { weather: opts.weather } : {}),
     hooks: opts.hooks,
+    aiSharpness: difficulty.enemy.aiSharpness,
     c,
   });
 }

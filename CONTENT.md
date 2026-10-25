@@ -75,8 +75,8 @@ Solenne (Sun & Justice, holy), Morrath (Death & Endings, shadow), Kael (War & Gl
 
 **Armor weights (4):** Cloth, Leather, Mail, Plate.
 
-## Paragon board (13 nodes)
-Might/Finesse/Intellect/Fortitude/Insight/Fortune/Devotion (+1 to one primary per rank, max 50) · Vigor (+1% HP, 30) · Precision (+0.2% crit, 25) · Swiftness (+1 speed, 10) · Prosperity (+1% gold find, 50) · Treasure Sense (+0.5% magic find, 50) · Warding (+0.5% all resists, 40).
+## Paragon board (19 nodes)
+Might/Finesse/Intellect/Fortitude/Insight/Fortune/Devotion (+1 to one primary per rank, max 50) · Vigor (+1% HP, 30) · Precision (+0.2% crit, 25) · Swiftness (+1 speed, 10) · Prosperity (+1% gold find, 50) · Treasure Sense (+0.5% magic find, 50) · Warding (+0.5% all resists, 40). Difficulty-gated: Grit and Ferocity (Hard+), Legend Lore and Killing Edge (Legendary+), Defiance and Godslayer (Impossible only).
 
 ## Progression
 - XP to next level: `floor(100 × level^1.55)` (level 1 → 100, level 10 → 3,548).
@@ -1873,3 +1873,16 @@ NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosse
 - **Spectral Stag:** 0.75 min per step, 50% fewer ambushes. Ysolde’s gift: it walks between the trees, and the beasts do not see it. (Achievement: Cartographer)
 - **Rift-Strider:** 0.5 min per step, 60% fewer ambushes. It steps through the margins of the world. Nothing follows. (Achievement: Riftwalker)
 <!-- endgame:end -->
+
+## Difficulty
+
+<!-- difficulty:start -->
+| Difficulty | Enemy HP | Enemy damage | Defense | Speed | Accuracy / crit | Levels | AI | XP | Gold | Paragon XP | Hero bonuses |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Noob** | x0.15 | x0.12 | x0.5 | x0.8 | +-25 / +-100 | +0 | 0 | x0.6 | x0.6 | x1 | - Hero: x2 damage, 50% damage taken, x2 healing. |
+| **Easy** | x0.5 | x0.45 | x0.8 | x0.9 | +-10 / +-5 | +0 | 0.1 | x0.85 | x0.85 | x1 | - Hero: x1.25 damage, 90% damage taken, x1.25 healing. |
+| **Medium** | x1 | x1 | x1 | x1 | +0 / +0 | +0 | 0.25 | x1 | x1 | x1 | - |
+| **Hard** | x2.2 | x1.6 | x1.15 | x1.05 | +6 / +4 | +0 | 0.5 | x1.4 | x1.4 | x1.25 | magicFind +20, goldFind +10, favorGain +10, xpGain +5 |
+| **Legendary** | x5.5 | x3 | x1.4 | x1.12 | +14 / +10 | +2 | 0.8 | x2.2 | x2.2 | x1.75 | magicFind +60, goldFind +30, favorGain +30, xpGain +15, maxHp +10%, damageBonus +5 |
+| **Impossible** | x14 | x6 | x1.8 | x1.22 | +25 / +20 | +5 | 1 | x3.5 | x3.5 | x2.5 | magicFind +150, goldFind +75, favorGain +60, xpGain +30, maxHp +25%, damageBonus +15, critDamage +25, lifesteal +3 |
+<!-- difficulty:end -->

@@ -3,6 +3,7 @@ import { challengeHeroModifiers } from './challenges';
 import { heresyModifiers } from '../gods/heresy';
 import { slayerModifiers } from '../bestiary/bestiary';
 import { content, type Content } from '../../data';
+import { getDifficulty } from '../../data/difficulty';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { equipmentModifiers, equippedWeaponTypes } from '../items/equipment';
 import { divineModifiers } from '../gods/blessings';
@@ -57,6 +58,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
       mods.push({ ...spec, value: spec.value * ranks, source: `paragon:${node.id}` });
     }
   }
+  mods.push(...withSource(getDifficulty(char.difficulty).bonuses, `difficulty:${char.difficulty}`));
   mods.push(...equipmentModifiers(char, c));
   mods.push(...treeModifiers(char, c));
   mods.push(...generalModifiers(char, c));

@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import { COMBAT } from '../../data/combat';
 import { recordBattle } from '../bestiary/bestiary';
+import { getDifficulty } from '../../data/difficulty';
 import { killXp } from '../character/progression';
 import { characterStats, restoreFull } from '../character/stats';
 import type { Battle } from '../combat/battle';
@@ -129,6 +130,9 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
       rewards.items.push(...loot.items);
     }
     rewards.gold += b.tally.goldFound;
+    const reward = getDifficulty(p.difficulty).reward;
+    rewards.xp = Math.round(rewards.xp * reward.xp);
+    rewards.gold = Math.round(rewards.gold * reward.gold);
     const topLevel = Math.max(p.level, ...b.tally.kills.map((k) => k.level));
     rewards.items.push(...s.general.fieldFinds(topLevel));
     const xpResult = s.grantXp(rewards.xp);

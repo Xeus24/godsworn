@@ -1,4 +1,5 @@
 import type { ModifierSpec } from '../engine/stats/modifiers';
+import type { DifficultyId } from './difficulty';
 import { ELEMENTS } from '../engine/stats/types';
 
 /**
@@ -12,6 +13,8 @@ export interface ParagonNodeDef {
   maxRank: number;
   /** Applied once per rank. */
   perRank: ModifierSpec[];
+  /** Only heroes who swore their oath on this difficulty or higher can spend points here. */
+  minDifficulty?: DifficultyId;
 }
 
 export const PARAGON_NODES: ParagonNodeDef[] = [
@@ -34,4 +37,11 @@ export const PARAGON_NODES: ParagonNodeDef[] = [
     maxRank: 40,
     perRank: ELEMENTS.map((e): ModifierSpec => ({ stat: `${e}Resist`, type: 'flat', value: 0.5 })),
   },
+  // Difficulty-gated nodes: the harder the oath, the stronger the late-game options.
+  { id: 'grit', name: 'Grit', description: '-0.3% damage taken per rank. Hard or higher.', maxRank: 40, minDifficulty: 'hard', perRank: [{ stat: 'damageTaken', type: 'flat', value: -0.3 }] },
+  { id: 'ferocity', name: 'Ferocity', description: '+0.6% damage per rank. Hard or higher.', maxRank: 40, minDifficulty: 'hard', perRank: [{ stat: 'damageBonus', type: 'flat', value: 0.6 }] },
+  { id: 'legend-lore', name: 'Legend Lore', description: '+0.5% XP gain and +0.5% favor gain per rank. Legendary or higher.', maxRank: 40, minDifficulty: 'legendary', perRank: [{ stat: 'xpGain', type: 'flat', value: 0.5 }, { stat: 'favorGain', type: 'flat', value: 0.5 }] },
+  { id: 'killing-edge', name: 'Killing Edge', description: '+1% crit damage per rank. Legendary or higher.', maxRank: 40, minDifficulty: 'legendary', perRank: [{ stat: 'critDamage', type: 'flat', value: 1 }] },
+  { id: 'defiance', name: 'Defiance', description: '+0.1% lifesteal and -0.4% damage taken per rank. Impossible only.', maxRank: 25, minDifficulty: 'impossible', perRank: [{ stat: 'lifesteal', type: 'flat', value: 0.1 }, { stat: 'damageTaken', type: 'flat', value: -0.4 }] },
+  { id: 'godslayer', name: 'Godslayer', description: '+1.2% damage and +0.2% crit chance per rank. Impossible only.', maxRank: 25, minDifficulty: 'impossible', perRank: [{ stat: 'damageBonus', type: 'flat', value: 1.2 }, { stat: 'critChance', type: 'flat', value: 0.2 }] },
 ];

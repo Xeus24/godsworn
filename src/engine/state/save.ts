@@ -78,10 +78,13 @@ export function migrate(raw: Json): Json {
   state.endgame = { ...createEndgameState(), ...obj(state.endgame) };
   p.challenges ??= [];
   p.stable ??= { pets: [], mounts: [] };
+  // Version 15: difficulty tiers.
+  p.difficulty ??= 'medium';
   // Companions are characters too.
   for (const comp of Object.values(obj(obj(state.party).companions))) {
     const ch = obj(obj(comp).character);
     ch.bestiary ??= {};
+    ch.difficulty ??= 'medium';
     ch.challenges ??= [];
     ch.stable ??= { pets: [], mounts: [] };
     const cd = obj(ch.devotion);

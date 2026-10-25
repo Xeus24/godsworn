@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { DEFAULT_DIFFICULTY, DIFFICULTIES, type DifficultyId } from '../../data/difficulty';
 import { createCharacter, NAME_MAX_LENGTH, validateName } from '../../engine/character/create';
 import type { Character } from '../../engine/character/types';
 import { drawPortrait, PORTRAIT_VARIANTS } from '../art/portraits';
@@ -13,6 +14,7 @@ export interface CreationChoice {
   birthSignId: string;
   hardcore: boolean;
   challenges: string[];
+  difficulty: DifficultyId;
 }
 
 const RANDOM_NAMES = ['Aldric', 'Seren', 'Bryn', 'Kestrel', 'Morwen', 'Thane', 'Ilya', 'Corvin', 'Isolde', 'Rook', 'Vela', 'Doran'];
@@ -30,6 +32,7 @@ export class CreationScreen implements Screen {
     birthSignId: 'the-forge',
     hardcore: false,
     challenges: [],
+    difficulty: DEFAULT_DIFFICULTY,
   };
   private portraitCanvas = el('canvas', { class: 'portrait-large pixel', 'aria-label': 'Portrait' });
   private nameInput = el('input', { type: 'text', maxlength: String(NAME_MAX_LENGTH), placeholder: 'Name your hero', 'aria-label': 'Name' });
@@ -115,6 +118,7 @@ export class CreationScreen implements Screen {
       birthSignId: pickRandom(content.birthSigns.ids()),
       hardcore: this.choice.hardcore,
       challenges: this.choice.challenges,
+      difficulty: this.choice.difficulty,
     };
     hardcore.checked = this.choice.hardcore;
     this.nameInput.value = this.choice.name;
@@ -136,6 +140,13 @@ export class CreationScreen implements Screen {
     this.beginButton.disabled = error !== undefined;
 
     this.choices.replaceChildren(
+      this.group(
+        'Difficulty',
+        [...DIFFICULTIES],
+        this.choice.difficulty,
+        (d) => [d.name, `Enemies x${d.enemy.hp} HP, x${d.enemy.damage} damage`],
+        (id) => (this.choice.difficulty = id as DifficultyId),
+      ),
       this.group('Race', content.races.all(), this.choice.raceId, (r) => [r.name, r.passive.name], (id) => (this.choice.raceId = id)),
       this.group(
         'Class',

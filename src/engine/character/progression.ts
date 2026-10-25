@@ -1,4 +1,5 @@
 import { content, type Content } from '../../data';
+import { getDifficulty } from '../../data/difficulty';
 import { PROGRESSION } from '../../data/progression';
 import { restoreFull } from './stats';
 import type { Character, ClassProgress } from './types';
@@ -136,7 +137,7 @@ export function grantXp(char: Character, amount: number, levelCap: number = PROG
   // Past the cap, leftover XP goes to paragon levels.
   if (char.level >= levelCap) {
     char.xp = 0;
-    char.paragonXp += remaining;
+    char.paragonXp += Math.round(remaining * getDifficulty(char.difficulty).reward.paragonXp);
     while (char.paragonXp >= paragonXpToNext(char.paragonLevel, levelCap)) {
       char.paragonXp -= paragonXpToNext(char.paragonLevel, levelCap);
       char.paragonLevel++;

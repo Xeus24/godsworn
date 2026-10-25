@@ -15,6 +15,10 @@ const hpShare = (x: Combatant): number => x.hp / Math.max(1, x.maxHp);
 function pickFoe(b: Battle, x: Combatant, skill: SkillDef, profile: AiProfile): Combatant | undefined {
   const valid = validTargets(b, x, skill);
   if (valid.length === 0) return undefined;
+  // Sharp enemies (hard difficulties) focus the weakest target instead of rolling dice.
+  if (x.side === 'enemy' && b.rng.chance(Math.max(0, b.aiSharpness - 0.25) / 0.75)) {
+    return [...valid].sort((p, q) => p.hp - q.hp)[0];
+  }
   switch (profile) {
     case 'aggressive':
       // Finish off the weakest, with some randomness.
@@ -66,7 +70,8 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
   for (const { skill, rank, check } of skillOptions(b, x)) {
     if (!check.ok || !canUseSkill(b, x, skill).ok || isTelegraphOnly(b, x, skill.id)) continue;
     const w = weights.get(skill.id) ?? 1;
-    const jitter = b.rng.float(0.8, 1.2);
+    const spread = x.side === 'enemy' ? 0.2 * (1 - b.aiSharpness * 0.8) : 0.2;
+    const jitter = b.rng.float(1 - spread, 1 + spread);
     const kind = skill.id === 'basic-attack' ? 'attack' : 'skill';
     const act = (targetId?: string): Action =>
       kind === 'attack' ? { kind: 'attack', actorId: x.id, targetId: targetId ?? '' } : { kind: 'skill', actorId: x.id, skillId: skill.id, ...(targetId ? { targetId } : {}) };

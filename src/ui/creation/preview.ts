@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { getDifficulty } from '../../data/difficulty';
 import { characterStats, primaryClassId } from '../../engine/character/stats';
 import type { Character } from '../../engine/character/types';
 import { PRIMARY_STATS, type StatId } from '../../engine/stats/types';
@@ -37,6 +38,7 @@ export function renderPreview(char: Character, hardcore: boolean): HTMLElement {
     el('h2', {}, `${char.name}`),
     el('div', { class: 'preview-sub' }, `${race.name} ${cls.name}${hardcore ? ' · Hardcore' : ''}`),
     el('div', { class: 'preview-tagline', style: `color:${cls.color}` }, cls.tagline),
+    difficultyPanel(char),
     el('h3', {}, 'Attributes'),
     el('div', { class: 'stat-grid' }, ...PRIMARY_STATS.map(statCell)),
     el('div', { class: 'stat-grid' }, ...PREVIEW_DERIVED.map(statCell)),
@@ -57,5 +59,22 @@ export function renderPreview(char: Character, hardcore: boolean): HTMLElement {
     el('p', {}, race.passive.description),
     el('h3', {}, sign.name),
     el('p', {}, el('span', { style: `color:${god.color}` }, `${god.name}, ${god.domain}. `), sign.description),
+  );
+}
+
+const times = (n: number): string => `x${Number.isInteger(n) ? n : n.toFixed(2).replace(/0$/, '')}`;
+
+/** What the chosen difficulty does to enemies, to the hero and to rewards. */
+function difficultyPanel(char: Character): HTMLElement {
+  const d = getDifficulty(char.difficulty);
+  const e = d.enemy;
+  const bonuses = d.bonuses.map((m) => `${content.stats.get(m.stat).short} ${m.value > 0 ? '+' : ''}${m.value}${m.type === 'percent' ? '%' : ''}`);
+  return el(
+    'div',
+    { class: 'difficulty-panel' },
+    el('h3', { style: `color:${d.color}` }, `Difficulty: ${d.name}`),
+    el('p', {}, d.blurb),
+    el('p', { class: 'dim small' }, `Enemies: HP ${times(e.hp)}, damage ${times(e.damage)}, defense ${times(e.defense)}, speed ${times(e.speed)}, accuracy ${e.accuracy >= 0 ? '+' : ''}${e.accuracy}${e.levelBonus ? `, +${e.levelBonus} levels` : ''}`),
+    el('p', { class: 'dim small' }, `Rewards: XP ${times(d.reward.xp)}, gold ${times(d.reward.gold)}, paragon XP ${times(d.reward.paragonXp)}${bonuses.length ? `. Permanent bonuses: ${bonuses.join(', ')}` : ''}`),
   );
 }
