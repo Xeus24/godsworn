@@ -401,7 +401,7 @@ Generated from the data files by `npm run content:md`.
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (39)
+### Consumables (40)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -441,6 +441,7 @@ Generated from the data files by `npm run content:md`.
 - Void Draught: +25% void damage and +8% damage, but 10% less max HP, for 8 battles.
 - Unwritten Salve: Heals 50% of max HP at once, but leaves you Vulnerable for 2 turns.
 - Tear of a Dead God: Unmakes the air: heavy void damage to every enemy, Corrupting them.
+- Rift Map: A map of a place that is not there. Open it at any town’s Rift Gate.
 - Traveler's Pack: Permanently adds 8 inventory slots (up to 96).
 
 **Materials (35):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment
@@ -1744,7 +1745,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 - Knowledge per enemy at 1 / 5 / 15 / 40 kills (bosses 1 / 1 / 2 / 3): Stats, Resistances, Skills, Mastered.
 - Slayer ranks per creature type at 10 / 50 / 150 / 400 / 1000 kills: +2% damage against that type per rank.
 
-### Achievements (112, 36 titles)
+### Achievements (126, 45 titles)
 
 **Combat** (21): First Blood (Win your first battle; 5 pts) · Battle-Hardened (Win 100 battles; 10 pts) · Veteran (Win 500 battles; 20 pts; title “the Veteran”) · Warlord (Win 2,000 battles; 40 pts; title “Warlord”) · Hundred-Slayer (Slay 100 enemies; 10 pts) · Thousand-Slayer (Slay 1,000 enemies; 20 pts) · The Relentless (Slay 5,000 enemies; 40 pts; title “the Relentless”) · Heavy Hitter (Deal 1,000 damage in one hit; 10 pts) · Mountain-Splitter (Deal 10,000 damage in one hit; 20 pts) · Worldbreaker (Deal 50,000 damage in one hit; 40 pts; title “Worldbreaker”) · Critical Thinker (Land 500 critical hits; 10 pts) · Precision (Land 5,000 critical hits; 20 pts; title “the Precise”) · Elite Hunter (Slay 10 elites; 10 pts) · Bane of Elites (Slay 100 elites; 25 pts; title “Elitebane”) · Champion Hunter (Slay 10 champions; 10 pts) · Breaker of Champions (Slay 100 champions; 25 pts; title “Championbreaker”) · Not So Fast (Break a boss while it winds up an attack; 10 pts) · Spellbreaker (Interrupt 25 boss wind-ups; 25 pts; title “Spellbreaker”) · Well Supplied (Use 100 consumables in battle; 10 pts) · Not Today… Oh. (hidden) (Fall in battle for the first time; 5 pts) · Discretion (hidden) (Escape from 10 battles; 5 pts)
 
@@ -1764,9 +1765,11 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 
 **Companions** (4): Fellowship (Recruit a companion; 10 pts) · The Whole Company (Have all six companions with you; 30 pts; title “the Captain”) · Trusted Friend (Reach 80 approval with a companion; 20 pts) · Their Stories (Complete 6 companion quests; 25 pts)
 
-**Challenges** (4): Living Dangerously (Reach level 20 in Hardcore; 25 pts) · The Undying (Reach level 60 in Hardcore; 50 pts; title “the Undying”) · Achiever (Earn 25 achievements; 10 pts) · Completionist (Earn 60 achievements; 30 pts; title “the Completionist”)
+**Challenges** (10): Living Dangerously (Reach level 20 in Hardcore; 25 pts) · The Undying (Reach level 60 in Hardcore; 50 pts; title “the Undying”) · Iron Will (Reach an ending in the Iron Will challenge mode; 40 pts; title “the Iron”) · Lone Wolf (Reach an ending in the Lone Wolf challenge mode; 40 pts; title “the Lone Wolf”) · Godless (Reach an ending in the Godless challenge mode; 40 pts; title “the Godless”) · Glass Cannon (Reach an ending in the Glass Cannon challenge mode; 40 pts; title “the Glass Cannon”) · Nightmare (Reach an ending in the Nightmare challenge mode; 40 pts; title “Nightmare-Walker”) · Masochist (Reach an ending with Hardcore and two challenge modes at once; 60 pts; title “the Unbreakable”) · Achiever (Earn 25 achievements; 10 pts) · Completionist (Earn 60 achievements; 30 pts; title “the Completionist”)
 
 **New Game+ & Twilight** (11): Once More, With Feeling (Begin New Game+; 20 pts) · The Wheel Turns (Reach New Game+3; 30 pts; title “the Returning”) · Endless (Reach New Game+10; 50 pts; title “the Eternal”) · The Silence (Hear the Nameless One for the first time; 15 pts) · Twilight-Bringer (Give the Nameless One back its name; 50 pts) · The Unwritten Crown (hidden) (Take the Nameless One’s crown; 50 pts) · Peace in Heaven (End every old feud of the pantheon; 30 pts; title “the Peacemaker”) · Whispered (hidden) (Become Whispered by the Nameless One; 15 pts) · Unwritten (hidden) (Reach the deepest heresy; 30 pts) · Defender of the Pantheon (Defend a second god beside your own; 40 pts; title “Defender of the Pantheon”) · Every Story Told (Reach all six endings across your playthroughs; 60 pts; title “the Storyteller”)
+
+**Rifts & Boss Rush** (8): Through the Rift (Clear a tier 1 Rift; 15 pts) · Riftwalker (Clear a tier 5 Rift; 25 pts; title “Riftwalker”) · Into the Deep (Clear a tier 10 Rift; 40 pts) · Edge of Nothing (Clear a tier 15 Rift; 50 pts) · Rift Lord (Clear a tier 20 Rift; 80 pts; title “Rift Lord”) · Warming Up (Beat 5 bosses in one Boss Rush; 15 pts) · Boss Rush (Clear the Boss Rush; 40 pts; title “the Relentless Champion”) · Older Than the Gods (hidden) (Find a Primordial item; 50 pts)
 <!-- codex:end -->
 
 ## New Game+, heresy and the Defender path
@@ -1802,3 +1805,71 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 
 **The Defender path** (NG+3+): an Apostle who has passed a second, non-rival god's trial may defend that god too: its Divine blessing in one more slot, the Apostle tier with it, and the title "Defender of X".
 <!-- ngplus:end -->
+
+## Endgame: Rifts, the Boss Rush, challenge modes, Primordials, pets and mounts
+
+<!-- endgame:start -->
+### Rifts
+
+Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every zone, then a Rift Guardian (a dungeon boss; world bosses too from tier 10). Tiers 1–20: enemies at your level -3 +1 per 3 tiers, +8% HP and damage per tier, 35% of HP and MP back between waves. Affixes from tiers 3 / 8 / 14. Rewards: 6 gold × level × tier per wave (×3 for the Guardian), 1 elite loot roll per wave and 3 boss rolls for the Guardian, +15% Magic Find per tier; Primordials from tier 10; a Rift pet at 3% + 0.4% per tier.
+
+| Rift affix | Effect | Bounty |
+|---|---|---|
+| Bloodlust | Enemies deal 20% more damage. | - |
+| Bulwark | Enemies have 30% more HP. | - |
+| Haste | Enemies are 15% faster. | - |
+| Warded | Enemies resist every element by 25. | - |
+| Deadly | Enemies have +15% crit chance. | - |
+| Fragile | You and your party have 15% less max HP. | +20% gold and MF |
+| Parched | Healing on your party is 30% weaker. | +20% gold and MF |
+| Drained | Your party has 25% less max MP. | +15% gold and MF |
+| Empowered | Your party deals 15% more damage, and so do enemies (25%). | - |
+| Gilded | Enemies have 20% more HP, but drop much more gold and better loot. | +50% gold and MF |
+
+### The Boss Rush
+
+At any town (level 30+): all 10 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
+
+### Challenge modes
+
+- **Ironman:** No merchant will sell to you (selling, crafting and quest rewards are fine), and waypoints will not carry you.
+- **Lone Wolf:** Companions and followers will not fight beside you.
+- **Godless:** The gods never warm to you: you gain no favor (you can still lose it), so no blessings, prayers or interventions.
+- **Glass Cannon:** Half your max HP, but you deal 30% more damage.
+- **Nightmare:** Every enemy has 50% more HP and deals 40% more damage; you find far more (+100% Magic Find and Gold Find).
+
+### Primordial items (10)
+
+NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosses, item level 70+.
+
+- **The First Word** (Godforged Greatsword): Deal 25% more damage to bosses; Critical hits ignore half of the target’s defense; Attacks against enemies below 20% HP always crit.
+- **The Unmade Crown** (Godweave Hood): 20% chance for spells to cast a second time; Spells have a 25% chance to make their target Vulnerable; +10% cooldown reduction.
+- **World-Anchor** (Godforged Shield): Once per battle, survive a killing blow with 1 HP; Immune to Stun and Freeze; +25 status resistance.
+- **Starborn** (Worldtree Bow): Always act first in the opening round; Critical hits rain starlight on every enemy (80% ATK arcane); +15% crit chance.
+- **Root of Ages** (Worldtree Staff): Heal the party for 4% of max HP at the start of each of your turns; Half of all overhealing becomes a shield; +40 healing power.
+- **Tidebreaker** (Godforged Spear): Strike the back row from the front; 30% chance on hit to make the target Wet; Ice damage against Burning enemies always Shatters.
+- **Ember of Creation** (Godseye Orb): 40% chance on hit to Burn; Burning enemies spread Burn when they die; Damage over time can critically strike.
+- **The Shadow Before Light** (Godforged Dagger): Begin every battle in Stealth; Attacks against enemies below 20% HP always crit; +10 dodge.
+- **Heartstring** (Worldtree Lute): Two songs can play at once; The party deals 15% more damage on each of your turns; +30% resource gain.
+- **Seal of the Unwritten** (Divine Amulet): Deal 25% more damage to bosses; Kills grant a shield of 10% of max HP; +25% ultimate gain.
+
+### Pets
+
+- **Lucky Ferret:** +5% Gold Find and +5% Magic Find. (Achievement: Pocket Money)
+- **Ember Sprite:** +5% fire damage. (Achievement: Bossfight)
+- **Owlet of Aurelis:** +5% XP gain. (Achievement: Curious)
+- **Stone Tortoise:** +4% defense. (Achievement: Delver)
+- **Hearth Cat:** +5 healing received. (Achievement: Fellowship)
+- **Grave Moth:** +5% shadow damage. (Achievement: Slayer)
+- **Rift Wisp:** +3% damage and +5% void resistance. (A Rift Guardian, rarely)
+- **Void Kitten:** +3% crit chance. It is not entirely there. (A Rift Guardian, rarely)
+- **Primordial Hatchling:** +4% damage, +4% max HP. It hatched from something older than the world. (Achievement: Rift Lord)
+
+### Mounts
+
+- **Farm Pony:** 1.5 min per step, 10% fewer ambushes. Slow, steady and unbothered. (800 gold at the stables)
+- **Warhorse:** 1 min per step, 25% fewer ambushes. Trained for battle; most bandits think twice. (6000 gold at the stables)
+- **Sand Strider:** 1 min per step, 40% fewer ambushes. A long-legged desert bird that never gets lost. (15000 gold at the stables)
+- **Spectral Stag:** 0.75 min per step, 50% fewer ambushes. Ysolde’s gift: it walks between the trees, and the beasts do not see it. (Achievement: Cartographer)
+- **Rift-Strider:** 0.5 min per step, 60% fewer ambushes. It steps through the margins of the world. Nothing follows. (Achievement: Riftwalker)
+<!-- endgame:end -->

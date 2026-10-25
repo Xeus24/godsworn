@@ -12,6 +12,7 @@ export interface CreationChoice {
   classId: string;
   birthSignId: string;
   hardcore: boolean;
+  challenges: string[];
 }
 
 const RANDOM_NAMES = ['Aldric', 'Seren', 'Bryn', 'Kestrel', 'Morwen', 'Thane', 'Ilya', 'Corvin', 'Isolde', 'Rook', 'Vela', 'Doran'];
@@ -28,6 +29,7 @@ export class CreationScreen implements Screen {
     classId: 'warrior',
     birthSignId: 'the-forge',
     hardcore: false,
+    challenges: [],
   };
   private portraitCanvas = el('canvas', { class: 'portrait-large pixel', 'aria-label': 'Portrait' });
   private nameInput = el('input', { type: 'text', maxlength: String(NAME_MAX_LENGTH), placeholder: 'Name your hero', 'aria-label': 'Name' });
@@ -77,6 +79,18 @@ export class CreationScreen implements Screen {
         hardcore,
         el('span', {}, 'Hardcore: death is permanent'),
       ),
+      el(
+        'details',
+        { class: 'small' },
+        el('summary', {}, 'Challenge modes'),
+        ...content.challenges.all().map((ch) => {
+          const box = el('input', { type: 'checkbox', id: `challenge-${ch.id}` }) as HTMLInputElement;
+          box.addEventListener('change', () => {
+            this.choice.challenges = box.checked ? [...this.choice.challenges, ch.id] : this.choice.challenges.filter((x) => x !== ch.id);
+          });
+          return el('label', { class: 'checkbox', for: `challenge-${ch.id}`, title: ch.description }, box, el('span', {}, `${ch.name}: ${ch.description}`));
+        }),
+      ),
       el('div', { class: 'creation-actions' }, this.beginButton, randomize, back),
     );
 
@@ -100,6 +114,7 @@ export class CreationScreen implements Screen {
       classId: pickRandom(content.classes.ids()),
       birthSignId: pickRandom(content.birthSigns.ids()),
       hardcore: this.choice.hardcore,
+      challenges: this.choice.challenges,
     };
     hardcore.checked = this.choice.hardcore;
     this.nameInput.value = this.choice.name;

@@ -1,3 +1,4 @@
+import { hasRule } from '../character/challenges';
 import { content } from '../../data';
 import { characterStats, clampVitals, restoreFull } from '../character/stats';
 import type { Battle } from '../combat/battle';
@@ -163,6 +164,7 @@ export class PartyActions {
 
   /** Characters and their bond perks for the next battle. */
   battleMembers(): { char: Character; extras: CompanionExtras }[] {
+    if (hasRule(this.s.player, 'noCompanions')) return [];
     return this.members().map((comp) => ({ char: comp.character, extras: companionExtras(this.def(comp.id), comp) }));
   }
 

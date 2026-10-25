@@ -1,3 +1,5 @@
+import { petModifiers } from './stable';
+import { challengeHeroModifiers } from './challenges';
 import { heresyModifiers } from '../gods/heresy';
 import { slayerModifiers } from '../bestiary/bestiary';
 import { content, type Content } from '../../data';
@@ -62,7 +64,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...divineModifiers(char, characterBaseStats(char, c), c));
   mods.push(...factionModifiers(char, c), ...houseModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
-  mods.push(...slayerModifiers(char, c), ...heresyModifiers(char));
+  mods.push(...slayerModifiers(char, c), ...heresyModifiers(char), ...challengeHeroModifiers(char, c), ...petModifiers(char, c));
   return mods;
 }
 

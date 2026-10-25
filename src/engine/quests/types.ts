@@ -67,6 +67,12 @@ export type Cond =
   | { kind: 'profession'; level: number }
   | { kind: 'achievements'; min: number }
   | { kind: 'hardcore' }
+  /** Playing under a challenge mode. */
+  | { kind: 'challenge'; challenge: string }
+  /** Highest Rift tier cleared. */
+  | { kind: 'riftTier'; min: number }
+  /** Boss Rush: full clears, or bosses beaten in one run. */
+  | { kind: 'bossRush'; clears?: number; best?: number }
   /** Defending a second god (the Defender path). */
   | { kind: 'defender' }
   /** Different endings reached across all playthroughs. */

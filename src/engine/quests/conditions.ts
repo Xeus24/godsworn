@@ -127,6 +127,12 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return p.hardcore;
     case 'ngPlus':
       return state.ngPlus >= cond.min;
+    case 'challenge':
+      return p.challenges.includes(cond.challenge);
+    case 'riftTier':
+      return state.endgame.riftTier >= cond.min;
+    case 'bossRush':
+      return state.endgame.bossRush.clears >= (cond.clears ?? 0) && state.endgame.bossRush.best >= (cond.best ?? 0);
     case 'defender':
       return p.devotion.defender !== undefined;
     case 'endingsSeen':

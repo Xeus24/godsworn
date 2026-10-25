@@ -38,6 +38,8 @@ import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
 import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
 import { CodexScreen } from './ui/codex/codexScreen';
+import { EndgameScreen } from './ui/endgame/endgameScreen';
+import type { ModifierSpec } from './engine/stats/modifiers';
 import './ui/codex/codex.css';
 
 validateContent();
@@ -143,6 +145,16 @@ function showCodex(): void {
   if (session) screens.show(new CodexScreen(session, nav));
 }
 
+function showEndgame(): void {
+  if (session) screens.show(new EndgameScreen(session, nav, startGauntletFight, () => showTown(session?.world.inTown() ?? 'brightwater')));
+}
+
+/** The next fight of the Rift or Boss Rush in progress. */
+function startGauntletFight(): void {
+  const f = session?.endgame.nextFight();
+  if (f) startFight(f.encounter, f.level, false, { enemyModifiers: f.enemyModifiers, partyModifiers: f.partyModifiers });
+}
+
 function showPantheon(): void {
   if (session) screens.show(new PantheonScreen(session, nav, startFight));
 }
@@ -157,7 +169,7 @@ function showWorld(): void {
 }
 
 function showTown(town: string): void {
-  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), leave: showWorld, talk }, town));
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), endgame: showEndgame, leave: showWorld, talk }, town));
 }
 
 function showMarket(town: string): void {
@@ -173,7 +185,13 @@ function showWorkshop(town: string): void {
  * trials scale to the hero). World fights use the zone's weather and cannot
  * be replayed.
  */
-function startFight(encounter: EncounterDef, level?: number, world = false): void {
+/** A fight that is part of a Rift or the Boss Rush: its affixes, and where to go when it ends. */
+interface GauntletOptions {
+  enemyModifiers: ModifierSpec[];
+  partyModifiers: ModifierSpec[];
+}
+
+function startFight(encounter: EncounterDef, level?: number, world = false, gauntlet?: GauntletOptions): void {
   const s = session;
   if (!s) return;
   inBattle = true;
@@ -187,7 +205,8 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
     punisher,
     companions: s.party.battleMembers(),
     guests: [...s.quests.guests(), ...(follower ? [{ id: 'follower', enemyId: follower, ally: true }] : [])],
-    ngPlus: s.state.ngPlus,
+    // Rifts and the Boss Rush are already set at your level: no NG+ stretching.
+    ...(gauntlet ? { enemyModifiers: gauntlet.enemyModifiers, partyModifiers: gauntlet.partyModifiers } : { ngPlus: s.state.ngPlus }),
     ...(level !== undefined ? { level } : {}),
   });
   currentBattle = battle;
@@ -201,12 +220,14 @@ function startFight(encounter: EncounterDef, level?: number, world = false): voi
         if (s.state.gameOver) {
           session = undefined;
           showTitle();
+        } else if (gauntlet) {
+          showEndgame();
         } else {
           showWorld();
           showEnding();
         }
       },
-      ...(world ? {} : { onRematch: () => startFight(encounter, level) }),
+      ...(world || gauntlet ? {} : { onRematch: () => startFight(encounter, level) }),
     }),
   );
 }

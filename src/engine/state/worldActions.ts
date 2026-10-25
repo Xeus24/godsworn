@@ -1,3 +1,5 @@
+import { grantMount, mountOf } from '../character/stable';
+import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
 import { content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
@@ -72,6 +74,8 @@ const TRAP_DAMAGE = 0.15;
 /** The overworld on a running game: walking, exploring, towns, factions and your house. */
 export class WorldActions {
   pending: PendingFight | undefined;
+  /** Fractional minutes of riding not yet spent. */
+  private ride = 0;
 
   constructor(private readonly s: GameSession) {
     // Every finished battle reports back: world fights clear their entity, defeats send you to town.
@@ -171,14 +175,14 @@ export class WorldActions {
       this.toast('info', 'The wall crumbles: a hidden passage!');
     }
     if (!exit) this.placeAt(map.id, nx, ny);
-    this.s.advanceTime(isDungeon(map.id) ? DUNGEON_STEP_MINUTES : STEP_MINUTES);
+    this.s.advanceTime(this.stepMinutes(map.id));
     if (this.world.grace > 0) this.world.grace--;
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
     // Random encounters roam the open zones, not dungeons or towns.
     if (!isDungeon(map.id) && this.world.grace === 0) {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
-      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night))) {
+      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1))) {
         const encounter = randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng);
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
@@ -203,6 +207,48 @@ export class WorldActions {
   markerHere(): QuestMarker | undefined {
     const p = this.world.position;
     return this.s.quests.markerAt(p.map, p.x, p.y);
+  }
+
+  /** Minutes a step takes: riding is faster on the overworld (fractions carry over to the next step). */
+  private stepMinutes(map: string): number {
+    if (isDungeon(map)) return DUNGEON_STEP_MINUTES;
+    this.ride += mountOf(this.s.player)?.stepMinutes ?? STEP_MINUTES;
+    const whole = Math.floor(this.ride);
+    this.ride -= whole;
+    return whole;
+  }
+
+  // ------------------------------------------------------------ pets and mounts
+
+  /** Buys a mount at a town's stables. */
+  buyMount(id: string): WorldResult {
+    const def = content.mounts.find(id);
+    if (!def?.price) return fail('That mount is not for sale.');
+    if (hasRule(this.s.player, 'noShopping')) return fail('Ironman: no merchant will sell to you.');
+    if (!this.inTown()) return fail('Stables are in towns.');
+    if (this.s.player.stable.mounts.includes(id)) return fail('You already own one.');
+    if (!this.s.spendGold(def.price, 'mount')) return fail(`${def.name} costs ${def.price} gold.`);
+    grantMount(this.s.player, id);
+    this.s.player.stable.mount = id;
+    this.toast('loot', `You bought a ${def.name}.`);
+    this.changed('mount');
+    return { ok: true };
+  }
+
+  setMount(id: string | undefined): WorldResult {
+    if (id !== undefined && !this.s.player.stable.mounts.includes(id)) return fail('You do not own that mount.');
+    if (id === undefined) delete this.s.player.stable.mount;
+    else this.s.player.stable.mount = id;
+    this.changed('mount');
+    return { ok: true };
+  }
+
+  setPet(id: string | undefined): WorldResult {
+    if (id !== undefined && !this.s.player.stable.pets.includes(id)) return fail('You do not have that pet.');
+    if (id === undefined) delete this.s.player.stable.pet;
+    else this.s.player.stable.pet = id;
+    this.changed('pet');
+    return { ok: true };
   }
 
   private fight(e: MapEntity, kind: PendingFight['kind']): StepResult {
@@ -379,6 +425,7 @@ export class WorldActions {
 
   /** Fast travel to another zone's waypoint (both attuned). Costs gold and a few hours. */
   fastTravel(zone: string): WorldResult {
+    if (hasRule(this.s.player, 'noFastTravel')) return fail('Ironman: the waypoints will not carry you.');
     if (!this.world.waypoints.includes(zone)) return fail('You have not attuned that waypoint.');
     if (isDungeon(this.world.position.map)) return fail('Leave the dungeon first.');
     if (zone === this.world.position.map) return fail('You are already here.');

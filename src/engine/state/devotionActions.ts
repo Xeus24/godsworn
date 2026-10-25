@@ -1,3 +1,4 @@
+import { hasRule } from '../character/challenges';
 import { HERESY } from '../../data/heresy';
 import { atoneCost, heresyFavorCost, heresyTier } from '../gods/heresy';
 import { content } from '../../data';
@@ -62,6 +63,8 @@ export class DevotionActions {
    * announces tier changes and new blessing offers, and returns the changes.
    */
   apply(deltas: Record<string, number>, reason: string, raw = false, quiet = false): FavorChange[] {
+    // Godless: favor can only fall.
+    if (hasRule(this.p, 'noFavor')) deltas = Object.fromEntries(Object.entries(deltas).filter(([, v]) => v < 0));
     const changes = applyFavor(this.p, deltas, characterStats(this.p).favorGain, raw);
     for (const ch of changes) {
       this.s.bus.emit('favorChanged', { god: ch.god, previous: ch.before, current: ch.after, reason });
@@ -163,6 +166,7 @@ export class DevotionActions {
 
   /** The follower to bring into the next fight, if any. */
   follower(): string | undefined {
+    if (hasRule(this.p, 'noCompanions')) return undefined;
     return followerOf(this.p);
   }
 

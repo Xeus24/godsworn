@@ -147,7 +147,8 @@ export type ConsumableKind =
   | 'revive'
   | 'cleanse'
   | 'tome'
-  | 'bag';
+  | 'bag'
+  | 'key';
 
 /** What using a consumable does. */
 export type ConsumableAction =
@@ -159,7 +160,9 @@ export type ConsumableAction =
   | { kind: 'skillPoint' }
   | { kind: 'expandInventory'; slots: number }
   | { kind: 'escape' }
-  | { kind: 'revive'; hpPct: number };
+  | { kind: 'revive'; hpPct: number }
+  /** Opens something somewhere else (a Rift Map at a town's Rift Gate). */
+  | { kind: 'key'; text: string };
 
 export interface ConsumableDef extends BaseCommon {
   category: 'consumable';

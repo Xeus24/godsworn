@@ -40,6 +40,10 @@ export interface Character {
   raceId: string;
   birthSignId: string;
   hardcore: boolean;
+  /** Challenge modes chosen at creation (see data/challenges.ts). */
+  challenges: string[];
+  /** Pets and mounts owned, and the ones out with you. */
+  stable: { pets: string[]; mounts: string[]; pet?: string; mount?: string };
 
   /** Character level: drives HP/MP formulas, attribute points and the cap. */
   level: number;

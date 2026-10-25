@@ -19,6 +19,8 @@ export interface TownNav {
   arena: () => void;
   market: () => void;
   workshop: () => void;
+  /** Rift Gate and Boss Rush. */
+  endgame: () => void;
   leave: () => void;
   /** Opens a conversation with someone in town. */
   talk: (conv: Conversation) => void;
@@ -146,6 +148,12 @@ export class TownScreen implements Screen {
       ),
       this.card('Workshop', el('p', { class: 'small' }, 'Learn professions, craft, upgrade gear, reroll affixes, add sockets and raise quality.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
     );
+    const forSale = content.mounts.filter((m) => m.price !== undefined);
+    cards.push(this.card('Stables', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you.'), ...forSale.map((m) => {
+      const owned = s.player.stable.mounts.includes(m.id);
+      return el('div', { class: 'board-row' }, el('b', {}, m.name), el('div', { class: 'dim small' }, `${m.description} ${m.stepMinutes} min per step, ${Math.round((1 - m.encounterMult) * 100)}% fewer ambushes.`), this.btn(owned ? 'Owned' : `Buy (${m.price}g)`, () => this.say(s.world.buyMount(m.id)), owned || s.state.gold < (m.price ?? 0)));
+    })));
+    cards.push(this.card('Rift Gate & Boss Rush', el('p', { class: 'small' }, s.endgame.active ? 'Your run is waiting for you.' : 'Open a Rift with a Rift Map, or take on every dungeon boss in a row in the arena’s Boss Rush.'), this.btn(s.endgame.active ? 'Return to your run' : 'Go to the Rift Gate', () => this.town.endgame(), false, 'primary')));
     cards.push(this.card('Arena & Class Trainers', el('p', { class: 'small' }, 'Spar against the beasts of the land in the arena, or train in a new class.'), this.btn('Go to the arena', () => this.town.arena(), false, 'primary')));
 
     const books = s.state.inventory.slots.map((it, i) => ({ it, i })).filter((x) => x.it && bookSkill(x.it.baseId));

@@ -53,6 +53,7 @@ export function startNgPlus(s: GameSession): NgPlusResult {
   st.clock = createClock();
   st.flags = Object.fromEntries(Object.entries(st.flags).filter(([k]) => k.startsWith(NG_PLUS.legacyFlagPrefix)));
   st.economy = { bought: {}, buyback: [] };
+  delete st.endgame.active;
   restoreFull(s.player);
   for (const comp of Object.values(st.party.companions)) restoreFull(comp.character);
   s.world.pending = undefined;

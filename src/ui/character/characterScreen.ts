@@ -193,7 +193,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, this.titles(), this.legacy(), classes, this.reputation(), skills, paragon),
+          el('div', { class: 'sheet-col' }, this.titles(), this.stable(), this.legacy(), classes, this.reputation(), skills, paragon),
         ),
       ),
     );
@@ -251,6 +251,34 @@ export class CharacterScreen implements Screen {
       ...(endings.length ? [el('div', { class: 'dim small' }, `Endings reached before: ${endings.join(', ')}`)] : []),
       begin,
       ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),
+    );
+  }
+
+  /** The pet out with you and the mount you ride. */
+  private stable(): HTMLElement {
+    const s = this.session;
+    const st = s.player.stable;
+    const pick = (label: string, owned: string[], current: string | undefined, name: (id: string) => string, set: (id: string | undefined) => void): HTMLSelectElement => {
+      const sel = el('select', { 'aria-label': label }) as HTMLSelectElement;
+      sel.append(el('option', { value: '' }, `(no ${label.toLowerCase()})`), ...owned.map((id) => el('option', { value: id }, name(id))));
+      sel.value = current ?? '';
+      sel.disabled = owned.length === 0;
+      sel.addEventListener('change', () => {
+        set(sel.value || undefined);
+        this.render();
+      });
+      return sel;
+    };
+    const pet = st.pet ? content.pets.get(st.pet) : undefined;
+    const mount = st.mount ? content.mounts.get(st.mount) : undefined;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h3', {}, 'Pet & Mount'),
+      pick('Pet', st.pets, st.pet, (id) => content.pets.get(id).name, (id) => s.world.setPet(id)),
+      el('div', { class: 'dim small' }, pet ? pet.description : 'Pets come from achievements and, rarely, from Rift Guardians.'),
+      pick('Mount', st.mounts, st.mount, (id) => content.mounts.get(id).name, (id) => s.world.setMount(id)),
+      el('div', { class: 'dim small' }, mount ? `${mount.description} ${mount.stepMinutes} min per step, ${Math.round((1 - mount.encounterMult) * 100)}% fewer ambushes.` : 'Buy a mount at a town’s stables, or earn one.'),
     );
   }
 

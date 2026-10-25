@@ -1,3 +1,4 @@
+import { challengeNames } from '../../engine/character/challenges';
 import { content } from '../../data';
 import { characterStats } from '../../engine/character/stats';
 import type { GameSession } from '../../engine/state/gameState';
@@ -54,7 +55,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
     el(
       'div',
       { class: 'sheet-ident' },
-      el('div', { class: 'sheet-name' }, p.name, p.title ? el('span', { class: 'sheet-title' }, p.title) : '', p.hardcore ? el('span', { class: 'badge danger' }, 'Hardcore') : ''),
+      el('div', { class: 'sheet-name' }, p.name, p.title ? el('span', { class: 'sheet-title' }, p.title) : '', ...challengeNames(p).map((n) => el('span', { class: 'badge danger' }, n))),
       el('div', { class: 'dim', title: identity }, identity),
       ...(extra ? [extra] : []),
     ),

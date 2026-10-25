@@ -48,6 +48,9 @@ import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
 import { ELITE_AFFIXES } from './bestiary/affixes';
 import { ACHIEVEMENTS } from './achievements';
 import { FOLLOWERS } from './followers';
+import { RIFT_AFFIXES } from './rifts';
+import { CHALLENGES } from './challenges';
+import { MOUNTS, PETS } from './pets';
 import { HERESY } from './heresy';
 import { FACTIONS } from './world/factions';
 import { HOUSE_ROOMS } from './world/housing';
@@ -111,6 +114,10 @@ export const content = {
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', BOSS_SCRIPTS),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),
+  riftAffixes: new ContentTable('rift affix', RIFT_AFFIXES),
+  challenges: new ContentTable('challenge', CHALLENGES),
+  pets: new ContentTable('pet', PETS),
+  mounts: new ContentTable('mount', MOUNTS),
   encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS, ...QUEST_ENCOUNTERS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
   specializations: new ContentTable('specialization', SPECIALIZATIONS),
@@ -362,6 +369,19 @@ export function validateContent(c: Content = content): void {
     checkCond(v, c, a.check, `achievement ${a.id}`);
     v.check(a.points > 0, `achievement ${a.id}: needs points`);
   }
+  for (const pet of c.pets.all()) checkModifiers(v, pet.modifiers, `pet ${pet.id}`);
+  for (const a of c.achievements.all()) {
+    if (a.pet) v.ref(c.pets, a.pet, `achievement ${a.id}`);
+    if (a.mount) v.ref(c.mounts, a.mount, `achievement ${a.id}`);
+  }
+  for (const ch of c.challenges.all()) {
+    checkModifiers(v, ch.heroModifiers ?? [], `challenge ${ch.id}`);
+    checkModifiers(v, ch.enemyModifiers ?? [], `challenge ${ch.id}`);
+  }
+  for (const a of c.riftAffixes.all()) {
+    checkModifiers(v, a.enemy ?? [], `rift affix ${a.id}`);
+    checkModifiers(v, a.party ?? [], `rift affix ${a.id}`);
+  }
   for (const a of c.eliteAffixes.all()) {
     const where = `elite affix ${a.id}`;
     checkModifiers(v, a.modifiers ?? [], where);
@@ -587,6 +607,8 @@ function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, wher
       return;
     case 'rarity':
       return v.ref(c.rarities, cond.rarity, where);
+    case 'challenge':
+      return v.ref(c.challenges, cond.challenge, where);
     case 'all':
     case 'any':
       for (const x of cond.conds) checkCond(v, c, x, where);

@@ -99,7 +99,7 @@ export function registerItemSections(panel: DebugPanel, getSession: () => GameSe
             log('gave gems and runes');
           })),
           debugButton('Consumables', give(() => {
-            for (const id of ['health-potion-greater', 'mana-potion-greater', 'scroll-of-identify', 'elixir-of-might', 'hearty-stew', 'tome-of-insight', 'travelers-pack', 'fire-bomb']) {
+            for (const id of ['health-potion-greater', 'mana-potion-greater', 'scroll-of-identify', 'elixir-of-might', 'hearty-stew', 'tome-of-insight', 'travelers-pack', 'fire-bomb', 'rift-map']) {
               s.items.give(createItem(id, 5, () => s.newUid(), content), false);
             }
             log('gave consumables');

@@ -14,6 +14,7 @@ export interface NewCharacterOptions {
   classId: string;
   birthSignId: string;
   hardcore?: boolean;
+  challenges?: string[];
   id?: string;
 }
 
@@ -41,6 +42,8 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     raceId: opts.raceId,
     birthSignId: opts.birthSignId,
     hardcore: opts.hardcore ?? false,
+    challenges: [...(opts.challenges ?? [])],
+    stable: { pets: [], mounts: [] },
     level: 1,
     xp: 0,
     classes: [{ classId: opts.classId, slot: 'primary', level: 1, xp: 0, skillPoints: 0 }],

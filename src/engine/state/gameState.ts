@@ -25,6 +25,8 @@ import { WorldActions } from './worldActions';
 import { QuestActions } from './questActions';
 import { PartyActions } from './partyActions';
 import { AchievementActions } from './achievementActions';
+import { EndgameActions } from './endgameActions';
+import { createEndgameState, type EndgameState } from '../endgame/types';
 import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
 import type { WorldState } from '../world/types';
@@ -32,7 +34,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 13;
+export const SAVE_VERSION = 14;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -128,6 +130,8 @@ export interface GameState {
   rarityFound: Record<string, number>;
   /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
   legacy: { endings: string[] };
+  /** Rifts and the Boss Rush: the run in progress and your records. */
+  endgame: EndgameState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -154,6 +158,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     achievements: {},
     rarityFound: {},
     legacy: { endings: [] },
+    endgame: createEndgameState(),
   };
 }
 
@@ -176,6 +181,7 @@ export class GameSession {
   readonly quests: QuestActions;
   readonly party: PartyActions;
   readonly achievements: AchievementActions;
+  readonly endgame: EndgameActions;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();
@@ -191,6 +197,7 @@ export class GameSession {
     this.party = new PartyActions(this);
     this.quests = new QuestActions(this);
     this.achievements = new AchievementActions(this);
+    this.endgame = new EndgameActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {
       if (amount > 0) this.state.stats.goldEarned += amount;

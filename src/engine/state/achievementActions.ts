@@ -1,3 +1,4 @@
+import { grantMount, grantPet } from '../character/stable';
 import { content } from '../../data';
 import type { AchievementDef } from '../achievements/types';
 import { evaluate } from '../quests/conditions';
@@ -61,6 +62,8 @@ export class AchievementActions {
     const p = s.player;
     if (def.title && !p.devotion.titles.includes(def.title)) p.devotion.titles.push(def.title);
     if (def.gold) s.addGold(def.gold, 'achievement');
+    if (def.pet && grantPet(p, def.pet)) s.bus.emit('toast', { kind: 'loot', text: `A new pet: ${content.pets.get(def.pet).name}!` });
+    if (def.mount && grantMount(p, def.mount)) s.bus.emit('toast', { kind: 'loot', text: `A new mount: ${content.mounts.get(def.mount).name}!` });
     s.bus.emit('achievementUnlocked', { achievementId: def.id });
     s.bus.emit('toast', { kind: 'achievement', text: `Achievement: ${def.name}${def.title ? ` (title: ${def.title})` : ''}` });
   }

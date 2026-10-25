@@ -119,6 +119,8 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 
 **New Game+ and Twilight of the Gods:** after any ending, begin **New Game+** from the Legacy panel on the Character screen. Your hero, gear, gold, companions and achievements come with you; the story starts again, and the world rises to levels 60–80 (later tiers make enemies tougher still). In New Game+ the **Twilight of the Gods** unfolds beside the main story: the gods fall silent, their old feuds turn to war (end them, or pick a side and make new enemies), and the Nameless One, the god the pantheon wrote out of the world, makes you an offer. Accept it and you walk the road of **heresy**: void power, Forbidden skills and the Black Market's back room, paid for with every god's favor (a temple will hear your atonement). An **Apostle** can call their god's **follower** into battle from the Pantheon, and from NG+3 may become **Defender** of a second god.
 
+**Endgame:** from level 50, take a **Rift Map** (the Black Market sells them) to any town's **Rift Gate**: three waves and a Rift Guardian, back to back, with tougher tiers (1–20), Rift affixes and better loot the deeper you go, including **Primordial** items from tier 10. The **Boss Rush** pits you against every dungeon boss in a row. **Challenge modes** (Ironman, Lone Wolf, Godless, Glass Cannon, Nightmare) are chosen when you create your hero, alongside Hardcore. Collect **pets** (small bonuses) and **mounts** (faster, safer travel; sold at town stables) and choose them on the Character screen.
+
 More screens and controls are documented here as each phase lands.
 
 ## Project layout
@@ -140,6 +142,7 @@ src/
     party/      companions: creation, approval, bond perks
     bestiary/   bestiary knowledge and Slayer ranks
     ngplus/     New Game+: starting a new playthrough, NG+ levels and threat
+    endgame/    Rift and Boss Rush run state (run by state/endgameActions.ts)
     achievements/ achievement types (checked in state/achievementActions.ts)
     state/      saved game state, session, clock
     content/    content tables and validation

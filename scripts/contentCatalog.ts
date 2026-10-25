@@ -13,6 +13,8 @@ import { BOSS, PARTY_SCALING } from '../src/data/combat';
 import { ACHIEVEMENT_CATEGORIES } from '../src/data/achievements';
 import { HERESY } from '../src/data/heresy';
 import { NG_PLUS } from '../src/data/ngPlus';
+import { RIFTS } from '../src/data/rifts';
+import { BOSS_RUSH } from '../src/engine/state/endgameActions';
 import { ELITE_AFFIX_RULES } from '../src/data/bestiary/affixes';
 import { BESTIARY, KNOWLEDGE_NAMES } from '../src/data/bestiary/bestiary';
 import type { SkillTreeDef } from '../src/engine/skills/treeTypes';
@@ -392,7 +394,24 @@ function ngPlusSection(): string {
   return out.join('\n');
 }
 
-const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection, ngplus: ngPlusSection };
+function endgameSection(): string {
+  const out: string[] = [];
+  out.push(`### Rifts`, '', `Open with a Rift Map at a town's Rift Gate (level ${RIFTS.minLevel}+): ${RIFTS.waves} waves drawn from every zone, then a Rift Guardian (a dungeon boss; world bosses too from tier ${RIFTS.worldBossTier}). Tiers 1–${RIFTS.maxTier}: enemies at your level ${RIFTS.levelOffset} +1 per ${RIFTS.tiersPerLevel} tiers, +${RIFTS.threatPerTier}% HP and damage per tier, ${RIFTS.respitePct}% of HP and MP back between waves. Affixes from tiers ${RIFTS.affixTiers.join(' / ')}. Rewards: ${RIFTS.goldPerLevelPerTier} gold × level × tier per wave (×3 for the Guardian), ${RIFTS.waveLootRolls} elite loot roll per wave and ${RIFTS.guardianLootRolls} boss rolls for the Guardian, +${RIFTS.magicFindPerTier}% Magic Find per tier; Primordials from tier ${RIFTS.primordialTier}; a Rift pet at ${RIFTS.petChance * 100}% + ${RIFTS.petChancePerTier * 100}% per tier.`, '');
+  out.push('| Rift affix | Effect | Bounty |', '|---|---|---|');
+  for (const a of content.riftAffixes.all()) out.push(`| ${a.name} | ${a.description} | ${a.bounty ? `+${a.bounty}% gold and MF` : '-'} |`);
+  out.push('', `### The Boss Rush`, '', `At any town (level ${BOSS_RUSH.minLevel}+): all ${content.dungeons.size} dungeon bosses in road order at your level, HP carried over. A full clear pays ${BOSS_RUSH.goldPerLevel} gold × level; best run and fastest clear are kept.`, '');
+  out.push('### Challenge modes', '');
+  for (const ch of content.challenges.all()) out.push(`- **${ch.name}:** ${ch.description}`);
+  out.push('', `### Primordial items (${content.uniques.filter((u) => u.rarity === 'primordial').length})`, '', 'NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosses, item level 70+.', '');
+  for (const u of content.uniques.filter((x) => x.rarity === 'primordial')) out.push(`- **${u.name}** (${content.items.get(u.baseId).name}): ${u.effectText.join('; ')}.`);
+  out.push('', '### Pets', '');
+  for (const p of content.pets.all()) out.push(`- **${p.name}:** ${p.description} (${p.source})`);
+  out.push('', '### Mounts', '');
+  for (const m of content.mounts.all()) out.push(`- **${m.name}:** ${m.stepMinutes} min per step, ${Math.round((1 - m.encounterMult) * 100)}% fewer ambushes. ${m.description} (${m.price ? `${m.price} gold at the stables` : m.source})`);
+  return out.join('\n');
+}
+
+const SECTIONS: Record<string, () => string> = { items: itemsSection, combat: combatSection, trees: treesSection, specializations: specsSection, general: generalSection, multiclass: multiclassSection, gods: godsSection, apostles: apostlesSection, world: worldSection, economy: economySection, story: storySection, codex: codexSection, ngplus: ngPlusSection, endgame: endgameSection };
 
 let md = readFileSync(FILE, 'utf8');
 for (const [name, build] of Object.entries(SECTIONS)) {

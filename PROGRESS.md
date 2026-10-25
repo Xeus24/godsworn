@@ -18,8 +18,8 @@
 | 12 | Quests, dialogue, main story, companions | **Done** |
 | 13 | Bosses, elites, bestiary, achievements, codex | **Done** |
 | 14 | New Game+ and Twilight of the Gods | **Done** |
-| 15 | Endgame activities, challenge modes, Ascended/Primordial items | Next |
-| 16 | Save system, settings, audio, polish, balance, playtest | |
+| 15 | Endgame activities, challenge modes, Ascended/Primordial items | **Done** |
+| 16 | Save system, settings, audio, polish, balance, playtest | Next |
 
 ## Completed features
 
@@ -463,6 +463,21 @@
 - **Balance** (solo benchmark heroes at each fight's level, NG+1): Twilight fights 58–98%; the Nameless One 31% (Seryth is 31%), the Last Light 40%.
 - 421 unit tests.
 
+### Phase 15: endgame activities, challenge modes, Ascended and Primordial items
+- **Rifts** (`state/endgameActions.ts`, `data/rifts.ts`): the tiered endgame gauntlet, opened with a **Rift Map** (Black Market; rare loot from level 50) at any town's **Rift Gate**, from level 50.
+  - A run is 3 waves drawn from every zone, then a **Rift Guardian** (a dungeon boss; world bosses too from tier 10), fought back to back. HP and MP carry over, with a 35% respite between waves. Falling or fleeing closes the Rift and spends the map.
+  - **Tiers 1–20:** enemies at your level −3, +1 level every 3 tiers and +8% HP and damage per tier. Clearing a tier opens the next.
+  - **Rift affixes** (10): one from tier 3, two from tier 8, three from tier 14. Bloodlust, Bulwark, Haste, Warded and Deadly toughen enemies; Fragile, Parched and Drained weaken your party for a bounty of more gold and Magic Find; Empowered and Gilded cut both ways.
+  - **Rewards:** gold per wave (×3 for the Guardian), an elite loot roll per wave and three boss rolls for the Guardian, +15% Magic Find per tier, Primordials from the Guardian at tier 10+, and sometimes a Rift pet.
+- **The Boss Rush** (any town, level 30+): all 10 dungeon bosses in road order at your level, back to back. Your best run and fastest full clear are kept; a clear pays 40 gold × level.
+- Rift and Boss Rush fights are set at your level, so NG+ does not stretch them. A run in progress is shown at the Rift Gate (town card) and survives leaving the screen.
+- **Challenge modes** (`data/challenges.ts`), chosen at creation (any combination, with Hardcore): **Ironman** (no buying, no fast travel), **Lone Wolf** (no companions or followers in battle), **Godless** (favor can only fall), **Glass Cannon** (half max HP, +30% damage) and **Nightmare** (enemies +50% HP and +40% damage, you +100% Magic and Gold Find). They show as badges under your name. Rules are enforced in the engine (shops, waypoints, party, favor) and the modifiers flow through `calculateStats`.
+- **Primordial items** (10, `data/items/primordials.ts`): three effects each (The First Word, the Unmade Crown, World-Anchor, Starborn...). Item level 70+, NG+5 or later (or a tier 10+ Rift Guardian), and only from elites, champions and bosses: about 0.06–0.09% of elite and boss drops at NG+5. **Ascended** items (Phase 3) still come from upgrading legendaries and mythics in NG+.
+- **Pets** (9) and **mounts** (5) (`data/pets.ts`, `character/stable.ts`): one pet out at a time for a small bonus (from achievements and, rarely, Rift Guardians); one mount at a time for faster overworld travel (0.5–1.5 minutes a step instead of 2) and fewer ambushes. Three mounts are sold at every town's **Stables**; two are earned (Cartographer, Riftwalker). Pick both on the Character screen.
+- **Achievements:** 14 more (112 → 126, 45 titles): finishing the story in each challenge mode (with titles), Masochist (Hardcore plus two challenges), Rift tiers 1/5/10/15/20, the Boss Rush, and finding a Primordial. Some achievements now bring a pet or mount.
+- **Balance** (scratch sim, every class at 60 with benchmark gear, alone, no potions): full Rift clears 50% at tier 1, 48% at tier 5, 19% at tier 10 and 6% at tier 20. By class at tier 1: rogue, ranger and monk 100%, cleric 83%, bard 17%, and warrior, mage and necromancer 0%. Those three are the weak solo classes from earlier phases; with companions and potions they clear. Fixing them is Phase 16's class pass.
+- 433 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -565,6 +580,9 @@
 - **Heresy is a track of its own, not an 11th god's favor,** because the Nameless One is not a member of the pantheon: it has no prayers, blessings or punisher, and every gain is paid for with every god's favor.
 - **Politics change relations, not the gods.** The pantheon data stays fixed; the save records which pairs became rivals, allies or made peace, and every rival lookup goes through `rivalsOf`.
 - **Followers count as part of a companion** (0.4) for enemy scaling: as a full companion they were a net loss (the enemies' extra HP outweighed them), and without any scaling they were worth a whole companion for free.
+- **Rifts and the Boss Rush share one gauntlet engine:** a run is a saved list of fights; `settleBattle` reports each result back, and the run decides what comes next. Fights are pre-rolled when the run opens, so a run can be left and resumed.
+- **Challenge modes are data with rules and modifiers,** so most of what they do goes through `calculateStats` and the battle setup; the few rules that stop actions (shops, waypoints, companions, favor) are checked where those actions happen.
+- **Mounts change step time, not movement,** so the map and fog work unchanged; fractional minutes carry over between steps.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
 ## Known bugs
@@ -581,12 +599,12 @@
 - **The Defender path** gives the second god's blessing, tier and title, not a second apostle tree, avatar, weapon or edicts (see Design decisions).
 - **Twilight of the Gods** is the same five chapters in every NG+ tier; tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
-- **Rift Maps** (a gold sink) come in Phase 15.
 - **Boss balance by hand:** some late world bosses (Frostspire, Stormcoast, Dark Citadel) are 23–25% for a hero alone; they are meant for a party, but the Phase 16 pass may soften them. Solo healer heroes (clerics) lose more often to bosses now that enrage ends stalls; their damage is a Phase 16 class-balance question.
 - **Codex extras:** no item compendium or god/class pages in the Codex yet (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites. Phase 16 polish.
-- **Achievement rewards** are titles and gold; cosmetic rewards (portrait frames, transmog) come with transmog in Phase 15.
+- **Achievement rewards** are titles, gold, pets and mounts. Portrait frames and **transmog** are left for Phase 16 polish (items have no visual variants to swap yet).
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
-- **Treasure maps, Rift Maps, keys, pets, mounts and transmog** arrive with the systems that use them (Phase 15). Lore pages are collected (Phase 10) and read in the Codex.
+- **Treasure maps** were cut: Rift Maps and the dungeons' chests fill that role. Lore pages are collected (Phase 10) and read in the Codex.
+- **Rift balance:** clear rates depend heavily on class (see Phase 15); the Phase 16 class pass should bring warrior, mage, necromancer and bard solo play up. There are no Rift leaderboards beyond your own best tier.
 
 ## Next steps
-- Phase 15: endgame activities, challenge modes, Ascended and Primordial items.
+- Phase 16: save system, settings, audio, polish, the full balance pass and playtest.

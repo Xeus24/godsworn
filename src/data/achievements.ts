@@ -14,9 +14,10 @@ export const ACHIEVEMENT_CATEGORIES: { id: AchievementCategory; name: string }[]
   { id: 'companions', name: 'Companions' },
   { id: 'challenge', name: 'Challenges' },
   { id: 'twilight', name: 'New Game+ & Twilight' },
+  { id: 'endgame', name: 'Rifts & Boss Rush' },
 ];
 
-type Extra = Pick<AchievementDef, 'hidden' | 'title' | 'gold'>;
+type Extra = Pick<AchievementDef, 'hidden' | 'title' | 'gold' | 'pet' | 'mount'>;
 const ach = (category: AchievementCategory) => (id: string, name: string, description: string, points: number, check: Cond, extra: Extra = {}): AchievementDef => ({ id, name, description, category, points, check, ...extra });
 const life = (stat: LifetimeStat, min: number): Cond => ({ kind: 'lifetime', stat, min });
 
@@ -31,6 +32,7 @@ const wealth = ach('wealth');
 const companions = ach('companions');
 const challenge = ach('challenge');
 const twilight = ach('twilight');
+const endgame = ach('endgame');
 
 const WORLD_BOSSES = ['bramblehorn', 'gnarlroot', 'abyssal-crab', 'sandworm', 'frost-wyrm', 'storm-roc', 'ember-matriarch', 'unwritten-herald'];
 
@@ -60,14 +62,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   combat('flee-10', 'Discretion', 'Escape from 10 battles.', 5, life('battlesFled', 10), { hidden: true }),
 
   // ---------------- Bosses ----------------
-  bosses('boss-1', 'Bossfight', 'Defeat a miniboss or boss.', 10, life('bossesKilled', 1)),
+  bosses('boss-1', 'Bossfight', 'Defeat a miniboss or boss.', 10, life('bossesKilled', 1), { pet: 'ember-sprite' }),
   bosses('boss-25', 'Boss Hunter', 'Defeat 25 minibosses and bosses.', 20, life('bossesKilled', 25)),
   bosses('boss-100', 'The Undaunted', 'Defeat 100 minibosses and bosses.', 40, life('bossesKilled', 100), { title: 'the Undaunted' }),
   bosses('world-boss-1', 'Giant-Killer', 'Slay a world boss.', 15, life('worldBossesKilled', 1)),
   bosses('world-boss-all', 'Titan-Slayer', 'Slay all eight world bosses.', 50, { kind: 'all', conds: WORLD_BOSSES.map((enemy) => ({ kind: 'killed', enemy })) }, { title: 'Titan-Slayer', gold: 5000 }),
   bosses('enraged-1', 'Into the Fire', 'Defeat a boss after it has enraged.', 15, life('enragedKilled', 1)),
   bosses('punisher-1', 'Godsdefier', 'Defeat a herald a god sent to punish you.', 20, life('punishersKilled', 1), { title: 'Godsdefier' }),
-  bosses('dungeon-1', 'Delver', 'Clear a dungeon.', 10, { kind: 'dungeons', min: 1 }),
+  bosses('dungeon-1', 'Delver', 'Clear a dungeon.', 10, { kind: 'dungeons', min: 1 }, { pet: 'stone-tortoise' }),
   bosses('dungeon-all', 'Master Delver', 'Clear all ten dungeons.', 40, { kind: 'dungeons', min: 10 }, { title: 'the Delver', gold: 3000 }),
   bosses('goblin-king', 'Long Live the King?', 'Defeat the Goblin King.', 10, { kind: 'killed', enemy: 'goblin-king' }),
   bosses('void-commander', 'Into the Dark', 'Defeat the Void Commander in the Dark Citadel.', 30, { kind: 'killed', enemy: 'void-commander' }),
@@ -78,7 +80,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   bestiary('seen-100', 'Encyclopedist', 'Meet 100 kinds of enemy.', 30, { kind: 'bestiary', seen: 100 }, { title: 'the Naturalist' }),
   bestiary('mastered-1', 'Know Thy Enemy', 'Master a bestiary entry.', 10, { kind: 'bestiary', mastered: 1 }),
   bestiary('mastered-25', 'Monster Scholar', 'Master 25 bestiary entries.', 30, { kind: 'bestiary', mastered: 25 }, { title: 'Monster Scholar' }),
-  bestiary('slayer-1', 'Slayer', 'Earn a Slayer rank against any creature type.', 5, { kind: 'slayer', rank: 1 }),
+  bestiary('slayer-1', 'Slayer', 'Earn a Slayer rank against any creature type.', 5, { kind: 'slayer', rank: 1 }, { pet: 'grave-moth' }),
   bestiary('slayer-3', 'Seasoned Slayer', 'Reach Slayer rank 3 against any creature type.', 15, { kind: 'slayer', rank: 3 }),
   bestiary('slayer-5', 'Grand Slayer', 'Reach Slayer rank 5 against any creature type.', 40, { kind: 'slayer', rank: 5 }, { title: 'the Slayer' }),
   bestiary('slayer-undead', 'Gravewarden', 'Reach Slayer rank 3 against the undead.', 20, { kind: 'slayer', enemyType: 'undead', rank: 3 }, { title: 'Gravewarden' }),
@@ -127,15 +129,15 @@ export const ACHIEVEMENTS: AchievementDef[] = [
 
   // ---------------- Exploration ----------------
   exploration('zones-4', 'Wanderer', 'Set foot in four zones.', 10, { kind: 'zones', min: 4 }),
-  exploration('zones-all', 'Cartographer', 'Set foot in all eight zones.', 25, { kind: 'zones', min: 8 }, { title: 'the Wayfarer' }),
+  exploration('zones-all', 'Cartographer', 'Set foot in all eight zones.', 25, { kind: 'zones', min: 8 }, { mount: 'spectral-stag', title: 'the Wayfarer' }),
   exploration('waypoints-all', 'Well Traveled', 'Attune every waypoint.', 15, { kind: 'waypoints', min: 8 }),
-  exploration('lore-5', 'Curious', 'Find 5 lore pages.', 10, { kind: 'lore', count: 5 }),
+  exploration('lore-5', 'Curious', 'Find 5 lore pages.', 10, { kind: 'lore', count: 5 }, { pet: 'owlet-of-aurelis' }),
   exploration('lore-all', 'Lorekeeper', 'Find all 16 lore pages.', 30, { kind: 'lore', count: 16 }, { title: 'Lorekeeper' }),
   exploration('house', 'Home Sweet Home', 'Buy a house.', 15, { kind: 'house' }),
   exploration('faction-legend', 'Living Legend', 'Reach Legend rank with a faction.', 30, { kind: 'any', conds: ['order-of-dawn', 'wardens', 'iron-legion', 'mages-guild', 'thieves-den'].map((faction) => ({ kind: 'rep', faction, min: 3000 })) }),
 
   // ---------------- Wealth & loot ----------------
-  wealth('gold-1k', 'Pocket Money', 'Earn 1,000 gold in total.', 5, life('goldEarned', 1000)),
+  wealth('gold-1k', 'Pocket Money', 'Earn 1,000 gold in total.', 5, life('goldEarned', 1000), { pet: 'lucky-ferret' }),
   wealth('gold-100k', 'Merchant Prince', 'Earn 100,000 gold in total.', 20, life('goldEarned', 100000)),
   wealth('gold-1m', 'Tycoon', 'Earn 1,000,000 gold in total.', 40, life('goldEarned', 1000000), { title: 'the Tycoon' }),
   wealth('spend-50k', 'Big Spender', 'Spend 50,000 gold.', 15, life('goldSpent', 50000)),
@@ -146,7 +148,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   wealth('legendary-25', 'Hoard of Legends', 'Find 25 legendary items.', 30, { kind: 'rarity', rarity: 'legendary', min: 25 }, { title: 'the Hoarder' }),
 
   // ---------------- Companions ----------------
-  companions('recruit-1', 'Fellowship', 'Recruit a companion.', 10, { kind: 'companions', min: 1 }),
+  companions('recruit-1', 'Fellowship', 'Recruit a companion.', 10, { kind: 'companions', min: 1 }, { pet: 'hearth-cat' }),
   companions('recruit-all', 'The Whole Company', 'Have all six companions with you.', 30, { kind: 'companions', min: 6 }, { title: 'the Captain' }),
   companions('devoted-companion', 'Trusted Friend', 'Reach 80 approval with a companion.', 20, { kind: 'companions', min: 1, minApproval: 80 }),
   companions('companion-quests', 'Their Stories', 'Complete 6 companion quests.', 25, { kind: 'questsDone', questKind: 'companion', min: 6 }),
@@ -166,6 +168,22 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   twilight('heresy-3', 'Unwritten', 'Reach the deepest heresy.', 30, { kind: 'heresy', min: 100 }, { hidden: true }),
   twilight('defender', 'Defender of the Pantheon', 'Defend a second god beside your own.', 40, { kind: 'defender' }, { title: 'Defender of the Pantheon' }),
   twilight('all-endings', 'Every Story Told', 'Reach all six endings across your playthroughs.', 60, { kind: 'endingsSeen', min: 6 }, { title: 'the Storyteller' }),
+
+  // Challenge modes: finish the story under each.
+  ...[['ironman', 'Iron Will', 'the Iron'], ['lone-wolf', 'Lone Wolf', 'the Lone Wolf'], ['godless', 'Godless', 'the Godless'], ['glass-cannon', 'Glass Cannon', 'the Glass Cannon'], ['nightmare', 'Nightmare', 'Nightmare-Walker']].map(([id, name, title]) =>
+    challenge(`challenge-${id}`, name as string, `Reach an ending in the ${name} challenge mode.`, 40, { kind: 'all', conds: [{ kind: 'challenge', challenge: id as string }, { kind: 'ending' }] }, { title: title as string }),
+  ),
+  challenge('challenge-triple', 'Masochist', 'Reach an ending with Hardcore and two challenge modes at once.', 60, { kind: 'all', conds: [{ kind: 'hardcore' }, { kind: 'ending' }, { kind: 'any', conds: [['ironman', 'lone-wolf'], ['ironman', 'godless'], ['ironman', 'glass-cannon'], ['ironman', 'nightmare'], ['lone-wolf', 'godless'], ['lone-wolf', 'glass-cannon'], ['lone-wolf', 'nightmare'], ['godless', 'glass-cannon'], ['godless', 'nightmare'], ['glass-cannon', 'nightmare']].map(([a, b]) => ({ kind: 'all' as const, conds: [{ kind: 'challenge' as const, challenge: a as string }, { kind: 'challenge' as const, challenge: b as string }] })) }] }, { title: 'the Unbreakable' }),
+
+  // ---------------- Rifts and the Boss Rush ----------------
+  endgame('rift-1', 'Through the Rift', 'Clear a tier 1 Rift.', 15, { kind: 'riftTier', min: 1 }),
+  endgame('rift-5', 'Riftwalker', 'Clear a tier 5 Rift.', 25, { kind: 'riftTier', min: 5 }, { mount: 'rift-strider', title: 'Riftwalker' }),
+  endgame('rift-10', 'Into the Deep', 'Clear a tier 10 Rift.', 40, { kind: 'riftTier', min: 10 }),
+  endgame('rift-15', 'Edge of Nothing', 'Clear a tier 15 Rift.', 50, { kind: 'riftTier', min: 15 }),
+  endgame('rift-20', 'Rift Lord', 'Clear a tier 20 Rift.', 80, { kind: 'riftTier', min: 20 }, { pet: 'primordial-egg', title: 'Rift Lord' }),
+  endgame('boss-rush-5', 'Warming Up', 'Beat 5 bosses in one Boss Rush.', 15, { kind: 'bossRush', best: 5 }),
+  endgame('boss-rush-clear', 'Boss Rush', 'Clear the Boss Rush.', 40, { kind: 'bossRush', clears: 1 }, { title: 'the Relentless Champion' }),
+  endgame('primordial', 'Older Than the Gods', 'Find a Primordial item.', 50, { kind: 'rarity', rarity: 'primordial' }, { hidden: true }),
 
   challenge('achievements-25', 'Achiever', 'Earn 25 achievements.', 10, { kind: 'achievements', min: 25 }),
   challenge('achievements-60', 'Completionist', 'Earn 60 achievements.', 30, { kind: 'achievements', min: 60 }, { title: 'the Completionist' }),
