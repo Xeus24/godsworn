@@ -747,3 +747,11 @@ input.num {
   color: var(--gold-hi);
   font-size: 0.7em;
 }
+
+/* Reduce motion: no animations or transitions anywhere. */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}

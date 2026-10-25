@@ -45,7 +45,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
     return b;
   };
   const identity = `Level ${p.level} ${content.races.get(p.raceId).name} ${[...p.classes.map((c) => content.classes.get(c.classId).name), ...p.hybrids.map((h) => content.hybrids.get(h).name)].join(' / ')}`;
-  const title = el('button', {}, 'Title');
+  const title = el('button', {}, 'Menu (Esc)');
   title.addEventListener('click', nav.title);
 
   return el(

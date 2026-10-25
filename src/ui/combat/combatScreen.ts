@@ -1,3 +1,5 @@
+import { audio } from '../audio/audio';
+import { settings, updateSettings } from '../settings';
 import { content } from '../../data';
 import { chooseAction } from '../../engine/combat/ai';
 import type { Battle } from '../../engine/combat/battle';
@@ -54,8 +56,8 @@ export class CombatScreen implements Screen {
   private queue: BattleEvent[] = [];
   private playing = false;
   private timer = 0;
-  private speed = 1;
-  private auto = false;
+  private speed: number = settings().battleSpeed;
+  private auto = settings().autoBattle;
   private menu: Menu = 'main';
   private pending: Pending | undefined;
   private logLines: string[] = [];
@@ -81,13 +83,15 @@ export class CombatScreen implements Screen {
       const b = el('button', { class: `tab${n === this.speed ? ' active' : ''}` }, `${n}×`);
       b.addEventListener('click', () => {
         this.speed = n;
+        updateSettings({ battleSpeed: n as 1 | 2 | 4 });
         speedBtns.forEach((x, i) => x.classList.toggle('active', [1, 2, 4][i] === n));
       });
       return b;
     });
-    const autoBtn = el('button', { class: 'tab' }, 'Auto: off');
+    const autoBtn = el('button', { class: `tab${this.auto ? ' active' : ''}` }, `Auto: ${this.auto ? 'on' : 'off'}`);
     autoBtn.addEventListener('click', () => {
       this.auto = !this.auto;
+      updateSettings({ autoBattle: this.auto });
       autoBtn.textContent = `Auto: ${this.auto ? 'on' : 'off'}`;
       autoBtn.classList.toggle('active', this.auto);
       if (this.auto && this.battle.current && !this.playing) this.step();
@@ -154,6 +158,7 @@ export class CombatScreen implements Screen {
     if (!e) return;
     this.playing = true;
     this.scene.applyEvent(e);
+    this.sound(e);
     const line = this.describe(e);
     if (line) this.addLog(line, e.type === 'boss');
     if (e.type === 'turn') this.scene.actorId = e.actorId;
@@ -437,6 +442,18 @@ export class CombatScreen implements Screen {
   }
 
   // ---------------------------------------------------------- log & results
+
+  /** The sound of a battle event. */
+  private sound(e: BattleEvent): void {
+    const a = audio();
+    if (e.type === 'damage' && !e.dot) a.play(e.crit ? 'crit' : 'hit');
+    else if (e.type === 'heal') a.play('heal');
+    else if (e.type === 'miss') a.play('miss');
+    else if (e.type === 'death') a.play('death');
+    else if (e.type === 'break') a.play('break');
+    else if (e.type === 'boss') a.play('boss');
+    else if (e.type === 'end') a.play(e.outcome === 'victory' ? 'victory' : 'defeat');
+  }
 
   private name(id: string | undefined): string {
     return (id && this.battle.get(id)?.name) || '?';

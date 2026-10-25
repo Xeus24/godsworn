@@ -37,6 +37,12 @@ import type { Conversation, ConversationOutcome } from './engine/state/conversat
 import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
 import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
+import { AUTOSAVE_SLOT, SaveSlots, type SaveStore } from './engine/state/save';
+import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay } from './ui/menu/menus';
+import { applySettings, settings } from './ui/settings';
+import './ui/menu/menu.css';
+import { audio } from './ui/audio/audio';
+import { isDungeon } from './engine/world/world';
 import { CodexScreen } from './ui/codex/codexScreen';
 import { EndgameScreen } from './ui/endgame/endgameScreen';
 import type { ModifierSpec } from './engine/stats/modifiers';
@@ -48,6 +54,40 @@ const root = document.getElementById('app');
 if (!root) throw new Error('#app element missing');
 
 let session: GameSession | undefined;
+
+/** Saves live in localStorage (if the browser allows it; otherwise only for this page). */
+const memory = new Map<string, string>();
+const browserStore: SaveStore = {
+  getItem: (k) => {
+    try {
+      return localStorage.getItem(k);
+    } catch {
+      return memory.get(k) ?? null;
+    }
+  },
+  setItem: (k, v) => {
+    try {
+      localStorage.setItem(k, v);
+    } catch {
+      memory.set(k, v);
+    }
+  },
+  removeItem: (k) => {
+    try {
+      localStorage.removeItem(k);
+    } catch {
+      memory.delete(k);
+    }
+  },
+  keys: () => {
+    try {
+      return Object.keys(localStorage);
+    } catch {
+      return [...memory.keys()];
+    }
+  },
+};
+const saves = new SaveSlots(browserStore);
 /** Screen hotkeys are disabled mid-battle. */
 let inBattle = false;
 /** The fight in progress (for console poking). */
@@ -60,7 +100,7 @@ registerItemSections(debug, () => session);
 registerQuestSections(debug, () => session);
 
 const nav: Nav = {
-  title: showTitle,
+  title: openMenu,
   character: showCharacter,
   inventory: showInventory,
   skills: showSkills,
@@ -101,8 +141,74 @@ function showEnding(): void {
 
 function showTitle(): void {
   const items = [{ label: 'New Game', onSelect: showCreation }];
+  const latest = saves.latest();
+  if (saves.list().length) items.unshift({ label: 'Load Game', onSelect: () => showSaves('load') });
+  if (latest && !session) items.unshift({ label: `Continue (${latest.name}, level ${latest.level})`, onSelect: () => loadSlot(latest.slot) });
   if (session) items.unshift({ label: 'Resume', onSelect: showWorld });
-  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}  ·  Phase 13: bosses, bestiary and achievements`));
+  items.push({ label: 'Settings', onSelect: () => new SettingsOverlay().open() });
+  audio().setTrack('title');
+  screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}`));
+}
+
+/** The save slots screen; loading a slot replaces the running game. */
+function showSaves(mode: 'save' | 'load'): void {
+  screens.show(new SaveLoadScreen(saves, mode, session, loadSlot, () => (session ? showWorld() : showTitle())));
+}
+
+/** Loads a slot and enters the game where it was saved. Returns an error, if any. */
+function loadSlot(slot: string): string | undefined {
+  const result = saves.load(slot);
+  if (!result.ok) return result.reason;
+  attach(result.session);
+  toasts.show('info', `Welcome back, ${result.session.player.name}.`);
+  const town = result.session.world.inTown();
+  if (town) showTown(town);
+  else showWorld();
+  return undefined;
+}
+
+/** Makes a session the running game: toasts, debug log, autosave and play time. */
+function attach(s: GameSession): void {
+  session = s;
+  lastAutosave = Date.now();
+  s.bus.on('toast', ({ kind, text }) => {
+    toasts.show(kind, text);
+    if (kind === 'level') audio().play('levelUp');
+    else if (kind === 'loot') audio().play('loot');
+    else if (kind === 'achievement') audio().play('achievement');
+    else if (kind === 'warning') audio().play('warning');
+  });
+  s.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
+  s.bus.on('stateChanged', ({ reason }) => {
+    if (reason === 'battle' || reason === 'ngPlus' || reason === 'quest') autosave(reason === 'battle' ? 0 : AUTOSAVE_EVERY_MS);
+  });
+}
+
+const AUTOSAVE_EVERY_MS = 3 * 60 * 1000;
+let lastAutosave = 0;
+
+/** Autosaves (when enabled) if at least `minGap` ms passed since the last one; never mid-battle or for a fallen hero. */
+function autosave(minGap = AUTOSAVE_EVERY_MS): void {
+  const s = session;
+  if (!s || !settings().autosave || s.state.gameOver || inBattle) return;
+  if (Date.now() - lastAutosave < minGap) return;
+  lastAutosave = Date.now();
+  try {
+    saves.save(AUTOSAVE_SLOT, s);
+  } catch {
+    toasts.show('warning', 'Autosave failed: browser storage is full or unavailable.');
+  }
+}
+
+function openMenu(): void {
+  new PauseMenu({
+    save: () => showSaves('save'),
+    load: () => showSaves('load'),
+    quit: () => {
+      autosave(0);
+      showTitle();
+    },
+  }).open();
 }
 
 function showCreation(): void {
@@ -110,11 +216,11 @@ function showCreation(): void {
 }
 
 function startGame(hero: Character): void {
-  session = GameSession.newGame(Math.floor(Math.random() * 2 ** 32), hero);
-  session.bus.on('toast', ({ kind, text }) => toasts.show(kind, text));
-  session.bus.on('timeChanged', ({ day, hour }) => debug.log(`time -> day ${day}, ${hour}:00`));
+  const s = GameSession.newGame(Math.floor(Math.random() * 2 ** 32), hero);
+  attach(s);
   toasts.show('info', `${hero.name} swears the oath.`);
-  showTown(session.world.inTown() ?? 'brightwater');
+  autosave(0);
+  showTown(s.world.inTown() ?? 'brightwater');
 }
 
 function showCharacter(): void {
@@ -165,10 +271,12 @@ function showGrounds(): void {
 
 /** The overworld, or the town screen when you are standing in a town you just entered. */
 function showWorld(): void {
+  if (session) audio().setTrack(isDungeon(session.state.world.position.map) ? 'dungeon' : 'world');
   if (session) screens.show(new WorldScreen(session, nav, (enc, level) => startFight(enc, level, true), showTown, talk));
 }
 
 function showTown(town: string): void {
+  audio().setTrack('town');
   if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), endgame: showEndgame, leave: showWorld, talk }, town));
 }
 
@@ -210,6 +318,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     ...(level !== undefined ? { level } : {}),
   });
   currentBattle = battle;
+  audio().setTrack(encounter.isBoss ? 'boss' : 'battle');
   if (punisher) toasts.show('warning', `${content.gods.get(punisher).name} sends a herald to punish you!`);
   screens.show(
     new CombatScreen({
@@ -218,6 +327,8 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
       onExit: () => {
         inBattle = false;
         if (s.state.gameOver) {
+          // Hardcore: the legend is over, and so are its saves.
+          saves.removeCharacter(s.player.id);
           session = undefined;
           showTitle();
         } else if (gauntlet) {
@@ -235,6 +346,15 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
 window.addEventListener('keydown', (e) => {
   const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
   if (typing || e.metaKey || e.ctrlKey || e.altKey || !session || inBattle || dialogue) return;
+  if (document.querySelector('.menu-overlay, .dialogue-overlay')) return;
+  if (e.key === 'Escape') {
+    // Screens that use Esc themselves (leave town, back) mark it handled; otherwise it opens the menu.
+    window.setTimeout(() => {
+      if (!e.defaultPrevented && session && !inBattle && !document.querySelector('.menu-overlay, .dialogue-overlay')) openMenu();
+    });
+    return;
+  }
+  if (e.key === '?') return new HelpOverlay().open();
   const key = e.key.toLowerCase();
   if (key === 'c') showCharacter();
   if (key === 'i') showInventory();
@@ -247,6 +367,22 @@ window.addEventListener('keydown', (e) => {
   if (key === 'p') showPantheon();
 });
 
+// Play time counts while a game is running (paused while the tab is hidden).
+window.setInterval(() => {
+  if (session && !document.hidden) session.state.meta.playTimeMs += 1000;
+}, 1000);
+// Autosave every few minutes, and when the tab is hidden or closed.
+window.setInterval(() => autosave(), 30_000);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) autosave(0);
+});
+window.addEventListener('pagehide', () => autosave(0));
+
+applySettings();
+// A soft click for every button.
+document.addEventListener('click', (e) => {
+  if (e.target instanceof HTMLButtonElement && !e.target.disabled) audio().play('click');
+});
 showTitle();
 
 // Exposed for console poking during development.

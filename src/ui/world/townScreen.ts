@@ -47,7 +47,10 @@ export class TownScreen implements Screen {
     this.root = root;
     this.offs.push(this.session.bus.on('stateChanged', () => this.render()));
     const onKey = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape' && !this.overlay) this.town.leave();
+      if (e.key === 'Escape' && !this.overlay) {
+        e.preventDefault();
+        this.town.leave();
+      }
     };
     window.addEventListener('keydown', onKey);
     this.offs.push(() => window.removeEventListener('keydown', onKey));
