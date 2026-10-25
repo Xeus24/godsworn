@@ -123,14 +123,14 @@ export const PARTY_SCALING = {
    * worth about the same beside every hero (`npm run sim:party`).
    */
   companionPower: {
-    warrior: 5,
-    mage: 50,
-    rogue: -45,
-    cleric: -75,
-    ranger: -65,
-    necromancer: 105,
-    monk: -15,
-    bard: 30,
+    warrior: -5,
+    mage: 30,
+    rogue: -40,
+    cleric: -82,
+    ranger: -55,
+    necromancer: 65,
+    monk: 30,
+    bard: 5,
   } as Record<string, number>,
   /** Power for a class missing from the table. */
   companionPowerDefault: -30,

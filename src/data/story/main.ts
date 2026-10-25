@@ -62,8 +62,8 @@ export const MAIN_ENCOUNTERS: EncounterDef[] = [
   { ...encounter('q-black-tide', 'Black Tide Raiders', 43, ['corsair', 'hollow-knight', '^unsworn-oathburner']), threat: 20 },
   encounter('q-vey', 'Admiral Vey', 46, ['corsair', 'admiral-vey', '^siren'], true),
   encounter('q-engine', 'The Severance Engine', 53, ['hollow-knight', 'severance-engine', '^unsworn-oathburner'], true),
-  encounter('q-seryth', 'Seryth the Oathbreaker', 60, ['hollow-knight', 'seryth', '^unsworn-oathburner'], true),
-  encounter('q-shadow', 'Shadow of the Unwritten', 60, ['shadow-of-the-unwritten', '^void-wraith'], true),
+  encounter('q-seryth', 'Seryth the Oathbreaker', 60, ['hollow-knight', 'seryth'], true),
+  encounter('q-shadow', 'Shadow of the Unwritten', 60, ['shadow-of-the-unwritten'], true),
   ...GODS.filter((g) => !g.hidden).map((g) => encounter(`q-charge-${g.id}`, `${g.name}’s Chained Herald`, 50, [`punisher-${g.id}`, 'hollow-knight', '^unsworn-oathburner'])),
 ];
 

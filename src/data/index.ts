@@ -247,6 +247,7 @@ export function validateContent(c: Content = content): void {
     v.check(c.startingKits[cls.id] !== undefined, `${where}: no starting kit`);
     v.ref(c.skills, cls.ultimate, where);
     if (cls.startingSummon) v.ref(c.summons, cls.startingSummon, where);
+    if (cls.trait) checkModifiers(v, cls.trait.modifiers, `${where} trait`);
     v.check(c.skills.find(cls.ultimate)?.ultimate === true, `${where}: ${cls.ultimate} is not an ultimate`);
   }
 

@@ -19,7 +19,7 @@
 | 13 | Bosses, elites, bestiary, achievements, codex | **Done** |
 | 14 | New Game+ and Twilight of the Gods | **Done** |
 | 15 | Endgame activities, challenge modes, Ascended/Primordial items | **Done** |
-| 16 | Save system, settings, audio, polish, balance, playtest | Next |
+| 16 | Save system, settings, audio, polish, balance, playtest | **Done** |
 
 ## Completed features
 
@@ -478,6 +478,27 @@
 - **Balance** (scratch sim, every class at 60 with benchmark gear, alone, no potions): full Rift clears 50% at tier 1, 48% at tier 5, 19% at tier 10 and 6% at tier 20. By class at tier 1: rogue, ranger and monk 100%, cleric 83%, bard 17%, and warrior, mage and necromancer 0%. Those three are the weak solo classes from earlier phases; with companions and potions they clear. Fixing them is Phase 16's class pass.
 - 433 unit tests.
 
+### Phase 16: saves, settings, audio, the class pass and the playtest
+- **Saving** (`engine/state/save.ts`): an autosave slot and three manual slots in browser storage (the engine takes a plain key-value store, so tests use a Map). A save is the game state as JSON with the time it was written.
+  - **Versioned migrations:** every field added since the save system began (bestiary, achievements, lifetime stats, legacy, heresy and politics, endgame, challenges, pets and mounts, and the same for companions) gets its default, so older saves load. Saves from a newer version are refused, and a few checks (hero, race, classes, inventory, world, quests, party, clock) turn a damaged save into a message instead of a broken game.
+  - **Autosave** after battles, quest steps and New Game+, every few minutes of play, and when the tab is hidden or closed (it can be turned off). **Export** a slot to a file and **import** it into a slot (checked first). A fallen Hardcore hero's saves are all deleted, and a fallen hero can't be loaded.
+  - The title screen has **Continue** (the newest save), **Load Game**, **New Game** and **Settings**; the Save/Load screen shows each slot's hero, level, classes, NG+ tier, day and play time.
+- **Settings** (`ui/settings.ts`, kept in browser storage): master, music and sound volumes, mute, default battle speed (1×/2×/4×) and auto-battle, autosave, reduce motion and text size.
+- **The menu** (Esc, `ui/menu/menus.ts`): resume, save, load, settings, the keyboard list (also on ?) and quit to title. Screens that use Esc to go back (town, market, workshop) keep it, and in battle Esc only cancels targeting.
+- **Audio** (`ui/audio/audio.ts`): all sound is synthesized with WebAudio, no files. 14 sound effects (hits, crits, misses, heals, deaths, breaks, boss moments, level-ups, loot, achievements, victory, defeat, warnings) and procedural music for six moods (title, town, wild, dungeon, battle, boss), each a pad, bass line and arpeggio over its own chord progression.
+- **Class traits** (`ClassDef.trait`, applied in `characterModifiers` for the primary class only): the class pass that earlier phases left for here. Warrior, mage, necromancer and bard trailed rogue, ranger and monk alone (38–43% average over every zone's packs, dungeon, story and world fights against 84–98%), and cleric lacked boss damage.
+  - **Battle-Hardened** (warrior): 35% more max HP, 15% less damage taken, 30% more physical attack. **Arcane Mastery** (mage): 45% more magic attack, 35% more max HP, 15% less damage taken. **Unholy Vigor** (necromancer): 40% more magic attack, 35% more max HP, 10% less damage taken, 8% lifesteal. **Heroic Presence** (bard): +45% damage, 35% more max HP, 10% less damage taken. **Righteous Wrath** (cleric): +30% damage. Rogue, ranger and monk have none.
+  - Alone, the four now average 69–73% (cleric 79%, monk 85%, rogue 96%, ranger 98%). Traits show at creation and on the Character screen, and in CONTENT.md.
+  - **Companion powers retuned** after the traits (companions are characters, so they gain traits too): every companion class wins 87.5–90.4% overall in `sim:party` (spread 2.3 points; solo 81.2%, up from 79).
+  - **Class trials** got +60% threat to stay a test (63–85% for the other classes at level 15; before the traits 69–90%).
+- **The playtest** (`tests/playthrough.ts`): a driver that plays the main story the way a player would (talking to people in their towns, walking to markers, lighting rune stones, hunting, delivering, fighting) and tries a different reply when a riddle goes wrong.
+  - `tests/story.test.ts` plays it to an ending with a save and reload after every step, and down two different dialogue paths to two different endings.
+  - `npm run playtest` plays it with **every class and real auto-battles**: the hero is caught up to each chapter's level with benchmark gear, companions level along, and the party rests and repairs before each fight. All eight classes reach an ending (13–16 fights, 0–1 lost).
+  - It found that the **story's last four fights were a wall**: the Severance Engine, the Commander of the Black Throne, Seryth and the Shadow of the Unwritten were 0% for four classes beside Aldric, while every earlier chapter was 75–100%. The Engine, Seryth and the Shadow lost 15–30% of their HP and some damage, the two final encounters lost their extra add (the phase adds stay), their telegraphs come a turn later, the Commander lost a sixth of his HP, and the four **enrage at 75 turns** instead of 50 so slow, steady parties can finish. Now 50–100% for every class (the cleric 13% against Seryth on auto-battle, where it heals too little).
+  - It also found that a new hero began with MP short of full when the starting weapon adds MP; a new game now starts at full HP and MP.
+- **Balance after the pass** (`npm run sim`): zones' dungeon bosses 52–100% solo (were 35–83%), world bosses 22–92%, apostle trials 75–100% / 49–59% for the Aspect, normal encounters 98.8% (above the 85–95% band: the early game is gentle). Rifts (scratch sim, every class at 60 alone): full clears 88% at tier 1, 66% at tier 5, 25% at tier 10 and 6% at tier 20 (were 50/48/19/6).
+- 444 unit tests.
+
 ## Design decisions
 - **Percent values are percentage points.** `{ type: 'percent', value: 15 }` means +15%. Chance stats are stored the same way (`critChance: 5` = 5%).
 - **Overrides skip caps.** With several overrides on one stat, the last one wins.
@@ -583,28 +604,29 @@
 - **Rifts and the Boss Rush share one gauntlet engine:** a run is a saved list of fights; `settleBattle` reports each result back, and the run decides what comes next. Fights are pre-rolled when the run opens, so a run can be left and resumed.
 - **Challenge modes are data with rules and modifiers,** so most of what they do goes through `calculateStats` and the battle setup; the few rules that stop actions (shops, waypoints, companions, favor) are checked where those actions happen.
 - **Mounts change step time, not movement,** so the map and fog work unchanged; fractional minutes carry over between steps.
+- **Saves go through a store interface,** so the engine never touches localStorage; migrations fill defaults by field rather than by version step, which keeps any old save loadable with one function.
+- **Class traits are modifiers on the primary class,** not new skills: they go through `calculateStats` like every other bonus, are data on the class, and a second class doesn't stack another trait.
+- **The playtest reuses one driver for tests and the script:** the test proves the story can be finished and survives save/load at every step; the script runs the same path with real battles to find walls.
 - **The Defender path is Apostleship-lite** for the second god (blessing, tier, title), rather than a second apostle tree, avatar, weapon and edicts, which would double the Apostle's power.
 
 ## Known bugs
 - None known.
 
 ## Cut / deferred
-- **Companions' class trees** are auto-built; the skill tree screen edits only your own trees (Phase 16 polish could open companions' trees too). Companion gear is managed on the Party screen, not by dragging onto a paper doll.
-- **Party balance:** companion classes are evened out (see the balance pass under Phase 12). Still for Phase 16: the companion numbers make up for weak *hero* classes too (necromancer, mage, bard and warrior heroes are 42–50% alone in `sim:party`), so they need retuning after the class pass; full three-companion parties win 92–100% against dungeon bosses (65% alone), so party-size scaling may need to grow with the third companion; and pairs of low-damage classes (two clerics, two necromancers) still stall against regenerating world bosses. The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
-- **Save/Continue** is Phase 16. Until then a refresh starts over, and the title menu offers Resume only within the same page session.
-- **Racial and class starting skills** are defined and displayed, but become usable in combat in Phase 4.
-- **Primordial items** (10) are added in Phase 15 with the late NG+ tiers. The rarity is fully supported by generation already; it just has no items yet, so it never drops.
-- **Gear loadouts** (gear + skill tree + hotbar) come in Phase 5 with skill trees and the hotbar.
-- **Hybrid trial balance** depends heavily on the class pair (0–100% for benchmark pairs at level 35 against level-36 mentors) because the auto-battler plays some two-class kits badly; the full pass is Phase 16. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
+- **Companions' class trees** are auto-built; the skill tree screen edits only your own trees. Companion gear is managed on the Party screen, not by dragging onto a paper doll.
+- **Party balance:** companion classes are even (2.3 points apart, Phase 16). Party-size scaling does not grow with the third companion, so full parties win nearly every fight; and a cleric hero beside a cleric companion still loses to world bosses (two healers can't outdamage the enrage). The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
+- **Hybrid trial balance** depends heavily on the class pair (6–100% for benchmark pairs at level 35 against level-36 mentors; the Plague Doctor's pair is the outlier) because the auto-battler plays some two-class kits badly. It was left as is: a player plays the kit by hand and can level up and return. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
 - **The Defender path** gives the second god's blessing, tier and title, not a second apostle tree, avatar, weapon or edicts (see Design decisions).
 - **Twilight of the Gods** is the same five chapters in every NG+ tier; tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
-- **Boss balance by hand:** some late world bosses (Frostspire, Stormcoast, Dark Citadel) are 23–25% for a hero alone; they are meant for a party, but the Phase 16 pass may soften them. Solo healer heroes (clerics) lose more often to bosses now that enrage ends stalls; their damage is a Phase 16 class-balance question.
-- **Codex extras:** no item compendium or god/class pages in the Codex yet (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites. Phase 16 polish.
-- **Achievement rewards** are titles, gold, pets and mounts. Portrait frames and **transmog** are left for Phase 16 polish (items have no visual variants to swap yet).
+- **Late world bosses** (Frostspire, Stormcoast, Volcanic Rift, Dark Citadel) stay 22–32% for a hero alone: they are party fights. The auto-battler's cleric heals too little against heavy bursts (13% against Seryth with Aldric); played by hand it does better.
+- **Codex extras:** no item compendium or god/class pages in the Codex (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites.
+- **Achievement rewards** are titles, gold, pets and mounts. Portrait frames and **transmog** were cut: items have no visual variants to swap.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
 - **Treasure maps** were cut: Rift Maps and the dungeons' chests fill that role. Lore pages are collected (Phase 10) and read in the Codex.
-- **Rift balance:** clear rates depend heavily on class (see Phase 15); the Phase 16 class pass should bring warrior, mage, necromancer and bard solo play up. There are no Rift leaderboards beyond your own best tier.
+- **Rift leaderboards:** there are none beyond your own best tier and Boss Rush times (no server).
+- **Cloud saves:** saves stay in the browser; export and import move them by hand.
+- **Music** is procedural and short-looped; there are no composed tracks or ambient soundscapes per zone.
 
 ## Next steps
-- Phase 16: save system, settings, audio, polish, the full balance pass and playtest.
+- All 16 phases are done. Further work would start from the Cut / deferred list: party-size scaling for full parties, hybrid trial tuning, the Codex extras and a companions' skill tree editor.

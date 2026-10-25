@@ -3,7 +3,7 @@ import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
 import { spendParagonPoint } from '../character/paragon';
 import { grantXp, type XpResult } from '../character/progression';
-import { characterStats } from '../character/stats';
+import { characterStats, restoreFull } from '../character/stats';
 import type { Character } from '../character/types';
 import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
@@ -218,6 +218,8 @@ export class GameSession {
       const result = applyStartingKit(player, session.state.inventory, kit, () => session.newUid());
       if (!result.ok) throw new Error(`Starting kit failed: ${result.reason}`);
     }
+    // Begin at full HP and MP with the starting gear on.
+    restoreFull(session.player);
     session.bus.emit('gameStarted', { seed: session.state.seed });
     // The story begins at once.
     session.quests.refresh();

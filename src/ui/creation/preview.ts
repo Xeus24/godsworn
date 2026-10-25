@@ -43,6 +43,7 @@ export function renderPreview(char: Character, hardcore: boolean): HTMLElement {
     el('h3', {}, 'Playstyle'),
     el('p', {}, cls.playstyle),
     el('p', {}, el('b', {}, `${cls.mechanic.name}: `), cls.mechanic.description),
+    ...(cls.trait ? [el('p', {}, el('b', {}, `Trait, ${cls.trait.name}: `), cls.trait.description)] : []),
     resource ? el('p', { class: 'dim' }, `Resource: ${resource.name} (max ${resource.max}) · MP`) : el('p', { class: 'dim' }, 'Resource: MP'),
     el(
       'p',

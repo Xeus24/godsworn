@@ -110,10 +110,10 @@ function combatSection(): string {
   const out: string[] = [];
   out.push(`### Status effects (${content.statuses.size})`, '', '| Status | Kind | Effect |', '|---|---|---|');
   for (const st of content.statuses.all()) out.push(`| **${st.name}** | ${st.kind} | ${cell(st.description)} |`);
-  out.push('', `### Class ultimates (${content.classes.size})`, '', '| Class | Ultimate | Effect |', '|---|---|---|');
+  out.push('', `### Class ultimates and traits (${content.classes.size})`, '', '| Class | Ultimate | Effect | Trait (primary class) |', '|---|---|---|---|');
   for (const cls of content.classes.all()) {
     const u = content.skills.get(cls.ultimate);
-    out.push(`| ${cls.name} | **${u.name}** | ${cell(u.description)} |`);
+    out.push(`| ${cls.name} | **${u.name}** | ${cell(u.description)} | ${cls.trait ? `**${cls.trait.name}**: ${cell(cls.trait.description)}` : ''} |`);
   }
   out.push('', `**Songs (${content.songs.size}):** ${content.songs.all().map((s) => `${s.name} (${s.description} Crescendo: ${s.crescendo.description})`).join(' · ')}`);
   out.push('', `**Stances (${content.stances.size}):** ${content.stances.all().map((s) => `${s.name} (${s.description})`).join(' · ')}`, '');

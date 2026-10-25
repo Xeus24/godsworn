@@ -484,18 +484,18 @@ Generated from the data files by `npm run content:md`.
 | **Enraged** | buff | The fight has gone on too long: +40% damage and 10% more speed per stack, growing over time. |
 | **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
 
-### Class ultimates (8)
+### Class ultimates and traits (8)
 
-| Class | Ultimate | Effect |
-|---|---|---|
-| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. |
-| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. |
-| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |
-| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. |
-| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |
-| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. |
-| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |
-| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. |
+| Class | Ultimate | Effect | Trait (primary class) |
+|---|---|---|---|
+| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. | **Battle-Hardened**: 35% more max HP, 15% less damage taken and 30% more physical attack. |
+| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. | **Arcane Mastery**: 45% more magic attack, 35% more max HP and 15% less damage taken. |
+| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |  |
+| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +30% damage. |
+| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
+| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, 35% more max HP, 10% less damage taken and 8% lifesteal. |
+| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
+| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +45% damage, 35% more max HP and 10% less damage taken. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
@@ -724,8 +724,8 @@ Generated from the data files by `npm run content:md`.
 | **Black Tide Raiders** | 43 | Corsair, Hollow Knight, Oathburner |
 | **Admiral Vey** | 46 | Corsair, Admiral Vey of the Black Tide, Siren |
 | **The Severance Engine** | 53 | Hollow Knight, The Severance Engine, Oathburner |
-| **Seryth the Oathbreaker** | 60 | Hollow Knight, Seryth the Oathbreaker, Oathburner |
-| **Shadow of the Unwritten** | 60 | Shadow of the Unwritten, Void Wraith |
+| **Seryth the Oathbreaker** | 60 | Hollow Knight, Seryth the Oathbreaker |
+| **Shadow of the Unwritten** | 60 | Shadow of the Unwritten |
 | **Solenne’s Chained Herald** | 50 | Herald of Solenne, Hollow Knight, Oathburner |
 | **Morrath’s Chained Herald** | 50 | Herald of Morrath, Hollow Knight, Oathburner |
 | **Kael’s Chained Herald** | 50 | Herald of Kael, Hollow Knight, Oathburner |
@@ -1609,14 +1609,14 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 | Class | Power | Extra |
 |---|---|---|
-| Warrior | +5% | 40% more Max HP, 20% less Damage Taken |
-| Mage | +50% | 50% more Max HP |
-| Rogue | -45% | - |
-| Cleric | -75% | +100% Damage Bonus |
-| Ranger | -65% | - |
-| Necromancer | +105% | 50% more Max HP |
-| Monk | -15% | - |
-| Bard | +30% | 60% more Max HP, 20% less Damage Taken |
+| Warrior | -5% | 40% more Max HP, 20% less Damage Taken |
+| Mage | +30% | 50% more Max HP |
+| Rogue | -40% | - |
+| Cleric | -82% | +100% Damage Bonus |
+| Ranger | -55% | - |
+| Necromancer | +65% | 50% more Max HP |
+| Monk | +30% | - |
+| Bard | +5% | 60% more Max HP, 20% less Damage Taken |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
@@ -1661,7 +1661,7 @@ Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss)
 | Captain Redfang | 50%: **All Hands!** (adds Corsair, Corsair) | Broadside every 4 turns |
 | Leviathan Spawn | 50%: **Surfacing** (+25% Damage Bonus, -20% increased Defense) | Tidal Wave every 4 turns |
 | The Magma Titan | 66%: **Eruption** (adds Magma Elemental); 33%: **Molten Core** (+20% Damage Bonus, -30% increased Defense) | Inferno every 5 turns |
-| Commander of the Black Throne | 66%: **Reinforcements** (adds Void Knight); 33%: **No Retreat** (+20% Damage Bonus) | Unmaking every 5 turns |
+| Commander of the Black Throne (enrages at 75) | 66%: **Reinforcements** (adds Void Knight); 33%: **No Retreat** (+20% Damage Bonus) | Unmaking every 5 turns |
 | Bramblehorn | 50%: **Stampede** (+10% Damage Bonus) | Earthshatter every 6 turns |
 | Gnarlroot the Elder | 50%: **The Grove Wakes** (adds Treant Sapling) | Blight Bloom every 6 turns |
 | The Abyssal Crab | 50%: **Shell Cracks** (-30% increased Defense, +30% Damage Bonus) | Crushing Blow every 6 turns |
@@ -1676,9 +1676,9 @@ Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss)
 | Captain Idris Kaur | 50%: **Paid in Full** (adds Desert Raider) (+15% Damage Bonus) | Crushing Blow every 4 turns |
 | The Wight of Saint Orren | 60%: **The Saint Remembers** (heals or shields); 30%: **Last Rites** (+25% Damage Bonus) | Grave Toll every 4 turns |
 | Admiral Vey of the Black Tide | 50%: **Boarders Away** (adds Corsair) | Thunderstorm every 4 turns |
-| The Severance Engine | 66%: **Overclock** (25% more Speed); 33%: **Breach** (adds Void Wraith) (+20% Damage Bonus) | Unmaking every 4 turns |
-| Seryth the Oathbreaker | 70%: **Oathbreaker** (+20% Damage Bonus); 35%: **What Answered** (adds Hollow Knight) (15% more Speed) | Doom Mark every 4 turns; Unmaking every 5 turns from phase 2 |
-| Shadow of the Unwritten | 66%: **The Margins** (adds Void Wraith); 33%: **Erasure** (+30% Damage Bonus) | Unmaking every 4 turns |
+| The Severance Engine (enrages at 75) | 66%: **Overclock** (25% more Speed); 33%: **Breach** (adds Void Wraith) (+20% Damage Bonus) | Unmaking every 5 turns |
+| Seryth the Oathbreaker (enrages at 75) | 70%: **Oathbreaker** (+20% Damage Bonus); 35%: **What Answered** (adds Hollow Knight) (15% more Speed) | Doom Mark every 5 turns; Unmaking every 6 turns from phase 2 |
+| Shadow of the Unwritten (enrages at 75) | 66%: **The Margins** (adds Void Wraith); 33%: **Erasure** (+30% Damage Bonus) | Unmaking every 5 turns |
 | Korga Ironhide | 50%: **Blood Up** (+25% Damage Bonus) | Crushing Blow every 4 turns |
 | Legion Champion | 50%: **The Crowd Roars** (15% more Speed, +15% Damage Bonus) | Crushing Blow every 4 turns |
 | The Bone Priest | 50%: **Unholy Rite** (adds Skeleton Soldier) | Grave Toll every 5 turns |

@@ -145,6 +145,7 @@ export class CharacterScreen implements Screen {
           el('div', {}, el('b', { style: `color:${cls.color}` }, cls.name), ` · ${cp.slot} · level ${cp.level}`),
           bar(cp.level >= s.state.levelCap ? 1 : cp.xp / xpToNext(cp.level), 'xp thin', `${availablePoints(p, cp.classId)} of ${cp.skillPoints} skill points unspent`),
           el('div', { class: 'dim small' }, cls.mechanic.name + ': ' + cls.mechanic.description),
+          ...(cp.slot === 'primary' && cls.trait ? [el('div', { class: 'dim small' }, `Trait, ${cls.trait.name}: ${cls.trait.description}`)] : []),
           ...(cp.slot !== 'primary' ? [el('div', { class: 'small' }, `${masteryPointsLeft(p, cp.classId)} of ${masteryPointsEarned(p, cp.classId)} Mastery Points free (for keystones and capstones)`)] : []),
         );
       }),

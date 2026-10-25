@@ -4,7 +4,7 @@ A turn-based fantasy RPG for the browser: classes and multiclassing, sprawling s
 
 Built with TypeScript and Vite. There is no game engine: HTML/CSS for menus and Canvas for the world and combat.
 
-> **Status:** in development, phase by phase. See [PROGRESS.md](PROGRESS.md) for what works today and [CONTENT.md](CONTENT.md) for the content list.
+> **Status:** all 16 phases are built: the full story, New Game+ and the endgame, with saves, settings and sound. See [PROGRESS.md](PROGRESS.md) for what is in and what was cut, and [CONTENT.md](CONTENT.md) for the content list.
 
 ## Run it
 
@@ -27,12 +27,13 @@ Then open http://localhost:5173.
 | `npm run sim` | Simulate fights per class and level; print win rates, turns and damage per turn |
 | `npm run sim:party` | Simulate every hero class beside every companion class across each zone's fights; print win rates and the spread between companion classes |
 | `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
+| `npm run playtest` | Play the main story to an ending with every class, using real auto-battles (`npm run playtest -- mage` logs every fight of one class) |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 
 ## Play
 
-1. Choose **New Game** on the title screen.
-2. Name your hero, pick a portrait, a race, a class and a birth sign. The right-hand panel previews your stats, playstyle and starting skills. Tick **Hardcore** if you want death to be permanent.
+1. Choose **New Game** on the title screen (or **Continue** your latest save, or **Load Game**).
+2. Name your hero, pick a portrait, a race, a class and a birth sign. The right-hand panel previews your stats, playstyle, your class's mechanic and **trait** (a passive of your first class) and starting skills. Tick **Hardcore** if you want death to be permanent.
 3. Choose **Swear your oath** to begin.
 
 | Key | Action |
@@ -46,6 +47,8 @@ Then open http://localhost:5173.
 | B | Codex: bestiary and Slayer ranks, achievements and titles, lore, statistics |
 | P | Pantheon: favor, shrines, offerings and blessings (in battle: Pray) |
 | G | The world (WASD or arrows to walk, E to use, M for the world map) |
+| Esc | Menu: save, load, settings, keyboard list, quit to title (on screens with their own Esc, it goes back first; not in battle) |
+| ? | Keyboard list |
 | ` (backtick) | Developer panel (XP, levels, gold, items, loot) |
 
 On the character sheet, spend attribute points with **+** (shift-click adds 5). Hover any stat to see how it was calculated. Respec refunds all points for 50 gold × level. Past the level cap, extra XP earns paragon points for the paragon board.
@@ -115,13 +118,15 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 
 **Bosses and elites:** bosses fight in **phases** (at HP thresholds they change, heal, call in adds) and **telegraph** their biggest attacks: when a boss is **Winding Up**, Break its stagger bar to interrupt it, or Defend to halve the hit. Drag a fight out too long and the boss **enrages**, growing stronger every few turns. **Elites** carry one affix and **champion packs** share two (Swift, Vampiric, Molten, Volatile...), shown in their names and in the battle log.
 
-**The Codex (B):** every enemy you meet goes into the **bestiary**; killing more of them reveals their stats, resistances, skills and boss battle plans. Kills of each creature type earn **Slayer ranks** (+2% damage against that type per rank). **Achievements** (101) reward points, gold and **titles**; pick the title to show under your name on the Character screen. The Codex also keeps the **lore** pages you found and your lifetime **statistics**.
+**The Codex (B):** every enemy you meet goes into the **bestiary**; killing more of them reveals their stats, resistances, skills and boss battle plans. Kills of each creature type earn **Slayer ranks** (+2% damage against that type per rank). **Achievements** (126) reward points, gold and **titles**; pick the title to show under your name on the Character screen. The Codex also keeps the **lore** pages you found and your lifetime **statistics**.
 
 **New Game+ and Twilight of the Gods:** after any ending, begin **New Game+** from the Legacy panel on the Character screen. Your hero, gear, gold, companions and achievements come with you; the story starts again, and the world rises to levels 60–80 (later tiers make enemies tougher still). In New Game+ the **Twilight of the Gods** unfolds beside the main story: the gods fall silent, their old feuds turn to war (end them, or pick a side and make new enemies), and the Nameless One, the god the pantheon wrote out of the world, makes you an offer. Accept it and you walk the road of **heresy**: void power, Forbidden skills and the Black Market's back room, paid for with every god's favor (a temple will hear your atonement). An **Apostle** can call their god's **follower** into battle from the Pantheon, and from NG+3 may become **Defender** of a second god.
 
 **Endgame:** from level 50, take a **Rift Map** (the Black Market sells them) to any town's **Rift Gate**: three waves and a Rift Guardian, back to back, with tougher tiers (1–20), Rift affixes and better loot the deeper you go, including **Primordial** items from tier 10. The **Boss Rush** pits you against every dungeon boss in a row. **Challenge modes** (Ironman, Lone Wolf, Godless, Glass Cannon, Nightmare) are chosen when you create your hero, alongside Hardcore. Collect **pets** (small bonuses) and **mounts** (faster, safer travel; sold at town stables) and choose them on the Character screen.
 
-More screens and controls are documented here as each phase lands.
+**Saving:** the game **autosaves** after battles, quest steps and New Game+, every few minutes, and when you close or hide the tab. The menu (Esc) saves to three manual slots; the title screen and the menu load any of them. Each slot can be **exported** to a file and **imported** back (to keep a save safe or move it to another browser). Saves live in your browser's storage and older saves are upgraded when loaded. A Hardcore hero who falls loses every save.
+
+**Settings** (title screen or Esc): master, music and sound effect volumes, mute, default battle speed and auto-battle, autosave on or off, reduce motion and text size. **Sound** is made on the fly: sound effects for hits, crits, heals, loot, level-ups and achievements, and music that changes with the town, the wild, dungeons, battles and bosses (it starts on your first click or key press).
 
 ## Project layout
 
@@ -144,11 +149,11 @@ src/
     ngplus/     New Game+: starting a new playthrough, NG+ levels and threat
     endgame/    Rift and Boss Rush run state (run by state/endgameActions.ts)
     achievements/ achievement types (checked in state/achievementActions.ts)
-    state/      saved game state, session, clock
+    state/      game state, session, clock, saving and loading (save.ts)
     content/    content tables and validation
   data/       all game content and balance numbers
-  ui/         rendering and input only
-tests/        Vitest unit tests
+  ui/         rendering and input only (menus, settings and audio in ui/menu, ui/settings.ts, ui/audio)
+tests/        Vitest unit tests (tests/playthrough.ts plays the story; npm run playtest reuses it)
 scripts/      simulations and content tools (run with tsx)
 ```
 
