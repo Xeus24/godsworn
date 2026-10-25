@@ -38,7 +38,7 @@ import type { Conversation, ConversationOutcome } from './engine/state/conversat
 import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
 import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
-import { AUTOSAVE_SLOT, SaveSlots, type SaveStore } from './engine/state/save';
+import { AUTOSAVE_SLOT, SaveSlots, serialize, type SaveStore } from './engine/state/save';
 import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay } from './ui/menu/menus';
 import { applySettings, settings } from './ui/settings';
 import './ui/menu/menu.css';
@@ -193,7 +193,7 @@ function attach(s: GameSession): void {
   });
 }
 
-const AUTOSAVE_EVERY_MS = 3 * 60 * 1000;
+const AUTOSAVE_EVERY_MS = 5 * 60 * 1000;
 let lastAutosave = 0;
 
 /** Autosaves (when enabled) if at least `minGap` ms passed since the last one; never mid-battle or for a fallen hero. */
@@ -204,9 +204,15 @@ function autosave(minGap = AUTOSAVE_EVERY_MS): void {
   lastAutosave = Date.now();
   try {
     saves.save(AUTOSAVE_SLOT, s);
+    mirrorToFolder(AUTOSAVE_SLOT, s);
   } catch {
     toasts.show('warning', 'Autosave failed: browser storage is full or unavailable.');
   }
+}
+
+/** Also writes the save into the project's `saves/` folder when the dev or preview server is running (silently skipped otherwise). */
+function mirrorToFolder(slot: string, s: GameSession): void {
+  void fetch(`/__godsworn/save?name=${encodeURIComponent(slot)}`, { method: 'POST', body: serialize(s) }).catch(() => undefined);
 }
 
 function openMenu(): void {
