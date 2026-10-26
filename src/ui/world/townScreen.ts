@@ -14,6 +14,7 @@ import { rewardText } from '../quests/questLog';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 import { loadLayout, moveCard, orderCards, resetLayout, saveLayout } from './townLayout';
+import { townBanner } from './townBanner';
 import { WorldMapOverlay } from './worldMap';
 
 /** Extra navigation the town needs: the arena (Proving Grounds and class trainers) and leaving. */
@@ -159,6 +160,16 @@ export class TownScreen implements Screen {
     return grid;
   }
 
+  /** The town's skyline, by day or night. */
+  private banner(townId: string): HTMLCanvasElement {
+    const src = townBanner(townId, timeOfDay(this.session.state.clock) === 'night');
+    const canvas = el('canvas', { class: 'town-banner pixel', 'aria-hidden': 'true' });
+    canvas.width = src.width;
+    canvas.height = src.height;
+    canvas.getContext('2d')?.drawImage(src, 0, 0);
+    return canvas;
+  }
+
   private render = (): void => {
     if (!this.root) return;
     const s = this.session;
@@ -270,6 +281,7 @@ export class TownScreen implements Screen {
           el(
             'section',
             { class: 'panel town-head' },
+            this.banner(t.id),
             el('h2', {}, t.name),
             el('p', {}, t.description),
             el('div', { class: 'dim small' }, `${content.zones.get(t.zone).name} · ${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}`),

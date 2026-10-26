@@ -365,6 +365,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     new CombatScreen({
       session: s,
       battle,
+      biome: s.world.map.biome,
       onExit: () => {
         inBattle = false;
         if (s.state.gameOver) {

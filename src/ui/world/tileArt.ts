@@ -48,12 +48,96 @@ function speckle(g: CanvasRenderingContext2D, base: string, dot: string, seed: n
   }
 }
 
+export const WATER_FRAMES = 4;
+
+/** Small ground details so open terrain does not read as one repeated tile. */
+function decorate(g: CanvasRenderingContext2D, biome: Biome, p: Palette, kind: number, variant: number): void {
+  const px = (color: string, x: number, y: number, w = 1, h = 1): void => {
+    g.fillStyle = color;
+    g.fillRect(x, y, w, h);
+  };
+  const x = 2 + ((variant * 3) % 6);
+  const y = 3 + ((variant * 5) % 5);
+  switch (biome) {
+    case 'meadow':
+      if (kind === 0) {
+        // A flower.
+        px('#2f6a2a', x + 1, y + 2, 1, 3);
+        px(variant % 2 ? '#f0d050' : '#e05080', x, y, 3, 2);
+        px('#fff', x + 1, y, 1, 1);
+      } else {
+        px(p.scenery[1], x, y + 1, 1, 3);
+        px(p.scenery[1], x + 2, y, 1, 4);
+        px(p.scenery[0], x + 1, y + 2, 1, 2);
+      }
+      break;
+    case 'forest':
+      if (kind === 0) {
+        // A mushroom.
+        px('#e8e0d0', x + 1, y + 2, 1, 2);
+        px('#c8503a', x, y, 3, 2);
+        px('#fff', x + 1, y, 1, 1);
+      } else {
+        px(p.scenery[1], x, y + 2, 4, 1);
+        px(p.scenery[1], x + 1, y, 1, 4);
+        px(p.scenery[1], x + 3, y + 1, 1, 3);
+      }
+      break;
+    case 'cave':
+    case 'dungeon':
+      px(p.scenery[1], x, y + 1, 3, 2);
+      px(p.scenery[0], x, y + 3, 3, 1);
+      if (kind === 0) px(p.scenery[2], x + 4, y - 1, 1, 2);
+      break;
+    case 'desert':
+      if (kind === 0) {
+        // A bleached bone and a pebble.
+        px('#f0e8d0', x, y, 4, 1);
+        px('#f0e8d0', x, y - 1, 1, 3);
+        px('#f0e8d0', x + 3, y - 1, 1, 3);
+      } else {
+        px(p.scenery[2], x + 1, y, 1, 4);
+        px(p.scenery[2], x, y + 1, 1, 1);
+        px(p.scenery[2], x + 2, y + 2, 1, 1);
+      }
+      break;
+    case 'snow':
+      px('#c8d8e8', x, y + 2, 5, 2);
+      px('#ffffff', x + 1, y + 1, 3, 1);
+      if (kind === 0) px('#8ac0e8', x + 2, y - 1, 1, 2);
+      break;
+    case 'coast':
+      if (kind === 0) {
+        // A shell.
+        px('#f4e8d8', x, y, 3, 2);
+        px('#e8a8a0', x + 1, y + 1, 1, 1);
+      } else {
+        px(p.scenery[0], x, y, 3, 2);
+        px(p.scenery[1], x, y, 2, 1);
+      }
+      break;
+    case 'volcanic':
+      px(kind === 0 ? '#ff6a2a' : '#5a4a46', x, y, 2, 1);
+      if (kind === 0) px('#ffd070', x, y, 1, 1);
+      px('#1a1418', x + 1, y + 2, 3, 1);
+      break;
+    case 'citadel':
+      px(kind === 0 ? '#a050ff' : '#4a4058', x, y, 1, 3);
+      px(kind === 0 ? '#d0a0ff' : '#4a4058', x + 1, y + 1, 1, 1);
+      px('#4a4058', x - 1, y + 3, 4, 1);
+      break;
+  }
+}
+
 /**
  * A tile image for a biome. `variant` (0-3) picks one of a few textures so
  * large areas do not look stamped.
  */
-export function tileImage(biome: Biome, tile: string, variant: number): HTMLCanvasElement {
-  const key = `${biome}|${tile}|${variant}`;
+export function tileImage(biome: Biome, tile: string, variant: number, frame = 0, deco = 99): HTMLCanvasElement {
+  // Only water animates and only open ground gets decorations: keep the cache small.
+  const f = tile === '~' ? frame % WATER_FRAMES : 0;
+  const d = tile === '.' && deco < 2 ? deco : 99;
+  const key = `${biome}|${tile}|${variant}|${f}|${d}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const p = PALETTES[biome];
@@ -64,9 +148,12 @@ export function tileImage(biome: Biome, tile: string, variant: number): HTMLCanv
       break;
     case '~':
       speckle(g, p.water[0], p.water[1], variant + 7, 4);
+      // Ripples drift sideways a pixel per frame; the variant offsets neighbours so they do not move in lockstep.
       g.fillStyle = p.water[1];
-      g.fillRect(2 + variant, 4, 4, 1);
-      g.fillRect(6, 8 - (variant % 2), 4, 1);
+      g.fillRect((2 + variant + f * 2) % TILE_PX, 4, 4, 1);
+      g.fillRect((6 + f * 2 + variant * 3) % TILE_PX, 8 - (variant % 2), 4, 1);
+      g.fillStyle = 'rgba(255,255,255,0.35)';
+      g.fillRect((9 + f * 3 + variant * 5) % TILE_PX, 1 + ((f + variant) % 3) * 4, 2, 1);
       break;
     case 'T': {
       speckle(g, p.ground[0], p.ground[1], variant, 5);
@@ -152,6 +239,7 @@ export function tileImage(biome: Biome, tile: string, variant: number): HTMLCanv
       break;
     default:
       speckle(g, p.ground[0], p.ground[1], variant, 8);
+      if (d < 2) decorate(g, biome, p, d, variant);
   }
   cache.set(key, c);
   return c;

@@ -14,6 +14,7 @@ import { itemIconUrl } from '../art/itemIcons';
 import { attachTooltip, hideTooltip, showTooltip } from '../components/tooltip';
 import { skillCostText } from '../format';
 import { el, type Screen } from '../screen';
+import type { Biome } from '../../engine/world/types';
 import { CombatScene } from './combatScene';
 import { effectsOf, effectTooltip } from './effectText';
 import { StatsWindow } from './statsWindow';
@@ -49,6 +50,8 @@ export interface CombatScreenOptions {
   /** Called when the player leaves the results screen. */
   onExit: (rewards: BattleRewards) => void;
   onRematch?: () => void;
+  /** Terrain of the battlefield (the map the fight started on). */
+  biome?: Biome;
 }
 
 export class CombatScreen implements Screen {
@@ -77,7 +80,7 @@ export class CombatScreen implements Screen {
   constructor(private readonly opts: CombatScreenOptions) {
     this.session = opts.session;
     this.battle = opts.battle;
-    this.scene = new CombatScene(this.battle);
+    this.scene = new CombatScene(this.battle, opts.biome);
     this.scene.onClick = (id) => this.pickTarget(id);
     this.scene.onEffectHover = (e, unit, fx) => showTooltip(e, effectTooltip(this.battle, unit, fx));
     this.scene.onEffectLeave = hideTooltip;

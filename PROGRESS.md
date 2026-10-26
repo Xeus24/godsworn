@@ -617,6 +617,11 @@
 ### Combat hit feedback (added after Phase 16)
 - `src/ui/combat/combatScene.ts` only (UI, no engine change). Attackers **lunge** toward their first target on an `action` event; hits spawn element-coloured **sparks**, tint the hit flash with the element (gold on crits) and pop the damage number, which grows with the blow's share of the target's max HP. A white **trailing HP bar** drains after a hit. Crits and deaths shake the whole scene. Damage-over-time ticks stay quiet (small number, no sparks).
 
+### Graphics pass (added after Phase 16)
+- **Battle:** per-biome backdrops (`src/ui/combat/battlefield.ts`: meadow, forest, cave, desert, snow, coast, volcanic, citadel, dungeon; day and night) chosen from the map the fight starts on (`CombatScreenOptions.biome`). Creatures are larger and breathe (bob, plus a stretch on slimes). Status icons are 20px, wrap to a second row and show stack counts; front-row spacing grew to fit.
+- **Overworld:** water ripples animate and open ground gets small decorations (flowers, mushrooms, bones, shells, embers...) per biome; the hero has a pulsing halo, outline and a bobbing arrow. The view redraws every 110 ms while the map is open.
+- **Towns:** each of the five towns has a pixel skyline banner (`src/ui/world/townBanner.ts`), with a night version.
+
 ### Achievement point milestones (added after Phase 16)
 - Achievement points used to be only a score. Eight milestones (100 to 2,900 of the 2,985 points) now each give a permanent bonus: XP, Magic Find, gold find, max HP, damage, favor, crit and finally all resistances. They stack and are kept on the hero (`achievementPoints`, rebuilt from earned achievements for older saves; save version 16).
 - The Codex Achievements tab has a "What points do" panel listing every milestone, which are active and how far the next one is. A toast announces each milestone as it is passed.

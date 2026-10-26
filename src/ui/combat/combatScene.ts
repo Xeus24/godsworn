@@ -2,7 +2,9 @@ import { content } from '../../data';
 import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
 import { portraitCanvas } from '../art/portraits';
+import type { Biome } from '../../engine/world/types';
 import { creatureSprite } from './creatureSprites';
+import { paintBattlefield } from './battlefield';
 import { effectsOf, type EffectView } from './effectText';
 
 export const SCENE_W = 960;
@@ -62,7 +64,15 @@ const ELEMENT_COLORS: Record<string, string> = {
  * Canvas renderer for a battle. It draws from the battle state, except HP,
  * which follows the event stream so bars drop in time with the hits.
  */
-const MAX_ICONS = 8;
+const MAX_ICONS = 10;
+const ICON = 20;
+const ICON_STEP = 22;
+const ICONS_PER_ROW = 5;
+
+/** Where status icon `i` sits, relative to the unit's centre x and its HP bar row. */
+function iconSpot(cx: number, by: number, bw: number, i: number): { x: number; y: number } {
+  return { x: cx - bw / 2 + (i % ICONS_PER_ROW) * ICON_STEP, y: by + 30 + Math.floor(i / ICONS_PER_ROW) * ICON_STEP };
+}
 
 export class CombatScene {
   readonly canvas: HTMLCanvasElement;
@@ -83,7 +93,7 @@ export class CombatScene {
   onEffectHover: ((e: MouseEvent, unit: Combatant, effect: EffectView) => void) | undefined;
   onEffectLeave: (() => void) | undefined;
 
-  constructor(private readonly battle: Battle) {
+  constructor(private readonly battle: Battle, private readonly biome: Biome = 'meadow') {
     this.canvas = document.createElement('canvas');
     this.canvas.width = SCENE_W;
     this.canvas.height = SCENE_H;
@@ -136,11 +146,10 @@ export class CombatScene {
       const unit = this.battle.get(id);
       if (!unit || !unit.alive) continue;
       const bw = Math.max(70, this.unitSize(unit));
-      const iy = p.y + 10 + 30;
       const icons = effectsOf(unit).slice(0, MAX_ICONS);
       for (let i = 0; i < icons.length; i++) {
-        const ix = p.x - bw / 2 + i * 15;
-        if (x >= ix && x <= ix + 14 && y >= iy && y <= iy + 14) return { unit, effect: icons[i] as EffectView };
+        const spot = iconSpot(p.x, p.y + 10, bw, i);
+        if (x >= spot.x && x <= spot.x + ICON && y >= spot.y && y <= spot.y + ICON) return { unit, effect: icons[i] as EffectView };
       }
     }
     return undefined;
@@ -312,7 +321,7 @@ export class CombatScene {
       const units = this.battle.combatants.filter((c) => c.side === side && c.row === row && (c.alive || c.corpse || (this.views.get(c.id)?.alpha ?? 0) > 0.05));
       units.forEach((u, i) => {
         const n = units.length;
-        const spacing = Math.min(125, 360 / Math.max(1, n));
+        const spacing = Math.min(140, 420 / Math.max(1, n));
         // Back-row units sit slightly higher so their labels clear the front row.
         out.set(u.id, { x, y: 330 + (i - (n - 1) / 2) * spacing - (row === 'back' ? 20 : 0) });
       });
@@ -331,42 +340,7 @@ export class CombatScene {
     bg.width = SCENE_W;
     bg.height = SCENE_H;
     const g = bg.getContext('2d');
-    if (!g) return bg;
-    const night = this.battle.timeOfDay === 'night';
-    const sky = g.createLinearGradient(0, 0, 0, 260);
-    sky.addColorStop(0, night ? '#0b0a1e' : '#4a6fa8');
-    sky.addColorStop(1, night ? '#2a1f3a' : '#e8b88a');
-    g.fillStyle = sky;
-    g.fillRect(0, 0, SCENE_W, 260);
-    // Hills.
-    g.fillStyle = night ? '#1a1a2a' : '#5a7a5a';
-    for (let x = 0; x < SCENE_W; x += 4) {
-      const h = 40 + 20 * Math.sin(x * 0.01) + 12 * Math.sin(x * 0.037 + 2);
-      g.fillRect(x, 260 - h, 4, h);
-    }
-    const ground = g.createLinearGradient(0, 250, 0, SCENE_H);
-    ground.addColorStop(0, night ? '#1f2a1f' : '#5f8a3a');
-    ground.addColorStop(1, night ? '#101810' : '#3a5a22');
-    g.fillStyle = ground;
-    g.fillRect(0, 250, SCENE_W, SCENE_H - 250);
-    // Grass tufts from a tiny fixed-seed generator (cosmetic only).
-    let seed = 1337;
-    const rand = (): number => {
-      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-      return seed / 0x7fffffff;
-    };
-    g.fillStyle = night ? '#2a3a2a' : '#7aa84a';
-    for (let i = 0; i < 220; i++) {
-      const x = Math.floor(rand() * SCENE_W);
-      const y = 262 + Math.floor(rand() * (SCENE_H - 270));
-      g.fillRect(x, y, 3, 3);
-      g.fillRect(x + 3, y - 3, 3, 3);
-      g.fillRect(x - 3, y - 2, 3, 3);
-    }
-    if (night) {
-      g.fillStyle = '#f4f0d8';
-      for (let i = 0; i < 70; i++) g.fillRect((i * 131) % SCENE_W, (i * 37) % 200, 2, 2);
-    }
+    if (g) paintBattlefield(g, SCENE_W, SCENE_H, this.biome, this.battle.timeOfDay === 'night');
     return bg;
   }
 
@@ -435,7 +409,7 @@ export class CombatScene {
   }
 
   private unitSize(x: Combatant): number {
-    return x.kind === 'hero' || x.kind === 'companion' ? 64 : x.tier === 'elite' ? 84 : 72;
+    return x.kind === 'hero' || x.kind === 'companion' ? 64 : x.tier === 'elite' ? 100 : 82;
   }
 
   /** Clickable area of a unit: sprite, name and bars. */
@@ -447,7 +421,13 @@ export class CombatScene {
   private drawUnit(x: Combatant, v: UnitView, cx: number, cy: number, t: number): void {
     const g = this.ctx;
     const size = this.unitSize(x);
-    const top = cy - size;
+    // Idle breathing: a slow, per-unit-phase bob. Creatures also stretch a little, slimes more.
+    let phase = 0;
+    for (const ch of x.id) phase = (phase * 31 + ch.charCodeAt(0)) % 628;
+    const breath = x.alive ? Math.sin(t * 2.4 + phase / 100) : 0;
+    const bob = Math.round(breath * (x.sprite ? 2 : 1));
+    const stretch = x.sprite ? 1 + breath * (x.sprite.family === 'slime' ? 0.05 : 0.025) : 1;
+    const top = cy - size - bob;
     g.globalAlpha = v.alpha * (1 - v.appear * 0.8);
 
     // Shadow.
@@ -482,6 +462,11 @@ export class CombatScene {
     } else if (x.sprite) {
       const img = creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
       g.save();
+      // Stretch from the feet so the sprite breathes without leaving the ground.
+      const feet = top + size;
+      g.translate(0, feet);
+      g.scale(1, stretch);
+      g.translate(0, -feet);
       if (x.side === 'party') {
         // Allied creatures face the enemy.
         g.translate(cx, 0);
@@ -560,18 +545,24 @@ export class CombatScene {
       // Status icons.
       const icons = effectsOf(x).map((fx) => ({ glyph: fx.glyph, color: fx.color, n: fx.stacks, turns: fx.turns }));
       icons.slice(0, MAX_ICONS).forEach((icon, i) => {
-        const ix = cx - bw / 2 + i * 15;
-        const iy = by + 30;
+        const { x: ix, y: iy } = iconSpot(cx, by, bw, i);
         g.fillStyle = '#120c18';
-        g.fillRect(ix, iy, 14, 14);
+        g.fillRect(ix, iy, ICON, ICON);
         g.fillStyle = icon.color;
-        g.fillRect(ix + 1, iy + 1, 12, 12);
+        g.fillRect(ix + 1, iy + 1, ICON - 2, ICON - 2);
+        // A lighter top edge gives the square a little relief.
+        g.fillStyle = 'rgba(255,255,255,0.3)';
+        g.fillRect(ix + 1, iy + 1, ICON - 2, 3);
         g.fillStyle = '#120c18';
-        g.font = 'bold 8px ui-monospace, Menlo, monospace';
-        g.fillText(icon.glyph, ix + 7, iy + 10);
+        g.font = 'bold 11px ui-monospace, Menlo, monospace';
+        g.fillText(icon.glyph, ix + ICON / 2, iy + 14);
         if (icon.n > 1) {
+          g.font = 'bold 10px ui-monospace, Menlo, monospace';
+          g.lineWidth = 3;
+          g.strokeStyle = '#000';
+          g.strokeText(String(icon.n), ix + ICON - 3, iy + ICON + 2);
           g.fillStyle = '#fff';
-          g.fillText(String(icon.n), ix + 12, iy + 16);
+          g.fillText(String(icon.n), ix + ICON - 3, iy + ICON + 2);
         }
       });
     }

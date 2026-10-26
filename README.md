@@ -72,6 +72,7 @@ You start in **Brightwater**, a town in the Meadowlands. **Leave town** to walk 
 
 In battle:
 
+- The battlefield matches where you fight (meadow, forest, cave, desert, snow, coast, volcano, citadel or dungeon), by day or night.
 - Hits show on the battlefield: attackers lunge at their target, hits throw sparks and pop a damage number (bigger for big blows), crits shake the screen, and a pale trail on the HP bar shows how much a hit took.
 - The **turn order** runs across the top. Faster combatants act more often.
 - On your turn choose **Attack, Skills, Items, Abilities** (trinket and relic powers), **Defend** (half damage until your next turn), **Swap** rows or **Flee**. Number keys 1–9 pick menu entries.

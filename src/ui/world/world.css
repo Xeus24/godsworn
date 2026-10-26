@@ -325,3 +325,15 @@
   justify-content: flex-end;
   gap: 4px;
 }
+
+.town-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 240 / 48;
+  max-height: 170px;
+  object-fit: cover;
+  object-position: center bottom;
+  border: 2px solid var(--border, #3a2f55);
+  margin-bottom: 8px;
+}

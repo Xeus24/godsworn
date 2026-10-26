@@ -56,6 +56,7 @@ export class WorldScreen implements Screen {
   private lastStep = 0;
   private overlay: WorldMapOverlay | undefined;
   private observer: ResizeObserver | undefined;
+  private animTimer = 0;
 
   constructor(
     private readonly session: GameSession,
@@ -77,6 +78,10 @@ export class WorldScreen implements Screen {
     this.offs.push(s.bus.on('stateChanged', () => this.draw()), s.bus.on('timeChanged', () => this.draw()));
     this.observer = new ResizeObserver(() => this.draw());
     this.observer.observe(stage);
+    // Redraw the view a few times a second: water ripples and the hero's halo are animated.
+    this.animTimer = window.setInterval(() => {
+      if (this.root && !this.overlay && !document.hidden) this.drawView(this.session.world.map);
+    }, 110);
     this.draw();
   }
 
@@ -84,6 +89,7 @@ export class WorldScreen implements Screen {
     for (const off of this.offs) off();
     this.offs = [];
     this.observer?.disconnect();
+    window.clearInterval(this.animTimer);
     this.overlay?.close();
   }
 
@@ -241,13 +247,15 @@ export class WorldScreen implements Screen {
     const x1 = Math.min(map.w - 1, Math.ceil((cw - ox) / TILE));
     const y1 = Math.min(map.h - 1, Math.ceil((ch - oy) / TILE));
     const day = s.state.clock.day;
+    const now = performance.now();
+    const frame = Math.floor(now / 450);
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
         if (!explored(w, map, x, y)) continue;
         let t = tileAt(map, x, y);
         if (t === 'D' && runesDone(w, map)) t = '_';
         if (t === 'X' && w.used[usedKey(map.id, `crack-${x}-${y}`)] !== undefined) t = map.biome === 'dungeon' ? '_' : '.';
-        g.drawImage(tileImage(map.biome, t, (x * 7 + y * 13) % 4), ox + x * TILE, oy + y * TILE, TILE, TILE);
+        g.drawImage(tileImage(map.biome, t, (x * 7 + y * 13) % 4, frame, (x * 31 + y * 17 + x * y) % 11), ox + x * TILE, oy + y * TILE, TILE, TILE);
       }
     }
     for (const e of map.entities) {
@@ -295,9 +303,30 @@ export class WorldScreen implements Screen {
     // The hero.
     const cls = s.player.classes[0] ? content.classes.get(s.player.classes[0].classId) : undefined;
     const hero = portraitCanvas(s.player.raceId, s.player.portrait, cls?.color ?? '#888888');
+    const hx = ox + p.x * TILE;
+    const hy = oy + p.y * TILE;
+    // A pulsing halo and a bobbing arrow keep the hero easy to find on busy terrain.
+    const pulse = 0.5 + 0.5 * Math.sin(now / 280);
+    const glow = g.createRadialGradient(hx + TILE / 2, hy + TILE / 2, TILE * 0.3, hx + TILE / 2, hy + TILE / 2, TILE * (0.85 + 0.15 * pulse));
+    glow.addColorStop(0, 'rgba(255,224,120,0.55)');
+    glow.addColorStop(1, 'rgba(255,224,120,0)');
+    g.fillStyle = glow;
+    g.fillRect(hx - TILE, hy - TILE, TILE * 3, TILE * 3);
     g.fillStyle = cls?.color ?? '#ffd84a';
-    g.fillRect(ox + p.x * TILE + 1, oy + p.y * TILE + 1, TILE - 2, TILE - 2);
-    g.drawImage(hero, ox + p.x * TILE + 3, oy + p.y * TILE + 3, TILE - 6, TILE - 6);
+    g.fillRect(hx + 1, hy + 1, TILE - 2, TILE - 2);
+    g.drawImage(hero, hx + 3, hy + 3, TILE - 6, TILE - 6);
+    g.strokeStyle = `rgba(255,248,214,${0.75 + 0.25 * pulse})`;
+    g.lineWidth = 2;
+    g.strokeRect(hx + 1, hy + 1, TILE - 2, TILE - 2);
+    const bob = Math.round(Math.sin(now / 220) * 2);
+    g.fillStyle = '#05030a';
+    g.fillRect(hx + TILE / 2 - 6, hy - 11 + bob, 12, 3);
+    g.fillStyle = '#ffd84a';
+    g.beginPath();
+    g.moveTo(hx + TILE / 2 - 5, hy - 9 + bob);
+    g.lineTo(hx + TILE / 2 + 5, hy - 9 + bob);
+    g.lineTo(hx + TILE / 2, hy - 2 + bob);
+    g.fill();
     // Night and weather tints (dungeons are lit by torches).
     if (!isDungeon(map.id)) {
       const weather = content.weather.find(s.world.weatherNow());
