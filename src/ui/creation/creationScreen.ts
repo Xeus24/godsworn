@@ -4,6 +4,7 @@ import { endgameSeen, highestNgPlus } from '../profile';
 import { DEFAULT_DIFFICULTY, DIFFICULTIES, type DifficultyId } from '../../data/difficulty';
 import { createCharacter, NAME_MAX_LENGTH, validateName } from '../../engine/character/create';
 import type { Character } from '../../engine/character/types';
+import { choiceIcon, type ChoiceKind } from '../art/choiceIcons';
 import { drawPortrait, PORTRAIT_VARIANTS } from '../art/portraits';
 import { el, type Screen } from '../screen';
 import { renderPreview } from './preview';
@@ -148,6 +149,8 @@ export class CreationScreen implements Screen {
         this.choice.difficulty,
         (d) => [d.name, `Enemies x${d.enemy.hp} HP, x${d.enemy.damage} damage`],
         (id) => (this.choice.difficulty = id as DifficultyId),
+        undefined,
+        'difficulty',
       ),
       this.group(
         'Race',
@@ -156,6 +159,7 @@ export class CreationScreen implements Screen {
         (r) => [r.name, raceUnlocked(r, highestNgPlus()) ? r.passive.name : `Locked: ${raceUnlockText(r)}`],
         (id) => (this.choice.raceId = id),
         (r) => !raceUnlocked(r, highestNgPlus()),
+        'race',
       ),
       this.group(
         'Class',
@@ -163,6 +167,8 @@ export class CreationScreen implements Screen {
         this.choice.classId,
         (c) => [c.name, `${c.role} · ${'★'.repeat(c.difficulty)}${'☆'.repeat(3 - c.difficulty)}`],
         (id) => (this.choice.classId = id),
+        undefined,
+        'class',
       ),
       this.group(
         'Birth Sign',
@@ -170,6 +176,8 @@ export class CreationScreen implements Screen {
         this.choice.birthSignId,
         (s) => [s.name, content.gods.get(s.god).name],
         (id) => (this.choice.birthSignId = id),
+        undefined,
+        'birth',
       ),
     );
 
@@ -185,14 +193,15 @@ export class CreationScreen implements Screen {
     label: (item: T) => [string, string],
     select: (id: string) => void,
     locked?: (item: T) => boolean,
+    icon?: ChoiceKind,
   ): HTMLElement {
-    const cards = items.map((item) => {
+    const cards = items.map((item, i) => {
       const [name, sub] = label(item);
       const card = el(
         'button',
         { class: `choice-card${item.id === selected ? ' selected' : ''}`, 'aria-pressed': String(item.id === selected) },
-        el('span', { class: 'choice-name' }, name),
-        el('span', { class: 'choice-sub' }, sub),
+        ...(icon ? [choiceIcon(icon, item.id, i, items.length)] : []),
+        el('span', { class: 'choice-text' }, el('span', { class: 'choice-name' }, name), el('span', { class: 'choice-sub' }, sub)),
       );
       if (locked?.(item)) {
         card.disabled = true;

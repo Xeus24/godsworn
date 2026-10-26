@@ -11,7 +11,7 @@ import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 import { settings } from '../settings';
-import { entityIcon, minimapColor, tileImage } from './tileArt';
+import { EDGE_E, EDGE_N, EDGE_S, EDGE_W, entityIcon, minimapColor, tileImage } from './tileArt';
 import { WorldMapOverlay } from './worldMap';
 import type { Conversation } from '../../engine/state/conversation';
 import { objectiveLine } from '../../engine/state/conversation';
@@ -100,7 +100,8 @@ export class WorldScreen implements Screen {
   }
 
   private onKey(e: KeyboardEvent): void {
-    if (e.target instanceof HTMLInputElement || e.metaKey || e.ctrlKey || e.altKey) return;
+    const typing = e.target instanceof HTMLInputElement && !['checkbox', 'radio', 'button', 'range'].includes(e.target.type);
+    if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
     const key = e.key.toLowerCase();
     if (this.overlay) {
       if (key === 'escape' || key === 'm') this.closeMap();
@@ -256,7 +257,12 @@ export class WorldScreen implements Screen {
         let t = tileAt(map, x, y);
         if (t === 'D' && runesDone(w, map)) t = '_';
         if (t === 'X' && w.used[usedKey(map.id, `crack-${x}-${y}`)] !== undefined) t = map.biome === 'dungeon' ? '_' : '.';
-        g.drawImage(tileImage(map.biome, t, (x * 7 + y * 13) % 4, frame, (x * 31 + y * 17 + x * y) % 11), ox + x * TILE, oy + y * TILE, TILE, TILE);
+        // Soft ground patches from low-frequency noise; shores and road edges from the neighbours.
+        const n = Math.sin(x * 0.37 + 1.3) + Math.sin(y * 0.46) + Math.sin((x + y) * 0.21);
+        const tone = n > 1.15 ? 1 : n < -1.15 ? 2 : 0;
+        const like = t === '~' ? (c: string) => c !== '~' : (c: string) => c !== '=' && c !== 'D';
+        const mask = t === '~' || t === '=' ? (like(tileAt(map, x, y - 1)) ? EDGE_N : 0) | (like(tileAt(map, x + 1, y)) ? EDGE_E : 0) | (like(tileAt(map, x, y + 1)) ? EDGE_S : 0) | (like(tileAt(map, x - 1, y)) ? EDGE_W : 0) : 0;
+        g.drawImage(tileImage(map.biome, t, (x * 7 + y * 13) % 4, frame, (x * 31 + y * 17 + x * y) % 11, tone, mask), ox + x * TILE, oy + y * TILE, TILE, TILE);
       }
     }
     for (const e of map.entities) {
@@ -344,6 +350,7 @@ export class WorldScreen implements Screen {
     g.lineTo(hx + TILE / 2 + 5, hy - 9 + bob);
     g.lineTo(hx + TILE / 2, hy - 2 + bob);
     g.fill();
+    if (!settings().reduceMotion) this.drawAmbient(g, map.biome, cw, ch, now);
     // Night and weather tints (dungeons are lit by torches).
     if (!isDungeon(map.id)) {
       const weather = content.weather.find(s.world.weatherNow());
@@ -355,6 +362,46 @@ export class WorldScreen implements Screen {
         g.fillStyle = 'rgba(10,12,50,0.38)';
         g.fillRect(0, 0, cw, ch);
       }
+    }
+  }
+
+  /** Slow drifting life over the view: birds, snow, embers, dust. Purely cosmetic and screen-space. */
+  private drawAmbient(g: CanvasRenderingContext2D, biome: string, cw: number, ch: number, now: number): void {
+    const t = now / 1000;
+    const wrap = (v: number, m: number): number => ((v % m) + m) % m;
+    switch (biome) {
+      case 'meadow':
+      case 'forest':
+      case 'coast': {
+        // A few birds crossing, wings flapping.
+        g.fillStyle = 'rgba(20,16,28,0.8)';
+        for (let i = 0; i < 3; i++) {
+          const x = wrap(t * (22 + i * 7) + i * 260, cw + 80) - 40;
+          const y = 40 + i * 70 + Math.sin(t * 1.3 + i) * 10;
+          const up = Math.floor(t * 6 + i) % 2 === 0;
+          g.fillRect(x, y + (up ? 0 : 2), 3, 2);
+          g.fillRect(x + 3, y + (up ? 2 : 0), 3, 2);
+          g.fillRect(x + 6, y + (up ? 0 : 2), 3, 2);
+        }
+        break;
+      }
+      case 'snow':
+        g.fillStyle = 'rgba(255,255,255,0.85)';
+        for (let i = 0; i < 40; i++) g.fillRect(wrap(i * 97 + Math.sin(t + i) * 14, cw), wrap(i * 53 + t * (20 + (i % 5) * 6), ch), 2, 2);
+        break;
+      case 'volcanic':
+        for (let i = 0; i < 24; i++) {
+          g.fillStyle = i % 3 ? 'rgba(255,140,50,0.8)' : 'rgba(255,220,120,0.9)';
+          g.fillRect(wrap(i * 83 + Math.sin(t * 1.4 + i) * 10, cw), wrap(ch - ((t * (25 + (i % 4) * 8) + i * 41) % ch), ch), 2, 2);
+        }
+        break;
+      case 'desert':
+        g.fillStyle = 'rgba(230,200,140,0.35)';
+        for (let i = 0; i < 18; i++) g.fillRect(wrap(i * 71 + t * (60 + (i % 3) * 20), cw), wrap(i * 43 + Math.sin(t + i) * 8, ch), 6, 1);
+        break;
+      default:
+        g.fillStyle = biome === 'citadel' ? 'rgba(190,130,255,0.45)' : 'rgba(210,220,255,0.28)';
+        for (let i = 0; i < 20; i++) g.fillRect(wrap(i * 89 + Math.sin(t * 0.6 + i) * 18, cw), wrap(i * 47 - t * (6 + (i % 3) * 3), ch), 2, 2);
     }
   }
 

@@ -1,3 +1,4 @@
+import { uiGlyph } from '../art/uiGlyphs';
 import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { questLevel } from '../../engine/quests/quests';
 import { content } from '../../data';
@@ -86,7 +87,7 @@ export class TownScreen implements Screen {
   /** A person to talk to, marked ! (a new quest) or ? (something to hand in). */
   private npcRow(npc: NpcDef): HTMLElement {
     const mark = this.session.quests.npcMark(npc.id);
-    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}`)));
+    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), uiGlyph(npc.place === 'temple' ? 'temple' : 'figure', mark === '!' ? '#b8892a' : mark === '?' ? '#2a7a8a' : undefined), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}`)));
     b.addEventListener('click', () => {
       const conv = this.session.quests.talkTo(npc.id);
       if (conv) this.town.talk(conv);
@@ -100,7 +101,7 @@ export class TownScreen implements Screen {
     const rows = posted.map((q) => {
       const take = el('button', { class: 'tab' }, 'Take it');
       take.addEventListener('click', () => this.say(s.quests.start(q.id)));
-      return el('div', { class: 'board-row' }, el('b', {}, `${q.name} (level ${questLevel(q, s.state.ngPlus)})`), el('div', { class: 'small' }, q.summary), el('div', { class: 'dim small' }, `Reward: ${rewardText(q, s.state.ngPlus)}`), take);
+      return el('div', { class: 'board-row' }, el('b', {}, uiGlyph(/bounty/i.test(q.name) ? 'swords' : 'scroll'), ` ${q.name} (level ${questLevel(q, s.state.ngPlus)})`), el('div', { class: 'small' }, q.summary), el('div', { class: 'dim small' }, `Reward: ${rewardText(q, s.state.ngPlus)}`), take);
     });
     return this.card('Quest Board', ...(rows.length ? rows : [el('p', { class: 'dim small' }, 'Nothing posted right now. Bounties return each day.')]));
   }

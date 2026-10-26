@@ -63,7 +63,9 @@ export class DebugPanel {
 }
 
 function isTyping(target: EventTarget | null): boolean {
-  return target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+  // Checkboxes and buttons keep focus after a click but do not take typed text, so they must not swallow hotkeys.
+  if (target instanceof HTMLInputElement) return !['checkbox', 'radio', 'button', 'range'].includes(target.type);
+  return target instanceof HTMLTextAreaElement;
 }
 
 export function debugButton(label: string, onClick: () => void): HTMLButtonElement {

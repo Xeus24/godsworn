@@ -4,6 +4,8 @@ import { FAST_TRAVEL_GOLD_PER_LEVEL, exploredShare } from '../../engine/world/wo
 import { mapFor } from '../../engine/world/mapgen';
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
+import { zoneVignette } from '../art/uiGlyphs';
+import { hashString } from '../../engine/world/mapgen';
 
 /**
  * The world map (M): every zone along the road with its level range, how
@@ -52,6 +54,7 @@ export class WorldMapOverlay {
       return el(
         'div',
         { class: `map-zone${z.id === here ? ' here' : ''}${known ? '' : ' unknown'}` },
+        zoneVignette(z.biome, hashString(z.id) % 11),
         el('b', {}, known ? z.name : '???'),
         el('div', { class: 'dim small' }, `Levels ${worldLevel(z.levels[0], s.state.ngPlus)}-${worldLevel(z.levels[1], s.state.ngPlus)} · ${Math.round(share * 100)}% explored`),
         ...(known

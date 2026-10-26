@@ -26,6 +26,35 @@ const PALETTES: Record<Biome, Palette> = {
 
 const cache = new Map<string, HTMLCanvasElement>();
 
+/** Neighbour bits for edge fringes: 1 = north, 2 = east, 4 = south, 8 = west is something else (land, for water). */
+export const EDGE_N = 1;
+export const EDGE_E = 2;
+export const EDGE_S = 4;
+export const EDGE_W = 8;
+
+/** Draws a ragged 2px edge on the sides marked in `mask`: foam along shores, grass beside roads. */
+function edgeFringe(g: CanvasRenderingContext2D, mask: number, color: string, foam: boolean, frame = 0): void {
+  if (!mask) return;
+  const bit = (m: number): boolean => (mask & m) !== 0;
+  for (let i = 0; i < TILE_PX; i++) {
+    const w = (i + frame) % 3 === 0 ? 1 : 2;
+    g.fillStyle = color;
+    if (bit(EDGE_N)) g.fillRect(i, 0, 1, w);
+    if (bit(EDGE_S)) g.fillRect(i, TILE_PX - w, 1, w);
+    if (bit(EDGE_W)) g.fillRect(0, i, w, 1);
+    if (bit(EDGE_E)) g.fillRect(TILE_PX - w, i, w, 1);
+  }
+  if (foam) {
+    g.fillStyle = 'rgba(255,255,255,0.55)';
+    for (let i = (frame % 2) * 2; i < TILE_PX; i += 4) {
+      if (bit(EDGE_N)) g.fillRect(i, 2, 2, 1);
+      if (bit(EDGE_S)) g.fillRect(i, TILE_PX - 3, 2, 1);
+      if (bit(EDGE_W)) g.fillRect(2, i, 1, 2);
+      if (bit(EDGE_E)) g.fillRect(TILE_PX - 3, i, 1, 2);
+    }
+  }
+}
+
 function canvas(): [HTMLCanvasElement, CanvasRenderingContext2D] {
   const c = document.createElement('canvas');
   c.width = TILE_PX;
@@ -58,6 +87,14 @@ function decorate(g: CanvasRenderingContext2D, biome: Biome, p: Palette, kind: n
   };
   const x = 2 + ((variant * 3) % 6);
   const y = 3 + ((variant * 5) % 5);
+  if (kind === 2) {
+    // A small boulder or stump, whatever the biome.
+    const rock = biome === 'forest' || biome === 'meadow' ? ['#6a4a2a', '#8a6a3a'] : [p.wall[0], p.wall[1]];
+    px('#120c18', x, y + 2, 5, 3);
+    px(rock[0] as string, x, y + 2, 4, 2);
+    px(rock[1] as string, x, y + 2, 2, 1);
+    return;
+  }
   switch (biome) {
     case 'meadow':
       if (kind === 0) {
@@ -133,11 +170,13 @@ function decorate(g: CanvasRenderingContext2D, biome: Biome, p: Palette, kind: n
  * A tile image for a biome. `variant` (0-3) picks one of a few textures so
  * large areas do not look stamped.
  */
-export function tileImage(biome: Biome, tile: string, variant: number, frame = 0, deco = 99): HTMLCanvasElement {
-  // Only water animates and only open ground gets decorations: keep the cache small.
-  const f = tile === '~' ? frame % WATER_FRAMES : 0;
-  const d = tile === '.' && deco < 2 ? deco : 99;
-  const key = `${biome}|${tile}|${variant}|${f}|${d}`;
+export function tileImage(biome: Biome, tile: string, variant: number, frame = 0, deco = 99, tone = 0, mask = 0): HTMLCanvasElement {
+  // Water ripples, trees sway, and open ground gets decorations and tone patches: keep the cache small.
+  const f = tile === '~' ? frame % WATER_FRAMES : tile === 'T' || tile === 'H' ? Math.floor(frame / 2) % 2 : 0;
+  const d = tile === '.' && deco < 3 ? deco : 99;
+  const tn = tile === '.' ? tone : 0;
+  const mk = tile === '~' || tile === '=' ? mask : 0;
+  const key = `${biome}|${tile}|${variant}|${f}|${d}|${tn}|${mk}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const p = PALETTES[biome];
@@ -145,6 +184,7 @@ export function tileImage(biome: Biome, tile: string, variant: number, frame = 0
   switch (tile) {
     case '=':
       speckle(g, p.path[0], p.path[1], variant + 3, 5);
+      edgeFringe(g, mk, p.ground[0], false);
       break;
     case '~':
       speckle(g, p.water[0], p.water[1], variant + 7, 4);
@@ -154,9 +194,11 @@ export function tileImage(biome: Biome, tile: string, variant: number, frame = 0
       g.fillRect((6 + f * 2 + variant * 3) % TILE_PX, 8 - (variant % 2), 4, 1);
       g.fillStyle = 'rgba(255,255,255,0.35)';
       g.fillRect((9 + f * 3 + variant * 5) % TILE_PX, 1 + ((f + variant) % 3) * 4, 2, 1);
+      edgeFringe(g, mk, p.ground[1], true, f);
       break;
     case 'T': {
       speckle(g, p.ground[0], p.ground[1], variant, 5);
+      const sway = f === 1 && (biome === 'meadow' || biome === 'forest' || biome === 'snow' || biome === 'coast');
       const [dark, light, accent] = p.scenery;
       if (biome === 'cave' || biome === 'volcanic' || biome === 'citadel' || biome === 'desert' || (biome === 'coast' && variant % 2)) {
         // Rocks and spires.
@@ -173,7 +215,7 @@ export function tileImage(biome: Biome, tile: string, variant: number, frame = 0
       } else if (biome === 'forest' || biome === 'snow') {
         // Pines.
         g.fillStyle = dark;
-        for (let r = 0; r < 4; r++) g.fillRect(5 - r, 1 + r * 2, 2 + r * 2, 2);
+        for (let r = 0; r < 4; r++) g.fillRect(5 - r + (sway && r < 2 ? 1 : 0), 1 + r * 2, 2 + r * 2, 2);
         g.fillStyle = accent;
         g.fillRect(5, 9, 2, 3);
         if (biome === 'snow') {
@@ -182,12 +224,13 @@ export function tileImage(biome: Biome, tile: string, variant: number, frame = 0
           g.fillRect(3, 5, 2, 1);
         }
       } else {
-        // Round trees.
+        // Round trees: the crown shifts a pixel as the wind picks up.
+        const sx = sway ? 1 : 0;
         g.fillStyle = dark;
-        g.fillRect(2, 1, 8, 7);
-        g.fillRect(1, 3, 10, 3);
+        g.fillRect(2 + sx, 1, 8, 7);
+        g.fillRect(1 + sx, 3, 10 - sx, 3);
         g.fillStyle = light;
-        g.fillRect(3, 2, 3, 3);
+        g.fillRect(3 + sx, 2, 3, 3);
         g.fillStyle = accent;
         g.fillRect(5, 8, 2, 4);
       }
@@ -239,7 +282,22 @@ export function tileImage(biome: Biome, tile: string, variant: number, frame = 0
       break;
     default:
       speckle(g, p.ground[0], p.ground[1], variant, 8);
-      if (d < 2) decorate(g, biome, p, d, variant);
+      if (tn === 1) {
+        // Lush patch: darker, with a few extra blades.
+        g.fillStyle = 'rgba(10,30,10,0.18)';
+        g.fillRect(0, 0, TILE_PX, TILE_PX);
+        g.fillStyle = p.scenery[1];
+        g.fillRect(2 + variant, 8, 1, 2);
+        g.fillRect(8 - variant, 3, 1, 2);
+      } else if (tn === 2) {
+        // Worn patch: lighter, bare earth showing through.
+        g.fillStyle = 'rgba(255,240,200,0.12)';
+        g.fillRect(0, 0, TILE_PX, TILE_PX);
+        g.fillStyle = p.path[0];
+        g.fillRect(3 + variant, 6, 2, 1);
+        g.fillRect(8, 9 - (variant % 3), 1, 1);
+      }
+      if (d < 3) decorate(g, biome, p, d, variant);
   }
   cache.set(key, c);
   return c;
