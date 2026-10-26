@@ -620,6 +620,7 @@
 ### Graphics pass (added after Phase 16)
 - **Battle:** per-biome backdrops (`src/ui/combat/battlefield.ts`: meadow, forest, cave, desert, snow, coast, volcanic, citadel, dungeon; day and night) chosen from the map the fight starts on (`CombatScreenOptions.biome`). Creatures are larger and breathe (bob, plus a stretch on slimes). Status icons are 20px, wrap to a second row and show stack counts; front-row spacing grew to fit.
 - **Overworld:** water ripples animate and open ground gets small decorations (flowers, mushrooms, bones, shells, embers...) per biome; the hero has a pulsing halo, outline and a bobbing arrow. The view redraws every 110 ms while the map is open.
+- **Second pass:** status effects are 8x8 pictures (`src/ui/combat/statusIcons.ts`, light ink on dark tiles), creature sprites get top-left lighting and a tinted outline, map entities get outlines, shadows, glow (loot, shrines) and breathing (monsters), and the acting unit stands in a pulsing ring.
 - **Towns:** each of the five towns has a pixel skyline banner (`src/ui/world/townBanner.ts`), with a night version.
 
 ### Achievement point milestones (added after Phase 16)

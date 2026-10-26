@@ -5,6 +5,7 @@ import { portraitCanvas } from '../art/portraits';
 import type { Biome } from '../../engine/world/types';
 import { creatureSprite } from './creatureSprites';
 import { paintBattlefield } from './battlefield';
+import { drawStatusPicture } from './statusIcons';
 import { effectsOf, type EffectView } from './effectText';
 
 export const SCENE_W = 960;
@@ -436,6 +437,16 @@ export class CombatScene {
     g.ellipse(cx, cy + 2, size * 0.38, 7, 0, 0, Math.PI * 2);
     g.fill();
 
+    // The unit whose turn it is stands in a pulsing ring.
+    if (this.actorId === x.id && x.alive) {
+      const ring = 0.55 + 0.45 * Math.sin(t * 5);
+      g.strokeStyle = `rgba(255,216,74,${ring})`;
+      g.lineWidth = 3;
+      g.beginPath();
+      g.ellipse(cx, cy + 2, size * 0.5, 10, 0, 0, Math.PI * 2);
+      g.stroke();
+    }
+
     // Divine Avatar: a pulsing halo in the god's color behind the hero.
     const avatar = x.buffs.find((bf) => bf.id.startsWith('avatar:'));
     if (avatar && x.alive) {
@@ -459,6 +470,13 @@ export class CombatScene {
       g.fillStyle = x.portrait.color;
       g.fillRect(cx - size / 2 - 3, top - 3, size + 6, size + 6);
       g.drawImage(img, cx - size / 2, top, size, size);
+      // A bevelled frame: light on the top and left edges, dark on the bottom and right.
+      g.fillStyle = 'rgba(255,255,255,0.35)';
+      g.fillRect(cx - size / 2 - 3, top - 3, size + 6, 2);
+      g.fillRect(cx - size / 2 - 3, top - 3, 2, size + 6);
+      g.fillStyle = 'rgba(0,0,0,0.4)';
+      g.fillRect(cx - size / 2 - 3, top + size + 1, size + 6, 2);
+      g.fillRect(cx + size / 2 + 1, top - 3, 2, size + 6);
     } else if (x.sprite) {
       const img = creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
       g.save();
@@ -543,7 +561,7 @@ export class CombatScene {
         g.fillRect(cx - bw / 2, by + 23, bw * Math.min(1, share), 3);
       }
       // Status icons.
-      const icons = effectsOf(x).map((fx) => ({ glyph: fx.glyph, color: fx.color, n: fx.stacks, turns: fx.turns }));
+      const icons = effectsOf(x).map((fx) => ({ pic: fx.kind === 'buff' ? 'buff' : fx.id, glyph: fx.glyph, color: fx.color, n: fx.stacks, turns: fx.turns }));
       icons.slice(0, MAX_ICONS).forEach((icon, i) => {
         const { x: ix, y: iy } = iconSpot(cx, by, bw, i);
         g.fillStyle = '#120c18';
@@ -553,9 +571,11 @@ export class CombatScene {
         // A lighter top edge gives the square a little relief.
         g.fillStyle = 'rgba(255,255,255,0.3)';
         g.fillRect(ix + 1, iy + 1, ICON - 2, 3);
-        g.fillStyle = '#120c18';
-        g.font = 'bold 11px ui-monospace, Menlo, monospace';
-        g.fillText(icon.glyph, ix + ICON / 2, iy + 14);
+        if (!drawStatusPicture(g, icon.pic, ix, iy, ICON, icon.color)) {
+          g.fillStyle = '#120c18';
+          g.font = 'bold 11px ui-monospace, Menlo, monospace';
+          g.fillText(icon.glyph, ix + ICON / 2, iy + 14);
+        }
         if (icon.n > 1) {
           g.font = 'bold 10px ui-monospace, Menlo, monospace';
           g.lineWidth = 3;

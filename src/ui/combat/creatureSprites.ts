@@ -247,7 +247,8 @@ export function creatureSprite(family: string, main: string, accent: string): HT
   const oy = SIZE - h - 1;
   const filled = new Set<number>();
   rows.forEach((row, y) => [...row].forEach((ch, x) => palette[ch] && filled.add((oy + y) * SIZE + ox + x)));
-  ctx.fillStyle = '#120c18';
+  // A tinted outline reads softer than flat black and keeps each creature's colour.
+  ctx.fillStyle = shade(main, -0.86);
   for (const p of filled) {
     const x = p % SIZE;
     const y = Math.floor(p / SIZE);
@@ -257,12 +258,28 @@ export function creatureSprite(family: string, main: string, accent: string): HT
       if (nx >= 0 && ny >= 0 && nx < SIZE && ny < SIZE && !filled.has(ny * SIZE + nx)) ctx.fillRect(nx, ny, 1, 1);
     }
   }
+  const has = (x: number, y: number): boolean => filled.has(y * SIZE + x);
+  const lit = shade(main, 0.22);
+  const shadow = shade(main, -0.28);
+  const accentLit = shade(accent, 0.22);
+  const accentShadow = shade(accent, -0.28);
   rows.forEach((row, y) =>
     [...row].forEach((ch, x) => {
       const color = palette[ch];
       if (!color) return;
-      ctx.fillStyle = color;
-      ctx.fillRect(ox + x, oy + y, 1, 1);
+      const px = ox + x;
+      const py = oy + y;
+      let out = color;
+      // Light from the top left: body and accent pixels on an upper or left edge are lit,
+      // those on a lower or right edge are in shadow. Hand-placed l/d pixels stay as drawn.
+      if (ch === 'm' || ch === 'a') {
+        const topLeft = !has(px, py - 1) || !has(px - 1, py);
+        const bottomRight = !has(px, py + 1) || !has(px + 1, py);
+        if (topLeft && !bottomRight) out = ch === 'm' ? lit : accentLit;
+        else if (bottomRight && !topLeft) out = ch === 'm' ? shadow : accentShadow;
+      }
+      ctx.fillStyle = out;
+      ctx.fillRect(px, py, 1, 1);
     }),
   );
   cache.set(key, canvas);

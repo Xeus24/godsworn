@@ -264,7 +264,23 @@ export class WorldScreen implements Screen {
       if (!img) continue;
       const big = e.kind === 'worldBoss' || e.kind === 'boss';
       const size = big ? TILE * 1.3 : TILE;
-      g.drawImage(img, ox + e.x * TILE + (TILE - size) / 2, oy + e.y * TILE + (TILE - size), size, size);
+      const living = e.kind === 'enemies' || big;
+      // Monsters breathe (out of step with each other); loot and shrines pulse a soft glow.
+      const bob = living ? Math.round(Math.sin(now / 340 + e.x * 1.7 + e.y * 2.3) * 1.5) : 0;
+      const ex = ox + e.x * TILE;
+      const ey = oy + e.y * TILE;
+      g.fillStyle = 'rgba(0,0,0,0.3)';
+      g.beginPath();
+      g.ellipse(ex + TILE / 2, ey + TILE - 3, size * 0.32, 4, 0, 0, Math.PI * 2);
+      g.fill();
+      if (!living && e.kind !== 'town') {
+        const glow = 0.18 + 0.12 * Math.sin(now / 420 + e.x + e.y);
+        g.fillStyle = `rgba(255,226,140,${glow})`;
+        g.beginPath();
+        g.arc(ex + TILE / 2, ey + TILE / 2, TILE * 0.55, 0, Math.PI * 2);
+        g.fill();
+      }
+      g.drawImage(img, ex + (TILE - size) / 2, ey + (TILE - size) + bob, size, size);
       if (big) {
         g.fillStyle = '#ffd84a';
         g.fillRect(ox + e.x * TILE + TILE / 2 - 4, oy + e.y * TILE - TILE * 0.35, 8, 3);

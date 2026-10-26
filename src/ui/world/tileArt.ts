@@ -247,6 +247,19 @@ export function tileImage(biome: Biome, tile: string, variant: number, frame = 0
 
 const iconCache = new Map<string, HTMLCanvasElement>();
 
+/** Adds a 1px dark outline around everything drawn so far, so icons stand out from busy ground. */
+function outline(g: CanvasRenderingContext2D): void {
+  const img = g.getImageData(0, 0, TILE_PX, TILE_PX);
+  const solid = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < TILE_PX && y < TILE_PX && (img.data[(y * TILE_PX + x) * 4 + 3] ?? 0) > 0;
+  g.fillStyle = '#120c18';
+  for (let y = 0; y < TILE_PX; y++) {
+    for (let x = 0; x < TILE_PX; x++) {
+      if (solid(x, y)) continue;
+      if (solid(x + 1, y) || solid(x - 1, y) || solid(x, y + 1) || solid(x, y - 1)) g.fillRect(x, y, 1, 1);
+    }
+  }
+}
+
 /** Small pixel icons for map entities. `tint` colors shrines (god color) and runes. */
 export function entityIcon(kind: string, tint = '#ffd84a', state = ''): HTMLCanvasElement {
   const key = `${kind}|${tint}|${state}`;
@@ -325,6 +338,7 @@ export function entityIcon(kind: string, tint = '#ffd84a', state = ''): HTMLCanv
     default:
       px(tint, 3, 3, 6, 6);
   }
+  outline(g);
   iconCache.set(key, c);
   return c;
 }
