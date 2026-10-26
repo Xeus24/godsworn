@@ -67,6 +67,7 @@ export function onSettingsChange(l: Listener): void {
 
 /** Applies the visual settings to the page. */
 export function applySettings(): void {
-  document.documentElement.style.fontSize = `${Math.round(current.textScale * 100)}%`;
+  // The stylesheets size everything in px, so scale the whole page rather than only the root font.
+  document.documentElement.style.setProperty('zoom', String(current.textScale));
   document.body.classList.toggle('reduce-motion', current.reduceMotion);
 }

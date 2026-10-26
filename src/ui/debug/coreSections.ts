@@ -3,6 +3,7 @@ import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import { calculateStats } from '../../engine/stats/calculate';
 import type { Modifier } from '../../engine/stats/modifiers';
+import { battleFx } from '../combat/combatScene';
 import { el } from '../screen';
 import { debugButton, type DebugPanel } from './debugPanel';
 
@@ -10,6 +11,26 @@ const noGame = (): HTMLElement => el('p', { class: 'dim' }, 'Start a game first.
 
 /** Sections for the engine core and character progression. */
 export function registerCoreSections(panel: DebugPanel, getSession: () => GameSession | undefined): void {
+  panel.addSection({
+    title: 'Battle effects speed',
+    render: (refresh, log) =>
+      el(
+        'div',
+        {},
+        el('div', { class: 'dim small' }, `Animation and event pacing multiplier: x${battleFx.timeScale}. Slow it down to study hits, sparks and lunges.`),
+        el(
+          'div',
+          { class: 'row' },
+          ...[1, 0.5, 0.25, 0.1].map((v) =>
+            debugButton(`x${v}`, () => {
+              battleFx.timeScale = v;
+              log(`battle effects at x${v}`);
+              refresh();
+            }),
+          ),
+        ),
+      ),
+  });
   panel.addSection({
     title: 'Session',
     render: (refresh, log) => {

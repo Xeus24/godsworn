@@ -1,7 +1,8 @@
 import { content } from '../../data';
 import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
-import { portraitCanvas } from '../art/portraits';
+import { heroSprite } from '../art/heroSprite';
+import { settings } from '../settings';
 import type { Biome } from '../../engine/world/types';
 import { creatureSprite } from './creatureSprites';
 import { paintBattlefield } from './battlefield';
@@ -10,6 +11,9 @@ import { effectsOf, type EffectView } from './effectText';
 
 export const SCENE_W = 960;
 export const SCENE_H = 540;
+
+/** Playback speed of battle animation and event pacing (the developer panel sets it below 1 to study effects). */
+export const battleFx = { timeScale: 1 };
 
 interface UnitView {
   hp: number;
@@ -191,6 +195,7 @@ export class CombatScene {
     switch (e.type) {
       case 'action': {
         // The actor steps toward its first target and back.
+        if (settings().reduceMotion) return;
         const from = positions.get(e.actorId);
         const to = e.targets.map((id) => positions.get(id)).find((p) => p && p !== from);
         const actor = this.battle.get(e.actorId);
@@ -216,7 +221,7 @@ export class CombatScene {
         v.shake = e.crit ? 1 : 0.5;
         // DoT ticks are quiet; real hits get sparks, and crits shake the whole scene.
         const share = e.amount / Math.max(1, x.maxHp);
-        if (!e.dot) {
+        if (!e.dot && !settings().reduceMotion) {
           const p = positions.get(e.targetId);
           if (p) this.burst(p.x, p.y - this.unitSize(x) / 2, e.crit ? '#ffd84a' : color, e.crit ? 16 : 8 + Math.min(8, Math.round(share * 40)));
           if (e.crit) this.sceneShake = Math.max(this.sceneShake, 1);
@@ -302,7 +307,7 @@ export class CombatScene {
   start(): void {
     this.last = performance.now();
     const tick = (now: number): void => {
-      const dt = Math.min(0.05, (now - this.last) / 1000);
+      const dt = Math.min(0.05, (now - this.last) / 1000) * battleFx.timeScale;
       this.last = now;
       this.draw(dt, now / 1000);
       this.frame = requestAnimationFrame(tick);
@@ -410,7 +415,9 @@ export class CombatScene {
   }
 
   private unitSize(x: Combatant): number {
-    return x.kind === 'hero' || x.kind === 'companion' ? 64 : x.tier === 'elite' ? 100 : 82;
+    if (x.portrait) return 96;
+    if (x.tier === 'boss' || x.tier === 'worldBoss' || x.tier === 'punisher') return 144;
+    return x.tier === 'elite' || x.tier === 'champion' || x.tier === 'miniboss' ? 120 : 96;
   }
 
   /** Clickable area of a unit: sprite, name and bars. */
@@ -425,7 +432,7 @@ export class CombatScene {
     // Idle breathing: a slow, per-unit-phase bob. Creatures also stretch a little, slimes more.
     let phase = 0;
     for (const ch of x.id) phase = (phase * 31 + ch.charCodeAt(0)) % 628;
-    const breath = x.alive ? Math.sin(t * 2.4 + phase / 100) : 0;
+    const breath = x.alive && !settings().reduceMotion ? Math.sin(t * 2.4 + phase / 100) : 0;
     const bob = Math.round(breath * (x.sprite ? 2 : 1));
     const stretch = x.sprite ? 1 + breath * (x.sprite.family === 'slime' ? 0.05 : 0.025) : 1;
     const top = cy - size - bob;
@@ -465,43 +472,69 @@ export class CombatScene {
       g.ellipse(cx, top - 8, size * 0.32, 6, 0, 0, Math.PI * 2);
       g.stroke();
     }
+    // The figure: a full-body hero, or the creature's sprite. `body` is where it is drawn.
+    let img: HTMLCanvasElement | undefined;
+    let bw = size;
     if (x.portrait) {
-      const img = portraitCanvas(x.portrait.raceId, x.portrait.variant, x.portrait.color);
-      g.fillStyle = x.portrait.color;
-      g.fillRect(cx - size / 2 - 3, top - 3, size + 6, size + 6);
-      g.drawImage(img, cx - size / 2, top, size, size);
-      // A bevelled frame: light on the top and left edges, dark on the bottom and right.
-      g.fillStyle = 'rgba(255,255,255,0.35)';
-      g.fillRect(cx - size / 2 - 3, top - 3, size + 6, 2);
-      g.fillRect(cx - size / 2 - 3, top - 3, 2, size + 6);
-      g.fillStyle = 'rgba(0,0,0,0.4)';
-      g.fillRect(cx - size / 2 - 3, top + size + 1, size + 6, 2);
-      g.fillRect(cx + size / 2 + 1, top - 3, 2, size + 6);
+      img = heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes);
+      bw = Math.round(size * (img.width / img.height));
     } else if (x.sprite) {
-      const img = creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
+      img = creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
+    }
+    if (img) {
       g.save();
-      // Stretch from the feet so the sprite breathes without leaving the ground.
+      // Stretch from the feet so the figure breathes without leaving the ground.
       const feet = top + size;
       g.translate(0, feet);
       g.scale(1, stretch);
       g.translate(0, -feet);
-      if (x.side === 'party') {
-        // Allied creatures face the enemy.
-        g.translate(cx, 0);
-        g.scale(-1, 1);
-        g.drawImage(img, -size / 2, top, size, size);
-      } else {
-        g.drawImage(img, cx - size / 2, top, size, size);
+      // Allied creatures face the enemy, and so do hostile humanoids; heroes face right.
+      const flip = x.portrait ? x.side === 'enemy' : x.side === 'party';
+      const blit = (im: HTMLCanvasElement): void => {
+        g.save();
+        if (flip) {
+          g.translate(cx, 0);
+          g.scale(-1, 1);
+          g.drawImage(im, -bw / 2, top, bw, size);
+        } else {
+          g.drawImage(im, cx - bw / 2, top, bw, size);
+        }
+        g.restore();
+      };
+      blit(img);
+      // Hit flash and fallen tint follow the figure's outline, not its bounding box.
+      if (v.flash > 0 || !x.alive) {
+        const tint = document.createElement('canvas');
+        tint.width = img.width;
+        tint.height = img.height;
+        const tg = tint.getContext('2d');
+        if (tg) {
+          tg.drawImage(img, 0, 0);
+          tg.globalCompositeOperation = 'source-in';
+          tg.fillStyle = !x.alive ? 'rgb(40,30,50)' : `rgb(${v.flashColor})`;
+          tg.fillRect(0, 0, tint.width, tint.height);
+          const prev = g.globalAlpha;
+          g.globalAlpha = prev * (!x.alive ? 0.5 : v.flash * 0.7);
+          blit(tint);
+          g.globalAlpha = prev;
+        }
       }
       g.restore();
-    }
-    if (v.flash > 0) {
-      g.fillStyle = `rgba(${v.flashColor},${v.flash * 0.6})`;
-      g.fillRect(cx - size / 2, top, size, size);
-    }
-    if (!x.alive) {
-      g.fillStyle = 'rgba(40,30,50,0.5)';
-      g.fillRect(cx - size / 2, top, size, size);
+      // A weapon swing: a bright crescent sweeps in front of a lunging hero.
+      if (x.portrait && v.lunge > 0.15 && x.alive) {
+        const sweep = 1 - v.lunge;
+        const dir = v.lungeDx >= 0 ? 1 : -1;
+        g.save();
+        g.translate(cx + dir * (bw * 0.45), top + size * 0.45);
+        g.scale(dir, 1);
+        g.strokeStyle = `rgba(255,248,214,${Math.sin(sweep * Math.PI) * 0.9})`;
+        g.lineWidth = 5;
+        g.lineCap = 'round';
+        g.beginPath();
+        g.arc(0, 0, size * 0.55, -1.1 + sweep * 2.2 - 0.8, -1.1 + sweep * 2.2, false);
+        g.stroke();
+        g.restore();
+      }
     }
 
     const rect = this.rectFor(x, cx, cy);

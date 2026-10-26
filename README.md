@@ -130,7 +130,7 @@ You start with your class's weapon, some armor, potions and a Scroll of Identify
 
 **Saving:** the game **autosaves** after battles, quest steps and New Game+, every 5 minutes, and when you close or hide the tab. While the dev or preview server runs (`npm run dev`), each autosave is also written to `saves/auto.json` in the project folder (git-ignored). The menu (Esc) saves to three manual slots; the title screen and the menu load any of them. Each slot can be **exported** to a file and **imported** back (to keep a save safe or move it to another browser). Saves live in your browser's storage and older saves are upgraded when loaded. A Hardcore hero who falls loses every save.
 
-**Settings** (title screen or Esc): master, music and sound effect volumes, mute, default battle speed and auto-battle, autosave on or off, reduce motion and text size. **Sound** is made on the fly: sound effects for hits, crits, heals, loot, level-ups and achievements, and music that changes with the town, the wild, dungeons, battles and bosses (it starts on your first click or key press).
+**Settings** (title screen or Esc): master, music and sound effect volumes, mute, default battle speed and auto-battle, autosave on or off, reduce motion and interface size (Small to Huge). **Sound** is made on the fly: sound effects for hits, crits, heals, loot, level-ups and achievements, and music that changes with the town, the wild, dungeons, battles and bosses (it starts on your first click or key press).
 
 ## Project layout
 

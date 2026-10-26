@@ -91,7 +91,7 @@ export class SettingsOverlay extends Overlay {
       el('h3', {}, 'Game'),
       check('Autosave (after battles, in towns and every few minutes)', 'autosave'),
       check('Reduce motion (no animations)', 'reduceMotion'),
-      select<number>('Text size', [[0.9, 'Small'], [1, 'Normal'], [1.15, 'Large'], [1.3, 'Larger']], s.textScale, (v) => updateSettings({ textScale: v })),
+      select<number>('Interface size', [[0.9, 'Small'], [1, 'Normal'], [1.15, 'Large'], [1.3, 'Larger'], [1.5, 'Huge']], s.textScale, (v) => updateSettings({ textScale: v })),
       el('div', { class: 'dim small' }, 'Settings are kept in this browser.'),
       button('Close', () => this.close(), false, 'primary'),
     );

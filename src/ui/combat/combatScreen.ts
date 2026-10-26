@@ -15,7 +15,7 @@ import { attachTooltip, hideTooltip, showTooltip } from '../components/tooltip';
 import { skillCostText } from '../format';
 import { el, type Screen } from '../screen';
 import type { Biome } from '../../engine/world/types';
-import { CombatScene } from './combatScene';
+import { CombatScene, battleFx } from './combatScene';
 import { effectsOf, effectTooltip } from './effectText';
 import { StatsWindow } from './statsWindow';
 
@@ -179,7 +179,7 @@ export class CombatScreen implements Screen {
       return;
     }
     this.render();
-    this.timer = window.setTimeout(() => this.act(chooseAction(this.battle, x)), 250 / this.speed);
+    this.timer = window.setTimeout(() => this.act(chooseAction(this.battle, x)), 250 / this.speed / battleFx.timeScale);
   }
 
   private playNext(): void {
@@ -191,7 +191,7 @@ export class CombatScreen implements Screen {
     const line = this.describe(e);
     if (line) this.addLog(line, e.type === 'boss');
     if (e.type === 'turn') this.scene.actorId = e.actorId;
-    const delay = (EVENT_DELAY[e.type] ?? 90) / this.speed;
+    const delay = (EVENT_DELAY[e.type] ?? 90) / this.speed / battleFx.timeScale;
     this.timer = window.setTimeout(() => {
       this.playing = false;
       if (e.type === 'action' || e.type === 'status' || e.type === 'death' || e.type === 'summon' || e.type === 'turn' || e.type === 'boss') this.renderPanels();

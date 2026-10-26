@@ -216,7 +216,9 @@ const PATTERNS: Record<string, string[]> = {
   ],
 };
 
-const SIZE = 24;
+const SRC = 24;
+/** Sprites are drawn at twice the sketch resolution (Scale2x), so edges can be lit and outlined at half-pixel detail. */
+const SIZE = SRC * 2;
 const FIXED: Record<string, string> = { w: '#f4f0e8', k: '#1a1420', e: '#ffe14a' };
 
 function shade(hex: string, amount: number): string {
@@ -227,7 +229,46 @@ function shade(hex: string, amount: number): string {
 
 const cache = new Map<string, HTMLCanvasElement>();
 
-/** A 24x24 canvas with the creature drawn and outlined (cached per family and palette). */
+type Cell = { color: string; shaded: 'm' | 'a' | undefined } | undefined;
+
+const same = (a: Cell, b: Cell): boolean => (a === undefined || b === undefined ? a === b : a.color === b.color);
+
+/** Scale2x: doubles the grid and rounds off staircase diagonals without blurring. */
+function scale2x(grid: Cell[][]): Cell[][] {
+  const h = grid.length;
+  const w = grid[0]?.length ?? 0;
+  const at = (x: number, y: number): Cell => (x < 0 || y < 0 || x >= w || y >= h ? undefined : grid[y]?.[x]);
+  const out: Cell[][] = Array.from({ length: h * 2 }, () => new Array<Cell>(w * 2).fill(undefined));
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const p = at(x, y);
+      const a = at(x, y - 1);
+      const b = at(x + 1, y);
+      const c = at(x - 1, y);
+      const d = at(x, y + 1);
+      let e0 = p;
+      let e1 = p;
+      let e2 = p;
+      let e3 = p;
+      if (!same(a, d) && !same(c, b)) {
+        if (same(c, a)) e0 = a;
+        if (same(a, b)) e1 = b;
+        if (same(d, c)) e2 = c;
+        if (same(b, d)) e3 = d;
+      }
+      // Single-pixel features (eyes, teeth) are kept whole rather than eaten by neighbours.
+      const row = out[y * 2] as Cell[];
+      const row2 = out[y * 2 + 1] as Cell[];
+      row[x * 2] = e0;
+      row[x * 2 + 1] = e1;
+      row2[x * 2] = e2;
+      row2[x * 2 + 1] = e3;
+    }
+  }
+  return out;
+}
+
+/** A 48x48 canvas with the creature drawn, lit from the top left and outlined (cached per family and palette). */
 export function creatureSprite(family: string, main: string, accent: string): HTMLCanvasElement {
   const key = `${family}|${main}|${accent}`;
   const hit = cache.get(key);
@@ -243,45 +284,47 @@ export function creatureSprite(family: string, main: string, accent: string): HT
   if (!ctx) return canvas;
   const h = rows.length;
   const w = Math.max(...rows.map((r) => r.length));
-  const ox = Math.floor((SIZE - w) / 2);
-  const oy = SIZE - h - 1;
-  const filled = new Set<number>();
-  rows.forEach((row, y) => [...row].forEach((ch, x) => palette[ch] && filled.add((oy + y) * SIZE + ox + x)));
+  const ox = Math.floor((SRC - w) / 2);
+  const oy = SRC - h - 1;
+  const grid: Cell[][] = Array.from({ length: SRC }, () => new Array<Cell>(SRC).fill(undefined));
+  rows.forEach((row, y) =>
+    [...row].forEach((ch, x) => {
+      const color = palette[ch];
+      const cell = (grid[oy + y] as Cell[]);
+      if (color) cell[ox + x] = { color, shaded: ch === 'm' || ch === 'a' ? ch : undefined };
+    }),
+  );
+  const big = scale2x(grid);
+  const filled = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < SIZE && y < SIZE && big[y]?.[x] !== undefined;
   // A tinted outline reads softer than flat black and keeps each creature's colour.
   ctx.fillStyle = shade(main, -0.86);
-  for (const p of filled) {
-    const x = p % SIZE;
-    const y = Math.floor(p / SIZE);
-    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
-      const nx = x + dx;
-      const ny = y + dy;
-      if (nx >= 0 && ny >= 0 && nx < SIZE && ny < SIZE && !filled.has(ny * SIZE + nx)) ctx.fillRect(nx, ny, 1, 1);
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      if (filled(x, y)) continue;
+      if (filled(x + 1, y) || filled(x - 1, y) || filled(x, y + 1) || filled(x, y - 1)) ctx.fillRect(x, y, 1, 1);
     }
   }
-  const has = (x: number, y: number): boolean => filled.has(y * SIZE + x);
   const lit = shade(main, 0.22);
   const shadow = shade(main, -0.28);
   const accentLit = shade(accent, 0.22);
   const accentShadow = shade(accent, -0.28);
-  rows.forEach((row, y) =>
-    [...row].forEach((ch, x) => {
-      const color = palette[ch];
-      if (!color) return;
-      const px = ox + x;
-      const py = oy + y;
-      let out = color;
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const cell = big[y]?.[x];
+      if (!cell) continue;
+      let out = cell.color;
       // Light from the top left: body and accent pixels on an upper or left edge are lit,
       // those on a lower or right edge are in shadow. Hand-placed l/d pixels stay as drawn.
-      if (ch === 'm' || ch === 'a') {
-        const topLeft = !has(px, py - 1) || !has(px - 1, py);
-        const bottomRight = !has(px, py + 1) || !has(px + 1, py);
-        if (topLeft && !bottomRight) out = ch === 'm' ? lit : accentLit;
-        else if (bottomRight && !topLeft) out = ch === 'm' ? shadow : accentShadow;
+      if (cell.shaded) {
+        const topLeft = !filled(x, y - 1) || !filled(x - 1, y) || !filled(x - 1, y - 1);
+        const bottomRight = !filled(x, y + 1) || !filled(x + 1, y) || !filled(x + 1, y + 1);
+        if (topLeft && !bottomRight) out = cell.shaded === 'm' ? lit : accentLit;
+        else if (bottomRight && !topLeft) out = cell.shaded === 'm' ? shadow : accentShadow;
       }
       ctx.fillStyle = out;
-      ctx.fillRect(px, py, 1, 1);
-    }),
-  );
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
   cache.set(key, canvas);
   return canvas;
 }

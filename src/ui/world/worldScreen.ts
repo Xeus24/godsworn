@@ -10,6 +10,7 @@ import { portraitCanvas } from '../art/portraits';
 import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
+import { settings } from '../settings';
 import { entityIcon, minimapColor, tileImage } from './tileArt';
 import { WorldMapOverlay } from './worldMap';
 import type { Conversation } from '../../engine/state/conversation';
@@ -248,7 +249,7 @@ export class WorldScreen implements Screen {
     const y1 = Math.min(map.h - 1, Math.ceil((ch - oy) / TILE));
     const day = s.state.clock.day;
     const now = performance.now();
-    const frame = Math.floor(now / 450);
+    const frame = settings().reduceMotion ? 0 : Math.floor(now / 450);
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
         if (!explored(w, map, x, y)) continue;
