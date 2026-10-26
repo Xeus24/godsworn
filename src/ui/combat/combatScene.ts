@@ -15,6 +15,24 @@ interface UnitView {
   shake: number;
   alpha: number;
   appear: number;
+  /** Trailing HP bar: drains slowly after a hit so the size of the blow is visible. */
+  ghost: number;
+  /** Attack lunge progress 1 -> 0, and the screen-space direction it travels. */
+  lunge: number;
+  lungeDx: number;
+  lungeDy: number;
+  flashColor: string;
+}
+
+interface Spark {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  age: number;
+  life: number;
+  size: number;
+  color: string;
 }
 
 interface FloatText {
@@ -24,6 +42,8 @@ interface FloatText {
   color: string;
   age: number;
   big: boolean;
+  /** Size multiplier: bigger blows (relative to the target's max HP) draw bigger numbers. */
+  scale: number;
 }
 
 const ELEMENT_COLORS: Record<string, string> = {
@@ -49,6 +69,9 @@ export class CombatScene {
   private readonly ctx: CanvasRenderingContext2D;
   private readonly views = new Map<string, UnitView>();
   private floats: FloatText[] = [];
+  private sparks: Spark[] = [];
+  /** Whole-scene shake, set by critical hits and deaths. */
+  private sceneShake = 0;
   private frame = 0;
   private last = 0;
   private background: HTMLCanvasElement;
@@ -126,7 +149,7 @@ export class CombatScene {
   private view(x: Combatant): UnitView {
     let v = this.views.get(x.id);
     if (!v) {
-      v = { hp: x.hp, shield: x.shield, flash: 0, shake: 0, alpha: x.alive ? 1 : 0.3, appear: 0 };
+      v = { hp: x.hp, shield: x.shield, flash: 0, shake: 0, alpha: x.alive ? 1 : 0.3, appear: 0, ghost: x.hp, lunge: 0, lungeDx: 0, lungeDy: 0, flashColor: '255,255,255' };
       this.views.set(x.id, v);
     }
     return v;
@@ -138,6 +161,7 @@ export class CombatScene {
       const v = this.view(x);
       v.hp = x.hp;
       v.shield = x.shield;
+      v.ghost = Math.max(v.ghost, x.hp);
       v.alpha = x.alive ? 1 : x.corpse ? 0.3 : 0;
     }
   }
@@ -150,20 +174,44 @@ export class CombatScene {
       const unit = this.battle.get(id);
       return p && unit ? { x: p.x, y: p.y - this.unitSize(unit) - 14 } : { x: SCENE_W / 2, y: SCENE_H / 2 };
     };
-    const float = (id: string, text: string, color: string, big = false): void => {
+    const float = (id: string, text: string, color: string, big = false, scale = 1): void => {
       const p = pos(id);
-      this.floats.push({ x: p.x + (Math.random() * 16 - 8), y: p.y, text, color, age: 0, big });
+      this.floats.push({ x: p.x + (Math.random() * 16 - 8), y: p.y, text, color, age: 0, big, scale });
     };
     switch (e.type) {
+      case 'action': {
+        // The actor steps toward its first target and back.
+        const from = positions.get(e.actorId);
+        const to = e.targets.map((id) => positions.get(id)).find((p) => p && p !== from);
+        const actor = this.battle.get(e.actorId);
+        if (!from || !to || !actor) return;
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const v = this.view(actor);
+        v.lunge = 1;
+        v.lungeDx = dx / len;
+        v.lungeDy = dy / len;
+        return;
+      }
       case 'damage': {
         const x = this.battle.get(e.targetId);
         if (!x) return;
         const v = this.view(x);
         v.shield = Math.max(0, v.shield - e.absorbed);
         v.hp = Math.max(0, v.hp - (e.amount - e.absorbed));
+        const color = ELEMENT_COLORS[e.element] ?? '#fff';
         v.flash = 1;
+        v.flashColor = e.crit ? '255,230,120' : this.rgb(color);
         v.shake = e.crit ? 1 : 0.5;
-        float(e.targetId, `${e.crit ? 'CRIT ' : ''}${e.amount}`, e.crit ? '#ffd84a' : (ELEMENT_COLORS[e.element] ?? '#fff'), e.crit);
+        // DoT ticks are quiet; real hits get sparks, and crits shake the whole scene.
+        const share = e.amount / Math.max(1, x.maxHp);
+        if (!e.dot) {
+          const p = positions.get(e.targetId);
+          if (p) this.burst(p.x, p.y - this.unitSize(x) / 2, e.crit ? '#ffd84a' : color, e.crit ? 16 : 8 + Math.min(8, Math.round(share * 40)));
+          if (e.crit) this.sceneShake = Math.max(this.sceneShake, 1);
+        }
+        float(e.targetId, `${e.crit ? 'CRIT ' : ''}${e.amount}`, e.crit ? '#ffd84a' : color, e.crit, e.dot ? 0.8 : 1 + Math.min(0.6, share * 3));
         return;
       }
       case 'heal': {
@@ -191,7 +239,11 @@ export class CombatScene {
         return;
       case 'death': {
         const x = this.battle.get(e.targetId);
-        if (x) this.view(x).alpha = 0.99;
+        if (!x) return;
+        this.view(x).alpha = 0.99;
+        const p = positions.get(e.targetId);
+        if (p) this.burst(p.x, p.y - this.unitSize(x) / 2, '#c8c0d8', 18);
+        this.sceneShake = Math.max(this.sceneShake, 0.6);
         return;
       }
       case 'revive': {
@@ -221,6 +273,19 @@ export class CombatScene {
         return;
       default:
         return;
+    }
+  }
+
+  private rgb(hex: string): string {
+    const n = parseInt(hex.slice(1), 16);
+    return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+  }
+
+  private burst(x: number, y: number, color: string, count: number): void {
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const speed = 60 + Math.random() * 140;
+      this.sparks.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed - 50, age: 0, life: 0.35 + Math.random() * 0.25, size: 2 + Math.floor(Math.random() * 3), color });
     }
   }
 
@@ -308,6 +373,9 @@ export class CombatScene {
   private draw(dt: number, t: number): void {
     const g = this.ctx;
     g.imageSmoothingEnabled = false;
+    this.sceneShake = Math.max(0, this.sceneShake - dt * 3.5);
+    g.save();
+    if (this.sceneShake > 0) g.translate(Math.round(Math.sin(t * 90) * this.sceneShake * 5), Math.round(Math.cos(t * 70) * this.sceneShake * 4));
     g.drawImage(this.background, 0, 0);
     const pos = this.positions();
 
@@ -319,10 +387,27 @@ export class CombatScene {
       v.flash = Math.max(0, v.flash - dt * 4);
       v.shake = Math.max(0, v.shake - dt * 3);
       v.appear = Math.max(0, v.appear - dt * 2);
+      v.lunge = Math.max(0, v.lunge - dt * 2.6);
+      v.ghost = v.ghost > v.hp ? Math.max(v.hp, v.ghost - dt * Math.max(20, x.maxHp * 0.5)) : v.hp;
       if (!x.alive && v.alpha > (x.corpse ? 0.3 : 0)) v.alpha = Math.max(x.corpse ? 0.3 : 0, v.alpha - dt * 1.5);
       if (v.alpha <= 0.01) continue;
-      this.drawUnit(x, v, p.x + Math.sin(t * 60) * v.shake * 4, p.y, t);
+      // Lunge: out and back along a sine, peaking mid-swing.
+      const reach = Math.sin((1 - v.lunge) * Math.PI) * (v.lunge > 0 ? 34 : 0);
+      this.drawUnit(x, v, p.x + Math.sin(t * 60) * v.shake * 4 + v.lungeDx * reach, p.y + v.lungeDy * reach * 0.5, t);
     }
+
+    // Sparks.
+    this.sparks = this.sparks.filter((s) => s.age < s.life);
+    for (const s of this.sparks) {
+      s.age += dt;
+      s.vy += 380 * dt;
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      g.globalAlpha = Math.max(0, 1 - s.age / s.life);
+      g.fillStyle = s.color;
+      g.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
+    }
+    g.globalAlpha = 1;
 
     // Floating text.
     g.textAlign = 'center';
@@ -335,11 +420,18 @@ export class CombatScene {
       g.strokeStyle = `rgba(0,0,0,${a})`;
       g.globalAlpha = a;
       const y = f.y - f.age * 40;
-      g.strokeText(f.text, f.x, y);
+      // Pop: starts oversized and settles within a tenth of a second.
+      const pop = f.scale * (1 + Math.max(0, 0.12 - f.age) * 6);
+      g.save();
+      g.translate(f.x, y);
+      g.scale(pop, pop);
+      g.strokeText(f.text, 0, 0);
       g.fillStyle = f.color;
-      g.fillText(f.text, f.x, y);
+      g.fillText(f.text, 0, 0);
+      g.restore();
       g.globalAlpha = 1;
     }
+    g.restore();
   }
 
   private unitSize(x: Combatant): number {
@@ -401,7 +493,7 @@ export class CombatScene {
       g.restore();
     }
     if (v.flash > 0) {
-      g.fillStyle = `rgba(255,255,255,${v.flash * 0.6})`;
+      g.fillStyle = `rgba(${v.flashColor},${v.flash * 0.6})`;
       g.fillRect(cx - size / 2, top, size, size);
     }
     if (!x.alive) {
@@ -444,6 +536,11 @@ export class CombatScene {
       g.fillStyle = '#0a0710';
       g.fillRect(cx - bw / 2 - 1, by - 1, bw + 2, 9);
       const hpShare = Math.max(0, Math.min(1, v.hp / Math.max(1, x.maxHp)));
+      const ghostShare = Math.max(hpShare, Math.min(1, v.ghost / Math.max(1, x.maxHp)));
+      if (ghostShare > hpShare) {
+        g.fillStyle = '#f4f0e8';
+        g.fillRect(cx - bw / 2, by, bw * ghostShare, 7);
+      }
       g.fillStyle = hpShare > 0.5 ? '#5fcf6a' : hpShare > 0.25 ? '#e8c84a' : '#e0503a';
       g.fillRect(cx - bw / 2, by, bw * hpShare, 7);
       if (v.shield > 0) {

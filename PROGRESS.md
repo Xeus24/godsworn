@@ -614,6 +614,9 @@
 - A movable, resizable **stats window** (Stats button or T in battle, or the setting in Settings) lists every stat of any unit in the fight (attributes, offense, defense, utility, all nine elements), live with buffs and effects; green is above the unit's out-of-combat value, red below. Its position and size are remembered.
 - **Town layout:** "Rearrange layout" in any town lets you drag the cards (or use the arrows) into any order; the layout is saved and shared by every town, with a reset button.
 
+### Combat hit feedback (added after Phase 16)
+- `src/ui/combat/combatScene.ts` only (UI, no engine change). Attackers **lunge** toward their first target on an `action` event; hits spawn element-coloured **sparks**, tint the hit flash with the element (gold on crits) and pop the damage number, which grows with the blow's share of the target's max HP. A white **trailing HP bar** drains after a hit. Crits and deaths shake the whole scene. Damage-over-time ticks stay quiet (small number, no sparks).
+
 ### Achievement point milestones (added after Phase 16)
 - Achievement points used to be only a score. Eight milestones (100 to 2,900 of the 2,985 points) now each give a permanent bonus: XP, Magic Find, gold find, max HP, damage, favor, crit and finally all resistances. They stack and are kept on the hero (`achievementPoints`, rebuilt from earned achievements for older saves; save version 16).
 - The Codex Achievements tab has a "What points do" panel listing every milestone, which are active and how far the next one is. A toast announces each milestone as it is passed.
