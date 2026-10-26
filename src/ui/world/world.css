@@ -350,8 +350,33 @@
   margin-bottom: 2px;
 }
 
+.zone-art {
+  position: relative;
+  line-height: 0;
+}
+
 .map-zone.unknown .zone-vignette {
-  filter: grayscale(1) brightness(0.35) blur(0.5px);
+  filter: saturate(0.35) brightness(0.28) contrast(1.2);
+}
+
+/* A locked zone: its silhouette under drifting fog, with a padlock. */
+.zone-fog {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background:
+    radial-gradient(ellipse at 30% 70%, rgba(150, 140, 190, 0.28), transparent 60%),
+    radial-gradient(ellipse at 75% 40%, rgba(150, 140, 190, 0.22), transparent 55%),
+    linear-gradient(rgba(20, 14, 32, 0.1), rgba(20, 14, 32, 0.45));
+}
+
+.zone-fog .ui-glyph {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
 }
 
 .ui-glyph {

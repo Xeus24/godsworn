@@ -23,6 +23,7 @@ import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { skillCard } from '../format';
 import { el, type Screen } from '../screen';
+import { branchGlyph, uiGlyph } from '../art/uiGlyphs';
 import { describeNode, KIND_LABEL } from './nodeText';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -171,6 +172,9 @@ export class TreeScreen implements Screen {
       const t = svg('text', { x, y: 24, 'text-anchor': 'middle', class: 'tree-branch-title', fill: b.color });
       t.textContent = b.spec && !chosenSpec(this.session.player, this.classId) ? `${b.name} (preview)` : `${b.name} (${branchPoints(build, tree, b.id)})`;
       layer.append(t);
+      const icon = svg('image', { href: uiGlyph(branchGlyph(b.name, b.description)).toDataURL(), x: x - (t.textContent?.length ?? 0) * 4.8 - 32, y: 6, width: 24, height: 24, 'pointer-events': 'none' });
+      icon.style.imageRendering = 'pixelated';
+      layer.append(icon);
     });
 
     // Edges first.

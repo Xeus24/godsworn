@@ -21,6 +21,62 @@ const GLYPHS: Record<string, { rows: string[]; colors: Record<string, string> }>
     rows: ['.....yy.....', '....yyyy....', '...yyyyyy...', '..wwwwwwww..', '..w.w..w.w..', '..w.w..w.w..', '..w.w..w.w..', '..wwwwwwww..', '.wwwwwwwwww.', '............', '............', '............'],
     colors: { y: '#ffd84a', w: '#d8d4e0' },
   },
+  sword: {
+    rows: ['.....ss.....', '.....ss.....', '.....ss.....', '.....ss.....', '.....ss.....', '.....ss.....', '.....ss.....', '..gggggggg..', '.....bb.....', '.....bb.....', '.....gg.....', '............'],
+    colors: { s: '#d8e0f0', g: '#d8a83a', b: '#6a3a1a' },
+  },
+  flame: {
+    rows: ['.....r......', '....rr......', '....rrr.....', '...rrorr....', '..rrooorr...', '..rroyorr...', '.rrooyyorr..', '.rrooyyorr..', '.rrooyyorr..', '..rrooorr...', '...rrrrr....', '............'],
+    colors: { r: '#d83a1a', o: '#f08a1a', y: '#ffe060' },
+  },
+  frost: {
+    rows: ['.....cc.....', '.c...cc...c.', '..c..cc..c..', '...c.cc.c...', '....cccc....', 'cccccccccccc', 'cccccccccccc', '....cccc....', '...c.cc.c...', '..c..cc..c..', '.c...cc...c.', '.....cc.....'],
+    colors: { c: '#a8e0ff' },
+  },
+  bolt: {
+    rows: ['......yy....', '.....yyy....', '....yyy.....', '...yyy......', '..yyyyyyy...', '.....yyy....', '....yyy.....', '...yyy......', '...yy.......', '..yy........', '..y.........', '............'],
+    colors: { y: '#ffe060' },
+  },
+  star: {
+    rows: ['.....pp.....', '.....pp.....', '....pppp....', 'pppppppppppp', '.pppppppppp.', '..pppppppp..', '...pppppp...', '...pppppp...', '..ppp..ppp..', '..pp....pp..', '.p........p.', '............'],
+    colors: { p: '#b06ae8' },
+  },
+  skull: {
+    rows: ['...wwwwww...', '..wwwwwwww..', '.wwwwwwwwww.', '.wwkkwwkkww.', '.wwkkwwkkww.', '.wwwwwwwwww.', '..wwwkkwww..', '...wwwwww...', '...w.ww.w...', '...wwwwww...', '............', '............'],
+    colors: { w: '#e8e4d8', k: '#2a1a2a' },
+  },
+  sun: {
+    rows: ['.....yy.....', '.y..yyyy..y.', '..y.yyyy.y..', '...yyyyyy...', 'yy.yyyyyy.yy', 'yy.yyyyyy.yy', '...yyyyyy...', '..y.yyyy.y..', '.y..yyyy..y.', '.....yy.....', '............', '............'],
+    colors: { y: '#ffd84a' },
+  },
+  bow: {
+    rows: ['....bb......', '...b.w......', '..b..w......', '..b..w......', '.b...w..s...', '.bsssssssss.', '.b...w..s...', '..b..w......', '..b..w......', '...b.w......', '....bb......', '............'],
+    colors: { b: '#8a5a2a', w: '#e8e0d0', s: '#c8d4e8' },
+  },
+  leaf: {
+    rows: ['.......ggg..', '.....ggggg..', '....gggggg..', '...ggdgggg..', '..gggdggg...', '..ggggdgg...', '..gggggdg...', '...gggggg...', '..bgggg.....', '.b..........', '............', '............'],
+    colors: { g: '#5ab04a', d: '#2a6a2a', b: '#7a5a30' },
+  },
+  fist: {
+    rows: ['............', '..ffffffff..', '.ffffffffff.', '.fkffkffkff.', '.ffffffffff.', '.ffffffffff.', '..ffffffff..', '..ffffffff..', '...ffffff...', '...bbbbbb...', '...bbbbbb...', '............'],
+    colors: { f: '#e8b078', k: '#b8804a', b: '#6a4a8a' },
+  },
+  note: {
+    rows: ['....ppppppp.', '....p.....p.', '....p.....p.', '....p.....p.', '....p.....p.', '..ppp...ppp.', '.pppp..pppp.', '..pp....pp..', '............', '............', '............', '............'],
+    colors: { p: '#e86aa8' },
+  },
+  coin: {
+    rows: ['............', '...yyyyyy...', '..yyyyyyyy..', '.yyyyddyyyy.', '.yyyddyyyyy.', '.yyyyddyyyy.', '.yyyyyddyyy.', '.yyyyddyyyy.', '..yyyyyyyy..', '...yyyyyy...', '............', '............'],
+    colors: { y: '#e8c040', d: '#a87a1a' },
+  },
+  drop: {
+    rows: ['.....gg.....', '....gggg....', '....gggg....', '...gggggg...', '..gggggggg..', '.gggggggggg.', '.gghggggggg.', '.ggghgggggg.', '..gggggggg..', '...gggggg...', '............', '............'],
+    colors: { g: '#7ae84a', h: '#d8ffb0' },
+  },
+  lock: {
+    rows: ['............', '...gggggg...', '..gg....gg..', '..g......g..', '..g......g..', '.yyyyyyyyyy.', '.yyyyyyyyyy.', '.yyyyddyyyy.', '.yyyyddyyyy.', '.yyyyyddyyy.', '.yyyyyyyyyy.', '............'],
+    colors: { g: '#9a96a8', y: '#c8a040', d: '#3a2a1a' },
+  },
   inn: {
     rows: ['............', '..ffffffff..', '.ffffffffff.', '..mmmmmmmm..', '..mmmmmmmmmm', '..mmmmmmmm.m', '..mmmmmmmm.m', '..mmmmmmmmmm', '..mmmmmmmm..', '..mmmmmmmm..', '..bbbbbbbb..', '............'],
     colors: { f: '#f4ecd0', m: '#c88a2a', b: '#7a4a1a' },
@@ -115,4 +171,25 @@ export function zoneVignette(biome: Biome, seed: number): HTMLCanvasElement {
     g.drawImage(tileImage(biome, lake ? '~' : '.', x % 4, 0, 99, 0, lake ? 1 : 0), x * TILE_PX, 2 * TILE_PX);
   }
   return c;
+}
+
+/** Which emblem suits a skill-tree branch, judged from its name and description. */
+export function branchGlyph(name: string, description: string): string {
+  const t = `${name} ${description}`.toLowerCase();
+  const rules: [RegExp, string][] = [
+    [/poison|venom|plague|blight|serpent/, 'drop'],
+    [/fire|pyro|flame|forge|rage|fury|berserk/, 'flame'],
+    [/cryo|frost|cold|\bice\b/, 'frost'],
+    [/storm|lightning|thunder/, 'bolt'],
+    [/bone|death|lich|undead|grave|soul|reaper|deathless/, 'skull'],
+    [/holy|sun|light|solenne|saint|oracle|benediction|smit|paladin|inquisitor|templar|glory/, 'sun'],
+    [/marksman|sharp|archer|arrow/, 'bow'],
+    [/beast|wild|pack|survival|warden|hearth|green/, 'leaf'],
+    [/luck|fortune|gold|swashbuckler/, 'coin'],
+    [/song|music|valor|ward\b|discord|virtuoso|skald|showman/, 'note'],
+    [/tiger|crane|spirit|fist|monk|chi\b|grandmaster|mystic|wind/, 'fist'],
+    [/arcan|time|chrono|magic|lore|spell/, 'star'],
+    [/protect|shield|defen|guard|discipline/, 'arena'],
+  ];
+  return rules.find(([re]) => re.test(t))?.[1] ?? 'sword';
 }

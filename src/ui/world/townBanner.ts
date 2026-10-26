@@ -126,6 +126,54 @@ function birds(g: CanvasRenderingContext2D, spots: [number, number][]): void {
   }
 }
 
+/** A barrel (or keg) with an iron hoop. */
+function barrel(g: CanvasRenderingContext2D, x: number, base: number): void {
+  px(g, '#7a4a22', x, base - 5, 4, 5);
+  px(g, '#a8743a', x + 1, base - 5, 1, 5);
+  px(g, '#3a3a44', x, base - 4, 4, 1);
+  px(g, '#3a3a44', x, base - 2, 4, 1);
+}
+
+/** A crate. */
+function crate(g: CanvasRenderingContext2D, x: number, base: number): void {
+  px(g, '#a8743a', x, base - 5, 5, 5);
+  px(g, '#6a4220', x, base - 5, 5, 1);
+  px(g, '#6a4220', x, base - 1, 5, 1);
+  px(g, '#6a4220', x + 2, base - 5, 1, 5);
+}
+
+/** A burning fire (a brazier or a campfire), glowing at night. */
+function fire(g: CanvasRenderingContext2D, night: boolean, x: number, base: number): void {
+  px(g, '#5a5a66', x - 1, base - 1, 5, 1);
+  px(g, '#d83a1a', x, base - 3, 3, 2);
+  px(g, '#f08a1a', x + 1, base - 4, 1, 3);
+  px(g, '#ffe060', x + 1, base - 2, 1, 1);
+  if (night) {
+    g.fillStyle = 'rgba(255,170,70,0.18)';
+    g.fillRect(x - 5, base - 9, 13, 10);
+  }
+}
+
+/** A snow-dusted pine. */
+function pine(g: CanvasRenderingContext2D, night: boolean, x: number, base: number, h: number, snow: boolean): void {
+  px(g, '#3a2210', x + 3, base - 3, 2, 3);
+  g.fillStyle = night ? '#0e2a1e' : '#1f4a2c';
+  for (let r = 0; r < 6; r++) g.fillRect(x + 4 - 1 - r, base - h + r * Math.round((h - 3) / 6), 2 + r * 2, Math.round((h - 3) / 6) + 1);
+  if (snow) for (let r = 0; r < 6; r += 2) px(g, night ? '#8a98b0' : '#f4f8fc', x + 4 - r, base - h + r * Math.round((h - 3) / 6), 2 + r * 2 - 1, 1);
+}
+
+/** A camel standing, facing right. */
+function camel(g: CanvasRenderingContext2D, x: number, base: number): void {
+  const c = '#b8884a';
+  px(g, c, x, base - 8, 9, 4);
+  px(g, c, x + 2, base - 10, 3, 2);
+  px(g, c, x + 8, base - 11, 2, 5);
+  px(g, c, x + 9, base - 12, 3, 2);
+  px(g, '#2a1a10', x + 11, base - 12, 1, 1);
+  for (const lx of [x, x + 2, x + 6, x + 8]) px(g, '#8a6030', lx, base - 4, 1, 4);
+  px(g, '#c84a3a', x + 3, base - 8, 3, 1);
+}
+
 function ground(g: CanvasRenderingContext2D, top: string, bottom: string, y = 38): void {
   px(g, top, 0, y, BANNER_W, 2);
   px(g, bottom, 0, y + 2, BANNER_W, BANNER_H - y - 2);
@@ -199,7 +247,19 @@ const TOWNS: Record<string, Draw> = {
     if (!night) {
       villager(g, 100, 38, '#5a7a3a', '#3a2418');
       villager(g, 146, 38, '#8a5a3a', '#c8a050');
+      birds(g, [[40, 8], [52, 12], [190, 6]]);
     }
+    // A campfire ring, a drying rack of pelts and a stack of logs.
+    fire(g, night, 84, 38);
+    villager(g, 90, 38, '#7a4a2a', '#2a2a2a');
+    px(g, '#5a3a1a', 36, 28, 1, 10);
+    px(g, '#5a3a1a', 46, 28, 1, 10);
+    px(g, '#5a3a1a', 36, 28, 11, 1);
+    px(g, '#a87a4a', 38, 29, 3, 5);
+    px(g, '#8a6a4a', 42, 29, 3, 4);
+    for (let i = 0; i < 3; i++) px(g, '#7a4a22', 204, 34 + i, 8, 1);
+    px(g, '#a8743a', 204, 34, 1, 3);
+    px(g, '#a8743a', 211, 34, 1, 3);
     // Smoke.
     px(g, 'rgba(220,220,230,0.5)', 126, 24, 2, 2);
     px(g, 'rgba(220,220,230,0.35)', 128, 20, 3, 2);
@@ -235,6 +295,17 @@ const TOWNS: Record<string, Draw> = {
       px(g, night ? '#ffd070' : '#3a3a4a', dx + 6, 24, 4, 6);
     }
     px(g, '#2a2a30', 84, 28, 6, 10);
+    // The bazaar: two stalls, a camel and robed townsfolk in the foreground.
+    px(g, night ? '#2a5a7a' : '#4aa0c8', 156, 40, 22, 3);
+    px(g, night ? '#4a8aaa' : '#a8e0f0', 160, 41, 8, 1);
+    stall(g, night, 60, 45, 14, '#2a9a9a', '#f0e8d0', ['#e8c040', '#c84a3a', '#6ab04a']);
+    stall(g, night, 128, 45, 14, '#e08a2a', '#f0e8d0', ['#b04a8a', '#e8e0d0', '#e8c040']);
+    camel(g, 186, 46);
+    if (!night) {
+      villager(g, 78, 46, '#f0e8d0', '#2a2a2a');
+      villager(g, 146, 46, '#c84a3a', '#3a2418');
+      villager(g, 52, 46, '#3a6aa8', '#2a2a2a');
+    }
     // Palms.
     for (const palm of [14, 150, 228]) {
       px(g, '#7a5a30', palm, 26, 2, 14);
@@ -277,6 +348,24 @@ const TOWNS: Record<string, Draw> = {
     // Banners.
     px(g, '#4a6aa8', 66, 9, 4, 8);
     px(g, '#4a6aa8', 166, 9, 4, 8);
+    // Pines, braziers at the gate and the garrison.
+    pine(g, night, 14, 42, 22, true);
+    pine(g, night, 34, 42, 18, true);
+    pine(g, night, 196, 42, 20, true);
+    pine(g, night, 222, 42, 24, true);
+    fire(g, night, 104, 38);
+    fire(g, night, 132, 38);
+    villager(g, 108, 38, '#4a5a7a', '#c8c8d0');
+    villager(g, 124, 38, '#4a5a7a', '#c8c8d0');
+    px(g, '#a8a8b8', 108, 24, 1, 14);
+    px(g, '#a8a8b8', 125, 24, 1, 14);
+    if (!night) {
+      villager(g, 52, 40, '#7a5a3a', '#e0e0e8');
+      villager(g, 180, 40, '#8a3a3a', '#6a4a2a');
+    }
+    // Chimney smoke from the keep.
+    px(g, 'rgba(225,230,240,0.5)', 90, 8, 3, 3);
+    px(g, 'rgba(225,230,240,0.32)', 92, 4, 3, 3);
     // Falling snow.
     for (let i = 0; i < 26; i++) px(g, 'rgba(255,255,255,0.8)', (i * 47) % BANNER_W, (i * 29) % 40);
   },
@@ -299,6 +388,15 @@ const TOWNS: Record<string, Draw> = {
       villager(g, 128, 30, '#c8503a', '#6a3a22');
       villager(g, 140, 30, '#e8e0d0', '#3a2418');
     }
+    // Barrels, crates, a crane and a rowboat on the quay.
+    barrel(g, 44, 30);
+    barrel(g, 48, 30);
+    crate(g, 138, 30);
+    crate(g, 143, 30);
+    px(g, '#3a2a1a', 132, 12, 2, 18);
+    px(g, '#3a2a1a', 120, 12, 14, 2);
+    px(g, '#8a7a6a', 121, 14, 1, 8);
+    px(g, night ? '#2a1a10' : '#6a4220', 40, 35, 10, 2);
     // The lighthouse.
     px(g, '#f4f0e8', 206, 8, 8, 22);
     px(g, '#c8503a', 206, 14, 8, 3);
