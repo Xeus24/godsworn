@@ -362,6 +362,13 @@
   image-rendering: pixelated;
 }
 
+.town-card h3 .ui-glyph {
+  width: 24px;
+  height: 24px;
+  vertical-align: -6px;
+  margin-right: 4px;
+}
+
 .npc-row {
   align-items: center;
 }

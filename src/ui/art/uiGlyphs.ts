@@ -21,6 +21,46 @@ const GLYPHS: Record<string, { rows: string[]; colors: Record<string, string> }>
     rows: ['.....yy.....', '....yyyy....', '...yyyyyy...', '..wwwwwwww..', '..w.w..w.w..', '..w.w..w.w..', '..w.w..w.w..', '..wwwwwwww..', '.wwwwwwwwww.', '............', '............', '............'],
     colors: { y: '#ffd84a', w: '#d8d4e0' },
   },
+  inn: {
+    rows: ['............', '..ffffffff..', '.ffffffffff.', '..mmmmmmmm..', '..mmmmmmmmmm', '..mmmmmmmm.m', '..mmmmmmmm.m', '..mmmmmmmmmm', '..mmmmmmmm..', '..mmmmmmmm..', '..bbbbbbbb..', '............'],
+    colors: { f: '#f4ecd0', m: '#c88a2a', b: '#7a4a1a' },
+  },
+  market: {
+    rows: ['............', '.rwrwrwrwrw.', 'rwrwrwrwrwrw', '.rwrwrwrwrw.', '.b........b.', '.b.yy.gg..b.', '.b.yy.gg..b.', '.bbbbbbbbbb.', '.bttttttttb.', '.bttttttttb.', '.bbbbbbbbbb.', '............'],
+    colors: { r: '#c84a3a', w: '#f0e8d0', b: '#7a4a1a', y: '#e8c040', g: '#6ab04a', t: '#a8743a' },
+  },
+  workshop: {
+    rows: ['.......s....', '.aaaaaaaaaa.', 'aaaaaaaaaaaa', 'aaaaaaaaaa..', '.aaaaaaaa...', '...aaaa.....', '...aaaa.....', '...aaaa.....', '..aaaaaa....', '.bbbbbbbbb..', '.bbbbbbbbb..', '............'],
+    colors: { a: '#8a94a8', b: '#4a4258', s: '#ffb040' },
+  },
+  arena: {
+    rows: ['............', '.gggggggggg.', '.gsssggsssg.', '.gsssggsssg.', '.gggggggggg.', '.gsssggsssg.', '..gsssggsg..', '...gsggsg...', '....gssg....', '.....gg.....', '............', '............'],
+    colors: { g: '#d8a83a', s: '#b83a3a' },
+  },
+  library: {
+    rows: ['............', '..bbbbbbbb..', '..bppppppb..', '..bpwwwwpb..', '..bppppppb..', '..bpwwwwpb..', '..bppppppb..', '..bpwwwwpb..', '..bppppppb..', '..bbbbbbbb..', '..wwwwwwww..', '............'],
+    colors: { b: '#6a3a7a', p: '#8a5aa8', w: '#e8dcb8' },
+  },
+  stash: {
+    rows: ['............', '..bbbbbbbb..', '.bwwwwwwwwb.', '.bwwwwwwwwb.', '.bbbbggbbbb.', '.bwwwggwwwb.', '.bwwwwwwwwb.', '.bwwwwwwwwb.', '.bbbbbbbbbb.', '............', '............', '............'],
+    colors: { b: '#5a3a1a', w: '#a8743a', g: '#e8c040' },
+  },
+  hall: {
+    rows: ['.bbbbbbbbbb.', '.rrrrrrrrrr.', '.rrryyyyrrr.', '.rrryyyyrrr.', '.rrrryyrrrr.', '.rrrrrrrrrr.', '.rrrrrrrrrr.', '.rrrr..rrrr.', '.rrr....rrr.', '.rr......rr.', '............', '............'],
+    colors: { r: '#3a5aa8', y: '#e8c040', b: '#8a6a3a' },
+  },
+  house: {
+    rows: ['.....rr.....', '....rrrr....', '...rrrrrr...', '..rrrrrrrr..', '.rrrrrrrrrr.', '..wwwwwwww..', '..wyywwddw..', '..wyywwddw..', '..wwwwwddw..', '..wwwwwwww..', '............', '............'],
+    colors: { r: '#b84a3a', w: '#e8dcc0', y: '#6ab0e8', d: '#7a4a1a' },
+  },
+  stables: {
+    rows: ['............', '...ssssss...', '..ssssssss..', '.sss....sss.', '.ss......ss.', '.sg......gs.', '.ss......ss.', '.sg......gs.', '.ss......ss.', '.ss......ss.', '............', '............'],
+    colors: { s: '#a8b0c0', g: '#4a4a58' },
+  },
+  rift: {
+    rows: ['............', '....pppp....', '..ppccccpp..', '.ppccwwccpp.', '.pcwwwwwwcp.', 'pccwwwwwwccp', 'pccwwwwwwccp', '.pcwwwwwwcp.', '.ppccwwccpp.', '..ppccccpp..', '....pppp....', '............'],
+    colors: { p: '#6a3aa8', c: '#a86ae8', w: '#e8d8ff' },
+  },
 };
 
 const glyphCache = new Map<string, HTMLCanvasElement>();

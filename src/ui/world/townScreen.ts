@@ -30,6 +30,24 @@ export interface TownNav {
   talk: (conv: Conversation) => void;
 }
 
+/** The pixel icon beside each card's title. */
+const CARD_ICONS: Record<string, string> = {
+  'The Inn': 'inn',
+  People: 'figure',
+  'Quest Board': 'scroll',
+  Temple: 'temple',
+  Market: 'market',
+  Workshop: 'workshop',
+  Stables: 'stables',
+  'Rift Gate & Boss Rush': 'rift',
+  'Arena & Class Trainers': 'arena',
+  Library: 'library',
+  Stash: 'stash',
+  'House for sale': 'house',
+  'Your House': 'house',
+  Housing: 'house',
+};
+
 /**
  * A town: inn, temple, Library, arena and class trainers, stash, faction
  * hall and (in some towns) a house for sale.
@@ -81,7 +99,8 @@ export class TownScreen implements Screen {
   }
 
   private card(title: string, ...children: (Node | string)[]): HTMLElement {
-    return el('section', { class: 'panel town-card', 'data-card': title }, el('h3', {}, title), ...children);
+    const icon = CARD_ICONS[title] ?? (title.endsWith('(hall)') ? 'hall' : undefined);
+    return el('section', { class: 'panel town-card', 'data-card': title }, el('h3', {}, ...(icon ? [uiGlyph(icon), ' '] : []), title), ...children);
   }
 
   /** A person to talk to, marked ! (a new quest) or ? (something to hand in). */

@@ -92,8 +92,8 @@ export class TreeScreen implements Screen {
 
   private shape(node: TreeNodeDef, color: string, state: string): SVGElement {
     const r = SIZE[node.kind];
-    const fill = state === 'allocated' || state === 'maxed' ? color : '#1a1226';
-    const stroke = state === 'locked' ? '#4a3a5a' : state === 'available' ? '#f4f0e8' : color;
+    const fill = state === 'allocated' || state === 'maxed' ? color : state === 'locked' ? '#261b36' : '#1a1226';
+    const stroke = state === 'locked' ? '#7a6a92' : state === 'available' ? '#f4f0e8' : color;
     const common = { fill, stroke, 'stroke-width': node.kind === 'keystone' || node.kind === 'capstone' ? 4 : 3 };
     switch (node.kind) {
       case 'active':
@@ -121,6 +121,28 @@ export class TreeScreen implements Screen {
         return svg('circle', { r, ...common, stroke: state === 'locked' ? '#5a4a2a' : '#e0a63a' });
       default:
         return svg('circle', { r, ...common });
+    }
+  }
+
+  /** A small mark inside a node that tells its kind apart at a glance (skipped where the rank number goes). */
+  private mark(node: TreeNodeDef, state: string): SVGElement | undefined {
+    if (node.kind === 'active' || node.maxRank > 1) return undefined;
+    const on = state === 'allocated' || state === 'maxed';
+    const stroke = on ? '#1a1226' : state === 'locked' ? '#8a7aa0' : '#f4f0e8';
+    const common = { fill: 'none', stroke, 'stroke-width': 2.5, 'stroke-linecap': 'round', 'pointer-events': 'none' };
+    switch (node.kind) {
+      case 'modifier':
+        return svg('path', { d: 'M-4 0H4M0 -4V4', ...common });
+      case 'choice':
+        return svg('path', { d: 'M-5 -3L0 3L5 -3', ...common });
+      case 'notable':
+        return svg('path', { d: 'M0 -7L2 -2L7 -2L3 1L5 6L0 3L-5 6L-3 1L-7 -2L-2 -2Z', ...common, 'stroke-width': 2 });
+      case 'keystone':
+        return svg('path', { d: 'M0 -9L8 0L0 9L-8 0Z', ...common });
+      case 'capstone':
+        return svg('path', { d: 'M-8 5L-8 -3L-4 0L0 -7L4 0L8 -3L8 5Z', ...common, 'stroke-width': 2 });
+      default:
+        return undefined;
     }
   }
 
@@ -167,6 +189,8 @@ export class TreeScreen implements Screen {
       const g = svg('g', { transform: `translate(${node.x} ${node.y})`, class: `tree-node ${state}${this.selected === node.id ? ' selected' : ''}${this.search ? (this.matches(node) ? ' match' : ' dim') : ''}`, tabindex: 0 });
       if (this.selected === node.id) g.append(svg('circle', { r: SIZE[node.kind] + 9, fill: 'none', stroke: '#ffd84a', 'stroke-width': 2, 'stroke-dasharray': '4 3' }));
       g.append(this.shape(node, color, state));
+      const mark = this.mark(node, state);
+      if (mark) g.append(mark);
       const rank = rankOf(build, node.id);
       const label = svg('text', { y: SIZE[node.kind] + 15, 'text-anchor': 'middle', class: 'tree-node-label' });
       label.textContent = node.name.length > 18 ? `${node.name.slice(0, 17)}…` : node.name;

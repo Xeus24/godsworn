@@ -80,7 +80,11 @@
 }
 
 .tree-node.locked {
-  opacity: 0.55;
+  opacity: 0.85;
+}
+
+.tree-node.locked .tree-node-label {
+  fill: #9c8eb0;
 }
 
 .tree-node.available > :first-child {

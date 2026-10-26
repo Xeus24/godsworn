@@ -89,6 +89,13 @@ select {
   text-align: center;
 }
 
+.doll-sprite {
+  width: 96px;
+  height: 128px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
 .doll-name {
   font-family: var(--font-display);
   color: var(--gold);

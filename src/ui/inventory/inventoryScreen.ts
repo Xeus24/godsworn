@@ -6,6 +6,8 @@ import { appraiseLimit, bookSkill, studyTerms } from '../../engine/skills/genera
 import { RARITIES, type EquipSlot, type ItemCategory, type ItemInstance, type RarityId } from '../../engine/items/types';
 import type { GameSession } from '../../engine/state/gameState';
 import type { ItemLocation } from '../../engine/state/itemActions';
+import { equippedWeaponTypes } from '../../engine/items/equipment';
+import { heroSprite } from '../art/heroSprite';
 import { itemIconUrl } from '../art/itemIcons';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { el, type Screen } from '../screen';
@@ -188,7 +190,11 @@ export class InventoryScreen implements Screen {
       cell.style.gridRow = String(row);
       grid.append(cell);
     }
-    const figure = el('div', { class: 'doll-figure' }, el('div', { class: 'doll-name' }, p.name), el('div', { class: 'dim small' }, `Level ${p.level}`));
+    const primary = (p.classes.find((x) => x.slot === 'primary') ?? p.classes[0])?.classId;
+    const cls = primary ? content.classes.get(primary) : undefined;
+    const sprite = heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', equippedWeaponTypes(p, content));
+    sprite.className = 'doll-sprite pixel';
+    const figure = el('div', { class: 'doll-figure' }, sprite, el('div', { class: 'doll-name' }, p.name), el('div', { class: 'dim small' }, `Level ${p.level}`));
     figure.style.gridColumn = '2 / span 2';
     figure.style.gridRow = '1 / span 7';
     grid.append(figure);
