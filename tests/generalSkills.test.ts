@@ -4,7 +4,7 @@ import { characterStats } from '../src/engine/character/stats';
 import { createHero } from '../src/engine/combat/combatants';
 import { createEncounterBattle } from '../src/engine/combat/setup';
 import { skillOptions, useSkill } from '../src/engine/combat/skills';
-import { startBattle } from '../src/engine/combat/turns';
+import { perform, startBattle } from '../src/engine/combat/turns';
 import { Rng } from '../src/engine/core/rng';
 import { createItem } from '../src/engine/items/generate';
 import { addItem } from '../src/engine/items/inventory';
@@ -116,6 +116,21 @@ describe('general skills in battle', () => {
     b.tally.generalUses['power-attack'] = trainingNeeded(1);
     const r = settleBattle(s, b);
     expect(r.generalUps).toContainEqual(['power-attack', 2]);
+  });
+
+  it('a slotted general combat skill can be performed even though it is not on the hotbar', () => {
+    const s = newSession(4);
+    learnGeneral(s.player, 'power-attack');
+    const b = createEncounterBattle(s.player, content.encounters.get('slime-puddle'), { rng: s.rng });
+    startBattle(b);
+    const hero = b.combatants.find((x) => x.kind === 'hero');
+    if (!hero) throw new Error('no hero');
+    expect(hero.hotbar?.includes('g-power-attack')).toBe(false);
+    hero.mp = 100;
+    b.current = hero;
+    const foe = b.alive('enemy')[0];
+    const r = perform(b, { kind: 'skill', actorId: hero.id, skillId: 'g-power-attack', targetId: foe?.id });
+    expect(r.ok).toBe(true);
   });
 
   it('Grimoire skills fight at reduced power', () => {
