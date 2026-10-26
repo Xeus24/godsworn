@@ -305,6 +305,49 @@
   gap: 5px;
 }
 
+.trainer-top {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.trainer-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.trainer-id .enc-head {
+  flex-wrap: wrap;
+  gap: 0 8px;
+}
+
+.trainer-face {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border: 2px solid var(--border);
+  image-rendering: pixelated;
+}
+
+.enc-icons {
+  display: flex;
+  gap: 2px;
+  min-height: 48px;
+  align-items: flex-end;
+  padding: 2px 4px;
+  background: linear-gradient(#1c1528, #2a2038);
+  border: 1px solid var(--border);
+}
+
+.enc-icon {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+
 .xp-split {
   margin-top: 8px;
 }

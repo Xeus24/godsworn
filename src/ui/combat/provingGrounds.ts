@@ -6,8 +6,20 @@ import type { EncounterDef } from '../../engine/combat/types';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import type { Conversation } from '../../engine/state/conversation';
+import { portraitCanvas } from '../art/portraits';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
+import { creatureSprite } from './creatureSprites';
+
+/** A fresh copy of a cached canvas (a cached one can only sit in one place in the page). */
+function copyOf(src: HTMLCanvasElement, cls: string): HTMLCanvasElement {
+  const c = document.createElement('canvas');
+  c.width = src.width;
+  c.height = src.height;
+  c.className = `${cls} pixel`;
+  c.getContext('2d')?.drawImage(src, 0, 0);
+  return c;
+}
 
 /**
  * The town arena: practice fights against the early road's encounters,
@@ -25,6 +37,12 @@ export class ProvingGroundsScreen implements Screen {
     private readonly back: () => void,
     private readonly talk: (conv: Conversation) => void,
   ) {}
+
+  /** A mentor's portrait, by the NPC's own race, face and colour. */
+  private mentorFace(mentor: string): HTMLElement {
+    const npc = content.npcs.get(mentor);
+    return copyOf(portraitCanvas(npc.race, npc.portrait, npc.color), 'trainer-face');
+  }
 
   /** A "talk to the mentor" button, marked when they have a quest or an errand for you. */
   private talkButton(mentor: string): HTMLButtonElement {
@@ -62,11 +80,18 @@ export class ProvingGroundsScreen implements Screen {
       const tag = diff >= 3 ? ['Deadly', 'danger'] : diff >= 1 ? ['Hard', 'warn'] : diff <= -4 ? ['Trivial', 'dim'] : ['Fair', 'ok'];
       const fightBtn = el('button', { class: 'primary' }, 'Fight');
       fightBtn.addEventListener('click', () => this.fight(enc));
-      const enemies = enc.enemies.map((e) => content.enemies.get(e.enemyId).name);
+      const defs = enc.enemies.map((e) => content.enemies.get(e.enemyId));
+      const enemies = defs.map((d) => d.name);
+      const icons = el('div', { class: 'enc-icons', 'aria-hidden': 'true' }, ...defs.map((d) => {
+        const c = copyOf(creatureSprite(d.family, d.palette.main, d.palette.accent), 'enc-icon');
+        c.title = d.name;
+        return c;
+      }));
       return el(
         'div',
         { class: 'encounter-card panel' },
         el('div', { class: 'enc-head' }, el('b', {}, enc.name), el('span', { class: `enc-tag ${tag[1]}` }, `Lv ${enc.level} · ${tag[0]}`)),
+        icons,
         el('div', { class: 'dim small' }, enc.description),
         el('div', { class: 'small' }, enemies.join(', ')),
         fightBtn,
@@ -123,8 +148,7 @@ export class ProvingGroundsScreen implements Screen {
         return el(
           'div',
           { class: 'trainer-card panel' },
-          el('div', { class: 'enc-head' }, el('b', { style: `color:${cls.color}` }, cls.name), el('span', { class: `enc-tag ${won ? 'ok' : 'warn'}` }, won ? 'Trial won' : `Lv ${enc.level} trial`)),
-          el('div', { class: 'small' }, enc.name.replace('Trial: ', '')),
+          el('div', { class: 'trainer-top' }, this.mentorFace(`mentor-${t.classId}`), el('div', { class: 'trainer-id' }, el('div', { class: 'enc-head' }, el('b', { style: `color:${cls.color}` }, cls.name), el('span', { class: `enc-tag ${won ? 'ok' : 'warn'}` }, won ? 'Trial won' : `Lv ${enc.level} trial`)), el('div', { class: 'small' }, enc.name.replace('Trial: ', '')))),
           el('div', { class: 'dim small' }, `“${t.quote}”`),
           this.talkButton(`mentor-${t.classId}`),
           action,
@@ -146,8 +170,7 @@ export class ProvingGroundsScreen implements Screen {
       return el(
         'div',
         { class: 'trainer-card panel' },
-        el('div', { class: 'enc-head' }, el('b', {}, h.name), el('span', { class: 'enc-tag warn' }, `Lv ${enc.level} trial`)),
-        el('div', { class: 'small' }, h.classes.map((id) => content.classes.get(id).name).join(' + ')),
+        el('div', { class: 'trainer-top' }, this.mentorFace(`mentor-${h.classes[0] as string}`), el('div', { class: 'trainer-id' }, el('div', { class: 'enc-head' }, el('b', {}, h.name), el('span', { class: 'enc-tag warn' }, `Lv ${enc.level} trial`)), el('div', { class: 'small' }, h.classes.map((id) => content.classes.get(id).name).join(' + ')))),
         el('div', { class: 'dim small' }, h.description),
         ...(unlocked ? [] : [this.talkButton(`mentor-${h.classes[0] as string}`)]),
         action,
