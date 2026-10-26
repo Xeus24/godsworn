@@ -356,7 +356,7 @@
 }
 
 .map-zone.unknown .zone-vignette {
-  filter: saturate(0.35) brightness(0.28) contrast(1.2);
+  filter: saturate(0.55) brightness(0.5) contrast(1.15);
 }
 
 /* A locked zone: its silhouette under drifting fog, with a padlock. */
