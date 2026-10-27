@@ -158,3 +158,10 @@ button.danger {
   border-color: #e0503a;
   color: #ff8a7a;
 }
+
+.god-head .ui-glyph,
+.god-details h2 .ui-glyph {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}

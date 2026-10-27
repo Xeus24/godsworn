@@ -46,6 +46,8 @@ export class TreeScreen implements Screen {
   private message = '';
   /** Pan/zoom state survives re-renders. */
   private view = { x: 10, y: 10, scale: 0.9 };
+  /** True once the tree has been fitted to its stage; cleared by the Fit view button. */
+  private fitted = false;
   private pickingSlot: number | undefined;
   /** Specialization branch shown before one is chosen. */
   private previewSpec: string | undefined;
@@ -197,7 +199,7 @@ export class TreeScreen implements Screen {
       if (mark) g.append(mark);
       const rank = rankOf(build, node.id);
       const label = svg('text', { y: SIZE[node.kind] + 15, 'text-anchor': 'middle', class: 'tree-node-label' });
-      label.textContent = node.name.length > 18 ? `${node.name.slice(0, 17)}…` : node.name;
+      label.textContent = node.name.length > 15 ? `${node.name.slice(0, 14)}…` : node.name;
       g.append(label);
       if (node.maxRank > 1 || node.kind === 'active') {
         const rt = svg('text', { y: 5, 'text-anchor': 'middle', class: 'tree-node-rank' });
@@ -259,6 +261,23 @@ export class TreeScreen implements Screen {
       },
       { passive: false },
     );
+    // Fit the whole tree into the stage on first show (the stage has no size until it is in the page).
+    if (!this.fitted) {
+      requestAnimationFrame(() => {
+        const rect = root.getBoundingClientRect();
+        if (!rect.width || !rect.height || !tree.nodes.length) return;
+        const xs = tree.nodes.map((n) => n.x);
+        const ys = tree.nodes.map((n) => n.y);
+        const minX = Math.min(...xs) - 60;
+        const maxX = Math.max(...xs) + 60;
+        const minY = -10;
+        const maxY = Math.max(...ys) + 50;
+        const scale = Math.min(1.1, Math.max(0.75, Math.min(rect.width / (maxX - minX), rect.height / (maxY - minY))));
+        this.view = { scale, x: Math.max(0, (rect.width - (maxX - minX) * scale) / 2) - minX * scale, y: Math.max(0, (rect.height - (maxY - minY) * scale) / 2) - minY * scale };
+        this.fitted = true;
+        layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
+      });
+    }
     return el('div', { class: 'tree-stage' }, root as unknown as HTMLElement);
   }
 
@@ -277,6 +296,7 @@ export class TreeScreen implements Screen {
       const b = el('button', { class: `tab${id === this.classId ? ' active' : ''}` }, name);
       b.addEventListener('click', () => {
         this.classId = id;
+        this.fitted = false;
         this.selected = undefined;
         this.render();
       });
@@ -306,7 +326,7 @@ export class TreeScreen implements Screen {
     });
     const center = el('button', {}, 'Reset view');
     center.addEventListener('click', () => {
-      this.view = { x: 10, y: 10, scale: 0.9 };
+      this.fitted = false;
       this.render();
     });
     const pts = availablePoints(p, this.classId);

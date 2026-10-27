@@ -109,8 +109,9 @@ select {
   position: relative;
   width: 44px;
   height: 44px;
-  background: #0b0812;
-  border: 2px solid var(--border);
+  background: linear-gradient(160deg, #15101f, #0b0812);
+  border: 2px solid #5a4575;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +158,7 @@ select {
 
 .item-cell .placeholder {
   font-size: 9px;
-  color: #4a3a5a;
+  color: #8a76a4;
   text-align: center;
   line-height: 1.1;
 }

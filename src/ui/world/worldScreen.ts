@@ -239,7 +239,10 @@ export class WorldScreen implements Screen {
     if (!g) return;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.imageSmoothingEnabled = false;
-    g.fillStyle = '#05030a';
+    const void_ = g.createRadialGradient(cw / 2, ch / 2, ch * 0.2, cw / 2, ch / 2, Math.max(cw, ch) * 0.7);
+    void_.addColorStop(0, '#171028');
+    void_.addColorStop(1, '#05030a');
+    g.fillStyle = void_;
     g.fillRect(0, 0, cw, ch);
     const p = w.position;
     const ox = Math.round(cw / 2 - (p.x + 0.5) * TILE);

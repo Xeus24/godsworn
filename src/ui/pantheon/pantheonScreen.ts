@@ -2,6 +2,7 @@ import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { HERESY } from '../../data/heresy';
 import { atoneCost, heresyTierDef } from '../../engine/gods/heresy';
 import { content } from '../../data';
+import { uiGlyph } from '../art/uiGlyphs';
 import { APOSTLESHIP, DEVOTION } from '../../data/devotion';
 import type { PantheonDef } from '../../data/pantheon';
 import { activeMinors, blessingSlotCount, isActive } from '../../engine/gods/blessings';
@@ -19,6 +20,10 @@ import { availablePoints } from '../../engine/skills/tree';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { el, type Screen } from '../screen';
+
+/** Emblem drawn beside each god (reuses the shared pixel glyphs). */
+const GOD_GLYPH: Record<string, string> = { solenne: 'sun', morrath: 'skull', kael: 'swords', ysolde: 'leaf', vex: 'note', thalor: 'flame', nymira: 'bolt', aurelis: 'star', hesha: 'temple', grimvald: 'coin' };
+const godGlyph = (id: string): HTMLCanvasElement => uiGlyph(GOD_GLYPH[id] ?? 'star');
 
 const TIER_CLASS: Record<string, string> = { hated: 'danger', distrusted: 'warn', neutral: 'dim', acknowledged: 'ok', favored: 'ok', devoted: 'gold', exalted: 'gold', apostle: 'gold' };
 
@@ -86,7 +91,7 @@ export class PantheonScreen implements Screen {
       const card = el(
         'button',
         { class: `god-card${this.selected === g.id ? ' selected' : ''}`, style: `--god:${god.color}` },
-        el('div', { class: 'god-head' }, el('b', { style: `color:${god.color}` }, god.name), p.devotion.patron === g.id ? el('span', { class: 'badge' }, 'Patron') : '', offer),
+        el('div', { class: 'god-head' }, godGlyph(g.id), el('b', { style: `color:${god.color}` }, god.name), p.devotion.patron === g.id ? el('span', { class: 'badge' }, 'Patron') : '', offer),
         el('div', { class: 'dim small' }, god.domain),
         this.favorBar(g.id),
         el('span', { class: `small enc-tag ${TIER_CLASS[tier] ?? ''}` }, tierName(tier)),
@@ -157,7 +162,7 @@ export class PantheonScreen implements Screen {
     if (this.message) panel.append(el('div', { class: 'field-error' }, this.message));
     const relation = (ids: string[]): string => ids.map((id) => content.gods.get(id).name).join(', ') || 'none';
     panel.append(
-      el('h2', { style: `color:${god.color}` }, `${god.name}, ${god.epithet}`),
+      el('h2', { style: `color:${god.color}` }, godGlyph(g.id), ` ${god.name}, ${god.epithet}`),
       el('div', { class: 'dim' }, `${god.domain} · ${g.alignment} · ${content.elements.get(god.element).name} · favors ${god.favoredStats.map((st) => st.toUpperCase()).join('/')}`),
       el('p', { class: 'small' }, `${g.personality} Symbol: ${god.symbol}.`),
       this.favorBar(g.id),
