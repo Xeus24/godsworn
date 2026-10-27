@@ -5,6 +5,7 @@ import { heroSprite } from '../art/heroSprite';
 import { drawWeather } from '../art/weatherFx';
 import { settings } from '../settings';
 import type { Biome } from '../../engine/world/types';
+import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from './creatureSprites';
 import { paintBattlefield } from './battlefield';
 import { drawStatusPicture } from './statusIcons';
@@ -482,7 +483,7 @@ export class CombatScene {
       img = heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
       bw = Math.round(size * (img.width / img.height));
     } else if (x.sprite) {
-      img = creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
+      img = monsterTile(x.enemyId, x.sprite.family) ?? creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
     }
     if (img) {
       g.save();

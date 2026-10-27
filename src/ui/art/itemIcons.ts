@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import { baseOf } from '../../engine/items/lookup';
 import type { ItemBaseDef, ItemInstance } from '../../engine/items/types';
+import { ITEM_TILES } from './dcssItemTiles';
 import { ITEM_PATTERNS, ITEM_PATTERN_VARIANTS } from './itemPatterns';
 
 const SIZE = 16;
@@ -226,5 +227,40 @@ export function iconUrl(spec: IconSpec): string {
 }
 
 export function itemIconUrl(item: ItemInstance): string {
-  return iconUrl(iconSpec(item));
+  return tileIconUrl(item) ?? iconUrl(iconSpec(item));
+}
+
+/** The Dungeon Crawl tile for a mapped item, or undefined when it keeps its procedural icon. */
+function tileIconUrl(item: ItemInstance): string | undefined {
+  const base = baseOf(item);
+  const pick = (key: string, tier?: number): string | undefined => {
+    const list = ITEM_TILES[key];
+    if (!list?.length) return undefined;
+    const idx = tier ? Math.min(tier - 1, 6) % list.length : hash(base.id) % list.length;
+    return `${import.meta.env.BASE_URL}art/items/${list[idx]}.png`;
+  };
+  switch (base.category) {
+    case 'weapon':
+      return pick(`weapon:${base.weaponType}`, base.tier);
+    case 'armor':
+      return pick(`armor:${base.slot}:${base.weight}`, base.tier) ?? pick(`armor:${base.slot}`, base.tier);
+    case 'accessory':
+      return pick(`accessory:${base.kind}`, base.tier);
+    case 'consumable':
+      if (base.kind === 'potion' || base.kind === 'elixir') {
+        const liquid = base.kind === 'potion' && /^(health|mana|spirit)/.exec(base.id)?.[1];
+        return pick(`potion:${liquid || 'other'}`);
+      }
+      if (base.kind === 'food') return pick('food');
+      if (base.kind === 'scroll') return pick('scroll');
+      if (base.kind === 'tome') return pick('book');
+      if (base.kind === 'bag') return pick('bag');
+      return undefined;
+    case 'book':
+      return pick('book');
+    case 'recipe':
+      return pick('scroll');
+    default:
+      return undefined;
+  }
 }
