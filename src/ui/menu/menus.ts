@@ -2,7 +2,7 @@ import { AUTOSAVE_SLOT, MANUAL_SLOTS, type SaveSlots, type SaveSummary } from '.
 import type { GameSession } from '../../engine/state/gameState';
 import { el, type Screen } from '../screen';
 import { audio } from '../audio/audio';
-import { MUSIC_CREDIT } from '../audio/musicFiles';
+import { AMBIENCE_IDS, AMBIENCE_SOURCES, MUSIC_CREDIT, MUSIC_TRACKS } from '../audio/musicFiles';
 import { SFX_CREDIT } from '../audio/sfxFiles';
 import { DEFAULT_SETTINGS, settings, updateSettings, type Settings } from '../settings';
 
@@ -84,7 +84,7 @@ export class SettingsOverlay extends Overlay {
       input.addEventListener('input', () => updateSettings({ [key]: Number(input.value) / 100 } as Partial<Settings>));
       return el('label', { class: 'setting-row' }, el('span', {}, label), input);
     };
-    const check = (label: string, key: 'muted' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion'): HTMLElement => {
+    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion'): HTMLElement => {
       const input = el('input', { type: 'checkbox' }) as HTMLInputElement;
       input.checked = s[key];
       input.addEventListener('change', () => updateSettings({ [key]: input.checked } as Partial<Settings>));
@@ -115,6 +115,7 @@ export class SettingsOverlay extends Overlay {
         this.render();
       }),
       ...(s.sfxSource === 'recorded' ? [el('div', { class: 'dim small' }, SFX_CREDIT)] : []),
+      check('Ambient sound (wind, rain, water, caves)', 'ambience'),
       check('Mute everything', 'muted'),
       el(
         'div',
@@ -124,9 +125,10 @@ export class SettingsOverlay extends Overlay {
           updateSettings({ musicSource: human ? 'composed' : 'synth', sfxSource: human ? 'recorded' : 'synth' });
           this.render();
         }),
+        button('Audio credits', () => new AudioCreditsOverlay().open()),
         button('Reset audio settings', () => {
-          const { masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted } = DEFAULT_SETTINGS;
-          updateSettings({ masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted });
+          const { masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted, ambience } = DEFAULT_SETTINGS;
+          updateSettings({ masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted, ambience });
           this.render();
         }),
       ),
@@ -139,6 +141,30 @@ export class SettingsOverlay extends Overlay {
       check('Reduce motion (no animations)', 'reduceMotion'),
       select<number>('Interface size', [[0.9, 'Small'], [1, 'Normal'], [1.15, 'Large'], [1.3, 'Larger'], [1.5, 'Huge']], s.textScale, (v) => updateSettings({ textScale: v })),
       el('div', { class: 'dim small' }, 'Settings are kept in this browser.'),
+      button('Close', () => this.close(), false, 'primary'),
+    );
+  }
+}
+
+// ---------------------------------------------------------------- audio credits
+
+/** Who made the human-made music, ambience and sound effects (all CC0). */
+export class AudioCreditsOverlay extends Overlay {
+  constructor() {
+    super('Audio credits');
+  }
+
+  protected render(): void {
+    const titles = Object.values(MUSIC_TRACKS).map((t) => t.title);
+    this.panel.replaceChildren(
+      el('h2', {}, 'Audio credits'),
+      el('div', { class: 'dim small' }, 'The human-made audio is all CC0 (public domain). Credits are also in public/music/CREDITS.md and public/sfx/CREDITS.md.'),
+      el('h3', {}, 'Music'),
+      el('div', { class: 'small' }, `Juhani Junkala, via OpenGameArt: ${titles.join(', ')}.`),
+      el('h3', {}, 'Ambience'),
+      ...AMBIENCE_IDS.map((id) => el('div', { class: 'small' }, `${id}: ${AMBIENCE_SOURCES[id]}`)),
+      el('h3', {}, 'Sound effects'),
+      el('div', { class: 'small' }, SFX_CREDIT),
       button('Close', () => this.close(), false, 'primary'),
     );
   }
@@ -160,6 +186,8 @@ export const KEYS: [string, string][] = [
   ['1–9', 'Battle: skills; dialogue: choices'],
   ['T', 'Battle: the movable stats window'],
   ['Esc', 'Menu (save, load, settings)'],
+  ['N', 'Skip to the next music track (composed music)'],
+  ['U', 'Mute or unmute all sound'],
   ['?', 'This list'],
   ['`', 'Developer panel'],
 ];

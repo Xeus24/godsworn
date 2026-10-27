@@ -41,7 +41,7 @@ import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
 import { AUTOSAVE_SLOT, SaveSlots, serialize, type SaveStore } from './engine/state/save';
 import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay, UnlockOverlay } from './ui/menu/menus';
-import { applySettings, settings } from './ui/settings';
+import { applySettings, settings, updateSettings } from './ui/settings';
 import './ui/menu/menu.css';
 import { audio } from './ui/audio/audio';
 import { syncAreaAudio } from './ui/audio/areaAudio';
@@ -409,6 +409,16 @@ window.addEventListener('keydown', (e) => {
   if (key === 'o') showParty();
   if (key === 'b') showCodex();
   if (key === 'p') showPantheon();
+  if (key === 'n') audio().skip();
+  if (key === 'u') {
+    updateSettings({ muted: !settings().muted });
+    toasts.show('info', settings().muted ? 'Sound muted (U to unmute).' : 'Sound on.');
+  }
+});
+
+// Name the recorded track when it changes, so a tune you like can be looked up.
+audio().onNowPlaying((track) => {
+  if (track && session && !inBattle) toasts.show('info', `\u266a ${track.title} \u2014 ${track.artist}`);
 });
 
 // Play time counts while a game is running (paused while the tab is hidden).

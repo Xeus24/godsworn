@@ -16,6 +16,25 @@ import { SFX_ALL, SFX_FILES, SFX_GAIN, STEP_CLIPS, sfxUrl, wantsRecorded, type S
 /** Seconds to fade a composed track out when the mood changes. */
 const FADE = 1.2;
 
+interface SynthRecipe {
+  type: BiquadFilterType;
+  freq: number;
+  /** Loudness (0..1) and how fast it swells, in Hz (0 for steady). */
+  level: number;
+  swell: number;
+}
+
+/** The synthesized stand-ins for the ambience loops; forest and birds have none (they are recordings of birds). */
+const SYNTH_AMBIENCE: Partial<Record<AmbienceId, SynthRecipe>> = {
+  rain: { type: 'highpass', freq: 1500, level: 0.18, swell: 0 },
+  desert: { type: 'bandpass', freq: 380, level: 0.2, swell: 0.1 },
+  snow: { type: 'bandpass', freq: 900, level: 0.18, swell: 0.14 },
+  waves: { type: 'lowpass', freq: 650, level: 0.28, swell: 0.1 },
+  dungeon: { type: 'lowpass', freq: 160, level: 0.3, swell: 0 },
+  volcanic: { type: 'lowpass', freq: 110, level: 0.35, swell: 0.05 },
+  citadel: { type: 'lowpass', freq: 130, level: 0.3, swell: 0.07 },
+};
+
 /** How long the "hear a sample" button plays the composed music, in seconds. */
 const PREVIEW = 12;
 
@@ -76,6 +95,9 @@ class AudioEngine {
   private weather: string | undefined;
   /** Where effects are sent while one is being panned. */
   private sfxOut: AudioNode | undefined;
+  /** Synthesized ambience (filtered noise) for players who keep the synthesized sound. */
+  private readonly synthAmbience = new Map<AmbienceId, { gain: GainNode; stop: () => void }>();
+  private ambienceOn = settings().ambience;
   private readonly buffers = new Map<string, AudioBuffer>();
   private loadingSfx = false;
   private readonly unlockers: (() => void)[] = [];
@@ -90,6 +112,10 @@ class AudioEngine {
       if (s.sfxSource !== this.sfxSource) {
         this.sfxSource = s.sfxSource;
         this.loadSfx();
+      }
+      if (s.ambience !== this.ambienceOn) {
+        this.ambienceOn = s.ambience;
+        this.syncAmbience();
       }
       if (s.musicSource !== this.source) {
         this.source = s.musicSource;
@@ -431,10 +457,62 @@ class AudioEngine {
     this.syncAmbience();
   }
 
+  /** Runs filtered-noise ambience (rain, wind, water, a cave's rumble) when the music is synthesized. */
+  private syncSynthAmbience(layers: AmbienceId[]): void {
+    const ctx = this.ctx;
+    const want = new Set(layers.filter((id) => id in SYNTH_AMBIENCE));
+    for (const [id, a] of this.synthAmbience) {
+      if (want.has(id)) continue;
+      this.synthAmbience.delete(id);
+      const t = ctx ? ctx.currentTime : 0;
+      a.gain.gain.cancelScheduledValues(t);
+      a.gain.gain.setValueAtTime(a.gain.gain.value, t);
+      a.gain.gain.linearRampToValueAtTime(0.0001, t + FADE);
+      window.setTimeout(() => a.stop(), FADE * 1000 + 100);
+    }
+    if (!ctx || !this.music) return;
+    for (const id of want) {
+      if (this.synthAmbience.has(id)) continue;
+      const recipe = SYNTH_AMBIENCE[id] as SynthRecipe;
+      // A few seconds of noise, looped, shaped by filters and a slow swell.
+      const len = ctx.sampleRate * 4;
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.loop = true;
+      const low = ctx.createBiquadFilter();
+      low.type = recipe.type;
+      low.frequency.value = recipe.freq;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(recipe.level, ctx.currentTime + MUSIC_CROSSFADE);
+      src.connect(low);
+      low.connect(gain);
+      gain.connect(this.music);
+      const nodes: { stop: () => void }[] = [src];
+      if (recipe.swell > 0) {
+        const lfo = ctx.createOscillator();
+        lfo.frequency.value = recipe.swell;
+        const depth = ctx.createGain();
+        depth.gain.value = recipe.level * 0.6;
+        lfo.connect(depth);
+        depth.connect(gain.gain);
+        lfo.start();
+        nodes.push(lfo);
+      }
+      src.start();
+      this.synthAmbience.set(id, { gain, stop: () => nodes.forEach((n) => n.stop()) });
+    }
+  }
+
   /** Runs the ambience loops under the recorded music (by mood and weather), and stops the rest. */
   private syncAmbience(): void {
     const ctx = this.ctx;
-    const want = new Set<AmbienceId>(this.composed() ? ambienceFor(this.track, this.weather) : []);
+    const layers = settings().ambience ? ambienceFor(this.track, this.weather) : [];
+    const want = new Set<AmbienceId>(this.composed() ? layers : []);
+    this.syncSynthAmbience(this.composed() ? [] : layers);
     for (const [id, a] of this.ambience) {
       if (want.has(id)) continue;
       this.ambience.delete(id);
@@ -447,7 +525,7 @@ class AudioEngine {
       el.loop = true;
       const gain = ctx.createGain();
       gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(AMBIENCE_GAIN[id], ctx.currentTime + MUSIC_CROSSFADE);
+      gain.gain.linearRampToValueAtTime(AMBIENCE_GAIN, ctx.currentTime + MUSIC_CROSSFADE);
       try {
         ctx.createMediaElementSource(el).connect(gain);
       } catch {

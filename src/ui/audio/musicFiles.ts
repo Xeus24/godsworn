@@ -162,22 +162,22 @@ export function moodForTown(id: string): MusicMood {
 export const RESTART_MOODS: readonly MusicMood[] = ['battle', 'boss'];
 
 /** The ambience loops, relative to the site root (`public/ambience/`). */
-export type AmbienceId = 'dungeon' | 'forest' | 'wind' | 'rain' | 'birds' | 'waves';
+export type AmbienceId = 'dungeon' | 'volcanic' | 'citadel' | 'forest' | 'desert' | 'snow' | 'rain' | 'birds' | 'waves';
 
-export const AMBIENCE_IDS: readonly AmbienceId[] = ['dungeon', 'forest', 'wind', 'rain', 'birds', 'waves'];
+export const AMBIENCE_IDS: readonly AmbienceId[] = ['dungeon', 'volcanic', 'citadel', 'forest', 'desert', 'snow', 'rain', 'birds', 'waves'];
 
-/** How loud each ambience loop plays under the music (0..1). */
-export const AMBIENCE_GAIN: Record<AmbienceId, number> = { dungeon: 0.5, forest: 0.5, wind: 0.4, rain: 0.45, birds: 0.45, waves: 0.5 };
+/** How loud each ambience loop plays under the music (0..1); the files are balanced to the same level. */
+export const AMBIENCE_GAIN = 0.5;
 
 /** The ambience under each mood's music. */
 const MOOD_AMBIENCE: Partial<Record<MusicMood, AmbienceId>> = {
   world: 'birds',
   forest: 'forest',
-  desert: 'wind',
-  snow: 'wind',
+  desert: 'desert',
+  snow: 'snow',
   coast: 'waves',
-  volcanic: 'dungeon',
-  citadel: 'dungeon',
+  volcanic: 'volcanic',
+  citadel: 'citadel',
   cave: 'dungeon',
   dungeon: 'dungeon',
   depths: 'dungeon',
@@ -185,7 +185,7 @@ const MOOD_AMBIENCE: Partial<Record<MusicMood, AmbienceId>> = {
 };
 
 /** The ambience a weather adds in the open. */
-const WEATHER_AMBIENCE: Record<string, AmbienceId> = { rain: 'rain', storm: 'rain', sandstorm: 'wind', snow: 'wind' };
+const WEATHER_AMBIENCE: Record<string, AmbienceId> = { rain: 'rain', storm: 'rain', sandstorm: 'desert', snow: 'snow' };
 
 /** Which ambience loops play for a mood and (in the open) the weather. */
 export function ambienceFor(mood: MusicMood | 'none', weather?: string): AmbienceId[] {
@@ -197,6 +197,19 @@ export function ambienceFor(mood: MusicMood | 'none', weather?: string): Ambienc
   if (w && !out.includes(w)) out.push(w);
   return out;
 }
+
+/** Where each ambience loop comes from (shown in the credits). All CC0; some are filtered or pitched versions of the original. */
+export const AMBIENCE_SOURCES: Record<AmbienceId, string> = {
+  dungeon: 'Loopable Dungeon Ambience by JaggedStone',
+  volcanic: 'Loopable Dungeon Ambience by JaggedStone, with a low rumble added',
+  citadel: 'Loopable Dungeon Ambience by JaggedStone, pitched down',
+  forest: 'Forest Ambience by TinyWorlds',
+  desert: 'wind whoosh loop by SketchMan3, warmed',
+  snow: 'wind whoosh loop by SketchMan3, thinned',
+  rain: 'Rain (loopable) by Ylmir',
+  birds: 'Birds and Wind - Ambient by Spring Spring',
+  waves: 'Beach Ocean Waves by jasinski',
+};
 
 export const ambienceUrl = (id: AmbienceId, base = '/'): string => `${base}ambience/${id}.ogg`;
 

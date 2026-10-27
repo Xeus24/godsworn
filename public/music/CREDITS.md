@@ -51,9 +51,14 @@ Quiet loops under the recorded music (`../ambience/`), re-encoded to small mono 
 
 | File | Used for | Source |
 | --- | --- | --- |
-| `dungeon.ogg` | caves, dungeons, the Rift and the Citadel | "Loopable Dungeon Ambience" by JaggedStone, https://opengameart.org/content/loopable-dungeon-ambience |
-| `forest.ogg` | the Whisperwood | "Forest Ambience" by TinyWorlds, https://opengameart.org/content/forest-ambience |
+| `dungeon.ogg` | caves and dungeons | "Loopable Dungeon Ambience" by JaggedStone, https://opengameart.org/content/loopable-dungeon-ambience |
+| `volcanic.ogg` | the Volcanic Rift | the same, with a low brown-noise rumble mixed in |
+| `citadel.ogg` | the Dark Citadel | the same, pitched down and low-passed |
+| `forest.ogg` | the Whisperwood | "Forest Ambience" by TinyWorlds, https://opengameart.org/content/forest-ambience (volume raised) |
 | `birds.ogg` | the meadows | "Birds and Wind - Ambient" by Spring Spring, https://opengameart.org/content/birds-and-wind-ambient-birds-wind-and-synth |
 | `waves.ogg` | the coast (four wave clips joined) | "Beach Ocean Waves" by jasinski, via qubodup, https://opengameart.org/content/beach-ocean-waves |
-| `wind.ogg` | desert and snow, and sandstorm and snow weather | "wind whoosh loop" by SketchMan3, https://opengameart.org/content/wind-whoosh-loop |
-| `rain.ogg` | rain and thunderstorm weather | "Rain (loopable)" by Ylmir, https://opengameart.org/content/rain-loopable |
+| `desert.ogg` | the Ashen Desert and sandstorms | the same wind loop, low-passed for a warmer sound |
+| `snow.ogg` | Frostspire and snow | the same wind loop, high-passed for a thinner sound |
+| `rain.ogg` | rain and thunderstorms | "Rain (loopable)" by Ylmir, https://opengameart.org/content/rain-loopable (volume lowered) |
+
+All the loops are balanced to the same loudness.

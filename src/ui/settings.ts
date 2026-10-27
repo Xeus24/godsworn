@@ -9,6 +9,8 @@ export interface Settings {
   /** Music made on the fly, or the human-made open-licence tracks. */
   musicSource: 'synth' | 'composed';
   muted: boolean;
+  /** Wind, rain, water and cave ambience under the music. */
+  ambience: boolean;
   /** Battle playback speed and auto-battle, as new battles start. */
   battleSpeed: 1 | 2 | 4;
   autoBattle: boolean;
@@ -28,6 +30,7 @@ export const DEFAULT_SETTINGS: Settings = {
   sfxSource: 'synth',
   musicSource: 'synth',
   muted: false,
+  ambience: true,
   battleSpeed: 1,
   autoBattle: false,
   statsWindow: false,

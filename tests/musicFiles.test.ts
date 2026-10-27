@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { AMBIENCE_IDS, DEPTHS_LEVEL, MUSIC_MOODS, MUSIC_PLAYLISTS, MUSIC_TRACKS, SYNTH_MOOD, ambienceFor, ambienceUrl, dungeonRoom, moodForMap, moodForTown, musicUrl, nextTrack, wantsComposed } from '../src/ui/audio/musicFiles';
@@ -71,11 +71,25 @@ describe('composed music', () => {
   it('layers ambience by mood and, in the open, weather', () => {
     expect(ambienceFor('forest')).toEqual(['forest']);
     expect(ambienceFor('world', 'rain')).toEqual(['birds', 'rain']);
-    expect(ambienceFor('desert', 'sandstorm')).toEqual(['wind']);
+    expect(ambienceFor('desert', 'sandstorm')).toEqual(['desert']);
+    expect(ambienceFor('world', 'snow')).toEqual(['birds', 'snow']);
+    expect(ambienceFor('volcanic')).toEqual(['volcanic']);
     expect(ambienceFor('town', 'rain')).toEqual(['rain']);
     expect(ambienceFor('battle')).toEqual([]);
     expect(ambienceFor('none', 'rain')).toEqual([]);
     expect(ambienceFor('dungeon')).toEqual(['dungeon']);
+  });
+
+  it('uses every track and ambience loop it ships, and ships nothing unused', () => {
+    const files = readdirSync(join(pub, 'music')).filter((f) => f.endsWith('.ogg')).map((f) => f.replace('.ogg', ''));
+    const used = new Set(Object.values(MUSIC_PLAYLISTS).flat());
+    expect(files.sort()).toEqual(Object.keys(MUSIC_TRACKS).sort());
+    expect([...used].sort()).toEqual(Object.keys(MUSIC_TRACKS).sort());
+    const ambient = new Set<string>();
+    for (const mood of MUSIC_MOODS) for (const w of [undefined, 'rain', 'storm', 'sandstorm', 'snow']) for (const id of ambienceFor(mood, w)) ambient.add(id);
+    expect([...ambient].sort()).toEqual([...AMBIENCE_IDS].sort());
+    const shipped = readdirSync(join(pub, 'ambience')).map((f) => f.replace('.ogg', ''));
+    expect(shipped.sort()).toEqual([...AMBIENCE_IDS].sort());
   });
 
   it('ships a real Ogg file for every track, plus the ambience loop', () => {

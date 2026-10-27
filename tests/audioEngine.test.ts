@@ -143,7 +143,10 @@ describe('audio engine', () => {
     expect(audio().unlocked).toBe(true);
     expect(called).toBe(true);
     audio().setTrack('world');
+    const before = sources.length;
     audio().setWeather('rain');
+    // Rain is synthesized as filtered noise: one looping source, no file.
+    expect(sources.length).toBe(before + 1);
     audio().play('hit');
     audio().step('grass');
     expect(created).toHaveLength(0);

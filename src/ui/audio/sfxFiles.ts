@@ -50,7 +50,7 @@ export const SFX_NAMES = Object.keys(SFX_FILES) as SfxName[];
 export const SFX_ALL: string[] = [...new Set([...Object.values(SFX_FILES).flat(), ...Object.values(STEP_CLIPS).flat()])];
 
 /** Who made the recorded effects, shown under the setting. */
-export const SFX_CREDIT = 'Recorded effects: Kenney and Spring Spring, CC0 (public domain).';
+export const SFX_CREDIT = 'Recorded effects: Kenney, Spring Spring and Kistol, CC0 (public domain).';
 
 export const sfxUrl = (clip: string, base = '/'): string => `${base}sfx/${clip}.ogg`;
 
