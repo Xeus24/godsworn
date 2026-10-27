@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
+import { heroDoll } from '../art/heroDoll';
 import { heroSprite } from '../art/heroSprite';
 import { drawWeather } from '../art/weatherFx';
 import { settings } from '../settings';
@@ -480,7 +481,7 @@ export class CombatScene {
     let img: HTMLCanvasElement | undefined;
     let bw = size;
     if (x.portrait) {
-      img = heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
+      img = heroDoll(x.portrait.raceId, x.portrait.variant, x.weaponTypes, x.portrait.look) ?? heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
       bw = Math.round(size * (img.width / img.height));
     } else if (x.sprite) {
       img = monsterTile(x.enemyId, x.sprite.family) ?? creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);

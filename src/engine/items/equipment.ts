@@ -216,6 +216,7 @@ export function equipmentFlags(char: Character, c: Content = content): string[] 
 export interface WornPiece {
   weight: string;
   color: string;
+  tier: number;
 }
 
 export type GearLook = Partial<Record<'head' | 'shoulders' | 'chest' | 'gloves' | 'legs' | 'boots' | 'cloak', WornPiece>>;
@@ -229,7 +230,7 @@ export function equippedGearLook(char: Character, c: Content = content): GearLoo
     const b = baseOf(it, c);
     if (b.category !== 'armor') continue;
     const color = c.rarities.get(it.rarity).color;
-    look[slot] = { weight: b.weight, color: color === '#1a1a1a' ? '#c8b8ff' : color };
+    look[slot] = { weight: b.weight, color: color === '#1a1a1a' ? '#c8b8ff' : color, tier: b.tier };
   }
   return look;
 }

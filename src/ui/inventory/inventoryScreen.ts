@@ -15,6 +15,7 @@ import { DRAG_TYPE, FILTER_CATEGORIES, FILTERS, focusKeyOf, GRID_COLS, locKey, r
 import { StashControls } from './stashControls';
 import { GamepadNav } from './gamepad';
 import { noRule, type TabRule } from '../../engine/items/tabRules';
+import { heroDoll } from '../art/heroDoll';
 import { heroSprite } from '../art/heroSprite';
 import { itemIconUrl } from '../art/itemIcons';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
@@ -31,6 +32,9 @@ const DOLL: [EquipSlot, number, number][] = [
   ['amulet', 4, 1], ['earring1', 4, 2], ['earring2', 4, 3], ['ring1', 4, 4], ['ring2', 4, 5], ['trinket', 4, 6], ['holySymbol', 4, 7], ['relic', 4, 8],
   ['mainHand', 2, 8], ['offHand', 3, 8],
 ];
+
+/** Redraw attempts while the tile paper doll loads (reset once it has). */
+let dollRetries = 0;
 
 export class InventoryScreen implements Screen {
   private root: HTMLElement | undefined;
@@ -328,8 +332,14 @@ export class InventoryScreen implements Screen {
     }
     const primary = (p.classes.find((x) => x.slot === 'primary') ?? p.classes[0])?.classId;
     const cls = primary ? content.classes.get(primary) : undefined;
-    const sprite = heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', equippedWeaponTypes(p, content), equippedGearLook(p, content));
-    sprite.className = 'doll-sprite pixel';
+    const weaponTypes = equippedWeaponTypes(p, content);
+    const look = equippedGearLook(p, content);
+    const doll = heroDoll(p.raceId, p.portrait, weaponTypes, look);
+    const sprite = doll ?? heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', weaponTypes, look);
+    sprite.className = `doll-sprite pixel${doll ? ' doll-tile' : ''}`;
+    // The tile doll loads asynchronously: redraw once it is ready.
+    if (doll) dollRetries = 0;
+    else if (dollRetries++ < 6) window.setTimeout(() => { if (heroDoll(p.raceId, p.portrait, weaponTypes, look)) this.render(); }, 400);
     const figure = el('div', { class: 'doll-figure' }, sprite, el('div', { class: 'doll-name' }, p.name), el('div', { class: 'dim small' }, `Level ${p.level}`));
     figure.style.gridColumn = '2 / span 2';
     figure.style.gridRow = '1 / span 7';

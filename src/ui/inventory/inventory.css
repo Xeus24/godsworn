@@ -89,6 +89,11 @@ select {
   text-align: center;
 }
 
+.doll-sprite.doll-tile {
+  width: 128px;
+  height: 128px;
+}
+
 .doll-sprite {
   width: 96px;
   height: 128px;
