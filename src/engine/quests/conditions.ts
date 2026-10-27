@@ -2,7 +2,7 @@ import { content, type Content } from '../../data';
 import { hybridTrialOpen } from '../character/multiclass';
 import { characterBaseStats } from '../character/stats';
 import { atLeast, tierName } from '../gods/devotion';
-import { countOf } from '../items/inventory';
+import { countHeld } from '../items/inventory';
 import { killsByType, knowledgeLevel, slayerRank } from '../bestiary/bestiary';
 import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
 import type { GameState } from '../state/gameState';
@@ -38,7 +38,7 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
     case 'rep':
       return repOf(p, cond.faction) >= cond.min;
     case 'item':
-      return countOf(state.inventory, cond.itemId) >= (cond.count ?? 1);
+      return countHeld(state, cond.itemId) >= (cond.count ?? 1);
     case 'gold':
       return state.gold >= cond.min;
     case 'flag': {

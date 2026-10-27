@@ -233,3 +233,37 @@ export function renameStashTab(stash: Stash, tab: number, name: string): boolean
   stash.names[tab] = name.trim().slice(0, STASH_NAME_MAX);
   return true;
 }
+
+// ---------------------------------------------------------------- holdings
+
+/** Everything you own that is not worn: the bags, the stash and loot set aside. GameState fits this shape. */
+export interface Holdings {
+  inventory: Inventory;
+  stash: Stash;
+  overflow: ItemInstance[];
+}
+
+/** Bags first, then stash tabs, then set-aside loot. */
+function heldGrids(h: Holdings): Inventory[] {
+  return [h.inventory, ...h.stash.tabs, { slots: h.overflow }];
+}
+
+/** How many of an item you hold across bags, stash and set-aside loot. */
+export function countHeld(h: Holdings, baseId: string): number {
+  return heldGrids(h).reduce((n, g) => n + countOf(g, baseId), 0);
+}
+
+/** Removes `qty` from bags first, then the stash, then set-aside loot. Returns false (no change) if you hold too few. */
+export function takeHeld(h: Holdings, baseId: string, qty: number): boolean {
+  if (countHeld(h, baseId) < qty) return false;
+  let left = qty;
+  for (const g of heldGrids(h)) {
+    const here = Math.min(left, countOf(g, baseId));
+    if (here > 0) takeQuantity(g, baseId, here);
+    left -= here;
+    if (left <= 0) break;
+  }
+  const kept = h.overflow.filter((x): x is ItemInstance => x !== null);
+  h.overflow.splice(0, h.overflow.length, ...kept);
+  return true;
+}

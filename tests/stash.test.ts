@@ -4,6 +4,8 @@ import { itemsNeededByQuests } from '../src/engine/quests/quests';
 import { createItem } from '../src/engine/items/generate';
 import {
   addItem,
+  countHeld,
+  takeHeld,
   countOf,
   createInventory,
   createStash,
@@ -17,6 +19,7 @@ import {
 import { migrate } from '../src/engine/state/save';
 import { GameSession } from '../src/engine/state/gameState';
 import { OVERFLOW_MAX } from '../src/engine/state/itemActions';
+import { canCraft } from '../src/engine/economy/crafting';
 import { makeHero } from './helpers';
 
 let n = 0;
@@ -269,5 +272,42 @@ describe('overflow', () => {
     expect(migrated.overflow).toEqual([]);
     expect(migrated.stashRules).toEqual([]);
     expect(migrated.stash.names).toEqual([]);
+  });
+});
+
+describe('holdings: bags, stash and set-aside loot', () => {
+  it('counts and takes across all three, bags first', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.items.give(ore(10), false);
+    s.items.depositAll(0, (i) => i.baseId === 'mithril-ore');
+    s.items.give(ore(5), false);
+    s.state.overflow.push(ore(3));
+    expect(countHeld(s.state, 'mithril-ore')).toBe(18);
+    expect(takeHeld(s.state, 'mithril-ore', 7)).toBe(true);
+    expect(s.items.count('mithril-ore')).toBe(0);
+    expect(countOf(s.state.stash.tabs[0]!, 'mithril-ore')).toBe(8);
+    expect(s.state.overflow).toHaveLength(1);
+    expect(takeHeld(s.state, 'mithril-ore', 11)).toBe(true);
+    expect(s.state.overflow).toHaveLength(0);
+    expect(takeHeld(s.state, 'mithril-ore', 1)).toBe(false);
+  });
+
+  it('a stashed skeleton key opens a chest', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.state.stash.tabs[0]!.slots[0] = createItem('skeleton-key', 1, uid);
+    expect(countHeld(s.state, 'skeleton-key')).toBe(1);
+    expect(takeHeld(s.state, 'skeleton-key', 1)).toBe(true);
+    expect(countHeld(s.state, 'skeleton-key')).toBe(0);
+  });
+
+  it('crafting uses materials held in the stash and spends them there', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.economy.learnProfession('alchemy');
+    const r = content.recipes.get('brew-health-minor');
+    expect(canCraft(s.player, s.state, s.state.gold, r).ok).toBe(false);
+    for (const [k, i] of r.inputs.entries()) s.state.stash.tabs[0]!.slots[k] = createItem(i.itemId, i.qty, uid);
+    expect(canCraft(s.player, s.state, s.state.gold, r).ok).toBe(true);
+    expect(s.economy.craft('brew-health-minor').ok).toBe(true);
+    for (const i of r.inputs) expect(countHeld(s.state, i.itemId)).toBe(0);
   });
 });

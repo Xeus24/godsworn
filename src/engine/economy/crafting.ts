@@ -2,7 +2,7 @@ import { content, type Content } from '../../data';
 import type { Character } from '../character/types';
 import type { Rng } from '../core/rng';
 import { createItem, generateGear } from '../items/generate';
-import { addItem, canAdd, countOf, takeQuantity, type Inventory } from '../items/inventory';
+import { addItem, canAdd, countHeld, countOf, takeHeld, takeQuantity, type Holdings, type Inventory } from '../items/inventory';
 import { isGearBase, type GearBaseDef, type ItemInstance } from '../items/types';
 import type { CraftingProfession, GatheringSkill, RecipeDef } from './types';
 
@@ -77,11 +77,16 @@ export function recipeGold(char: Character, r: RecipeDef, c: Content = content):
   return Math.round((r.gold ?? 0) * (1 - craftingDiscount(char, r.profession, c)));
 }
 
-export function canCraft(char: Character, inv: Inventory, gold: number, r: RecipeDef, c: Content = content): CraftCheck {
+/** Crafting draws from everything you hold; a bare grid (as in tests) is treated as just the bags. */
+const isHoldings = (x: Holdings | Inventory): x is Holdings => 'stash' in x;
+const haveOf = (x: Holdings | Inventory, id: string): number => (isHoldings(x) ? countHeld(x, id) : countOf(x, id));
+const bagsOf = (x: Holdings | Inventory): Inventory => (isHoldings(x) ? x.inventory : x);
+
+export function canCraft(char: Character, inv: Holdings | Inventory, gold: number, r: RecipeDef, c: Content = content): CraftCheck {
   if (!char.crafting.professions[r.profession]) return fail(`Requires the ${c.professions.get(r.profession).name} profession.`);
   if (!char.crafting.recipes.includes(r.id)) return fail('You do not know this recipe.');
   if (professionLevel(char, r.profession) < r.level) return fail(`Requires ${c.professions.get(r.profession).name} ${r.level}.`);
-  for (const i of r.inputs) if (countOf(inv, i.itemId) < i.qty) return fail(`Needs ${i.qty} ${c.items.get(i.itemId).name}.`);
+  for (const i of r.inputs) if (haveOf(inv, i.itemId) < i.qty) return fail(`Needs ${i.qty} ${c.items.get(i.itemId).name}.`);
   if (gold < recipeGold(char, r, c)) return fail(`Costs ${recipeGold(char, r, c)} gold.`);
   return { ok: true };
 }
@@ -113,7 +118,7 @@ export function forgeBases(r: RecipeDef, c: Content = content): GearBaseDef[] {
  * Crafts a recipe: takes the inputs (the caller takes the gold) and makes
  * the output. Forged gear uses `baseId` (or a random base of the tier).
  */
-export function craft(char: Character, inv: Inventory, r: RecipeDef, rng: Rng, newUid: () => string, baseId?: string, c: Content = content): CraftResult {
+export function craft(char: Character, held: Holdings | Inventory, r: RecipeDef, rng: Rng, newUid: () => string, baseId?: string, c: Content = content): CraftResult {
   let made: ItemInstance[];
   if (r.output.kind === 'item') {
     made = [createItem(r.output.itemId, r.output.qty, newUid, c)];
@@ -124,8 +129,10 @@ export function craft(char: Character, inv: Inventory, r: RecipeDef, rng: Rng, n
     item.identified = true;
     made = [item];
   }
+  const inv = bagsOf(held);
+  for (const i of r.inputs) if (haveOf(held, i.itemId) < i.qty) return fail(`Needs ${i.qty} ${c.items.get(i.itemId).name}.`);
   for (const m of made) if (!canAdd(inv, m, c)) return fail('Your bags are full.');
-  for (const i of r.inputs) takeQuantity(inv, i.itemId, i.qty);
+  for (const i of r.inputs) (isHoldings(held) ? takeHeld(held, i.itemId, i.qty) : takeQuantity(inv, i.itemId, i.qty));
   for (const m of made) addItem(inv, m, c);
   return { ok: true, made };
 }

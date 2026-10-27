@@ -6,7 +6,7 @@ import { addSocket, ascend, ASCEND_COST, canAscend, canUpgrade, modifiable, qual
 import { BUYBACK_SIZE, gamble, gamblePrice, GAMBLE_PRICE, sellPrice, shopOpen, shopsIn, shopStock } from '../economy/shops';
 import type { CraftingProfession, StockLine } from '../economy/types';
 import { equippedItems } from '../items/equipment';
-import { addItem, canAdd, countOf, takeQuantity } from '../items/inventory';
+import { addItem, canAdd, countHeld, takeHeld, takeQuantity } from '../items/inventory';
 import { baseOf } from '../items/lookup';
 import { itemName } from '../items/naming';
 import type { ItemInstance } from '../items/types';
@@ -187,10 +187,10 @@ export class EconomyActions {
 
   craft(recipeId: string, baseId?: string): EconomyResult {
     const r = content.recipes.get(recipeId);
-    const check = canCraft(this.p, this.s.state.inventory, this.s.state.gold, r);
+    const check = canCraft(this.p, this.s.state, this.s.state.gold, r);
     if (!check.ok) return check;
     const gold = recipeGold(this.p, r);
-    const result = craft(this.p, this.s.state.inventory, r, this.s.rng, () => this.s.newUid(), baseId);
+    const result = craft(this.p, this.s.state, r, this.s.rng, () => this.s.newUid(), baseId);
     if (!result.ok) return result;
     this.s.spendGold(gold, 'craft');
     const up = gainProfessionXp(this.p, r.profession, r.xp);
@@ -204,9 +204,9 @@ export class EconomyActions {
 
   private pay(cost: ServiceCost): EconomyResult {
     if (!this.town()) return fail('The workshop is in town.');
-    for (const m of cost.materials) if (countOf(this.s.state.inventory, m.itemId) < m.qty) return fail(`Needs ${m.qty} ${content.items.get(m.itemId).name}.`);
+    for (const m of cost.materials) if (countHeld(this.s.state, m.itemId) < m.qty) return fail(`Needs ${m.qty} ${content.items.get(m.itemId).name}.`);
     if (!this.s.spendGold(cost.gold, 'workshop')) return fail(`Costs ${cost.gold} gold.`);
-    for (const m of cost.materials) takeQuantity(this.s.state.inventory, m.itemId, m.qty);
+    for (const m of cost.materials) takeHeld(this.s.state, m.itemId, m.qty);
     return { ok: true };
   }
 

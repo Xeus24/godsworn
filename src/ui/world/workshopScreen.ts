@@ -4,7 +4,7 @@ import { canCraft, forgeBases, gatheringLevel, MAX_PROFESSIONS, professionLevel,
 import { ASCEND_COST, maxSockets, qualityCost, rerollCost, socketCost, upgradeChance, upgradeCost, type ServiceCost } from '../../engine/economy/enchanting';
 import type { CraftingProfession, GatheringSkill, RecipeDef } from '../../engine/economy/types';
 import { equippedItems, permissions } from '../../engine/items/equipment';
-import { countOf } from '../../engine/items/inventory';
+import { countHeld } from '../../engine/items/inventory';
 import { isGear } from '../../engine/items/lookup';
 import { itemName } from '../../engine/items/naming';
 import type { ItemInstance } from '../../engine/items/types';
@@ -65,8 +65,7 @@ export class WorkshopScreen implements Screen {
   }
 
   private costText(cost: ServiceCost): string {
-    const inv = this.session.state.inventory;
-    return [`${cost.gold}g`, ...cost.materials.map((m) => `${m.qty} ${content.items.get(m.itemId).name} (${countOf(inv, m.itemId)})`)].join(', ');
+    return [`${cost.gold}g`, ...cost.materials.map((m) => `${m.qty} ${content.items.get(m.itemId).name} (${countHeld(this.session.state, m.itemId)})`)].join(', ');
   }
 
   private professions(): HTMLElement {
@@ -102,10 +101,9 @@ export class WorkshopScreen implements Screen {
 
   private recipeRow(r: RecipeDef): HTMLElement {
     const s = this.session;
-    const inv = s.state.inventory;
-    const check = canCraft(s.player, inv, s.state.gold, r);
+    const check = canCraft(s.player, s.state, s.state.gold, r);
     const inputs = r.inputs.map((i) => {
-      const have = countOf(inv, i.itemId);
+      const have = countHeld(s.state, i.itemId);
       return el('span', { class: have >= i.qty ? '' : 'tip-bad' }, `${i.qty} ${content.items.get(i.itemId).name} (${have})`);
     });
     const gold = recipeGold(s.player, r);

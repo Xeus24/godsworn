@@ -1,7 +1,7 @@
 import { worldLevel } from '../ngplus/ngplus';
 import { content, type Content } from '../../data';
 import { xpToNext } from '../character/progression';
-import { countOf } from '../items/inventory';
+import { countHeld } from '../items/inventory';
 import { absMinute } from '../world/world';
 import { runesDone } from '../world/world';
 import { mapFor } from '../world/mapgen';
@@ -51,7 +51,7 @@ export function required(o: ObjectiveDef): number {
 
 /** Progress toward an objective right now (carried items count live; everything else is recorded). */
 export function progressOf(state: GameState, prog: QuestProgress, o: ObjectiveDef): number {
-  if (o.kind === 'collect') return Math.min(o.count, countOf(state.inventory, o.itemId));
+  if (o.kind === 'collect') return Math.min(o.count, countHeld(state, o.itemId));
   return Math.min(required(o), prog.progress[o.id] ?? 0);
 }
 

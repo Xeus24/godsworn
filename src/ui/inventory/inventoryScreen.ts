@@ -44,6 +44,13 @@ const DOLL: [EquipSlot, number, number][] = [
 ];
 
 const DRAG_TYPE = 'application/x-godsworn-item';
+const GRID_COLS = 8;
+
+function locKey(loc: ItemLocation): string {
+  if (loc.where === 'equipment') return `equipment:${loc.slot}`;
+  if (loc.where === 'stash') return `stash:${loc.tab}:${loc.index}`;
+  return `inventory:${loc.index}`;
+}
 
 function sameLoc(a: ItemLocation | undefined, b: ItemLocation): boolean {
   if (!a || a.where !== b.where) return false;
@@ -93,7 +100,8 @@ export class InventoryScreen implements Screen {
   // ------------------------------------------------------------ cells
 
   private cell(item: ItemInstance | undefined, loc: ItemLocation, placeholder = ''): HTMLElement {
-    const node = el('div', { class: 'item-cell', role: 'button', tabindex: '0' });
+    const node = el('div', { class: 'item-cell', role: 'button', tabindex: '0', 'data-loc': locKey(loc) });
+    node.setAttribute('aria-label', item ? `${itemName(item)}${item.quantity > 1 ? ` x${item.quantity}` : ''}` : placeholder || 'Empty slot');
     if (sameLoc(this.selected, loc)) node.classList.add('selected');
     if (item) {
       const rarity = content.rarities.get(item.rarity);
@@ -125,8 +133,8 @@ export class InventoryScreen implements Screen {
     } else if (placeholder) {
       node.append(el('span', { class: 'placeholder' }, ...(loc.where === 'equipment' ? [el('img', { class: 'slot-glyph', src: slotGlyphUrl(loc.slot), alt: '', draggable: 'false' })] : []), placeholder));
     }
-    node.addEventListener('click', (e) => {
-      if (e.shiftKey && item && loc.where !== 'equipment') {
+    const activate = (shift: boolean): void => {
+      if (shift && item && loc.where !== 'equipment') {
         hideTooltip();
         this.selected = undefined;
         return this.say(this.actions.quickTransfer(loc, this.stashTab));
@@ -135,7 +143,9 @@ export class InventoryScreen implements Screen {
       this.confirmDestroy = false;
       this.message = '';
       this.render();
-    });
+    };
+    node.addEventListener('click', (e) => activate(e.shiftKey));
+    node.addEventListener('keydown', (e) => this.cellKey(e, item, loc, activate));
     node.addEventListener('dragover', (e) => {
       if (e.dataTransfer?.types.includes(DRAG_TYPE)) {
         e.preventDefault();
@@ -149,6 +159,30 @@ export class InventoryScreen implements Screen {
       if (raw) this.drop(JSON.parse(raw) as ItemLocation, loc);
     });
     return node;
+  }
+
+  /**
+   * Keyboard use of a cell: Enter selects (Shift+Enter sends it across the stash),
+   * Space is the quick action, arrows move between cells of the same grid.
+   */
+  private cellKey(e: KeyboardEvent, item: ItemInstance | undefined, loc: ItemLocation, activate: (shift: boolean) => void): void {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      activate(e.shiftKey);
+    } else if (e.key === ' ') {
+      e.preventDefault();
+      if (item) this.quickAction(item, loc);
+    } else if (loc.where !== 'equipment' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -GRID_COLS, ArrowDown: GRID_COLS }[e.key];
+      const to = loc.index + step;
+      const prefix = loc.where === 'stash' ? `stash:${loc.tab}:` : 'inventory:';
+      this.root?.querySelector<HTMLElement>(`[data-loc="${prefix}${to}"]`)?.focus();
+    } else if (e.key === 'Escape' && this.selected) {
+      e.stopPropagation();
+      this.selected = undefined;
+      this.render();
+    }
   }
 
   /** Right-click: the most likely action for the item. */
@@ -343,7 +377,7 @@ export class InventoryScreen implements Screen {
       { class: 'stash-rules' },
       el('summary', { class: 'small dim' }, `Auto-stash on arriving in town${rules.length ? ` (${rules.length})` : ''}`),
       el('div', { class: 'row' }, ...boxes),
-      el('p', { class: 'dim small' }, 'Stashed materials are not used for crafting until you take them back.'),
+      el('p', { class: 'dim small' }, 'Quest items and skeleton keys always stay in your bags.'),
     );
   }
 
@@ -444,6 +478,8 @@ export class InventoryScreen implements Screen {
     if (!this.root) return;
     hideTooltip();
     if (this.selected && !this.actions.itemAt(this.selected)) this.selected = undefined;
+    // The screen is rebuilt on every change; keep keyboard focus on the same cell.
+    const focused = (document.activeElement as HTMLElement | null)?.dataset?.loc;
     this.root.replaceChildren(
       el(
         'div',
@@ -458,6 +494,7 @@ export class InventoryScreen implements Screen {
         ),
       ),
     );
+    if (focused) this.root.querySelector<HTMLElement>(`[data-loc="${focused}"]`)?.focus();
   };
 }
 

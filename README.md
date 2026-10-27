@@ -105,7 +105,7 @@ In battle:
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
 
-- **Drag** items between your bags, the stash and the paper doll to move, equip or unequip them. **Drop a gem or rune onto gear** to socket it. The right runes in the right order form a runeword. **Shift-click** an item to send it to the stash (or back to your bags) in town; use the stash buttons to move whole categories, rename tabs, search by name across tabs, and auto-stash gems, runes and more when you reach a town. Loot that does not fit is set aside and can be claimed later.
+- **Drag** items between your bags, the stash and the paper doll to move, equip or unequip them. **Drop a gem or rune onto gear** to socket it. The right runes in the right order form a runeword. **Shift-click** an item to send it to the stash (or back to your bags) in town; use the stash buttons to move whole categories, rename tabs, search by name across tabs, and auto-stash gems, runes and more when you reach a town. Loot that does not fit is set aside and can be claimed later. Quests and crafting use what is in your stash too. The whole screen works from the keyboard (Tab or arrows to move, Enter to select, Shift+Enter to stash).
 - **Right-click** for the quick action: equip, use, read, identify or unequip.
 - **Click** an item for its full tooltip and every action: Unsocket (costs gold), Mark as junk, Salvage into materials, Destroy (click twice).
 - **Hover** anything to see its stats and how it compares to what you are wearing. Green is an upgrade, red a downgrade.

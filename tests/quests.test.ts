@@ -9,7 +9,7 @@ import { applyStatus, tickStatusesAtTurnStart } from '../src/engine/combat/statu
 import { startBattle } from '../src/engine/combat/turns';
 import type { Combatant } from '../src/engine/combat/types';
 import { createItem } from '../src/engine/items/generate';
-import { addItem, countOf } from '../src/engine/items/inventory';
+import { addItem, countHeld, countOf } from '../src/engine/items/inventory';
 import { evaluate } from '../src/engine/quests/conditions';
 import { activeMarkers, isAvailable, questGold, questXp } from '../src/engine/quests/quests';
 import { resolveSpot } from '../src/engine/quests/spots';
@@ -204,6 +204,17 @@ describe('quest flow', () => {
     finish(wenna);
     expect(countOf(s.state.inventory, 'healroot')).toBe(2);
     expect(s.player.devotion.favor.hesha).toBeGreaterThan(0);
+  });
+
+  it('collect objectives count the stash, and turning in spends from it', () => {
+    const s = newSession();
+    expect(s.quests.start('side-healroot').ok).toBe(true);
+    s.state.stash.tabs[0]!.slots[0] = createItem('healroot', 7, () => s.newUid());
+    const wenna = s.quests.talkTo('sister-wenna') as Conversation;
+    pick(wenna, 'Report');
+    finish(wenna);
+    expect(s.state.quests.completed['side-healroot']).toBe(1);
+    expect(countHeld(s.state, 'healroot')).toBe(2);
   });
 
   it('deliveries hand over items to the NPC; quest items cannot be sold or destroyed', () => {

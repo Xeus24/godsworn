@@ -1,6 +1,6 @@
 import { content } from '../../data';
 import { RIFTS } from '../../data/rifts';
-import { countOf } from '../../engine/items/inventory';
+import { countHeld } from '../../engine/items/inventory';
 import { BOSS_RUSH } from '../../engine/state/endgameActions';
 import type { GameSession } from '../../engine/state/gameState';
 import { navBar, type Nav } from '../components/navBar';
@@ -85,7 +85,7 @@ export class EndgameScreen implements Screen {
       { class: 'panel' },
       el('h2', {}, 'Rift Gate'),
       el('p', { class: 'small' }, `${RIFTS.waves} waves drawn from every zone, then a Rift Guardian. Each tier adds ${RIFTS.threatPerTier}% enemy HP and damage and better loot (+${RIFTS.magicFindPerTier}% Magic Find per tier); from tier ${RIFTS.affixTiers[0]} the Rift rolls affixes, from tier ${RIFTS.worldBossTier} world bosses guard it, and from tier ${RIFTS.primordialTier} its Guardian can drop Primordial items. Clearing a tier opens the next, up to ${RIFTS.maxTier}.`),
-      el('div', { class: 'small' }, `Highest tier cleared: ${e.riftTier} · Rifts cleared: ${e.riftsCleared} · Rift Maps: ${countOf(s.state.inventory, 'rift-map')}`),
+      el('div', { class: 'small' }, `Highest tier cleared: ${e.riftTier} · Rifts cleared: ${e.riftsCleared} · Rift Maps: ${countHeld(s.state, 'rift-map')}`),
       pick,
       this.btn(`Open a tier ${this.tier} Rift`, () => this.say(s.endgame.openRift(this.tier)), !check.ok, 'primary'),
       ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),

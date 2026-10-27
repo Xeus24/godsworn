@@ -7,7 +7,7 @@ import type { Battle } from '../combat/battle';
 import type { EncounterDef } from '../combat/types';
 import type { GauntletState } from '../endgame/types';
 import { favorTiers } from '../gods/devotion';
-import { countOf, takeQuantity } from '../items/inventory';
+import { countHeld, takeHeld } from '../items/inventory';
 import { rollLoot } from '../items/loot';
 import type { ItemInstance } from '../items/types';
 import type { ModifierSpec } from '../stats/modifiers';
@@ -72,7 +72,7 @@ export class EndgameActions {
     if (!this.s.world.inTown()) return fail('Rifts open at a town’s Rift Gate.');
     if (this.s.player.level < RIFTS.minLevel) return fail(`Rifts open to heroes of level ${RIFTS.minLevel}.`);
     if (tier < 1 || tier > this.maxRiftTier()) return fail(`Clear tier ${tier - 1} first.`);
-    if (countOf(this.s.state.inventory, 'rift-map') < 1) return fail('You need a Rift Map (the Black Market sells them, and they turn up in loot).');
+    if (countHeld(this.s.state, 'rift-map') < 1) return fail('You need a Rift Map (the Black Market sells them, and they turn up in loot).');
     return { ok: true };
   }
 
@@ -80,7 +80,7 @@ export class EndgameActions {
   openRift(tier: number): EndgameResult {
     const check = this.canOpenRift(tier);
     if (!check.ok) return check;
-    takeQuantity(this.s.state.inventory, 'rift-map', 1);
+    takeHeld(this.s.state, 'rift-map', 1);
     const rng = this.s.rng;
     const level = this.riftLevel(tier);
     const threat = (tier - 1) * RIFTS.threatPerTier;

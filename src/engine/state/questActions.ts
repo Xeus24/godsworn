@@ -5,7 +5,7 @@ import type { Battle } from '../combat/battle';
 import type { EncounterDef } from '../combat/types';
 import { judgeDeedList, type DeedOccurrence } from '../gods/devotion';
 import { createItem, generateGear } from '../items/generate';
-import { takeQuantity, countOf } from '../items/inventory';
+import { takeHeld, countHeld } from '../items/inventory';
 import { favorTiers } from '../gods/devotion';
 import { evaluate } from '../quests/conditions';
 import {
@@ -351,7 +351,7 @@ export class QuestActions {
     const prog = this.q.active[q.id];
     if (!prog) return;
     const st = stageOf(q, prog.stage);
-    for (const o of st.objectives) if (o.kind === 'collect' && !o.keep) takeQuantity(this.s.state.inventory, o.itemId, o.count);
+    for (const o of st.objectives) if (o.kind === 'collect' && !o.keep) takeHeld(this.s.state, o.itemId, o.count);
     this.runActions(st.onComplete ?? []);
     if (!this.q.active[q.id]) return;
     const next = nextStageId(this.s.state, q, st);
@@ -455,7 +455,7 @@ export class QuestActions {
           this.toast('info', `Received: ${a.qty && a.qty > 1 ? `${a.qty}× ` : ''}${content.items.get(a.itemId).name}`);
           break;
         case 'takeItem':
-          takeQuantity(s.state.inventory, a.itemId, Math.min(a.qty ?? 1, countOf(s.state.inventory, a.itemId)));
+          takeHeld(s.state, a.itemId, Math.min(a.qty ?? 1, countHeld(s.state, a.itemId)));
           break;
         case 'gold':
           s.addGold(a.amount, 'quest');
@@ -520,8 +520,8 @@ export class QuestActions {
           const prog = this.q.active[a.quest];
           const q = this.def(a.quest);
           const o = prog ? stageOf(q, prog.stage).objectives.find((x) => x.id === a.objective) : undefined;
-          if (prog && o?.kind === 'deliver' && countOf(s.state.inventory, o.itemId) >= o.count) {
-            takeQuantity(s.state.inventory, o.itemId, o.count);
+          if (prog && o?.kind === 'deliver' && countHeld(s.state, o.itemId) >= o.count) {
+            takeHeld(s.state, o.itemId, o.count);
             this.bump(q, o, prog, o.count);
           }
           break;
