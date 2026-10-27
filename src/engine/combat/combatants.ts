@@ -156,9 +156,12 @@ export function createEnemy(def: EnemyDef, id: string, level = def.level, row: R
 
 /** A summon scales with its owner's level and borrows part of the owner's attack and magic. */
 export function createSummon(def: SummonDef, id: string, owner: Combatant, ownerAttack: number, ownerMagic: number, c: Content = content): Combatant {
+  // A summon's main damage stat borrows the owner's stronger one, so a caster's skeleton is not weak for lack of Strength.
+  const borrowed = Math.max(ownerAttack, ownerMagic);
+  const physical = def.stats.attack >= def.stats.magic;
   const input = creatureStatInput(def.stats, owner.level, 'normal', {}, [], {
-    attack: Math.round(ownerAttack * def.ownerPowerShare),
-    magic: Math.round(ownerMagic * def.ownerPowerShare),
+    attack: Math.round((physical ? borrowed : ownerAttack) * def.ownerPowerShare),
+    magic: Math.round((physical ? ownerMagic : borrowed) * def.ownerPowerShare),
   });
   const x = emptyCombatant(id, def.name, owner.side, 'front', owner.level, input);
   x.kind = 'summon';
