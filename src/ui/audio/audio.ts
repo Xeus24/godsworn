@@ -1,21 +1,25 @@
 import { onSettingsChange, settings } from '../settings';
-import { musicUrl, wantsComposed } from './musicFiles';
+import { MUSIC_CROSSFADE, MUSIC_TRACKS, musicUrl, nextTrack, wantsComposed, type MusicMood } from './musicFiles';
 
 /**
  * Sound, made on the fly with WebAudio. Sound effects are short synthesized
  * blips and bursts; music is by default a small procedural loop per mood (a
  * pad, a bass line and an arpeggio over a chord progression). As an option the
- * music is a human-made CC0 track per mood (`public/music/`), which falls back
- * to the synthesized loop if a file cannot be played. The audio context starts
- * on the first click or key press, as browsers ask.
+ * music is a small playlist of human-made CC0 tracks per mood (`public/music/`),
+ * crossfaded into each other, which falls back to the synthesized loop if a
+ * file cannot be played. The audio context starts on the first click or key
+ * press, as browsers ask.
  */
 
-/** Seconds to fade a composed track in or out when the mood changes. */
+/** Seconds to fade a composed track out when the mood changes. */
 const FADE = 1.2;
 
 interface FilePlayer {
   el: HTMLAudioElement;
   gain: GainNode;
+  mood: MusicMood;
+  /** 1-based place in the mood's playlist. */
+  n: number;
 }
 
 export type Sfx = 'click' | 'hit' | 'crit' | 'miss' | 'heal' | 'death' | 'break' | 'boss' | 'levelUp' | 'loot' | 'achievement' | 'victory' | 'defeat' | 'warning';
@@ -53,6 +57,7 @@ class AudioEngine {
   private timer: number | undefined;
   private nextBar = 0;
   private bar = 0;
+  /** The composed track now playing (older ones may still be fading out). */
   private player: FilePlayer | undefined;
   private source = settings().musicSource;
 
@@ -195,47 +200,69 @@ class AudioEngine {
     else this.schedule();
   }
 
-  /** Plays a mood's recorded track on a loop, fading in; falls back to the synthesized loop on any failure. */
-  private playFile(track: Exclude<Track, 'none'>): void {
+  /** Starts a mood's playlist at a random track. */
+  private playFile(mood: MusicMood): void {
+    this.startTrack(mood, 1 + Math.floor(Math.random() * MUSIC_TRACKS[mood]));
+  }
+
+  /** Plays one recorded track, fading in; at its end the next one takes over. Falls back to the synthesized loop on any failure. */
+  private startTrack(mood: MusicMood, n: number): void {
     const ctx = this.ctx;
     if (!ctx || !this.music) return;
-    const fallback = (): void => {
-      if (this.player?.el !== el) return;
-      this.stopFile();
-      if (this.track === track) this.schedule();
-    };
-    const el = new Audio(musicUrl(track, import.meta.env.BASE_URL));
-    el.loop = true;
+    const el = new Audio(musicUrl(mood, n, import.meta.env.BASE_URL));
     el.preload = 'auto';
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(1, ctx.currentTime + FADE);
+    gain.gain.linearRampToValueAtTime(1, ctx.currentTime + (this.player ? MUSIC_CROSSFADE : FADE));
     try {
       ctx.createMediaElementSource(el).connect(gain);
     } catch {
       return this.schedule();
     }
     gain.connect(this.music);
-    this.player = { el, gain };
+    const p: FilePlayer = { el, gain, mood, n };
+    const previous = this.player;
+    this.player = p;
+    if (previous) this.release(previous, MUSIC_CROSSFADE);
+    let advanced = false;
+    const advance = (): void => {
+      if (advanced || this.player !== p) return;
+      advanced = true;
+      this.startTrack(mood, nextTrack(mood, n));
+    };
+    const fallback = (): void => {
+      if (this.player !== p) return;
+      this.stopFile();
+      if (this.track === mood) this.schedule();
+    };
+    el.addEventListener('timeupdate', () => {
+      if (Number.isFinite(el.duration) && el.duration - el.currentTime <= MUSIC_CROSSFADE) advance();
+    });
+    el.addEventListener('ended', advance);
     el.addEventListener('error', fallback);
     el.play().catch(fallback);
   }
 
-  /** Fades out and releases the current recorded track, if any. */
+  /** Fades out the current recorded track, if any. */
   private stopFile(): void {
     const p = this.player;
     this.player = undefined;
-    if (!p || !this.ctx) return;
+    if (p) this.release(p, FADE);
+  }
+
+  /** Fades a recorded track out over `secs`, then lets it go. */
+  private release(p: FilePlayer, secs: number): void {
+    if (!this.ctx) return;
     const t = this.ctx.currentTime;
     p.gain.gain.cancelScheduledValues(t);
     p.gain.gain.setValueAtTime(p.gain.gain.value, t);
-    p.gain.gain.linearRampToValueAtTime(0.0001, t + FADE);
+    p.gain.gain.linearRampToValueAtTime(0.0001, t + secs);
     window.setTimeout(() => {
       p.el.pause();
       p.el.removeAttribute('src');
       p.el.load();
       p.gain.disconnect();
-    }, FADE * 1000 + 100);
+    }, secs * 1000 + 100);
   }
 
   /** Schedules music a little ahead of time, bar by bar. */
