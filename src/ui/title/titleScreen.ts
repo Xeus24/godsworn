@@ -1,3 +1,4 @@
+import { audio } from '../audio/audio';
 import { el, type Screen } from '../screen';
 import { drawLogo } from './logo';
 import { startStarfield } from './starfield';
@@ -27,6 +28,11 @@ export class TitleScreen implements Screen {
       menu.append(button);
     }
 
+    // Browsers only start sound after a click or key press: say so until it has.
+    const soundHint = el('div', { class: 'title-hint sound-hint' }, 'Click anywhere or press any key to start the sound');
+    if (audio().unlocked) soundHint.remove();
+    else audio().onUnlock(() => soundHint.remove());
+
     const screen = el(
       'div',
       { class: 'title-screen' },
@@ -34,6 +40,7 @@ export class TitleScreen implements Screen {
       el('div', { class: 'logo-wrap' }, logo),
       ...(this.items.length > 0 ? [menu] : []),
       el('div', { class: 'title-hint' }, 'Press ` (backtick) to open the developer panel'),
+      soundHint,
       el('div', { class: 'title-footer' }, this.footer),
     );
     root.append(screen);

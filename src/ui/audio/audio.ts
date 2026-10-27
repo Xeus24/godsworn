@@ -1,29 +1,35 @@
 import { onSettingsChange, settings } from '../settings';
-import { MUSIC_CROSSFADE, MUSIC_TRACKS, musicUrl, nextTrack, wantsComposed, type MusicMood } from './musicFiles';
+import { AMBIENCE_FILE, AMBIENT_MOODS, MUSIC_CROSSFADE, MUSIC_PLAYLISTS, MUSIC_TRACKS, RESTART_MOODS, SYNTH_MOOD, musicUrl, nextTrack, wantsComposed, type MusicMood, type MusicTrack } from './musicFiles';
+import { SFX_ALL, SFX_FILES, SFX_GAIN, sfxUrl, wantsRecorded, type SfxName } from './sfxFiles';
 
 /**
  * Sound, made on the fly with WebAudio. Sound effects are short synthesized
  * blips and bursts; music is by default a small procedural loop per mood (a
- * pad, a bass line and an arpeggio over a chord progression). As an option the
+ * pad, a bass line and an arpeggio over a chord progression). As options the
  * music is a small playlist of human-made CC0 tracks per mood (`public/music/`),
- * crossfaded into each other, which falls back to the synthesized loop if a
- * file cannot be played. The audio context starts on the first click or key
- * press, as browsers ask.
+ * crossfaded into each other, with a cave and dungeon ambience layer, and the
+ * effects are recorded CC0 clips (`public/sfx/`). Anything that fails to load
+ * falls back to the synthesized sound. The audio context starts on the first
+ * click or key press, as browsers ask.
  */
 
 /** Seconds to fade a composed track out when the mood changes. */
 const FADE = 1.2;
 
+/** How long the "hear a sample" button plays the composed music, in seconds. */
+const PREVIEW = 12;
+
+const BASE = import.meta.env.BASE_URL;
+
 interface FilePlayer {
   el: HTMLAudioElement;
   gain: GainNode;
   mood: MusicMood;
-  /** 1-based place in the mood's playlist. */
-  n: number;
+  slug: string;
 }
 
-export type Sfx = 'click' | 'hit' | 'crit' | 'miss' | 'heal' | 'death' | 'break' | 'boss' | 'levelUp' | 'loot' | 'achievement' | 'victory' | 'defeat' | 'warning';
-export type Track = 'title' | 'town' | 'world' | 'dungeon' | 'battle' | 'boss' | 'none';
+export type Sfx = SfxName;
+export type Track = MusicMood | 'none';
 
 interface Mood {
   bpm: number;
@@ -36,7 +42,7 @@ interface Mood {
   arp: number;
 }
 
-const MOODS: Record<Exclude<Track, 'none'>, Mood> = {
+const MOODS: Record<(typeof SYNTH_MOOD)[MusicMood], Mood> = {
   title: { bpm: 64, roots: [50, 46, 43, 45], chord: [0, 7, 12, 15], wave: 'triangle', arp: 4 },
   town: { bpm: 84, roots: [48, 53, 55, 48], chord: [0, 4, 7, 12], wave: 'triangle', arp: 8 },
   world: { bpm: 76, roots: [45, 41, 43, 40], chord: [0, 7, 12, 16], wave: 'sine', arp: 4 },
@@ -60,6 +66,16 @@ class AudioEngine {
   /** The composed track now playing (older ones may still be fading out). */
   private player: FilePlayer | undefined;
   private source = settings().musicSource;
+  private sfxSource = settings().sfxSource;
+  /** Where each calm mood was left, so coming back resumes the same track. */
+  private readonly resume = new Map<MusicMood, { slug: string; t: number }>();
+  private previewing = false;
+  /** The cave and dungeon ambience layer, while it plays. */
+  private ambience: { el: HTMLAudioElement; gain: GainNode } | undefined;
+  private readonly buffers = new Map<string, AudioBuffer>();
+  private loadingSfx = false;
+  private readonly unlockers: (() => void)[] = [];
+  private readonly nowListeners = new Set<(t: MusicTrack | undefined) => void>();
 
   constructor() {
     const unlock = (): void => this.start();
@@ -67,11 +83,26 @@ class AudioEngine {
     window.addEventListener('keydown', unlock, { once: false });
     onSettingsChange((s) => {
       this.applyVolumes();
+      if (s.sfxSource !== this.sfxSource) {
+        this.sfxSource = s.sfxSource;
+        this.loadSfx();
+      }
       if (s.musicSource !== this.source) {
         this.source = s.musicSource;
         this.restartMusic();
       }
     });
+  }
+
+  /** True once a click or key press has let the browser start the sound. */
+  get unlocked(): boolean {
+    return this.ctx !== undefined;
+  }
+
+  /** Calls back once sound has started (at once if it already has). */
+  onUnlock(cb: () => void): void {
+    if (this.ctx) cb();
+    else this.unlockers.push(cb);
   }
 
   /** Creates (or resumes) the audio context; called on user gestures. */
@@ -91,7 +122,9 @@ class AudioEngine {
       const data = this.noise.getChannelData(0);
       for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
       this.applyVolumes();
+      this.loadSfx();
       this.restartMusic();
+      for (const cb of this.unlockers.splice(0)) cb();
     }
     if (this.ctx.state === 'suspended') void this.ctx.resume();
   }
@@ -101,7 +134,7 @@ class AudioEngine {
     if (!this.master || !this.music || !this.sfxBus) return;
     this.master.gain.value = s.muted ? 0 : s.masterVolume;
     // The synthesized loop is mixed quietly; recorded tracks are already at full level.
-    this.music.gain.value = s.musicVolume * (wantsComposed(s) ? 0.8 : 0.35);
+    this.music.gain.value = s.musicVolume * (this.composed() ? 0.8 : 0.35);
     this.sfxBus.gain.value = s.sfxVolume;
   }
 
@@ -142,9 +175,45 @@ class AudioEngine {
     src.stop(start + dur + 0.05);
   }
 
+  /** Loads the recorded effects (once), if the player chose them. */
+  private loadSfx(): void {
+    const ctx = this.ctx;
+    if (!ctx || this.loadingSfx || !wantsRecorded(settings())) return;
+    this.loadingSfx = true;
+    for (const clip of SFX_ALL) {
+      void fetch(sfxUrl(clip, BASE))
+        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(String(r.status)))))
+        .then((data) => ctx.decodeAudioData(data))
+        .then((buf) => void this.buffers.set(clip, buf))
+        .catch(() => undefined);
+    }
+  }
+
+  /** Plays a recorded clip for the effect; false if there is none loaded (the synthesized one plays instead). */
+  private playRecorded(name: Sfx): boolean {
+    const ctx = this.ctx;
+    if (!ctx || !wantsRecorded(settings())) return false;
+    const clips = SFX_FILES[name].filter((c) => this.buffers.has(c));
+    const clip = clips[Math.floor(Math.random() * clips.length)];
+    const buf = clip ? this.buffers.get(clip) : undefined;
+    if (!buf) return false;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    if (name === 'hit' || name === 'crit' || name === 'miss') src.playbackRate.value = 0.94 + Math.random() * 0.12;
+    const g = ctx.createGain();
+    g.gain.value = SFX_GAIN[name] ?? 1;
+    src.connect(g);
+    g.connect(this.sfxBus as GainNode);
+    src.start();
+    return true;
+  }
+
   play(name: Sfx): void {
     const ctx = this.ctx;
+    // The battle music gives way to the end-of-battle sting; the next screen starts its own.
+    if (name === 'victory' || name === 'defeat') this.setTrack('none');
     if (!ctx || settings().muted) return;
+    if (this.playRecorded(name)) return;
     const t = ctx.currentTime;
     const arp = (notes: number[], step: number, type: OscillatorType, gain: number): void => notes.forEach((n, i) => this.tone(hz(n), t + i * step, step * 2.5, type, gain));
     switch (name) {
@@ -183,6 +252,11 @@ class AudioEngine {
 
   // ------------------------------------------------------------ music
 
+  /** True when the recorded music plays: chosen in Settings, or being sampled. */
+  private composed(): boolean {
+    return wantsComposed(settings()) || this.previewing;
+  }
+
   /** Switches the music to a mood (or silence). */
   setTrack(track: Track): void {
     if (track === this.track) return;
@@ -190,27 +264,67 @@ class AudioEngine {
     this.restartMusic();
   }
 
+  /** What is playing now, when it is a recorded track. */
+  nowPlaying(): MusicTrack | undefined {
+    return this.player ? MUSIC_TRACKS[this.player.slug] : undefined;
+  }
+
+  /** Calls back whenever the recorded track changes; returns a function that stops the calls. */
+  onNowPlaying(cb: (t: MusicTrack | undefined) => void): () => void {
+    this.nowListeners.add(cb);
+    return () => void this.nowListeners.delete(cb);
+  }
+
+  private notifyNowPlaying(): void {
+    const t = this.nowPlaying();
+    for (const cb of this.nowListeners) cb(t);
+  }
+
+  /** Crossfades to the next track in the mood's playlist. */
+  skip(): void {
+    const p = this.player;
+    if (p) this.startTrack(p.mood, nextTrack(p.mood, p.slug));
+  }
+
+  /** Plays the recorded music for a few seconds so it can be heard before it is chosen. */
+  preview(): void {
+    if (this.previewing) return;
+    this.previewing = true;
+    this.applyVolumes();
+    this.restartMusic();
+    window.setTimeout(() => {
+      this.previewing = false;
+      this.applyVolumes();
+      this.restartMusic();
+    }, PREVIEW * 1000);
+  }
+
   /** Stops whatever music plays and starts the current mood from the chosen source. */
   private restartMusic(): void {
     if (this.timer !== undefined) window.clearInterval(this.timer);
     this.timer = undefined;
     this.stopFile();
+    this.syncAmbience();
     if (this.track === 'none' || !this.ctx) return;
-    if (wantsComposed(settings())) this.playFile(this.track);
+    if (this.composed()) this.playFile(this.track);
     else this.schedule();
   }
 
-  /** Starts a mood's playlist at a random track. */
+  /** Starts a mood's playlist: where it was left, or at a random track. */
   private playFile(mood: MusicMood): void {
-    this.startTrack(mood, 1 + Math.floor(Math.random() * MUSIC_TRACKS[mood]));
+    const list = MUSIC_PLAYLISTS[mood];
+    const saved = RESTART_MOODS.includes(mood) ? undefined : this.resume.get(mood);
+    if (saved) this.startTrack(mood, saved.slug, saved.t);
+    else this.startTrack(mood, list[Math.floor(Math.random() * list.length)] as string);
   }
 
   /** Plays one recorded track, fading in; at its end the next one takes over. Falls back to the synthesized loop on any failure. */
-  private startTrack(mood: MusicMood, n: number): void {
+  private startTrack(mood: MusicMood, slug: string, at = 0): void {
     const ctx = this.ctx;
     if (!ctx || !this.music) return;
-    const el = new Audio(musicUrl(mood, n, import.meta.env.BASE_URL));
+    const el = new Audio(musicUrl(slug, BASE));
     el.preload = 'auto';
+    if (at > 0) el.addEventListener('loadedmetadata', () => void (el.currentTime = at), { once: true });
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, ctx.currentTime);
     gain.gain.linearRampToValueAtTime(1, ctx.currentTime + (this.player ? MUSIC_CROSSFADE : FADE));
@@ -220,15 +334,16 @@ class AudioEngine {
       return this.schedule();
     }
     gain.connect(this.music);
-    const p: FilePlayer = { el, gain, mood, n };
+    const p: FilePlayer = { el, gain, mood, slug };
     const previous = this.player;
     this.player = p;
     if (previous) this.release(previous, MUSIC_CROSSFADE);
+    this.notifyNowPlaying();
     let advanced = false;
     const advance = (): void => {
       if (advanced || this.player !== p) return;
       advanced = true;
-      this.startTrack(mood, nextTrack(mood, n));
+      this.startTrack(mood, nextTrack(mood, slug));
     };
     const fallback = (): void => {
       if (this.player !== p) return;
@@ -243,15 +358,21 @@ class AudioEngine {
     el.play().catch(fallback);
   }
 
-  /** Fades out the current recorded track, if any. */
+  /** Fades out the current recorded track, if any, remembering where a calm mood left off. */
   private stopFile(): void {
     const p = this.player;
     this.player = undefined;
-    if (p) this.release(p, FADE);
+    if (!p) return;
+    const { el } = p;
+    if (!RESTART_MOODS.includes(p.mood) && el.currentTime > 1 && Number.isFinite(el.duration) && el.duration - el.currentTime > MUSIC_CROSSFADE * 2) {
+      this.resume.set(p.mood, { slug: p.slug, t: el.currentTime });
+    }
+    this.release(p, FADE);
+    this.notifyNowPlaying();
   }
 
   /** Fades a recorded track out over `secs`, then lets it go. */
-  private release(p: FilePlayer, secs: number): void {
+  private release(p: { el: HTMLAudioElement; gain: GainNode }, secs: number): void {
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
     p.gain.gain.cancelScheduledValues(t);
@@ -265,6 +386,39 @@ class AudioEngine {
     }, secs * 1000 + 100);
   }
 
+  /** Runs the cave and dungeon ambience under the recorded music, and stops it elsewhere. */
+  private syncAmbience(): void {
+    const ctx = this.ctx;
+    const want = this.composed() && this.track !== 'none' && AMBIENT_MOODS.includes(this.track);
+    if (!want) {
+      const a = this.ambience;
+      this.ambience = undefined;
+      if (a) this.release(a, FADE);
+      return;
+    }
+    if (this.ambience || !ctx || !this.music) return;
+    const el = new Audio(`${BASE}${AMBIENCE_FILE}`);
+    el.loop = true;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + MUSIC_CROSSFADE);
+    try {
+      ctx.createMediaElementSource(el).connect(gain);
+    } catch {
+      return;
+    }
+    gain.connect(this.music);
+    const a = { el, gain };
+    this.ambience = a;
+    const drop = (): void => {
+      if (this.ambience !== a) return;
+      this.ambience = undefined;
+      this.release(a, 0.1);
+    };
+    el.addEventListener('error', drop);
+    el.play().catch(drop);
+  }
+
   /** Schedules music a little ahead of time, bar by bar. */
   private schedule(): void {
     const ctx = this.ctx;
@@ -273,7 +427,7 @@ class AudioEngine {
     this.bar = 0;
     const tick = (): void => {
       if (!this.ctx || this.track === 'none') return;
-      const mood = MOODS[this.track];
+      const mood = MOODS[SYNTH_MOOD[this.track]];
       const barLen = (60 / mood.bpm) * 4;
       while (this.nextBar < this.ctx.currentTime + 1.5) {
         const root = mood.roots[this.bar % mood.roots.length] ?? 48;

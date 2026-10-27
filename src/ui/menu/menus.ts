@@ -1,7 +1,9 @@
 import { AUTOSAVE_SLOT, MANUAL_SLOTS, type SaveSlots, type SaveSummary } from '../../engine/state/save';
 import type { GameSession } from '../../engine/state/gameState';
 import { el, type Screen } from '../screen';
+import { audio } from '../audio/audio';
 import { MUSIC_CREDIT } from '../audio/musicFiles';
+import { SFX_CREDIT } from '../audio/sfxFiles';
 import { settings, updateSettings, type Settings } from '../settings';
 
 const playTime = (ms: number): string => {
@@ -54,8 +56,25 @@ abstract class Overlay {
 
 /** Volume, battle defaults, autosave, motion and text size. */
 export class SettingsOverlay extends Overlay {
+  private stopNowPlaying: (() => void) | undefined;
+
   constructor(onClose?: () => void) {
     super('Settings', onClose);
+  }
+
+  override close(): void {
+    this.stopNowPlaying?.();
+    super.close();
+  }
+
+  /** The track now playing, kept current, with a button to skip it. */
+  private nowPlayingRow(): HTMLElement {
+    const text = el('span', { class: 'dim small', 'aria-live': 'polite' });
+    const show = (t: { title: string; artist: string } | undefined): void => void (text.textContent = t ? `Now playing: ${t.title} \u2014 ${t.artist}` : 'Now playing: nothing yet (music starts after a click or key press)');
+    show(audio().nowPlaying());
+    this.stopNowPlaying?.();
+    this.stopNowPlaying = audio().onNowPlaying(show);
+    return el('div', { class: 'setting-row' }, text, button('Skip track', () => audio().skip()));
   }
 
   protected render(): void {
@@ -87,8 +106,15 @@ export class SettingsOverlay extends Overlay {
         updateSettings({ musicSource: v });
         this.render();
       }),
-      ...(s.musicSource === 'composed' ? [el('div', { class: 'dim small' }, MUSIC_CREDIT)] : []),
+      ...(s.musicSource === 'composed'
+        ? [el('div', { class: 'dim small' }, MUSIC_CREDIT), this.nowPlayingRow()]
+        : [el('div', { class: 'setting-row' }, el('span', { class: 'dim small' }, 'Hear the human-made music before choosing it.'), button('Hear a sample', () => audio().preview()))]),
       slider('Sound effects', 'sfxVolume'),
+      select<'synth' | 'recorded'>('Sound effects source', [['synth', 'Synthesized (made on the fly)'], ['recorded', 'Recorded (human-made, open licence)']], s.sfxSource, (v) => {
+        updateSettings({ sfxSource: v });
+        this.render();
+      }),
+      ...(s.sfxSource === 'recorded' ? [el('div', { class: 'dim small' }, SFX_CREDIT)] : []),
       check('Mute everything', 'muted'),
       el('h3', {}, 'Battle'),
       select<number>('Battle speed', [[1, '1×'], [2, '2×'], [4, '4×']], s.battleSpeed, (v) => updateSettings({ battleSpeed: v as 1 | 2 | 4 })),

@@ -44,6 +44,7 @@ import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay, UnlockOverlay 
 import { applySettings, settings } from './ui/settings';
 import './ui/menu/menu.css';
 import { audio } from './ui/audio/audio';
+import { moodForMap } from './ui/audio/musicFiles';
 import { isDungeon } from './engine/world/world';
 import { CodexScreen } from './ui/codex/codexScreen';
 import { EndgameScreen } from './ui/endgame/endgameScreen';
@@ -312,7 +313,10 @@ function showGrounds(): void {
 
 /** The overworld, or the town screen when you are standing in a town you just entered. */
 function showWorld(): void {
-  if (session) audio().setTrack(isDungeon(session.state.world.position.map) ? 'dungeon' : 'world');
+  if (session) {
+    const mapId = session.state.world.position.map;
+    audio().setTrack(moodForMap(session.world.map.biome, isDungeon(mapId) ? content.dungeons.get(mapId)?.level : undefined));
+  }
   if (session) screens.show(new WorldScreen(session, nav, (enc, level) => startFight(enc, level, true), showTown, talk));
 }
 
