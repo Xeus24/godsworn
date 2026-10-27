@@ -4,6 +4,8 @@ export interface Settings {
   masterVolume: number;
   musicVolume: number;
   sfxVolume: number;
+  /** Music made on the fly, or the human-made open-licence tracks. */
+  musicSource: 'synth' | 'composed';
   muted: boolean;
   /** Battle playback speed and auto-battle, as new battles start. */
   battleSpeed: 1 | 2 | 4;
@@ -21,6 +23,7 @@ export const DEFAULT_SETTINGS: Settings = {
   masterVolume: 0.7,
   musicVolume: 0.4,
   sfxVolume: 0.7,
+  musicSource: 'synth',
   muted: false,
   battleSpeed: 1,
   autoBattle: false,

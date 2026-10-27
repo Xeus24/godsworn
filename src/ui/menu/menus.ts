@@ -1,6 +1,7 @@
 import { AUTOSAVE_SLOT, MANUAL_SLOTS, type SaveSlots, type SaveSummary } from '../../engine/state/save';
 import type { GameSession } from '../../engine/state/gameState';
 import { el, type Screen } from '../screen';
+import { MUSIC_CREDIT } from '../audio/musicFiles';
 import { settings, updateSettings, type Settings } from '../settings';
 
 const playTime = (ms: number): string => {
@@ -82,6 +83,11 @@ export class SettingsOverlay extends Overlay {
       el('h3', {}, 'Sound'),
       slider('Master volume', 'masterVolume'),
       slider('Music', 'musicVolume'),
+      select<'synth' | 'composed'>('Music source', [['synth', 'Synthesized (made on the fly)'], ['composed', 'Composed (human-made, open licence)']], s.musicSource, (v) => {
+        updateSettings({ musicSource: v });
+        this.render();
+      }),
+      ...(s.musicSource === 'composed' ? [el('div', { class: 'dim small' }, MUSIC_CREDIT)] : []),
       slider('Sound effects', 'sfxVolume'),
       check('Mute everything', 'muted'),
       el('h3', {}, 'Battle'),

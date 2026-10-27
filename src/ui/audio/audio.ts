@@ -1,11 +1,22 @@
 import { onSettingsChange, settings } from '../settings';
+import { musicUrl, wantsComposed } from './musicFiles';
 
 /**
- * Sound, made on the fly with WebAudio: no audio files. Sound effects are
- * short synthesized blips and bursts; music is a small procedural loop per
- * mood (a pad, a bass line and an arpeggio over a chord progression). The
- * audio context starts on the first click or key press, as browsers ask.
+ * Sound, made on the fly with WebAudio. Sound effects are short synthesized
+ * blips and bursts; music is by default a small procedural loop per mood (a
+ * pad, a bass line and an arpeggio over a chord progression). As an option the
+ * music is a human-made CC0 track per mood (`public/music/`), which falls back
+ * to the synthesized loop if a file cannot be played. The audio context starts
+ * on the first click or key press, as browsers ask.
  */
+
+/** Seconds to fade a composed track in or out when the mood changes. */
+const FADE = 1.2;
+
+interface FilePlayer {
+  el: HTMLAudioElement;
+  gain: GainNode;
+}
 
 export type Sfx = 'click' | 'hit' | 'crit' | 'miss' | 'heal' | 'death' | 'break' | 'boss' | 'levelUp' | 'loot' | 'achievement' | 'victory' | 'defeat' | 'warning';
 export type Track = 'title' | 'town' | 'world' | 'dungeon' | 'battle' | 'boss' | 'none';
@@ -42,12 +53,20 @@ class AudioEngine {
   private timer: number | undefined;
   private nextBar = 0;
   private bar = 0;
+  private player: FilePlayer | undefined;
+  private source = settings().musicSource;
 
   constructor() {
     const unlock = (): void => this.start();
     window.addEventListener('pointerdown', unlock, { once: false });
     window.addEventListener('keydown', unlock, { once: false });
-    onSettingsChange(() => this.applyVolumes());
+    onSettingsChange((s) => {
+      this.applyVolumes();
+      if (s.musicSource !== this.source) {
+        this.source = s.musicSource;
+        this.restartMusic();
+      }
+    });
   }
 
   /** Creates (or resumes) the audio context; called on user gestures. */
@@ -67,7 +86,7 @@ class AudioEngine {
       const data = this.noise.getChannelData(0);
       for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
       this.applyVolumes();
-      if (this.track !== 'none') this.schedule();
+      this.restartMusic();
     }
     if (this.ctx.state === 'suspended') void this.ctx.resume();
   }
@@ -76,7 +95,8 @@ class AudioEngine {
     const s = settings();
     if (!this.master || !this.music || !this.sfxBus) return;
     this.master.gain.value = s.muted ? 0 : s.masterVolume;
-    this.music.gain.value = s.musicVolume * 0.35;
+    // The synthesized loop is mixed quietly; recorded tracks are already at full level.
+    this.music.gain.value = s.musicVolume * (wantsComposed(s) ? 0.8 : 0.35);
     this.sfxBus.gain.value = s.sfxVolume;
   }
 
@@ -162,9 +182,60 @@ class AudioEngine {
   setTrack(track: Track): void {
     if (track === this.track) return;
     this.track = track;
+    this.restartMusic();
+  }
+
+  /** Stops whatever music plays and starts the current mood from the chosen source. */
+  private restartMusic(): void {
     if (this.timer !== undefined) window.clearInterval(this.timer);
     this.timer = undefined;
-    if (track !== 'none' && this.ctx) this.schedule();
+    this.stopFile();
+    if (this.track === 'none' || !this.ctx) return;
+    if (wantsComposed(settings())) this.playFile(this.track);
+    else this.schedule();
+  }
+
+  /** Plays a mood's recorded track on a loop, fading in; falls back to the synthesized loop on any failure. */
+  private playFile(track: Exclude<Track, 'none'>): void {
+    const ctx = this.ctx;
+    if (!ctx || !this.music) return;
+    const fallback = (): void => {
+      if (this.player?.el !== el) return;
+      this.stopFile();
+      if (this.track === track) this.schedule();
+    };
+    const el = new Audio(musicUrl(track, import.meta.env.BASE_URL));
+    el.loop = true;
+    el.preload = 'auto';
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(1, ctx.currentTime + FADE);
+    try {
+      ctx.createMediaElementSource(el).connect(gain);
+    } catch {
+      return this.schedule();
+    }
+    gain.connect(this.music);
+    this.player = { el, gain };
+    el.addEventListener('error', fallback);
+    el.play().catch(fallback);
+  }
+
+  /** Fades out and releases the current recorded track, if any. */
+  private stopFile(): void {
+    const p = this.player;
+    this.player = undefined;
+    if (!p || !this.ctx) return;
+    const t = this.ctx.currentTime;
+    p.gain.gain.cancelScheduledValues(t);
+    p.gain.gain.setValueAtTime(p.gain.gain.value, t);
+    p.gain.gain.linearRampToValueAtTime(0.0001, t + FADE);
+    window.setTimeout(() => {
+      p.el.pause();
+      p.el.removeAttribute('src');
+      p.el.load();
+      p.gain.disconnect();
+    }, FADE * 1000 + 100);
   }
 
   /** Schedules music a little ahead of time, bar by bar. */
