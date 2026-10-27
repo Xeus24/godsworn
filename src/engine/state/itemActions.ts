@@ -18,7 +18,7 @@ import {
   type Inventory,
   type SortMode,
 } from '../items/inventory';
-import { baseOf, isGear } from '../items/lookup';
+import { baseOf, isGear, rarityOrder } from '../items/lookup';
 import { applyLootFilter } from '../items/lootFilter';
 import { itemName } from '../items/naming';
 import { lastFilledSocket, socketInto, unsocket, unsocketCost } from '../items/sockets';
@@ -32,12 +32,13 @@ import type { GameSession } from './gameState';
 export type ItemLocation =
   | { where: 'inventory'; index: number }
   | { where: 'stash'; tab: number; index: number }
+  | { where: 'overflow'; index: number }
   | { where: 'equipment'; slot: EquipSlot };
 
 const fail = (reason: string): Result => ({ ok: false, reason });
 
 /** Most items held in overflow; past this the oldest is lost. */
-export const OVERFLOW_MAX = 40;
+export const OVERFLOW_MAX = 20;
 
 /** Items used straight from the bags, so auto-stash never takes them. */
 const KEEP_IN_BAGS = ['skeleton-key'];
@@ -48,6 +49,9 @@ const KEEP_IN_BAGS = ['skeleton-key'];
  */
 export class ItemActions {
   constructor(private readonly s: GameSession) {}
+
+  /** The bags and stash before the last stash operation, kept for one undo (never saved). */
+  private undoState: { slots: (ItemInstance | null)[]; tabs: (ItemInstance | null)[][]; seal: string } | undefined;
 
   private get inv(): Inventory {
     return this.s.state.inventory;
@@ -61,6 +65,7 @@ export class ItemActions {
   itemAt(loc: ItemLocation): ItemInstance | undefined {
     if (loc.where === 'inventory') return this.inv.slots[loc.index] ?? undefined;
     if (loc.where === 'stash') return this.s.state.stash.tabs[loc.tab]?.slots[loc.index] ?? undefined;
+    if (loc.where === 'overflow') return this.s.state.overflow[loc.index];
     return this.s.player.equipment[loc.slot];
   }
 
@@ -69,7 +74,47 @@ export class ItemActions {
     else if (loc.where === 'stash') {
       const tab = this.s.state.stash.tabs[loc.tab];
       if (tab) tab.slots[loc.index] = null;
-    } else delete this.s.player.equipment[loc.slot];
+    } else if (loc.where === 'overflow') this.s.state.overflow.splice(loc.index, 1);
+    else delete this.s.player.equipment[loc.slot];
+  }
+
+  /** What the bags, stash and gold look like right now. An undo only applies while this is unchanged. */
+  private fingerprint(): string {
+    const ids = (slots: (ItemInstance | null)[]): string => slots.map((x) => (x ? `${x.uid}:${x.quantity}` : '-')).join(',');
+    return [ids(this.inv.slots), ...this.s.state.stash.tabs.map((t) => ids(t.slots)), this.s.state.gold].join('|');
+  }
+
+  /** Runs a stash operation so that it can be undone once. */
+  private undoable(run: () => Result): Result {
+    const before = {
+      slots: structuredClone(this.inv.slots),
+      tabs: this.s.state.stash.tabs.map((t) => structuredClone(t.slots)),
+    };
+    const result = run();
+    if (result.ok) this.undoState = { ...before, seal: this.fingerprint() };
+    return result;
+  }
+
+  canUndo(): boolean {
+    return this.undoState !== undefined && this.undoState.seal === this.fingerprint() && !!this.s.world.inTown();
+  }
+
+  /** Reverses the last stash move, sort or bulk transfer, if nothing else has touched the bags, stash or gold since. */
+  undoStash(): Result {
+    const u = this.undoState;
+    if (!u) return fail('Nothing to undo.');
+    if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
+    if (u.seal !== this.fingerprint()) {
+      this.undoState = undefined;
+      return fail('Things have changed since then.');
+    }
+    this.inv.slots = u.slots;
+    this.s.state.stash.tabs.forEach((t, i) => {
+      if (u.tabs[i]) t.slots = u.tabs[i] as (ItemInstance | null)[];
+    });
+    this.undoState = undefined;
+    this.changed('move');
+    return { ok: true };
   }
 
   /**
@@ -94,13 +139,21 @@ export class ItemActions {
   private setAside(item: ItemInstance): void {
     const held = this.s.state.overflow;
     held.push(item);
-    if (held.length > OVERFLOW_MAX) held.shift();
+    if (held.length <= OVERFLOW_MAX) return;
+    // Past the cap the least valuable (lowest rarity, then oldest) is lost. Quest items are never the one.
+    const droppable = [...held.keys()].filter((i) => baseOf(held[i] as ItemInstance).category !== 'quest');
+    if (droppable.length === 0) return;
+    let worst = droppable[0] as number;
+    for (const i of droppable) if (rarityOrder((held[i] as ItemInstance).rarity) < rarityOrder((held[worst] as ItemInstance).rarity)) worst = i;
+    const [lost] = held.splice(worst, 1);
+    if (lost) this.s.bus.emit('toast', { kind: 'warning', text: `Set-aside loot is full: ${itemName(lost)} was lost` });
   }
 
   /** Moves set-aside items into the bags (all of them, or just the one at `index`). Returns how many stacks were claimed. */
   claimOverflow(index?: number): Result {
     const held = this.s.state.overflow;
     if (held.length === 0) return fail('Nothing is set aside.');
+    if (!this.s.world.inTown()) return fail('Set-aside loot can only be claimed in a town.');
     const order = index === undefined ? held.map((_, i) => i) : [index];
     const remaining: ItemInstance[] = [];
     let claimed = 0;
@@ -117,6 +170,32 @@ export class ItemActions {
     if (claimed === 0) return fail('Your bags are full.');
     this.changed('overflow');
     return { ok: true };
+  }
+
+  /** On reaching a town, set-aside loot goes to the bags and then the stash. Returns the units recovered. */
+  settleOverflow(): number {
+    const held = this.s.state.overflow;
+    if (held.length === 0 || !this.s.world.inTown()) return 0;
+    const grids = [this.inv, ...this.s.state.stash.tabs];
+    const rest: ItemInstance[] = [];
+    let moved = 0;
+    for (const item of held.splice(0)) {
+      let left = item.quantity;
+      for (const g of grids) {
+        if (left <= 0) break;
+        const piece: ItemInstance = { ...item, sockets: [...item.sockets], quantity: left };
+        const before = left;
+        left = addItem(g, piece);
+        moved += before - left;
+      }
+      if (left > 0) rest.push({ ...item, uid: this.s.newUid(), quantity: left });
+    }
+    held.push(...rest);
+    if (moved > 0) {
+      this.s.bus.emit('toast', { kind: 'info', text: `Recovered ${moved} set-aside item${moved === 1 ? '' : 's'}` });
+      this.changed('overflow');
+    }
+    return moved;
   }
 
   /** Adds dropped loot through the loot filter, with toasts for notable finds. */
@@ -247,12 +326,17 @@ export class ItemActions {
 
   /** Moves between inventory and stash slots (merging stacks or swapping). */
   move(from: ItemLocation, to: ItemLocation): Result {
+    if (from.where === 'overflow') return to.where === 'inventory' || to.where === 'stash' ? this.claimOverflow(from.index) : fail('Cannot move there.');
     if ((from.where === 'stash' || to.where === 'stash') && !this.s.world.inTown()) return fail('The stash is kept in towns.');
+    return this.undoable(() => this.moveNow(from, to));
+  }
+
+  private moveNow(from: ItemLocation, to: ItemLocation): Result {
     const grid = (loc: ItemLocation): Inventory | undefined =>
       loc.where === 'inventory' ? this.inv : loc.where === 'stash' ? this.s.state.stash.tabs[loc.tab] : undefined;
     const a = grid(from);
     const b = grid(to);
-    if (!a || !b || from.where === 'equipment' || to.where === 'equipment') return fail('Cannot move there.');
+    if (!a || !b || from.where === 'equipment' || to.where === 'equipment' || from.where === 'overflow' || to.where === 'overflow') return fail('Cannot move there.');
     moveItem(a, from.index, b, to.index);
     this.changed('move');
     return { ok: true };
@@ -260,7 +344,11 @@ export class ItemActions {
 
   sort(mode: SortMode, tab?: number): void {
     const target = tab === undefined ? this.inv : this.s.state.stash.tabs[tab];
-    if (target) sortInventory(target, mode);
+    if (!target) return;
+    this.undoable(() => {
+      sortInventory(target, mode);
+      return { ok: true };
+    });
     this.changed('sort');
   }
 
@@ -276,6 +364,12 @@ export class ItemActions {
 
   /** Sends the bag item to the stash (first tab with room, starting at `preferTab`) or pulls a stash item into the bags. */
   quickTransfer(loc: ItemLocation, preferTab = 0): Result {
+    if (loc.where === 'overflow') return this.claimOverflow(loc.index);
+    return this.undoable(() => this.quickTransferNow(loc, preferTab));
+  }
+
+  private quickTransferNow(loc: ItemLocation, preferTab: number): Result {
+    if (loc.where === 'overflow') return fail('Claim it first.');
     if (loc.where === 'equipment') return fail('Unequip it first.');
     if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
     const tabs = this.s.state.stash.tabs;
@@ -300,22 +394,33 @@ export class ItemActions {
 
   /** Stashes everything in the bags that matches `pick` (default all), skipping nothing but what does not fit. */
   depositAll(preferTab = 0, pick?: (item: ItemInstance) => boolean): Result & { moved?: number } {
+    return this.undoable(() => this.depositNow(preferTab, pick)) as Result & { moved?: number };
+  }
+
+  private depositNow(preferTab: number, pick?: (item: ItemInstance) => boolean): Result & { moved?: number } {
     if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
     const tabs = this.s.state.stash.tabs;
     const order = [...tabs.keys()].sort((a, b) => Number(a !== preferTab) - Number(b !== preferTab) || a - b);
     let moved = 0;
     for (const t of order) moved += transferAll(this.inv, tabs[t] as Inventory, pick);
     if (moved === 0) return fail('Nothing to stash, or the stash is full.');
+    this.s.bus.emit('toast', { kind: 'info', text: `Stashed ${moved} item${moved === 1 ? '' : 's'}` });
     this.changed('move');
     return { ok: true, moved };
   }
 
   /** Pulls everything from a stash tab into the bags, as far as it fits. */
   withdrawTab(tab: number): Result {
+    return this.undoable(() => this.withdrawNow(tab));
+  }
+
+  private withdrawNow(tab: number): Result {
     if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
     const from = this.s.state.stash.tabs[tab];
     if (!from) return fail('No such tab.');
-    if (transferAll(from, this.inv) === 0) return fail(from.slots.some(Boolean) ? 'Your bags are full.' : 'The tab is empty.');
+    const taken = transferAll(from, this.inv);
+    if (taken === 0) return fail(from.slots.some(Boolean) ? 'Your bags are full.' : 'The tab is empty.');
+    this.s.bus.emit('toast', { kind: 'info', text: `Took ${taken} item${taken === 1 ? '' : 's'} from the stash` });
     this.changed('move');
     return { ok: true };
   }
@@ -341,9 +446,8 @@ export class ItemActions {
     if (rules.length === 0 || !this.s.world.inTown()) return 0;
     // Leave what a quest objective or an opened chest needs from the bags.
     const needed = itemsNeededByQuests(this.s.state);
-    const r = this.depositAll(0, (item) => rules.includes(baseOf(item).category) && !item.junk && !needed.has(item.baseId) && !KEEP_IN_BAGS.includes(item.baseId));
+    const r = this.depositNow(0, (item) => rules.includes(baseOf(item).category) && !item.junk && !needed.has(item.baseId) && !KEEP_IN_BAGS.includes(item.baseId));
     if (!r.ok) return 0;
-    this.s.bus.emit('toast', { kind: 'info', text: `Stashed ${r.moved} item${r.moved === 1 ? '' : 's'} by your stash rules` });
     return r.moved ?? 0;
   }
 

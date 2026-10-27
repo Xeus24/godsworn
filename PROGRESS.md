@@ -113,10 +113,13 @@
   - Sort by category, rarity, level or name (junk always last).
 - **Stash:** shared, with up to 6 tabs costing 1k to 100k gold. Tabs can be renamed (14 characters), sorted on their own, and filled or emptied in bulk.
 - **Transfers:** shift-click or the "Send to stash / Take to bags" button moves an item across (merging stacks, spilling into the next tab with room); "Stash all", "Stash filtered" (the current category tab) and "Take all" move many at once. Town only. "Salvage junk gear" works anywhere.
-- **Overflow:** loot that does not fit in the bags is set aside (up to 40 entries, oldest dropped) instead of vanishing, and claimed from the Inventory screen. Save version 17 adds `overflow`, `stashRules` and stash tab names (older saves load with defaults).
+- **Overflow:** loot that does not fit in the bags is set aside (up to 20 entries; past that the lowest-rarity one is lost, never a quest item). It shows as a grid you can drag or shift-click into the bags, but only in a town, and reaching a town recovers it automatically (bags first, then the stash). This keeps it a safety net, not extra field space. Save version 17 adds `overflow`, `stashRules` and stash tab names (older saves load with defaults).
 - **Search:** one box on the Inventory screen dims every bag and stash item whose name does not match; stash tabs show how many matches they hold.
 - **Auto-stash rules:** gems, runes, curiosities and/or materials can be sent to the stash automatically on arriving in a town (never junk-marked items, items an active quest objective needs, or skeleton keys). The stash has its own sort setting.
+- **Undo:** one-step undo for the last stash move, sort or bulk transfer. It only works while the bags, stash and gold are exactly as that move left them, so it can never duplicate or resurrect sold items.
+- **Balance guards:** skeleton keys are used from the bags only, there is no remote stash and combat consumables never come from the stash (both would void bag-size limits and Traveler's Packs).
 - **Holdings:** quests (collect, deliver and item conditions), skeleton keys, Rift Maps, workshop services and crafting count and spend items from the bags first, then the stash, then set-aside loot (`countHeld` / `takeHeld`).
+- **Polish:** searching jumps to the first stash tab with a match, tabs carry a rarity underline for their best item, moved items flash briefly (not with reduced motion), tooltips show on keyboard focus, J toggles junk, and the stash sits under the bags on narrower windows.
 - **Keyboard:** every cell is focusable with an accessible label. Enter selects, Shift+Enter sends it across the stash, Space is the quick action, arrows move within a grid, Escape deselects; focus survives redraws.
 - **Material stacks:** crafting materials stack to 999 (other items stay at 99).
 - Sorting never loses an item: if a merge could not fit, the grid is left untouched.

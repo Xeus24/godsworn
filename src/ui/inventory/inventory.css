@@ -374,3 +374,41 @@ select {
 .tab.dimmed {
   opacity: 0.5;
 }
+
+.item-cell:focus-visible,
+.tab:focus-visible,
+.bag-tools button:focus-visible {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 1px;
+}
+
+.item-cell.arrived {
+  animation: cell-arrive 0.45s ease-out;
+}
+
+@keyframes cell-arrive {
+  from {
+    box-shadow: 0 0 0 2px var(--gold-hi), 0 0 10px var(--gold-hi);
+    transform: scale(1.12);
+  }
+  to {
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item-cell.arrived {
+    animation: none;
+  }
+}
+
+.overflow-grid {
+  margin-top: 4px;
+}
+
+@media (max-width: 1250px) and (min-width: 761px) {
+  .inventory-body .sheet-col:nth-child(3) {
+    grid-column: 2;
+  }
+}

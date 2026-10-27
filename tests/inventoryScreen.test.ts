@@ -119,7 +119,7 @@ describe('inventory screen', () => {
     for (let i = 0; i < session.state.inventory.slots.length; i++) session.state.inventory.slots[i] ??= createItem('sword-t1', 1, uid);
     session.items.give(createItem('sword-t1', 1, uid), false);
     screen.render();
-    expect(text(root)).toContain('Set aside (1)');
+    expect(text(root)).toContain('Set aside (1/20)');
     session.state.inventory.slots[0] = null;
     const claim = [...root.querySelectorAll('button')].find((b) => b.textContent === 'Claim all') as HTMLButtonElement;
     claim.click();
@@ -134,5 +134,78 @@ describe('inventory screen', () => {
     boxes[0]!.checked = true;
     boxes[0]!.dispatchEvent(new Event('change', { bubbles: true }));
     expect(session.state.stashRules).toEqual(['gem']);
+  });
+
+  const dragData = (): DataTransfer => {
+    const data: Record<string, string> = {};
+    return {
+      effectAllowed: 'move',
+      get types() {
+        return Object.keys(data);
+      },
+      setData: (k: string, v: string) => void (data[k] = v),
+      getData: (k: string) => data[k] ?? '',
+    } as unknown as DataTransfer;
+  };
+  const drag = (from: HTMLElement, to: HTMLElement): void => {
+    const dt = dragData();
+    const start = new Event('dragstart', { bubbles: true });
+    Object.defineProperty(start, 'dataTransfer', { value: dt });
+    from.dispatchEvent(start);
+    for (const type of ['dragover', 'drop']) {
+      const ev = new Event(type, { bubbles: true, cancelable: true });
+      Object.defineProperty(ev, 'dataTransfer', { value: dt });
+      to.dispatchEvent(ev);
+    }
+  };
+
+  it('dragging a bag item onto a stash slot stores it, and Undo brings it back', () => {
+    const { session, root, screen } = setup();
+    session.items.give(createItem('mithril-ore', 5, uid), false);
+    screen.render();
+    const index = session.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+    drag(cell(root, `inventory:${index}`), cell(root, 'stash:0:3'));
+    expect(session.items.count('mithril-ore')).toBe(0);
+    expect(session.state.stash.tabs[0]?.slots[3]?.baseId).toBe('mithril-ore');
+    const undo = [...root.querySelectorAll('button')].find((b) => b.textContent === 'Undo') as HTMLButtonElement;
+    expect(undo.disabled).toBe(false);
+    undo.click();
+    expect(session.items.count('mithril-ore')).toBe(5);
+    expect(session.state.stash.tabs[0]?.slots[3]).toBeNull();
+  });
+
+  it('dragging set-aside loot into the bags claims it', () => {
+    const { session, root, screen } = setup();
+    for (let i = 0; i < session.state.inventory.slots.length; i++) session.state.inventory.slots[i] ??= createItem('sword-t1', 1, uid);
+    const loot = createItem('sword-t3', 1, uid);
+    session.items.give(loot, false);
+    session.state.inventory.slots[5] = null;
+    screen.render();
+    expect(root.querySelectorAll('[data-loc^="overflow:"]')).toHaveLength(1);
+    drag(cell(root, 'overflow:0'), cell(root, 'inventory:5'));
+    expect(session.state.overflow).toHaveLength(0);
+    expect(session.state.inventory.slots.some((x) => x?.baseId === 'sword-t3')).toBe(true);
+  });
+
+  it('searching jumps to the first stash tab that has a match', () => {
+    const { session, root, screen } = setup();
+    session.addGold(1000, 'test');
+    session.items.buyStashTab();
+    session.state.stash.tabs[1]!.slots[0] = createItem('mithril-ore', 3, uid);
+    screen.render();
+    const box = root.querySelector<HTMLInputElement>('.item-search') as HTMLInputElement;
+    box.value = 'mithril';
+    box.dispatchEvent(new Event('input', { bubbles: true }));
+    expect([...root.querySelectorAll('.tab.active')].map((t) => t.textContent)).toContain('Tab 2 (1)');
+    expect(root.querySelectorAll('[data-loc^="stash:1:"]')).toHaveLength(48);
+  });
+
+  it('J marks the focused item as junk', () => {
+    const { session, root, screen } = setup();
+    session.items.give(createItem('mithril-ore', 1, uid), false);
+    screen.render();
+    const index = session.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+    press(cell(root, `inventory:${index}`), 'j');
+    expect(session.state.inventory.slots[index]?.junk).toBe(true);
   });
 });

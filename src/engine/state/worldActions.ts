@@ -8,7 +8,7 @@ import type { EncounterDef } from '../combat/types';
 import { gainGatheringXp, gatherYield, gatheringLevel } from '../economy/crafting';
 import { favorTiers, type DeedOccurrence } from '../gods/devotion';
 import { createItem } from '../items/generate';
-import { addItem, canAdd, countHeld, createInventory, STASH_TAB_SIZE, takeHeld } from '../items/inventory';
+import { addItem, canAdd, countOf, createInventory, STASH_TAB_SIZE, takeQuantity } from '../items/inventory';
 import { rollLoot } from '../items/loot';
 import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
@@ -281,6 +281,7 @@ export class WorldActions {
         this.world.lastTown = town;
         this.collectHouse();
         this.s.items.applyStashRules();
+        this.s.items.settleOverflow();
         return { kind: 'town', town };
       }
       case 'dungeon': {
@@ -362,8 +363,8 @@ export class WorldActions {
     if (e.locked) {
       const now = absMinute(this.s.state.clock);
       const lastFail = this.world.lockpickFailed[key];
-      if (countHeld(this.s.state, 'skeleton-key') > 0) {
-        takeHeld(this.s.state, 'skeleton-key', 1);
+      if (countOf(this.s.state.inventory, 'skeleton-key') > 0) {
+        takeQuantity(this.s.state.inventory, 'skeleton-key', 1);
         notes.push('Your Skeleton Key turns, and snaps.');
       } else if (lastFail !== undefined && now - lastFail < LOCKPICK_RETRY) {
         return 'Locked. Your last attempt bent your picks; try again in an hour.';

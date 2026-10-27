@@ -311,3 +311,89 @@ describe('holdings: bags, stash and set-aside loot', () => {
     for (const i of r.inputs) expect(countHeld(s.state, i.itemId)).toBe(0);
   });
 });
+
+describe('overflow balance rules', () => {
+  const leaveTown = (s: GameSession): void => {
+    s.state.world.position = { ...s.state.world.position, x: s.state.world.position.x + 1 };
+    expect(s.world.inTown()).toBeUndefined();
+  };
+
+  it('set-aside loot can only be claimed in a town', () => {
+    const s = GameSession.newGame(5, makeHero());
+    fillBags(s);
+    s.items.give(sword(), false);
+    s.state.inventory.slots[0] = null;
+    leaveTown(s);
+    expect(s.items.claimOverflow().ok).toBe(false);
+    expect(s.state.overflow).toHaveLength(1);
+  });
+
+  it('is capped at 20 and loses the least valuable item first', () => {
+    const s = GameSession.newGame(5, makeHero());
+    fillBags(s);
+    const rare = sword();
+    rare.rarity = 'epic';
+    s.items.give(rare, false);
+    for (let i = 0; i < OVERFLOW_MAX + 3; i++) s.items.give(sword(), false);
+    expect(s.state.overflow).toHaveLength(OVERFLOW_MAX);
+    expect(s.state.overflow.some((x) => x.rarity === 'epic')).toBe(true);
+  });
+
+  it('never drops a quest item from set-aside loot', () => {
+    const s = GameSession.newGame(5, makeHero());
+    fillBags(s);
+    const questItem = createItem(content.items.all().find((b) => b.category === 'quest')!.id, 1, uid);
+    s.items.give(questItem, false);
+    for (let i = 0; i < OVERFLOW_MAX + 5; i++) s.items.give(sword(), false);
+    expect(s.state.overflow.some((x) => x.baseId === questItem.baseId)).toBe(true);
+  });
+
+  it('arriving in a town recovers set-aside loot into the bags, then the stash', () => {
+    const s = GameSession.newGame(5, makeHero());
+    fillBags(s);
+    s.items.give(sword(), false);
+    s.items.give(sword(), false);
+    s.state.inventory.slots[0] = null;
+    expect(s.items.settleOverflow()).toBe(2);
+    expect(s.state.overflow).toHaveLength(0);
+    expect(s.state.stash.tabs[0]!.slots.filter(Boolean)).toHaveLength(1);
+  });
+
+  it('skeleton keys are only used from the bags', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.state.stash.tabs[0]!.slots[0] = createItem('skeleton-key', 1, uid);
+    expect(countHeld(s.state, 'skeleton-key')).toBe(1);
+    expect(s.items.count('skeleton-key')).toBe(0);
+  });
+});
+
+describe('undo', () => {
+  it('reverses the last move, sort or bulk transfer once', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.items.give(ore(5), false);
+    s.items.depositAll(0, (i) => i.baseId === 'mithril-ore');
+    expect(s.items.canUndo()).toBe(true);
+    expect(s.items.undoStash().ok).toBe(true);
+    expect(s.items.count('mithril-ore')).toBe(5);
+    expect(s.items.undoStash().ok).toBe(false);
+  });
+
+  it('refuses once anything else changed, so it cannot duplicate or restore sold items', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.items.give(ore(5), false);
+    const index = s.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+    s.items.quickTransfer({ where: 'inventory', index });
+    s.addGold(10, 'test');
+    expect(s.items.canUndo()).toBe(false);
+    expect(s.items.undoStash().ok).toBe(false);
+    expect(s.items.count('mithril-ore')).toBe(0);
+  });
+
+  it('a failed move does not replace the last undo', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.items.give(ore(2), false);
+    s.items.depositAll(0, (i) => i.baseId === 'mithril-ore');
+    expect(s.items.depositAll(0).ok).toBe(true);
+    expect(s.items.undoStash().ok).toBe(true);
+  });
+});
