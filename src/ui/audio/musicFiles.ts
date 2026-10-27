@@ -158,6 +158,25 @@ export function moodForTown(id: string): MusicMood {
   return mood in MUSIC_PLAYLISTS ? (mood as MusicMood) : 'town';
 }
 
+/** Moods whose music reacts to how the fight is going. */
+export const INTENSE_MOODS: readonly MusicMood[] = ['battle', 'boss'];
+
+/** Low-pass cutoffs (Hz) of the recorded battle music: muffled while the fight is easy, fully open at its height. */
+export const CALM_CUTOFF = 2200;
+export const OPEN_CUTOFF = 20000;
+
+/** How tense a battle is, 0..1: the party's health running down, the enemy's nearly spent, and a boss on the field. */
+export function battleIntensity(partyHp: number, enemyHp: number, boss: boolean): number {
+  const clamp = (n: number): number => Math.max(0, Math.min(1, n));
+  return clamp((1 - clamp(partyHp)) * 0.6 + (1 - clamp(enemyHp)) * 0.25 + (boss ? 0.15 : 0.05));
+}
+
+/** The cutoff for an intensity: exponential, so each step sounds like an even opening. */
+export function intensityCutoff(intensity: number): number {
+  const i = Math.max(0, Math.min(1, intensity));
+  return CALM_CUTOFF * Math.pow(OPEN_CUTOFF / CALM_CUTOFF, i);
+}
+
 /** Moods that start from the top rather than where you left off. */
 export const RESTART_MOODS: readonly MusicMood[] = ['battle', 'boss'];
 

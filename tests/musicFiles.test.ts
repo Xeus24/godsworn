@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { AMBIENCE_IDS, DEPTHS_LEVEL, MUSIC_MOODS, MUSIC_PLAYLISTS, MUSIC_TRACKS, SYNTH_MOOD, ambienceFor, ambienceUrl, dungeonRoom, moodForMap, moodForTown, musicUrl, nextTrack, wantsComposed } from '../src/ui/audio/musicFiles';
+import { AMBIENCE_IDS, CALM_CUTOFF, OPEN_CUTOFF, battleIntensity, intensityCutoff, DEPTHS_LEVEL, MUSIC_MOODS, MUSIC_PLAYLISTS, MUSIC_TRACKS, SYNTH_MOOD, ambienceFor, ambienceUrl, dungeonRoom, moodForMap, moodForTown, musicUrl, nextTrack, wantsComposed } from '../src/ui/audio/musicFiles';
 import { SFX_ALL, SFX_FILES, SFX_NAMES, STEP_CLIPS, sfxUrl, stepSurface, wantsRecorded } from '../src/ui/audio/sfxFiles';
 import { DEFAULT_SETTINGS } from '../src/ui/settings';
 
@@ -113,6 +113,25 @@ describe('composed music', () => {
       expect(credits, slug).toContain(track.title.replace('’', "'"));
     }
     for (const id of AMBIENCE_IDS) expect(credits, id).toContain(`${id}.ogg`);
+  });
+});
+
+describe('battle intensity', () => {
+  it('rises as the party falters, the enemy nears its end, and a boss is on the field', () => {
+    const start = battleIntensity(1, 1, false);
+    expect(start).toBeLessThan(0.1);
+    expect(battleIntensity(1, 1, true)).toBeGreaterThan(start);
+    expect(battleIntensity(0.4, 1, false)).toBeGreaterThan(start + 0.3);
+    expect(battleIntensity(1, 0.1, false)).toBeGreaterThan(start + 0.15);
+    expect(battleIntensity(0, 0, true)).toBe(1);
+    expect(battleIntensity(2, 5, false)).toBeGreaterThanOrEqual(0);
+  });
+
+  it('opens the filter from muffled to full, evenly', () => {
+    expect(intensityCutoff(0)).toBeCloseTo(CALM_CUTOFF);
+    expect(intensityCutoff(1)).toBeCloseTo(OPEN_CUTOFF);
+    expect(intensityCutoff(0.5)).toBeCloseTo(Math.sqrt(CALM_CUTOFF * OPEN_CUTOFF));
+    expect(intensityCutoff(-3)).toBeCloseTo(CALM_CUTOFF);
   });
 });
 

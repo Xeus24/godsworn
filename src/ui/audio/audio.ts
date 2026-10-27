@@ -1,5 +1,5 @@
 import { onSettingsChange, settings } from '../settings';
-import { AMBIENCE_GAIN, MUSIC_CROSSFADE, MUSIC_PLAYLISTS, MUSIC_TRACKS, RESTART_MOODS, SYNTH_MOOD, ambienceFor, ambienceUrl, musicUrl, nextTrack, wantsComposed, type AmbienceId, type MusicMood, type MusicTrack } from './musicFiles';
+import { AMBIENCE_GAIN, INTENSE_MOODS, MUSIC_CROSSFADE, OPEN_CUTOFF, intensityCutoff, MUSIC_PLAYLISTS, MUSIC_TRACKS, RESTART_MOODS, SYNTH_MOOD, ambienceFor, ambienceUrl, musicUrl, nextTrack, wantsComposed, type AmbienceId, type MusicMood, type MusicTrack } from './musicFiles';
 import { SFX_ALL, SFX_FILES, SFX_GAIN, STEP_CLIPS, sfxUrl, wantsRecorded, type SfxName, type StepSurface } from './sfxFiles';
 
 /**
@@ -77,6 +77,10 @@ class AudioEngine {
   private master: GainNode | undefined;
   private music: GainNode | undefined;
   private sfxBus: GainNode | undefined;
+  /** The recorded music passes through this filter, which opens as a battle heats up. */
+  private musicFilter: BiquadFilterNode | undefined;
+  /** How tense the battle is, 0..1. */
+  private intensity = 0;
   /** Ambience and footsteps have their own volumes, apart from music and effects. */
   private ambienceBus: GainNode | undefined;
   private stepBus: GainNode | undefined;
@@ -149,6 +153,10 @@ class AudioEngine {
       this.sfxBus = this.ctx.createGain();
       this.ambienceBus = this.ctx.createGain();
       this.stepBus = this.ctx.createGain();
+      this.musicFilter = this.ctx.createBiquadFilter();
+      this.musicFilter.type = 'lowpass';
+      this.musicFilter.frequency.value = OPEN_CUTOFF;
+      this.musicFilter.connect(this.music);
       this.music.connect(this.master);
       this.sfxBus.connect(this.master);
       this.ambienceBus.connect(this.master);
@@ -335,6 +343,7 @@ class AudioEngine {
   setTrack(track: Track): void {
     if (track === this.track) return;
     this.track = track;
+    if (track !== 'none' && INTENSE_MOODS.includes(track)) this.intensity = 0;
     this.restartMusic();
   }
 
@@ -352,6 +361,21 @@ class AudioEngine {
   private notifyNowPlaying(): void {
     const t = this.nowPlaying();
     for (const cb of this.nowListeners) cb(t);
+  }
+
+  /** Tells the music how tense the battle is (0..1): the recorded music opens up, the synthesized loop thickens. */
+  setIntensity(intensity: number): void {
+    this.intensity = Math.max(0, Math.min(1, intensity));
+    this.applyIntensity();
+  }
+
+  /** Muffles the recorded battle music while the fight is easy, and opens it fully as it heats up. */
+  private applyIntensity(): void {
+    const filter = this.musicFilter;
+    const ctx = this.ctx;
+    if (!filter || !ctx) return;
+    const battle = this.track !== 'none' && INTENSE_MOODS.includes(this.track);
+    filter.frequency.setTargetAtTime(battle ? intensityCutoff(this.intensity) : OPEN_CUTOFF, ctx.currentTime, 0.8);
   }
 
   /** Crossfades to the next track in the mood's playlist. */
@@ -378,6 +402,7 @@ class AudioEngine {
     if (this.timer !== undefined) window.clearInterval(this.timer);
     this.timer = undefined;
     this.stopFile();
+    this.applyIntensity();
     this.syncAmbience();
     if (this.track === 'none' || !this.ctx) return;
     if (this.composed()) this.playFile(this.track);
@@ -407,7 +432,7 @@ class AudioEngine {
     } catch {
       return this.schedule();
     }
-    gain.connect(this.music);
+    gain.connect(this.musicFilter ?? this.music);
     const p: FilePlayer = { el, gain, mood, slug };
     const previous = this.player;
     this.player = p;
@@ -572,10 +597,16 @@ class AudioEngine {
         // Bass on beats 1 and 3.
         this.tone(hz(root - 12), this.nextBar, barLen / 2, 'triangle', 0.12, undefined, out);
         this.tone(hz(root - 12), this.nextBar + barLen / 2, barLen / 2, 'triangle', 0.1, undefined, out);
-        // Arpeggio.
-        for (let i = 0; i < mood.arp; i++) {
+        // Arpeggio (twice as dense, with bass on every beat, when a battle is at its height).
+        const hot = this.intensity > 0.6 && INTENSE_MOODS.includes(this.track as MusicMood);
+        if (hot) {
+          this.tone(hz(root - 12), this.nextBar + barLen / 4, barLen / 4, 'triangle', 0.08, undefined, out);
+          this.tone(hz(root - 12), this.nextBar + (3 * barLen) / 4, barLen / 4, 'triangle', 0.08, undefined, out);
+        }
+        const arpNotes = hot ? mood.arp * 2 : mood.arp;
+        for (let i = 0; i < arpNotes; i++) {
           const iv = mood.chord[i % mood.chord.length] ?? 0;
-          this.tone(hz(root + 24 + iv), this.nextBar + (i * barLen) / mood.arp, barLen / mood.arp, mood.wave, 0.025, undefined, out);
+          this.tone(hz(root + 24 + iv), this.nextBar + (i * barLen) / arpNotes, barLen / arpNotes, mood.wave, 0.025, undefined, out);
         }
         this.nextBar += barLen;
         this.bar++;

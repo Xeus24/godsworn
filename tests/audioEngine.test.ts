@@ -12,6 +12,9 @@ class FakeParam {
   setValueAtTime(v: number): void {
     this.value = v;
   }
+  setTargetAtTime(v: number): void {
+    this.value = v;
+  }
   linearRampToValueAtTime(v: number): void {
     this.value = v;
   }
@@ -279,6 +282,25 @@ describe('audio engine', () => {
     expect(buses.ambienceBus.gain.value).toBeCloseTo(0.16);
     updateSettings({ musicSource: 'synth' });
     expect(buses.ambienceBus.gain.value).toBeCloseTo(0.07);
+  });
+
+  it('opens the battle music as the fight heats up, and the filter stays open elsewhere', async () => {
+    const filter = (audio() as unknown as { musicFilter: FakeNode }).musicFilter;
+    audio().setTrack('battle');
+    await settle();
+    expect(filter.frequency.value).toBeCloseTo(2200);
+    audio().setIntensity(1);
+    expect(filter.frequency.value).toBeCloseTo(20000);
+    audio().setIntensity(0.5);
+    expect(filter.frequency.value).toBeGreaterThan(2200);
+    expect(filter.frequency.value).toBeLessThan(20000);
+    audio().setTrack('world');
+    await settle();
+    expect(filter.frequency.value).toBe(20000);
+    // A new battle starts calm again.
+    audio().setTrack('battle');
+    await settle();
+    expect(filter.frequency.value).toBeCloseTo(2200);
   });
 
   it('knows every mood has a track', () => {

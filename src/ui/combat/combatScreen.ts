@@ -1,4 +1,5 @@
 import { audio } from '../audio/audio';
+import { battleIntensity } from '../audio/musicFiles';
 import { settings, updateSettings } from '../settings';
 import { content } from '../../data';
 import { chooseAction } from '../../engine/combat/ai';
@@ -188,6 +189,7 @@ export class CombatScreen implements Screen {
     this.playing = true;
     this.scene.applyEvent(e);
     this.sound(e);
+    this.musicMood(e);
     const line = this.describe(e);
     if (line) this.addLog(line, e.type === 'boss');
     if (e.type === 'turn') this.scene.actorId = e.actorId;
@@ -481,6 +483,18 @@ export class CombatScreen implements Screen {
   }
 
   // ---------------------------------------------------------- log & results
+
+  /** Lets the music follow the fight: tension from both sides' health, and a step up when a boss changes phase. */
+  private musicMood(e: BattleEvent): void {
+    const hp = (side: 'party' | 'enemy'): number => {
+      const units = this.battle.combatants.filter((x) => x.side === side);
+      const max = units.reduce((n, x) => n + x.maxHp, 0);
+      return max > 0 ? units.reduce((n, x) => n + (x.alive ? Math.max(0, x.hp) : 0), 0) / max : 1;
+    };
+    const boss = this.battle.combatants.some((x) => x.side === 'enemy' && (x.tier === 'boss' || x.tier === 'worldBoss'));
+    audio().setIntensity(battleIntensity(hp('party'), hp('enemy'), boss));
+    if (e.type === 'boss' && (e.moment === 'phase' || e.moment === 'enrage')) audio().skip();
+  }
 
   /** The sound of a battle event. */
   private sound(e: BattleEvent): void {
