@@ -7,9 +7,7 @@ import { DOLL } from './dcssDoll';
  * the weapon and offhand, picked from the worn gear's weight and tier. Returns undefined until every
  * layer has loaded; callers then draw the procedural hero sprite instead.
  */
-const SCALE = 3;
-const PAD = 4;
-const SIZE = 32 * SCALE + PAD * 2;
+const DEFAULT_SCALE = 3;
 const OUTLINE = '#120c18';
 const HAIRED = new Set(['human', 'elf', 'dwarf', 'gnome', 'fae', 'nephilim']);
 
@@ -66,8 +64,11 @@ function load(name: string): HTMLImageElement | null | undefined {
   return null;
 }
 
-export function heroDoll(raceId: string, variant: number, weapons: string[], look: GearLook = {}): HTMLCanvasElement | undefined {
-  const key = `${raceId}|${variant}|${weapons.join(',')}|${JSON.stringify(look)}`;
+export function heroDoll(raceId: string, variant: number, weapons: string[], look: GearLook = {}, scale = DEFAULT_SCALE): HTMLCanvasElement | undefined {
+  const SCALE = scale;
+  const PAD = scale + 1;
+  const SIZE = 32 * SCALE + PAD * 2;
+  const key = `${raceId}|${variant}|${weapons.join(',')}|${JSON.stringify(look)}|${scale}`;
   const hit = built.get(key);
   if (hit) return hit;
   const names = layersFor(raceId, variant, weapons, look);

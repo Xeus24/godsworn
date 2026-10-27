@@ -1,6 +1,7 @@
 // Generated from the CC0 Dungeon Crawl Stone Soup tiles (public/art/items, see public/art/CREDITS.md).
 /** Candidate tiles per item kind, lowest tier first. */
 export const ITEM_TILES: Record<string, string[]> = {
+  'rune': ['misc__runes__rune_abyss', 'misc__runes__rune_cocytus_new', 'misc__runes__rune_demonic_1', 'misc__runes__rune_demonic_2', 'misc__runes__rune_demonic_3', 'misc__runes__rune_demonic_4', 'misc__runes__rune_demonic_5', 'misc__runes__rune_demonic_6', 'misc__runes__rune_dis_new', 'misc__runes__rune_elven', 'misc__runes__rune_gehenna_new', 'misc__runes__rune_shoals', 'misc__runes__rune_slime', 'misc__runes__rune_spider', 'misc__runes__rune_swamp', 'misc__runes__rune_tomb', 'misc__runes__rune_vaults', 'misc__runes__generic'],
   'weapon:sword': ['weapon__short_sword_1_new', 'weapon__long_sword_1_new', 'weapon__long_sword_3', 'weapon__scimitar_2', 'weapon__double_sword_new', 'weapon__triple_sword_new', 'weapon__golden_sword'],
   'weapon:greatsword': ['weapon__two_handed_sword', 'weapon__greatsword_1_new', 'weapon__claymore', 'weapon__greatsword_2', 'weapon__claymore_2', 'weapon__orcish_great_sword', 'weapon__claymore_blessed'],
   'weapon:axe': ['weapon__hand_axe_1_new', 'weapon__hand_axe_2_new', 'weapon__axe', 'weapon__war_axe_1', 'weapon__war_axe_4', 'weapon__war_axe_5', 'weapon__war_axe_7'],

@@ -717,6 +717,11 @@
 - Class boss pass (necromancer and bard): summons now borrow the owner's stronger attack stat (a necromancer's skeleton copied a Strength-based attack the class barely has); the Necromancer trait gains +35% damage and Soul Bolt goes from 160% to 190% MAG; the Bard trait goes from +45% to +70% damage. Mean world boss wins (benchmark gear, solo): necromancer 23% to about 55%, bard 42% to 54%. L60 necromancer 66 to 71%, Plague Doctor hybrid trial 7 to 30%. Ordinary-fight wins at levels 1-45 are unchanged (necromancer is now 100% at L1-45).
 - Still deferred: the cleric gets 0% against Gnarlroot (regeneration) and the Abyssal Crab (Harden) because the auto-battle never saves burst for the window, and the bard still dies to Bramblehorn and Gnarlroot at levels 9-17. The mage is now the weakest solo class against late world bosses (30% mean). Raising the cleric's damage did not move those walls, so it was left alone.
 
+### Graphics pass 16: world tiles
+- The world map now draws Dungeon Crawl terrain (146 tiles in `public/art/world`): per-biome ground, paths, water or lava, walls, scenery and thickets, plus tile objects for towns, dungeon entrances, altars (shrines), waypoints, chests, gathering nodes and runes. Map tiles are 32px (was 36) so the tiles draw 1:1; monsters and the hero doll stand on it at their natural size. The procedural tiles remain as the fallback while images load.
+- Rune items use the Dungeon Crawl rune tiles.
+- Cut / deferred: the town banner, zone vignettes, minimap and portraits stay procedural; water and path edges have no transition tiles; cracked walls are a wall tile with a drawn crack.
+
 ## Known bugs
 - None known.
 

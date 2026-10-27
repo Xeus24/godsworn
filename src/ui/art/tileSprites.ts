@@ -7,10 +7,10 @@ import { ENEMY_TILE, FAMILY_TILES } from './dcssTiles';
  * to the procedural creature sprite).
  */
 const SCALE = 3;
-const PAD = 4;
 const OUTLINE = '#120c18';
 
 const cache = new Map<string, HTMLCanvasElement | null>();
+const images = new Map<string, HTMLImageElement | null>();
 
 function hash(text: string): number {
   let h = 2166136261;
@@ -26,7 +26,9 @@ export function tileFor(enemyId: string | undefined, family: string): string | u
   return list[hash(enemyId ?? family) % list.length];
 }
 
-function build(img: HTMLImageElement): HTMLCanvasElement {
+function build(img: HTMLImageElement, scale: number): HTMLCanvasElement {
+  const SCALE = scale;
+  const PAD = scale + 1;
   const size = img.naturalWidth * SCALE + PAD * 2;
   const out = document.createElement('canvas');
   out.width = size;
@@ -49,16 +51,25 @@ function build(img: HTMLImageElement): HTMLCanvasElement {
   return out;
 }
 
-export function monsterTile(enemyId: string | undefined, family: string): HTMLCanvasElement | undefined {
+/** The sprite at `scale` times (3 for battle; 1 or 2 for the world map), or undefined until it has loaded. */
+export function monsterTile(enemyId: string | undefined, family: string, scale = SCALE): HTMLCanvasElement | undefined {
   const name = tileFor(enemyId, family);
   if (!name) return undefined;
-  const hit = cache.get(name);
+  const key = `${name}@${scale}`;
+  const hit = cache.get(key);
   if (hit) return hit;
-  if (hit === null) return undefined;
-  cache.set(name, null);
-  const img = new Image();
-  img.onload = () => cache.set(name, build(img));
-  img.onerror = () => cache.set(name, null);
-  img.src = `${import.meta.env.BASE_URL}art/monsters/${name}.png`;
+  const img = images.get(name);
+  if (img) {
+    const made = build(img, scale);
+    cache.set(key, made);
+    return made;
+  }
+  if (img === undefined) {
+    images.set(name, null);
+    const el = new Image();
+    el.onload = () => images.set(name, el);
+    el.onerror = () => images.set(name, null);
+    el.src = `${import.meta.env.BASE_URL}art/monsters/${name}.png`;
+  }
   return undefined;
 }

@@ -256,6 +256,8 @@ function tileIconUrl(item: ItemInstance): string | undefined {
       if (base.kind === 'tome') return pick('book');
       if (base.kind === 'bag') return pick('bag');
       return undefined;
+    case 'rune':
+      return pick('rune');
     case 'book':
       return pick('book');
     case 'recipe':

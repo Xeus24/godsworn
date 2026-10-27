@@ -15,6 +15,10 @@ import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 import { settings } from '../settings';
 import { EDGE_E, EDGE_N, EDGE_S, EDGE_W, entityIcon, minimapColor, tileImage } from './tileArt';
+import { entityTile, terrainTile } from './worldTiles';
+import { monsterTile } from '../art/tileSprites';
+import { heroDoll } from '../art/heroDoll';
+import { equippedGearLook, equippedWeaponTypes } from '../../engine/items/equipment';
 import { drawWeather } from '../art/weatherFx';
 import { WorldMapOverlay } from './worldMap';
 import type { Conversation } from '../../engine/state/conversation';
@@ -42,7 +46,7 @@ const KEYS: Record<string, [number, number]> = {
   arrowright: [1, 0],
 };
 /** On-screen tile size in CSS pixels. */
-const TILE = 36;
+const TILE = 32;
 /** Minimum milliseconds between steps while a key is held. */
 const STEP_MS = 85;
 
@@ -211,30 +215,38 @@ export class WorldScreen implements Screen {
     this.drawSide(map);
   };
 
-  private entityImage(map: TileMap, e: MapEntity): HTMLCanvasElement | undefined {
+  /** The picture for a map object: a Dungeon Crawl tile (drawn at its natural size) when loaded, else the procedural icon. */
+  private entityImage(map: TileMap, e: MapEntity): { img: HTMLCanvasElement; tile: boolean } | undefined {
     const w = this.session.state.world;
+    const tile = (img: HTMLCanvasElement | undefined, fallback: () => HTMLCanvasElement): { img: HTMLCanvasElement; tile: boolean } => (img ? { img, tile: true } : { img: fallback(), tile: false });
     switch (e.kind) {
       case 'enemies': {
         const def = content.enemies.get(e.group?.enemies[0]?.enemyId ?? 'green-slime');
-        return creatureSprite(def.family, def.palette.main, def.palette.accent);
+        return tile(monsterTile(def.id, def.family, 1), () => creatureSprite(def.family, def.palette.main, def.palette.accent));
       }
       case 'worldBoss':
       case 'boss': {
         const def = content.enemies.get(e.ref as string);
-        return creatureSprite(def.family, def.palette.main, def.palette.accent);
+        return tile(monsterTile(def.id, def.family, 2), () => creatureSprite(def.family, def.palette.main, def.palette.accent));
       }
-      case 'shrine':
-        return entityIcon('shrine', content.gods.get(e.ref as string).color);
-      case 'waypoint':
-        return entityIcon('waypoint', '', w.waypoints.includes(map.id) ? 'on' : '');
+      case 'shrine': {
+        const god = content.gods.get(e.ref as string);
+        return tile(entityTile('shrine', '', content.gods.all().findIndex((g) => g.id === god.id)), () => entityIcon('shrine', god.color));
+      }
+      case 'waypoint': {
+        const on = w.waypoints.includes(map.id) ? 'on' : '';
+        return tile(entityTile('waypoint', on), () => entityIcon('waypoint', '', on));
+      }
       case 'chest':
-        return entityIcon('chest', '', e.locked ? 'locked' : '');
+        return tile(entityTile('chest', e.locked ? 'locked' : ''), () => entityIcon('chest', '', e.locked ? 'locked' : ''));
       case 'node':
-        return entityIcon('node', '', e.gather);
-      case 'rune':
-        return entityIcon('rune', '', w.used[usedKey(map.id, e.id)] !== undefined ? 'lit' : '');
+        return tile(entityTile('node', e.gather), () => entityIcon('node', '', e.gather));
+      case 'rune': {
+        const lit = w.used[usedKey(map.id, e.id)] !== undefined ? 'lit' : '';
+        return tile(entityTile('rune', lit), () => entityIcon('rune', '', lit));
+      }
       default:
-        return entityIcon(e.kind);
+        return tile(entityTile(e.kind), () => entityIcon(e.kind));
     }
   }
 
@@ -281,7 +293,10 @@ export class WorldScreen implements Screen {
         const tone = n > 1.15 ? 1 : n < -1.15 ? 2 : 0;
         const like = t === '~' ? (c: string) => c !== '~' : (c: string) => c !== '=' && c !== 'D';
         const mask = t === '~' || t === '=' ? (like(tileAt(map, x, y - 1)) ? EDGE_N : 0) | (like(tileAt(map, x + 1, y)) ? EDGE_E : 0) | (like(tileAt(map, x, y + 1)) ? EDGE_S : 0) | (like(tileAt(map, x - 1, y)) ? EDGE_W : 0) : 0;
-        g.drawImage(tileImage(map.biome, t, (x * 7 + y * 13) % 4, frame, (x * 31 + y * 17 + x * y) % 11, tone, mask), ox + x * TILE, oy + y * TILE, TILE, TILE);
+        const variant = (x * 7 + y * 13) % 4;
+        const deco = (x * 31 + y * 17 + x * y) % 11;
+        const art = terrainTile(map.biome, t, variant + ((x * 3 + y * 5) % 3) * 4, frame, tone === 0 ? deco : 99) ?? tileImage(map.biome, t, variant, frame, deco, tone, mask);
+        g.drawImage(art, ox + x * TILE, oy + y * TILE, TILE, TILE);
       }
     }
     // Trees and walls cast a soft shadow down and to the right, so the ground reads as lit from the upper left.
@@ -300,10 +315,11 @@ export class WorldScreen implements Screen {
     }
     for (const e of map.entities) {
       if (!explored(w, map, e.x, e.y) || !entityActive(w, map, e, day)) continue;
-      const img = this.entityImage(map, e);
-      if (!img) continue;
+      const art = this.entityImage(map, e);
+      if (!art) continue;
+      const img = art.img;
       const big = e.kind === 'worldBoss' || e.kind === 'boss';
-      const size = big ? TILE * 1.3 : TILE;
+      const size = art.tile ? img.width : big ? TILE * 1.3 : TILE;
       const living = e.kind === 'enemies' || big;
       // Monsters breathe (out of step with each other); loot and shrines pulse a soft glow.
       const bob = living ? Math.round(Math.sin(now / 340 + e.x * 1.7 + e.y * 2.3) * 1.5) : 0;
@@ -320,7 +336,7 @@ export class WorldScreen implements Screen {
         g.arc(ex + TILE / 2, ey + TILE / 2, TILE * 0.55, 0, Math.PI * 2);
         g.fill();
       }
-      g.drawImage(img, ex + (TILE - size) / 2, ey + (TILE - size) + bob, size, size);
+      g.drawImage(img, ex + (TILE - size) / 2, ey + (TILE - (art.tile ? img.height : size)) + bob, size, art.tile ? img.height : size);
       if (big) {
         g.fillStyle = '#ffd84a';
         g.fillRect(ox + e.x * TILE + TILE / 2 - 4, oy + e.y * TILE - TILE * 0.35, 8, 3);
@@ -392,12 +408,22 @@ export class WorldScreen implements Screen {
     glow.addColorStop(1, 'rgba(255,224,120,0)');
     g.fillStyle = glow;
     g.fillRect(hx - TILE, hy - TILE, TILE * 3, TILE * 3);
-    g.fillStyle = cls?.color ?? '#ffd84a';
-    g.fillRect(hx + 1, hy + 1, TILE - 2, TILE - 2);
-    g.drawImage(hero, hx + 3, hy + 3, TILE - 6, TILE - 6);
-    g.strokeStyle = `rgba(255,248,214,${0.75 + 0.25 * pulse})`;
-    g.lineWidth = 2;
-    g.strokeRect(hx + 1, hy + 1, TILE - 2, TILE - 2);
+    const doll = heroDoll(s.player.raceId, s.player.portrait, equippedWeaponTypes(s.player, content), equippedGearLook(s.player, content), 1);
+    if (doll) {
+      // The tile doll stands on the ground at its natural size (the halo and arrow still mark it).
+      g.fillStyle = 'rgba(0,0,0,0.3)';
+      g.beginPath();
+      g.ellipse(hx + TILE / 2, hy + TILE - 3, TILE * 0.3, 4, 0, 0, Math.PI * 2);
+      g.fill();
+      g.drawImage(doll, hx + (TILE - doll.width) / 2, hy + TILE - doll.height + 2);
+    } else {
+      g.fillStyle = cls?.color ?? '#ffd84a';
+      g.fillRect(hx + 1, hy + 1, TILE - 2, TILE - 2);
+      g.drawImage(hero, hx + 3, hy + 3, TILE - 6, TILE - 6);
+      g.strokeStyle = `rgba(255,248,214,${0.75 + 0.25 * pulse})`;
+      g.lineWidth = 2;
+      g.strokeRect(hx + 1, hy + 1, TILE - 2, TILE - 2);
+    }
     const bob = Math.round(Math.sin(now / 220) * 2);
     g.fillStyle = '#05030a';
     g.fillRect(hx + TILE / 2 - 6, hy - 11 + bob, 12, 3);
