@@ -96,6 +96,7 @@ export function migrate(raw: Json): Json {
   }
   // Version 17: loot set aside when the bags were full, and stash tab names.
   state.overflow ??= [];
+  state.stashRules ??= [];
   const stash = obj(state.stash);
   stash.names ??= [];
   state.stash = stash;

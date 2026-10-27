@@ -22,7 +22,7 @@ import { baseOf, isGear } from '../items/lookup';
 import { applyLootFilter } from '../items/lootFilter';
 import { itemName } from '../items/naming';
 import { lastFilledSocket, socketInto, unsocket, unsocketCost } from '../items/sockets';
-import type { EquipSlot, ItemInstance } from '../items/types';
+import type { EquipSlot, ItemCategory, ItemInstance } from '../items/types';
 import { salvageYield } from '../items/upkeep';
 import { appraiseLimit } from '../skills/general';
 import { useConsumableInField, type UseResult } from '../items/use';
@@ -320,6 +320,25 @@ export class ItemActions {
     if (!renameStashTab(this.s.state.stash, tab, name)) return fail('No such tab.');
     this.changed('stash');
     return { ok: true };
+  }
+
+  /** Turns automatic stashing of a category on or off (applies on arriving in a town). */
+  setStashRule(category: ItemCategory, on: boolean): void {
+    const rules = this.s.state.stashRules;
+    const has = rules.includes(category);
+    if (on && !has) rules.push(category);
+    if (!on && has) rules.splice(rules.indexOf(category), 1);
+    this.changed('stash');
+  }
+
+  /** Stashes bag items in the ruled categories (never junk-marked gear). Returns the units moved. */
+  applyStashRules(): number {
+    const rules = this.s.state.stashRules;
+    if (rules.length === 0 || !this.s.world.inTown()) return 0;
+    const r = this.depositAll(0, (item) => rules.includes(baseOf(item).category) && !item.junk);
+    if (!r.ok) return 0;
+    this.s.bus.emit('toast', { kind: 'info', text: `Stashed ${r.moved} item${r.moved === 1 ? '' : 's'} by your stash rules` });
+    return r.moved ?? 0;
   }
 
   /** Salvages every piece of gear in the bags marked junk. */

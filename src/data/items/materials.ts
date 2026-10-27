@@ -48,7 +48,7 @@ export const MATERIALS: MaterialDef[] = SPECS.map(([id, name, kind, tier, value,
   tier,
   level: 1,
   value,
-  stack: 99,
+  stack: 999,
   description,
 }));
 

@@ -9,7 +9,7 @@ import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
 import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
-import type { ItemInstance } from '../items/types';
+import type { ItemCategory, ItemInstance } from '../items/types';
 import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
 import { applyStartingKit } from '../items/use';
 import { SPEC_LEVEL } from '../skills/specs';
@@ -113,6 +113,8 @@ export interface GameState {
   stash: Stash;
   /** Loot that did not fit in the bags, held until claimed (oldest dropped past OVERFLOW_MAX). */
   overflow: ItemInstance[];
+  /** Item categories sent to the stash automatically on arriving in a town. */
+  stashRules: ItemCategory[];
   /** Counter for item uids. */
   nextUid: number;
   lootFilter: LootFilterSettings;
@@ -151,6 +153,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     inventory: createInventory(),
     stash: createStash(),
     overflow: [],
+    stashRules: [],
     nextUid: 0,
     lootFilter: { ...DEFAULT_LOOT_FILTER },
     stats: createGameStats(),

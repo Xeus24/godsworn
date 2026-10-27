@@ -357,3 +357,20 @@ select {
   flex-wrap: wrap;
   gap: 6px;
 }
+
+.tab.match {
+  color: var(--gold-hi);
+}
+
+.stash-rules {
+  margin: 4px 0;
+}
+
+.stash-rules .row {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tab.dimmed {
+  opacity: 0.5;
+}

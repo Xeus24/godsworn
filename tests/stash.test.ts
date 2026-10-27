@@ -163,6 +163,40 @@ describe('item actions: stash', () => {
   });
 });
 
+describe('stash rules and stacks', () => {
+  it('materials stack to 999', () => {
+    const inv = createInventory(2);
+    expect(addItem(inv, ore(500))).toBe(0);
+    expect(addItem(inv, ore(400))).toBe(0);
+    expect(inv.slots[0]?.quantity).toBe(900);
+    expect(inv.slots[1]).toBeNull();
+  });
+
+  it('auto-stash moves ruled categories,  does nothing with no rules', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.items.give(ore(7), false);
+    expect(s.items.applyStashRules()).toBe(0);
+    s.items.setStashRule('material', true);
+    s.items.setStashRule('material', true);
+    expect(s.state.stashRules).toEqual(['material']);
+    expect(s.items.applyStashRules()).toBeGreaterThan(0);
+    expect(s.items.count('mithril-ore')).toBe(0);
+    expect(countOf(s.state.stash.tabs[0]!, 'mithril-ore')).toBe(7);
+    s.items.setStashRule('material', false);
+    expect(s.state.stashRules).toEqual([]);
+  });
+
+  it('stashes automatically when you step into a town', () => {
+    const s = GameSession.newGame(5, makeHero());
+    s.items.setStashRule('material', true);
+    s.items.give(ore(4), false);
+    const gate = s.world.here();
+    expect(gate?.kind).toBe('town');
+    s.world.interact(gate!);
+    expect(s.items.count('mithril-ore')).toBe(0);
+  });
+});
+
 describe('overflow', () => {
   it('sets aside what does not fit, and claims it once there is room', () => {
     const s = GameSession.newGame(5, makeHero());
@@ -181,8 +215,9 @@ describe('overflow', () => {
   it('keeps the part of a stack that did not fit', () => {
     const s = GameSession.newGame(5, makeHero());
     fillBags(s);
-    s.state.inventory.slots[0] = ore(90);
-    s.items.give(ore(30), false);
+    const scroll = (qty: number) => createItem('scroll-of-escape', qty, uid);
+    s.state.inventory.slots[0] = scroll(90);
+    s.items.give(scroll(30), false);
     expect(s.state.inventory.slots[0]?.quantity).toBe(99);
     expect(s.state.overflow[0]?.quantity).toBe(21);
   });
@@ -209,9 +244,11 @@ describe('overflow', () => {
     const s = GameSession.newGame(5, makeHero());
     const raw = JSON.parse(JSON.stringify(s.state)) as Record<string, unknown>;
     delete raw.overflow;
+    delete raw.stashRules;
     delete (raw.stash as Record<string, unknown>).names;
     const migrated = migrate(raw) as unknown as GameSession['state'];
     expect(migrated.overflow).toEqual([]);
+    expect(migrated.stashRules).toEqual([]);
     expect(migrated.stash.names).toEqual([]);
   });
 });

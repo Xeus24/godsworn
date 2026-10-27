@@ -60,6 +60,7 @@ export class InventoryScreen implements Screen {
   private sortMode: SortMode = 'category';
   private stashTab = 0;
   private query = '';
+  private stashSort: SortMode = 'rarity';
   private selected: ItemLocation | undefined;
   private confirmDestroy = false;
   private message = '';
@@ -224,13 +225,7 @@ export class InventoryScreen implements Screen {
       });
       return b;
     });
-    const sortSelect = el('select', { 'aria-label': 'Sort by' });
-    for (const mode of ['category', 'rarity', 'level', 'name'] as SortMode[]) {
-      const o = el('option', { value: mode }, `Sort: ${mode}`);
-      if (mode === this.sortMode) o.selected = true;
-      sortSelect.append(o);
-    }
-    sortSelect.addEventListener('change', () => (this.sortMode = sortSelect.value as SortMode));
+    const sortSelect = this.sortSelect(this.sortMode, (m) => (this.sortMode = m));
     const sortBtn = el('button', {}, 'Sort');
     sortBtn.addEventListener('click', () => this.actions.sort(this.sortMode));
     const used = inv.slots.filter(Boolean).length;
@@ -244,6 +239,17 @@ export class InventoryScreen implements Screen {
       this.bagTools(),
       this.overflowPanel(),
     );
+  }
+
+  private sortSelect(current: SortMode, set: (mode: SortMode) => void): HTMLSelectElement {
+    const select = el('select', { 'aria-label': 'Sort by' });
+    for (const mode of ['category', 'rarity', 'level', 'name'] as SortMode[]) {
+      const o = el('option', { value: mode }, `Sort: ${mode}`);
+      if (mode === current) o.selected = true;
+      select.append(o);
+    }
+    select.addEventListener('change', () => set(select.value as SortMode));
+    return select;
   }
 
   private button(label: string, run: () => void, title = ''): HTMLButtonElement {
@@ -322,11 +328,32 @@ export class InventoryScreen implements Screen {
     );
   }
 
+  /** Which categories go to the stash by themselves on arriving in a town. */
+  private stashRules(): HTMLElement {
+    const rules = this.session.state.stashRules;
+    const options: [ItemCategory, string][] = [['gem', 'Gems'], ['rune', 'Runes'], ['curiosity', 'Curiosities'], ['material', 'Materials']];
+    const boxes = options.map(([cat, label]) => {
+      const box = el('input', { type: 'checkbox' });
+      box.checked = rules.includes(cat);
+      box.addEventListener('change', () => this.actions.setStashRule(cat, box.checked));
+      return el('label', { class: 'small dim filter-label' }, box, label);
+    });
+    return el(
+      'details',
+      { class: 'stash-rules' },
+      el('summary', { class: 'small dim' }, `Auto-stash on arriving in town${rules.length ? ` (${rules.length})` : ''}`),
+      el('div', { class: 'row' }, ...boxes),
+      el('p', { class: 'dim small' }, 'Stashed materials are not used for crafting until you take them back.'),
+    );
+  }
+
   private stashPanel(): HTMLElement {
     const stash = this.session.state.stash;
     this.stashTab = Math.min(this.stashTab, stash.tabs.length - 1);
-    const tabs = stash.tabs.map((_, i) => {
-      const b = el('button', { class: `tab${this.stashTab === i ? ' active' : ''}` }, stashTabName(stash, i));
+    const tabs = stash.tabs.map((inv, i) => {
+      const hits = this.query ? inv.slots.filter((x) => x && itemName(x).toLowerCase().includes(this.query)).length : 0;
+      const label = this.query ? `${stashTabName(stash, i)} (${hits})` : stashTabName(stash, i);
+      const b = el('button', { class: `tab${this.stashTab === i ? ' active' : ''}${this.query && hits === 0 ? ' dimmed' : ''}${hits > 0 ? ' match' : ''}` }, label);
       b.addEventListener('click', () => {
         this.stashTab = i;
         this.render();
@@ -343,7 +370,8 @@ export class InventoryScreen implements Screen {
     const name = el('input', { type: 'text', maxlength: String(STASH_NAME_MAX), placeholder: `Tab ${this.stashTab + 1}`, 'aria-label': 'Tab name', class: 'tab-name' });
     name.value = stash.names[this.stashTab] ?? '';
     name.addEventListener('change', () => this.say(this.actions.renameTab(this.stashTab, name.value)));
-    const sortBtn = this.button('Sort tab', () => this.actions.sort(this.sortMode, this.stashTab));
+    const stashSort = this.sortSelect(this.stashSort, (m) => (this.stashSort = m));
+    const sortBtn = this.button('Sort tab', () => this.actions.sort(this.stashSort, this.stashTab));
     const takeAll = this.button('Take all', () => this.say(this.actions.withdrawTab(this.stashTab)), 'Move everything in this tab to your bags');
     takeAll.disabled = !inTown;
     return el(
@@ -351,7 +379,8 @@ export class InventoryScreen implements Screen {
       { class: 'panel' },
       el('div', { class: 'panel-head' }, el('h3', {}, 'Stash'), el('span', { class: 'dim small' }, `${used}/${tab?.slots.length ?? 0}`)),
       el('div', { class: 'tabs' }, ...tabs, buy),
-      el('div', { class: 'row' }, name, sortBtn, takeAll),
+      el('div', { class: 'row' }, name, stashSort, sortBtn, takeAll),
+      this.stashRules(),
       tab ? this.grid(tab, (index) => ({ where: 'stash', tab: this.stashTab, index })) : el('div', {}),
       el('p', { class: 'dim small' }, inTown ? 'Shared by all your towns. Drag items, or shift-click to send them across.' : 'The stash can only be used in towns.'),
     );

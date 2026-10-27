@@ -280,6 +280,7 @@ export class WorldActions {
         const town = e.ref as string;
         this.world.lastTown = town;
         this.collectHouse();
+        this.s.items.applyStashRules();
         return { kind: 'town', town };
       }
       case 'dungeon': {
