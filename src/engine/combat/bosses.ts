@@ -56,13 +56,13 @@ export function checkBossPhase(b: Battle, x: Combatant): void {
   }
 }
 
-/** An enemy joins the boss mid-fight, scaled like it (level, zone threat, party size), with no reward of its own. */
+/** An enemy joins the boss mid-fight, scaled like it (level, zone threat, party size, difficulty), with no reward of its own. */
 function spawnAdd(b: Battle, boss: Combatant, enemyId: string): void {
   const def = b.c.enemies.get(enemyId);
   const add = createEnemy(def, b.newId('add'), boss.level, def.row, b.c);
   add.xp = 0;
   delete add.lootTable;
-  const scaling = boss.statInput.modifiers.filter((m) => m.source === 'party' || m.source === 'threat' || m.source === 'ngPlus' || m.source === 'rift');
+  const scaling = boss.statInput.modifiers.filter((m) => m.source === 'party' || m.source === 'threat' || m.source === 'ngPlus' || m.source === 'rift' || m.source === 'difficulty');
   add.statInput = { ...add.statInput, modifiers: [...add.statInput.modifiers, ...scaling] };
   const stats = calculateStats(add.statInput);
   add.maxHp = stats.maxHp;

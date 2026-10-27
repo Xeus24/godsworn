@@ -2,6 +2,7 @@ import { CRESCENDO_COST } from '../../data/songs';
 import { COMBAT } from '../../data/combat';
 import { MAX_TRIGGER_DEPTH } from '../effects/triggers';
 import type { EffectSpec, EffectTarget, TriggerType } from '../effects/types';
+import { calculateStats } from '../stats/calculate';
 import type { ConditionContext } from '../stats/conditions';
 import type { Battle } from './battle';
 import { createSummon } from './combatants';
@@ -178,6 +179,16 @@ export function summon(b: Battle, owner: Combatant, summonId: string, consumeCor
   for (let i = 0; i < count; i++) {
     const def = b.c.summons.get(summonId);
     const minion = createSummon(def, b.newId(summonId), owner, stats.physicalAttack, stats.magicAttack, b.c);
+    // An enemy's summons are as durable as the difficulty makes their master (their attack already follows the owner's).
+    if (owner.side === 'enemy') {
+      const durability = owner.statInput.modifiers.filter((m) => m.source === 'difficulty' && ['maxHp', 'defense', 'magicResist', 'speed'].includes(m.stat));
+      if (durability.length > 0) {
+        minion.statInput = { ...minion.statInput, modifiers: [...minion.statInput.modifiers, ...durability] };
+        const scaled = calculateStats(minion.statInput, { inCombat: true });
+        minion.maxHp = scaled.maxHp;
+        minion.hp = scaled.maxHp;
+      }
+    }
     // Summons act soon after appearing.
     minion.nextAt = b.time + 100 / Math.max(1, b.stats(minion).speed) / 2;
     b.combatants.push(minion);
