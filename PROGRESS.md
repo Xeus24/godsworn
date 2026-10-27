@@ -669,6 +669,12 @@
 - Bestiary: unmet creatures show a glowing outline and a "?" instead of a flat blob, the first met creature opens by default, and the preview is larger with a gold or blue frame for elites and bosses.
 - Skill tree: opens fitted to show every branch; node names wrap to two short lines so none overlap, and hide when zoomed far out (hover for the tooltip) while branch titles grow to stay readable. Node labels and rank numbers are larger and brighter, and unlit edges are easier to see. Reset view gives the zoomed-in readable view.
 
+### Graphics pass 11
+- Hero sprite shows worn armor: head, shoulders, chest, gloves, legs, boots and cloak change by weight (cloth hood, leather cap, mail coif, plate helm and pauldrons) and carry a trim in the piece's rarity color. Shown on the paper doll and in battle (`equippedGearLook` in the engine passes plain data; the engine still never touches the DOM).
+- Weather is now animated, in the world and in battle: rain, thunderstorm with lightning flashes, snow, drifting fog, heat shimmer, sandstorm streaks, falling ash and blood-moon motes (`ui/art/weatherFx.ts`). Off with Reduce Motion.
+- Item cells show rarity by shape as well as color: gem pips on the top edge (Rare 1 up to Ascended 5) and a standing glow from Epic.
+- World screen takes an accent color per biome on its border, glow and header.
+
 ## Known bugs
 - None known.
 

@@ -12,6 +12,7 @@ import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 import { settings } from '../settings';
 import { EDGE_E, EDGE_N, EDGE_S, EDGE_W, entityIcon, minimapColor, tileImage } from './tileArt';
+import { drawWeather } from '../art/weatherFx';
 import { WorldMapOverlay } from './worldMap';
 import type { Conversation } from '../../engine/state/conversation';
 import { objectiveLine } from '../../engine/state/conversation';
@@ -47,6 +48,11 @@ const STEP_MS = 85;
  * fog of war, a minimap, the clock and weather. Walk with WASD or arrows;
  * stepping onto things uses them.
  */
+/** Accent color per biome for the world HUD. */
+const BIOME_ACCENT: Record<string, string> = {
+  meadow: '#8ad45a', forest: '#4fa86a', cave: '#7ad0e0', desert: '#e8b868', snow: '#9ad0f0', coast: '#58b0e8', volcanic: '#ff7a3a', citadel: '#b070ff', dungeon: '#e8a040',
+};
+
 export class WorldScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
@@ -385,6 +391,7 @@ export class WorldScreen implements Screen {
         g.fillStyle = weather.tint;
         g.fillRect(0, 0, cw, ch);
       }
+      if (weather && !settings().reduceMotion) drawWeather(g, weather.id, cw, ch, now);
       if (timeOfDay(s.state.clock) === 'night') {
         g.fillStyle = 'rgba(10,12,50,0.38)';
         g.fillRect(0, 0, cw, ch);
@@ -521,6 +528,10 @@ export class WorldScreen implements Screen {
     }
     const ng = s.state.ngPlus;
     const levels = dungeon ? `Level ${worldLevel(dungeon.level, ng)}` : `Levels ${worldLevel(zone.levels[0], ng)}-${worldLevel(zone.levels[1], ng)}${ng ? ` · NG+${ng}` : ''}`;
+    // Each biome tints the stage border and the side panel header so zones feel different at a glance.
+    const accent = BIOME_ACCENT[map.biome] ?? '#c8a040';
+    this.side.style.setProperty('--zone-accent', accent);
+    this.canvas.parentElement?.style.setProperty('--zone-accent', accent);
     this.side.replaceChildren(
       el('h2', {}, map.name),
       el('div', { class: 'dim small' }, `${levels}${dungeon && s.state.world.dungeonsCleared.includes(dungeon.id) ? ' · cleared' : ''}`),

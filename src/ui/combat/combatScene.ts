@@ -2,6 +2,7 @@ import { content } from '../../data';
 import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
 import { heroSprite } from '../art/heroSprite';
+import { drawWeather } from '../art/weatherFx';
 import { settings } from '../settings';
 import type { Biome } from '../../engine/world/types';
 import { creatureSprite } from './creatureSprites';
@@ -389,6 +390,8 @@ export class CombatScene {
     }
     g.globalAlpha = 1;
 
+    // Weather falls in front of the fighters, behind the floating numbers.
+    if (this.battle.weather && !settings().reduceMotion) drawWeather(g, this.battle.weather, SCENE_W, SCENE_H, t * 1000);
     // Floating text.
     g.textAlign = 'center';
     this.floats = this.floats.filter((f) => f.age < 1.1);
@@ -476,7 +479,7 @@ export class CombatScene {
     let img: HTMLCanvasElement | undefined;
     let bw = size;
     if (x.portrait) {
-      img = heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes);
+      img = heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
       bw = Math.round(size * (img.width / img.height));
     } else if (x.sprite) {
       img = creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);

@@ -212,6 +212,28 @@ export function equipmentFlags(char: Character, c: Content = content): string[] 
   return [...new Set(flags)];
 }
 
+/** One worn armor piece as the art needs it: its weight class and rarity color (no DOM, plain data). */
+export interface WornPiece {
+  weight: string;
+  color: string;
+}
+
+export type GearLook = Partial<Record<'head' | 'shoulders' | 'chest' | 'gloves' | 'legs' | 'boots' | 'cloak', WornPiece>>;
+
+/** What armor a character visibly wears, for the body sprite. */
+export function equippedGearLook(char: Character, c: Content = content): GearLook {
+  const look: GearLook = {};
+  for (const slot of ['head', 'shoulders', 'chest', 'gloves', 'legs', 'boots', 'cloak'] as const) {
+    const it = char.equipment[slot];
+    if (!it) continue;
+    const b = baseOf(it, c);
+    if (b.category !== 'armor') continue;
+    const color = c.rarities.get(it.rarity).color;
+    look[slot] = { weight: b.weight, color: color === '#1a1a1a' ? '#c8b8ff' : color };
+  }
+  return look;
+}
+
 /** Weapon types in hand, for `weaponType` conditions. */
 export function equippedWeaponTypes(char: Character, c: Content = content): string[] {
   return (['mainHand', 'offHand'] as const).flatMap((s) => {

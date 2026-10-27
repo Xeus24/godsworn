@@ -1,4 +1,5 @@
 import type { EffectSpec, TriggeredEffect } from '../effects/types';
+import type { GearLook } from '../items/equipment';
 import type { SkillPatch } from '../skills/treeTypes';
 import type { StatInput } from '../stats/calculate';
 import type { ModifierSpec } from '../stats/modifiers';
@@ -227,7 +228,7 @@ export interface Combatant {
   lowHpFired: boolean;
   turnsTaken: number;
   /** Visuals. */
-  portrait?: { raceId: string; variant: number; color: string };
+  portrait?: { raceId: string; variant: number; color: string; look?: GearLook };
   sprite?: { family: string; main: string; accent: string };
   /** Weapon types in hand, for weaponType conditions. */
   weaponTypes: string[];

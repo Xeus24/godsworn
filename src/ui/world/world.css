@@ -20,10 +20,11 @@
 .world-stage {
   position: relative;
   min-height: 0;
-  border: 2px solid var(--border);
+  border: 2px solid var(--zone-accent, var(--border));
   border-radius: 6px;
   overflow: hidden;
   background: #05030a;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--zone-accent, transparent) 30%, transparent);
 }
 
 .world-canvas {
@@ -58,8 +59,13 @@
   overflow-y: auto;
 }
 
+.world-side {
+  border-top: 3px solid var(--zone-accent, var(--border));
+}
+
 .world-side h2 {
   margin: 0;
+  color: var(--zone-accent, inherit);
 }
 
 .world-minimap {

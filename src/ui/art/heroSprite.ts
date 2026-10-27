@@ -1,3 +1,4 @@
+import type { GearLook } from '../../engine/items/equipment';
 import { drawPortrait } from './portraits';
 
 /** Logical size of a hero body sprite (drawn about 1.5x in battle). */
@@ -109,6 +110,44 @@ function drawOffhand(px: Px, type: string, accent: string): void {
   }
 }
 
+
+/** Base metal/cloth/leather tones by armor weight; the rarity color is used only for trim. */
+const WEIGHT_TONE: Record<string, string> = { cloth: '#7a6aa8', leather: '#7a5230', mail: '#9aa2b8', plate: '#d0d6e6' };
+const tone = (weight: string, fallback: string): string => WEIGHT_TONE[weight] ?? fallback;
+
+/** Helm, pauldrons and the like, painted over the base body. Each piece shows its weight and a rarity-colored trim. */
+function drawHelm(px: Px, p: NonNullable<GearLook['head']>): void {
+  const base = tone(p.weight, '#9aa2b8');
+  if (p.weight === 'cloth') {
+    // Hood: draped over the hair and down the sides of the face.
+    px(base, 15, 1, 18, 7);
+    px(shade(base, -0.3), 14, 6, 3, 12);
+    px(shade(base, -0.3), 31, 6, 3, 12);
+    px(p.color, 15, 1, 18, 1);
+  } else if (p.weight === 'leather') {
+    px(base, 16, 1, 16, 5);
+    px(shade(base, -0.3), 15, 5, 18, 2);
+    px(p.color, 16, 1, 16, 1);
+  } else {
+    // Helm with a brow guard and a crest of trim.
+    px(base, 15, 0, 18, 8);
+    px(shade(base, 0.3), 16, 1, 16, 2);
+    px(shade(base, -0.35), 15, 7, 18, 2);
+    px(shade(base, -0.35), 23, 7, 2, 7);
+    px(p.color, 23, -3, 2, 3);
+    px(p.color, 15, 0, 18, 1);
+  }
+}
+
+function drawShoulders(px: Px, p: NonNullable<GearLook['shoulders']>): void {
+  const base = tone(p.weight, '#9aa2b8');
+  for (const x of [9, 32]) {
+    px(shade(base, -0.2), x, 22, 7, 6);
+    px(shade(base, 0.3), x, 22, 7, 1);
+    px(p.color, x, 27, 7, 1);
+  }
+}
+
 const cache = new Map<string, HTMLCanvasElement>();
 
 /**
@@ -116,8 +155,8 @@ const cache = new Map<string, HTMLCanvasElement>();
  * with a cloak, armour in the class colour, legs and boots, and the hero's
  * weapon. Cached per look and loadout.
  */
-export function heroSprite(raceId: string, variant: number, classColor: string, weapons: string[]): HTMLCanvasElement {
-  const key = `${raceId}|${variant}|${classColor}|${weapons.join(',')}`;
+export function heroSprite(raceId: string, variant: number, classColor: string, weapons: string[], look: GearLook = {}): HTMLCanvasElement {
+  const key = `${raceId}|${variant}|${classColor}|${weapons.join(',')}|${JSON.stringify(look)}`;
   const hit = cache.get(key);
   if (hit) return hit;
   const canvas = document.createElement('canvas');
@@ -134,8 +173,10 @@ export function heroSprite(raceId: string, variant: number, classColor: string, 
     f.fillStyle = color;
     f.fillRect(x, y, w, h);
   };
-  const main = /^#[0-9a-f]{6}$/i.test(classColor) ? classColor : '#8a8aa0';
-  const dark = shade(main, -0.4);
+  const classMain = /^#[0-9a-f]{6}$/i.test(classColor) ? classColor : '#8a8aa0';
+  // Worn chest armor recolors the torso (the class color remains for the cloak and offhand).
+  const main = look.chest ? shade(tone(look.chest.weight, classMain), 0) : classMain;
+  const dark = shade(look.cloak ? tone(look.cloak.weight, classMain) : classMain, -0.4);
   const light = shade(main, 0.3);
   const weapon = weapons.find((w) => w !== 'shield' && w !== 'tome' && w !== 'orb') ?? 'fist';
   const offhand = weapons.find((w) => w === 'shield' || w === 'tome' || w === 'orb');
@@ -144,11 +185,17 @@ export function heroSprite(raceId: string, variant: number, classColor: string, 
   px(dark, 12, 22, 24, 28);
   px(shade(dark, -0.2), 12, 44, 24, 6);
   // Legs and boots.
-  px('#2a2438', 17, 40, 6, 12);
-  px('#2a2438', 25, 40, 6, 12);
+  const legs = look.legs ? shade(tone(look.legs.weight, '#2a2438'), -0.25) : '#2a2438';
+  px(legs, 17, 40, 6, 12);
+  px(legs, 25, 40, 6, 12);
   px('#1a1620', 17, 40, 1, 12);
-  px('#3a2a1a', 15, 51, 9, 6);
-  px('#3a2a1a', 24, 51, 9, 6);
+  const boots = look.boots ? shade(tone(look.boots.weight, '#3a2a1a'), -0.3) : '#3a2a1a';
+  px(boots, 15, 51, 9, 6);
+  px(boots, 24, 51, 9, 6);
+  if (look.boots) {
+    px(look.boots.color, 15, 51, 9, 1);
+    px(look.boots.color, 24, 51, 9, 1);
+  }
   px('#5a4228', 15, 51, 9, 1);
   px('#5a4228', 24, 51, 9, 1);
   // Torso armour with a belt.
@@ -159,16 +206,27 @@ export function heroSprite(raceId: string, variant: number, classColor: string, 
   px(GOLD, 15, 37, 18, 2);
   px('#fff4c0', 23, 37, 2, 2);
   px(shade(main, -0.2), 21, 28, 6, 6);
+  if (look.chest) {
+    px(look.chest.color, 15, 24, 18, 1);
+    px(look.chest.color, 22, 29, 4, 4);
+  }
   // Arms with gloves.
   px(shade(main, -0.15), 11, 25, 4, 12);
   px(shade(main, -0.15), 33, 25, 4, 12);
-  px('#4a3a2a', 11, 36, 4, 4);
-  px('#4a3a2a', 33, 36, 4, 4);
+  const gloves = look.gloves ? shade(tone(look.gloves.weight, '#4a3a2a'), -0.2) : '#4a3a2a';
+  px(gloves, 11, 36, 4, 4);
+  px(gloves, 33, 36, 4, 4);
+  if (look.gloves) {
+    px(look.gloves.color, 11, 36, 4, 1);
+    px(look.gloves.color, 33, 36, 4, 1);
+  }
 
   // Head and shoulders from the portrait, over the body.
   const head = document.createElement('canvas');
   drawPortrait(head, raceId, variant, 'rgba(0,0,0,0)');
   f.drawImage(head, 8, -6);
+  if (look.shoulders) drawShoulders(px, look.shoulders);
+  if (look.head) drawHelm(px, look.head);
 
   drawOffhand(px, offhand ?? '', main);
   drawWeapon(px, weapon, main);

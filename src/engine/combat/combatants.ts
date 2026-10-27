@@ -4,7 +4,7 @@ import { characterBaseStats, characterModifiers } from '../character/stats';
 import type { Character } from '../character/types';
 import { blessingFlags, blessingTriggers } from '../gods/blessings';
 import { applyDivineCombat } from '../gods/combat';
-import { equipmentFlags, equipmentTriggers, equippedWeaponTypes } from '../items/equipment';
+import { equipmentFlags, equipmentTriggers, equippedGearLook, equippedWeaponTypes } from '../items/equipment';
 import { generalCombatSkills, generalFlags } from '../skills/general';
 import { classUltimate } from '../skills/specs';
 import { hotbar, knownSkills, treeFlags, treeTriggers } from '../skills/tree';
@@ -213,7 +213,7 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.ultimateSkill = cls ? classUltimate(char, cls.id, c) : undefined;
   x.basicAttack = heroBasicAttack(char, c);
   applyDivineCombat(x, char, input.base.fai, c);
-  x.portrait = { raceId: char.raceId, variant: char.portrait, color: cls?.color ?? '#888888' };
+  x.portrait = { raceId: char.raceId, variant: char.portrait, color: cls?.color ?? '#888888', look: equippedGearLook(char, c) };
   // Every class resource a character has (multiclass characters can have two).
   for (const p of char.classes) {
     const res = c.classes.get(p.classId).resource;
