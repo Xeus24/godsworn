@@ -696,6 +696,17 @@
 - Each in-game screen (inventory, skills, general, pantheon, quests, party, codex) has its own accent hue for panel corners, headings and the active tab.
 - Sandstorm and ashfall are denser and easier to see; the cloth hood reads as a peaked hood with a shadowed opening.
 
+### Graphics pass 13
+- World view lighting: trees and walls cast soft shadows down and to the right; night is dark except for a flickering warm pool of light around the hero; dungeons are torch-lit the same way; a faint vignette frames every view.
+- Sprites and item icons get a rim light on the upper-left edges and a cool shade on the lower-right. Heroes now breathe in battle like creatures do.
+- UI depth: a lit-from-above glow and fine dither behind each screen, beveled buttons with an accent glow on hover, accent rules under panel headings, raised panels.
+
+### Graphics pass 14: open-source art
+- Battle sprites for all 136 enemies now come from the CC0 Dungeon Crawl Stone Soup tileset (120 tiles in `public/art/monsters`, credits in `public/art/CREDITS.md`): curated tiles for named enemies, family-based picks for the rest, scaled 3x with an outline. If a tile has not loaded the procedural creature sprite is drawn instead.
+- Weapon, shield, head, chest, gloves, boots, cloak, ring, amulet, potion, food, scroll and book icons use Dungeon Crawl tiles (about 250 in `public/art/items`), chosen by type and tier; shoulders, belts, legs, gems, runes, materials and the rest keep the procedural icons.
+- The hero body is a layered Dungeon Crawl paper doll (`ui/art/heroDoll.ts`, 171 tiles in `public/art/player`): race body, legs, boots, torso, cloak, gloves, hair, headgear, weapon and offhand follow the worn gear's weight and tier, on the inventory paper doll and in battle. The procedural hero sprite draws while the tiles load.
+- Cut / deferred: portraits stay procedural (a tile-cropped bust was tried and was blurrier and less detailed than the procedural faces, so it was dropped); shoulder, belt, leg, gem, rune and material icons stay procedural (no matching tiles); Kenney Tiny Dungeon was downloaded but not used.
+
 ### Balance pass 2: world bosses and the hero auto-battle AI (added after Phase 16)
 - Review finding: the "level 60 class cliff" was the two finale fights (Seryth, the Shadow of the Unwritten), and world bosses ranged from 20% to 92% wins by zone (mean of all classes, `npm run sim`), with Frostspire onward far too hard and Whisperwood and the Ashen Desert far too easy.
 - World bosses were retuned per boss (stats in `data/bestiary/enemies.ts`): Gnarlroot, the Sandworm, the Abyssal Crab and Bramblehorn are tougher; the Frost Wyrm, Storm Roc, Ember Matriarch and Unwritten Herald are 25-45% lighter in HP and about 20-35% lighter in damage. Every zone's world boss now sits at 52-64% wins (target 30-60). Seryth and the Shadow have 15% less HP.
