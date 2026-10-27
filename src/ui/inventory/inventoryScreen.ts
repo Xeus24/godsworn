@@ -8,7 +8,7 @@ import { appraiseLimit, bookSkill, studyTerms } from '../../engine/skills/genera
 import { RARITIES, type EquipSlot, type ItemCategory, type ItemInstance, type RarityId } from '../../engine/items/types';
 import type { GameSession } from '../../engine/state/gameState';
 import type { ItemLocation } from '../../engine/state/itemActions';
-import { equippedWeaponTypes, setPieceCounts } from '../../engine/items/equipment';
+import { equippedGearLook, equippedWeaponTypes, setPieceCounts } from '../../engine/items/equipment';
 import { parseSearch, type ItemTest } from './search';
 import { heroSprite } from '../art/heroSprite';
 import { itemIconUrl } from '../art/itemIcons';
@@ -145,6 +145,11 @@ export class InventoryScreen implements Screen {
       node.style.setProperty('--rarity', rarity.color === '#1a1a1a' ? '#c8b8ff' : rarity.color);
       node.classList.add('has-item');
       if (rarity.animated) node.classList.add('animated');
+      // Rarity reads by shape as well as color: gem pips on the top edge, and a standing glow from Epic up.
+      const pips = rarity.order >= 10 ? 5 : rarity.order >= 7 ? 4 : rarity.order >= 5 ? 3 : rarity.order >= 4 ? 2 : rarity.order >= 3 ? 1 : 0;
+      if (pips) node.append(el('span', { class: 'pips', 'aria-hidden': 'true' }, '◆'.repeat(pips)));
+      if (rarity.order >= 4) node.classList.add('glow');
+      if (rarity.order >= 5) node.classList.add('glow-hi');
       if (item.junk) node.classList.add('junk');
       const key = locKey(loc);
       this.nextSeen.set(item.uid, key);
@@ -297,7 +302,7 @@ export class InventoryScreen implements Screen {
     }
     const primary = (p.classes.find((x) => x.slot === 'primary') ?? p.classes[0])?.classId;
     const cls = primary ? content.classes.get(primary) : undefined;
-    const sprite = heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', equippedWeaponTypes(p, content));
+    const sprite = heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', equippedWeaponTypes(p, content), equippedGearLook(p, content));
     sprite.className = 'doll-sprite pixel';
     const figure = el('div', { class: 'doll-figure' }, sprite, el('div', { class: 'doll-name' }, p.name), el('div', { class: 'dim small' }, `Level ${p.level}`));
     figure.style.gridColumn = '2 / span 2';
