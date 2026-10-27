@@ -473,3 +473,73 @@ select {
   gap: 6px;
   margin-top: 6px;
 }
+
+/* ---------- List view ---------- */
+
+.list-wrap {
+  width: 100%;
+  max-width: 388px;
+}
+
+.list-head {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.list-head button {
+  flex: 1;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.inv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 340px;
+  min-height: 60px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.item-cell.item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 2px 6px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.item-row img.pixel {
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+
+.item-row .qty,
+.item-row .badge,
+.item-row .pips {
+  position: static;
+  flex: none;
+}
+
+.item-row .row-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-row .row-meta {
+  flex: none;
+  white-space: nowrap;
+}
+
+.item-row .pips {
+  order: 5;
+}

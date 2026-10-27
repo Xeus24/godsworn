@@ -10,6 +10,7 @@ import type { GameSession } from '../../engine/state/gameState';
 import type { ItemLocation } from '../../engine/state/itemActions';
 import { equippedGearLook, equippedWeaponTypes, setPieceCounts } from '../../engine/items/equipment';
 import { parseSearch, type ItemTest } from './search';
+import { noRule, type TabRule } from '../../engine/items/tabRules';
 import { heroSprite } from '../art/heroSprite';
 import { itemIconUrl } from '../art/itemIcons';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
@@ -54,6 +55,38 @@ function shortQty(n: number): string {
   return n >= 1000 ? `${(Math.round(n / 100) / 10).toString()}k` : String(n);
 }
 
+/** A stable name for a control, so focus can be put back on it after the screen is rebuilt. */
+function focusKeyOf(node: HTMLElement): string | undefined {
+  if (node.dataset.loc) return `loc:${node.dataset.loc}`;
+  const tag = node.tagName.toLowerCase();
+  const label = node.getAttribute('aria-label');
+  if (label) return `${tag}:${label}`;
+  const text = node.textContent ?? '';
+  // Toggle buttons change their label when pressed; they keep the same identity.
+  if (tag === 'button' && /^(Un)?[Ll]ock$/.test(text)) return 'button:lock';
+  if (tag === 'button' && /^(Unmark junk|Mark as junk)$/.test(text)) return 'button:junk';
+  if (tag === 'button' && /^(Grid|List) view$/.test(text)) return 'button:view';
+  if (tag === 'button' && text) return `button:${text}`;
+  if (tag === 'summary' && node.textContent) return `summary:${node.textContent.replace(/\s*\(\d+\)$/, '')}`;
+  return undefined;
+}
+
+const VIEW_KEY = 'godsworn.inventoryView';
+
+function readView(): 'grid' | 'list' {
+  try {
+    return localStorage.getItem(VIEW_KEY) === 'list' ? 'list' : 'grid';
+  } catch {
+    return 'grid';
+  }
+}
+
+function ruleSummary(rule: TabRule): string {
+  const groups = (FILTERS.filter(([id]) => id !== 'all') as [Exclude<Filter, 'all'>, string][]).filter(([id]) => FILTER_CATEGORIES[id].every((c) => rule.categories.includes(c))).map(([, label]) => label.toLowerCase());
+  const what = groups.length > 0 ? groups.join(', ') : 'everything';
+  return rule.minRarity ? `${what} (${content.rarities.get(rule.minRarity).name} and up)` : what;
+}
+
 function locKey(loc: ItemLocation): string {
   if (loc.where === 'equipment') return `equipment:${loc.slot}`;
   if (loc.where === 'stash') return `stash:${loc.tab}:${loc.index}`;
@@ -81,6 +114,10 @@ export class InventoryScreen implements Screen {
   private loadoutPick = LOADOUT_NAMES[0] as string;
   private upgradeCache = new Map<string, boolean>();
   private equipSig = '';
+  /** Grid of slots, or a compact sortable list of just the items. Remembered between visits. */
+  private view: 'grid' | 'list' = readView();
+  /** Which collapsible sections are open, so a redraw does not fold them shut. */
+  private openSections = new Set<string>();
   private setCounts = new Map<string, number>();
   /** Spoken to screen readers: moves, claims and errors. It outlives redraws so its text is announced. */
   private live = el('div', { class: 'sr-only', 'aria-live': 'polite', role: 'status' });
@@ -136,8 +173,8 @@ export class InventoryScreen implements Screen {
     return better;
   }
 
-  private cell(item: ItemInstance | undefined, loc: ItemLocation, placeholder = ''): HTMLElement {
-    const node = el('div', { class: 'item-cell', role: 'button', tabindex: '0', 'data-loc': locKey(loc) });
+  private cell(item: ItemInstance | undefined, loc: ItemLocation, placeholder = '', row = false): HTMLElement {
+    const node = el('div', { class: `item-cell${row ? ' item-row' : ''}`, role: 'button', tabindex: '0', 'data-loc': locKey(loc) });
     node.setAttribute('aria-label', item ? `${itemName(item)}${item.quantity > 1 ? ` x${item.quantity}` : ''}` : placeholder || 'Empty slot');
     if (sameLoc(this.selected, loc)) node.classList.add('selected');
     if (item) {
@@ -176,6 +213,11 @@ export class InventoryScreen implements Screen {
       const img = el('img', { class: 'pixel', src: itemIconUrl(item), alt: '', draggable: 'false' });
       node.append(img);
       if (item.quantity > 1) node.append(el('span', { class: 'qty' }, shortQty(item.quantity)));
+      if (row) {
+        const name = el('span', { class: 'row-name' }, itemName(item));
+        name.style.color = rarity.color === '#1a1a1a' ? '#c8b8ff' : rarity.color;
+        node.append(name, el('span', { class: 'row-meta dim small' }, `${category} \u00B7 iLvl ${item.itemLevel}`));
+      }
       node.draggable = true;
       node.addEventListener('dragstart', (e) => {
         hideTooltip();
@@ -230,6 +272,12 @@ export class InventoryScreen implements Screen {
     } else if (e.key === ' ') {
       e.preventDefault();
       if (item) this.quickAction(item, loc);
+    } else if (this.view === 'list' && loc.where !== 'overflow' && loc.where !== 'equipment' && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+      e.preventDefault();
+      const here = e.currentTarget as HTMLElement | null;
+      const rows = [...(here?.closest('.inv-list')?.querySelectorAll<HTMLElement>('.item-row') ?? [])];
+      const to = rows.indexOf(here as HTMLElement) + (e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 1);
+      rows[to]?.focus();
     } else if (loc.where !== 'equipment' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
       e.preventDefault();
       const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -GRID_COLS, ArrowDown: GRID_COLS }[e.key];
@@ -322,6 +370,29 @@ export class InventoryScreen implements Screen {
     return el('section', { class: 'panel' }, el('h3', {}, 'Equipment'), grid, el('div', { class: 'row loadouts' }, pick, save, wear));
   }
 
+  /** The bags or a stash tab, shown as a slot grid or as a list of items, per the view setting. */
+  private items(inv: Inventory, locOf: (i: number) => ItemLocation, tab?: number): HTMLElement {
+    return this.view === 'list' ? this.list(inv, locOf, tab) : this.grid(inv, locOf);
+  }
+
+  private list(inv: Inventory, locOf: (i: number) => ItemLocation, tab?: number): HTMLElement {
+    const columns: [string, SortMode][] = [['Name', 'name'], ['Type', 'category'], ['Rarity', 'rarity'], ['Level', 'level']];
+    const head = el('div', { class: 'list-head' }, ...columns.map(([label, mode]) => this.button(label, () => this.actions.sort(mode, tab), `Sort by ${label.toLowerCase()}`)));
+    const rows = inv.slots.flatMap((item, i) => (item ? [this.cell(item, locOf(i), '', true)] : []));
+    const body = el('div', { class: 'inv-list', role: 'group', 'aria-label': tab === undefined ? 'Bag items' : 'Stash items' }, ...rows);
+    if (rows.length === 0) body.append(el('p', { class: 'dim small' }, 'Empty.'));
+    // Dropping on the list (not on a row) puts the item in the first free slot.
+    body.addEventListener('dragover', (e) => {
+      if (e.dataTransfer?.types.includes(DRAG_TYPE)) e.preventDefault();
+    });
+    body.addEventListener('drop', (e) => {
+      const raw = e.dataTransfer?.getData(DRAG_TYPE);
+      const free = inv.slots.indexOf(null);
+      if (raw && free >= 0 && e.target === body) this.drop(JSON.parse(raw) as ItemLocation, locOf(free));
+    });
+    return el('div', { class: 'list-wrap' }, head, body);
+  }
+
   private grid(inv: Inventory, locOf: (i: number) => ItemLocation, cls = 'inv-grid'): HTMLElement {
     return el('div', { class: cls }, ...inv.slots.map((item, i) => this.cell(item ?? undefined, locOf(i))));
   }
@@ -336,7 +407,7 @@ export class InventoryScreen implements Screen {
       });
       return b;
     });
-    const sortSelect = this.sortSelect(this.sortMode, (m) => (this.sortMode = m));
+    const sortSelect = this.sortSelect(this.sortMode, (m) => (this.sortMode = m), 'Sort bags by');
     const sortBtn = el('button', {}, 'Sort');
     sortBtn.addEventListener('click', () => this.actions.sort(this.sortMode));
     const used = inv.slots.filter(Boolean).length;
@@ -345,15 +416,15 @@ export class InventoryScreen implements Screen {
       { class: 'panel' },
       el('div', { class: 'panel-head' }, el('h3', {}, 'Inventory'), el('span', { class: 'dim small' }, `${used}/${inv.slots.length}`)),
       el('div', { class: 'tabs' }, ...filters),
-      this.grid(inv, (index) => ({ where: 'inventory', index })),
+      this.items(inv, (index) => ({ where: 'inventory', index })),
       el('div', { class: 'row' }, sortSelect, sortBtn, this.lootFilterControls()),
       this.bagTools(),
       this.overflowPanel(),
     );
   }
 
-  private sortSelect(current: SortMode, set: (mode: SortMode) => void): HTMLSelectElement {
-    const select = el('select', { 'aria-label': 'Sort by' });
+  private sortSelect(current: SortMode, set: (mode: SortMode) => void, label: string): HTMLSelectElement {
+    const select = el('select', { 'aria-label': label });
     for (const mode of ['category', 'rarity', 'level', 'name', 'upgrade'] as SortMode[]) {
       const o = el('option', { value: mode }, `Sort: ${mode}`);
       if (mode === current) o.selected = true;
@@ -377,9 +448,6 @@ export class InventoryScreen implements Screen {
       this.test = parseSearch(input.value);
       this.jumpToMatchingTab();
       this.render();
-      const next = this.root?.querySelector<HTMLInputElement>('.item-search');
-      next?.focus();
-      next?.setSelectionRange(next.value.length, next.value.length);
     });
     return input;
   }
@@ -408,7 +476,18 @@ export class InventoryScreen implements Screen {
     salvage.disabled = !junkGear;
     const restock = this.button('Restock potions', () => this.say(this.actions.restockPotions()), `Top each potion kind in your bags up to ${RESTOCK_TARGET} from the stash (town only)`);
     restock.disabled = !inTown;
-    return el('div', { class: 'row bag-tools' }, this.searchBox(), stashAll, stashFilter, restock, salvage);
+    const viewBtn = this.button(this.view === 'list' ? 'Grid view' : 'List view', () => {
+      this.view = this.view === 'list' ? 'grid' : 'list';
+      try {
+        localStorage.setItem(VIEW_KEY, this.view);
+      } catch {
+        // The view just is not remembered.
+      }
+      this.live.textContent = this.view === 'list' ? 'List view' : 'Grid view';
+      this.render();
+    }, 'Switch between a slot grid and a sortable list');
+    viewBtn.setAttribute('aria-pressed', String(this.view === 'list'));
+    return el('div', { class: 'row bag-tools' }, this.searchBox(), viewBtn, stashAll, stashFilter, restock, salvage);
   }
 
   /** Loot that did not fit in the bags: a small grid you can claim from in towns. */
@@ -459,13 +538,51 @@ export class InventoryScreen implements Screen {
       box.addEventListener('change', () => this.actions.setStashRule(cat, box.checked));
       return el('label', { class: 'small dim filter-label' }, box, label);
     });
-    return el(
-      'details',
-      { class: 'stash-rules' },
-      el('summary', { class: 'small dim' }, `Auto-stash on arriving in town${rules.length ? ` (${rules.length})` : ''}`),
-      el('div', { class: 'row' }, ...boxes),
-      el('p', { class: 'dim small' }, 'Quest items and skeleton keys always stay in your bags.'),
-    );
+    return this.section('autostash', `Auto-stash on arriving in town${rules.length ? ` (${rules.length})` : ''}`, el('div', { class: 'row' }, ...boxes), el('p', { class: 'dim small' }, 'Quest items and skeleton keys always stay in your bags.'));
+  }
+
+  /** A collapsible block that remembers whether it was open across redraws. */
+  private section(id: string, title: string, ...body: HTMLElement[]): HTMLElement {
+    const node = el('details', { class: 'stash-rules', 'data-section': id }, el('summary', { class: 'small dim' }, title), ...body);
+    node.open = this.openSections.has(id);
+    node.addEventListener('toggle', () => {
+      if (node.open) this.openSections.add(id);
+      else this.openSections.delete(id);
+    });
+    return node;
+  }
+
+  /** What the open tab claims when items are sent to the stash. */
+  private tabRuleControls(): HTMLElement {
+    const stash = this.session.state.stash;
+    const tab = this.stashTab;
+    const rule: TabRule = stash.rules[tab] ?? { categories: [], minRarity: null };
+    const groups = FILTERS.filter(([id]) => id !== 'all') as [Exclude<Filter, 'all'>, string][];
+    const boxes = groups.map(([id, label]) => {
+      const cats = FILTER_CATEGORIES[id];
+      const box = el('input', { type: 'checkbox', 'aria-label': `Claim ${label}` });
+      box.checked = cats.every((c) => rule.categories.includes(c));
+      box.addEventListener('change', () => {
+        const kept = rule.categories.filter((c) => !cats.includes(c));
+        this.say(this.actions.setTabRule(tab, { categories: box.checked ? [...kept, ...cats] : kept, minRarity: rule.minRarity }));
+      });
+      return el('label', { class: 'small dim filter-label' }, box, label);
+    });
+    const rarity = el('select', { 'aria-label': 'Claim from rarity' });
+    rarity.append(el('option', { value: '' }, 'Any rarity'));
+    for (const r of RARITIES.slice(0, 6)) {
+      const o = el('option', { value: r }, `${content.rarities.get(r).name} and up`);
+      if (r === rule.minRarity) o.selected = true;
+      rarity.append(o);
+    }
+    rarity.addEventListener('change', () => this.say(this.actions.setTabRule(tab, { categories: rule.categories, minRarity: (rarity.value || null) as RarityId | null })));
+    const others = [...stash.tabs.keys()].filter((i) => i !== tab && stash.rules[i]);
+    const copy = el('select', { 'aria-label': 'Copy rule from tab' });
+    copy.append(el('option', { value: '' }, 'Copy rule from...'));
+    for (const i of others) copy.append(el('option', { value: String(i) }, stashTabName(stash, i)));
+    copy.addEventListener('change', () => copy.value && this.say(this.actions.copyTabRule(Number(copy.value), tab)));
+    const note = noRule(rule) ? 'No rule: the tab takes whatever the claiming tabs do not.' : `Claims ${ruleSummary(rule)}. Shift-click and Stash all send matching items here first.`;
+    return this.section('tabrule', `Sorting rule for this tab${noRule(rule) ? '' : ' \u25C8'}`, el('div', { class: 'row' }, ...boxes), el('div', { class: 'row' }, rarity, ...(others.length ? [copy] : [])), el('p', { class: 'dim small' }, note));
   }
 
   /** Dedicate the open tab to a god's reliquary: a tidy collection of things they like earns a little favor each day. */
@@ -493,9 +610,11 @@ export class InventoryScreen implements Screen {
     const tabs = stash.tabs.map((inv, i) => {
       const test = this.test;
       const hits = test ? inv.slots.filter((x) => x && test(x)).length : 0;
-      const star = stash.reliquary[i] ? '\u2726 ' : '';
+      const ruled = stash.rules[i] && !noRule(stash.rules[i] as TabRule);
+      const star = `${stash.reliquary[i] ? '\u2726 ' : ''}${ruled ? '\u25C8 ' : ''}`;
       const label = this.query ? `${star}${stashTabName(stash, i)} (${hits})` : `${star}${stashTabName(stash, i)}`;
       const b = el('button', { class: `tab${this.stashTab === i ? ' active' : ''}${this.query && hits === 0 ? ' dimmed' : ''}${hits > 0 ? ' match' : ''}` }, label);
+      if (ruled) b.title = `Claims ${ruleSummary(stash.rules[i] as TabRule)}`;
       const best = inv.slots.reduce<ItemInstance | null>((top, x) => (x && (!top || content.rarities.get(x.rarity).order > content.rarities.get(top.rarity).order) ? x : top), null);
       if (best) b.style.borderBottom = `2px solid ${content.rarities.get(best.rarity).color === '#1a1a1a' ? '#c8b8ff' : content.rarities.get(best.rarity).color}`;
       b.addEventListener('click', () => {
@@ -514,7 +633,7 @@ export class InventoryScreen implements Screen {
     const name = el('input', { type: 'text', maxlength: String(STASH_NAME_MAX), placeholder: `Tab ${this.stashTab + 1}`, 'aria-label': 'Tab name', class: 'tab-name' });
     name.value = stash.names[this.stashTab] ?? '';
     name.addEventListener('change', () => this.say(this.actions.renameTab(this.stashTab, name.value)));
-    const stashSort = this.sortSelect(this.stashSort, (m) => (this.stashSort = m));
+    const stashSort = this.sortSelect(this.stashSort, (m) => (this.stashSort = m), 'Sort stash by');
     const sortBtn = this.button('Sort tab', () => this.actions.sort(this.stashSort, this.stashTab));
     const undo = this.button('Undo', () => this.say(this.actions.undoStash()), 'Undo your last stash move');
     undo.disabled = !this.actions.canUndo();
@@ -526,9 +645,10 @@ export class InventoryScreen implements Screen {
       el('div', { class: 'panel-head' }, el('h3', {}, 'Stash'), el('span', { class: 'dim small' }, `${used}/${tab?.slots.length ?? 0}`)),
       el('div', { class: 'tabs' }, ...tabs, buy),
       el('div', { class: 'row' }, name, stashSort, sortBtn, takeAll, undo),
+      this.tabRuleControls(),
       this.stashRules(),
       this.reliquaryControls(),
-      tab ? this.grid(tab, (index) => ({ where: 'stash', tab: this.stashTab, index })) : el('div', {}),
+      tab ? this.items(tab, (index) => ({ where: 'stash', tab: this.stashTab, index }), this.stashTab) : el('div', {}),
       el('p', { class: 'dim small' }, inTown ? 'Shared by all your towns. Drag items, or shift-click to send them across.' : 'The stash can only be used in towns.'),
     );
   }
@@ -593,8 +713,10 @@ export class InventoryScreen implements Screen {
     if (!this.root) return;
     hideTooltip();
     if (this.selected && !this.actions.itemAt(this.selected)) this.selected = undefined;
-    // The screen is rebuilt on every change; keep keyboard focus on the same cell.
-    const focused = (document.activeElement as HTMLElement | null)?.dataset?.loc;
+    // The screen is rebuilt on every change; keep keyboard focus on the same control (and the caret in a text box).
+    const active = document.activeElement instanceof HTMLElement && this.root.contains(document.activeElement) ? document.activeElement : undefined;
+    const focusKey = active ? focusKeyOf(active) : undefined;
+    const caret = active instanceof HTMLInputElement && active.type !== 'checkbox' ? [active.selectionStart, active.selectionEnd] : undefined;
     this.nextSeen = new Map();
     this.setCounts = setPieceCounts(this.session.player);
     this.equipSig = `${this.session.player.level}:${Object.values(this.session.player.equipment).map((i) => i?.uid).join(',')}`;
@@ -615,7 +737,16 @@ export class InventoryScreen implements Screen {
     );
     this.seen = this.nextSeen;
     this.firstRender = false;
-    if (focused) this.root.querySelector<HTMLElement>(`[data-loc="${focused}"]`)?.focus();
+    if (focusKey) this.restoreFocus(focusKey, caret);
   };
+
+  private restoreFocus(key: string, caret: (number | null)[] | undefined): void {
+    const root = this.root as HTMLElement;
+    const candidates = [...root.querySelectorAll<HTMLElement>('[data-loc],button,select,input,summary')];
+    // A control that vanished (a button that changed its label, or an item that moved) hands focus to the selected cell.
+    const next = candidates.find((c) => focusKeyOf(c) === key) ?? (this.selected ? root.querySelector<HTMLElement>(`[data-loc="${locKey(this.selected)}"]`) : null);
+    next?.focus();
+    if (next instanceof HTMLInputElement && caret && caret[0] !== null && caret[1] !== null && next.type !== 'checkbox') next.setSelectionRange(caret[0] as number, caret[1] as number);
+  }
 }
 

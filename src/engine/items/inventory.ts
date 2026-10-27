@@ -1,6 +1,7 @@
 import { content, type Content } from '../../data';
 import { baseOf, maxStackOf, rarityOrder } from './lookup';
 import { itemName } from './naming';
+import type { TabRule } from './tabRules';
 import type { ItemCategory, ItemInstance } from './types';
 
 /** A fixed grid of slots. Empty slots are null; positions matter for the UI grid. */
@@ -208,6 +209,8 @@ export interface Stash {
   names: string[];
   /** Tabs dedicated to a god's reliquary: tab index -> god id. */
   reliquary: Record<number, string>;
+  /** Sorting rules: which items each tab claims when they are sent to the stash. */
+  rules: Record<number, TabRule>;
 }
 
 export const STASH_NAME_MAX = 14;
@@ -217,7 +220,7 @@ export const STASH_TAB_SIZE = 48;
 export const STASH_TAB_COSTS = [1_000, 5_000, 15_000, 40_000, 100_000];
 
 export function createStash(): Stash {
-  return { tabs: [createInventory(STASH_TAB_SIZE)], names: [], reliquary: {} };
+  return { tabs: [createInventory(STASH_TAB_SIZE)], names: [], reliquary: {}, rules: {} };
 }
 
 /** Cost of the next tab, or undefined at the maximum. */

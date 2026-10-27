@@ -32,6 +32,7 @@ const text = (root: HTMLElement): string => root.textContent ?? '';
 describe('inventory screen', () => {
   beforeEach(() => {
     document.body.replaceChildren();
+    localStorage.clear();
   });
 
   it('renders bag and stash cells with accessible labels', () => {
@@ -129,7 +130,7 @@ describe('inventory screen', () => {
 
   it('auto-stash checkboxes write the rules', () => {
     const { session, root } = setup();
-    const boxes = root.querySelectorAll<HTMLInputElement>('.stash-rules input[type="checkbox"]');
+    const boxes = root.querySelectorAll<HTMLInputElement>('[data-section="autostash"] input[type="checkbox"]');
     expect(boxes.length).toBe(4);
     boxes[0]!.checked = true;
     boxes[0]!.dispatchEvent(new Event('change', { bubbles: true }));
@@ -271,5 +272,176 @@ describe('inventory screen', () => {
     const lit = bagItems.filter((c) => !c.classList.contains('dimmed'));
     expect(lit).toHaveLength(1);
     expect(lit[0]?.getAttribute('aria-label')).toContain('Mithril');
+  });
+
+  describe('keeping focus across redraws', () => {
+    const button = (root: HTMLElement, text: string): HTMLButtonElement => [...root.querySelectorAll('button')].find((b) => b.textContent === text) as HTMLButtonElement;
+
+    it('a button keeps focus after it is pressed', () => {
+      const { root } = setup();
+      button(root, 'Sort').focus();
+      button(root, 'Sort').click();
+      expect(document.activeElement?.textContent).toBe('Sort');
+      expect(root.contains(document.activeElement)).toBe(true);
+    });
+
+    it('the tab-name box keeps focus when it saves', () => {
+      const { session, root } = setup();
+      const name = root.querySelector<HTMLInputElement>('.tab-name') as HTMLInputElement;
+      name.focus();
+      name.value = 'Loot';
+      name.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(session.state.stash.names[0]).toBe('Loot');
+      expect(document.activeElement?.getAttribute('aria-label')).toBe('Tab name');
+    });
+
+    it('typing in the search box keeps focus in the search box', () => {
+      const { root } = setup();
+      const box = root.querySelector<HTMLInputElement>('.item-search') as HTMLInputElement;
+      box.focus();
+      box.value = 'ab';
+      box.dispatchEvent(new Event('input', { bubbles: true }));
+      expect(document.activeElement?.classList.contains('item-search')).toBe(true);
+      expect((document.activeElement as HTMLInputElement).value).toBe('ab');
+    });
+
+    it('a checkbox keeps focus and its section stays open', () => {
+      const { root } = setup();
+      const section = root.querySelector<HTMLDetailsElement>('[data-section="tabrule"]') as HTMLDetailsElement;
+      section.open = true;
+      section.dispatchEvent(new Event('toggle'));
+      const box = root.querySelector<HTMLInputElement>('input[aria-label="Claim Materials"]') as HTMLInputElement;
+      box.focus();
+      box.checked = true;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(document.activeElement?.getAttribute('aria-label')).toBe('Claim Materials');
+      expect((root.querySelector('[data-section="tabrule"]') as HTMLDetailsElement).open).toBe(true);
+    });
+
+    it('when the focused control disappears, focus goes to the selected cell', () => {
+      const { session, root, screen } = setup();
+      const sword = createItem('sword-t3', 1, uid);
+      session.items.give(sword, false);
+      screen.render();
+      const index = session.state.inventory.slots.indexOf(sword);
+      cell(root, `inventory:${index}`).click();
+      button(root, 'Lock').focus();
+      button(root, 'Lock').click();
+      expect(document.activeElement?.textContent).toBe('Unlock');
+    });
+  });
+
+  describe('tab sorting rules', () => {
+    it('the rule controls write the rule and mark the tab', () => {
+      const { session, root } = setup();
+      const box = root.querySelector<HTMLInputElement>('input[aria-label="Claim Materials"]') as HTMLInputElement;
+      box.checked = true;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(session.state.stash.rules[0]?.categories).toEqual(['material']);
+      expect([...root.querySelectorAll('.tab')].some((t) => t.textContent?.includes('Tab 1') && t.textContent.includes('\u25C8'))).toBe(true);
+      const rarity = root.querySelector<HTMLSelectElement>('select[aria-label="Claim from rarity"]') as HTMLSelectElement;
+      rarity.value = 'rare';
+      rarity.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(session.state.stash.rules[0]?.minRarity).toBe('rare');
+    });
+
+    it('shift-click sends an item to the tab that claims it', () => {
+      const { session, root, screen } = setup();
+      session.addGold(1000, 'test');
+      session.items.buyStashTab();
+      session.items.setTabRule(1, { categories: ['material'], minRarity: null });
+      session.items.give(createItem('mithril-ore', 3, uid), false);
+      screen.render();
+      const index = session.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+      cell(root, `inventory:${index}`).dispatchEvent(new MouseEvent('click', { bubbles: true, shiftKey: true }));
+      expect(session.state.stash.tabs[1]?.slots.some((x) => x?.baseId === 'mithril-ore')).toBe(true);
+      expect(session.state.stash.tabs[0]?.slots.some((x) => x?.baseId === 'mithril-ore')).toBe(false);
+    });
+  });
+
+  describe('list view', () => {
+    const btn = (root: HTMLElement, text: string): HTMLButtonElement => [...root.querySelectorAll('button')].find((b) => b.textContent === text) as HTMLButtonElement;
+
+    it('toggles between the slot grid and a list of just the items, and remembers it', () => {
+      const { root, session } = setup();
+      const items = session.state.inventory.slots.filter(Boolean).length;
+      expect(root.querySelectorAll('[data-loc^="inventory:"]')).toHaveLength(48);
+      btn(root, 'List view').click();
+      expect(root.querySelectorAll('[data-loc^="inventory:"].item-row')).toHaveLength(items);
+      expect(btn(root, 'Grid view').getAttribute('aria-pressed')).toBe('true');
+      expect(localStorage.getItem('godsworn.inventoryView')).toBe('list');
+      const again = setup();
+      expect(again.root.querySelectorAll('[data-loc^="inventory:"].item-row')).toHaveLength(items);
+      btn(again.root, 'Grid view').click();
+      expect(again.root.querySelectorAll('[data-loc^="inventory:"]')).toHaveLength(48);
+    });
+
+    it('rows show name, type and level and still select, lock and shift-click like cells', () => {
+      const { session, root, screen } = setup();
+      btn(root, 'List view').click();
+      const sword = createItem('sword-t3', 1, uid);
+      session.items.give(sword, false);
+      screen.render();
+      const index = session.state.inventory.slots.indexOf(sword);
+      const row = cell(root, `inventory:${index}`);
+      expect(row.classList.contains('item-row')).toBe(true);
+      expect(row.querySelector('.row-name')?.textContent).toBeTruthy();
+      expect(row.querySelector('.row-meta')?.textContent).toContain('iLvl');
+      press(row, 'l');
+      expect(sword.locked).toBe(true);
+      cell(root, `inventory:${index}`).dispatchEvent(new MouseEvent('click', { bubbles: true, shiftKey: true }));
+      expect(session.state.stash.tabs[0]?.slots.some((x) => x?.uid === sword.uid)).toBe(true);
+    });
+
+    it('column headers sort the list, and arrow keys move between rows', () => {
+      const { session, root, screen } = setup();
+      btn(root, 'List view').click();
+      session.items.give(createItem('mithril-ore', 2, uid), false);
+      screen.render();
+      btn(root, 'Name').click();
+      const names = [...root.querySelectorAll('[data-loc^="inventory:"] .row-name')].map((n) => n.textContent ?? '');
+      expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+      const rows = [...root.querySelectorAll<HTMLElement>('[data-loc^="inventory:"].item-row')];
+      rows[0]!.focus();
+      press(rows[0]!, 'ArrowDown');
+      expect(document.activeElement).toBe(rows[1]);
+      press(rows[1]!, 'ArrowUp');
+      expect(document.activeElement).toBe(rows[0]);
+    });
+
+    it('dropping on the empty part of a stash list stores the item in the first free slot', () => {
+      const { session, root, screen } = setup();
+      btn(root, 'List view').click();
+      session.items.give(createItem('mithril-ore', 5, uid), false);
+      screen.render();
+      const index = session.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+      const stashList = root.querySelector('.inv-list[aria-label="Stash items"]') as HTMLElement;
+      const dt = dragData();
+      const start = new Event('dragstart', { bubbles: true });
+      Object.defineProperty(start, 'dataTransfer', { value: dt });
+      cell(root, `inventory:${index}`).dispatchEvent(start);
+      for (const type of ['dragover', 'drop']) {
+        const ev = new Event(type, { bubbles: true, cancelable: true });
+        Object.defineProperty(ev, 'dataTransfer', { value: dt });
+        stashList.dispatchEvent(ev);
+      }
+      expect(session.items.count('mithril-ore')).toBe(0);
+      expect(session.state.stash.tabs[0]?.slots[0]?.baseId).toBe('mithril-ore');
+    });
+
+    it('search and focus still work in the list', () => {
+      const { session, root, screen } = setup();
+      btn(root, 'List view').click();
+      session.items.give(createItem('mithril-ore', 2, uid), false);
+      screen.render();
+      const box = root.querySelector<HTMLInputElement>('.item-search') as HTMLInputElement;
+      box.value = 'type:material';
+      box.dispatchEvent(new Event('input', { bubbles: true }));
+      const rows = [...root.querySelectorAll('[data-loc^="inventory:"].item-row')];
+      expect(rows.filter((r) => !r.classList.contains('dimmed'))).toHaveLength(1);
+      btn(root, 'Grid view').focus();
+      btn(root, 'Grid view').click();
+      expect(document.activeElement?.textContent).toBe('List view');
+    });
   });
 });

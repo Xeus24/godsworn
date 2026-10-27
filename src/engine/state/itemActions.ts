@@ -23,6 +23,7 @@ import {
 import { baseOf, isGear, rarityOrder } from '../items/lookup';
 import { equippedItems } from '../items/equipment';
 import { upgradeScore } from '../items/upgrade';
+import { noRule, tabOrder, type TabRule } from '../items/tabRules';
 import { applyLootFilter } from '../items/lootFilter';
 import { itemName } from '../items/naming';
 import { lastFilledSocket, socketInto, unsocket, unsocketCost } from '../items/sockets';
@@ -188,12 +189,13 @@ export class ItemActions {
   settleOverflow(): number {
     const held = this.s.state.overflow;
     if (held.length === 0 || !this.s.world.inTown()) return 0;
-    const grids = [this.inv, ...this.s.state.stash.tabs];
+    const stash = this.s.state.stash;
     const rest: ItemInstance[] = [];
     let moved = 0;
     for (const item of held.splice(0)) {
       let left = item.quantity;
-      for (const g of grids) {
+      const order = [this.inv, ...tabOrder(stash.tabs.length, stash.rules, item, 0).map((t) => stash.tabs[t] as Inventory)];
+      for (const g of order) {
         if (left <= 0) break;
         const piece: ItemInstance = { ...item, sockets: [...item.sockets], quantity: left };
         const before = left;
@@ -403,8 +405,8 @@ export class ItemActions {
       if (moved === 0) return fail(from.slots[loc.index] ? 'Your bags are full.' : 'Nothing there.');
     } else {
       if (!this.inv.slots[loc.index]) return fail('Nothing there.');
-      const order = [...tabs.keys()].sort((a, b) => Number(a !== preferTab) - Number(b !== preferTab) || a - b);
-      for (const t of order) {
+      const item = this.inv.slots[loc.index] as ItemInstance;
+      for (const t of tabOrder(tabs.length, this.s.state.stash.rules, item, preferTab)) {
         moved = transferStack(this.inv, loc.index, tabs[t] as Inventory);
         if (moved > 0) break;
       }
@@ -421,10 +423,16 @@ export class ItemActions {
 
   private depositNow(preferTab: number, pick?: (item: ItemInstance) => boolean): Result & { moved?: number } {
     if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
-    const tabs = this.s.state.stash.tabs;
-    const order = [...tabs.keys()].sort((a, b) => Number(a !== preferTab) - Number(b !== preferTab) || a - b);
+    const stash = this.s.state.stash;
     let moved = 0;
-    for (const t of order) moved += transferAll(this.inv, tabs[t] as Inventory, pick);
+    for (let i = 0; i < this.inv.slots.length; i++) {
+      const item = this.inv.slots[i];
+      if (!item || (pick && !pick(item))) continue;
+      for (const t of tabOrder(stash.tabs.length, stash.rules, item, preferTab)) {
+        moved += transferStack(this.inv, i, stash.tabs[t] as Inventory);
+        if (!this.inv.slots[i]) break;
+      }
+    }
     if (moved === 0) return fail('Nothing to stash, or the stash is full.');
     this.s.bus.emit('toast', { kind: 'info', text: `Stashed ${moved} item${moved === 1 ? '' : 's'}` });
     this.changed('move');
@@ -581,6 +589,23 @@ export class ItemActions {
   }
 
   // ------------------------------------------------------------ reliquary
+
+  /** Sets what a tab claims when items are sent to the stash (null or an empty rule clears it). */
+  setTabRule(tab: number, rule: TabRule | null): Result {
+    const stash = this.s.state.stash;
+    if (!stash.tabs[tab]) return fail('No such tab.');
+    if (!rule || noRule(rule)) delete stash.rules[tab];
+    else stash.rules[tab] = { categories: [...rule.categories], minRarity: rule.minRarity };
+    this.changed('stash');
+    return { ok: true };
+  }
+
+  /** Copies one tab's sorting rule onto another. */
+  copyTabRule(from: number, to: number): Result {
+    const stash = this.s.state.stash;
+    if (!stash.tabs[from] || !stash.tabs[to]) return fail('No such tab.');
+    return this.setTabRule(to, stash.rules[from] ?? null);
+  }
 
   /** Dedicates a stash tab to a god's reliquary (or clears it with an empty god). */
   setReliquary(tab: number, god: string): Result {
