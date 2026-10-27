@@ -25,6 +25,7 @@ import { lastFilledSocket, socketInto, unsocket, unsocketCost } from '../items/s
 import type { EquipSlot, ItemCategory, ItemInstance } from '../items/types';
 import { salvageYield } from '../items/upkeep';
 import { appraiseLimit } from '../skills/general';
+import { itemsNeededByQuests } from '../quests/quests';
 import { useConsumableInField, type UseResult } from '../items/use';
 import type { GameSession } from './gameState';
 
@@ -37,6 +38,9 @@ const fail = (reason: string): Result => ({ ok: false, reason });
 
 /** Most items held in overflow; past this the oldest is lost. */
 export const OVERFLOW_MAX = 40;
+
+/** Items used straight from the bags, so auto-stash never takes them. */
+const KEEP_IN_BAGS = ['skeleton-key'];
 
 /**
  * Item actions on a running game: everything the inventory screen can do.
@@ -335,7 +339,9 @@ export class ItemActions {
   applyStashRules(): number {
     const rules = this.s.state.stashRules;
     if (rules.length === 0 || !this.s.world.inTown()) return 0;
-    const r = this.depositAll(0, (item) => rules.includes(baseOf(item).category) && !item.junk);
+    // Leave what a quest objective or an opened chest needs from the bags.
+    const needed = itemsNeededByQuests(this.s.state);
+    const r = this.depositAll(0, (item) => rules.includes(baseOf(item).category) && !item.junk && !needed.has(item.baseId) && !KEEP_IN_BAGS.includes(item.baseId));
     if (!r.ok) return 0;
     this.s.bus.emit('toast', { kind: 'info', text: `Stashed ${r.moved} item${r.moved === 1 ? '' : 's'} by your stash rules` });
     return r.moved ?? 0;

@@ -115,7 +115,7 @@
 - **Transfers:** shift-click or the "Send to stash / Take to bags" button moves an item across (merging stacks, spilling into the next tab with room); "Stash all", "Stash filtered" (the current category tab) and "Take all" move many at once. Town only. "Salvage junk gear" works anywhere.
 - **Overflow:** loot that does not fit in the bags is set aside (up to 40 entries, oldest dropped) instead of vanishing, and claimed from the Inventory screen. Save version 17 adds `overflow`, `stashRules` and stash tab names (older saves load with defaults).
 - **Search:** one box on the Inventory screen dims every bag and stash item whose name does not match; stash tabs show how many matches they hold.
-- **Auto-stash rules:** gems, runes, curiosities and/or materials can be sent to the stash automatically on arriving in a town (never junk-marked items). Stashed materials are not used for crafting until taken back. The stash has its own sort setting.
+- **Auto-stash rules:** gems, runes, curiosities and/or materials can be sent to the stash automatically on arriving in a town (never junk-marked items, items an active quest objective needs, or skeleton keys). Stashed materials are not used for crafting until taken back. The stash has its own sort setting.
 - **Material stacks:** crafting materials stack to 999 (other items stay at 99).
 - Sorting never loses an item: if a merge could not fit, the grid is left untouched.
 - **Upkeep:** durability (broken gear gives no stats) with a repair cost formula; salvage into essences, raw materials and socketed gems.

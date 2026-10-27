@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { content } from '../src/data';
+import { itemsNeededByQuests } from '../src/engine/quests/quests';
 import { createItem } from '../src/engine/items/generate';
 import {
   addItem,
@@ -184,6 +186,23 @@ describe('stash rules and stacks', () => {
     expect(countOf(s.state.stash.tabs[0]!, 'mithril-ore')).toBe(7);
     s.items.setStashRule('material', false);
     expect(s.state.stashRules).toEqual([]);
+  });
+
+  it('auto-stash leaves quest items and skeleton keys in the bags', () => {
+    const s = GameSession.newGame(5, makeHero());
+    const quest = content.quests.find('side-healroot')!;
+    s.state.quests.active['side-healroot'] = { stage: quest.stages[0]!.id, progress: {} } as never;
+    const needed = itemsNeededByQuests(s.state);
+    expect(needed.size).toBeGreaterThan(0);
+    const herb = createItem([...needed][0]!, 3, uid);
+    const key = createItem('skeleton-key', 1, uid);
+    s.items.give(herb, false);
+    s.items.give(key, false);
+    s.items.setStashRule('material', true);
+    s.items.setStashRule('curiosity', true);
+    s.items.applyStashRules();
+    expect(s.items.count(herb.baseId)).toBe(3);
+    expect(s.items.count('skeleton-key')).toBe(1);
   });
 
   it('stashes automatically when you step into a town', () => {

@@ -21,6 +21,17 @@ export function currentStage(state: GameState, q: QuestDef): StageDef | undefine
   return prog ? stageOf(q, prog.stage) : undefined;
 }
 
+/** Items the current stage of every active quest needs to have in the bags (collect and deliver objectives). */
+export function itemsNeededByQuests(state: GameState, c: Content = content): Set<string> {
+  const needed = new Set<string>();
+  for (const [id, prog] of Object.entries(state.quests.active)) {
+    const q = c.quests.find(id);
+    const stage = q?.stages.find((st) => st.id === prog.stage);
+    for (const o of stage?.objectives ?? []) if (o.kind === 'collect' || o.kind === 'deliver') needed.add(o.itemId);
+  }
+  return needed;
+}
+
 /** How many of something an objective needs. */
 export function required(o: ObjectiveDef): number {
   switch (o.kind) {
