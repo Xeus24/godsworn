@@ -212,7 +212,13 @@ export class ItemActions {
 
   /** Adds dropped loot through the loot filter, with toasts for notable finds. */
   receiveLoot(items: ItemInstance[], gold: number): { kept: ItemInstance[]; salvaged: number } {
-    const stamp = { day: this.s.state.clock.day, zone: this.s.world.zone.name };
+    let zone = 'the road';
+    try {
+      zone = this.s.world.zone.name;
+    } catch {
+      // Loot found somewhere outside the zone list (a rift, say) is just "the road".
+    }
+    const stamp = { day: this.s.state.clock.day, zone };
     for (const item of items) item.found ??= stamp;
     const filtered = applyLootFilter(items, this.s.state.lootFilter);
     for (const item of filtered.keep) {

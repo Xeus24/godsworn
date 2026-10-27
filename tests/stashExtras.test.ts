@@ -57,6 +57,16 @@ describe('item history', () => {
   });
 });
 
+describe('item history safety', () => {
+  it('loot found on an unknown map does not break', () => {
+    const s = newGame();
+    s.state.world.position = { ...s.state.world.position, map: 'nowhere-in-particular' };
+    const item = createItem('sword-t1', 1, uid);
+    expect(() => s.items.receiveLoot([item], 0)).not.toThrow();
+    expect(item.found?.zone).toBe('the road');
+  });
+});
+
 describe('what an item is for', () => {
   it('lists recipes that use a material and active quests that need it', () => {
     const s = newGame();
