@@ -503,9 +503,9 @@ Generated from the data files by `npm run content:md`.
 | Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |  |
 | Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +30% damage. |
 | Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
-| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, 35% more max HP, 10% less damage taken and 8% lifesteal. |
+| Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, +35% damage, 35% more max HP, 10% less damage taken and 8% lifesteal. |
 | Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
-| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +45% damage, 35% more max HP and 10% less damage taken. |
+| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +70% damage, 35% more max HP and 10% less damage taken. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 

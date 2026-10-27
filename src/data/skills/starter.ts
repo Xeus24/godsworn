@@ -158,7 +158,7 @@ export const CLASS_STARTER_SKILLS: SkillDef[] = [
     maxRank: 5,
     cost: { mp: 5 },
     cooldown: 0,
-    damage: { stat: 'magicAttack', multiplier: 1.6, perRank: 0.12 },
+    damage: { stat: 'magicAttack', multiplier: 1.9, perRank: 0.14 },
     generates: { resource: 'soulShards', amount: 1 },
   },
   {

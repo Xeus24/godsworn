@@ -714,6 +714,8 @@
 - L60 wins after: warrior 56 to 71%, mage 46 to 55%, necromancer 63 to 66%, bard 94 to 99%; levels 1-45 unchanged.
 - Tried and dropped: a diminishing-returns cap on Speed (rogues and rangers reach 140+ speed from DEX). It cut rogues to 74-82% in ordinary fights and did nothing for the weak classes. Raising world boss enrage timers did almost nothing either.
 - Cut / deferred: per-class boss walls remain. The necromancer deals about 20% of a boss's HP before dying (DoTs and summons lose to boss status resistance and area attacks), the cleric and bard are 0-10% against some world bosses, and the warrior still loses the two Rift-era world bosses. These are kit problems, not boss numbers, and need class changes.
+- Class boss pass (necromancer and bard): summons now borrow the owner's stronger attack stat (a necromancer's skeleton copied a Strength-based attack the class barely has); the Necromancer trait gains +35% damage and Soul Bolt goes from 160% to 190% MAG; the Bard trait goes from +45% to +70% damage. Mean world boss wins (benchmark gear, solo): necromancer 23% to about 55%, bard 42% to 54%. L60 necromancer 66 to 71%, Plague Doctor hybrid trial 7 to 30%. Ordinary-fight wins at levels 1-45 are unchanged (necromancer is now 100% at L1-45).
+- Still deferred: the cleric gets 0% against Gnarlroot (regeneration) and the Abyssal Crab (Harden) because the auto-battle never saves burst for the window, and the bard still dies to Bramblehorn and Gnarlroot at levels 9-17. The mage is now the weakest solo class against late world bosses (30% mean). Raising the cleric's damage did not move those walls, so it was left alone.
 
 ## Known bugs
 - None known.
