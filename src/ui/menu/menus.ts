@@ -188,6 +188,7 @@ export const KEYS: [string, string][] = [
   ['Esc', 'Menu (save, load, settings)'],
   ['N', 'Skip to the next music track (composed music)'],
   ['U', 'Mute or unmute all sound'],
+  ['Controller Select / right stick', 'Skip the music track / mute'],
   ['?', 'This list'],
   ['`', 'Developer panel'],
 ];

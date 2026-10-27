@@ -45,6 +45,7 @@ import { applySettings, settings, updateSettings } from './ui/settings';
 import './ui/menu/menu.css';
 import { audio } from './ui/audio/audio';
 import { syncAreaAudio } from './ui/audio/areaAudio';
+import { AudioPad } from './ui/audio/audioPad';
 import { moodForTown } from './ui/audio/musicFiles';
 import { CodexScreen } from './ui/codex/codexScreen';
 import { EndgameScreen } from './ui/endgame/endgameScreen';
@@ -410,11 +411,18 @@ window.addEventListener('keydown', (e) => {
   if (key === 'b') showCodex();
   if (key === 'p') showPantheon();
   if (key === 'n') audio().skip();
-  if (key === 'u') {
-    updateSettings({ muted: !settings().muted });
-    toasts.show('info', settings().muted ? 'Sound muted (U to unmute).' : 'Sound on.');
-  }
+  if (key === 'u') toggleMute();
 });
+
+function toggleMute(): void {
+  updateSettings({ muted: !settings().muted });
+  toasts.show('info', settings().muted ? 'Sound muted (U to unmute).' : 'Sound on.');
+}
+
+// A controller's Select skips the music track and a right-stick press mutes.
+const audioPad = new AudioPad({ skip: () => audio().skip(), mute: toggleMute });
+window.addEventListener('gamepadconnected', () => audioPad.start());
+if (navigator.getGamepads?.().some(Boolean)) audioPad.start();
 
 // Name the recorded track when it changes, so a tune you like can be looked up.
 audio().onNowPlaying((track) => {
