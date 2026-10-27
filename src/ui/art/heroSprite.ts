@@ -119,11 +119,14 @@ const tone = (weight: string, fallback: string): string => WEIGHT_TONE[weight] ?
 function drawHelm(px: Px, p: NonNullable<GearLook['head']>): void {
   const base = tone(p.weight, '#9aa2b8');
   if (p.weight === 'cloth') {
-    // Hood: draped over the hair and down the sides of the face.
+    // Hood: a peaked cowl over the hair, falling in folds past the cheeks, with a shadowed opening.
+    px(base, 18, -2, 12, 3);
     px(base, 15, 1, 18, 7);
-    px(shade(base, -0.3), 14, 6, 3, 12);
-    px(shade(base, -0.3), 31, 6, 3, 12);
-    px(p.color, 15, 1, 18, 1);
+    px(shade(base, -0.3), 14, 6, 3, 14);
+    px(shade(base, -0.3), 31, 6, 3, 14);
+    px(shade(base, -0.55), 17, 7, 14, 1);
+    px(shade(base, 0.2), 20, -1, 8, 1);
+    px(p.color, 15, 7, 18, 1);
   } else if (p.weight === 'leather') {
     px(base, 16, 1, 16, 5);
     px(shade(base, -0.3), 15, 5, 18, 2);

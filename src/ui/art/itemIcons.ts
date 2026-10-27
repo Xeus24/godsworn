@@ -1,7 +1,7 @@
 import { content } from '../../data';
 import { baseOf } from '../../engine/items/lookup';
 import type { ItemBaseDef, ItemInstance } from '../../engine/items/types';
-import { ITEM_PATTERNS } from './itemPatterns';
+import { ITEM_PATTERNS, ITEM_PATTERN_VARIANTS } from './itemPatterns';
 
 const SIZE = 16;
 const OUTLINE = '#120c18';
@@ -48,6 +48,15 @@ interface IconSpec {
   pattern: string;
   main: string;
   energy: string;
+  /** Silhouette variant (0 = the default pattern) and trim color; both are optional. */
+  variant?: number;
+  accent?: string;
+}
+
+function hash(text: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+  return h >>> 0;
 }
 
 function weaponFamily(type: string): string {
@@ -64,7 +73,7 @@ function liquidColor(base: ItemBaseDef): string {
 }
 
 /** Chooses pattern and colors for an item. `energy` defaults to the rarity color. */
-export function iconSpec(item: ItemInstance): IconSpec {
+function baseSpec(item: ItemInstance): IconSpec {
   const base = baseOf(item);
   const rarityColor = content.rarities.get(item.rarity).color;
   const energy = item.rarity === 'common' || item.rarity === 'junk' ? '#7fd8ff' : rarityColor;
@@ -126,21 +135,39 @@ export function iconSpec(item: ItemInstance): IconSpec {
   }
 }
 
+/**
+ * Chooses an icon's shape and trim: the shape varies by base item, and Epic and
+ * better items wear their rarity color as trim so rarity reads inside the icon.
+ */
+export function iconSpec(item: ItemInstance): IconSpec {
+  const spec = baseSpec(item);
+  const variants = ITEM_PATTERN_VARIANTS[spec.pattern]?.length ?? 0;
+  const out: IconSpec = { ...spec };
+  if (variants) out.variant = hash(item.baseId) % (variants + 1);
+  const order = content.rarities.get(item.rarity).order;
+  if (order >= 4) out.accent = spec.energy;
+  // Uniques get a slightly different metal tone each, so two uniques of one base differ.
+  if (item.uniqueId) out.main = shade(spec.main, ((hash(item.uniqueId) % 5) - 2) * 0.07);
+  return out;
+}
+
 const cache = new Map<string, string>();
 
 /** Renders (and caches) an icon as a PNG data URL. */
 export function iconUrl(spec: IconSpec): string {
-  const key = `${spec.pattern}|${spec.main}|${spec.energy}`;
+  const key = `${spec.pattern}|${spec.main}|${spec.energy}|${spec.variant ?? 0}|${spec.accent ?? ''}`;
   const hit = cache.get(key);
   if (hit) return hit;
 
-  const rows = ITEM_PATTERNS[spec.pattern] ?? ITEM_PATTERNS.curiosity ?? [];
+  const alt = spec.variant ? ITEM_PATTERN_VARIANTS[spec.pattern]?.[spec.variant - 1] : undefined;
+  const rows = alt ?? ITEM_PATTERNS[spec.pattern] ?? ITEM_PATTERNS.curiosity ?? [];
   const palette: Record<string, string> = {
     ...FIXED,
     m: spec.main,
     l: shade(spec.main, 0.35),
     d: shade(spec.main, -0.35),
     e: spec.energy,
+    ...(spec.accent ? { a: spec.accent } : {}),
   };
   const canvas = document.createElement('canvas');
   canvas.width = SIZE;

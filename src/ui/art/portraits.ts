@@ -100,7 +100,7 @@ export function drawPortrait(canvas: HTMLCanvasElement, raceId: string, variant:
   const skin = pal.skins[v % pal.skins.length] as string;
   const hair = pal.hairs[(v * 3 + 1) % pal.hairs.length] as string;
   const cloth = pal.clothes[(v + 2) % pal.clothes.length] as string;
-  const style = v % 3;
+  const style = v % 5;
   const skinDark = shade(skin, -0.22);
   const px = (x: number, y: number, w = 1, h = 1, c = skin): void => {
     f.fillStyle = c;
@@ -139,8 +139,13 @@ export function drawPortrait(canvas: HTMLCanvasElement, raceId: string, variant:
   const pupil = raceId === 'primordial' ? '#6a4aff' : raceId === 'dragon' ? '#d82a10' : raceId === 'fae' ? '#2a8a6a' : glow ? '#e8a800' : raceId === 'beastkin' || raceId === 'gnome' ? '#c8a020' : '#2a1a10';
   px(11, 15, 3, 2, eyeWhite);
   px(18, 15, 3, 2, eyeWhite);
-  px(12, 15, 2, 2, pupil);
-  px(19, 15, 2, 2, pupil);
+  const humanEyes = ['#2a1a10', '#2a5a8a', '#3a7a4a', '#6a4a1a', '#5a6a7a'];
+  const irisColor = ['human', 'elf', 'dwarf', 'gnome'].includes(raceId) ? (humanEyes[(v * 7 + 2) % humanEyes.length] as string) : pupil;
+  px(12, 15, 2, 2, irisColor);
+  px(19, 15, 2, 2, irisColor);
+  // A single catch-light keeps the eyes alive.
+  px(12, 15, 1, 1, '#ffffff');
+  px(19, 15, 1, 1, '#ffffff');
   const browY = raceId === 'orc' || raceId === 'giant' ? 13 : 14;
   px(11, browY, 4, 1, shade(hair, -0.2));
   px(18, browY, 4, 1, shade(hair, -0.2));
@@ -183,6 +188,30 @@ export function drawPortrait(canvas: HTMLCanvasElement, raceId: string, variant:
     px(18, 19, 1, 2, '#f4f0d8');
   }
 
+  // Per-variant details so two heroes of one race rarely look alike.
+  const feature = Math.floor(v / 2) % 6;
+  if (feature === 1 && raceId !== 'primordial') {
+    // A scar across the brow and cheek.
+    px(10, 12, 1, 1, '#c88a8a'); px(11, 13, 1, 1, '#c88a8a'); px(11, 14, 1, 1, '#c88a8a'); px(12, 16, 1, 1, '#c88a8a'); px(12, 17, 1, 1, '#c88a8a'); px(13, 18, 1, 1, '#c88a8a');
+  } else if (feature === 2 && raceId !== 'orc' && raceId !== 'dragon' && raceId !== 'primordial') {
+    // Freckles.
+    for (const [x, y] of [[11, 18], [13, 18], [12, 19], [19, 18], [21, 18], [20, 19]] as const) px(x, y, 1, 1, shade(skin, -0.3));
+  } else if (feature === 3 && !['elf', 'fae', 'dragon', 'primordial', 'dwarf'].includes(raceId)) {
+    // A moustache.
+    px(12, 18, 3, 1, shade(hair, -0.1)); px(17, 18, 3, 1, shade(hair, -0.1)); px(11, 19, 1, 1, shade(hair, -0.1)); px(20, 19, 1, 1, shade(hair, -0.1));
+  } else if (feature === 4) {
+    // An earring and a dark mark under the eye.
+    px(8, 17, 1, 2, '#e0a63a');
+    px(12, 17, 2, 1, shade(skin, -0.18)); px(19, 17, 2, 1, shade(skin, -0.18));
+  } else if (feature === 5 && !['dwarf', 'primordial', 'dragon'].includes(raceId)) {
+    // Face paint across the cheeks, in the clothing color.
+    px(10, 17, 4, 1, shade(cloth, 0.2)); px(19, 17, 4, 1, shade(cloth, 0.2));
+  }
+  // A collar and clasp on the shoulders.
+  px(12, 27, 8, 1, shade(cloth, -0.25));
+  px(15, 27, 2, 3, shade(cloth, 0.35));
+  px(15, 28, 2, 1, '#e0a63a');
+
   // Hair.
   px(10, 6, 12, 3, hair);
   px(9, 8, 14, 2, hair);
@@ -196,6 +225,17 @@ export function drawPortrait(canvas: HTMLCanvasElement, raceId: string, variant:
     px(22, 10, 3, 14, hair);
     px(7, 23, 2, 4, shade(hair, -0.15));
     px(23, 23, 2, 4, shade(hair, -0.15));
+  } else if (style === 3) {
+    // Swept side fringe over one eye.
+    px(9, 9, 9, 3, hair);
+    px(9, 12, 3, 4, hair);
+    px(10, 9, 5, 1, shade(hair, 0.3));
+  } else if (style === 4) {
+    // Ponytail over the shoulder, with a tie.
+    px(22, 10, 3, 3, hair);
+    px(24, 12, 3, 12, hair);
+    px(25, 24, 2, 3, shade(hair, -0.15));
+    px(24, 13, 3, 1, cloth);
   } else if (style === 2) {
     // Topknot / crest.
     px(14, 2, 4, 4, hair);

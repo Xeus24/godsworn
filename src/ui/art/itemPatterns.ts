@@ -69,3 +69,39 @@ export const ITEM_PATTERNS: Record<string, string[]> = {
   fang: ['ww......', 'wwww....', '.wwwww..', '..wwwww.', '...wwwwd', '.....wdd'],
   curiosity: ['.wwwww.', 'wkwwwkw', 'wwwwwww', 'wwwkwww', 'wwwwwww', 'wkwwwkw', '.wwwww.'],
 };
+
+/**
+ * Alternate silhouettes per pattern. An item picks its pattern (or one of
+ * these) from a hash of its base id, so different bases of one slot or
+ * weapon type no longer share a shape. Same palette letters as above.
+ */
+export const ITEM_PATTERN_VARIANTS: Record<string, string[][]> = {
+  sword: [
+    ['.....lw', '....lwd', '...lmmd', '...lmmd', '..lmmd.', '..lmmd.', '.lmmd..', '.lmd...', 'aaaa...', '.g.....', '.h.....', 'aea....'],
+    ['...w...', '..lwd..', '..lwd..', '..lmd..', '..lmd..', '..lmd..', '..lmd..', '..lmd..', 'a.aaa.a', '.aaaaa.', '...g...', '...h...', '..aea..'],
+  ],
+  axe: [['.llll.....', 'lmmmmd.h..', 'lmmmmmdh..', 'lmmmmmdh..', '.lmmmdgh..', '..dd..g...', '......h...', '......g...', '......h...', '......g...', '.....aea..']],
+  shield: [
+    ['..lllll..', '.lmmmmmd.', 'lmmaaammd', 'lmaaeaamd', 'lmmaaammd', 'lmmmmmmmd', '.lmmmmmd.', '..ldddd..'],
+    ['lllllll', 'lmmammd', 'lmmammd', 'lmaeamd', 'lmmammd', '.lmmmd.', '.lmmmd.', '..lmd..', '...d...'],
+  ],
+  staff: [['..aaa..', '.aeeea.', '.aewea.', '.aeeea.', '..aaa..', '...h...', '...g...', '...h...', '...g...', '...h...', '...g...', '...h...', '...a...']],
+  head: [
+    ['....a....', '...lmd...', '..lmmmd..', '.lmmmmmd.', 'lmmmmmmmd', 'lmm.k.mmd', 'lmm.k.mmd', 'lm.....md', '.d.....d.'],
+    ['..lllll..', '.lmmmmmd.', 'lmmmmmmmd', 'lmmmmmmmd', 'lmmkkkmmd', 'lmkk.kkmd', 'lmk...kmd', '.dk...kd.'],
+  ],
+  chest: [
+    ['..lmmmmd..', '.lmmmmmmd.', 'lmmmammmmd', 'lmmmmmmmmd', 'lmmaaaammd', '.lmmmmmmd.', '.lmmmmmmd.', '.lmmmmmmd.', '.lmmmmmmd.', '.lmmmmmmd.', '.ddddddddd'],
+    ['.ll.....ll.', 'lmmllllmmd.', 'lmmmaammmd', 'lmmmaammmd', 'lmmmaammmd', '.lmmaammd.', '.lmmaammd.', '.aaaaaaaa.', '.lmmmmmmd.', '..dd.dd.d.'],
+  ],
+  boots: [['.lmd...lmd.', '.lmd...lmd.', '.lmmd.lmmd.', 'lmmmmdlmmmd', 'aaaaaaaaaaa', 'ddddddddddd']],
+  ring: [
+    ['..eee..', '.eweee.', '..eee..', '.lmmmd.', 'lm...md', 'lm...md', '.lmmmd.', '..ddd..'],
+    ['.lmmmmd.', 'lmaeeamd', 'lmaeeamd', '.lmmmmd.', '..lmmd..', '..lm.md.', '...ddd..'],
+  ],
+  amulet: [['d.....d', '.d...d.', '..d.d..', '...d...', '..lmd..', '.lmmmd.', 'lmmeemd', 'lmeweed', '.lmeed.', '..lmd..', '...d...']],
+  potion: [
+    ['..hh..', '..gg..', '.wllw.', 'wleeew', 'leweeed', 'leeeeed', 'leeeeed', '.deeed.', '..ddd..'],
+    ['..hh..', '..gg..', '..ww..', '.wlew.', '.leeed', '.leeed', '.leeed', '.leeed', '.leeed', '.deed.', '..dd..'],
+  ],
+};

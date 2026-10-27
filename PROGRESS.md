@@ -683,6 +683,12 @@
 - Item cells show rarity by shape as well as color: gem pips on the top edge (Rare 1 up to Ascended 5) and a standing glow from Epic.
 - World screen takes an accent color per biome on its border, glow and header.
 
+### Graphics pass 12
+- Portraits: five hair styles (adds a side fringe and a ponytail), eye colors, catch-lights, a collar and clasp, and per-variant details (scar, freckles, moustache, earring, face paint).
+- Item icons: bases of one type use different silhouettes (swords, axes, shields, staves, helms, chests, boots, rings, amulets, potions), Epic and better items take their rarity color as trim, and uniques get their own metal tone.
+- Each in-game screen (inventory, skills, general, pantheon, quests, party, codex) has its own accent hue for panel corners, headings and the active tab.
+- Sandstorm and ashfall are denser and easier to see; the cloth hood reads as a peaked hood with a shadowed opening.
+
 ## Known bugs
 - None known.
 

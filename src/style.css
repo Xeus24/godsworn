@@ -215,7 +215,7 @@ button:disabled {
 
 .panel {
   /* Gilded corner brackets over a faint top-lit gradient, drawn as backgrounds so layout is untouched. */
-  --corner: var(--gold-lo);
+  --corner: var(--screen-lo, var(--gold-lo));
   background:
     linear-gradient(var(--corner), var(--corner)) top left / 10px 2px no-repeat,
     linear-gradient(var(--corner), var(--corner)) top left / 2px 10px no-repeat,
@@ -236,7 +236,7 @@ button:disabled {
   margin: 0 0 4px;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
   font-family: var(--font-display);
-  color: var(--gold);
+  color: var(--screen-hi, var(--gold));
   font-size: 22px;
 }
 
@@ -244,7 +244,7 @@ button:disabled {
   margin: 14px 0 6px;
   font-size: 12px;
   letter-spacing: 1px;
-  color: var(--gold);
+  color: var(--screen-hi, var(--gold));
   text-transform: uppercase;
 }
 
@@ -799,4 +799,23 @@ body.reduce-motion *::after {
 
 .tip-bad {
   color: #e8715a;
+}
+
+/* ---------- Per-screen accent hues ---------- */
+/* Each in-game screen tints its panel corners, headings, header rule and active tab. */
+.sheet[data-screen='inventory'] { --screen-hi: #e0a060; --screen-lo: #8a5a2a; }
+.sheet[data-screen='skills'] { --screen-hi: #78b0ff; --screen-lo: #2e50a0; }
+.sheet[data-screen='general'] { --screen-hi: #8ad46a; --screen-lo: #3a7030; }
+.sheet[data-screen='pantheon'] { --screen-hi: #ffe27a; --screen-lo: #b08a2a; }
+.sheet[data-screen='quests'] { --screen-hi: #f09060; --screen-lo: #9a4420; }
+.sheet[data-screen='party'] { --screen-hi: #6ad8cc; --screen-lo: #24726c; }
+.sheet[data-screen='codex'] { --screen-hi: #c09aff; --screen-lo: #6240a8; }
+
+.sheet[data-screen] .sheet-header {
+  border-bottom-color: var(--screen-lo, var(--border));
+}
+
+.sheet[data-screen] .tab.active {
+  border-color: var(--screen-hi, var(--gold));
+  color: var(--screen-hi, var(--gold-hi));
 }

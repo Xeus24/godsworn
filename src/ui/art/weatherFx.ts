@@ -79,20 +79,22 @@ export function drawWeather(g: CanvasRenderingContext2D, weather: string, w: num
       break;
     }
     case 'sandstorm': {
-      g.fillStyle = 'rgba(226,188,120,0.5)';
-      for (let i = 0; i < 110; i++) {
+      g.fillStyle = 'rgba(232,192,120,0.16)';
+      g.fillRect(0, 0, w, h);
+      g.fillStyle = 'rgba(240,206,140,0.85)';
+      for (let i = 0; i < 220; i++) {
         const x = wrap(lane(i, 13) * (w + 60) + t * (260 + lane(i, 14) * 180), w + 60) - 30;
         const y = lane(i, 15) * h + Math.sin(t * 2 + i) * 6;
-        g.fillRect(x, y, 8 + lane(i, 16) * 12, 1);
+        g.fillRect(x, y, 10 + lane(i, 16) * 16, 2);
       }
       break;
     }
     case 'ashfall': {
-      for (let i = 0; i < 70; i++) {
-        g.fillStyle = lane(i, 17) > 0.85 ? 'rgba(255,140,60,0.8)' : 'rgba(180,170,170,0.55)';
+      for (let i = 0; i < 140; i++) {
+        g.fillStyle = lane(i, 17) > 0.85 ? 'rgba(255,150,70,0.95)' : 'rgba(200,190,190,0.8)';
         const x = wrap(lane(i, 18) * w + Math.sin(t * 0.7 + i) * 20 + t * 12, w);
         const y = wrap(lane(i, 19) * h + t * (22 + lane(i, 20) * 30), h);
-        g.fillRect(Math.round(x), Math.round(y), 2, 2);
+        g.fillRect(Math.round(x), Math.round(y), 3, 3);
       }
       break;
     }

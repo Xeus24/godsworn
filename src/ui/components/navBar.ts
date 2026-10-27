@@ -49,7 +49,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
   const title = el('button', {}, 'Menu (Esc)');
   title.addEventListener('click', nav.title);
 
-  return el(
+  const header = el(
     'header',
     { class: 'sheet-header' },
     portrait,
@@ -70,4 +70,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
     el('nav', { class: 'tabs' }, tab('character', 'Character (C)', nav.character), tab('inventory', 'Inventory (I)', nav.inventory), tab('skills', 'Skills (K)', nav.skills), tab('general', 'General (L)', nav.general), tab('pantheon', 'Pantheon (P)', nav.pantheon), tab('quests', 'Quests (J)', nav.quests), tab('party', 'Party (O)', nav.party), tab('codex', 'Codex (B)', nav.codex), tab('world', 'World (G)', nav.world)),
     title,
   );
+  // Each screen gets its own accent hue (see `.sheet[data-screen]` in style.css); the sheet is the header's parent once it is placed.
+  queueMicrotask(() => header.closest('.sheet')?.setAttribute('data-screen', active));
+  return header;
 }
