@@ -4,6 +4,8 @@ export interface Settings {
   masterVolume: number;
   musicVolume: number;
   sfxVolume: number;
+  ambienceVolume: number;
+  footstepVolume: number;
   /** Sound effects made on the fly, or the recorded open-licence clips. */
   sfxSource: 'synth' | 'recorded';
   /** Music made on the fly, or the human-made open-licence tracks. */
@@ -27,6 +29,8 @@ export const DEFAULT_SETTINGS: Settings = {
   masterVolume: 0.7,
   musicVolume: 0.4,
   sfxVolume: 0.7,
+  ambienceVolume: 0.5,
+  footstepVolume: 0.7,
   sfxSource: 'synth',
   musicSource: 'synth',
   muted: false,

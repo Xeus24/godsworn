@@ -267,6 +267,20 @@ describe('audio engine', () => {
     expect(sources.length).toBeGreaterThanOrEqual(synthBefore);
   });
 
+  it('mixes music, ambience, footsteps and effects on their own volumes', () => {
+    const buses = audio() as unknown as { music: FakeNode; ambienceBus: FakeNode; stepBus: FakeNode; sfxBus: FakeNode };
+    updateSettings({ musicSource: 'composed', musicVolume: 0.5, ambienceVolume: 0.25, footstepVolume: 0.9, sfxVolume: 0.1 });
+    expect(buses.music.gain.value).toBeCloseTo(0.4);
+    expect(buses.ambienceBus.gain.value).toBeCloseTo(0.16);
+    expect(buses.stepBus.gain.value).toBe(0.9);
+    expect(buses.sfxBus.gain.value).toBe(0.1);
+    // Moving one slider leaves the others alone.
+    updateSettings({ musicVolume: 0 });
+    expect(buses.ambienceBus.gain.value).toBeCloseTo(0.16);
+    updateSettings({ musicSource: 'synth' });
+    expect(buses.ambienceBus.gain.value).toBeCloseTo(0.07);
+  });
+
   it('knows every mood has a track', () => {
     const moods = Object.keys(MUSIC_PLAYLISTS) as MusicMood[];
     expect(moods.length).toBeGreaterThan(10);

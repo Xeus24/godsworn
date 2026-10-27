@@ -79,7 +79,7 @@ export class SettingsOverlay extends Overlay {
 
   protected render(): void {
     const s = settings();
-    const slider = (label: string, key: 'masterVolume' | 'musicVolume' | 'sfxVolume'): HTMLElement => {
+    const slider = (label: string, key: 'masterVolume' | 'musicVolume' | 'sfxVolume' | 'ambienceVolume' | 'footstepVolume'): HTMLElement => {
       const input = el('input', { type: 'range', min: '0', max: '100', value: String(Math.round(s[key] * 100)), 'aria-label': label }) as HTMLInputElement;
       input.addEventListener('input', () => updateSettings({ [key]: Number(input.value) / 100 } as Partial<Settings>));
       return el('label', { class: 'setting-row' }, el('span', {}, label), input);
@@ -109,7 +109,9 @@ export class SettingsOverlay extends Overlay {
       ...(s.musicSource === 'composed'
         ? [el('div', { class: 'dim small' }, MUSIC_CREDIT), this.nowPlayingRow()]
         : [el('div', { class: 'setting-row' }, el('span', { class: 'dim small' }, 'Hear the human-made music before choosing it.'), button('Hear a sample', () => audio().preview()))]),
-      slider('Sound effects', 'sfxVolume'),
+      slider('Ambience (wind, rain, water, caves)', 'ambienceVolume'),
+      slider('Footsteps', 'footstepVolume'),
+      slider('Effects (combat and interface)', 'sfxVolume'),
       select<'synth' | 'recorded'>('Sound effects source', [['synth', 'Synthesized (made on the fly)'], ['recorded', 'Recorded (human-made, open licence)']], s.sfxSource, (v) => {
         updateSettings({ sfxSource: v });
         this.render();
@@ -127,8 +129,8 @@ export class SettingsOverlay extends Overlay {
         }),
         button('Audio credits', () => new AudioCreditsOverlay().open()),
         button('Reset audio settings', () => {
-          const { masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted, ambience } = DEFAULT_SETTINGS;
-          updateSettings({ masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted, ambience });
+          const { masterVolume, musicVolume, sfxVolume, ambienceVolume, footstepVolume, musicSource, sfxSource, muted, ambience } = DEFAULT_SETTINGS;
+          updateSettings({ masterVolume, musicVolume, sfxVolume, ambienceVolume, footstepVolume, musicSource, sfxSource, muted, ambience });
           this.render();
         }),
       ),

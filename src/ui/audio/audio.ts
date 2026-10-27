@@ -77,6 +77,9 @@ class AudioEngine {
   private master: GainNode | undefined;
   private music: GainNode | undefined;
   private sfxBus: GainNode | undefined;
+  /** Ambience and footsteps have their own volumes, apart from music and effects. */
+  private ambienceBus: GainNode | undefined;
+  private stepBus: GainNode | undefined;
   private noise: AudioBuffer | undefined;
   private track: Track = 'none';
   private timer: number | undefined;
@@ -144,8 +147,12 @@ class AudioEngine {
       this.master = this.ctx.createGain();
       this.music = this.ctx.createGain();
       this.sfxBus = this.ctx.createGain();
+      this.ambienceBus = this.ctx.createGain();
+      this.stepBus = this.ctx.createGain();
       this.music.connect(this.master);
       this.sfxBus.connect(this.master);
+      this.ambienceBus.connect(this.master);
+      this.stepBus.connect(this.master);
       this.master.connect(this.ctx.destination);
       const len = this.ctx.sampleRate * 0.5;
       this.noise = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
@@ -161,11 +168,14 @@ class AudioEngine {
 
   private applyVolumes(): void {
     const s = settings();
-    if (!this.master || !this.music || !this.sfxBus) return;
+    if (!this.master || !this.music || !this.sfxBus || !this.ambienceBus || !this.stepBus) return;
     this.master.gain.value = s.muted ? 0 : s.masterVolume;
     // The synthesized loop is mixed quietly; recorded tracks are already at full level.
     this.music.gain.value = s.musicVolume * (this.composed() ? 0.8 : 0.35);
     this.sfxBus.gain.value = s.sfxVolume;
+    this.stepBus.gain.value = s.footstepVolume;
+    // Ambience files are mixed louder than the synthesized noise, as with the music.
+    this.ambienceBus.gain.value = s.ambienceVolume * (this.composed() ? 0.64 : 0.28);
   }
 
   // ------------------------------------------------------------ effects
@@ -251,7 +261,7 @@ class AudioEngine {
     const g = ctx.createGain();
     g.gain.value = 0.35;
     src.connect(g);
-    g.connect(this.sfxBus as GainNode);
+    g.connect(this.stepBus as GainNode);
     src.start();
   }
 
@@ -470,7 +480,7 @@ class AudioEngine {
       a.gain.gain.linearRampToValueAtTime(0.0001, t + FADE);
       window.setTimeout(() => a.stop(), FADE * 1000 + 100);
     }
-    if (!ctx || !this.music) return;
+    if (!ctx || !this.ambienceBus) return;
     for (const id of want) {
       if (this.synthAmbience.has(id)) continue;
       const recipe = SYNTH_AMBIENCE[id] as SynthRecipe;
@@ -490,7 +500,7 @@ class AudioEngine {
       gain.gain.linearRampToValueAtTime(recipe.level, ctx.currentTime + MUSIC_CROSSFADE);
       src.connect(low);
       low.connect(gain);
-      gain.connect(this.music);
+      gain.connect(this.ambienceBus as GainNode);
       const nodes: { stop: () => void }[] = [src];
       if (recipe.swell > 0) {
         const lfo = ctx.createOscillator();
@@ -518,7 +528,7 @@ class AudioEngine {
       this.ambience.delete(id);
       this.release(a, FADE);
     }
-    if (!ctx || !this.music) return;
+    if (!ctx || !this.ambienceBus) return;
     for (const id of want) {
       if (this.ambience.has(id)) continue;
       const el = new Audio(ambienceUrl(id, BASE));
@@ -531,7 +541,7 @@ class AudioEngine {
       } catch {
         continue;
       }
-      gain.connect(this.music);
+      gain.connect(this.ambienceBus as GainNode);
       const a = { el, gain };
       this.ambience.set(id, a);
       const drop = (): void => {
