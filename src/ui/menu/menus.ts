@@ -157,12 +157,13 @@ export class AudioCreditsOverlay extends Overlay {
   }
 
   protected render(): void {
-    const titles = Object.values(MUSIC_TRACKS).map((t) => t.title);
+    const byArtist = new Map<string, string[]>();
+    for (const t of Object.values(MUSIC_TRACKS)) byArtist.set(t.artist, [...(byArtist.get(t.artist) ?? []), t.title]);
     this.panel.replaceChildren(
       el('h2', {}, 'Audio credits'),
       el('div', { class: 'dim small' }, 'The human-made audio is all CC0 (public domain). Credits are also in public/music/CREDITS.md and public/sfx/CREDITS.md.'),
       el('h3', {}, 'Music'),
-      el('div', { class: 'small' }, `Juhani Junkala, via OpenGameArt: ${titles.join(', ')}.`),
+      ...[...byArtist].map(([artist, titles]) => el('div', { class: 'small' }, `${artist}: ${titles.join(', ')}.`)),
       el('h3', {}, 'Ambience'),
       ...AMBIENCE_IDS.map((id) => el('div', { class: 'small' }, `${id}: ${AMBIENCE_SOURCES[id]}`)),
       el('h3', {}, 'Sound effects'),

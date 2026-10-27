@@ -22,7 +22,8 @@ describe('composed music', () => {
 
   it("cycles through a mood's playlist and returns to the start", () => {
     expect(nextTrack('town', 'where-time-stands-still')).toBe('home-town');
-    expect(nextTrack('town', 'bazaar')).toBe('where-time-stands-still');
+    expect(nextTrack('town', 'bazaar')).toBe('town-theme-rpg');
+    expect(nextTrack('town', 'kings-feast')).toBe('where-time-stands-still');
     for (const mood of MUSIC_MOODS) {
       const list = MUSIC_PLAYLISTS[mood];
       let slug = list[0] as string;

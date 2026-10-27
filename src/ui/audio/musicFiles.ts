@@ -62,30 +62,50 @@ export const MUSIC_TRACKS: Record<string, MusicTrack> = {
   'preparing-for-battle': { title: 'Preparing For Battle', artist: JJ },
   'army-approaching': { title: 'Army Approaching', artist: JJ },
   'encounter-with-the-witches': { title: 'Encounter With The Witches', artist: JJ },
+  'battle-theme-a': { title: 'Battle Theme A', artist: 'cynicmusic' },
+  'battle-theme-b': { title: 'Battle Theme B', artist: 'cynicmusic' },
+  'town-theme-rpg': { title: 'Town Theme RPG', artist: 'cynicmusic' },
+  'battle-rpg-theme': { title: 'Battle RPG Theme', artist: 'Cleyton Kauffman' },
+  'determined-pursuit': { title: 'Determined Pursuit', artist: 'Emma_MA' },
+  'a-legend-will-rise': { title: 'A Legend Will Rise', artist: 'CodeManu' },
+  'unexplored-expansion': { title: 'Unexplored (expanded)', artist: 'TAD and Bo Jingles' },
+  'treasure-hunter': { title: 'Treasure Hunter', artist: 'TAD' },
+  'forgotten-tombs': { title: 'Forgotten Tombs', artist: 'kindland' },
+  'dungeon-ambience-yd': { title: 'Dungeon Ambience', artist: 'yd' },
+  insistent: { title: 'Insistent', artist: 'yd' },
+  'market-day': { title: 'Market Day', artist: 'RandomMind' },
+  'the-old-tower-inn': { title: 'The Old Tower Inn', artist: 'RandomMind' },
+  'the-bards-tale': { title: 'The Bard\u2019s Tale', artist: 'RandomMind' },
+  'kings-feast': { title: 'King\u2019s Feast', artist: 'RandomMind' },
+  'cave-of-time': { title: 'Cave of time', artist: 'Komiku' },
+  'serenity-temple': { title: 'Serenity Temple', artist: 'Komiku' },
+  'travel-to-the-horizon': { title: 'Travel to the Horizon', artist: 'Komiku' },
+  'night-in-a-seashell': { title: 'Night in a seashell', artist: 'Komiku' },
+  'time-flutes-place': { title: 'Time Flute\u2019s place', artist: 'Komiku' },
 };
 
 /** The tracks each mood plays, in turn. Files may serve several moods. */
 export const MUSIC_PLAYLISTS: Record<MusicMood, string[]> = {
-  title: ['ancient-evil-awakens', 'a-place-i-call-home'],
-  town: ['where-time-stands-still', 'home-town', 'bazaar'],
-  'town-brightwater': ['home-town', 'where-time-stands-still'],
-  'town-thornwick': ['peaceful-days', 'bazaar'],
-  'town-sandhaven': ['bazaar', 'sand-castles'],
-  'town-frosthold': ['childhood-friends', 'innocence'],
-  'town-saltmere': ['sunshine-coast', 'tropical-island'],
-  world: ['grasslands', 'prairie-nights'],
-  forest: ['sneaking-around', 'peaceful-days'],
-  desert: ['military-base', 'sand-castles'],
-  snow: ['innocence', 'childhood-friends'],
-  coast: ['tropical-island', 'sunshine-coast'],
-  volcanic: ['witchs-lair', 'apocalypse'],
-  citadel: ['apocalypse', 'ancient-evil-awakens'],
-  cave: ['thael-mines', 'whispers-from-beyond'],
-  dungeon: ['thael-mines', 'whispers-from-beyond', 'catacombs'],
-  depths: ['catacombs', 'whispers-from-beyond', 'witchs-lair'],
-  lair: ['apocalypse', 'witchs-lair'],
-  battle: ['preparing-for-battle', 'army-approaching'],
-  boss: ['encounter-with-the-witches', 'apocalypse'],
+  title: ['ancient-evil-awakens', 'a-place-i-call-home', 'a-legend-will-rise'],
+  town: ['where-time-stands-still', 'home-town', 'bazaar', 'town-theme-rpg', 'market-day', 'the-old-tower-inn', 'the-bards-tale', 'kings-feast'],
+  'town-brightwater': ['home-town', 'where-time-stands-still', 'town-theme-rpg', 'market-day'],
+  'town-thornwick': ['peaceful-days', 'bazaar', 'the-bards-tale', 'the-old-tower-inn'],
+  'town-sandhaven': ['bazaar', 'sand-castles', 'market-day', 'kings-feast'],
+  'town-frosthold': ['childhood-friends', 'innocence', 'serenity-temple', 'the-old-tower-inn'],
+  'town-saltmere': ['sunshine-coast', 'tropical-island', 'night-in-a-seashell', 'kings-feast'],
+  world: ['grasslands', 'prairie-nights', 'unexplored-expansion', 'travel-to-the-horizon', 'treasure-hunter'],
+  forest: ['sneaking-around', 'peaceful-days', 'time-flutes-place', 'unexplored-expansion'],
+  desert: ['military-base', 'sand-castles', 'treasure-hunter'],
+  snow: ['innocence', 'childhood-friends', 'serenity-temple'],
+  coast: ['tropical-island', 'sunshine-coast', 'night-in-a-seashell', 'travel-to-the-horizon'],
+  volcanic: ['witchs-lair', 'apocalypse', 'insistent'],
+  citadel: ['apocalypse', 'ancient-evil-awakens', 'a-legend-will-rise', 'insistent'],
+  cave: ['thael-mines', 'whispers-from-beyond', 'cave-of-time', 'forgotten-tombs'],
+  dungeon: ['thael-mines', 'whispers-from-beyond', 'catacombs', 'cave-of-time', 'dungeon-ambience-yd', 'forgotten-tombs'],
+  depths: ['catacombs', 'whispers-from-beyond', 'witchs-lair', 'forgotten-tombs', 'insistent'],
+  lair: ['apocalypse', 'witchs-lair', 'insistent'],
+  battle: ['preparing-for-battle', 'army-approaching', 'battle-theme-a', 'battle-theme-b'],
+  boss: ['encounter-with-the-witches', 'apocalypse', 'battle-rpg-theme', 'determined-pursuit'],
 };
 
 export const MUSIC_MOODS = Object.keys(MUSIC_PLAYLISTS) as MusicMood[];
@@ -233,7 +253,7 @@ export const AMBIENCE_SOURCES: Record<AmbienceId, string> = {
 export const ambienceUrl = (id: AmbienceId, base = '/'): string => `${base}ambience/${id}.ogg`;
 
 /** Who made the composed music, shown under the setting. */
-export const MUSIC_CREDIT = 'Composed music: Juhani Junkala, CC0 (public domain), via OpenGameArt.';
+export const MUSIC_CREDIT = 'Composed music: Juhani Junkala, cynicmusic, Komiku and others, CC0 (public domain), via OpenGameArt.';
 
 /** Seconds a track overlaps the next one (and a mood change fades) so nothing cuts hard. */
 export const MUSIC_CROSSFADE = 2;
