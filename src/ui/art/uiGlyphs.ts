@@ -1,5 +1,6 @@
 import type { Biome } from '../../engine/world/types';
 import { TILE_PX, tileImage } from '../world/tileArt';
+import { WORLD_TILE_PX, terrainTile } from '../world/worldTiles';
 
 /** Tiny pixel glyphs for lists (quests, people) and a landscape strip for each zone on the world map. */
 const SIZE = 12;
@@ -156,18 +157,30 @@ export function uiGlyph(name: keyof typeof GLYPHS | string, tint?: string): HTML
 export function zoneVignette(biome: Biome, seed: number): HTMLCanvasElement {
   const cols = 10;
   const rows = 3;
+  // With the Dungeon Crawl tiles loaded the strip is drawn at 32px per tile; otherwise from the procedural sketches.
+  const tiled = terrainTile(biome, '.', 0, 0, 99) && terrainTile(biome, '=', 0, 0, 99) && terrainTile(biome, 'T', 0, 0, 99);
+  const px = tiled ? WORLD_TILE_PX : TILE_PX;
   const c = document.createElement('canvas');
-  c.width = cols * TILE_PX;
-  c.height = rows * TILE_PX;
+  c.width = cols * px;
+  c.height = rows * px;
   c.className = 'zone-vignette pixel';
   const g = c.getContext('2d') as CanvasRenderingContext2D;
   for (let x = 0; x < cols; x++) {
     const r = (x * 7 + seed * 3) % 5;
+    const lake = (x + seed) % 6 < 2;
+    if (tiled) {
+      const tile = (t: string, v: number, shore = 0): HTMLCanvasElement => (terrainTile(biome, t, v, 0, 99, shore) ?? terrainTile(biome, '.', v, 0, 99)) as HTMLCanvasElement;
+      g.drawImage(tile('.', x % 4), x * px, 0);
+      if (r < 3) g.drawImage(tile('T', x + seed), x * px, 0);
+      g.drawImage(tile('.', x + 1), x * px, px);
+      g.drawImage(tile('=', x % 4), x * px, px);
+      g.drawImage(tile(lake ? '~' : '.', x % 4), x * px, 2 * px);
+      continue;
+    }
     g.drawImage(tileImage(biome, '.', x % 4, 0, 99, 0, 0), x * TILE_PX, 0);
     if (r < 3) g.drawImage(tileImage(biome, 'T', (x + seed) % 4, 0), x * TILE_PX, r === 0 ? 0 : 2);
     g.drawImage(tileImage(biome, '.', (x + 1) % 4, 0, 99, 0, 0), x * TILE_PX, TILE_PX);
     g.drawImage(tileImage(biome, '=', x % 4, 0, 99, 0, 1 | 4), x * TILE_PX, TILE_PX + 2);
-    const lake = (x + seed) % 6 < 2;
     g.drawImage(tileImage(biome, lake ? '~' : '.', x % 4, 0, 99, 0, lake ? 1 : 0), x * TILE_PX, 2 * TILE_PX);
   }
   return c;

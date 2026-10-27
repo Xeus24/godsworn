@@ -727,6 +727,12 @@
 - Rune items use the Dungeon Crawl rune tiles.
 - Cut / deferred: the town banner, zone vignettes, minimap and portraits stay procedural; water and path edges have no transition tiles; cracked walls are a wall tile with a drawn crack.
 
+### Graphics pass 17: world polish
+- Scenery varies by biome: tinted bushes (snow-covered, dry desert shrubs), molds in caves, crumbled columns and statues in the desert, dungeons and citadel, mangroves on the coast. Land beside water gets a soft shoreline. Forest and snow water are no longer neon green.
+- Zone vignettes on the world-map overlay are drawn from the same tiles.
+- Shoulder, belt and leg icons use the Dungeon Crawl doll pieces (cropped, enlarged, tinted by armor weight); gems are a tinted crystal tile; materials (ore, hides, cloth, herbs, essences, bones, fish) use tinted tiles.
+- Cut / deferred: the town banner stays procedural (it reads better than a tile street would); path edges have no transition tiles.
+
 ## Known bugs
 - None known.
 

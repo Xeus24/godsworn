@@ -63,8 +63,8 @@ export const WORLD_TILES = {
     'dungeon__wall__stone_dark_3'
    ],
    'water': [
-    'dungeon__water__shallow_water_murky',
-    'dungeon__water__shallow_water_murky_2'
+    'dungeon__water__deep_water',
+    'dungeon__water__deep_water_2'
    ],
    'scenery': [
     'dungeon__trees__mangrove_1',
@@ -105,9 +105,15 @@ export const WORLD_TILES = {
     'dungeon__water__deep_water_2'
    ],
    'scenery': [
-    'dungeon__boulder'
+    'dungeon__boulder',
+    'dungeon__mold_large_1',
+    'dungeon__mold_large_2',
+    'dungeon__boulder',
+    'dungeon__mold_large_3',
+    'dungeon__mold_large_4'
    ],
    'thicket': [
+    'dungeon__mold_large_1',
     'dungeon__boulder'
    ]
   },
@@ -140,10 +146,15 @@ export const WORLD_TILES = {
     'dungeon__water__shallow_water_2'
    ],
    'scenery': [
-    'dungeon__boulder'
+    'dungeon__boulder',
+    'monster__fungi_plants__bush_3|#d8b060|0.5',
+    'monster__fungi_plants__bush_2|#d8b060|0.5',
+    'dungeon__statues__crumbled_column_1',
+    'monster__fungi_plants__bush_4|#d8b060|0.5',
+    'dungeon__statues__crumbled_column_2'
    ],
    'thicket': [
-    'dungeon__boulder'
+    'monster__fungi_plants__bush_4|#d8b060|0.5'
    ]
   },
   'snow': {
@@ -170,14 +181,18 @@ export const WORLD_TILES = {
     'dungeon__wall__stone_gray_3'
    ],
    'water': [
-    'dungeon__water__shallow_water_murky',
-    'dungeon__water__shallow_water_murky_2'
+    'dungeon__water__shallow_water',
+    'dungeon__water__shallow_water_2'
    ],
    'scenery': [
-    'dungeon__boulder'
+    'monster__fungi_plants__bush_2|#f4f8ff|0.6',
+    'dungeon__boulder|#ffffff|0.5',
+    'monster__fungi_plants__bush_3|#f4f8ff|0.6',
+    'dungeon__trees__mangrove_1|#f4f8ff|0.55',
+    'monster__fungi_plants__bush_4|#f4f8ff|0.6'
    ],
    'thicket': [
-    'dungeon__boulder'
+    'monster__fungi_plants__bush_4|#f4f8ff|0.6'
    ]
   },
   'coast': {
@@ -209,10 +224,16 @@ export const WORLD_TILES = {
     'dungeon__water__shallow_water_2'
    ],
    'scenery': [
-    'dungeon__boulder'
+    'dungeon__boulder',
+    'dungeon__trees__mangrove_1',
+    'monster__fungi_plants__bush_2',
+    'dungeon__trees__mangrove_2',
+    'dungeon__boulder',
+    'dungeon__trees__mangrove_3'
    ],
    'thicket': [
-    'dungeon__boulder'
+    'dungeon__trees__mangrove_2',
+    'monster__fungi_plants__bush_4'
    ]
   },
   'volcanic': {
@@ -245,10 +266,13 @@ export const WORLD_TILES = {
     'dungeon__floor__lava_3'
    ],
    'scenery': [
-    'dungeon__boulder'
+    'dungeon__boulder|#301010|0.55',
+    'dungeon__statues__crumbled_column_3',
+    'dungeon__boulder|#401810|0.45',
+    'dungeon__statues__crumbled_column_4'
    ],
    'thicket': [
-    'dungeon__boulder'
+    'dungeon__boulder|#301010|0.55'
    ]
   },
   'citadel': {
@@ -279,7 +303,10 @@ export const WORLD_TILES = {
     'dungeon__water__ink_full'
    ],
    'scenery': [
-    'dungeon__zot_pillar'
+    'dungeon__zot_pillar',
+    'dungeon__statues__statue_demonic_bust',
+    'dungeon__zot_pillar',
+    'dungeon__statues__statue_wraith'
    ],
    'thicket': [
     'dungeon__zot_pillar'
@@ -314,10 +341,16 @@ export const WORLD_TILES = {
     'dungeon__water__deep_water_2'
    ],
    'scenery': [
-    'dungeon__boulder'
+    'dungeon__boulder',
+    'dungeon__statues__crumbled_column_4',
+    'dungeon__statues__statue_ancient_hero',
+    'dungeon__boulder',
+    'dungeon__statues__crumbled_column_5',
+    'dungeon__statues__crumbled_column_6'
    ],
    'thicket': [
-    'dungeon__boulder'
+    'dungeon__boulder',
+    'dungeon__statues__crumbled_column_6'
    ]
   }
  },
@@ -379,5 +412,11 @@ export const WORLD_TILES = {
    'dungeon__altars__altar_yredelemnul',
    'dungeon__altars__altar_fedhas'
   ]
+ },
+ 'border': {
+  'top': 'dungeon__water__shallow_border_top',
+  'bottom': 'dungeon__water__shallow_border_bottom',
+  'left': 'dungeon__water__shallow_border_left',
+  'right': 'dungeon__water__shallow_border_right'
  }
 };

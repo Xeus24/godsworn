@@ -21,20 +21,38 @@ function load(name: string): HTMLImageElement | null | undefined {
   return null;
 }
 
-for (const b of Object.values(WORLD_TILES.biome)) for (const list of Object.values(b)) list.forEach(load);
+for (const b of Object.values(WORLD_TILES.biome)) for (const list of Object.values(b)) list.forEach((entry) => load(entry.split('|')[0] as string));
 for (const list of Object.values(WORLD_TILES.entity)) list.forEach(load);
+for (const n of Object.values(WORLD_TILES.border)) if (n) load(n);
 
 const pick = (list: string[], i: number): string | undefined => (list.length ? list[Math.abs(i) % list.length] : undefined);
+
+function tinted(img: HTMLImageElement, color: string, strength: number): HTMLCanvasElement {
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth;
+  c.height = img.naturalHeight;
+  const g = c.getContext('2d');
+  if (g) {
+    g.drawImage(img, 0, 0);
+    g.globalCompositeOperation = 'source-atop';
+    g.globalAlpha = strength;
+    g.fillStyle = color;
+    g.fillRect(0, 0, c.width, c.height);
+  }
+  return c;
+}
 
 function compose(key: string, names: (string | undefined)[], after?: (g: CanvasRenderingContext2D) => void): HTMLCanvasElement | undefined {
   const hit = built.get(key);
   if (hit) return hit;
-  const imgs: HTMLImageElement[] = [];
-  for (const n of names) {
-    if (!n) continue;
-    const img = load(n);
+  const imgs: (HTMLImageElement | HTMLCanvasElement)[] = [];
+  for (const entry of names) {
+    if (!entry) continue;
+    // "name|#color|strength" draws the tile tinted (snow-covered bushes, dry desert shrubs...).
+    const [n, color, strength] = entry.split('|');
+    const img = load(n as string);
     if (!img) return undefined;
-    imgs.push(img);
+    imgs.push(color ? tinted(img, color, Number(strength ?? 0.5)) : img);
   }
   if (!imgs.length) return undefined;
   const c = document.createElement('canvas');
@@ -56,15 +74,18 @@ function compose(key: string, names: (string | undefined)[], after?: (g: CanvasR
 }
 
 /** A terrain tile for `tile` ('.', '=', 'T', 'H', '~', '#', 'X', '_', 'D') in a biome. */
-export function terrainTile(biome: Biome, tile: string, variant: number, frame: number, deco: number): HTMLCanvasElement | undefined {
+export function terrainTile(biome: Biome, tile: string, variant: number, frame: number, deco: number, shore = 0): HTMLCanvasElement | undefined {
   const b = WORLD_TILES.biome[biome];
   const ground = pick(b.ground, variant);
+  // Land beside water (1 north, 2 east, 4 south, 8 west) gets a soft shoreline; lava and void have none.
+  const edges = biome === 'volcanic' || biome === 'citadel' ? [] : [shore & 1 ? WORLD_TILES.border.top : undefined, shore & 2 ? WORLD_TILES.border.right : undefined, shore & 4 ? WORLD_TILES.border.bottom : undefined, shore & 8 ? WORLD_TILES.border.left : undefined];
+  const shoreKey = edges.map((e) => (e ? 1 : 0)).join('');
   switch (tile) {
     case '.':
     case '_':
-      return compose(`${biome}|g|${variant % b.ground.length}|${deco < 3 ? deco : 'x'}`, [deco < 3 ? pick(b.deco, deco) ?? ground : ground]);
+      return compose(`${biome}|g|${variant % b.ground.length}|${deco < 3 ? deco : 'x'}|${shoreKey}`, [deco < 3 ? pick(b.deco, deco) ?? ground : ground, ...edges]);
     case '=':
-      return compose(`${biome}|p|${variant % b.path.length}`, [pick(b.path, variant)]);
+      return compose(`${biome}|p|${variant % b.path.length}|${shoreKey}`, [pick(b.path, variant), ...edges]);
     case '~':
       return compose(`${biome}|w|${(variant + frame) % b.water.length}`, [pick(b.water, variant + frame)]);
     case 'T':

@@ -295,7 +295,9 @@ export class WorldScreen implements Screen {
         const mask = t === '~' || t === '=' ? (like(tileAt(map, x, y - 1)) ? EDGE_N : 0) | (like(tileAt(map, x + 1, y)) ? EDGE_E : 0) | (like(tileAt(map, x, y + 1)) ? EDGE_S : 0) | (like(tileAt(map, x - 1, y)) ? EDGE_W : 0) : 0;
         const variant = (x * 7 + y * 13) % 4;
         const deco = (x * 31 + y * 17 + x * y) % 11;
-        const art = terrainTile(map.biome, t, variant + ((x * 3 + y * 5) % 3) * 4, frame, tone === 0 ? deco : 99) ?? tileImage(map.biome, t, variant, frame, deco, tone, mask);
+        const isWater = (c: string): boolean => c === '~';
+        const shore = t === '~' ? 0 : (isWater(tileAt(map, x, y - 1)) ? 1 : 0) | (isWater(tileAt(map, x + 1, y)) ? 2 : 0) | (isWater(tileAt(map, x, y + 1)) ? 4 : 0) | (isWater(tileAt(map, x - 1, y)) ? 8 : 0);
+        const art = terrainTile(map.biome, t, variant + ((x * 3 + y * 5) % 3) * 4, frame, tone === 0 ? deco : 99, shore) ?? tileImage(map.biome, t, variant, frame, deco, tone, mask);
         g.drawImage(art, ox + x * TILE, oy + y * TILE, TILE, TILE);
       }
     }

@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import { baseOf } from '../../engine/items/lookup';
 import type { ItemBaseDef, ItemInstance } from '../../engine/items/types';
+import { composedIconUrl } from './composedIcons';
 import { ITEM_TILES } from './dcssItemTiles';
 import { ITEM_PATTERNS, ITEM_PATTERN_VARIANTS } from './itemPatterns';
 
@@ -233,6 +234,31 @@ export function itemIconUrl(item: ItemInstance): string {
 /** The Dungeon Crawl tile for a mapped item, or undefined when it keeps its procedural icon. */
 function tileIconUrl(item: ItemInstance): string | undefined {
   const base = baseOf(item);
+  const metal = (t: number): string => (FAMILY_COLORS.metal ?? [])[t - 1] ?? '#9aa3ad';
+  const WEIGHT_TINT: Record<string, string> = { cloth: '#7a6aa8', leather: '#7a5230', mail: '#9aa2b8', plate: '#d0d6e6' };
+  if (base.category === 'armor' && (base.slot === 'shoulders' || base.slot === 'belt' || base.slot === 'legs')) {
+    if (base.slot === 'shoulders') return composedIconUrl('p_body__shoulder_pad', { center: true, tint: WEIGHT_TINT[base.weight], strength: 0.4 });
+    if (base.slot === 'belt') return composedIconUrl(base.tier < 4 ? 'p_legs__belt_redbrown' : 'p_legs__belt_gray', { center: true });
+    const legs: Record<string, string[]> = { cloth: ['p_legs__pants_blue', 'p_legs__pants_brown', 'p_legs__pants_black'], leather: ['p_legs__pants_brown', 'p_legs__pants_black'], mail: ['p_legs__leg_armor_0', 'p_legs__leg_armor_2'], plate: ['p_legs__leg_armor_4', 'p_legs__metal_gray'] };
+    const list = legs[base.weight] ?? (legs.leather as string[]);
+    return composedIconUrl(list[Math.min(base.tier - 1, 6) % list.length] as string, { center: true });
+  }
+  if (base.category === 'gem') return composedIconUrl('misc__crystal', { center: true, tint: GEM_COLORS[base.gemType] ?? '#ffffff', strength: 0.6 });
+  if (base.category === 'material') {
+    const essenceColors = ['#d8d8d8', '#4fd36b', '#4a8dff', '#ff9a1f', '#ff3b3b', '#ff7ff0'];
+    switch (base.kind) {
+      case 'ore': return composedIconUrl('boulder', { center: true, tint: metal(Math.min(7, base.tier + 1)), strength: 0.5 });
+      case 'wood': return composedIconUrl('quarterstaff', { center: true });
+      case 'leather': return composedIconUrl('animal_skin', { center: true, tint: (FAMILY_COLORS.leather ?? [])[base.tier - 1], strength: 0.35 });
+      case 'cloth': return composedIconUrl('cloak2', { center: true, tint: (FAMILY_COLORS.cloth ?? [])[base.tier - 1], strength: 0.45 });
+      case 'herb': return composedIconUrl('plant', { center: true });
+      case 'essence': return composedIconUrl('misc__phial', { center: true, tint: essenceColors[base.tier - 1] ?? '#ffffff', strength: 0.5 });
+      case 'monster': return composedIconUrl('bone', { center: true });
+      case 'divine': return composedIconUrl('misc__crystal', { center: true, tint: '#ffd54a', strength: 0.55 });
+      case 'void': return composedIconUrl('misc__stone', { center: true, tint: '#2b1b3d', strength: 0.6 });
+      case 'fish': return composedIconUrl('goldfish', { center: true, tint: (FAMILY_COLORS.jewel ?? [])[Math.min(6, base.tier)], strength: 0.3 });
+    }
+  }
   const pick = (key: string, tier?: number): string | undefined => {
     const list = ITEM_TILES[key];
     if (!list?.length) return undefined;
