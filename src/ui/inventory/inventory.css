@@ -66,9 +66,21 @@ select {
   }
 }
 
+.inventory-body {
+  --cell: 44px;
+}
+
+.inventory-body[data-cell='small'] {
+  --cell: 38px;
+}
+
+.inventory-body[data-cell='large'] {
+  --cell: 56px;
+}
+
 .inv-grid {
   display: grid;
-  grid-template-columns: repeat(8, 44px);
+  grid-template-columns: repeat(8, var(--cell));
   gap: 3px;
 }
 
@@ -112,8 +124,8 @@ select {
 .item-cell {
   --rarity: var(--border);
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: var(--cell, 44px);
+  height: var(--cell, 44px);
   background: linear-gradient(160deg, #15101f, #0b0812);
   border: 2px solid #5a4575;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
@@ -169,17 +181,31 @@ select {
 }
 
 .item-cell img {
+  width: calc(var(--cell, 44px) - 12px);
+  height: calc(var(--cell, 44px) - 12px);
+  pointer-events: none;
+}
+
+.paper-doll .item-cell {
+  width: 44px;
+  height: 44px;
+}
+
+.paper-doll .item-cell img {
   width: 32px;
   height: 32px;
-  pointer-events: none;
 }
 
 .item-cell .qty {
   position: absolute;
-  right: 2px;
-  bottom: 0;
-  font-size: 10px;
-  text-shadow: 1px 1px 0 #000;
+  right: 1px;
+  bottom: 1px;
+  font-size: 11px;
+  line-height: 12px;
+  padding: 0 2px;
+  border-radius: 3px;
+  background: rgba(8, 5, 14, 0.78);
+  text-shadow: none;
 }
 
 .item-cell .placeholder {
@@ -206,30 +232,12 @@ select {
   opacity: 0.25;
 }
 
-.item-cell.junk::after {
-  content: 'J';
-  position: absolute;
-  left: 2px;
-  top: 0;
-  font-size: 9px;
-  color: var(--r-junk);
-}
-
 .item-cell.broken {
   background: repeating-linear-gradient(45deg, #2a0a0a, #2a0a0a 4px, #12060a 4px, #12060a 8px);
 }
 
 .item-cell.unidentified img {
   filter: brightness(0.6) saturate(0.4);
-}
-
-.item-cell.unidentified::before {
-  content: '?';
-  position: absolute;
-  right: 3px;
-  top: 0;
-  font-size: 11px;
-  color: var(--gold-hi);
 }
 
 .loot-filter {
@@ -429,26 +437,6 @@ select {
   white-space: nowrap;
 }
 
-.item-cell .badge {
-  position: absolute;
-  font-size: 9px;
-  line-height: 1;
-  text-shadow: 1px 1px 0 #000;
-  pointer-events: none;
-}
-
-.item-cell .badge.lock {
-  left: 2px;
-  bottom: 1px;
-  color: var(--gold-hi);
-}
-
-.item-cell .badge.up {
-  right: 2px;
-  top: 1px;
-  color: #6ee07a;
-}
-
 .item-cell.set-piece {
   outline: 1px solid var(--r-set);
   outline-offset: -2px;
@@ -483,7 +471,6 @@ select {
 
 .list-wrap {
   width: 100%;
-  max-width: 388px;
 }
 
 .list-head {
@@ -504,6 +491,7 @@ select {
   gap: 3px;
   max-height: 340px;
   min-height: 60px;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-right: 2px;
 }
@@ -533,7 +521,7 @@ select {
 }
 
 .item-row .row-name {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -541,7 +529,10 @@ select {
 }
 
 .item-row .row-meta {
-  flex: none;
+  flex: 0 1 auto;
+  max-width: 48%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -549,8 +540,144 @@ select {
   order: 5;
 }
 
-.item-cell .badge.pleases-badge {
-  right: 2px;
+/* ---------- Corner chips: one place for each kind of marker ---------- */
+
+.item-cell .corner {
+  position: absolute;
+  display: flex;
+  gap: 1px;
+  pointer-events: none;
+}
+
+.item-cell .corner.tr {
+  right: 1px;
   top: 1px;
+}
+
+.item-cell .corner.bl {
+  left: 1px;
+  bottom: 1px;
+}
+
+.item-cell .badge {
+  font-size: 11px;
+  line-height: 12px;
+  padding: 0 2px;
+  border-radius: 3px;
+  background: rgba(8, 5, 14, 0.82);
+  font-weight: bold;
+}
+
+.badge.lock,
+.badge.pleases-badge,
+.badge.unid {
   color: var(--gold-hi);
+}
+
+.badge.up {
+  color: #6ee07a;
+}
+
+.badge.junk-badge {
+  color: var(--r-junk);
+}
+
+/* ---------- Capacity meter ---------- */
+
+.capacity {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.capbar {
+  width: 64px;
+  height: 6px;
+  border: 1px solid var(--border);
+  background: #0b0812;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.capfill {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+}
+
+.capacity.near .capfill {
+  background: #e0a030;
+}
+
+.capacity.full .capfill {
+  background: var(--danger);
+}
+
+.capacity.full .small {
+  color: var(--danger);
+}
+
+/* ---------- Toolbar ---------- */
+
+.bag-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.bag-tools .tool-row {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+
+button.compact {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.sort-row {
+  margin-top: 6px;
+}
+
+.empty-hint {
+  text-align: center;
+  margin: 6px 0 0;
+}
+
+/* Stash tabs show how full they are. */
+.tab[style*='--fill'] {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.13) var(--fill), transparent var(--fill));
+}
+
+/* ---------- Compare card ---------- */
+
+.tip-pair {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.tip-worn {
+  border-left: 1px solid var(--border);
+  padding-left: 10px;
+  opacity: 0.92;
+}
+
+.tip-worn-label {
+  color: var(--gold);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+
+.item-row .corner {
+  position: static;
+  flex: none;
+}
+
+.item-row .qty {
+  position: static;
 }

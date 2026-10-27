@@ -91,4 +91,15 @@ test.describe('inventory in a real browser', () => {
     expect(where.startsWith('inventory:')).toBe(false);
     expect(await page.locator('[data-loc]:not([tabindex="-1"])').count()).toBeLessThanOrEqual(6);
   });
+
+  test('L and J act on the focused item and never jump to the General or Quests screens', async ({ page }) => {
+    const first = page.locator('[data-loc^="inventory:"].has-item').first();
+    await first.focus();
+    await page.keyboard.press('l');
+    await expect(page.locator('.inventory-body')).toBeVisible();
+    await page.keyboard.press('j');
+    await expect(page.locator('.inventory-body')).toBeVisible();
+    // The first starting item is a stack (stacks cannot be locked) and J marks it as junk.
+    await expect(page.locator('[data-loc^="inventory:"].junk')).toHaveCount(1);
+  });
 });

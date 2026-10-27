@@ -63,11 +63,15 @@ export class StashControls {
       select.addEventListener('change', () => set(select.value ? (select.value as RarityId) : null));
       return el('label', { class: 'small dim filter-label' }, label, select);
     };
-    return el(
-      'div',
-      { class: 'loot-filter' },
-      make('Hide loot below', lf.hideBelow, false, (v) => (lf.hideBelow = v ?? 'junk')),
-      make('Auto-salvage below', lf.autoSalvageBelow, true, (v) => (lf.autoSalvageBelow = v)),
+    return this.section(
+      'lootfilter',
+      'Loot filter',
+      el(
+        'div',
+        { class: 'loot-filter' },
+        make('Hide loot below', lf.hideBelow, false, (v) => (lf.hideBelow = v ?? 'junk')),
+        make('Auto-salvage below', lf.autoSalvageBelow, true, (v) => (lf.autoSalvageBelow = v)),
+      ),
     );
   }
 

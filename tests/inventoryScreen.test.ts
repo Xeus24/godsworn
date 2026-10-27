@@ -17,7 +17,7 @@ const nav = new Proxy({}, { get: () => () => undefined }) as Nav;
 function setup(): { session: GameSession; root: HTMLElement; screen: InventoryScreen } {
   const session = GameSession.newGame(5, makeHero());
   const root = document.createElement('div');
-  document.body.replaceChildren(root);
+  document.body.replaceChildren(root, ...document.querySelectorAll('.tooltip'));
   const screen = new InventoryScreen(session, nav);
   screen.mount(root);
   return { session, root, screen };
@@ -31,7 +31,7 @@ const text = (root: HTMLElement): string => root.textContent ?? '';
 
 describe('inventory screen', () => {
   beforeEach(() => {
-    document.body.replaceChildren();
+    document.body.replaceChildren(...document.querySelectorAll('.tooltip'));
     localStorage.clear();
   });
 
@@ -255,7 +255,7 @@ describe('inventory screen', () => {
   it('restock fetches potions from the stash and announces it to screen readers', () => {
     const { session, root } = setup();
     session.state.stash.tabs[0]!.slots[0] = createItem('health-potion-minor', 30, uid);
-    const restock = [...root.querySelectorAll('button')].find((b) => b.textContent === 'Restock potions') as HTMLButtonElement;
+    const restock = [...root.querySelectorAll('button')].find((b) => b.textContent === 'Restock') as HTMLButtonElement;
     restock.click();
     expect(session.items.count('health-potion-minor')).toBe(10);
     expect(root.querySelector('[aria-live="polite"]')?.textContent).toContain('Restocked');
@@ -516,6 +516,90 @@ describe('inventory screen', () => {
       expect(cell(root, `inventory:${index}`).getAttribute('aria-pressed')).toBe('true');
       expect(cell(root, 'inventory:47').getAttribute('aria-pressed')).toBe('false');
       expect(root.querySelector('[role="tablist"][aria-label="Stash tabs"] [role="tab"][aria-selected="true"]')).not.toBeNull();
+    });
+  });
+
+  it('L and J on an item act on the item and do not also trigger the General and Quests hotkeys', () => {
+    const { session, root, screen } = setup();
+    const sword = createItem('sword-t3', 1, uid);
+    session.items.give(sword, false);
+    screen.render();
+    const keys: string[] = [];
+    const spy = (e: KeyboardEvent): void => void keys.push(e.key);
+    window.addEventListener('keydown', spy);
+    const index = session.state.inventory.slots.indexOf(sword);
+    press(cell(root, `inventory:${index}`), 'l');
+    press(cell(root, `inventory:${index}`), 'j');
+    window.removeEventListener('keydown', spy);
+    expect(keys).toEqual([]);
+    expect(sword.locked).toBe(true);
+  });
+
+  describe('visual structure', () => {
+    it('markers sit in fixed corners: status top right, flags bottom left', () => {
+      const { session, root, screen } = setup();
+      const sword = createItem('sword-t3', 1, uid);
+      sword.identified = false;
+      sword.junk = true;
+      session.items.give(sword, false);
+      screen.render();
+      const index = session.state.inventory.slots.indexOf(sword);
+      press(cell(root, `inventory:${index}`), 'l');
+      const node = cell(root, `inventory:${index}`);
+      expect(node.querySelector('.corner.tr .badge.unid')).not.toBeNull();
+      expect(node.querySelector('.corner.bl .badge.lock')).not.toBeNull();
+      expect(node.querySelector('.corner.bl .badge.junk-badge')).toBeNull();
+    });
+
+    it('capacity meters report slots used and warn near full', () => {
+      const { session, root, screen } = setup();
+      const meter = (): HTMLElement => root.querySelector('.capacity') as HTMLElement;
+      expect(meter().getAttribute('aria-valuemax')).toBe('48');
+      expect(meter().classList.contains('ok')).toBe(true);
+      for (let i = 0; i < 48; i++) session.state.inventory.slots[i] ??= createItem('sword-t1', 1, uid);
+      screen.render();
+      expect(meter().classList.contains('full')).toBe(true);
+      expect(meter().getAttribute('aria-valuenow')).toBe('48');
+      session.state.inventory.slots[47] = null;
+      session.state.inventory.slots[46] = null;
+      screen.render();
+      expect(meter().classList.contains('near')).toBe(true);
+    });
+
+    it('cell size is a remembered setting', () => {
+      const { root } = setup();
+      const select = root.querySelector<HTMLSelectElement>('select[aria-label="Cell size"]') as HTMLSelectElement;
+      select.value = 'large';
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(root.querySelector('.inventory-body')?.getAttribute('data-cell')).toBe('large');
+      expect(localStorage.getItem('godsworn.inventoryCell')).toBe('large');
+      const again = setup();
+      expect(again.root.querySelector('.inventory-body')?.getAttribute('data-cell')).toBe('large');
+    });
+
+    it('an empty stash tab says what to do, and tabs show how full they are', () => {
+      const { session, root, screen } = setup();
+      expect(root.textContent).toContain('Drag items here');
+      session.state.stash.tabs[0]!.slots[0] = createItem('mithril-ore', 1, uid);
+      screen.render();
+      expect(root.textContent).not.toContain('Drag items here');
+      const tab = [...root.querySelectorAll<HTMLElement>('.tab')].find((t) => t.textContent?.includes('Tab 1')) as HTMLElement;
+      expect(tab.style.getPropertyValue('--fill')).toMatch(/%$/);
+    });
+
+    it('hovering gear shows the equipped item beside it; the level requirement appears once', () => {
+      const { session, root, screen } = setup();
+      const sword = createItem('sword-t3', 1, uid);
+      sword.identified = true;
+      session.items.give(sword, false);
+      screen.render();
+      const index = session.state.inventory.slots.indexOf(sword);
+      cell(root, `inventory:${index}`).dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+      const tip = document.querySelector('.tooltip') as HTMLElement;
+      const levelLines = (tip.textContent ?? '').match(/Requires level \d+/g) ?? [];
+      expect(levelLines.length).toBeLessThanOrEqual(1);
+      const worn = Object.values(session.player.equipment).find((it) => it && it.baseId.startsWith('sword'));
+      if (worn) expect(tip.textContent).toContain('Currently equipped');
     });
   });
 });

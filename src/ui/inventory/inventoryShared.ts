@@ -2,6 +2,7 @@ import { content } from '../../data';
 import type { TabRule } from '../../engine/items/tabRules';
 import type { ItemCategory, ItemInstance } from '../../engine/items/types';
 import type { GameSession } from '../../engine/state/gameState';
+import { el } from '../screen';
 import type { ItemActions, ItemLocation } from '../../engine/state/itemActions';
 
 export type Filter = 'all' | 'gear' | 'consumables' | 'materials' | 'socketables' | 'other';
@@ -94,4 +95,24 @@ export interface PanelContext {
 export function groupOf(key: string): string {
   const [where, a] = key.split(':');
   return where === 'stash' ? `stash:${a}` : (where ?? key);
+}
+
+export type CellSize = 'small' | 'medium' | 'large';
+export const CELL_KEY = 'godsworn.inventoryCell';
+
+export function readCellSize(): CellSize {
+  try {
+    const v = localStorage.getItem(CELL_KEY);
+    return v === 'small' || v === 'large' ? v : 'medium';
+  } catch {
+    return 'medium';
+  }
+}
+
+/** "12/48" with a thin bar that turns amber near full and red when full. */
+export function capacityMeter(used: number, total: number): HTMLElement {
+  const ratio = total > 0 ? used / total : 0;
+  const state = used >= total ? 'full' : ratio >= 0.85 ? 'near' : 'ok';
+  const bar = el('span', { class: 'capbar' }, el('span', { class: 'capfill', style: `width:${Math.round(ratio * 100)}%` }));
+  return el('span', { class: `capacity ${state}`, role: 'meter', 'aria-label': 'Slots used', 'aria-valuemin': '0', 'aria-valuemax': String(total), 'aria-valuenow': String(used) }, bar, el('span', { class: 'small' }, `${used}/${total}`));
 }

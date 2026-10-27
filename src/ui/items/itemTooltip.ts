@@ -130,7 +130,8 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
     if (isGear(item) && !equippedHere) {
       const slot = defaultSlot(session.player, item);
       const check = slot ? canEquip(session.player, item, slot, characterStats(session.player)) : { ok: false as const, reason: 'Cannot be equipped.' };
-      if (!check.ok && item.identified) out.push(line('tip-bad', check.reason));
+      // The level requirement already has its own line above; only other reasons are new information.
+      if (!check.ok && item.identified && !/^Requires level/i.test(check.reason)) out.push(line('tip-bad', check.reason));
       else if (item.identified) {
         const deltas = compareEquip(session.player, item);
         if (deltas.length > 0) {
@@ -154,4 +155,17 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
   }
   out.push(line('tip-value', `Value ${itemValue(item)}g · sells for ${sellValue(item)}g`));
   return el('div', { class: 'item-tip' }, ...out);
+}
+
+/**
+ * The tooltip for a bag or stash item: for gear that would replace something,
+ * the item's card with the currently equipped item's card beside it.
+ */
+export function compareTooltip(item: ItemInstance, session: GameSession): HTMLElement {
+  const card = itemTooltip(item, session);
+  if (!isGear(item) || !item.identified) return card;
+  const slot = defaultSlot(session.player, item);
+  const worn = slot ? session.player.equipment[slot] : undefined;
+  if (!worn || worn === item) return card;
+  return el('div', { class: 'tip-pair' }, card, el('div', { class: 'tip-worn' }, el('div', { class: 'tip-worn-label' }, 'Currently equipped'), itemTooltip(worn, session, true)));
 }
