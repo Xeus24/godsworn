@@ -1894,5 +1894,5 @@ NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosse
 | **Medium** | x1 | x1 | x1 | x1 | +0 / +0 | +0 | 0.25 | x1 | x1 | x1 | - |
 | **Hard** | x2.2 | x1.6 | x1.15 | x1.05 | +6 / +4 | +0 | 0.5 | x1.4 | x1.4 | x1.25 | magicFind +20, goldFind +10, favorGain +10, xpGain +5 |
 | **Legendary** | x5.5 | x3 | x1.4 | x1.12 | +14 / +10 | +2 | 0.8 | x2.2 | x2.2 | x1.75 | magicFind +60, goldFind +30, favorGain +30, xpGain +15, maxHp +10%, damageBonus +5 |
-| **Impossible** | x600 | x60 | x6 | x1.5 | +30 / +30 | +8 | 1 | x3.5 | x3.5 | x2.5 | magicFind +150, goldFind +75, favorGain +60, xpGain +30, maxHp +25%, damageBonus +15, critDamage +25, lifesteal +3 |
+| **Impossible** | x50 | x5 | x6 | x1.5 | +30 / +30 | +8 | 1 | x3.5 | x3.5 | x2.5 | magicFind +150, goldFind +75, favorGain +60, xpGain +30, maxHp +25%, damageBonus +15, critDamage +25, lifesteal +3 |
 <!-- difficulty:end -->
