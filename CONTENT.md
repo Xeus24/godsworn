@@ -499,9 +499,9 @@ Generated from the data files by `npm run content:md`.
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
 | Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. | **Battle-Hardened**: 35% more max HP, 15% less damage taken and 30% more physical attack. |
-| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. | **Arcane Mastery**: 45% more magic attack, 35% more max HP and 15% less damage taken. |
+| Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. | **Arcane Mastery**: 45% more magic attack, +30% damage, 65% more max HP and 27% less damage taken. |
 | Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |  |
-| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +30% damage. |
+| Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +70% damage. |
 | Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
 | Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, +35% damage, 35% more max HP, 10% less damage taken and 8% lifesteal. |
 | Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
