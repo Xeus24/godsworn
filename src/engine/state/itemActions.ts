@@ -77,6 +77,7 @@ export class ItemActions {
    * Returns false if some or all of it did not fit.
    */
   give(item: ItemInstance, announce = true): boolean {
+    item.found ??= this.foundStamp();
     const total = item.quantity;
     const probe: ItemInstance = { ...item, sockets: [...item.sockets] };
     const left = addItem(this.inv, item);
@@ -90,15 +91,20 @@ export class ItemActions {
     return left === 0;
   }
 
-  /** Adds dropped loot through the loot filter, with toasts for notable finds. */
-  receiveLoot(items: ItemInstance[], gold: number): { kept: ItemInstance[]; salvaged: number } {
+  /** Where and when something is picked up. Anywhere outside the zone list (a rift, say) is just "the road". */
+  private foundStamp(): { day: number; zone: string } {
     let zone = 'the road';
     try {
       zone = this.s.world.zone.name;
     } catch {
-      // Loot found somewhere outside the zone list (a rift, say) is just "the road".
+      // Not on a known map.
     }
-    const stamp = { day: this.s.state.clock.day, zone };
+    return { day: this.s.state.clock.day, zone };
+  }
+
+  /** Adds dropped loot through the loot filter, with toasts for notable finds. */
+  receiveLoot(items: ItemInstance[], gold: number): { kept: ItemInstance[]; salvaged: number } {
+    const stamp = this.foundStamp();
     for (const item of items) item.found ??= stamp;
     const filtered = applyLootFilter(items, this.s.state.lootFilter);
     for (const item of filtered.keep) {

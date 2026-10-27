@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
 import type { EquipSlot } from '../src/engine/items/types';
-import { favorOf } from '../src/engine/gods/devotion';
+import { favorOf, tierFor } from '../src/engine/gods/devotion';
 import { createItem, generateGear } from '../src/engine/items/generate';
 import { countOf } from '../src/engine/items/inventory';
 import { godLikes, pleases } from '../src/engine/items/reliquary';
@@ -163,7 +163,8 @@ describe('reliquary', () => {
     for (let i = 0; i < RELIQUARY_MIN; i++) s.state.stash.tabs[0]!.slots[i] = createItem('skeleton-key', 1, uid);
     s.player.devotion.favor.vex = RELIQUARY_CEILING - 1;
     s.advanceTime(10 * 24 * 60);
-    expect(favorOf(s.player, 'vex')).toBeLessThanOrEqual(RELIQUARY_CEILING + 1);
+    expect(favorOf(s.player, 'vex')).toBeLessThanOrEqual(RELIQUARY_CEILING);
+    expect(tierFor(favorOf(s.player, 'vex'))).not.toBe('acknowledged');
     const at = favorOf(s.player, 'vex');
     s.advanceTime(10 * 24 * 60);
     expect(favorOf(s.player, 'vex')).toBe(at);
@@ -272,5 +273,19 @@ describe('gear sets remember names', () => {
     raw.loadouts = { 'Set 1': { head: 'abc123' } };
     const m = migrate(raw) as unknown as GameSession['state'];
     expect(m.loadouts['Set 1']?.head).toEqual({ uid: 'abc123', name: 'a saved piece' });
+  });
+});
+
+describe('item history for every pickup', () => {
+  it('anything given to the bags remembers where and when', () => {
+    const s = newGame();
+    s.state.clock.day = 12;
+    const reward = createItem('mithril-ore', 2, uid);
+    s.items.give(reward, false);
+    expect(reward.found?.day).toBe(12);
+    const kept = createItem('sword-t1', 1, uid);
+    kept.found = { day: 3, zone: 'Somewhere Else' };
+    s.items.give(kept, false);
+    expect(kept.found).toEqual({ day: 3, zone: 'Somewhere Else' });
   });
 });

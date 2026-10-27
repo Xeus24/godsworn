@@ -10,8 +10,11 @@ const fail = (reason: string): Result => ({ ok: false, reason });
 /** Items a god must like in a reliquary tab before it pleases them, and the favor per day that earns. */
 export const RELIQUARY_MIN = 5;
 export const RELIQUARY_FAVOR_PER_DAY = 1;
-/** A reliquary alone can carry a god's favor only up to the Acknowledged tier; beyond that you need prayers, deeds and offerings. */
-export const RELIQUARY_CEILING = DEVOTION.tierFloors.acknowledged;
+/**
+ * A reliquary alone can bring a god's favor right up to the Acknowledged tier but never across it: the
+ * tier's powers (battle prayer, major blessing offers) always take a real deed, prayer or offering.
+ */
+export const RELIQUARY_CEILING = DEVOTION.tierFloors.acknowledged - 1;
 
 /** Stash tabs dedicated to a god: a tidy collection of things they like earns a little favor each day. */
 export class ReliquaryActions {
@@ -50,7 +53,7 @@ export class ReliquaryActions {
     for (const [tab, god] of Object.entries(this.s.state.stash.reliquary)) {
       if (this.reliquaryCount(Number(tab)) < RELIQUARY_MIN) continue;
       const room = RELIQUARY_CEILING - favorOf(this.s.player, god);
-      if (room > 0) this.s.devotion.apply({ [god]: Math.min(room, RELIQUARY_FAVOR_PER_DAY * days) }, 'reliquary', false, true);
+      if (room > 0) this.s.devotion.apply({ [god]: Math.min(room, RELIQUARY_FAVOR_PER_DAY * days) }, 'reliquary', true, true);
     }
   }
 }

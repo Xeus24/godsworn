@@ -83,4 +83,12 @@ test.describe('inventory in a real browser', () => {
     await expect(page.getByLabel('Claim Materials')).toBeChecked();
     await expect(page.locator('.tabs .tab', { hasText: 'Tab 1' }).filter({ hasText: '◈' })).toHaveCount(1);
   });
+
+  test('Tab steps over a whole grid instead of through every cell', async ({ page }) => {
+    await page.locator('[data-loc="inventory:0"]').focus();
+    await page.keyboard.press('Tab');
+    const where = await page.evaluate(() => (document.activeElement as HTMLElement | null)?.dataset.loc ?? 'not a cell');
+    expect(where.startsWith('inventory:')).toBe(false);
+    expect(await page.locator('[data-loc]:not([tabindex="-1"])').count()).toBeLessThanOrEqual(6);
+  });
 });

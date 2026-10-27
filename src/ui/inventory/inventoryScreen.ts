@@ -11,7 +11,7 @@ import type { GameSession } from '../../engine/state/gameState';
 import type { ItemLocation } from '../../engine/state/itemActions';
 import { equippedGearLook, equippedWeaponTypes, setPieceCounts } from '../../engine/items/equipment';
 import { parseSearch, type ItemTest } from './search';
-import { DRAG_TYPE, FILTER_CATEGORIES, FILTERS, focusKeyOf, GRID_COLS, locKey, readView, ruleSummary, sameLoc, shortQty, VIEW_KEY, type Filter } from './inventoryShared';
+import { DRAG_TYPE, FILTER_CATEGORIES, FILTERS, focusKeyOf, GRID_COLS, groupOf, locKey, readView, ruleSummary, sameLoc, shortQty, VIEW_KEY, type Filter } from './inventoryShared';
 import { StashControls } from './stashControls';
 import { GamepadNav } from './gamepad';
 import { noRule, type TabRule } from '../../engine/items/tabRules';
@@ -47,6 +47,8 @@ export class InventoryScreen implements Screen {
   private loadoutPick = LOADOUT_NAMES[0] as string;
   private upgradeCache = new Map<string, boolean>();
   private equipSig = '';
+  /** The one cell per group that Tab lands on (roving tabindex), by group name. */
+  private rover = new Map<string, string>();
   private readonly controls: StashControls;
   private readonly pad = new GamepadNav({ key: (k, shift) => this.padKey(k, shift), stashTab: (d) => this.padTab(d) });
   private padConnected = false;
@@ -80,6 +82,7 @@ export class InventoryScreen implements Screen {
 
   mount(root: HTMLElement): void {
     this.root = root;
+    root.addEventListener('focusin', this.onFocusIn);
     const padEvent = (): void => {
       this.padConnected = (navigator.getGamepads?.() ?? []).some(Boolean);
       this.render();
@@ -90,6 +93,7 @@ export class InventoryScreen implements Screen {
     this.pad.start();
     this.offs.push(
       () => this.pad.stop(),
+      () => root.removeEventListener('focusin', this.onFocusIn),
       () => window.removeEventListener('gamepadconnected', padEvent),
       () => window.removeEventListener('gamepaddisconnected', padEvent),
       this.session.bus.on('stateChanged', () => this.render()),
@@ -128,9 +132,10 @@ export class InventoryScreen implements Screen {
   }
 
   private cell(item: ItemInstance | undefined, loc: ItemLocation, placeholder = '', row = false): HTMLElement {
-    const node = el('div', { class: `item-cell${row ? ' item-row' : ''}`, role: 'button', tabindex: '0', 'data-loc': locKey(loc) });
+    const node = el('div', { class: `item-cell${row ? ' item-row' : ''}`, role: 'button', tabindex: '-1', 'data-loc': locKey(loc) });
     node.setAttribute('aria-label', item ? `${itemName(item)}${item.quantity > 1 ? ` x${item.quantity}` : ''}` : placeholder || 'Empty slot');
     if (sameLoc(this.selected, loc)) node.classList.add('selected');
+    node.setAttribute('aria-pressed', String(sameLoc(this.selected, loc)));
     if (item) {
       const rarity = content.rarities.get(item.rarity);
       node.style.setProperty('--rarity', rarity.color === '#1a1a1a' ? '#c8b8ff' : rarity.color);
@@ -259,6 +264,27 @@ export class InventoryScreen implements Screen {
     }
   }
 
+  /** Remembers which cell of a group was focused last, so Tab comes back to it. */
+  private onFocusIn = (e: FocusEvent): void => {
+    const key = e.target instanceof HTMLElement ? e.target.dataset.loc : undefined;
+    if (!key) return;
+    this.rover.set(groupOf(key), key);
+    this.syncTabStops();
+  };
+
+  /** Gives each group of cells exactly one tab stop: the last focused cell, or the first if there is none. */
+  private syncTabStops(): void {
+    const groups = new Map<string, HTMLElement[]>();
+    for (const c of this.root?.querySelectorAll<HTMLElement>('[data-loc]') ?? []) {
+      const g = groupOf(c.dataset.loc as string);
+      groups.set(g, [...(groups.get(g) ?? []), c]);
+    }
+    for (const [g, cells] of groups) {
+      const stop = cells.find((c) => c.dataset.loc === this.rover.get(g)) ?? cells[0];
+      for (const c of cells) c.tabIndex = c === stop ? 0 : -1;
+    }
+  }
+
   /** A controller button, as the key press the keyboard handling already understands. */
   private padKey(key: string, shift = false): void {
     const root = this.root;
@@ -382,7 +408,7 @@ export class InventoryScreen implements Screen {
   }
 
   private grid(inv: Inventory, locOf: (i: number) => ItemLocation, cls = 'inv-grid'): HTMLElement {
-    return el('div', { class: cls }, ...inv.slots.map((item, i) => this.cell(item ?? undefined, locOf(i))));
+    return el('div', { class: cls, role: 'group', 'aria-label': 'Item slots' }, ...inv.slots.map((item, i) => this.cell(item ?? undefined, locOf(i))));
   }
 
   private inventoryPanel(): HTMLElement {
@@ -487,7 +513,7 @@ export class InventoryScreen implements Screen {
       const ruled = stash.rules[i] && !noRule(stash.rules[i] as TabRule);
       const star = `${stash.reliquary[i] ? '\u2726 ' : ''}${ruled ? '\u25C8 ' : ''}`;
       const label = this.query ? `${star}${stashTabName(stash, i)} (${hits})` : `${star}${stashTabName(stash, i)}`;
-      const b = el('button', { class: `tab${this.stashTab === i ? ' active' : ''}${this.query && hits === 0 ? ' dimmed' : ''}${hits > 0 ? ' match' : ''}` }, label);
+      const b = el('button', { role: 'tab', 'aria-selected': String(this.stashTab === i), class: `tab${this.stashTab === i ? ' active' : ''}${this.query && hits === 0 ? ' dimmed' : ''}${hits > 0 ? ' match' : ''}` }, label);
       if (ruled) b.title = `Claims ${ruleSummary(stash.rules[i] as TabRule)}`;
       const best = inv.slots.reduce<ItemInstance | null>((top, x) => (x && (!top || content.rarities.get(x.rarity).order > content.rarities.get(top.rarity).order) ? x : top), null);
       if (best) b.style.borderBottom = `2px solid ${content.rarities.get(best.rarity).color === '#1a1a1a' ? '#c8b8ff' : content.rarities.get(best.rarity).color}`;
@@ -517,7 +543,7 @@ export class InventoryScreen implements Screen {
       'section',
       { class: 'panel' },
       el('div', { class: 'panel-head' }, el('h3', {}, 'Stash'), el('span', { class: 'dim small' }, `${used}/${tab?.slots.length ?? 0}`)),
-      el('div', { class: 'tabs' }, ...tabs, buy),
+      el('div', { class: 'tabs', role: 'tablist', 'aria-label': 'Stash tabs' }, ...tabs, buy),
       el('div', { class: 'row' }, name, stashSort, sortBtn, takeAll, undo),
       this.controls.tabRuleControls(),
       this.controls.stashRules(),
@@ -612,6 +638,7 @@ export class InventoryScreen implements Screen {
     );
     this.seen = this.nextSeen;
     this.firstRender = false;
+    this.syncTabStops();
     if (focusKey) this.restoreFocus(focusKey, caret);
   };
 

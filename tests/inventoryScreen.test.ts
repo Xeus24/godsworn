@@ -488,4 +488,34 @@ describe('inventory screen', () => {
       expect(root.querySelectorAll('[data-loc^="stash:0:"]')).toHaveLength(48);
     });
   });
+
+  describe('keyboard structure', () => {
+    const stops = (root: HTMLElement): string[] => [...root.querySelectorAll<HTMLElement>('[data-loc]')].filter((c) => c.tabIndex === 0).map((c) => c.dataset.loc as string);
+
+    it('each group of cells has exactly one tab stop instead of one per cell', () => {
+      const { root } = setup();
+      const groups = new Set(stops(root).map((k) => k.split(':').slice(0, k.startsWith('stash') ? 2 : 1).join(':')));
+      expect(stops(root).length).toBe(groups.size);
+      expect(stops(root).length).toBeLessThanOrEqual(5);
+    });
+
+    it('Tab returns to the last focused cell of a group, even after a redraw', () => {
+      const { root, screen } = setup();
+      cell(root, 'inventory:7').focus();
+      screen.render();
+      expect(stops(root)).toContain('inventory:7');
+      expect(stops(root)).not.toContain('inventory:0');
+    });
+
+    it('selected cells say so, and the stash tabs are a labelled tablist', () => {
+      const { session, root, screen } = setup();
+      session.items.give(createItem('mithril-ore', 2, uid), false);
+      screen.render();
+      const index = session.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+      cell(root, `inventory:${index}`).click();
+      expect(cell(root, `inventory:${index}`).getAttribute('aria-pressed')).toBe('true');
+      expect(cell(root, 'inventory:47').getAttribute('aria-pressed')).toBe('false');
+      expect(root.querySelector('[role="tablist"][aria-label="Stash tabs"] [role="tab"][aria-selected="true"]')).not.toBeNull();
+    });
+  });
 });

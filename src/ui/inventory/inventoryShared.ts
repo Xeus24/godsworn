@@ -89,3 +89,9 @@ export interface PanelContext {
   stashTab(): number;
   cell(item: ItemInstance | undefined, loc: ItemLocation): HTMLElement;
 }
+
+/** Cells that share one tab stop: only one cell per group is reached with Tab; arrow keys move within it. */
+export function groupOf(key: string): string {
+  const [where, a] = key.split(':');
+  return where === 'stash' ? `stash:${a}` : (where ?? key);
+}
