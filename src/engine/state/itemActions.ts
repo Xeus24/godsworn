@@ -1,4 +1,6 @@
 import { content } from '../../data';
+import { DEVOTION } from '../../data/devotion';
+import { favorOf } from '../gods/devotion';
 import { clampVitals, characterStats } from '../character/stats';
 import { equipFromInventory, unequipToInventory, type Result } from '../items/equipment';
 import { createItem } from '../items/generate';
@@ -19,6 +21,8 @@ import {
   type SortMode,
 } from '../items/inventory';
 import { baseOf, isGear, rarityOrder } from '../items/lookup';
+import { equippedItems } from '../items/equipment';
+import { upgradeScore } from '../items/upgrade';
 import { applyLootFilter } from '../items/lootFilter';
 import { itemName } from '../items/naming';
 import { lastFilledSocket, socketInto, unsocket, unsocketCost } from '../items/sockets';
@@ -39,6 +43,14 @@ const fail = (reason: string): Result => ({ ok: false, reason });
 
 /** Most items held in overflow; past this the oldest is lost. */
 export const OVERFLOW_MAX = 20;
+/** Potions of each kind the restock button tops the bags up to. */
+export const RESTOCK_TARGET = 10;
+/** Items a god must like in a reliquary tab before it pleases them, and the favor per day that earns. */
+export const RELIQUARY_MIN = 5;
+export const RELIQUARY_FAVOR_PER_DAY = 1;
+/** A reliquary alone can carry a god's favor only up to the Acknowledged tier; beyond that you need prayers, deeds and offerings. */
+export const RELIQUARY_CEILING = DEVOTION.tierFloors.acknowledged;
+export const LOADOUT_NAMES = ['Set 1', 'Set 2', 'Set 3'];
 
 /** Items used straight from the bags, so auto-stash never takes them. */
 const KEEP_IN_BAGS = ['skeleton-key'];
@@ -200,6 +212,8 @@ export class ItemActions {
 
   /** Adds dropped loot through the loot filter, with toasts for notable finds. */
   receiveLoot(items: ItemInstance[], gold: number): { kept: ItemInstance[]; salvaged: number } {
+    const stamp = { day: this.s.state.clock.day, zone: this.s.world.zone.name };
+    for (const item of items) item.found ??= stamp;
     const filtered = applyLootFilter(items, this.s.state.lootFilter);
     for (const item of filtered.keep) {
       this.give(item);
@@ -296,6 +310,7 @@ export class ItemActions {
     const item = this.itemAt(loc);
     if (!item || !isGear(item)) return fail('Only gear can be salvaged.');
     if (loc.where === 'equipment') return fail('Unequip it first.');
+    if (item.locked) return fail('Unlock it first.');
     this.removeAt(loc);
     const yields = salvageYield(item, this.s.rng);
     for (const y of yields) this.give(createItem(y.itemId, y.qty, () => this.s.newUid()), false);
@@ -311,6 +326,7 @@ export class ItemActions {
     if (!target) return fail('Nothing there.');
     if (content.items.get(target.baseId).category === 'quest') return fail('You need that for a quest.');
     if (loc.where === 'equipment') return fail('Unequip it first.');
+    if (target.locked) return fail('Unlock it first.');
     this.removeAt(loc);
     this.changed('destroy');
     return { ok: true };
@@ -346,7 +362,7 @@ export class ItemActions {
     const target = tab === undefined ? this.inv : this.s.state.stash.tabs[tab];
     if (!target) return;
     this.undoable(() => {
-      sortInventory(target, mode);
+      sortInventory(target, mode, content, (item) => (mode === 'upgrade' ? upgradeScore(this.s.player, item) : 0));
       return { ok: true };
     });
     this.changed('sort');
@@ -446,7 +462,7 @@ export class ItemActions {
     if (rules.length === 0 || !this.s.world.inTown()) return 0;
     // Leave what a quest objective or an opened chest needs from the bags.
     const needed = itemsNeededByQuests(this.s.state);
-    const r = this.depositNow(0, (item) => rules.includes(baseOf(item).category) && !item.junk && !needed.has(item.baseId) && !KEEP_IN_BAGS.includes(item.baseId));
+    const r = this.depositNow(0, (item) => rules.includes(baseOf(item).category) && !item.junk && !item.locked && !needed.has(item.baseId) && !KEEP_IN_BAGS.includes(item.baseId));
     if (!r.ok) return 0;
     return r.moved ?? 0;
   }
@@ -457,9 +473,150 @@ export class ItemActions {
     let count = 0;
     for (let i = 0; i < slots.length; i++) {
       const item = slots[i];
-      if (item?.junk && isGear(item) && this.salvage({ where: 'inventory', index: i }).ok) count++;
+      if (item?.junk && !item.locked && isGear(item) && this.salvage({ where: 'inventory', index: i }).ok) count++;
     }
     return count === 0 ? fail('No junk gear to salvage.') : { ok: true };
+  }
+
+  /** Locks or unlocks a single item (gear and other one-off items; stacks cannot be locked). */
+  toggleLock(loc: ItemLocation): Result {
+    const item = this.itemAt(loc);
+    if (!item) return fail('Nothing there.');
+    if (item.quantity > 1 || baseOf(item).category === 'quest') return fail('Only single items can be locked.');
+    item.locked = !item.locked;
+    if (item.locked) item.junk = false;
+    this.changed('lock');
+    return { ok: true };
+  }
+
+  // ------------------------------------------------------------ loadouts
+
+  /** Remembers what you are wearing under a name. */
+  saveLoadout(name: string): Result {
+    if (!LOADOUT_NAMES.includes(name)) return fail('Unknown set.');
+    const set: Partial<Record<EquipSlot, string>> = {};
+    for (const [slot, item] of equippedItems(this.s.player)) set[slot] = item.uid;
+    if (Object.keys(set).length === 0) return fail('You are wearing nothing to save.');
+    this.s.state.loadouts[name] = set;
+    this.changed('loadout');
+    return { ok: true };
+  }
+
+  /** Puts a saved set back on, fetching pieces from the bags and (in town) the stash. Pieces that are gone are skipped. */
+  applyLoadout(name: string): Result {
+    const set = this.s.state.loadouts[name];
+    if (!set) return fail('Nothing is saved there.');
+    if (!this.s.world.inTown()) return fail('Change your gear set in a town.');
+    const slots = (Object.keys(set) as EquipSlot[]).sort((a, b) => Number(b === 'mainHand') - Number(a === 'mainHand'));
+    let worn = 0;
+    let missing = 0;
+    for (const slot of slots) {
+      const uid = set[slot] as string;
+      if (this.s.player.equipment[slot]?.uid === uid) continue;
+      let index = this.inv.slots.findIndex((x) => x?.uid === uid);
+      if (index < 0) {
+        for (const tab of this.s.state.stash.tabs) {
+          const from = tab.slots.findIndex((x) => x?.uid === uid);
+          const free = this.inv.slots.indexOf(null);
+          if (from < 0) continue;
+          if (free < 0) break;
+          moveItem(tab, from, this.inv, free);
+          index = free;
+          break;
+        }
+      }
+      if (index < 0) {
+        missing++;
+        continue;
+      }
+      if (this.equip(index, slot).ok) worn++;
+      else missing++;
+    }
+    this.s.bus.emit('toast', { kind: 'info', text: `${name}: ${worn} piece${worn === 1 ? '' : 's'} equipped${missing ? `, ${missing} missing or unusable` : ''}` });
+    this.changed('loadout');
+    return worn > 0 ? { ok: true } : fail(missing ? 'None of that set could be equipped.' : 'You are already wearing that set.');
+  }
+
+  /** Tops each potion kind in the bags up to RESTOCK_TARGET from the stash (town only). Never creates supply. */
+  restockPotions(target = RESTOCK_TARGET): Result {
+    if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
+    return this.undoable(() => {
+      const tabs = this.s.state.stash.tabs;
+      const isPotion = (item: ItemInstance): boolean => {
+        const base = baseOf(item);
+        return base.category === 'consumable' && base.kind === 'potion';
+      };
+      const kinds = new Set<string>();
+      for (const grid of [this.inv, ...tabs]) for (const x of grid.slots) if (x && isPotion(x)) kinds.add(x.baseId);
+      let moved = 0;
+      for (const id of kinds) {
+        let need = target - countOf(this.inv, id);
+        for (const tab of tabs) {
+          for (let i = 0; i < tab.slots.length && need > 0; i++) {
+            const slot = tab.slots[i];
+            if (!slot || slot.baseId !== id) continue;
+            const piece: ItemInstance = { ...slot, sockets: [...slot.sockets], quantity: Math.min(need, slot.quantity) };
+            const asked = piece.quantity;
+            const left = addItem(this.inv, piece);
+            const taken = asked - left;
+            if (taken <= 0) break;
+            slot.quantity -= taken;
+            if (slot.quantity <= 0) tab.slots[i] = null;
+            need -= taken;
+            moved += taken;
+          }
+        }
+      }
+      if (moved === 0) return fail('Your bags already hold enough, or the stash has no potions.');
+      this.s.bus.emit('toast', { kind: 'info', text: `Restocked ${moved} potion${moved === 1 ? '' : 's'}` });
+      this.changed('move');
+      return { ok: true };
+    });
+  }
+
+  // ------------------------------------------------------------ reliquary
+
+  /** Dedicates a stash tab to a god's reliquary (or clears it with an empty god). */
+  setReliquary(tab: number, god: string): Result {
+    const stash = this.s.state.stash;
+    if (!stash.tabs[tab]) return fail('No such tab.');
+    if (god) {
+      if (!content.gods.find(god)) return fail('Unknown god.');
+      for (const [t, g] of Object.entries(stash.reliquary)) if (g === god && Number(t) !== tab) delete stash.reliquary[Number(t)];
+      stash.reliquary[tab] = god;
+    } else delete stash.reliquary[tab];
+    this.changed('stash');
+    return { ok: true };
+  }
+
+  /** Does the god like this item (a treasured curiosity, or a kind of offering they favor)? */
+  private pleases(god: string, item: ItemInstance): boolean {
+    const base = baseOf(item);
+    if (base.category === 'curiosity' && base.lovedBy?.includes(god)) return true;
+    const prefs = content.pantheon.get(god).offerings;
+    if ((prefs.categories?.[base.category] ?? 1) > 1) return true;
+    return base.category === 'material' && (prefs.materialKinds?.[base.kind] ?? 1) > 1;
+  }
+
+  /** How many items in a tab please its reliquary god (0 if the tab is not a reliquary). */
+  reliquaryCount(tab: number): number {
+    const god = this.s.state.stash.reliquary[tab];
+    const grid = this.s.state.stash.tabs[tab];
+    if (!god || !grid) return 0;
+    return grid.slots.filter((x) => x && this.pleases(god, x)).length;
+  }
+
+  /**
+   * A day passes: each reliquary that holds enough items its god likes earns
+   * a small, flat bit of favor. Deliberately tiny next to offerings, and it
+   * consumes nothing, so it rewards a tidy collection but cannot be farmed.
+   */
+  reliquaryDays(days: number): void {
+    for (const [tab, god] of Object.entries(this.s.state.stash.reliquary)) {
+      if (this.reliquaryCount(Number(tab)) < RELIQUARY_MIN) continue;
+      const room = RELIQUARY_CEILING - favorOf(this.s.player, god);
+      if (room > 0) this.s.devotion.apply({ [god]: Math.min(room, RELIQUARY_FAVOR_PER_DAY * days) }, 'reliquary', false, true);
+    }
   }
 
   count(baseId: string): number {

@@ -208,4 +208,68 @@ describe('inventory screen', () => {
     press(cell(root, `inventory:${index}`), 'j');
     expect(session.state.inventory.slots[index]?.junk).toBe(true);
   });
+
+  it('locking shows a badge and blocks salvage; L toggles it from the keyboard', () => {
+    const { session, root, screen } = setup();
+    const sword = createItem('sword-t3', 1, uid);
+    session.items.give(sword, false);
+    screen.render();
+    const index = session.state.inventory.slots.indexOf(sword);
+    press(cell(root, `inventory:${index}`), 'l');
+    expect(sword.locked).toBe(true);
+    expect(cell(root, `inventory:${index}`).querySelector('.badge.lock')).not.toBeNull();
+    expect(session.items.salvage({ where: 'inventory', index }).ok).toBe(false);
+  });
+
+  it('large stacks are abbreviated in the cell', () => {
+    const { session, root, screen } = setup();
+    session.state.inventory.slots[10] = createItem('mithril-ore', 999, uid);
+    session.state.inventory.slots[11] = { ...createItem('mithril-ore', 1, uid), quantity: 1500 };
+    screen.render();
+    expect(cell(root, 'inventory:10').querySelector('.qty')?.textContent).toBe('999');
+    expect(cell(root, 'inventory:11').querySelector('.qty')?.textContent).toBe('1.5k');
+  });
+
+  it('gear sets: save, then wear is available in town', () => {
+    const { session, root, screen } = setup();
+    const save = [...root.querySelectorAll('button')].find((b) => b.textContent === 'Save') as HTMLButtonElement;
+    const wear = (): HTMLButtonElement => [...root.querySelectorAll('button')].find((b) => b.textContent === 'Wear') as HTMLButtonElement;
+    expect(wear().disabled).toBe(true);
+    save.click();
+    expect(session.state.loadouts['Set 1']).toBeDefined();
+    screen.render();
+    expect(wear().disabled).toBe(false);
+  });
+
+  it('the reliquary select dedicates the open tab to a god', () => {
+    const { session, root } = setup();
+    const select = root.querySelector<HTMLSelectElement>('select[aria-label="Reliquary god"]') as HTMLSelectElement;
+    select.value = 'vex';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    expect(session.state.stash.reliquary[0]).toBe('vex');
+    expect(root.textContent).toContain('\u2726');
+    expect(root.textContent).toContain('/5 items they like');
+  });
+
+  it('restock fetches potions from the stash and announces it to screen readers', () => {
+    const { session, root } = setup();
+    session.state.stash.tabs[0]!.slots[0] = createItem('health-potion-minor', 30, uid);
+    const restock = [...root.querySelectorAll('button')].find((b) => b.textContent === 'Restock potions') as HTMLButtonElement;
+    restock.click();
+    expect(session.items.count('health-potion-minor')).toBe(10);
+    expect(root.querySelector('[aria-live="polite"]')?.textContent).toContain('Restocked');
+  });
+
+  it('advanced search filters dim items that do not match', () => {
+    const { session, root, screen } = setup();
+    session.items.give(createItem('mithril-ore', 2, uid), false);
+    screen.render();
+    const box = root.querySelector<HTMLInputElement>('.item-search') as HTMLInputElement;
+    box.value = 'type:material';
+    box.dispatchEvent(new Event('input', { bubbles: true }));
+    const bagItems = [...root.querySelectorAll('[data-loc^="inventory:"].has-item')];
+    const lit = bagItems.filter((c) => !c.classList.contains('dimmed'));
+    expect(lit).toHaveLength(1);
+    expect(lit[0]?.getAttribute('aria-label')).toContain('Mithril');
+  });
 });

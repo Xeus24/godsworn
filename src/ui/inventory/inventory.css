@@ -412,3 +412,62 @@ select {
     grid-column: 2;
   }
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.item-cell .badge {
+  position: absolute;
+  font-size: 9px;
+  line-height: 1;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+}
+
+.item-cell .badge.lock {
+  left: 2px;
+  bottom: 1px;
+  color: var(--gold-hi);
+}
+
+.item-cell .badge.up {
+  right: 2px;
+  top: 1px;
+  color: #6ee07a;
+}
+
+.item-cell.set-piece {
+  outline: 1px solid var(--r-set);
+  outline-offset: -2px;
+}
+
+.item-cell.set-match {
+  outline: 2px solid var(--r-set);
+  outline-offset: -3px;
+}
+
+.item-cell.cat-gem,
+.item-cell.cat-rune {
+  background-image: linear-gradient(180deg, rgba(120, 180, 255, 0.1), transparent);
+}
+
+.item-cell.cat-consumable {
+  background-image: linear-gradient(180deg, rgba(110, 220, 120, 0.09), transparent);
+}
+
+.item-cell.cat-material {
+  background-image: linear-gradient(180deg, rgba(200, 160, 100, 0.1), transparent);
+}
+
+.loadouts,
+.reliquary {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}

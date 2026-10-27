@@ -5,6 +5,7 @@ import { canEquip, defaultSlot, setPieceCounts } from '../../engine/items/equipm
 import { activeRuneword, baseStatMultiplier, itemValue, sellValue } from '../../engine/items/itemStats';
 import { baseOf, isGear, requiredLevel, uniqueOf } from '../../engine/items/lookup';
 import { itemName } from '../../engine/items/naming';
+import { usesOf } from '../../engine/items/uses';
 import type { ItemInstance } from '../../engine/items/types';
 import type { GameSession } from '../../engine/state/gameState';
 import { formatStat } from '../format';
@@ -142,6 +143,14 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
         }
       }
     }
+  }
+  if (item.locked) out.push(line('tip-desc', 'Locked: safe from salvage, selling, offering and auto-stash.'));
+  if (item.found) out.push(line('tip-lore', `Found on day ${item.found.day} in ${item.found.zone}.`));
+  if (session) {
+    const uses = usesOf(session.state, item.baseId);
+    const names = (list: string[]): string => `${list.slice(0, 3).join(', ')}${list.length > 3 ? ` +${list.length - 3} more` : ''}`;
+    if (uses.quests.length > 0) out.push(line('tip-good', `Needed for: ${names(uses.quests)}`));
+    if (uses.recipes.length > 0) out.push(line('tip-desc', `Crafting: ${names(uses.recipes)}`));
   }
   out.push(line('tip-value', `Value ${itemValue(item)}g · sells for ${sellValue(item)}g`));
   return el('div', { class: 'item-tip' }, ...out);

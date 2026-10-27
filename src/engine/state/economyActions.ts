@@ -82,6 +82,7 @@ export class EconomyActions {
     const item = this.s.state.inventory.slots[index];
     if (!item) return fail('Nothing to sell.');
     if (content.items.get(item.baseId).category === 'quest') return fail('You need that for a quest.');
+    if (item.locked) return fail('Unlock it first.');
     const price = sellPrice(item, this.p);
     this.s.state.inventory.slots[index] = null;
     this.s.addGold(price, 'sell');
@@ -96,7 +97,7 @@ export class EconomyActions {
     let total = 0;
     let count = 0;
     this.s.state.inventory.slots.forEach((item, i) => {
-      if (!item || !(item.junk || item.rarity === 'junk')) return;
+      if (!item || item.locked || !(item.junk || item.rarity === 'junk')) return;
       const r = this.sell(i);
       if (r.ok) {
         total += sellPrice(item, this.p);

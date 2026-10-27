@@ -9,7 +9,7 @@ import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
 import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
-import type { ItemCategory, ItemInstance } from '../items/types';
+import type { EquipSlot, ItemCategory, ItemInstance } from '../items/types';
 import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
 import { applyStartingKit } from '../items/use';
 import { SPEC_LEVEL } from '../skills/specs';
@@ -115,6 +115,8 @@ export interface GameState {
   overflow: ItemInstance[];
   /** Item categories sent to the stash automatically on arriving in a town. */
   stashRules: ItemCategory[];
+  /** Saved equipment sets: name -> slot -> item uid. */
+  loadouts: Record<string, Partial<Record<EquipSlot, string>>>;
   /** Counter for item uids. */
   nextUid: number;
   lootFilter: LootFilterSettings;
@@ -154,6 +156,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     stash: createStash(),
     overflow: [],
     stashRules: [],
+    loadouts: {},
     nextUid: 0,
     lootFilter: { ...DEFAULT_LOOT_FILTER },
     stats: createGameStats(),
@@ -252,7 +255,9 @@ export class GameSession {
   advanceTime(minutes: number): void {
     const { clock } = advanceClock(this.state.clock, minutes);
     const hourChanged = hourOf(clock) !== hourOf(this.state.clock) || clock.day !== this.state.clock.day;
+    const daysPassed = clock.day - this.state.clock.day;
     this.state.clock = clock;
+    if (daysPassed > 0) this.items.reliquaryDays(Math.min(daysPassed, 30));
     if (hourChanged) this.bus.emit('timeChanged', { day: clock.day, hour: hourOf(clock) });
   }
 

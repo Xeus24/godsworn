@@ -278,6 +278,7 @@ export class DevotionActions {
     if (!at.ok) return at;
     const item = this.s.state.inventory.slots[index];
     if (!item) return fail('Nothing to offer.');
+    if (item.locked) return fail('Unlock it first.');
     const favor = itemOfferingFavor(god, item.baseId, itemValue(item));
     if (favor <= 0) return fail('That is worth nothing to a god.');
     item.quantity--;

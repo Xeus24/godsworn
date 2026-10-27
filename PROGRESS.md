@@ -118,6 +118,14 @@
 - **Auto-stash rules:** gems, runes, curiosities and/or materials can be sent to the stash automatically on arriving in a town (never junk-marked items, items an active quest objective needs, or skeleton keys). The stash has its own sort setting.
 - **Undo:** one-step undo for the last stash move, sort or bulk transfer. It only works while the bags, stash and gold are exactly as that move left them, so it can never duplicate or resurrect sold items.
 - **Balance guards:** skeleton keys are used from the bags only, there is no remote stash and combat consumables never come from the stash (both would void bag-size limits and Traveler's Packs).
+- **Item locks:** lock single items (button or L): never salvaged, destroyed, sold, offered or auto-stashed; locking clears junk. Stacks cannot be locked.
+- **Upgrade hints:** a green arrow on bag gear that would raise attack, defense, resists or HP (identified, equippable, unbroken), plus an "upgrades first" sort. Set pieces get an outline, brighter when you already wear a piece of that set.
+- **Item history and uses:** loot remembers the day and zone it was found; tooltips say which active quests need an item and which recipes use it.
+- **Gear sets:** three saved equipment sets (Save / Wear). Wearing a set is town-only and pulls pieces from the bags and stash through the normal equip rules.
+- **Potion restock:** in town, tops each potion kind in the bags up to 10 from the stash. Never creates potions, and is undoable.
+- **Reliquary:** a stash tab can be dedicated to a god; if it holds 5 items that god likes (treasured curiosities, favored offering kinds) it earns +1 favor a day. It consumes nothing, one tab per god, and cannot lift favor past Acknowledged (100), so it stays far below shrine prayer (10 a day) and offerings.
+- **Search filters:** `rarity:epic`, `type:gem` (gear, gem, rune, mats...), `level>20`, `level<10`, `is:junk`, `is:locked`, `is:unid`, mixed with plain words.
+- **Visuals and access:** type-tinted cells, stacks shown as 1.5k, a drag ghost, and a screen-reader live region that speaks moves, claims and errors.
 - **Holdings:** quests (collect, deliver and item conditions), skeleton keys, Rift Maps, workshop services and crafting count and spend items from the bags first, then the stash, then set-aside loot (`countHeld` / `takeHeld`).
 - **Polish:** searching jumps to the first stash tab with a match, tabs carry a rarity underline for their best item, moved items flash briefly (not with reduced motion), tooltips show on keyboard focus, J toggles junk, and the stash sits under the bags on narrower windows.
 - **Keyboard:** every cell is focusable with an accessible label. Enter selects, Shift+Enter sends it across the stash, Space is the quick action, arrows move within a grid, Escape deselects; focus survives redraws.

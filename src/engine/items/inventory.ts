@@ -140,12 +140,12 @@ export function expandInventory(inv: Inventory, slots: number, max = INVENTORY_M
   return true;
 }
 
-export type SortMode = 'category' | 'rarity' | 'level' | 'name';
+export type SortMode = 'category' | 'rarity' | 'level' | 'name' | 'upgrade';
 
 const CATEGORY_ORDER: ItemCategory[] = ['weapon', 'armor', 'accessory', 'relic', 'consumable', 'gem', 'rune', 'material', 'curiosity', 'quest'];
 
 /** Merges stacks, then sorts items to the front. Junk always goes last. Never loses an item: if a merge somehow cannot fit, the grid is left as it was. */
-export function sortInventory(inv: Inventory, mode: SortMode, c: Content = content): void {
+export function sortInventory(inv: Inventory, mode: SortMode, c: Content = content, score: (item: ItemInstance) => number = () => 0): void {
   const items = inv.slots.filter((s): s is ItemInstance => s !== null);
   const merged = createInventory(inv.slots.length);
   for (const item of items) {
@@ -159,6 +159,7 @@ export function sortInventory(inv: Inventory, mode: SortMode, c: Content = conte
     rarity: (a, b) => rar(b) - rar(a) || cat(a) - cat(b),
     level: (a, b) => b.itemLevel - a.itemLevel || rar(b) - rar(a),
     name: (a, b) => itemName(a, c).localeCompare(itemName(b, c)),
+    upgrade: (a, b) => score(b) - score(a) || cat(a) - cat(b) || rar(b) - rar(a),
   };
   list.sort((a, b) => Number(a.junk) - Number(b.junk) || cmp[mode](a, b));
   inv.slots = inv.slots.map(() => null);
@@ -205,6 +206,8 @@ export interface Stash {
   tabs: Inventory[];
   /** Player-given tab names; a missing or blank entry shows as "Tab N". */
   names: string[];
+  /** Tabs dedicated to a god's reliquary: tab index -> god id. */
+  reliquary: Record<number, string>;
 }
 
 export const STASH_NAME_MAX = 14;
@@ -214,7 +217,7 @@ export const STASH_TAB_SIZE = 48;
 export const STASH_TAB_COSTS = [1_000, 5_000, 15_000, 40_000, 100_000];
 
 export function createStash(): Stash {
-  return { tabs: [createInventory(STASH_TAB_SIZE)], names: [] };
+  return { tabs: [createInventory(STASH_TAB_SIZE)], names: [], reliquary: {} };
 }
 
 /** Cost of the next tab, or undefined at the maximum. */

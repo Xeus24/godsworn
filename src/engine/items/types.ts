@@ -354,6 +354,10 @@ export interface ItemInstance {
   upgrade: number;
   quantity: number;
   junk: boolean;
+  /** Locked items are never salvaged, destroyed, sold or auto-stashed. */
+  locked?: boolean;
+  /** Where and when it was found (day of the in-game calendar, and the zone). */
+  found?: { day: number; zone: string };
   corruption?: { boon: string; drawback: string };
   ascended?: boolean;
   awakening?: { progress: number; awakened: boolean };

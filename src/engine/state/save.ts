@@ -99,6 +99,8 @@ export function migrate(raw: Json): Json {
   state.stashRules ??= [];
   const stash = obj(state.stash);
   stash.names ??= [];
+  stash.reliquary ??= {};
+  state.loadouts ??= {};
   state.stash = stash;
   state.meta = { ...obj(state.meta), version: SAVE_VERSION };
   return state;
