@@ -692,6 +692,14 @@
 - Each in-game screen (inventory, skills, general, pantheon, quests, party, codex) has its own accent hue for panel corners, headings and the active tab.
 - Sandstorm and ashfall are denser and easier to see; the cloth hood reads as a peaked hood with a shadowed opening.
 
+### Balance pass 2: world bosses and the hero auto-battle AI (added after Phase 16)
+- Review finding: the "level 60 class cliff" was the two finale fights (Seryth, the Shadow of the Unwritten), and world bosses ranged from 20% to 92% wins by zone (mean of all classes, `npm run sim`), with Frostspire onward far too hard and Whisperwood and the Ashen Desert far too easy.
+- World bosses were retuned per boss (stats in `data/bestiary/enemies.ts`): Gnarlroot, the Sandworm, the Abyssal Crab and Bramblehorn are tougher; the Frost Wyrm, Storm Roc, Ember Matriarch and Unwritten Herald are 25-45% lighter in HP and about 20-35% lighter in damage. Every zone's world boss now sits at 52-64% wins (target 30-60). Seryth and the Shadow have 15% less HP.
+- The party's auto-battle AI now scores elemental skills by the target's resistance (`engine/combat/ai.ts`), so heroes stop firing fire at an 80%-fire-resistant dragon. This lifted mage and bard against the late world bosses, and applies to the player's auto-battle too.
+- L60 wins after: warrior 56 to 71%, mage 46 to 55%, necromancer 63 to 66%, bard 94 to 99%; levels 1-45 unchanged.
+- Tried and dropped: a diminishing-returns cap on Speed (rogues and rangers reach 140+ speed from DEX). It cut rogues to 74-82% in ordinary fights and did nothing for the weak classes. Raising world boss enrage timers did almost nothing either.
+- Cut / deferred: per-class boss walls remain. The necromancer deals about 20% of a boss's HP before dying (DoTs and summons lose to boss status resistance and area attacks), the cleric and bard are 0-10% against some world bosses, and the warrior still loses the two Rift-era world bosses. These are kit problems, not boss numbers, and need class changes.
+
 ## Known bugs
 - None known.
 

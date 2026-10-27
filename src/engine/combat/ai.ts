@@ -2,6 +2,7 @@ import type { SkillDef } from '../skills/types';
 import { bossForcedAction, isTelegraphOnly } from './bosses';
 import type { Battle } from './battle';
 import { canUseSkill, foesOf, friendsOf, needsTarget, skillOptions, validTargets } from './skills';
+import { resistMultiplier } from './damage';
 import type { Action, AiProfile, Combatant } from './types';
 
 interface Option {
@@ -96,6 +97,12 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
       if (skill.finisher) score += (x.resources[skill.finisher.resource] ?? 0) * skill.finisher.multiplierPerPoint * 1.5;
       if (skill.effects?.length) score *= 1.15;
       if (profile === 'caster' && skill.tags.includes('Spell')) score *= 1.3;
+      // Heroes avoid spending turns on an element the target shrugs off.
+      if (x.side === 'party' && skill.element !== 'physical') {
+        const marks = target ? [target] : foes;
+        const taken = marks.reduce((s, f) => s + resistMultiplier(b.stats(f)[`${skill.element}Resist`]), 0) / Math.max(1, marks.length);
+        score *= Math.max(0.1, taken);
+      }
       options.push({ action: act(target?.id), score: score * w * jitter });
       continue;
     }
