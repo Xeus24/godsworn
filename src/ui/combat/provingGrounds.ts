@@ -9,6 +9,7 @@ import type { Conversation } from '../../engine/state/conversation';
 import { portraitCanvas } from '../art/portraits';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
+import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from './creatureSprites';
 
 /** A fresh copy of a cached canvas (a cached one can only sit in one place in the page). */
@@ -83,7 +84,7 @@ export class ProvingGroundsScreen implements Screen {
       const defs = enc.enemies.map((e) => content.enemies.get(e.enemyId));
       const enemies = defs.map((d) => d.name);
       const icons = el('div', { class: 'enc-icons', 'aria-hidden': 'true' }, ...defs.map((d) => {
-        const c = copyOf(creatureSprite(d.family, d.palette.main, d.palette.accent), 'enc-icon');
+        const c = copyOf(monsterTile(d.id, d.family) ?? creatureSprite(d.family, d.palette.main, d.palette.accent), 'enc-icon');
         c.title = d.name;
         return c;
       }));

@@ -73,3 +73,18 @@ export function monsterTile(enemyId: string | undefined, family: string, scale =
   }
   return undefined;
 }
+
+/** Starts loading every monster tile so the arena and bestiary can draw them synchronously. */
+export function preloadMonsterTiles(): void {
+  const names = new Set<string>([...Object.values(ENEMY_TILE), ...Object.values(FAMILY_TILES).flat()]);
+  for (const name of names) {
+    if (images.has(name)) continue;
+    images.set(name, null);
+    const el = new Image();
+    el.onload = () => images.set(name, el);
+    el.onerror = () => images.set(name, null);
+    el.src = `${import.meta.env.BASE_URL}art/monsters/${name}.png`;
+  }
+}
+
+preloadMonsterTiles();

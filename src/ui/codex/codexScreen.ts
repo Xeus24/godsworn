@@ -6,6 +6,7 @@ import { killsByType, knowledgeLevel, knowledgeName, knowledgeThresholds, slayer
 import { scaleCombatStats } from '../../engine/combat/combatants';
 import type { EnemyDef } from '../../engine/combat/types';
 import type { GameSession, LifetimeStat } from '../../engine/state/gameState';
+import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
@@ -49,7 +50,7 @@ function listedEnemies(): EnemyDef[] {
 
 /** A fresh copy of the creature's cached sprite; unmet creatures are a dark silhouette. */
 function spriteIcon(e: EnemyDef, cls: string, known: boolean): HTMLCanvasElement {
-  const src = creatureSprite(e.family, e.palette.main, e.palette.accent);
+  const src = monsterTile(e.id, e.family) ?? creatureSprite(e.family, e.palette.main, e.palette.accent);
   const c = document.createElement('canvas');
   c.width = src.width;
   c.height = src.height;

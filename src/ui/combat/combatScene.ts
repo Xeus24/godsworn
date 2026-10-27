@@ -486,11 +486,17 @@ export class CombatScene {
     // The figure: a full-body hero, or the creature's sprite. `body` is where it is drawn.
     let img: HTMLCanvasElement | undefined;
     let bw = size;
+    // Tile figures stand in the lower part of their square, so their name sits lower than a procedural sprite's.
+    let tiled = false;
     if (x.portrait) {
-      img = heroDoll(x.portrait.raceId, x.portrait.variant, x.weaponTypes, x.portrait.look) ?? heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
+      const doll = heroDoll(x.portrait.raceId, x.portrait.variant, x.weaponTypes, x.portrait.look);
+      tiled = !!doll;
+      img = doll ?? heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
       bw = Math.round(size * (img.width / img.height));
     } else if (x.sprite) {
-      img = monsterTile(x.enemyId, x.sprite.family) ?? creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
+      const tile = monsterTile(x.enemyId, x.sprite.family);
+      tiled = !!tile;
+      img = tile ?? creatureSprite(x.sprite.family, x.sprite.main, x.sprite.accent);
     }
     if (img) {
       g.save();
@@ -572,9 +578,10 @@ export class CombatScene {
     g.lineWidth = 3;
     g.strokeStyle = '#000';
     const label = x.tier !== 'party' && x.tier !== 'normal' ? `★ ${x.name}` : x.name;
-    g.strokeText(label, cx, top - 6);
+    const labelY = tiled ? top + size * (x.portrait ? 0.08 : 0.2) - 4 : top - 6;
+    g.strokeText(label, cx, labelY);
     g.fillStyle = x.side === 'party' ? '#e8f0ff' : x.tier === 'elite' ? '#ffb84a' : '#ffe0d8';
-    g.fillText(label, cx, top - 6);
+    g.fillText(label, cx, labelY);
 
     // HP, shield and stagger bars.
     if (x.alive) {
