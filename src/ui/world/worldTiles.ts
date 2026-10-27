@@ -46,7 +46,8 @@ function compose(key: string, names: (string | undefined)[], after?: (g: CanvasR
   for (const img of imgs) g.drawImage(img, 0, 0);
   // The tiles are dark: lift them a little so the map stays readable.
   g.globalCompositeOperation = 'source-atop';
-  g.fillStyle = 'rgba(255,255,236,0.1)';
+  // Snow ground is whitened so the frozen tiles read as snow.
+  g.fillStyle = key.startsWith('snow|g') || key.startsWith('snow|p') ? 'rgba(236,244,255,0.5)' : 'rgba(255,255,236,0.1)';
   g.fillRect(0, 0, WORLD_TILE_PX, WORLD_TILE_PX);
   g.globalCompositeOperation = 'source-over';
   after?.(g);
