@@ -71,6 +71,17 @@ export class WorldScreen implements Screen {
   private overlay: WorldMapOverlay | undefined;
   private observer: ResizeObserver | undefined;
   private animTimer = 0;
+  /** Bumped on every state-driven redraw; the cached layers below are rebuilt when it changes. */
+  private rev = 0;
+  private queued = 0;
+  private terrainLayer = document.createElement('canvas');
+  private fogLayer = document.createElement('canvas');
+  private terrainKey = '';
+  private overlayKey = '';
+  private fogSeen: string | undefined;
+  private minimapBase = document.createElement('canvas');
+  private minimapMap = '';
+  private minimapFog: string | undefined;
 
   constructor(
     private readonly session: GameSession,
@@ -104,6 +115,8 @@ export class WorldScreen implements Screen {
     this.offs = [];
     this.observer?.disconnect();
     window.clearInterval(this.animTimer);
+    cancelAnimationFrame(this.queued);
+    this.queued = 0;
     this.overlay?.close();
   }
 
@@ -206,13 +219,19 @@ export class WorldScreen implements Screen {
 
   // ------------------------------------------------------------ drawing
 
+  /** Asks for a redraw; several requests in one frame (a held key, a burst of events) draw once. */
   private draw = (): void => {
     if (!this.root) return;
-    const s = this.session;
-    const map = s.world.map;
-    this.drawView(map);
-    this.drawMinimap(map);
-    this.drawSide(map);
+    this.rev++;
+    if (this.queued) return;
+    this.queued = requestAnimationFrame(() => {
+      this.queued = 0;
+      if (!this.root) return;
+      const map = this.session.world.map;
+      this.drawView(map);
+      this.drawMinimap(map);
+      this.drawSide(map);
+    });
   };
 
   /** The picture for a map object: a Dungeon Crawl tile (drawn at its natural size) when loaded, else the procedural icon. */
@@ -267,11 +286,6 @@ export class WorldScreen implements Screen {
     if (!g) return;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.imageSmoothingEnabled = false;
-    const void_ = g.createRadialGradient(cw / 2, ch / 2, ch * 0.2, cw / 2, ch / 2, Math.max(cw, ch) * 0.7);
-    void_.addColorStop(0, '#171028');
-    void_.addColorStop(1, '#05030a');
-    g.fillStyle = void_;
-    g.fillRect(0, 0, cw, ch);
     const p = w.position;
     const ox = Math.round(cw / 2 - (p.x + 0.5) * TILE);
     const oy = Math.round(ch / 2 - (p.y + 0.5) * TILE);
@@ -282,39 +296,20 @@ export class WorldScreen implements Screen {
     const day = s.state.clock.day;
     const now = performance.now();
     const frame = settings().reduceMotion ? 0 : Math.floor(now / 450);
-    for (let y = y0; y <= y1; y++) {
-      for (let x = x0; x <= x1; x++) {
-        if (!explored(w, map, x, y)) continue;
-        let t = tileAt(map, x, y);
-        if (t === 'D' && runesDone(w, map)) t = '_';
-        if (t === 'X' && w.used[usedKey(map.id, `crack-${x}-${y}`)] !== undefined) t = map.biome === 'dungeon' ? '_' : '.';
-        // Soft ground patches from low-frequency noise; shores and road edges from the neighbours.
-        const n = Math.sin(x * 0.37 + 1.3) + Math.sin(y * 0.46) + Math.sin((x + y) * 0.21);
-        const tone = n > 1.15 ? 1 : n < -1.15 ? 2 : 0;
-        const like = t === '~' ? (c: string) => c !== '~' : (c: string) => c !== '=' && c !== 'D';
-        const mask = t === '~' || t === '=' ? (like(tileAt(map, x, y - 1)) ? EDGE_N : 0) | (like(tileAt(map, x + 1, y)) ? EDGE_E : 0) | (like(tileAt(map, x, y + 1)) ? EDGE_S : 0) | (like(tileAt(map, x - 1, y)) ? EDGE_W : 0) : 0;
-        const variant = (x * 7 + y * 13) % 4;
-        const deco = (x * 31 + y * 17 + x * y) % 11;
-        const isWater = (c: string): boolean => c === '~';
-        const shore = t === '~' ? 0 : (isWater(tileAt(map, x, y - 1)) ? 1 : 0) | (isWater(tileAt(map, x + 1, y)) ? 2 : 0) | (isWater(tileAt(map, x, y + 1)) ? 4 : 0) | (isWater(tileAt(map, x - 1, y)) ? 8 : 0);
-        const art = terrainTile(map.biome, t, variant + ((x * 3 + y * 5) % 3) * 4, frame, tone === 0 ? deco : 99, shore) ?? tileImage(map.biome, t, variant, frame, deco, tone, mask);
-        g.drawImage(art, ox + x * TILE, oy + y * TILE, TILE, TILE);
-      }
+    const geo = `${map.id}|${p.x},${p.y}|${this.rev}|${cw}x${ch}@${dpr}`;
+    const fogNow = w.fog[map.id];
+    if (fogNow !== this.fogSeen) {
+      this.fogSeen = fogNow;
+      this.terrainKey = '';
+      this.overlayKey = '';
     }
-    // Trees and walls cast a soft shadow down and to the right, so the ground reads as lit from the upper left.
-    g.fillStyle = 'rgba(8,6,20,0.14)';
-    for (let y = y0; y <= y1; y++) {
-      for (let x = x0; x <= x1; x++) {
-        const t = tileAt(map, x, y);
-        if ((t !== 'T' && t !== '#' && t !== 'H') || !explored(w, map, x, y)) continue;
-        const nx = tileAt(map, x + 1, y);
-        const ny = tileAt(map, x, y + 1);
-        const px = ox + x * TILE;
-        const py = oy + y * TILE;
-        if (nx !== 'T' && nx !== '#' && nx !== 'H') g.fillRect(px + TILE, py + Math.round(TILE * 0.3), Math.round(TILE * 0.42), TILE);
-        if (ny !== 'T' && ny !== '#' && ny !== 'H') g.fillRect(px + Math.round(TILE * 0.3), py + TILE, TILE, Math.round(TILE * 0.35));
-      }
+    const terrainKey = `${geo}|${frame}`;
+    if (this.terrainKey !== terrainKey) {
+      this.terrainKey = terrainKey;
+      const lg = this.layer(this.terrainLayer, cw, ch, dpr);
+      if (lg) this.paintTerrain(lg, map, ox, oy, x0, y0, x1, y1, frame, cw, ch);
     }
+    this.blit(g, this.terrainLayer, dpr);
     for (const e of map.entities) {
       if (!explored(w, map, e.x, e.y) || !entityActive(w, map, e, day)) continue;
       const art = this.entityImage(map, e);
@@ -344,60 +339,12 @@ export class WorldScreen implements Screen {
         g.fillRect(ox + e.x * TILE + TILE / 2 - 4, oy + e.y * TILE - TILE * 0.35, 8, 3);
       }
     }
-    // Quest markers (shown even through the fog, so you know where to go).
-    const tracked = s.state.quests.tracked;
-    for (const m of s.quests.markers(map.id)) {
-      const st = MARKER_STYLE[m.kind];
-      const cx = ox + m.x * TILE + TILE / 2;
-      const cy = oy + m.y * TILE + TILE / 2;
-      g.globalAlpha = m.quest === tracked ? 1 : 0.75;
-      g.fillStyle = '#1a1226';
-      g.beginPath();
-      g.arc(cx, cy, TILE * 0.38, 0, Math.PI * 2);
-      g.fill();
-      g.strokeStyle = st.color;
-      g.lineWidth = 2;
-      g.stroke();
-      g.fillStyle = st.color;
-      g.font = `bold ${Math.round(TILE * 0.45)}px ui-monospace, monospace`;
-      g.textAlign = 'center';
-      g.textBaseline = 'middle';
-      g.fillText(st.glyph, cx, cy + 1);
-      g.globalAlpha = 1;
+    if (this.overlayKey !== geo) {
+      this.overlayKey = geo;
+      const lg = this.layer(this.fogLayer, cw, ch, dpr);
+      if (lg) this.paintOverlay(lg, map, ox, oy, x0, y0, x1, y1);
     }
-    // Out-of-sight areas are remembered, but dim.
-    g.fillStyle = 'rgba(5,3,10,0.5)';
-    for (let y = y0; y <= y1; y++) {
-      for (let x = x0; x <= x1; x++) {
-        if (!explored(w, map, x, y)) continue;
-        const d2 = (x - p.x) ** 2 + (y - p.y) ** 2;
-        if (d2 > SIGHT * SIGHT || !lineOfSight(w, map, p.x, p.y, x, y)) g.fillRect(ox + x * TILE, oy + y * TILE, TILE, TILE);
-      }
-    }
-    // Feather the edge of the explored area: a short fade to the void wherever a neighbour is unexplored.
-    const feather = TILE * 0.45;
-    const fade = (x: number, y: number, dx: number, dy: number): void => {
-      const px = ox + x * TILE;
-      const py = oy + y * TILE;
-      const sx = dx > 0 ? px + TILE : px;
-      const sy = dy > 0 ? py + TILE : py;
-      const grad = g.createLinearGradient(sx, sy, sx - dx * feather, sy - dy * feather);
-      grad.addColorStop(0, 'rgba(8,5,16,0.85)');
-      grad.addColorStop(1, 'rgba(8,5,16,0)');
-      g.fillStyle = grad;
-      if (dx !== 0) g.fillRect(dx > 0 ? px + TILE - feather : px, py, feather, TILE);
-      else g.fillRect(px, dy > 0 ? py + TILE - feather : py, TILE, feather);
-    };
-    const seen = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < map.w && y < map.h && explored(w, map, x, y);
-    for (let y = y0; y <= y1; y++) {
-      for (let x = x0; x <= x1; x++) {
-        if (!seen(x, y)) continue;
-        if (!seen(x + 1, y)) fade(x, y, 1, 0);
-        if (!seen(x - 1, y)) fade(x, y, -1, 0);
-        if (!seen(x, y + 1)) fade(x, y, 0, 1);
-        if (!seen(x, y - 1)) fade(x, y, 0, -1);
-      }
-    }
+    this.blit(g, this.fogLayer, dpr);
     // The hero.
     const cls = s.player.classes[0] ? content.classes.get(s.player.classes[0].classId) : undefined;
     const hero = portraitCanvas(s.player.raceId, s.player.portrait, cls?.color ?? '#888888');
@@ -460,6 +407,127 @@ export class WorldScreen implements Screen {
     g.fillRect(0, 0, cw, ch);
   }
 
+  /** Cached layers are drawn at device resolution; this returns a cleared context for one, in CSS-pixel units. */
+  private layer(c: HTMLCanvasElement, cw: number, ch: number, dpr: number): CanvasRenderingContext2D | undefined {
+    c.width = Math.round(cw * dpr);
+    c.height = Math.round(ch * dpr);
+    const lg = c.getContext('2d');
+    if (!lg) return undefined;
+    lg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    lg.imageSmoothingEnabled = false;
+    return lg;
+  }
+
+  private blit(g: CanvasRenderingContext2D, layer: HTMLCanvasElement, dpr: number): void {
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.drawImage(layer, 0, 0);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  /** The ground and the soft shadows of trees and walls. Rebuilt when the state changes or the water frame ticks, not on every animation tick. */
+  private paintTerrain(g: CanvasRenderingContext2D, map: TileMap, ox: number, oy: number, x0: number, y0: number, x1: number, y1: number, frame: number, cw: number, ch: number): void {
+    const w = this.session.state.world;
+    const void_ = g.createRadialGradient(cw / 2, ch / 2, ch * 0.2, cw / 2, ch / 2, Math.max(cw, ch) * 0.7);
+    void_.addColorStop(0, '#171028');
+    void_.addColorStop(1, '#05030a');
+    g.fillStyle = void_;
+    g.fillRect(0, 0, cw, ch);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        if (!explored(w, map, x, y)) continue;
+        let t = tileAt(map, x, y);
+        if (t === 'D' && runesDone(w, map)) t = '_';
+        if (t === 'X' && w.used[usedKey(map.id, `crack-${x}-${y}`)] !== undefined) t = map.biome === 'dungeon' ? '_' : '.';
+        // Soft ground patches from low-frequency noise; shores and road edges from the neighbours.
+        const n = Math.sin(x * 0.37 + 1.3) + Math.sin(y * 0.46) + Math.sin((x + y) * 0.21);
+        const tone = n > 1.15 ? 1 : n < -1.15 ? 2 : 0;
+        const like = t === '~' ? (c: string) => c !== '~' : (c: string) => c !== '=' && c !== 'D';
+        const mask = t === '~' || t === '=' ? (like(tileAt(map, x, y - 1)) ? EDGE_N : 0) | (like(tileAt(map, x + 1, y)) ? EDGE_E : 0) | (like(tileAt(map, x, y + 1)) ? EDGE_S : 0) | (like(tileAt(map, x - 1, y)) ? EDGE_W : 0) : 0;
+        const variant = (x * 7 + y * 13) % 4;
+        const deco = (x * 31 + y * 17 + x * y) % 11;
+        const isWater = (c: string): boolean => c === '~';
+        const shore = t === '~' ? 0 : (isWater(tileAt(map, x, y - 1)) ? 1 : 0) | (isWater(tileAt(map, x + 1, y)) ? 2 : 0) | (isWater(tileAt(map, x, y + 1)) ? 4 : 0) | (isWater(tileAt(map, x - 1, y)) ? 8 : 0);
+        const art = terrainTile(map.biome, t, variant + ((x * 3 + y * 5) % 3) * 4, frame, tone === 0 ? deco : 99, shore) ?? tileImage(map.biome, t, variant, frame, deco, tone, mask);
+        g.drawImage(art, ox + x * TILE, oy + y * TILE, TILE, TILE);
+      }
+    }
+    // Trees and walls cast a soft shadow down and to the right, so the ground reads as lit from the upper left.
+    g.fillStyle = 'rgba(8,6,20,0.14)';
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        const t = tileAt(map, x, y);
+        if ((t !== 'T' && t !== '#' && t !== 'H') || !explored(w, map, x, y)) continue;
+        const nx = tileAt(map, x + 1, y);
+        const ny = tileAt(map, x, y + 1);
+        const px = ox + x * TILE;
+        const py = oy + y * TILE;
+        if (nx !== 'T' && nx !== '#' && nx !== 'H') g.fillRect(px + TILE, py + Math.round(TILE * 0.3), Math.round(TILE * 0.42), TILE);
+        if (ny !== 'T' && ny !== '#' && ny !== 'H') g.fillRect(px + Math.round(TILE * 0.3), py + TILE, TILE, Math.round(TILE * 0.35));
+      }
+    }
+  }
+
+  /** Quest markers, the dimming of remembered ground and the feathered edge of the explored area: only change when the hero moves or something is revealed. */
+  private paintOverlay(g: CanvasRenderingContext2D, map: TileMap, ox: number, oy: number, x0: number, y0: number, x1: number, y1: number): void {
+    const s = this.session;
+    const w = s.state.world;
+    const p = w.position;
+    // Quest markers (shown even through the fog, so you know where to go).
+    const tracked = s.state.quests.tracked;
+    for (const m of s.quests.markers(map.id)) {
+      const st = MARKER_STYLE[m.kind];
+      const cx = ox + m.x * TILE + TILE / 2;
+      const cy = oy + m.y * TILE + TILE / 2;
+      g.globalAlpha = m.quest === tracked ? 1 : 0.75;
+      g.fillStyle = '#1a1226';
+      g.beginPath();
+      g.arc(cx, cy, TILE * 0.38, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = st.color;
+      g.lineWidth = 2;
+      g.stroke();
+      g.fillStyle = st.color;
+      g.font = `bold ${Math.round(TILE * 0.45)}px ui-monospace, monospace`;
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText(st.glyph, cx, cy + 1);
+      g.globalAlpha = 1;
+    }
+    // Out-of-sight areas are remembered, but dim.
+    g.fillStyle = 'rgba(5,3,10,0.5)';
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        if (!explored(w, map, x, y)) continue;
+        const d2 = (x - p.x) ** 2 + (y - p.y) ** 2;
+        if (d2 > SIGHT * SIGHT || !lineOfSight(w, map, p.x, p.y, x, y)) g.fillRect(ox + x * TILE, oy + y * TILE, TILE, TILE);
+      }
+    }
+    // Feather the edge of the explored area: a short fade to the void wherever a neighbour is unexplored.
+    const feather = TILE * 0.45;
+    const fade = (x: number, y: number, dx: number, dy: number): void => {
+      const px = ox + x * TILE;
+      const py = oy + y * TILE;
+      const sx = dx > 0 ? px + TILE : px;
+      const sy = dy > 0 ? py + TILE : py;
+      const grad = g.createLinearGradient(sx, sy, sx - dx * feather, sy - dy * feather);
+      grad.addColorStop(0, 'rgba(8,5,16,0.85)');
+      grad.addColorStop(1, 'rgba(8,5,16,0)');
+      g.fillStyle = grad;
+      if (dx !== 0) g.fillRect(dx > 0 ? px + TILE - feather : px, py, feather, TILE);
+      else g.fillRect(px, dy > 0 ? py + TILE - feather : py, TILE, feather);
+    };
+    const seen = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < map.w && y < map.h && explored(w, map, x, y);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        if (!seen(x, y)) continue;
+        if (!seen(x + 1, y)) fade(x, y, 1, 0);
+        if (!seen(x - 1, y)) fade(x, y, -1, 0);
+        if (!seen(x, y + 1)) fade(x, y, 0, 1);
+        if (!seen(x, y - 1)) fade(x, y, 0, -1);
+      }
+    }
+  }
+
   /** Darkens the whole view except a warm pool of light around (cx, cy); the light flickers a little. */
   private lightAround(g: CanvasRenderingContext2D, cx: number, cy: number, cw: number, ch: number, rgb: string, inner: number, outer: number, r0: number, r1: number): void {
     const flicker = settings().reduceMotion ? 0 : Math.sin(performance.now() / 170) * 0.012 + Math.sin(performance.now() / 410) * 0.01;
@@ -518,19 +586,34 @@ export class WorldScreen implements Screen {
   private drawMinimap(map: TileMap): void {
     const w = this.session.state.world;
     const scale = 3;
-    this.minimap.width = map.w * scale;
-    this.minimap.height = map.h * scale;
-    const g = this.minimap.getContext('2d');
-    if (!g) return;
-    g.fillStyle = '#05030a';
-    g.fillRect(0, 0, this.minimap.width, this.minimap.height);
-    for (let y = 0; y < map.h; y++) {
-      for (let x = 0; x < map.w; x++) {
-        if (!explored(w, map, x, y)) continue;
-        g.fillStyle = minimapColor(map.biome, tileAt(map, x, y));
-        g.fillRect(x * scale, y * scale, scale, scale);
+    // The explored ground only changes when the fog does; the dots on top are cheap to redraw.
+    const base = this.minimapBase;
+    const fog = w.fog[map.id];
+    if (this.minimapMap !== map.id || this.minimapFog !== fog) {
+      this.minimapMap = map.id;
+      this.minimapFog = fog;
+      base.width = map.w * scale;
+      base.height = map.h * scale;
+      const bg = base.getContext('2d');
+      if (bg) {
+        bg.fillStyle = '#05030a';
+        bg.fillRect(0, 0, base.width, base.height);
+        for (let y = 0; y < map.h; y++) {
+          for (let x = 0; x < map.w; x++) {
+            if (!explored(w, map, x, y)) continue;
+            bg.fillStyle = minimapColor(map.biome, tileAt(map, x, y));
+            bg.fillRect(x * scale, y * scale, scale, scale);
+          }
+        }
       }
     }
+    if (this.minimap.width !== base.width || this.minimap.height !== base.height) {
+      this.minimap.width = base.width;
+      this.minimap.height = base.height;
+    }
+    const g = this.minimap.getContext('2d');
+    if (!g) return;
+    g.drawImage(base, 0, 0);
     const dot = (x: number, y: number, color: string): void => {
       g.fillStyle = color;
       g.fillRect(x * scale - 1, y * scale - 1, scale + 2, scale + 2);

@@ -88,6 +88,7 @@ export class CombatScene {
   private readonly views = new Map<string, UnitView>();
   private floats: FloatText[] = [];
   private sparks: Spark[] = [];
+  private tints = new WeakMap<HTMLCanvasElement, Map<string, HTMLCanvasElement>>();
   /** Whole-scene shake, set by critical hits and deaths. */
   private sceneShake = 0;
   private frame = 0;
@@ -350,6 +351,28 @@ export class CombatScene {
 
   // ---------------------------------------------------------- drawing
 
+  /** A sprite filled with one colour inside its outline. Cached per sprite and colour: flashes and fallen figures redraw it every frame. */
+  private tinted(img: HTMLCanvasElement, color: string): HTMLCanvasElement | undefined {
+    let byColor = this.tints.get(img);
+    if (!byColor) {
+      byColor = new Map();
+      this.tints.set(img, byColor);
+    }
+    const hit = byColor.get(color);
+    if (hit) return hit;
+    const tint = document.createElement('canvas');
+    tint.width = img.width;
+    tint.height = img.height;
+    const tg = tint.getContext('2d');
+    if (!tg) return undefined;
+    tg.drawImage(img, 0, 0);
+    tg.globalCompositeOperation = 'source-in';
+    tg.fillStyle = color;
+    tg.fillRect(0, 0, tint.width, tint.height);
+    byColor.set(color, tint);
+    return tint;
+  }
+
   private paintBackground(): HTMLCanvasElement {
     const bg = document.createElement('canvas');
     bg.width = SCENE_W;
@@ -521,15 +544,8 @@ export class CombatScene {
       blit(img);
       // Hit flash and fallen tint follow the figure's outline, not its bounding box.
       if (v.flash > 0 || !x.alive) {
-        const tint = document.createElement('canvas');
-        tint.width = img.width;
-        tint.height = img.height;
-        const tg = tint.getContext('2d');
-        if (tg) {
-          tg.drawImage(img, 0, 0);
-          tg.globalCompositeOperation = 'source-in';
-          tg.fillStyle = !x.alive ? 'rgb(40,30,50)' : `rgb(${v.flashColor})`;
-          tg.fillRect(0, 0, tint.width, tint.height);
+        const tint = this.tinted(img, !x.alive ? 'rgb(40,30,50)' : `rgb(${v.flashColor})`);
+        if (tint) {
           const prev = g.globalAlpha;
           g.globalAlpha = prev * (!x.alive ? 0.5 : v.flash * 0.7);
           blit(tint);
