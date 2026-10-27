@@ -29,6 +29,7 @@
 }
 
 .tree-stage {
+  position: relative;
   min-height: 0;
   background: radial-gradient(ellipse at center, #1d1530, #0b0812 75%);
   border: 2px solid var(--border);
@@ -57,8 +58,12 @@
 
 .tree-node-label {
   fill: var(--text-dim);
-  font: 11px var(--font-ui);
+  font: 12px var(--font-ui);
   pointer-events: none;
+  paint-order: stroke;
+  stroke: #0b0812;
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 
 .tree-node.allocated .tree-node-label,
@@ -149,4 +154,17 @@
 .mastery-bar div {
   height: 100%;
   background: var(--r-legendary);
+}
+
+.tree-zoom {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+}
+
+.tree-zoom button {
+  min-width: 32px;
+  padding: 2px 8px;
 }

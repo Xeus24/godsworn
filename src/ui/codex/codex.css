@@ -61,3 +61,36 @@
   justify-content: space-between;
   gap: 8px;
 }
+
+.codex-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.codex-icon {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  image-rendering: pixelated;
+}
+
+.silhouette {
+  filter: brightness(0) opacity(0.55);
+}
+
+.codex-preview {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: radial-gradient(ellipse at 50% 90%, #3a2d52, #1c1528 70%);
+  border: 1px solid var(--border);
+}
+
+.codex-art {
+  width: 144px;
+  height: 144px;
+  image-rendering: pixelated;
+}

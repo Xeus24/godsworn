@@ -48,6 +48,8 @@ export class TreeScreen implements Screen {
   private view = { x: 10, y: 10, scale: 0.9 };
   /** True once the tree has been fitted to its stage; cleared by the Fit view button. */
   private fitted = false;
+  /** Fit button: show every branch at once (small), rather than the readable default. */
+  private fitAll = false;
   private pickingSlot: number | undefined;
   /** Specialization branch shown before one is chosen. */
   private previewSpec: string | undefined;
@@ -185,7 +187,7 @@ export class TreeScreen implements Screen {
         const parent = byId.get(pid);
         if (!parent) continue;
         const lit = rankOf(build, node.id) > 0 && rankOf(build, pid) > 0;
-        layer.append(svg('line', { x1: parent.x, y1: parent.y, x2: node.x, y2: node.y, stroke: lit ? (branchColor.get(node.branch) ?? '#fff') : '#3a2e48', 'stroke-width': lit ? 4 : 2 }));
+        layer.append(svg('line', { x1: parent.x, y1: parent.y, x2: node.x, y2: node.y, stroke: lit ? (branchColor.get(node.branch) ?? '#fff') : '#5a4a70', 'stroke-width': lit ? 4 : 2.5 }));
       }
     }
 
@@ -272,13 +274,40 @@ export class TreeScreen implements Screen {
         const maxX = Math.max(...xs) + 60;
         const minY = -10;
         const maxY = Math.max(...ys) + 50;
-        const scale = Math.min(1.1, Math.max(0.75, Math.min(rect.width / (maxX - minX), rect.height / (maxY - minY))));
+        const scale = Math.min(1.1, Math.max(this.fitAll ? 0.25 : 0.75, Math.min(rect.width / (maxX - minX), rect.height / (maxY - minY))));
         this.view = { scale, x: Math.max(0, (rect.width - (maxX - minX) * scale) / 2) - minX * scale, y: Math.max(0, (rect.height - (maxY - minY) * scale) / 2) - minY * scale };
         this.fitted = true;
         layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
       });
     }
-    return el('div', { class: 'tree-stage' }, root as unknown as HTMLElement);
+    // Zoom buttons (the wheel does the same around the cursor); Fit re-fits the whole tree.
+    const zoomBy = (factor: number): void => {
+      const rect = root.getBoundingClientRect();
+      const next = Math.min(2.2, Math.max(0.35, this.view.scale * factor));
+      const px = rect.width / 2;
+      const py = rect.height / 2;
+      this.view.x = px - ((px - this.view.x) * next) / this.view.scale;
+      this.view.y = py - ((py - this.view.y) * next) / this.view.scale;
+      this.view.scale = next;
+      layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
+    };
+    const zoomButton = (label: string, title: string, onClick: () => void): HTMLElement => {
+      const b = el('button', { title, 'aria-label': title }, label);
+      b.addEventListener('click', onClick);
+      return b;
+    };
+    const zoom = el(
+      'div',
+      { class: 'tree-zoom' },
+      zoomButton('+', 'Zoom in', () => zoomBy(1.25)),
+      zoomButton('−', 'Zoom out', () => zoomBy(0.8)),
+      zoomButton('Fit', 'Fit the whole tree', () => {
+        this.fitAll = true;
+        this.fitted = false;
+        this.render();
+      }),
+    );
+    return el('div', { class: 'tree-stage' }, root as unknown as HTMLElement, zoom);
   }
 
   // ---------------------------------------------------------- panels
@@ -326,6 +355,7 @@ export class TreeScreen implements Screen {
     });
     const center = el('button', {}, 'Reset view');
     center.addEventListener('click', () => {
+      this.fitAll = false;
       this.fitted = false;
       this.render();
     });

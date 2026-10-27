@@ -12,6 +12,7 @@ import { itemIconUrl } from '../art/itemIcons';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { el, type Screen } from '../screen';
 import { itemTooltip } from '../items/itemTooltip';
+import { slotGlyphUrl } from '../art/slotGlyphs';
 import { slotLabel } from '../items/itemText';
 import { navBar, type Nav } from '../components/navBar';
 
@@ -118,7 +119,7 @@ export class InventoryScreen implements Screen {
         this.quickAction(item, loc);
       });
     } else if (placeholder) {
-      node.append(el('span', { class: 'placeholder' }, placeholder));
+      node.append(el('span', { class: 'placeholder' }, ...(loc.where === 'equipment' ? [el('img', { class: 'slot-glyph', src: slotGlyphUrl(loc.slot), alt: '', draggable: 'false' })] : []), placeholder));
     }
     node.addEventListener('click', () => {
       this.selected = item ? loc : undefined;

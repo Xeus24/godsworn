@@ -648,6 +648,12 @@
 - Balance check with the auto-battler (benchmark gear, no strategy): Noob/Easy about 100% wins, Medium about 95%, Hard about 50%, Legendary about 3%, Impossible 0.01% (1 of 10,080 fights; Impossible is tuned to this on purpose). Companions get the hero's permanent difficulty bonuses too. The last two are meant to need real play: buffs, gods, combos, consumables.
 - Shown in character creation (with a summary panel) and as a badge on the sheet header. `npm run sim -- --difficulty <id>` simulates a tier.
 
+### Graphics pass 9
+- Codex bestiary: creature sprites in the list (dark silhouettes until met) and a large preview on each entry.
+- World map: the explored edge fades into the void instead of ending in hard dark squares.
+- Skill tree: +, − and Fit buttons; Fit shows every branch, Reset view returns to the readable default; larger outlined node labels and brighter locked edges.
+- Inventory: empty equipment slots show a line-art silhouette of the slot. `.small` text is 13px, and the Pantheon detail pane has more spacing.
+
 ## Known bugs
 - None known.
 
@@ -660,7 +666,7 @@
 - **Twilight of the Gods** is the same five chapters in every NG+ tier; tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
 - **Late world bosses** (Frostspire, Stormcoast, Volcanic Rift, Dark Citadel) stay 22–32% for a hero alone: they are party fights. The auto-battler's cleric heals too little against heavy bursts (13% against Seryth with Aldric); played by hand it does better.
-- **Codex extras:** no item compendium or god/class pages in the Codex (the Pantheon and Skills screens cover gods and classes); bestiary portraits are text, not sprites.
+- **Codex extras:** no item compendium or god/class pages in the Codex (the Pantheon and Skills screens cover gods and classes).
 - **Achievement rewards** are titles, gold, pets and mounts. Portrait frames and **transmog** were cut: items have no visual variants to swap.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
 - **Treasure maps** were cut: Rift Maps and the dungeons' chests fill that role. Lore pages are collected (Phase 10) and read in the Codex.

@@ -58,7 +58,8 @@
 .god-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  line-height: 1.5;
   overflow-y: auto;
 }
 

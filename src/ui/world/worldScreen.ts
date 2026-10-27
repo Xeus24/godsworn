@@ -326,6 +326,30 @@ export class WorldScreen implements Screen {
         if (d2 > SIGHT * SIGHT || !lineOfSight(w, map, p.x, p.y, x, y)) g.fillRect(ox + x * TILE, oy + y * TILE, TILE, TILE);
       }
     }
+    // Feather the edge of the explored area: a short fade to the void wherever a neighbour is unexplored.
+    const feather = TILE * 0.45;
+    const fade = (x: number, y: number, dx: number, dy: number): void => {
+      const px = ox + x * TILE;
+      const py = oy + y * TILE;
+      const sx = dx > 0 ? px + TILE : px;
+      const sy = dy > 0 ? py + TILE : py;
+      const grad = g.createLinearGradient(sx, sy, sx - dx * feather, sy - dy * feather);
+      grad.addColorStop(0, 'rgba(8,5,16,0.85)');
+      grad.addColorStop(1, 'rgba(8,5,16,0)');
+      g.fillStyle = grad;
+      if (dx !== 0) g.fillRect(dx > 0 ? px + TILE - feather : px, py, feather, TILE);
+      else g.fillRect(px, dy > 0 ? py + TILE - feather : py, TILE, feather);
+    };
+    const seen = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < map.w && y < map.h && explored(w, map, x, y);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        if (!seen(x, y)) continue;
+        if (!seen(x + 1, y)) fade(x, y, 1, 0);
+        if (!seen(x - 1, y)) fade(x, y, -1, 0);
+        if (!seen(x, y + 1)) fade(x, y, 0, 1);
+        if (!seen(x, y - 1)) fade(x, y, 0, -1);
+      }
+    }
     // The hero.
     const cls = s.player.classes[0] ? content.classes.get(s.player.classes[0].classId) : undefined;
     const hero = portraitCanvas(s.player.raceId, s.player.portrait, cls?.color ?? '#888888');

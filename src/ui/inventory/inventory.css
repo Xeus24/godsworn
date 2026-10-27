@@ -157,8 +157,12 @@ select {
 }
 
 .item-cell .placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
   font-size: 9px;
-  color: #8a76a4;
+  color: #a794c0;
   text-align: center;
   line-height: 1.1;
 }
@@ -292,4 +296,10 @@ select {
   margin-top: 4px;
   color: var(--r-divine);
   font-size: 11px;
+}
+
+.slot-glyph {
+  width: 16px;
+  height: 16px;
+  opacity: 0.65;
 }

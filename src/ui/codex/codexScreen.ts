@@ -6,6 +6,7 @@ import { killsByType, knowledgeLevel, knowledgeName, knowledgeThresholds, slayer
 import { scaleCombatStats } from '../../engine/combat/combatants';
 import type { EnemyDef } from '../../engine/combat/types';
 import type { GameSession, LifetimeStat } from '../../engine/state/gameState';
+import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
@@ -44,6 +45,17 @@ const STAT_ROWS: [LifetimeStat, string][] = [
 /** Enemies the bestiary lists: everything you could fight, mentors, followers and summons aside. */
 function listedEnemies(): EnemyDef[] {
   return content.enemies.filter((e) => !e.types.includes('mentor') && !e.types.includes('follower')).sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+}
+
+/** A fresh copy of the creature's cached sprite; unmet creatures are a dark silhouette. */
+function spriteIcon(e: EnemyDef, cls: string, known: boolean): HTMLCanvasElement {
+  const src = creatureSprite(e.family, e.palette.main, e.palette.accent);
+  const c = document.createElement('canvas');
+  c.width = src.width;
+  c.height = src.height;
+  c.className = `${cls} pixel${known ? '' : ' silhouette'}`;
+  c.getContext('2d')?.drawImage(src, 0, 0);
+  return c;
 }
 
 /**
@@ -109,7 +121,7 @@ export class CodexScreen implements Screen {
       const b = el(
         'button',
         { class: `quest-row${this.selected === e.id ? ' active' : ''}${known ? '' : ' dim'}` },
-        el('span', {}, known ? e.name : '???'),
+        el('span', { class: 'codex-name' }, spriteIcon(e, 'codex-icon', known), el('span', {}, known ? e.name : '???')),
         el('span', { class: 'dim small' }, known ? `${knowledgeName(level)}${level >= 4 ? ' ★' : ''}` : `Lv ${e.level}`),
       );
       b.addEventListener('click', () => {
@@ -137,10 +149,11 @@ export class CodexScreen implements Screen {
   private entry(e: EnemyDef): HTMLElement {
     const p = this.session.player;
     const level = knowledgeLevel(p, e);
-    if (level < 0) return el('section', { class: 'panel' }, el('h2', {}, '???'), el('p', { class: 'dim' }, `Not yet met. Found around level ${e.level}.`));
+    if (level < 0) return el('section', { class: 'panel' }, el('div', { class: 'codex-preview' }, spriteIcon(e, 'codex-art', false)), el('h2', {}, '???'), el('p', { class: 'dim' }, `Not yet met. Found around level ${e.level}.`));
     const kills = p.bestiary[e.id] ?? 0;
     const next = knowledgeThresholds(e).find((t) => kills < t);
     const parts: HTMLElement[] = [
+      el('div', { class: 'codex-preview' }, spriteIcon(e, 'codex-art', true)),
       el('h2', {}, e.name),
       el('div', { class: 'dim small' }, `${TIER_NAMES[e.tier] ?? e.tier} · level ${e.level} · ${e.types.map(typeName).join(', ')}`),
       el('p', { class: 'small' }, e.description),
