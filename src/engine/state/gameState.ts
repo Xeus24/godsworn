@@ -9,6 +9,7 @@ import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
 import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
+import type { ItemInstance } from '../items/types';
 import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
 import { applyStartingKit } from '../items/use';
 import { SPEC_LEVEL } from '../skills/specs';
@@ -34,7 +35,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 16;
+export const SAVE_VERSION = 17;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -110,6 +111,8 @@ export interface GameState {
   ngPlus: number;
   inventory: Inventory;
   stash: Stash;
+  /** Loot that did not fit in the bags, held until claimed (oldest dropped past OVERFLOW_MAX). */
+  overflow: ItemInstance[];
   /** Counter for item uids. */
   nextUid: number;
   lootFilter: LootFilterSettings;
@@ -147,6 +150,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     ngPlus: 0,
     inventory: createInventory(),
     stash: createStash(),
+    overflow: [],
     nextUid: 0,
     lootFilter: { ...DEFAULT_LOOT_FILTER },
     stats: createGameStats(),

@@ -94,6 +94,11 @@ export function migrate(raw: Json): Json {
     cd.heresy ??= 0;
     cd.politics ??= {};
   }
+  // Version 17: loot set aside when the bags were full, and stash tab names.
+  state.overflow ??= [];
+  const stash = obj(state.stash);
+  stash.names ??= [];
+  state.stash = stash;
   state.meta = { ...obj(state.meta), version: SAVE_VERSION };
   return state;
 }

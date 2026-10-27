@@ -303,3 +303,57 @@ select {
   height: 16px;
   opacity: 0.65;
 }
+
+.bag-tools {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.item-search,
+.tab-name {
+  min-width: 0;
+  flex: 1 1 110px;
+}
+
+.overflow {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.overflow-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.overflow-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.overflow-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-search {
+  background: var(--panel-dark, #0d0a16);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 4px 6px;
+}
+
+.tab-name {
+  flex: 1 1 90px;
+}
+
+.panel .row:has(.tab-name) {
+  flex-wrap: wrap;
+  gap: 6px;
+}

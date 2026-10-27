@@ -144,12 +144,13 @@ export type SortMode = 'category' | 'rarity' | 'level' | 'name';
 
 const CATEGORY_ORDER: ItemCategory[] = ['weapon', 'armor', 'accessory', 'relic', 'consumable', 'gem', 'rune', 'material', 'curiosity', 'quest'];
 
-/** Merges stacks, then sorts items to the front. Junk always goes last. */
+/** Merges stacks, then sorts items to the front. Junk always goes last. Never loses an item: if a merge somehow cannot fit, the grid is left as it was. */
 export function sortInventory(inv: Inventory, mode: SortMode, c: Content = content): void {
   const items = inv.slots.filter((s): s is ItemInstance => s !== null);
-  inv.slots = inv.slots.map(() => null);
   const merged = createInventory(inv.slots.length);
-  for (const item of items) addItem(merged, item, c);
+  for (const item of items) {
+    if (addItem(merged, { ...item }, c) > 0) return;
+  }
   const list = merged.slots.filter((s): s is ItemInstance => s !== null);
   const cat = (i: ItemInstance): number => CATEGORY_ORDER.indexOf(baseOf(i, c).category);
   const rar = (i: ItemInstance): number => rarityOrder(i.rarity, c);
@@ -160,24 +161,75 @@ export function sortInventory(inv: Inventory, mode: SortMode, c: Content = conte
     name: (a, b) => itemName(a, c).localeCompare(itemName(b, c)),
   };
   list.sort((a, b) => Number(a.junk) - Number(b.junk) || cmp[mode](a, b));
+  inv.slots = inv.slots.map(() => null);
   list.forEach((item, i) => (inv.slots[i] = item));
+}
+
+let transferCounter = 0;
+
+/**
+ * Moves as much of the item at from[fi] as fits into `to`, merging into
+ * stacks first. Returns how many units moved (0 when `to` is full).
+ */
+export function transferStack(from: Inventory, fi: number, to: Inventory, c: Content = content): number {
+  const item = from.slots[fi];
+  if (!item || from === to) return 0;
+  const total = item.quantity;
+  const copy: ItemInstance = { ...item, sockets: [...item.sockets] };
+  const left = addItem(to, copy, c);
+  const moved = total - left;
+  if (moved <= 0) return 0;
+  if (left === 0) {
+    from.slots[fi] = null;
+  } else {
+    // A partial move leaves the original behind; the copy needs its own uid.
+    item.quantity = left;
+    for (const slot of to.slots) if (slot === copy) slot.uid = `${item.uid}~${++transferCounter}`;
+  }
+  return moved;
+}
+
+/** Moves every item matching `pick` from one grid into another. Returns the number of units moved. */
+export function transferAll(from: Inventory, to: Inventory, pick: (item: ItemInstance) => boolean = () => true, c: Content = content): number {
+  let moved = 0;
+  for (let i = 0; i < from.slots.length; i++) {
+    const item = from.slots[i];
+    if (item && pick(item)) moved += transferStack(from, i, to, c);
+  }
+  return moved;
 }
 
 // ---------------------------------------------------------------- stash
 
 export interface Stash {
   tabs: Inventory[];
+  /** Player-given tab names; a missing or blank entry shows as "Tab N". */
+  names: string[];
 }
+
+export const STASH_NAME_MAX = 14;
 
 export const STASH_TAB_SIZE = 48;
 /** Gold cost of each extra tab, in order. */
 export const STASH_TAB_COSTS = [1_000, 5_000, 15_000, 40_000, 100_000];
 
 export function createStash(): Stash {
-  return { tabs: [createInventory(STASH_TAB_SIZE)] };
+  return { tabs: [createInventory(STASH_TAB_SIZE)], names: [] };
 }
 
 /** Cost of the next tab, or undefined at the maximum. */
 export function nextStashTabCost(stash: Stash): number | undefined {
   return STASH_TAB_COSTS[stash.tabs.length - 1];
+}
+
+export function stashTabName(stash: Stash, tab: number): string {
+  return stash.names[tab]?.trim() || `Tab ${tab + 1}`;
+}
+
+/** Sets a tab's name (trimmed, cut to STASH_NAME_MAX). An empty name restores the default. */
+export function renameStashTab(stash: Stash, tab: number, name: string): boolean {
+  if (tab < 0 || tab >= stash.tabs.length) return false;
+  while (stash.names.length < stash.tabs.length) stash.names.push('');
+  stash.names[tab] = name.trim().slice(0, STASH_NAME_MAX);
+  return true;
 }

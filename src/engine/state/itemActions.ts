@@ -9,9 +9,12 @@ import {
   createInventory,
   moveItem,
   nextStashTabCost,
+  renameStashTab,
   sortInventory,
   STASH_TAB_SIZE,
   takeQuantity,
+  transferAll,
+  transferStack,
   type Inventory,
   type SortMode,
 } from '../items/inventory';
@@ -31,6 +34,9 @@ export type ItemLocation =
   | { where: 'equipment'; slot: EquipSlot };
 
 const fail = (reason: string): Result => ({ ok: false, reason });
+
+/** Most items held in overflow; past this the oldest is lost. */
+export const OVERFLOW_MAX = 40;
 
 /**
  * Item actions on a running game: everything the inventory screen can do.
@@ -62,14 +68,51 @@ export class ItemActions {
     } else delete this.s.player.equipment[loc.slot];
   }
 
-  /** Adds an item to the inventory. Returns false if some or all of it did not fit. */
+  /**
+   * Adds an item to the inventory. Whatever does not fit is set aside in
+   * overflow (claimable from the inventory screen) instead of being lost.
+   * Returns false if some or all of it did not fit.
+   */
   give(item: ItemInstance, announce = true): boolean {
+    const total = item.quantity;
+    const probe: ItemInstance = { ...item, sockets: [...item.sockets] };
     const left = addItem(this.inv, item);
-    if (announce && left < item.quantity) {
+    if (announce && left < total) {
       this.s.bus.emit('itemLooted', { itemId: item.uid, baseId: item.baseId, rarity: item.rarity });
     }
-    if (left > 0) this.s.bus.emit('toast', { kind: 'warning', text: 'Inventory full!' });
+    if (left > 0) {
+      this.setAside({ ...probe, uid: this.s.newUid(), quantity: left });
+      this.s.bus.emit('toast', { kind: 'warning', text: `Bags full: ${itemName(probe)} set aside` });
+    }
     return left === 0;
+  }
+
+  private setAside(item: ItemInstance): void {
+    const held = this.s.state.overflow;
+    held.push(item);
+    if (held.length > OVERFLOW_MAX) held.shift();
+  }
+
+  /** Moves set-aside items into the bags (all of them, or just the one at `index`). Returns how many stacks were claimed. */
+  claimOverflow(index?: number): Result {
+    const held = this.s.state.overflow;
+    if (held.length === 0) return fail('Nothing is set aside.');
+    const order = index === undefined ? held.map((_, i) => i) : [index];
+    const remaining: ItemInstance[] = [];
+    let claimed = 0;
+    for (const i of order) {
+      const item = held[i];
+      if (!item) continue;
+      const total = item.quantity;
+      const left = addItem(this.inv, item);
+      if (left < total) claimed++;
+      if (left > 0) remaining.push(left === total ? item : { ...item, uid: this.s.newUid(), quantity: left });
+    }
+    const keep = index === undefined ? [] : held.filter((_, i) => i !== index);
+    this.s.state.overflow = [...keep, ...remaining];
+    if (claimed === 0) return fail('Your bags are full.');
+    this.changed('overflow');
+    return { ok: true };
   }
 
   /** Adds dropped loot through the loot filter, with toasts for notable finds. */
@@ -225,6 +268,69 @@ export class ItemActions {
     this.s.state.stash.tabs.push(createInventory(STASH_TAB_SIZE));
     this.changed('stash');
     return { ok: true };
+  }
+
+  /** Sends the bag item to the stash (first tab with room, starting at `preferTab`) or pulls a stash item into the bags. */
+  quickTransfer(loc: ItemLocation, preferTab = 0): Result {
+    if (loc.where === 'equipment') return fail('Unequip it first.');
+    if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
+    const tabs = this.s.state.stash.tabs;
+    let moved = 0;
+    if (loc.where === 'stash') {
+      const from = tabs[loc.tab];
+      if (!from) return fail('Nothing there.');
+      moved = transferStack(from, loc.index, this.inv);
+      if (moved === 0) return fail(from.slots[loc.index] ? 'Your bags are full.' : 'Nothing there.');
+    } else {
+      if (!this.inv.slots[loc.index]) return fail('Nothing there.');
+      const order = [...tabs.keys()].sort((a, b) => Number(a !== preferTab) - Number(b !== preferTab) || a - b);
+      for (const t of order) {
+        moved = transferStack(this.inv, loc.index, tabs[t] as Inventory);
+        if (moved > 0) break;
+      }
+      if (moved === 0) return fail('The stash is full.');
+    }
+    this.changed('move');
+    return { ok: true };
+  }
+
+  /** Stashes everything in the bags that matches `pick` (default all), skipping nothing but what does not fit. */
+  depositAll(preferTab = 0, pick?: (item: ItemInstance) => boolean): Result & { moved?: number } {
+    if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
+    const tabs = this.s.state.stash.tabs;
+    const order = [...tabs.keys()].sort((a, b) => Number(a !== preferTab) - Number(b !== preferTab) || a - b);
+    let moved = 0;
+    for (const t of order) moved += transferAll(this.inv, tabs[t] as Inventory, pick);
+    if (moved === 0) return fail('Nothing to stash, or the stash is full.');
+    this.changed('move');
+    return { ok: true, moved };
+  }
+
+  /** Pulls everything from a stash tab into the bags, as far as it fits. */
+  withdrawTab(tab: number): Result {
+    if (!this.s.world.inTown()) return fail('The stash is kept in towns.');
+    const from = this.s.state.stash.tabs[tab];
+    if (!from) return fail('No such tab.');
+    if (transferAll(from, this.inv) === 0) return fail(from.slots.some(Boolean) ? 'Your bags are full.' : 'The tab is empty.');
+    this.changed('move');
+    return { ok: true };
+  }
+
+  renameTab(tab: number, name: string): Result {
+    if (!renameStashTab(this.s.state.stash, tab, name)) return fail('No such tab.');
+    this.changed('stash');
+    return { ok: true };
+  }
+
+  /** Salvages every piece of gear in the bags marked junk. */
+  salvageJunk(): Result {
+    const slots = this.inv.slots;
+    let count = 0;
+    for (let i = 0; i < slots.length; i++) {
+      const item = slots[i];
+      if (item?.junk && isGear(item) && this.salvage({ where: 'inventory', index: i }).ok) count++;
+    }
+    return count === 0 ? fail('No junk gear to salvage.') : { ok: true };
   }
 
   count(baseId: string): number {

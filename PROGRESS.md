@@ -111,7 +111,11 @@
 - **Inventory:**
   - 48-slot grid, stacks to 99, expandable to 96 with Traveler's Packs.
   - Sort by category, rarity, level or name (junk always last).
-- **Stash:** shared, with up to 6 tabs costing 1k to 100k gold.
+- **Stash:** shared, with up to 6 tabs costing 1k to 100k gold. Tabs can be renamed (14 characters), sorted on their own, and filled or emptied in bulk.
+- **Transfers:** shift-click or the "Send to stash / Take to bags" button moves an item across (merging stacks, spilling into the next tab with room); "Stash all", "Stash filtered" (the current category tab) and "Take all" move many at once. Town only. "Salvage junk gear" works anywhere.
+- **Overflow:** loot that does not fit in the bags is set aside (up to 40 entries, oldest dropped) instead of vanishing, and claimed from the Inventory screen. Save version 17 adds `overflow` and stash tab names (older saves load with defaults).
+- **Search:** one box on the Inventory screen dims every bag and stash item whose name does not match.
+- Sorting never loses an item: if a merge could not fit, the grid is left untouched.
 - **Upkeep:** durability (broken gear gives no stats) with a repair cost formula; salvage into essences, raw materials and socketed gems.
 - **Consumables outside combat:** potions, elixirs and food (timed buffs that last N battles), Tome of Insight, bags.
 - **Starting kits** per class, equipped automatically on a new game.
@@ -128,7 +132,7 @@
   - A shared nav bar on the Character and Inventory screens.
   - Developer panel item cheats: gear of any rarity, type and item level; any unique; gem, rune and consumable packs; loot table rolls; gear wear and repair.
 - `npm run sim:loot`: 100,000 gear drops per source tier (normal, elite, boss) × NG+ 0/1/5, printing rarity distributions.
-- 165 unit tests.
+- 165 unit tests (482 across the project after the inventory pass).
 
 ### Phase 4: combat core
 - **Combat engine** (`engine/combat/`, no DOM). A `Battle` holds the state; rules live in focused modules:

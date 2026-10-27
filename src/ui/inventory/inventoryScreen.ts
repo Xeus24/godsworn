@@ -1,5 +1,5 @@
 import { content } from '../../data';
-import { nextStashTabCost, type Inventory, type SortMode } from '../../engine/items/inventory';
+import { nextStashTabCost, stashTabName, STASH_NAME_MAX, type Inventory, type SortMode } from '../../engine/items/inventory';
 import { baseOf, isGear } from '../../engine/items/lookup';
 import { lastFilledSocket, unsocketCost } from '../../engine/items/sockets';
 import { appraiseLimit, bookSkill, studyTerms } from '../../engine/skills/general';
@@ -14,6 +14,7 @@ import { el, type Screen } from '../screen';
 import { itemTooltip } from '../items/itemTooltip';
 import { slotGlyphUrl } from '../art/slotGlyphs';
 import { slotLabel } from '../items/itemText';
+import { itemName } from '../../engine/items/naming';
 import { navBar, type Nav } from '../components/navBar';
 
 type Filter = 'all' | 'gear' | 'consumables' | 'materials' | 'socketables' | 'other';
@@ -58,6 +59,7 @@ export class InventoryScreen implements Screen {
   private filter: Filter = 'all';
   private sortMode: SortMode = 'category';
   private stashTab = 0;
+  private query = '';
   private selected: ItemLocation | undefined;
   private confirmDestroy = false;
   private message = '';
@@ -104,6 +106,7 @@ export class InventoryScreen implements Screen {
         const cat = baseOf(item).category;
         if (!FILTER_CATEGORIES[this.filter].includes(cat)) node.classList.add('dimmed');
       }
+      if (this.query && loc.where !== 'equipment' && !itemName(item).toLowerCase().includes(this.query)) node.classList.add('dimmed');
       const img = el('img', { class: 'pixel', src: itemIconUrl(item), alt: '', draggable: 'false' });
       node.append(img);
       if (item.quantity > 1) node.append(el('span', { class: 'qty' }, String(item.quantity)));
@@ -121,7 +124,12 @@ export class InventoryScreen implements Screen {
     } else if (placeholder) {
       node.append(el('span', { class: 'placeholder' }, ...(loc.where === 'equipment' ? [el('img', { class: 'slot-glyph', src: slotGlyphUrl(loc.slot), alt: '', draggable: 'false' })] : []), placeholder));
     }
-    node.addEventListener('click', () => {
+    node.addEventListener('click', (e) => {
+      if (e.shiftKey && item && loc.where !== 'equipment') {
+        hideTooltip();
+        this.selected = undefined;
+        return this.say(this.actions.quickTransfer(loc, this.stashTab));
+      }
       this.selected = item ? loc : undefined;
       this.confirmDestroy = false;
       this.message = '';
@@ -233,6 +241,62 @@ export class InventoryScreen implements Screen {
       el('div', { class: 'tabs' }, ...filters),
       this.grid(inv, (index) => ({ where: 'inventory', index })),
       el('div', { class: 'row' }, sortSelect, sortBtn, this.lootFilterControls()),
+      this.bagTools(),
+      this.overflowPanel(),
+    );
+  }
+
+  private button(label: string, run: () => void, title = ''): HTMLButtonElement {
+    const b = el('button', title ? { title } : {}, label);
+    b.addEventListener('click', run);
+    return b;
+  }
+
+  private searchBox(): HTMLElement {
+    const input = el('input', { type: 'search', placeholder: 'Search items...', 'aria-label': 'Search items', class: 'item-search' });
+    input.value = this.query;
+    input.addEventListener('input', () => {
+      this.query = input.value.trim().toLowerCase();
+      this.render();
+      const next = this.root?.querySelector<HTMLInputElement>('.item-search');
+      next?.focus();
+      next?.setSelectionRange(next.value.length, next.value.length);
+    });
+    return input;
+  }
+
+  private bagTools(): HTMLElement {
+    const inTown = this.session.world.inTown();
+    const stashAll = this.button('Stash all', () => this.say(this.actions.depositAll(this.stashTab)), 'Move everything in your bags to the stash (town only)');
+    const stashFilter = this.button('Stash filtered', () => {
+      const cats = this.filter === 'all' ? undefined : FILTER_CATEGORIES[this.filter];
+      this.say(this.actions.depositAll(this.stashTab, cats ? (item) => cats.includes(baseOf(item).category) : undefined));
+    }, 'Move the items shown by the current category tab to the stash (town only)');
+    stashAll.disabled = stashFilter.disabled = !inTown;
+    const junkGear = this.session.state.inventory.slots.some((x) => x?.junk && isGear(x));
+    const salvage = this.button('Salvage junk gear', () => this.say(this.actions.salvageJunk()));
+    salvage.disabled = !junkGear;
+    return el('div', { class: 'row bag-tools' }, this.searchBox(), stashAll, stashFilter, salvage);
+  }
+
+  /** Loot that did not fit in the bags. */
+  private overflowPanel(): HTMLElement {
+    const held = this.session.state.overflow;
+    if (held.length === 0) return el('div', {});
+    const rows = held.map((item, i) => {
+      const claim = this.button('Claim', () => this.say(this.actions.claimOverflow(i)));
+      const label = `${itemName(item)}${item.quantity > 1 ? ` x${item.quantity}` : ''}`;
+      const name = el('span', { class: 'overflow-name' }, label);
+      name.style.color = content.rarities.get(item.rarity).color;
+      attachTooltip(name, () => itemTooltip(item, this.session, false));
+      return el('div', { class: 'overflow-row' }, el('img', { class: 'pixel overflow-icon', src: itemIconUrl(item), alt: '' }), name, claim);
+    });
+    return el(
+      'div',
+      { class: 'overflow' },
+      el('div', { class: 'panel-head' }, el('h4', {}, `Set aside (${held.length})`), this.button('Claim all', () => this.say(this.actions.claimOverflow()))),
+      el('p', { class: 'dim small' }, 'These did not fit in your bags. Make room, then claim them.'),
+      ...rows,
     );
   }
 
@@ -262,7 +326,7 @@ export class InventoryScreen implements Screen {
     const stash = this.session.state.stash;
     this.stashTab = Math.min(this.stashTab, stash.tabs.length - 1);
     const tabs = stash.tabs.map((_, i) => {
-      const b = el('button', { class: `tab${this.stashTab === i ? ' active' : ''}` }, `Tab ${i + 1}`);
+      const b = el('button', { class: `tab${this.stashTab === i ? ' active' : ''}` }, stashTabName(stash, i));
       b.addEventListener('click', () => {
         this.stashTab = i;
         this.render();
@@ -274,13 +338,22 @@ export class InventoryScreen implements Screen {
     buy.disabled = cost === undefined || this.session.state.gold < cost;
     buy.addEventListener('click', () => this.say(this.actions.buyStashTab()));
     const tab = stash.tabs[this.stashTab];
+    const used = tab ? tab.slots.filter(Boolean).length : 0;
+    const inTown = this.session.world.inTown();
+    const name = el('input', { type: 'text', maxlength: String(STASH_NAME_MAX), placeholder: `Tab ${this.stashTab + 1}`, 'aria-label': 'Tab name', class: 'tab-name' });
+    name.value = stash.names[this.stashTab] ?? '';
+    name.addEventListener('change', () => this.say(this.actions.renameTab(this.stashTab, name.value)));
+    const sortBtn = this.button('Sort tab', () => this.actions.sort(this.sortMode, this.stashTab));
+    const takeAll = this.button('Take all', () => this.say(this.actions.withdrawTab(this.stashTab)), 'Move everything in this tab to your bags');
+    takeAll.disabled = !inTown;
     return el(
       'section',
       { class: 'panel' },
-      el('h3', {}, 'Stash'),
+      el('div', { class: 'panel-head' }, el('h3', {}, 'Stash'), el('span', { class: 'dim small' }, `${used}/${tab?.slots.length ?? 0}`)),
       el('div', { class: 'tabs' }, ...tabs, buy),
+      el('div', { class: 'row' }, name, sortBtn, takeAll),
       tab ? this.grid(tab, (index) => ({ where: 'stash', tab: this.stashTab, index })) : el('div', {}),
-      el('p', { class: 'dim small' }, 'Shared by all your towns. Drag items between your bags and the stash.'),
+      el('p', { class: 'dim small' }, inTown ? 'Shared by all your towns. Drag items, or shift-click to send them across.' : 'The stash can only be used in towns.'),
     );
   }
 
@@ -290,7 +363,7 @@ export class InventoryScreen implements Screen {
     const panel = el('section', { class: 'panel action-panel' });
     if (this.message) panel.append(el('div', { class: 'field-error' }, this.message));
     if (!loc || !item) {
-      panel.append(el('p', { class: 'dim small' }, 'Click an item to see what you can do with it. Right-click for the quick action. Drag to move, equip, or socket gems and runes.'));
+      panel.append(el('p', { class: 'dim small' }, 'Click an item to see what you can do with it. Right-click for the quick action, shift-click to send it to or from the stash. Drag to move, equip, or socket gems and runes.'));
       return panel;
     }
     panel.append(itemTooltip(item, this.session, loc.where === 'equipment'));
@@ -302,6 +375,8 @@ export class InventoryScreen implements Screen {
       buttons.push(b);
     };
     const gear = isGear(item);
+    if (loc.where === 'inventory') btn('Send to stash', () => this.say(this.actions.quickTransfer(loc, this.stashTab)), !this.session.world.inTown());
+    if (loc.where === 'stash') btn('Take to bags', () => this.say(this.actions.quickTransfer(loc)), !this.session.world.inTown());
     if (loc.where === 'equipment') btn('Unequip', () => this.say(this.actions.unequip(loc.slot)));
     if (loc.where === 'inventory' && gear) btn('Equip', () => this.say(this.actions.equip(loc.index)));
     if (loc.where === 'inventory' && this.actions.isUsable(loc.index)) btn('Use', () => this.say(this.actions.use(loc.index)));
