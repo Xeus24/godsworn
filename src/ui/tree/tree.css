@@ -168,3 +168,8 @@
   min-width: 32px;
   padding: 2px 8px;
 }
+
+.tree-svg.far .tree-node-label,
+.tree-svg.far .tree-node-rank {
+  display: none;
+}

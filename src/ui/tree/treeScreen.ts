@@ -37,6 +37,27 @@ function svg<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string,
 /** Node radius / half-size per kind. */
 const SIZE: Record<TreeNodeDef['kind'], number> = { active: 24, modifier: 15, minor: 13, notable: 19, choice: 18, keystone: 25, capstone: 28 };
 
+/** Below this zoom the node names are hidden: they would overlap. */
+const FAR_SCALE = 0.5;
+
+/** A node name as one or two short lines, so neighbouring labels never run into each other. */
+function nameLines(name: string): string[] {
+  const clip = (t: string): string => (t.length > 13 ? `${t.slice(0, 12)}…` : t);
+  if (name.length <= 13) return [name];
+  const words = name.split(' ');
+  if (words.length < 2) return [clip(name)];
+  let best = 1;
+  let bestDiff = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const diff = Math.abs(words.slice(0, i).join(' ').length - words.slice(i).join(' ').length);
+    if (diff < bestDiff) {
+      best = i;
+      bestDiff = diff;
+    }
+  }
+  return [clip(words.slice(0, best).join(' ')), clip(words.slice(best).join(' '))];
+}
+
 export class TreeScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
@@ -48,8 +69,8 @@ export class TreeScreen implements Screen {
   private view = { x: 10, y: 10, scale: 0.9 };
   /** True once the tree has been fitted to its stage; cleared by the Fit view button. */
   private fitted = false;
-  /** Fit button: show every branch at once (small), rather than the readable default. */
-  private fitAll = false;
+  /** Show every branch at once (the default on open); Reset view turns it off for the zoomed-in, readable view. */
+  private fitAll = true;
   private pickingSlot: number | undefined;
   /** Specialization branch shown before one is chosen. */
   private previewSpec: string | undefined;
@@ -170,15 +191,17 @@ export class TreeScreen implements Screen {
     const byId = new Map(tree.nodes.map((n) => [n.id, n]));
     const branchColor = new Map(tree.branches.map((b) => [b.id, b.color]));
 
-    // Branch headers.
+    // Branch headers (kept readable when zoomed out).
+    const titles: { text: SVGElement; icon: SVGElement; x: number }[] = [];
     tree.branches.forEach((b, i) => {
       const x = i * (4 * 110 + 80) + 60 + 165;
       const t = svg('text', { x, y: 24, 'text-anchor': 'middle', class: 'tree-branch-title', fill: b.color });
       t.textContent = b.spec && !chosenSpec(this.session.player, this.classId) ? `${b.name} (preview)` : `${b.name} (${branchPoints(build, tree, b.id)})`;
       layer.append(t);
-      const icon = svg('image', { href: uiGlyph(branchGlyph(b.name, b.description)).toDataURL(), x: x - (t.textContent?.length ?? 0) * 4.8 - 32, y: 6, width: 24, height: 24, 'pointer-events': 'none' });
+      const icon = svg('image', { href: uiGlyph(branchGlyph(b.name, b.description)).toDataURL(), 'pointer-events': 'none' });
       icon.style.imageRendering = 'pixelated';
       layer.append(icon);
+      titles.push({ text: t, icon, x });
     });
 
     // Edges first.
@@ -201,7 +224,11 @@ export class TreeScreen implements Screen {
       if (mark) g.append(mark);
       const rank = rankOf(build, node.id);
       const label = svg('text', { y: SIZE[node.kind] + 17, 'text-anchor': 'middle', class: 'tree-node-label' });
-      label.textContent = node.name.length > 15 ? `${node.name.slice(0, 14)}…` : node.name;
+      nameLines(node.name).forEach((line, i) => {
+        const t = svg('tspan', { x: 0, dy: i === 0 ? 0 : 14 });
+        t.textContent = line;
+        label.append(t);
+      });
       g.append(label);
       if (node.maxRank > 1 || node.kind === 'active') {
         const rt = svg('text', { y: 5, 'text-anchor': 'middle', class: 'tree-node-rank' });
@@ -233,6 +260,24 @@ export class TreeScreen implements Screen {
       layer.append(g);
     }
 
+    // Zoomed far out, node names would pile up, so they hide (hover for the tooltip); branch titles grow to stay readable.
+    const applyView = (): void => {
+      const { x, y, scale } = this.view;
+      layer.setAttribute('transform', `translate(${x} ${y}) scale(${scale})`);
+      root.classList.toggle('far', scale < FAR_SCALE);
+      const titleSize = Math.min(64, Math.max(18, 14 / scale));
+      for (const { text, icon, x: tx } of titles) {
+        text.style.fontSize = `${titleSize}px`;
+        const half = ((text.textContent?.length ?? 0) * titleSize * 0.27);
+        const side = titleSize * 1.35;
+        icon.setAttribute('x', String(tx - half - side - 8));
+        icon.setAttribute('y', String(24 - titleSize * 0.95));
+        icon.setAttribute('width', String(side));
+        icon.setAttribute('height', String(side));
+      }
+    };
+    applyView();
+
     // Pan with drag, zoom with the wheel.
     let drag: { x: number; y: number; vx: number; vy: number } | undefined;
     root.addEventListener('pointerdown', (e) => {
@@ -244,7 +289,7 @@ export class TreeScreen implements Screen {
       if (!drag) return;
       this.view.x = drag.vx + (e.clientX - drag.x);
       this.view.y = drag.vy + (e.clientY - drag.y);
-      layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
+      applyView();
     });
     root.addEventListener('pointerup', () => (drag = undefined));
     root.addEventListener(
@@ -254,12 +299,12 @@ export class TreeScreen implements Screen {
         const rect = root.getBoundingClientRect();
         const px = e.clientX - rect.left;
         const py = e.clientY - rect.top;
-        const next = Math.min(2.2, Math.max(0.35, this.view.scale * (e.deltaY < 0 ? 1.1 : 0.9)));
+        const next = Math.min(2.2, Math.max(0.12, this.view.scale * (e.deltaY < 0 ? 1.1 : 0.9)));
         // Zoom around the cursor.
         this.view.x = px - ((px - this.view.x) * next) / this.view.scale;
         this.view.y = py - ((py - this.view.y) * next) / this.view.scale;
         this.view.scale = next;
-        layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
+        applyView();
       },
       { passive: false },
     );
@@ -274,22 +319,22 @@ export class TreeScreen implements Screen {
         const maxX = Math.max(...xs) + 60;
         const minY = -10;
         const maxY = Math.max(...ys) + 50;
-        const scale = Math.min(1.1, Math.max(this.fitAll ? 0.25 : 0.75, Math.min(rect.width / (maxX - minX), rect.height / (maxY - minY))));
+        const scale = Math.min(1.1, Math.max(this.fitAll ? 0.12 : 0.75, Math.min(rect.width / (maxX - minX), rect.height / (maxY - minY))));
         this.view = { scale, x: Math.max(0, (rect.width - (maxX - minX) * scale) / 2) - minX * scale, y: Math.max(0, (rect.height - (maxY - minY) * scale) / 2) - minY * scale };
         this.fitted = true;
-        layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
+        applyView();
       });
     }
     // Zoom buttons (the wheel does the same around the cursor); Fit re-fits the whole tree.
     const zoomBy = (factor: number): void => {
       const rect = root.getBoundingClientRect();
-      const next = Math.min(2.2, Math.max(0.35, this.view.scale * factor));
+      const next = Math.min(2.2, Math.max(0.12, this.view.scale * factor));
       const px = rect.width / 2;
       const py = rect.height / 2;
       this.view.x = px - ((px - this.view.x) * next) / this.view.scale;
       this.view.y = py - ((py - this.view.y) * next) / this.view.scale;
       this.view.scale = next;
-      layer.setAttribute('transform', `translate(${this.view.x} ${this.view.y}) scale(${this.view.scale})`);
+      applyView();
     };
     const zoomButton = (label: string, title: string, onClick: () => void): HTMLElement => {
       const b = el('button', { title, 'aria-label': title }, label);
@@ -325,6 +370,7 @@ export class TreeScreen implements Screen {
       const b = el('button', { class: `tab${id === this.classId ? ' active' : ''}` }, name);
       b.addEventListener('click', () => {
         this.classId = id;
+        this.fitAll = true;
         this.fitted = false;
         this.selected = undefined;
         this.render();

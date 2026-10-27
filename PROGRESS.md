@@ -662,7 +662,7 @@
 
 ### Graphics pass 10
 - Bestiary: unmet creatures show a glowing outline and a "?" instead of a flat blob, the first met creature opens by default, and the preview is larger with a gold or blue frame for elites and bosses.
-- Skill tree: node labels and rank numbers are larger and brighter, and unlit edges are easier to see.
+- Skill tree: opens fitted to show every branch; node names wrap to two short lines so none overlap, and hide when zoomed far out (hover for the tooltip) while branch titles grow to stay readable. Node labels and rank numbers are larger and brighter, and unlit edges are easier to see. Reset view gives the zoomed-in readable view.
 
 ## Known bugs
 - None known.
