@@ -8,7 +8,27 @@ import type { Settings } from '../settings';
  */
 
 /** Every mood the game plays music for. */
-export type MusicMood = 'title' | 'town' | 'world' | 'forest' | 'desert' | 'snow' | 'coast' | 'volcanic' | 'citadel' | 'cave' | 'dungeon' | 'depths' | 'battle' | 'boss';
+export type MusicMood =
+  | 'title'
+  | 'town'
+  | 'town-brightwater'
+  | 'town-thornwick'
+  | 'town-sandhaven'
+  | 'town-frosthold'
+  | 'town-saltmere'
+  | 'world'
+  | 'forest'
+  | 'desert'
+  | 'snow'
+  | 'coast'
+  | 'volcanic'
+  | 'citadel'
+  | 'cave'
+  | 'dungeon'
+  | 'depths'
+  | 'lair'
+  | 'battle'
+  | 'boss';
 
 export interface MusicTrack {
   title: string;
@@ -48,6 +68,11 @@ export const MUSIC_TRACKS: Record<string, MusicTrack> = {
 export const MUSIC_PLAYLISTS: Record<MusicMood, string[]> = {
   title: ['ancient-evil-awakens', 'a-place-i-call-home'],
   town: ['where-time-stands-still', 'home-town', 'bazaar'],
+  'town-brightwater': ['home-town', 'where-time-stands-still'],
+  'town-thornwick': ['peaceful-days', 'bazaar'],
+  'town-sandhaven': ['bazaar', 'sand-castles'],
+  'town-frosthold': ['childhood-friends', 'innocence'],
+  'town-saltmere': ['sunshine-coast', 'tropical-island'],
   world: ['grasslands', 'prairie-nights'],
   forest: ['sneaking-around', 'peaceful-days'],
   desert: ['military-base', 'sand-castles'],
@@ -56,8 +81,9 @@ export const MUSIC_PLAYLISTS: Record<MusicMood, string[]> = {
   volcanic: ['witchs-lair', 'apocalypse'],
   citadel: ['apocalypse', 'ancient-evil-awakens'],
   cave: ['thael-mines', 'whispers-from-beyond'],
-  dungeon: ['catacombs', 'whispers-from-beyond', 'thael-mines'],
-  depths: ['witchs-lair', 'apocalypse', 'catacombs'],
+  dungeon: ['thael-mines', 'whispers-from-beyond', 'catacombs'],
+  depths: ['catacombs', 'whispers-from-beyond', 'witchs-lair'],
+  lair: ['apocalypse', 'witchs-lair'],
   battle: ['preparing-for-battle', 'army-approaching'],
   boss: ['encounter-with-the-witches', 'apocalypse'],
 };
@@ -68,6 +94,11 @@ export const MUSIC_MOODS = Object.keys(MUSIC_PLAYLISTS) as MusicMood[];
 export const SYNTH_MOOD: Record<MusicMood, 'title' | 'town' | 'world' | 'dungeon' | 'battle' | 'boss'> = {
   title: 'title',
   town: 'town',
+  'town-brightwater': 'town',
+  'town-thornwick': 'town',
+  'town-sandhaven': 'town',
+  'town-frosthold': 'town',
+  'town-saltmere': 'town',
   world: 'world',
   forest: 'world',
   desert: 'world',
@@ -78,16 +109,35 @@ export const SYNTH_MOOD: Record<MusicMood, 'title' | 'town' | 'world' | 'dungeon
   cave: 'dungeon',
   dungeon: 'dungeon',
   depths: 'dungeon',
+  lair: 'boss',
   battle: 'battle',
   boss: 'boss',
 };
 
-/** Dungeons at or above this level play the darker "depths" music. */
+/** Dungeons at or above this level play the darker "depths" music throughout. */
 export const DEPTHS_LEVEL = 31;
 
-/** The mood for a map: its biome in the open, or the dungeon's level in a dungeon. */
-export function moodForMap(biome: string, dungeonLevel?: number): MusicMood {
-  if (dungeonLevel !== undefined) return dungeonLevel >= DEPTHS_LEVEL ? 'depths' : 'dungeon';
+/** Where the player stands in a dungeon: its level, room count, map width and the player's column. */
+export interface DungeonSpot {
+  level: number;
+  rooms: number;
+  width: number;
+  x: number;
+}
+
+/** The room (0-based) a column falls in; rooms are laid out west to east, the last holding the boss. */
+export function dungeonRoom(spot: DungeonSpot): number {
+  const slice = Math.max(1, Math.floor((spot.width - 4) / spot.rooms));
+  return Math.min(spot.rooms - 1, Math.max(0, Math.floor((spot.x - 2) / slice)));
+}
+
+/** The mood for a map: its biome in the open, or how deep you are in a dungeon (the last room is the boss's lair). */
+export function moodForMap(biome: string, dungeon?: DungeonSpot): MusicMood {
+  if (dungeon) {
+    const room = dungeonRoom(dungeon);
+    if (room >= dungeon.rooms - 1) return 'lair';
+    return dungeon.level >= DEPTHS_LEVEL || room >= (dungeon.rooms - 1) / 2 ? 'depths' : 'dungeon';
+  }
   switch (biome) {
     case 'forest':
     case 'desert':
@@ -102,14 +152,53 @@ export function moodForMap(biome: string, dungeonLevel?: number): MusicMood {
   }
 }
 
+/** The music for a town: its own playlist if it has one, else the shared town music. */
+export function moodForTown(id: string): MusicMood {
+  const mood = `town-${id}`;
+  return mood in MUSIC_PLAYLISTS ? (mood as MusicMood) : 'town';
+}
+
 /** Moods that start from the top rather than where you left off. */
 export const RESTART_MOODS: readonly MusicMood[] = ['battle', 'boss'];
 
-/** Moods that play the cave and dungeon ambience layer under the recorded music. */
-export const AMBIENT_MOODS: readonly MusicMood[] = ['cave', 'dungeon', 'depths'];
+/** The ambience loops, relative to the site root (`public/ambience/`). */
+export type AmbienceId = 'dungeon' | 'forest' | 'wind' | 'rain' | 'birds' | 'waves';
 
-/** The ambience loop, relative to the site root. */
-export const AMBIENCE_FILE = 'ambience/dungeon.ogg';
+export const AMBIENCE_IDS: readonly AmbienceId[] = ['dungeon', 'forest', 'wind', 'rain', 'birds', 'waves'];
+
+/** How loud each ambience loop plays under the music (0..1). */
+export const AMBIENCE_GAIN: Record<AmbienceId, number> = { dungeon: 0.5, forest: 0.5, wind: 0.4, rain: 0.45, birds: 0.45, waves: 0.5 };
+
+/** The ambience under each mood's music. */
+const MOOD_AMBIENCE: Partial<Record<MusicMood, AmbienceId>> = {
+  world: 'birds',
+  forest: 'forest',
+  desert: 'wind',
+  snow: 'wind',
+  coast: 'waves',
+  volcanic: 'dungeon',
+  citadel: 'dungeon',
+  cave: 'dungeon',
+  dungeon: 'dungeon',
+  depths: 'dungeon',
+  lair: 'dungeon',
+};
+
+/** The ambience a weather adds in the open. */
+const WEATHER_AMBIENCE: Record<string, AmbienceId> = { rain: 'rain', storm: 'rain', sandstorm: 'wind', snow: 'wind' };
+
+/** Which ambience loops play for a mood and (in the open) the weather. */
+export function ambienceFor(mood: MusicMood | 'none', weather?: string): AmbienceId[] {
+  if (mood === 'none') return [];
+  const out: AmbienceId[] = [];
+  const base = MOOD_AMBIENCE[mood];
+  if (base) out.push(base);
+  const w = weather ? WEATHER_AMBIENCE[weather] : undefined;
+  if (w && !out.includes(w)) out.push(w);
+  return out;
+}
+
+export const ambienceUrl = (id: AmbienceId, base = '/'): string => `${base}ambience/${id}.ogg`;
 
 /** Who made the composed music, shown under the setting. */
 export const MUSIC_CREDIT = 'Composed music: Juhani Junkala, CC0 (public domain), via OpenGameArt.';

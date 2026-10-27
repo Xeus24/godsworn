@@ -1,6 +1,6 @@
 import { onSettingsChange, settings } from '../settings';
-import { AMBIENCE_FILE, AMBIENT_MOODS, MUSIC_CROSSFADE, MUSIC_PLAYLISTS, MUSIC_TRACKS, RESTART_MOODS, SYNTH_MOOD, musicUrl, nextTrack, wantsComposed, type MusicMood, type MusicTrack } from './musicFiles';
-import { SFX_ALL, SFX_FILES, SFX_GAIN, sfxUrl, wantsRecorded, type SfxName } from './sfxFiles';
+import { AMBIENCE_GAIN, MUSIC_CROSSFADE, MUSIC_PLAYLISTS, MUSIC_TRACKS, RESTART_MOODS, SYNTH_MOOD, ambienceFor, ambienceUrl, musicUrl, nextTrack, wantsComposed, type AmbienceId, type MusicMood, type MusicTrack } from './musicFiles';
+import { SFX_ALL, SFX_FILES, SFX_GAIN, STEP_CLIPS, sfxUrl, wantsRecorded, type SfxName, type StepSurface } from './sfxFiles';
 
 /**
  * Sound, made on the fly with WebAudio. Sound effects are short synthesized
@@ -70,8 +70,12 @@ class AudioEngine {
   /** Where each calm mood was left, so coming back resumes the same track. */
   private readonly resume = new Map<MusicMood, { slug: string; t: number }>();
   private previewing = false;
-  /** The cave and dungeon ambience layer, while it plays. */
-  private ambience: { el: HTMLAudioElement; gain: GainNode } | undefined;
+  /** The ambience loops now playing (cave, forest, wind, rain...). */
+  private readonly ambience = new Map<AmbienceId, { el: HTMLAudioElement; gain: GainNode }>();
+  /** The weather in the open, for the ambience it adds. */
+  private weather: string | undefined;
+  /** Where effects are sent while one is being panned. */
+  private sfxOut: AudioNode | undefined;
   private readonly buffers = new Map<string, AudioBuffer>();
   private loadingSfx = false;
   private readonly unlockers: (() => void)[] = [];
@@ -152,7 +156,7 @@ class AudioEngine {
     g.gain.exponentialRampToValueAtTime(gain, start + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
     o.connect(g);
-    g.connect(out ?? (this.sfxBus as GainNode));
+    g.connect(out ?? this.sfxOut ?? (this.sfxBus as GainNode));
     o.start(start);
     o.stop(start + dur + 0.05);
   }
@@ -170,7 +174,7 @@ class AudioEngine {
     g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
     src.connect(f);
     f.connect(g);
-    g.connect(this.sfxBus as GainNode);
+    g.connect(this.sfxOut ?? (this.sfxBus as GainNode));
     src.start(start);
     src.stop(start + dur + 0.05);
   }
@@ -203,16 +207,50 @@ class AudioEngine {
     const g = ctx.createGain();
     g.gain.value = SFX_GAIN[name] ?? 1;
     src.connect(g);
-    g.connect(this.sfxBus as GainNode);
+    g.connect(this.sfxOut ?? (this.sfxBus as GainNode));
     src.start();
     return true;
   }
 
-  play(name: Sfx): void {
+  /** One footstep on a surface (recorded effects only; there is no synthesized step). */
+  step(surface: StepSurface): void {
+    const ctx = this.ctx;
+    if (!ctx || settings().muted || !wantsRecorded(settings())) return;
+    const clips = STEP_CLIPS[surface].filter((c) => this.buffers.has(c));
+    const buf = this.buffers.get(clips[Math.floor(Math.random() * clips.length)] ?? '');
+    if (!buf) return;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.playbackRate.value = 0.9 + Math.random() * 0.2;
+    const g = ctx.createGain();
+    g.gain.value = 0.35;
+    src.connect(g);
+    g.connect(this.sfxBus as GainNode);
+    src.start();
+  }
+
+  /** Plays an effect; `pan` (-1 left to 1 right) places it in the stereo field, as in a battle. */
+  play(name: Sfx, pan = 0): void {
     const ctx = this.ctx;
     // The battle music gives way to the end-of-battle sting; the next screen starts its own.
     if (name === 'victory' || name === 'defeat') this.setTrack('none');
     if (!ctx || settings().muted) return;
+    let panner: StereoPannerNode | undefined;
+    if (pan !== 0 && ctx.createStereoPanner) {
+      panner = ctx.createStereoPanner();
+      panner.pan.value = Math.max(-1, Math.min(1, pan));
+      panner.connect(this.sfxBus as GainNode);
+      this.sfxOut = panner;
+    }
+    try {
+      this.playNow(name);
+    } finally {
+      this.sfxOut = undefined;
+    }
+  }
+
+  private playNow(name: Sfx): void {
+    const ctx = this.ctx as AudioContext;
     if (this.playRecorded(name)) return;
     const t = ctx.currentTime;
     const arp = (notes: number[], step: number, type: OscillatorType, gain: number): void => notes.forEach((n, i) => this.tone(hz(n), t + i * step, step * 2.5, type, gain));
@@ -386,37 +424,46 @@ class AudioEngine {
     }, secs * 1000 + 100);
   }
 
-  /** Runs the cave and dungeon ambience under the recorded music, and stops it elsewhere. */
+  /** Tells the audio the weather in the open (or none, in a dungeon or town), for the ambience it adds. */
+  setWeather(weather: string | undefined): void {
+    if (weather === this.weather) return;
+    this.weather = weather;
+    this.syncAmbience();
+  }
+
+  /** Runs the ambience loops under the recorded music (by mood and weather), and stops the rest. */
   private syncAmbience(): void {
     const ctx = this.ctx;
-    const want = this.composed() && this.track !== 'none' && AMBIENT_MOODS.includes(this.track);
-    if (!want) {
-      const a = this.ambience;
-      this.ambience = undefined;
-      if (a) this.release(a, FADE);
-      return;
+    const want = new Set<AmbienceId>(this.composed() ? ambienceFor(this.track, this.weather) : []);
+    for (const [id, a] of this.ambience) {
+      if (want.has(id)) continue;
+      this.ambience.delete(id);
+      this.release(a, FADE);
     }
-    if (this.ambience || !ctx || !this.music) return;
-    const el = new Audio(`${BASE}${AMBIENCE_FILE}`);
-    el.loop = true;
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + MUSIC_CROSSFADE);
-    try {
-      ctx.createMediaElementSource(el).connect(gain);
-    } catch {
-      return;
+    if (!ctx || !this.music) return;
+    for (const id of want) {
+      if (this.ambience.has(id)) continue;
+      const el = new Audio(ambienceUrl(id, BASE));
+      el.loop = true;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(AMBIENCE_GAIN[id], ctx.currentTime + MUSIC_CROSSFADE);
+      try {
+        ctx.createMediaElementSource(el).connect(gain);
+      } catch {
+        continue;
+      }
+      gain.connect(this.music);
+      const a = { el, gain };
+      this.ambience.set(id, a);
+      const drop = (): void => {
+        if (this.ambience.get(id) !== a) return;
+        this.ambience.delete(id);
+        this.release(a, 0.1);
+      };
+      el.addEventListener('error', drop);
+      el.play().catch(drop);
     }
-    gain.connect(this.music);
-    const a = { el, gain };
-    this.ambience = a;
-    const drop = (): void => {
-      if (this.ambience !== a) return;
-      this.ambience = undefined;
-      this.release(a, 0.1);
-    };
-    el.addEventListener('error', drop);
-    el.play().catch(drop);
   }
 
   /** Schedules music a little ahead of time, bar by bar. */

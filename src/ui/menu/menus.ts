@@ -4,7 +4,7 @@ import { el, type Screen } from '../screen';
 import { audio } from '../audio/audio';
 import { MUSIC_CREDIT } from '../audio/musicFiles';
 import { SFX_CREDIT } from '../audio/sfxFiles';
-import { settings, updateSettings, type Settings } from '../settings';
+import { DEFAULT_SETTINGS, settings, updateSettings, type Settings } from '../settings';
 
 const playTime = (ms: number): string => {
   const m = Math.floor(ms / 60000);
@@ -116,6 +116,20 @@ export class SettingsOverlay extends Overlay {
       }),
       ...(s.sfxSource === 'recorded' ? [el('div', { class: 'dim small' }, SFX_CREDIT)] : []),
       check('Mute everything', 'muted'),
+      el(
+        'div',
+        { class: 'setting-row' },
+        button(s.musicSource === 'composed' && s.sfxSource === 'recorded' ? 'Use synthesized sound' : 'Use all human-made audio', () => {
+          const human = !(s.musicSource === 'composed' && s.sfxSource === 'recorded');
+          updateSettings({ musicSource: human ? 'composed' : 'synth', sfxSource: human ? 'recorded' : 'synth' });
+          this.render();
+        }),
+        button('Reset audio settings', () => {
+          const { masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted } = DEFAULT_SETTINGS;
+          updateSettings({ masterVolume, musicVolume, sfxVolume, musicSource, sfxSource, muted });
+          this.render();
+        }),
+      ),
       el('h3', {}, 'Battle'),
       select<number>('Battle speed', [[1, '1×'], [2, '2×'], [4, '4×']], s.battleSpeed, (v) => updateSettings({ battleSpeed: v as 1 | 2 | 4 })),
       check('Start battles on auto-battle', 'autoBattle'),

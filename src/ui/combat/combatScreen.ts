@@ -485,11 +485,13 @@ export class CombatScreen implements Screen {
   /** The sound of a battle event. */
   private sound(e: BattleEvent): void {
     const a = audio();
-    if (e.type === 'damage' && !e.dot) a.play(e.crit ? 'crit' : 'hit');
-    else if (e.type === 'heal') a.play('heal');
-    else if (e.type === 'miss') a.play('miss');
-    else if (e.type === 'death') a.play('death');
-    else if (e.type === 'break') a.play('break');
+    // Effects sound from where they happen: the one hit, healed, missed or killed.
+    const at = (id: string): number => this.scene.panOf(id);
+    if (e.type === 'damage' && !e.dot) a.play(e.crit ? 'crit' : 'hit', at(e.targetId));
+    else if (e.type === 'heal') a.play('heal', at(e.targetId));
+    else if (e.type === 'miss') a.play('miss', at(e.targetId));
+    else if (e.type === 'death') a.play('death', at(e.targetId));
+    else if (e.type === 'break') a.play('break', at(e.targetId));
     else if (e.type === 'boss') a.play('boss');
     else if (e.type === 'end') a.play(e.outcome === 'victory' ? 'victory' : 'defeat');
   }

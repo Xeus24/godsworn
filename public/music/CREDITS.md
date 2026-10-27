@@ -6,7 +6,7 @@ tracks are by **Juhani Junkala** (https://juhanijunkala.com/), released under
 and were published on OpenGameArt by SubspaceAudio. No attribution is
 required; it is given here as thanks.
 
-Each mood (title, town, and one for each region and dungeon depth) plays a short playlist of
+Each mood (title, each town, each region, three depths of dungeon and the boss's lair) plays a short playlist of
 these tracks, crossfading from one to the next; some tracks serve more than one mood.
 
 | File | Track | Pack |
@@ -42,11 +42,18 @@ Pack pages:
 - JRPG Music Pack #4 [Calm]: https://opengameart.org/content/jrpg-pack-4-calm
 - JRPG Music Pack #5 [Action]: https://opengameart.org/content/jrpg-pack-5-action
 
-The files are the originals re-encoded to smaller Ogg Vorbis (quality 2, about 96 kbps)
+The files are the originals re-encoded to smaller Ogg Vorbis (quality 1, about 80 kbps)
 and renamed; the music itself is unchanged.
 
 ## Ambience
 
-`../ambience/dungeon.ogg` is "Loopable Dungeon Ambience" (`dungeon_ambient_1.ogg`) by JaggedStone,
-CC0, from https://opengameart.org/content/loopable-dungeon-ambience. It plays quietly under the
-recorded music in caves and dungeons. It is the original file, unmodified.
+Quiet loops under the recorded music (`../ambience/`), re-encoded to small mono Ogg Vorbis; all CC0.
+
+| File | Used for | Source |
+| --- | --- | --- |
+| `dungeon.ogg` | caves, dungeons, the Rift and the Citadel | "Loopable Dungeon Ambience" by JaggedStone, https://opengameart.org/content/loopable-dungeon-ambience |
+| `forest.ogg` | the Whisperwood | "Forest Ambience" by TinyWorlds, https://opengameart.org/content/forest-ambience |
+| `birds.ogg` | the meadows | "Birds and Wind - Ambient" by Spring Spring, https://opengameart.org/content/birds-and-wind-ambient-birds-wind-and-synth |
+| `waves.ogg` | the coast (four wave clips joined) | "Beach Ocean Waves" by jasinski, via qubodup, https://opengameart.org/content/beach-ocean-waves |
+| `wind.ogg` | desert and snow, and sandstorm and snow weather | "wind whoosh loop" by SketchMan3, https://opengameart.org/content/wind-whoosh-loop |
+| `rain.ogg` | rain and thunderstorm weather | "Rain (loopable)" by Ylmir, https://opengameart.org/content/rain-loopable |

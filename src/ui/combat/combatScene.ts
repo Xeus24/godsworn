@@ -324,6 +324,12 @@ export class CombatScene {
 
   // ---------------------------------------------------------- layout
 
+  /** Where a combatant sits across the scene, -1 (far left) to 1 (far right): sound effects pan to it. */
+  panOf(id: string): number {
+    const p = this.positions().get(id);
+    return p ? Math.max(-0.8, Math.min(0.8, ((p.x / SCENE_W) - 0.5) * 1.6)) : 0;
+  }
+
   private positions(): Map<string, { x: number; y: number }> {
     const out = new Map<string, { x: number; y: number }>();
     const place = (side: 'party' | 'enemy', row: 'front' | 'back', x: number): void => {

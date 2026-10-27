@@ -7,6 +7,9 @@ import type { StepResult } from '../../engine/state/worldActions';
 import type { MapEntity, TileMap } from '../../engine/world/types';
 import { entityActive, explored, isDungeon, lineOfSight, runesDone, SIGHT, tileAt, usedKey } from '../../engine/world/world';
 import { portraitCanvas } from '../art/portraits';
+import { audio } from '../audio/audio';
+import { syncAreaAudio } from '../audio/areaAudio';
+import { stepSurface } from '../audio/sfxFiles';
 import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
@@ -133,7 +136,14 @@ export class WorldScreen implements Screen {
   }
 
   private step(dx: number, dy: number): void {
-    this.handle(this.session.world.step(dx, dy));
+    const r = this.session.world.step(dx, dy);
+    this.handle(r);
+    if (r.kind === 'moved' || r.kind === 'map') syncAreaAudio(this.session);
+    if (r.kind === 'moved') {
+      const { x, y } = this.session.state.world.position;
+      const map = this.session.world.map;
+      audio().step(stepSurface(map.biome, tileAt(map, x, y)));
+    }
   }
 
   private handle(r: StepResult): void {

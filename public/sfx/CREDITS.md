@@ -6,6 +6,7 @@ is required, it is given here as thanks.
 
 - Kenney (https://kenney.nl): [RPG Audio](https://kenney.nl/assets/rpg-audio), [Impact Sounds](https://kenney.nl/assets/impact-sounds), [Interface Sounds](https://kenney.nl/assets/interface-sounds) and [Digital Audio](https://kenney.nl/assets/digital-audio).
 - Spring Spring: [Just a random fanfare](https://opengameart.org/content/just-a-random-fanfare).
+- Kistol: [Game Over II](https://opengameart.org/content/game-over-ii).
 
 | File | Source |
 | --- | --- |
@@ -29,8 +30,17 @@ is required, it is given here as thanks.
 | `loot-2.ogg` | Kenney RPG Audio, handleCoins2 |
 | `achievement-1.ogg` | Kenney Digital Audio, threeTone2 |
 | `victory-1.ogg` | "Just a random fanfare" by Spring Spring (OpenGameArt), trimmed to six seconds with a fade-out |
-| `defeat-1.ogg` | Kenney Digital Audio, lowThreeTone |
+| `defeat-1.ogg` | "Game Over II" by Kistol (OpenGameArt), trimmed to six seconds with a fade-out |
 | `warning-1.ogg` | Kenney Interface Sounds, error_004 |
+| `step-grass-1.ogg` | Kenney Impact Sounds, footstep_grass_000 |
+| `step-grass-2.ogg` | Kenney Impact Sounds, footstep_grass_001 |
+| `step-grass-3.ogg` | Kenney Impact Sounds, footstep_grass_002 |
+| `step-snow-1.ogg` | Kenney Impact Sounds, footstep_snow_000 |
+| `step-snow-2.ogg` | Kenney Impact Sounds, footstep_snow_001 |
+| `step-snow-3.ogg` | Kenney Impact Sounds, footstep_snow_002 |
+| `step-stone-1.ogg` | Kenney Impact Sounds, footstep_concrete_000 |
+| `step-stone-2.ogg` | Kenney Impact Sounds, footstep_concrete_001 |
+| `step-stone-3.ogg` | Kenney Impact Sounds, footstep_concrete_002 |
 
 Where an effect has several clips, one is picked at random each time. The files are the originals,
 renamed (the fanfare is trimmed).
