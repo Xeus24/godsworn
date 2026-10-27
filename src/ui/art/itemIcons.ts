@@ -207,6 +207,19 @@ export function iconUrl(spec: IconSpec): string {
       ctx.fillRect(ox + x, oy + y, 1, 1);
     });
   });
+  // Edge shading: a light rim toward the upper left and a cool shadow toward the lower right.
+  for (const p of filled) {
+    const x = p % SIZE;
+    const y = Math.floor(p / SIZE);
+    const has = (dx: number, dy: number): boolean => filled.has((y + dy) * SIZE + x + dx);
+    if (!has(-1, 0) || !has(0, -1)) {
+      ctx.fillStyle = 'rgba(255,246,220,0.28)';
+      ctx.fillRect(x, y, 1, 1);
+    } else if (!has(1, 0) || !has(0, 1)) {
+      ctx.fillStyle = 'rgba(24,12,56,0.28)';
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
   const url = canvas.toDataURL();
   cache.set(key, url);
   return url;

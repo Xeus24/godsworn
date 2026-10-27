@@ -245,6 +245,19 @@ export function heroSprite(raceId: string, variant: number, classColor: string, 
       if (solid(x + 1, y) || solid(x - 1, y) || solid(x, y + 1) || solid(x, y - 1)) g.fillRect(x, y, 1, 1);
     }
   }
+  // Rim light on the upper-left edges and a cool shade on the lower-right, so the figure reads as lit from above left.
+  for (let y = 0; y < HERO_H; y++) {
+    for (let x = 0; x < HERO_W; x++) {
+      if (!solid(x, y)) continue;
+      if (!solid(x - 1, y) || !solid(x, y - 1)) {
+        g.fillStyle = 'rgba(255,244,214,0.3)';
+        g.fillRect(x, y, 1, 1);
+      } else if (!solid(x + 1, y) || !solid(x, y + 1)) {
+        g.fillStyle = 'rgba(24,12,56,0.3)';
+        g.fillRect(x, y, 1, 1);
+      }
+    }
+  }
   cache.set(key, canvas);
   return canvas;
 }

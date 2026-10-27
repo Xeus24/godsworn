@@ -437,7 +437,7 @@ export class CombatScene {
     for (const ch of x.id) phase = (phase * 31 + ch.charCodeAt(0)) % 628;
     const breath = x.alive && !settings().reduceMotion ? Math.sin(t * 2.4 + phase / 100) : 0;
     const bob = Math.round(breath * (x.sprite ? 2 : 1));
-    const stretch = x.sprite ? 1 + breath * (x.sprite.family === 'slime' ? 0.05 : 0.025) : 1;
+    const stretch = x.sprite ? 1 + breath * (x.sprite.family === 'slime' ? 0.05 : 0.025) : 1 + breath * 0.018;
     const top = cy - size - bob;
     g.globalAlpha = v.alpha * (1 - v.appear * 0.8);
 

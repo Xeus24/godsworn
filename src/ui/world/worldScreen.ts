@@ -274,6 +274,20 @@ export class WorldScreen implements Screen {
         g.drawImage(tileImage(map.biome, t, (x * 7 + y * 13) % 4, frame, (x * 31 + y * 17 + x * y) % 11, tone, mask), ox + x * TILE, oy + y * TILE, TILE, TILE);
       }
     }
+    // Trees and walls cast a soft shadow down and to the right, so the ground reads as lit from the upper left.
+    g.fillStyle = 'rgba(8,6,20,0.14)';
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        const t = tileAt(map, x, y);
+        if ((t !== 'T' && t !== '#' && t !== 'H') || !explored(w, map, x, y)) continue;
+        const nx = tileAt(map, x + 1, y);
+        const ny = tileAt(map, x, y + 1);
+        const px = ox + x * TILE;
+        const py = oy + y * TILE;
+        if (nx !== 'T' && nx !== '#' && nx !== 'H') g.fillRect(px + TILE, py + Math.round(TILE * 0.3), Math.round(TILE * 0.42), TILE);
+        if (ny !== 'T' && ny !== '#' && ny !== 'H') g.fillRect(px + Math.round(TILE * 0.3), py + TILE, TILE, Math.round(TILE * 0.35));
+      }
+    }
     for (const e of map.entities) {
       if (!explored(w, map, e.x, e.y) || !entityActive(w, map, e, day)) continue;
       const img = this.entityImage(map, e);
@@ -393,10 +407,34 @@ export class WorldScreen implements Screen {
       }
       if (weather && !settings().reduceMotion) drawWeather(g, weather.id, cw, ch, now);
       if (timeOfDay(s.state.clock) === 'night') {
-        g.fillStyle = 'rgba(10,12,50,0.38)';
-        g.fillRect(0, 0, cw, ch);
+        // Night is dark everywhere except around the hero's own light.
+        this.lightAround(g, hx + TILE / 2, hy + TILE / 2, cw, ch, '10,12,50', 0.1, 0.6, TILE * 3, TILE * 9);
       }
+    } else {
+      // Dungeons are lit by torches: dark beyond a small circle around the hero.
+      this.lightAround(g, hx + TILE / 2, hy + TILE / 2, cw, ch, '4,2,12', 0.05, 0.62, TILE * 3.5, TILE * 9);
     }
+    // A faint vignette frames the view in every light.
+    const vig = g.createRadialGradient(cw / 2, ch / 2, Math.min(cw, ch) * 0.45, cw / 2, ch / 2, Math.max(cw, ch) * 0.75);
+    vig.addColorStop(0, 'rgba(0,0,0,0)');
+    vig.addColorStop(1, 'rgba(0,0,0,0.3)');
+    g.fillStyle = vig;
+    g.fillRect(0, 0, cw, ch);
+  }
+
+  /** Darkens the whole view except a warm pool of light around (cx, cy); the light flickers a little. */
+  private lightAround(g: CanvasRenderingContext2D, cx: number, cy: number, cw: number, ch: number, rgb: string, inner: number, outer: number, r0: number, r1: number): void {
+    const flicker = settings().reduceMotion ? 0 : Math.sin(performance.now() / 170) * 0.012 + Math.sin(performance.now() / 410) * 0.01;
+    const grad = g.createRadialGradient(cx, cy, r0 * (1 + flicker), cx, cy, r1);
+    grad.addColorStop(0, `rgba(${rgb},${inner})`);
+    grad.addColorStop(1, `rgba(${rgb},${outer})`);
+    g.fillStyle = grad;
+    g.fillRect(0, 0, cw, ch);
+    const warm = g.createRadialGradient(cx, cy, 0, cx, cy, r0 * 1.6);
+    warm.addColorStop(0, 'rgba(255,200,120,0.12)');
+    warm.addColorStop(1, 'rgba(255,200,120,0)');
+    g.fillStyle = warm;
+    g.fillRect(cx - r0 * 2, cy - r0 * 2, r0 * 4, r0 * 4);
   }
 
   /** Slow drifting life over the view: birds, snow, embers, dust. Purely cosmetic and screen-space. */
