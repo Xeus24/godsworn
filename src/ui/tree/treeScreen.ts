@@ -187,7 +187,7 @@ export class TreeScreen implements Screen {
         const parent = byId.get(pid);
         if (!parent) continue;
         const lit = rankOf(build, node.id) > 0 && rankOf(build, pid) > 0;
-        layer.append(svg('line', { x1: parent.x, y1: parent.y, x2: node.x, y2: node.y, stroke: lit ? (branchColor.get(node.branch) ?? '#fff') : '#5a4a70', 'stroke-width': lit ? 4 : 2.5 }));
+        layer.append(svg('line', { x1: parent.x, y1: parent.y, x2: node.x, y2: node.y, stroke: lit ? (branchColor.get(node.branch) ?? '#fff') : '#76679a', 'stroke-width': lit ? 4 : 2.5 }));
       }
     }
 
@@ -200,7 +200,7 @@ export class TreeScreen implements Screen {
       const mark = this.mark(node, state);
       if (mark) g.append(mark);
       const rank = rankOf(build, node.id);
-      const label = svg('text', { y: SIZE[node.kind] + 15, 'text-anchor': 'middle', class: 'tree-node-label' });
+      const label = svg('text', { y: SIZE[node.kind] + 17, 'text-anchor': 'middle', class: 'tree-node-label' });
       label.textContent = node.name.length > 15 ? `${node.name.slice(0, 14)}…` : node.name;
       g.append(label);
       if (node.maxRank > 1 || node.kind === 'active') {

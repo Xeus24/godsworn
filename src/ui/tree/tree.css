@@ -57,12 +57,12 @@
 }
 
 .tree-node-label {
-  fill: var(--text-dim);
-  font: 12px var(--font-ui);
+  fill: #c9bddc;
+  font: 13px var(--font-ui);
   pointer-events: none;
   paint-order: stroke;
   stroke: #0b0812;
-  stroke-width: 3px;
+  stroke-width: 4px;
   stroke-linejoin: round;
 }
 
@@ -77,7 +77,7 @@
 
 .tree-node-rank {
   fill: #fff;
-  font: bold 11px var(--font-ui);
+  font: bold 13px var(--font-ui);
   pointer-events: none;
   paint-order: stroke;
   stroke: #000;
@@ -89,7 +89,7 @@
 }
 
 .tree-node.locked .tree-node-label {
-  fill: #9c8eb0;
+  fill: #b7a9cd;
 }
 
 .tree-node.available > :first-child {

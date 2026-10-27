@@ -658,6 +658,10 @@
 - Skill tree: +, − and Fit buttons; Fit shows every branch, Reset view returns to the readable default; larger outlined node labels and brighter locked edges.
 - Inventory: empty equipment slots show a line-art silhouette of the slot. `.small` text is 13px, and the Pantheon detail pane has more spacing.
 
+### Graphics pass 10
+- Bestiary: unmet creatures show a glowing outline and a "?" instead of a flat blob, the first met creature opens by default, and the preview is larger with a gold or blue frame for elites and bosses.
+- Skill tree: node labels and rank numbers are larger and brighter, and unlit edges are easier to see.
+
 ## Known bugs
 - None known.
 

@@ -58,6 +58,11 @@ function spriteIcon(e: EnemyDef, cls: string, known: boolean): HTMLCanvasElement
   return c;
 }
 
+/** The sprite with a "?" over it when the creature is unmet. */
+function portrait(e: EnemyDef, cls: string, known: boolean): HTMLElement {
+  return el('span', { class: `codex-portrait${known ? '' : ' unknown'}` }, spriteIcon(e, cls, known), ...(known ? [] : [el('span', { class: 'codex-q' }, '?')]));
+}
+
 /**
  * The Codex (B): the bestiary (what you know of each enemy, Slayer ranks),
  * achievements and titles, the lore pages you found, and lifetime
@@ -121,7 +126,7 @@ export class CodexScreen implements Screen {
       const b = el(
         'button',
         { class: `quest-row${this.selected === e.id ? ' active' : ''}${known ? '' : ' dim'}` },
-        el('span', { class: 'codex-name' }, spriteIcon(e, 'codex-icon', known), el('span', {}, known ? e.name : '???')),
+        el('span', { class: 'codex-name' }, portrait(e, 'codex-icon', known), el('span', {}, known ? e.name : '???')),
         el('span', { class: 'dim small' }, known ? `${knowledgeName(level)}${level >= 4 ? ' ★' : ''}` : `Lv ${e.level}`),
       );
       b.addEventListener('click', () => {
@@ -130,7 +135,7 @@ export class CodexScreen implements Screen {
       });
       return b;
     });
-    const selected = this.selected ? content.enemies.find(this.selected) : undefined;
+    const selected = (this.selected ? content.enemies.find(this.selected) : undefined) ?? (met[0] ?? shown[0]);
     return el(
       'div',
       { class: 'quest-body' },
@@ -149,11 +154,11 @@ export class CodexScreen implements Screen {
   private entry(e: EnemyDef): HTMLElement {
     const p = this.session.player;
     const level = knowledgeLevel(p, e);
-    if (level < 0) return el('section', { class: 'panel' }, el('div', { class: 'codex-preview' }, spriteIcon(e, 'codex-art', false)), el('h2', {}, '???'), el('p', { class: 'dim' }, `Not yet met. Found around level ${e.level}.`));
+    if (level < 0) return el('section', { class: 'panel' }, el('div', { class: 'codex-preview' }, portrait(e, 'codex-art', false)), el('h2', {}, '???'), el('p', { class: 'dim' }, `Not yet met. Found around level ${e.level}.`));
     const kills = p.bestiary[e.id] ?? 0;
     const next = knowledgeThresholds(e).find((t) => kills < t);
     const parts: HTMLElement[] = [
-      el('div', { class: 'codex-preview' }, spriteIcon(e, 'codex-art', true)),
+      el('div', { class: `codex-preview tier-${e.tier}` }, portrait(e, 'codex-art', true)),
       el('h2', {}, e.name),
       el('div', { class: 'dim small' }, `${TIER_NAMES[e.tier] ?? e.tier} · level ${e.level} · ${e.types.map(typeName).join(', ')}`),
       el('p', { class: 'small' }, e.description),
