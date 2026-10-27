@@ -543,3 +543,9 @@ select {
 .item-row .pips {
   order: 5;
 }
+
+.item-cell .badge.pleases-badge {
+  right: 2px;
+  top: 1px;
+  color: var(--gold-hi);
+}

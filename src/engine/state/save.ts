@@ -102,6 +102,11 @@ export function migrate(raw: Json): Json {
   stash.reliquary ??= {};
   stash.rules ??= {};
   state.loadouts ??= {};
+  // Early gear sets stored bare uids; they now keep the item's name too.
+  for (const set of Object.values(obj(state.loadouts))) {
+    const pieces = obj(set);
+    for (const [slot, piece] of Object.entries(pieces)) if (typeof piece === 'string') pieces[slot] = { uid: piece, name: 'a saved piece' };
+  }
   state.stash = stash;
   state.meta = { ...obj(state.meta), version: SAVE_VERSION };
   return state;

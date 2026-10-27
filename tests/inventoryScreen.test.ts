@@ -444,4 +444,48 @@ describe('inventory screen', () => {
       expect(document.activeElement?.textContent).toBe('List view');
     });
   });
+
+  it('items a reliquary god likes carry a star and the god\'s likes are listed', () => {
+    const { session, root, screen } = setup();
+    session.items.setReliquary(0, 'vex');
+    session.state.stash.tabs[0]!.slots[0] = createItem('skeleton-key', 1, uid);
+    session.state.stash.tabs[0]!.slots[1] = createItem('mithril-ore', 1, uid);
+    screen.render();
+    expect(cell(root, 'stash:0:0').querySelector('.pleases-badge')).not.toBeNull();
+    expect(cell(root, 'stash:0:1').querySelector('.pleases-badge')).toBeNull();
+    expect(root.textContent).toContain('They like:');
+  });
+
+  describe('controller', () => {
+    type Padded = { padKey(key: string, shift?: boolean): void; padTab(delta: number): void };
+
+    it('the first press focuses a bag cell, then buttons act on the focused cell', () => {
+      const { session, root, screen } = setup();
+      const pad = screen as unknown as Padded;
+      session.items.give(createItem('mithril-ore', 2, uid), false);
+      screen.render();
+      pad.padKey('ArrowDown');
+      expect((document.activeElement as HTMLElement).dataset.loc?.startsWith('inventory:')).toBe(true);
+      const index = session.state.inventory.slots.findIndex((x) => x?.baseId === 'mithril-ore');
+      cell(root, `inventory:${index}`).focus();
+      pad.padKey('Enter');
+      expect(cell(root, `inventory:${index}`).classList.contains('selected')).toBe(true);
+      pad.padKey('Enter', true);
+      expect(session.items.count('mithril-ore')).toBe(0);
+    });
+
+    it('bumpers switch stash tab within the tabs you own', () => {
+      const { session, root, screen } = setup();
+      const pad = screen as unknown as Padded;
+      session.addGold(1000, 'test');
+      session.items.buyStashTab();
+      screen.render();
+      pad.padTab(1);
+      expect(root.querySelectorAll('[data-loc^="stash:1:"]')).toHaveLength(48);
+      pad.padTab(5);
+      expect(root.querySelectorAll('[data-loc^="stash:1:"]')).toHaveLength(48);
+      pad.padTab(-9);
+      expect(root.querySelectorAll('[data-loc^="stash:0:"]')).toHaveLength(48);
+    });
+  });
 });

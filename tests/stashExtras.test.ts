@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
+import type { EquipSlot } from '../src/engine/items/types';
 import { favorOf } from '../src/engine/gods/devotion';
 import { createItem, generateGear } from '../src/engine/items/generate';
 import { countOf } from '../src/engine/items/inventory';
-import { upgradeScore } from '../src/engine/items/upgrade';
+import { godLikes, pleases } from '../src/engine/items/reliquary';
+import { scoreDeltas, upgradeScore, upgradeWeights } from '../src/engine/items/upgrade';
 import { usesOf } from '../src/engine/items/uses';
 import { GameSession } from '../src/engine/state/gameState';
 import { RELIQUARY_CEILING, RELIQUARY_MIN, RESTOCK_TARGET } from '../src/engine/state/itemActions';
@@ -207,5 +209,68 @@ describe('upgrade score', () => {
     const at = (uid: string): number => slots.findIndex((x) => x?.uid === uid);
     expect(at(strong.uid)).toBeGreaterThanOrEqual(0);
     expect(at(strong.uid)).toBeLessThanOrEqual(at(weak.uid));
+  });
+});
+
+describe('upgrade weights follow the hero', () => {
+  it('a warrior counts physical attack, a mage magic attack', () => {
+    const warrior = GameSession.newGame(5, makeHero({ classId: 'warrior' })).player;
+    const mage = GameSession.newGame(5, makeHero({ classId: 'mage' })).player;
+    const ww = upgradeWeights(warrior);
+    const mw = upgradeWeights(mage);
+    expect(ww.physicalAttack).toBe(1);
+    expect(ww.magicAttack).toBeLessThan(1);
+    expect(mw.magicAttack).toBe(1);
+    expect(mw.physicalAttack).toBeLessThan(1);
+  });
+
+  it('the same stat change is an upgrade for one hero and barely one for the other', () => {
+    const warrior = GameSession.newGame(5, makeHero({ classId: 'warrior' })).player;
+    const mage = GameSession.newGame(5, makeHero({ classId: 'mage' })).player;
+    const sword = [{ stat: 'physicalAttack' as const, delta: 10 }];
+    expect(scoreDeltas(upgradeWeights(warrior), sword)).toBeGreaterThan(scoreDeltas(upgradeWeights(mage), sword) * 3);
+  });
+});
+
+const s0 = (): GameSession => newGame();
+
+describe('what gods like', () => {
+  it('names a god\'s favored offerings and tells pleasing items apart', () => {
+    const key = createItem('skeleton-key', 1, uid);
+    expect(pleases('vex', key)).toBe(true);
+    expect(pleases('nameless', key)).toBe(false);
+    expect(s0().items.setReliquary(0, 'nameless').ok).toBe(false);
+    expect(godLikes('vex').length).toBeGreaterThan(0);
+    expect(godLikes('vex').join(' ')).toContain('curiosities');
+    const gods = content.gods.all().map((g) => g.id);
+    for (const god of gods) expect(() => godLikes(god)).not.toThrow();
+    expect(godLikes('nameless')).toEqual([]);
+  });
+});
+
+describe('gear sets remember names', () => {
+  it('names the pieces that are gone instead of just counting them', () => {
+    const s = newGame();
+    s.items.saveLoadout('Set 1');
+    const [slot, item] = Object.entries(s.player.equipment).find(([, it]) => it) as [EquipSlot, { uid: string }];
+    const piece = s.state.loadouts['Set 1']![slot]!;
+    expect(piece.uid).toBe(item.uid);
+    expect(piece.name.length).toBeGreaterThan(0);
+    s.items.unequip(slot);
+    s.state.inventory.slots[s.state.inventory.slots.findIndex((x) => x?.uid === item.uid)] = null;
+    const toasts: string[] = [];
+    s.bus.on('toast', (t) => void toasts.push(t.text));
+    const result = s.items.applyLoadout('Set 1');
+    expect(result.ok).toBe(false);
+    expect(JSON.stringify(result)).toContain(piece.name);
+    expect(toasts.join(' ')).toContain(piece.name);
+  });
+
+  it('old saves with bare-uid sets are upgraded', () => {
+    const s = newGame();
+    const raw = JSON.parse(JSON.stringify(s.state)) as Record<string, unknown>;
+    raw.loadouts = { 'Set 1': { head: 'abc123' } };
+    const m = migrate(raw) as unknown as GameSession['state'];
+    expect(m.loadouts['Set 1']?.head).toEqual({ uid: 'abc123', name: 'a saved piece' });
   });
 });

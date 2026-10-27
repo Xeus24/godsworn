@@ -9,7 +9,7 @@ import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
 import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
-import type { EquipSlot, ItemCategory, ItemInstance } from '../items/types';
+import type { ItemCategory, ItemInstance } from '../items/types';
 import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
 import { applyStartingKit } from '../items/use';
 import { SPEC_LEVEL } from '../skills/specs';
@@ -20,6 +20,7 @@ import { EconomyActions } from './economyActions';
 import type { EconomyState } from '../economy/types';
 import { GeneralActions } from './generalActions';
 import { ItemActions } from './itemActions';
+import type { Loadout } from './loadoutActions';
 import { MulticlassActions } from './multiclassActions';
 import { TreeActions } from './treeActions';
 import { WorldActions } from './worldActions';
@@ -116,7 +117,7 @@ export interface GameState {
   /** Item categories sent to the stash automatically on arriving in a town. */
   stashRules: ItemCategory[];
   /** Saved equipment sets: name -> slot -> item uid. */
-  loadouts: Record<string, Partial<Record<EquipSlot, string>>>;
+  loadouts: Record<string, Loadout>;
   /** Counter for item uids. */
   nextUid: number;
   lootFilter: LootFilterSettings;
