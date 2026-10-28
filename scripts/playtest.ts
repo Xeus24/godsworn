@@ -36,7 +36,10 @@ function catchUp(s: GameSession, level: number): void {
 /** Before a fight: rested at an inn and repaired at a smith, as a careful player would be. */
 function prepare(s: GameSession): void {
   restoreFull(s.player);
-  for (const comp of Object.values(s.state.party.companions)) restoreFull(comp.character);
+  for (const comp of Object.values(s.state.party.companions)) {
+    if (!comp.autoTree) s.party.setAutoTree(comp.id, true);
+    restoreFull(comp.character);
+  }
   for (const [, item] of equippedItems(s.player)) repairItem(item);
 }
 

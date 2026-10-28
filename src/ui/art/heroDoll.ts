@@ -11,7 +11,12 @@ const DEFAULT_SCALE = 3;
 const OUTLINE = '#120c18';
 const HAIRED = new Set(['human', 'elf', 'dwarf', 'gnome', 'fae', 'nephilim']);
 
-type Layers = string[];
+interface Layer {
+  name: string;
+  /** Dye tint from the Wardrobe. */
+  dye?: string;
+}
+type Layers = Layer[];
 
 const images = new Map<string, HTMLImageElement | null>();
 const built = new Map<string, HTMLCanvasElement>();
@@ -31,26 +36,29 @@ function layersFor(raceId: string, variant: number, weapons: string[], look: Gea
     if (!worn) return layer === 'body' || layer === 'legs' || layer === 'boots' ? at(table.default, layer === 'body' ? v % 4 : 0) : undefined;
     return at(table[worn.weight] ?? table.leather, worn.tier - 1);
   };
-  if (base) out.push(base);
-  for (const l of [piece('boots', look.boots), piece('legs', look.legs), piece('body', look.chest)]) if (l) out.push(l);
+  const add = (name: string | undefined, dye?: string): void => {
+    if (name) out.push(dye ? { name, dye } : { name });
+  };
+  add(base);
+  add(piece('boots', look.boots), look.boots?.dye);
+  add(piece('legs', look.legs), look.legs?.dye);
+  add(piece('body', look.chest), look.chest?.dye);
   if (look.cloak) {
     const c = at((DOLL.cloak as Record<string, (string | null)[]>).any, look.cloak.tier - 1);
-    if (c) out.push(c);
+    add(c, look.cloak.dye);
   }
-  const gloves = piece('gloves', look.gloves);
-  if (gloves) out.push(gloves);
+  add(piece('gloves', look.gloves), look.gloves?.dye);
   if (HAIRED.has(raceId) && !look.head) {
     const h = at(DOLL.hair as (string | null)[], v % (DOLL.hair as unknown[]).length);
-    if (h) out.push(h);
+    add(h);
   }
-  const head = piece('head', look.head);
-  if (head) out.push(head);
+  add(piece('head', look.head), look.head?.dye);
   const right = DOLL.right as Record<string, string | null>;
   const left = DOLL.left as Record<string, string | null>;
   const main = weapons.find((w) => right[w]);
-  if (main && right[main]) out.push(right[main] as string);
+  if (main && right[main]) add(right[main] as string);
   const off = weapons.find((w) => w === 'shield' || w === 'tome' || w === 'orb');
-  if (off && left[off]) out.push(left[off] as string);
+  if (off && left[off]) add(left[off] as string);
   return out;
 }
 
@@ -73,7 +81,7 @@ export function heroDoll(raceId: string, variant: number, weapons: string[], loo
   if (hit) return hit;
   const names = layersFor(raceId, variant, weapons, look);
   if (!names.length) return undefined;
-  const imgs = names.map(load);
+  const imgs = names.map((n) => load(n.name));
   if (imgs.some((i) => !i)) return undefined;
   const sprites = imgs as HTMLImageElement[];
   const out = document.createElement('canvas');
@@ -87,12 +95,29 @@ export function heroDoll(raceId: string, variant: number, weapons: string[], loo
   if (!g || !s) return undefined;
   g.imageSmoothingEnabled = false;
   s.imageSmoothingEnabled = false;
-  for (const img of sprites) s.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE);
+  sprites.forEach((img) => s.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE));
   s.globalCompositeOperation = 'source-in';
   s.fillStyle = OUTLINE;
   s.fillRect(0, 0, SIZE, SIZE);
   for (const [dx, dy] of [[SCALE, 0], [-SCALE, 0], [0, SCALE], [0, -SCALE]] as const) g.drawImage(sil, dx, dy);
-  for (const img of sprites) g.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE);
+  sprites.forEach((img, i) => {
+    const dye = names[i]?.dye;
+    if (!dye) return g.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE);
+    // A dyed piece: draw it on its own, multiply the dye over it, and keep only its own pixels.
+    const layer = document.createElement('canvas');
+    layer.width = SIZE;
+    layer.height = SIZE;
+    const l = layer.getContext('2d');
+    if (!l) return g.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE);
+    l.imageSmoothingEnabled = false;
+    l.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE);
+    l.globalCompositeOperation = 'multiply';
+    l.fillStyle = dye;
+    l.fillRect(0, 0, SIZE, SIZE);
+    l.globalCompositeOperation = 'destination-in';
+    l.drawImage(img, PAD, PAD, 32 * SCALE, 32 * SCALE);
+    g.drawImage(layer, 0, 0);
+  });
   built.set(key, out);
   return out;
 }

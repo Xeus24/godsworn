@@ -365,6 +365,7 @@ export class TreeScreen implements Screen {
       ...p.classes.map((cp) => [cp.classId, content.classes.get(cp.classId).name] as const),
       ...p.hybrids.map((id) => [id, `${content.hybrids.get(id).name} ✧`] as const),
       ...(apostle ? [[`apostle-${apostle.god}`, `Apostle of ${content.gods.get(apostle.god).name} ✦`] as const] : []),
+      ...(apostle && p.devotion.defender ? [[`apostle-${p.devotion.defender}`, `Defender of ${content.gods.get(p.devotion.defender).name} ✦`] as const] : []),
     ];
     const classTabs = tabs.map(([id, name]) => {
       const b = el('button', { class: `tab${id === this.classId ? ' active' : ''}` }, name);

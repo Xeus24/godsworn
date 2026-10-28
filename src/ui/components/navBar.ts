@@ -4,6 +4,7 @@ import { content } from '../../data';
 import { characterStats } from '../../engine/character/stats';
 import type { GameSession } from '../../engine/state/gameState';
 import { drawPortrait } from '../art/portraits';
+import { frameStyle } from '../character/appearancePanel';
 import { el } from '../screen';
 
 /** Screen switches available from in-game screens. */
@@ -36,7 +37,7 @@ function bar(fraction: number, cls: string, label: string): HTMLElement {
 export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: HTMLElement): HTMLElement {
   const p = session.player;
   const stats = characterStats(p);
-  const portrait = el('canvas', { class: 'portrait-small pixel' });
+  const portrait = el('canvas', { class: 'portrait-small pixel', style: frameStyle(p.appearance?.frame) });
   const primary = p.classes[0];
   drawPortrait(portrait, p.raceId, p.portrait, primary ? content.classes.get(primary.classId).color + '55' : undefined);
 

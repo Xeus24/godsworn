@@ -188,6 +188,33 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   add({ id: 'chest-hidden', kind: 'chest', x: ax, y: ay + 1, hidden: true, locked: false, trapped: false });
   if (loreHidden) add({ id: `lore-${loreHidden}`, kind: 'lore', x: ax + 2, y: ay + 1, ref: loreHidden, hidden: true });
 
+  // Treasure dig spots: a separate generator so the rest of the map is unchanged. Each sits on open
+  // ground the road can reach, away from everything else; the world hides it until you hold its map.
+  const digRng = new Rng(hashString(`${zone.id}:dig`));
+  const reach = new Set<string>();
+  const queue: [number, number][] = [[1, westY]];
+  reach.add(`1,${westY}`);
+  while (queue.length) {
+    const [qx, qy] = queue.pop() as [number, number];
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+      const nx = qx + dx;
+      const ny = qy + dy;
+      const t = g.get(nx, ny);
+      if (nx < 0 || ny < 0 || nx >= W || ny >= H || reach.has(`${nx},${ny}`) || (t !== '.' && t !== '=')) continue;
+      reach.add(`${nx},${ny}`);
+      queue.push([nx, ny]);
+    }
+  }
+  const candidates = [...reach].map((k) => k.split(',').map(Number) as [number, number]).filter(([x, y]) => x > 3 && x < W - 4 && y > 2 && y < H - 3 && g.get(x, y) === '.');
+  for (const t of c.treasures.filter((tr) => tr.zone === zone.id)) {
+    for (let tries = 0; tries < 400 && candidates.length; tries++) {
+      const [x, y] = digRng.pick(candidates);
+      if (entities.some((e) => Math.abs(e.x - x) + Math.abs(e.y - y) < 4)) continue;
+      add({ id: `dig-${t.id}`, kind: 'dig', x, y, ref: t.id, label: 'Dig spot' });
+      break;
+    }
+  }
+
   // Nothing may stand on scenery.
   for (const e of entities) if (e.kind !== 'exit') g.set(e.x, e.y, g.get(e.x, e.y) === '=' ? '=' : '.');
 

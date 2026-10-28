@@ -159,5 +159,9 @@ if (arg('only', '') === 'zones' || arg('only', '') === '') {
     const wb = content.enemies.get(z.worldBoss);
     const world = avg((cls) => rate(() => ({ enc: groupEncounter({ weight: 1, enemies: [{ enemyId: wb.id }] }, 'sim', wb.name, wb.level, { isBoss: true }), level: wb.level }), cls, Math.max(level, wb.level - 2), wb.level));
     console.log(`${z.name.padEnd(18)}${String(level).padStart(5)}  ${enc.padStart(10)}  ${bosses.join(' / ').padStart(14)}  ${world.padStart(10)}`);
+    if (arg('detail', '') === '1') {
+      const per = content.classes.ids().map((cls) => `${cls.slice(0, 5)} ${(rate(() => ({ enc: groupEncounter({ weight: 1, enemies: [{ enemyId: wb.id }] }, 'sim', wb.name, wb.level, { isBoss: true }), level: wb.level }), cls, Math.max(level, wb.level - 2), wb.level) * 100).toFixed(0)}%`);
+      console.log(`  world boss by class: ${per.join(' · ')}`);
+    }
   }
 }

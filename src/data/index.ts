@@ -37,6 +37,8 @@ import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
 import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
 import { FORBIDDEN_COMBAT_SKILLS, FORBIDDEN_SKILLS } from './general/forbidden';
 import { BLESSINGS } from './blessings';
+import { TREASURES, TREASURE_ITEMS } from './world/treasures';
+import { DYES, FRAMES } from './appearance';
 import { PANTHEON } from './pantheon';
 import { PUNISHER_SKILLS, PUNISHERS } from './punishers';
 import { APOSTLE_BLESSINGS, APOSTLE_TRIALS, APOSTLES, ASPECT_SKILLS, ASPECTS, DIVINE_WEAPONS, EDICTS } from './apostles';
@@ -98,7 +100,7 @@ export const content = {
   mechanics: new ContentTable('mechanic', MECHANICS),
   rarities: new ContentTable('rarity', RARITY_DEFS),
   qualities: new ContentTable('quality', QUALITY_DEFS),
-  items: new ContentTable('item', [...ITEM_BASES, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES), ...QUEST_ITEMS]),
+  items: new ContentTable('item', [...ITEM_BASES, ...TREASURE_ITEMS, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES), ...QUEST_ITEMS]),
   uniques: new ContentTable('unique item', [...UNIQUE_ITEMS, ...DIVINE_WEAPONS]),
   itemSets: new ContentTable('item set', ITEM_SETS),
   runewords: new ContentTable('runeword', RUNEWORDS),
@@ -145,6 +147,9 @@ export const content = {
   companions: new ContentTable('companion', COMPANIONS),
   endings: new ContentTable('ending', ALL_ENDINGS),
   achievements: new ContentTable('achievement', ACHIEVEMENTS),
+  treasures: new ContentTable('treasure map', TREASURES),
+  dyes: new ContentTable('dye', DYES),
+  frames: new ContentTable('portrait frame', FRAMES),
 };
 
 export type Content = typeof content;
@@ -368,6 +373,8 @@ export function validateContent(c: Content = content): void {
   for (const g of c.generalSkills.all()) {
     if (g.heresy !== undefined) v.check(g.category === 'forbidden' && g.heresy < HERESY.tiers.length, `general skill ${g.id}: heresy needs a forbidden skill and a real tier`);
   }
+  for (const t of c.treasures.all()) v.ref(c.zones, t.zone, `treasure ${t.id}`);
+  for (const f of c.frames.all()) if (f.achievement) v.ref(c.achievements, f.achievement, `frame ${f.id}`);
   for (const a of c.achievements.all()) {
     checkCond(v, c, a.check, `achievement ${a.id}`);
     v.check(a.points > 0, `achievement ${a.id}: needs points`);

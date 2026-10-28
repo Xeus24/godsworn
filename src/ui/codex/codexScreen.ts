@@ -11,11 +11,12 @@ import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-type Tab = 'bestiary' | 'achievements' | 'lore' | 'statistics';
+type Tab = 'bestiary' | 'achievements' | 'lore' | 'maps' | 'statistics';
 const TABS: [Tab, string][] = [
   ['bestiary', 'Bestiary'],
   ['achievements', 'Achievements'],
   ['lore', 'Lore'],
+  ['maps', 'Maps'],
   ['statistics', 'Statistics'],
 ];
 
@@ -102,7 +103,7 @@ export class CodexScreen implements Screen {
       });
       return b;
     }));
-    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.statistics();
+    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'maps' ? this.maps() : this.statistics();
     this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), tabs, body));
   };
 
@@ -270,6 +271,33 @@ export class CodexScreen implements Screen {
             { class: 'panel' },
             el('h3', {}, z.name),
             ...content.lore.filter((l) => l.zone === z.id).map((l) => (found.includes(l.id) ? el('div', { class: 'codex-lore' }, el('b', {}, l.title), el('p', { class: 'small' }, l.text)) : el('div', { class: 'codex-lore dim' }, el('b', {}, '???'), el('p', { class: 'small' }, 'Not yet found.')))),
+          ),
+        ),
+      ),
+    );
+  }
+
+  private maps(): HTMLElement {
+    const w = this.session.state.world;
+    const held = w.treasureMaps;
+    const dug = (id: string): boolean => Object.keys(w.used).some((k) => k.endsWith(`:dig-${id}`));
+    return el(
+      'div',
+      { class: 'codex-scroll' },
+      el('section', { class: 'panel' }, el('h2', {}, 'Treasure maps'), el('div', {}, `${held.length} of ${content.treasures.size} maps found, ${held.filter(dug).length} dug up. Maps turn up in chests and on world bosses; a held map shows its dig spot on the zone.`)),
+      el(
+        'div',
+        { class: 'codex-grid' },
+        ...content.zones.all().map((z) =>
+          el(
+            'section',
+            { class: 'panel' },
+            el('h3', {}, z.name),
+            ...content.treasures.filter((t) => t.zone === z.id).map((t) =>
+              held.includes(t.id)
+                ? el('div', { class: 'codex-lore' }, el('b', {}, `${t.name}${dug(t.id) ? ' (dug up)' : ''}`), el('p', { class: 'small' }, `“${t.clue}”`))
+                : el('div', { class: 'codex-lore dim' }, el('b', {}, '???'), el('p', { class: 'small' }, 'Not yet found.')),
+            ),
           ),
         ),
       ),

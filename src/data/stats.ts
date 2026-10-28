@@ -57,6 +57,7 @@ const BASE_INFO: StatInfo[] = [
   { id: 'dodge', name: 'Dodge', short: 'DODGE', description: 'Chance to avoid an attack. Max 35%.', format: 'percent' },
   { id: 'accuracy', name: 'Accuracy', short: 'ACC', description: 'Chance to hit before enemy dodge.', format: 'percent' },
   { id: 'speed', name: 'Speed', short: 'SPD', description: 'Determines turn order.', format: 'int' },
+  { id: 'shieldPierce', name: 'Shield Piercing', short: 'PIERCE', description: 'Share of an enemy shield or hardened skin your hits ignore.', format: 'percent' },
   { id: 'lifesteal', name: 'Lifesteal', short: 'LEECH', description: 'Damage dealt returned as health.', format: 'percent' },
   {
     id: 'cooldownReduction',

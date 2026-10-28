@@ -1,3 +1,4 @@
+import type { AppearanceState } from '../items/appearance';
 import type { DifficultyId } from '../../data/difficulty';
 import type { EquipSlot, ItemInstance } from '../items/types';
 import type { CraftingState } from '../economy/types';
@@ -47,6 +48,8 @@ export interface Character {
   stable: { pets: string[]; mounts: string[]; pet?: string; mount?: string };
   /** Chosen at creation; scales enemies, rewards and unlocks paragon nodes. */
   difficulty: DifficultyId;
+  /** Transmog, dyes and portrait frame. */
+  appearance: AppearanceState;
   /** Achievement points earned so far (see the milestone bonuses in data/achievements.ts). */
   achievementPoints: number;
 

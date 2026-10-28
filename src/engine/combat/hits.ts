@@ -111,7 +111,7 @@ export function dealDamage(b: Battle, attacker: Combatant, target: Combatant, op
     return { missed: false, crit, amount: 0 };
   }
 
-  applyDamage(b, attacker, target, amount, { element: opts.element, crit, dot: opts.isDot, staggerMult: opts.staggerMult });
+  applyDamage(b, attacker, target, amount, { element: opts.element, crit, dot: opts.isDot, staggerMult: opts.staggerMult, shieldPierce: aStats.shieldPierce });
 
   if (!opts.isDot) {
     if (attacker.side === 'party') {
@@ -138,10 +138,10 @@ export function applyDamage(
   source: Combatant,
   target: Combatant,
   amount: number,
-  info: { element: Element; crit: boolean; dot?: boolean; staggerMult?: number },
+  info: { element: Element; crit: boolean; dot?: boolean; staggerMult?: number; shieldPierce?: number },
 ): void {
   if (!target.alive || amount <= 0) return;
-  const absorbed = Math.min(target.shield, amount);
+  const absorbed = Math.min(Math.round(target.shield * (1 - (info.shieldPierce ?? 0) / 100)), amount);
   target.shield -= absorbed;
   const dealt = amount - absorbed;
   target.hp = Math.max(0, target.hp - dealt);

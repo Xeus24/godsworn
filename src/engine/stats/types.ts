@@ -35,6 +35,7 @@ export const DERIVED_STATS = [
   'accuracy',
   'speed',
   'lifesteal',
+  'shieldPierce',
   'cooldownReduction',
   'statusChance',
   'statusResist',

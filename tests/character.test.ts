@@ -16,9 +16,9 @@ describe('character creation', () => {
   it('starts at full HP and MP', () => {
     const hero = makeHero();
     const stats = characterStats(hero);
-    // (50 + VIT 9 x 10 + level 1 x 5) x 1.35 for the Warrior's Battle-Hardened trait
-    expect(stats.maxHp).toBe(195);
-    expect(hero.hp).toBe(195);
+    // (50 + VIT 9 x 10 + level 1 x 5) x 1.45 for the Warrior's Battle-Hardened trait
+    expect(stats.maxHp).toBe(210);
+    expect(hero.hp).toBe(210);
     expect(hero.mp).toBe(stats.maxMp);
   });
 

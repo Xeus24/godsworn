@@ -27,6 +27,7 @@ export function interventionChance(char: Character, god: string, fai: number): n
 export function applyDivineCombat(x: Combatant, char: Character, fai: number, c: Content = content): void {
   const apostle = char.devotion.apostle;
   if (apostle) x.avatarSkill = c.apostles.get(apostle.god).avatar;
+  if (char.devotion.defender && apostle) x.avatarSkill2 = c.apostles.get(char.devotion.defender).avatar;
   const patron = char.devotion.patron;
   if (patron) {
     x.patron = patron;

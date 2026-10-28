@@ -2,6 +2,8 @@ import { content } from '../../data';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
 import { spendParagonPoint } from '../character/paragon';
+import { changeDifficulty, type DifficultyChange } from '../character/difficultyChange';
+import type { DifficultyId } from '../../data/difficulty';
 import { grantXp, type XpResult } from '../character/progression';
 import { characterStats, restoreFull } from '../character/stats';
 import type { Character } from '../character/types';
@@ -36,7 +38,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 17;
+export const SAVE_VERSION = 18;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -330,6 +332,13 @@ export class GameSession {
     if (this.state.gold < cost) return { ok: false, reason: `Respec costs ${cost} gold.` };
     const result = respecAttributes(this.player);
     if (result.ok) this.spendGold(cost, 'respec');
+    return result;
+  }
+
+  /** Switches difficulty (not for Hardcore heroes, and Impossible is neither entered nor left). */
+  setDifficulty(to: DifficultyId): DifficultyChange {
+    const result = changeDifficulty(this.player, to);
+    if (result.ok) this.bus.emit('toast', { kind: 'info', text: `Difficulty is now ${to}.` });
     return result;
   }
 

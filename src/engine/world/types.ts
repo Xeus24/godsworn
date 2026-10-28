@@ -145,7 +145,8 @@ export type EntityKind =
   | 'worldBoss'
   | 'boss'
   | 'rune'
-  | 'node';
+  | 'node'
+  | 'dig';
 
 /** Something on a map: a door to elsewhere, a chest, a fight waiting to happen... */
 export interface MapEntity {
@@ -224,4 +225,6 @@ export interface WorldState {
   dungeonsCleared: string[];
   /** In-game minute of the last failed lock pick per chest key (retry after an hour). */
   lockpickFailed: Record<string, number>;
+  /** Treasure maps held (ids from data/world/treasures.ts); dug spots are in `used`. */
+  treasureMaps: string[];
 }

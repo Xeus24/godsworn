@@ -736,22 +736,37 @@
 - Shoulder, belt and leg icons use the Dungeon Crawl doll pieces (cropped, enlarged, tinted by armor weight); gems are a tinted crystal tile; materials (ore, hides, cloth, herbs, essences, bones, fish) use tinted tiles.
 - Cut / deferred: the town banner stays procedural (it reads better than a tile street would); path edges have no transition tiles.
 
+## Expansion: The Greater Pantheon (started after Phase 16)
+The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_AUDIT.md` lists what existed and the delta per section. Save version is now **18**.
+
+### Expansion phase 1: audit, save v18 and known gaps
+- **Audit** (`docs/EXPANSION_AUDIT.md`, `scripts/auditCounts.ts`): live counts per section, name collisions (Death Knight, Blade Dancer and Spellthief already exist as hybrids, so the new content is renamed), and the delta still to build.
+- **Save v18**: migration adds `player.appearance` (and the same on companions), `world.treasureMaps` and `companion.autoTree`. Old saves keep their auto-built companion trees.
+- **Difficulty is changeable** after creation (Character screen). Hardcore heroes are locked, Impossible can only be chosen at creation and never left. Difficulty-locked paragon nodes pause while you play below their tier, so a tier cannot be borrowed for bonuses (`engine/character/difficultyChange.ts`).
+- **Companion skill trees are player-allocated**: new recruits start with Auto-allocate off; the Party screen has a branch-by-branch tree with + / - per node, Reset (free) and an Auto-allocate switch (spends every free point now and as they level). Existing saves stay automatic.
+- **Transmog, dyes and portrait frames** are back (`engine/items/appearance.ts`, `data/appearance.ts`, Character screen > Wardrobe): armor looks (weight and tier per slot) unlock by owning a piece, 16 dyes (8 free, 8 bought for gold) tint worn pieces on the paper doll, 12 frames unlock from achievements and show on the portrait.
+- **Treasure maps are back**: 56 maps (7 per zone, `data/world/treasures.ts`). Maps drop from chests (12%) and guarantee one from each world boss. A held map reveals its dig spot on the zone; digging gives a one-of-a-kind curiosity, gold and a gem, rune, material or consumable. Codex > Maps lists clues. Dig spots are placed with their own RNG so existing zone layouts do not move.
+- **Class boss walls**: traits retuned (`data/classes.ts`): Warrior 45% HP / 20% less damage / 40% attack / 5% lifesteal, Mage 60% attack / 90% HP / 36% less damage, Necromancer +50% damage / 55% to 90% HP / 11% lifesteal, Bard +85% damage / 50% HP / 4% lifesteal, Cleric +100% damage / 140% HP / 45% less damage and a new stat, **Shield Piercing**, at 100% (Harden-style shields were eating every Smite; cleric vs the Abyssal Crab went 0% to 100%). Late world bosses (Frostspire onward) now give every class 58-100% (`npm run sim -- --only zones --detail 1`); ordinary fights stay at 99%.
+- **Defender path** now gives the second god's full apostle tree (points from the level the path began) and its Divine Avatar as a second once-per-battle ultimate.
+- Tests: `tests/expansionPhase1.test.ts` and a Defender test in `tests/heresy.test.ts`; 627 unit tests, 8 e2e tests, build and the content validator (run at startup) pass.
+- Still open from section 1: Twilight NG+ tier variety (new scenes, remixed boss phases, world affixes) waits for phase 19 where its content lives. Rogue (Ashen Desert 26%), Monk and Bard on early world bosses stay low and are noted below.
+
 ## Known bugs
 - None known.
 
 ## Cut / deferred
-- **Difficulty** is fixed at creation; changing it mid-game and per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
-- **Companions' class trees** are auto-built; the skill tree screen edits only your own trees. Companion gear is managed on the Party screen, not by dragging onto a paper doll.
+- **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
+- **Companions' class trees** are player-allocated on the Party screen (list view, not the graph); the graph editor is not built. Companion gear is managed on the Party screen, not by dragging onto a paper doll.
 - **Party balance:** companion classes are even (2.3 points apart, Phase 16). Party-size scaling does not grow with the third companion, so full parties win nearly every fight; and a cleric hero beside a cleric companion still loses to world bosses (two healers can't outdamage the enrage). The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.
 - **Hybrid trial balance** depends heavily on the class pair (6–100% for benchmark pairs at level 35 against level-36 mentors; the Plague Doctor's pair is the outlier) because the auto-battler plays some two-class kits badly. It was left as is: a player plays the kit by hand and can level up and return. The sim's `warrior+mage` pair wins 70% at level 15 for the same reason (it spends turns on a level-1 mage's spells).
-- **The Defender path** gives the second god's blessing, tier and title, not a second apostle tree, avatar, weapon or edicts (see Design decisions).
-- **Twilight of the Gods** is the same five chapters in every NG+ tier; tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
+- **The Defender path** now gives the second god's apostle tree and Avatar; it still has no second divine weapon, edicts or follower (see Design decisions).
+- **Twilight of the Gods** is the same five chapters in every NG+ tier (expansion phase 19 fixes this); tiers differ in levels and threat, not story. Followers are one per Apostle (the Defender's second god sends none).
 - **Drag-and-drop offerings:** offerings are click-to-offer lists (gold amount, or the items a god values most) rather than dragging onto an altar.
-- **Late world bosses** (Frostspire, Stormcoast, Volcanic Rift, Dark Citadel) stay 22–32% for a hero alone: they are party fights. The auto-battler's cleric heals too little against heavy bursts (13% against Seryth with Aldric); played by hand it does better.
+- **Late world bosses** (Frostspire, Stormcoast, Volcanic Rift, Dark Citadel) are 58-100% for a lone benchmark hero of any class after expansion phase 1. Remaining low spots: Rogue vs the Ashen Desert boss (26%), Monk and Bard vs the Meadowlands boss (18-22%). The auto-battler's cleric heals too little against heavy bursts (13% against Seryth with Aldric); played by hand it does better.
 - **Codex extras:** no item compendium or god/class pages in the Codex (the Pantheon and Skills screens cover gods and classes).
-- **Achievement rewards** are titles, gold, pets and mounts. Portrait frames and **transmog** were cut: items have no visual variants to swap.
+- **Achievement rewards** are titles, gold, pets, mounts and portrait frames. Transmog covers armor looks (weight and tier per slot); weapon skins are not built.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
-- **Treasure maps** were cut: Rift Maps and the dungeons' chests fill that role. Lore pages are collected (Phase 10) and read in the Codex.
+- **Treasure maps** returned in expansion phase 1 (56 maps). No map seller or trader exists yet; maps come from chests and world bosses.
 - **Rift leaderboards:** there are none beyond your own best tier and Boss Rush times (no server).
 - **Cloud saves:** saves stay in the browser; export and import move them by hand.
 - **Music** is procedural and short-looped by default. The optional composed music has no per-room tracks beyond three depth tiers, and a mood change fades rather than finishing the current track. The forest and bird ambience have no synthesized stand-in (the synthesized sound has only noise-based ambience); weather ambience plays only in the open. Footsteps are recorded-only (no synthesized step). The composed and recorded paths were verified in a browser for the meadow, but dungeon, lair, victory and defeat sounds are verified only by the fake-context engine test. The dynamic battle music is not true layered stems (none exist under CC0): it is a filter and, for the synthesized music, extra notes.

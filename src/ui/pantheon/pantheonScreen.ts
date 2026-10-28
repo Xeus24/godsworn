@@ -285,7 +285,14 @@ export class PantheonScreen implements Screen {
       ];
     }
     if (p.devotion.defender === god) {
-      return [el('h3', {}, `Defender of ${name}`), el('p', { class: 'small' }, `You serve ${name} beside ${content.gods.get(apostle?.god ?? god).name}: their Divine blessing is yours (in its own slot), and they count you as their Apostle. The Defender path ends if you renounce your Apostleship.`)];
+      const def = content.apostles.get(god);
+      const avatar = content.skills.get(def.avatar);
+      return [
+        el('h3', {}, `Defender of ${name}`),
+        el('p', { class: 'small' }, `You serve ${name} beside ${content.gods.get(apostle?.god ?? god).name}: their Divine blessing is yours (in its own slot), and they count you as their Apostle. The Defender path ends if you renounce your Apostleship.`),
+        el('p', { class: 'small' }, `Second Divine Avatar: ${avatar.name}. ${avatar.description} (once per battle, uses the Ultimate gauge)`),
+        el('p', { class: 'small' }, `${name} apostle tree: ${availablePoints(p, apostleTreeId(god))} point(s) to spend in the Skills screen.`),
+      ];
     }
     if (!atLeast(p, god, 'exalted') && (p.devotion.trialStage[god] ?? 0) === 0) {
       return [el('h3', {}, 'Trial of Apostleship'), el('p', { class: 'dim small' }, `Reach Exalted favor (${DEVOTION.tierFloors.exalted}) to face ${name}'s trial and become their Apostle.`)];

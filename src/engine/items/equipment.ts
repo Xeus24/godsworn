@@ -217,6 +217,8 @@ export interface WornPiece {
   weight: string;
   color: string;
   tier: number;
+  /** Dye tint from the Wardrobe. */
+  dye?: string;
 }
 
 export type GearLook = Partial<Record<'head' | 'shoulders' | 'chest' | 'gloves' | 'legs' | 'boots' | 'cloak', WornPiece>>;
@@ -230,7 +232,14 @@ export function equippedGearLook(char: Character, c: Content = content): GearLoo
     const b = baseOf(it, c);
     if (b.category !== 'armor') continue;
     const color = c.rarities.get(it.rarity).color;
-    look[slot] = { weight: b.weight, color: color === '#1a1a1a' ? '#c8b8ff' : color, tier: b.tier };
+    const skin = char.appearance?.transmog[slot]?.split(':');
+    const dye = char.appearance?.dyes[slot];
+    look[slot] = {
+      weight: skin?.[0] ?? b.weight,
+      color: color === '#1a1a1a' ? '#c8b8ff' : color,
+      tier: skin?.[1] ? Number(skin[1]) : b.tier,
+      ...(dye ? { dye: c.dyes.get(dye).color } : {}),
+    };
   }
   return look;
 }

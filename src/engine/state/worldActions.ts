@@ -16,6 +16,7 @@ import { utilityChance } from '../skills/general';
 import { applyRep, FACTION_FAVOR_SHARE, judgeFactions, rankOf, repOf, type RepChange } from '../world/factions';
 import { canBuyHouse, buyHouse, roomCost, roomLevel, upgradeRoom } from '../world/housing';
 import { mapFor } from '../world/mapgen';
+import { grantMap, MAP_CHEST_CHANCE, treasureItemId } from '../world/treasure';
 import type { MapEntity, TileMap, WorldState, ZoneDef } from '../world/types';
 import {
   absMinute,
@@ -318,6 +319,8 @@ export class WorldActions {
       }
       case 'chest':
         return { kind: 'moved', message: this.openChest(e) };
+      case 'dig':
+        return { kind: 'moved', message: this.dig(e) };
       case 'rune': {
         this.world.used[usedKey(map.id, e.id)] = this.day;
         const done = runesDone(this.world, map);
@@ -352,6 +355,25 @@ export class WorldActions {
     if (up) this.toast('info', `${content.professions.get(skill).name} rises to ${up}.`);
     this.changed('gather');
     return `${e.label}: ${qty}× ${content.items.get(itemId).name}.`;
+  }
+
+  /** Digs up a treasure: its one-of-a-kind curiosity, gold, and a gem, rune, material or consumable. */
+  private dig(e: MapEntity): string {
+    const t = content.treasures.find(e.ref as string);
+    if (!t) return '';
+    const map = this.map;
+    const key = usedKey(map.id, e.id);
+    const prize = createItem(treasureItemId(t), 1, () => this.s.newUid());
+    const level = worldLevel(map.level[1], this.s.state.ngPlus);
+    const pool = content.items.filter((b) => b.category === t.bonus && b.level <= level + 3 && b.level >= Math.max(1, level - 20));
+    const bonus = pool.length ? createItem(this.s.rng.pick(pool).id, 1, () => this.s.newUid()) : undefined;
+    const gold = Math.round(120 * level * (0.8 + this.s.rng.float(0, 0.4)));
+    const items = bonus ? [prize, bonus] : [prize];
+    this.world.used[key] = this.day;
+    this.s.advanceTime(30);
+    this.s.items.receiveLoot(items, gold);
+    this.changed('dig');
+    return `You dig up ${t.name}: ${content.items.get(prize.baseId).name}${bonus ? `, ${content.items.get(bonus.baseId).name}` : ''} and ${gold} gold.`;
   }
 
   /** Opens a chest: locked chests need a Skeleton Key or Lockpicking; traps hurt unless detected. */
@@ -389,6 +411,11 @@ export class WorldActions {
     const loot = rollLoot('chest', { rng: this.s.rng, itemLevel: level, newUid: () => this.s.newUid(), magicFind: stats.magicFind, goldFind: stats.goldFind, ngPlus: this.s.state.ngPlus, sourceTier: 'chest', favorTiers: favorTiers(p) });
     const got = this.s.items.receiveLoot(loot.items, loot.gold);
     notes.push(`Chest: ${loot.gold} gold${got.kept.length ? ` and ${got.kept.length} item${got.kept.length > 1 ? 's' : ''}` : ''}.`);
+    const found = this.s.rng.chance(MAP_CHEST_CHANCE) ? grantMap(this.world, this.zone.id, this.s.rng) : undefined;
+    if (found) {
+      notes.push(`Among the contents: a treasure map, "${found.name}".`);
+      this.toast('quest', `Treasure map found: ${found.name}`);
+    }
     this.changed('chest');
     return notes.join(' ');
   }
@@ -417,6 +444,8 @@ export class WorldActions {
       const t = this.s.player.world.trophies;
       t[e.ref] = (t[e.ref] ?? 0) + 1;
       this.toast('loot', `Trophy taken: ${content.enemies.get(e.ref).name}.`);
+      const found = grantMap(this.world, this.zone.id, this.s.rng);
+      if (found) this.toast('quest', `The beast carried a treasure map: ${found.name}`);
     }
     if (pending.kind === 'boss' && !this.world.dungeonsCleared.includes(pending.map)) {
       this.world.dungeonsCleared.push(pending.map);

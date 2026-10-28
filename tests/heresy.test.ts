@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
+import { APOSTLESHIP } from '../src/data/devotion';
 import { HERESY } from '../src/data/heresy';
+import type { Combatant } from '../src/engine/combat/types';
+import { applyDivineCombat } from '../src/engine/gods/combat';
+import { availablePoints } from '../src/engine/skills/tree';
+import { ownsTree } from '../src/engine/skills/treeOwners';
 import { characterStats } from '../src/engine/character/stats';
 import { shopStock } from '../src/engine/economy/shops';
 import { applyFavor, favorOf, rivalsOf, setRelation } from '../src/engine/gods/devotion';
@@ -129,5 +134,26 @@ describe('apostle followers', () => {
     expect(hp(b)).toBeGreaterThan(hp(solo));
     s.devotion.callFollower(false);
     expect(s.devotion.follower()).toBeUndefined();
+  });
+
+  it('gives the Defender the second god\'s full apostle tree and Avatar', () => {
+    const s = newSession();
+    s.state.ngPlus = 3;
+    s.player.level = 50;
+    for (const g of ['solenne', 'kael']) {
+      s.player.devotion.favor[g] = 1100;
+      s.player.devotion.trialStage[g] = 3;
+    }
+    s.player.devotion.apostle = { god: 'solenne', level: s.player.level, edictsDone: 0, neglected: false };
+    expect(ownsTree(s.player, 'apostle-kael')).toBe(false);
+    s.devotion.defend('kael');
+    expect(ownsTree(s.player, 'apostle-kael')).toBe(true);
+    expect(availablePoints(s.player, 'apostle-kael')).toBe(APOSTLESHIP.basePoints);
+    s.player.level = 55;
+    expect(availablePoints(s.player, 'apostle-kael')).toBe(APOSTLESHIP.basePoints + 5);
+    const x = { avatarSkill: undefined as string | undefined, avatarSkill2: undefined as string | undefined } as Combatant;
+    applyDivineCombat(x, s.player, 20);
+    expect(x.avatarSkill).toBe(content.apostles.get('solenne').avatar);
+    expect(x.avatarSkill2).toBe(content.apostles.get('kael').avatar);
   });
 });

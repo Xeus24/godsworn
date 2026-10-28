@@ -131,6 +131,8 @@ export interface Devotion {
   heresy: number;
   /** The Defender path (NG+3+): a second god an Apostle also serves. */
   defender?: string;
+  /** Character level when the Defender path began (the second apostle tree earns points from it). */
+  defenderLevel?: number;
   /** Whether your god's follower answers your call in battle (Apostles). */
   followerCalled?: boolean;
   /** Pantheon politics: relations your choices changed, by god pair (`a|b`, sorted). */

@@ -71,6 +71,8 @@ export function defend(char: Character, god: string, ngPlus: number, c: Content 
   const check = canDefend(char, god, ngPlus, c);
   if (!check.ok) return check;
   char.devotion.defender = god;
+  char.devotion.defenderLevel = char.level;
+  treeState(char, apostleTreeId(god));
   const title = `Defender of ${c.gods.get(god).name}`;
   if (!char.devotion.titles.includes(title)) char.devotion.titles.push(title);
   const blessing = `${god}-divine`;
@@ -216,6 +218,7 @@ export function renounce(char: Character): { ok: true; god: string } | { ok: fal
   const defended = char.devotion.defender;
   if (defended) {
     delete char.devotion.defender;
+    delete char.devotion.defenderLevel;
     char.devotion.slotted = char.devotion.slotted.filter((id) => id !== `${defended}-divine`);
   }
   delete char.devotion.followerCalled;

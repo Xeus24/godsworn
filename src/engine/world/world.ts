@@ -35,7 +35,7 @@ export function townSpot(town: string, c: Content = content): { map: string; x: 
 /** A new world: you begin in Brightwater. */
 export function createWorldState(c: Content = content): WorldState {
   const start = townSpot('brightwater', c);
-  return { position: start, lastTown: 'brightwater', fog: {}, used: {}, waypoints: [], lore: [], weather: {}, grace: ENCOUNTER_GRACE, dungeonsCleared: [], lockpickFailed: {} };
+  return { position: start, lastTown: 'brightwater', fog: {}, used: {}, waypoints: [], lore: [], weather: {}, grace: ENCOUNTER_GRACE, dungeonsCleared: [], lockpickFailed: {}, treasureMaps: [] };
 }
 
 /** The zone a map belongs to (a zone, or the zone of a dungeon). */
@@ -69,6 +69,7 @@ export function runesDone(world: WorldState, map: TileMap): boolean {
  * Dungeon contents reset when you enter on a new day (see enterDungeon).
  */
 export function entityActive(world: WorldState, map: TileMap, e: MapEntity, day: number): boolean {
+  if (e.kind === 'dig' && !world.treasureMaps.includes(e.ref as string)) return false;
   const usedDay = world.used[usedKey(map.id, e.id)];
   if (usedDay === undefined) return true;
   if (e.kind === 'worldBoss') return day - usedDay >= WORLD_BOSS_RESPAWN_DAYS;

@@ -1,5 +1,6 @@
 import { petModifiers } from './stable';
 import { challengeHeroModifiers } from './challenges';
+import { difficultyMeets } from './difficultyChange';
 import { heresyModifiers } from '../gods/heresy';
 import { slayerModifiers } from '../bestiary/bestiary';
 import { content, type Content } from '../../data';
@@ -54,7 +55,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   ];
   for (const [nodeId, ranks] of Object.entries(char.paragon)) {
     const node = c.paragon.find(nodeId);
-    if (!node || ranks <= 0) continue;
+    if (!node || ranks <= 0 || !difficultyMeets(char, node.minDifficulty)) continue;
     for (const spec of node.perRank) {
       mods.push({ ...spec, value: spec.value * ranks, source: `paragon:${node.id}` });
     }

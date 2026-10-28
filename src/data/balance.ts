@@ -38,6 +38,7 @@ export const DERIVED_FORMULAS: Record<DerivedStat, LinearFormula> = {
   // Turn order. Each point of DEX is worth half a point of speed.
   speed: { base: 10, coefficients: { dex: 0.5 } },
   lifesteal: { base: 0 },
+  shieldPierce: { base: 0 },
   cooldownReduction: { base: 0 },
   statusChance: { base: 0, coefficients: { luk: 0.2 } },
   statusResist: { base: 0, coefficients: { wis: 0.3, vit: 0.1 } },
@@ -79,6 +80,7 @@ export const STAT_CAPS: Partial<Record<StatId, StatCap>> = {
   accuracy: { min: 0, max: 100 },
   statusResist: { min: 0, max: 75 },
   lifesteal: { min: 0, max: 30 },
+  shieldPierce: { min: 0, max: 100 },
   damageTaken: { min: 10 },
   maxHp: { min: 1 },
   maxMp: { min: 0 },

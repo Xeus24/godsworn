@@ -1,5 +1,6 @@
 import { content } from '../../data';
 import { createEndgameState } from '../endgame/types';
+import { createAppearanceState } from '../items/appearance';
 import { createGameStats, GAME_NAME, GameSession, SAVE_VERSION, type GameState } from './gameState';
 
 /**
@@ -88,7 +89,9 @@ export function migrate(raw: Json): Json {
     ch.bestiary ??= {};
     ch.difficulty ??= 'medium';
     ch.achievementPoints ??= 0;
+    obj(comp).autoTree ??= true;
     ch.challenges ??= [];
+    ch.appearance = { ...createAppearanceState(), ...obj(ch.appearance) };
     ch.stable ??= { pets: [], mounts: [] };
     const cd = obj(ch.devotion);
     cd.heresy ??= 0;
@@ -108,6 +111,11 @@ export function migrate(raw: Json): Json {
     for (const [slot, piece] of Object.entries(pieces)) if (typeof piece === 'string') pieces[slot] = { uid: piece, name: 'a saved piece' };
   }
   state.stash = stash;
+  // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
+  p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
+  const world = obj(state.world);
+  world.treasureMaps ??= [];
+  state.world = world;
   state.meta = { ...obj(state.meta), version: SAVE_VERSION };
   return state;
 }

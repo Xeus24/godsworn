@@ -52,9 +52,9 @@ export function clampApproval(n: number): number {
  * way their class grows, plain gear for the level, their specialization
  * from 20 and an auto-built tree.
  */
-export function createCompanion(def: CompanionDef, level: number, newUid: () => string, c: Content = content): CompanionState {
+export function createCompanion(def: CompanionDef, level: number, newUid: () => string, c: Content = content, autoTree = true): CompanionState {
   const char = createCharacter({ id: def.id, name: def.name, portrait: def.portrait, raceId: def.raceId, classId: def.classId, birthSignId: def.birthSignId }, c);
-  const state: CompanionState = { id: def.id, character: char, approval: def.startApproval, bonds: [], inParty: false, left: false, oath: false };
+  const state: CompanionState = { id: def.id, character: char, approval: def.startApproval, bonds: [], inParty: false, left: false, oath: false, autoTree };
   if (level > 1) grantXp(char, totalXpForLevel(level), 80, c);
   develop(state, def, c);
   outfit(char, char.level, newUid, false, c);
@@ -67,7 +67,7 @@ function develop(state: CompanionState, def: CompanionDef, c: Content): void {
   const char = state.character;
   autoAllocate(char, c);
   autoSpec(char, def.classId, def.specialization, c);
-  autoSpendTree(char, def.classId, c);
+  if (state.autoTree) autoSpendTree(char, def.classId, c);
 }
 
 /** Companions train alongside you: the same XP, spent automatically; their plain gear keeps up with their level. */

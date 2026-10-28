@@ -20,6 +20,8 @@ import {
 } from '../party/party';
 import type { CompanionDef, CompanionState, PartyState } from '../party/types';
 import type { Character } from '../character/types';
+import { autoSpendTree } from '../character/autoBuild';
+import { allocate, refund, resetBuild } from '../skills/tree';
 import type { GameSession } from './gameState';
 
 const fail = (reason: string): Result => ({ ok: false, reason });
@@ -65,11 +67,49 @@ export class PartyActions {
   recruit(id: string): void {
     if (this.party.companions[id]) return;
     const def = this.def(id);
-    const comp = createCompanion(def, this.s.player.level, () => this.s.newUid());
+    const comp = createCompanion(def, this.s.player.level, () => this.s.newUid(), undefined, false);
     comp.inParty = this.members().length < APPROVAL.partySize;
     this.party.companions[id] = comp;
     this.s.bus.emit('toast', { kind: 'quest', text: `${def.name} joins you${comp.inParty ? '' : ' (in reserve: your party is full)'}.` });
     this.changed('recruit');
+  }
+
+  /** Spends one of a companion's tree points on a node (player-allocated trees). */
+  allocateTree(id: string, nodeId: string): Result {
+    const comp = this.get(id);
+    if (!comp) return fail('They are not with you.');
+    const r = allocate(comp.character, this.def(id).classId, nodeId);
+    if (!r.ok) return fail(r.reason);
+    this.changed('companionTree');
+    return { ok: true };
+  }
+
+  refundTree(id: string, nodeId: string): Result {
+    const comp = this.get(id);
+    if (!comp) return fail('They are not with you.');
+    const r = refund(comp.character, this.def(id).classId, nodeId);
+    if (!r.ok) return fail(r.reason);
+    this.changed('companionTree');
+    return { ok: true };
+  }
+
+  /** Refunds every point so the tree can be rebuilt; free for companions. */
+  resetTree(id: string): Result {
+    const comp = this.get(id);
+    if (!comp) return fail('They are not with you.');
+    resetBuild(comp.character, this.def(id).classId);
+    this.changed('companionTree');
+    return { ok: true };
+  }
+
+  /** Turns automatic tree building on (spending every free point now) or off (the tree stays as it is). */
+  setAutoTree(id: string, on: boolean): Result {
+    const comp = this.get(id);
+    if (!comp) return fail('They are not with you.');
+    comp.autoTree = on;
+    if (on) autoSpendTree(comp.character, this.def(id).classId);
+    this.changed('companionTree');
+    return { ok: true };
   }
 
   setInParty(id: string, on: boolean): Result {

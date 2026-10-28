@@ -9,6 +9,8 @@ import type { CompanionDef, CompanionState } from '../../engine/party/types';
 import type { Conversation } from '../../engine/state/conversation';
 import type { GameSession } from '../../engine/state/gameState';
 import { drawPortrait } from '../art/portraits';
+import { activeBuild, availablePoints, canAllocate, earnedPoints, rankOf, treeOf } from '../../engine/skills/tree';
+import { describeNode } from '../tree/nodeText';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip } from '../components/tooltip';
 import { formatStat } from '../format';
@@ -158,11 +160,51 @@ export class PartyScreen implements Screen {
       el('div', { class: 'dim small' }, `Perks active: ${activeBonds(def, comp).map((n) => n.name).join(', ') || 'none yet'}.`),
       ...bond,
       oath,
+      ...this.treePanel(comp, def),
       el('h3', {}, 'Gear'),
       el('div', { class: 'party-gear' }, ...gear),
       el('h3', {}, 'From your bags'),
       el('div', { class: 'party-gear' }, ...(bag.length ? bag : [el('p', { class: 'dim small' }, 'Nothing in your bags they can use.')])),
     );
+  }
+
+  /** The companion's skill tree: spend their points yourself, or let them be spent automatically. */
+  private treePanel(comp: CompanionState, def: CompanionDef): HTMLElement[] {
+    const s = this.session;
+    const ch = comp.character;
+    const tree = treeOf(def.classId);
+    const build = activeBuild(ch, def.classId);
+    const free = availablePoints(ch, def.classId);
+    const auto = el('label', { class: 'small' });
+    const box = el('input', { type: 'checkbox' }) as HTMLInputElement;
+    box.checked = comp.autoTree;
+    box.addEventListener('change', () => this.say(s.party.setAutoTree(comp.id, box.checked)));
+    auto.append(box, ' Auto-allocate: spend their points for them as they level');
+    const reset = this.btn('Reset tree', () => this.say(s.party.resetTree(comp.id)));
+    const branches = tree.branches.map((b) => {
+      const nodes = tree.nodes.filter((n) => n.branch === b.id && n.kind !== 'keystone');
+      const rows = nodes.map((n) => {
+        const rank = rankOf(build, n.id);
+        const ok = canAllocate(ch, def.classId, n.id).ok;
+        const name = el('span', { class: rank > 0 ? '' : 'dim' }, `${n.name} ${rank}/${n.maxRank}`);
+        attachTooltip(name, () => describeNode(n, rank));
+        const plus = el('button', { class: 'tiny', 'aria-label': `Add a point to ${n.name}` }, '+');
+        plus.disabled = !ok || comp.autoTree;
+        plus.addEventListener('click', () => this.say(s.party.allocateTree(comp.id, n.id)));
+        const minus = el('button', { class: 'tiny', 'aria-label': `Remove a point from ${n.name}` }, '−');
+        minus.disabled = rank <= 0 || comp.autoTree;
+        minus.addEventListener('click', () => this.say(s.party.refundTree(comp.id, n.id)));
+        return el('div', { class: 'party-gear-row' }, name, minus, plus);
+      });
+      return el('details', {}, el('summary', {}, b.name), ...rows);
+    });
+    return [
+      el('h3', {}, 'Skill tree'),
+      el('div', { class: 'small' }, `${free} of ${earnedPoints(ch, def.classId)} points unspent.${comp.autoTree ? '' : free > 0 ? ' Spend them below.' : ''}`),
+      auto,
+      reset,
+      ...branches,
+    ];
   }
 
   private render = (): void => {

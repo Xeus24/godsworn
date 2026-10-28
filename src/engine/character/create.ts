@@ -1,3 +1,4 @@
+import { createAppearanceState } from '../items/appearance';
 import { content, type Content } from '../../data';
 import { DEFAULT_DIFFICULTY, type DifficultyId } from '../../data/difficulty';
 import { createDevotion } from '../gods/devotion';
@@ -47,6 +48,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     challenges: [...(opts.challenges ?? [])],
     stable: { pets: [], mounts: [] },
     difficulty: opts.difficulty ?? DEFAULT_DIFFICULTY,
+    appearance: createAppearanceState(),
     achievementPoints: 0,
     level: 1,
     xp: 0,

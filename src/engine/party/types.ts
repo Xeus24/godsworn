@@ -58,6 +58,8 @@ export interface CompanionState {
   left: boolean;
   /** Their personal quest is done: the oath perk is theirs. */
   oath: boolean;
+  /** Tree points are spent automatically; off means the player allocates them on the Party screen. */
+  autoTree: boolean;
 }
 
 export interface PartyState {

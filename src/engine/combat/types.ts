@@ -197,6 +197,9 @@ export interface Combatant {
   /** An Apostle's Divine Avatar: an ultimate usable once per battle. */
   avatarSkill?: string;
   avatarUsed?: boolean;
+  /** The Defender's second god's Avatar, usable once per battle as well. */
+  avatarSkill2?: string;
+  avatarUsed2?: boolean;
   stagger?: { value: number; max: number; brokenTurns: number };
   alive: boolean;
   flags: string[];

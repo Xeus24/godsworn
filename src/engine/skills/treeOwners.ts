@@ -12,7 +12,8 @@ import type { TreeNodeDef } from './treeTypes';
  */
 export function ownedTreeIds(char: Character): string[] {
   const apostle = char.devotion.apostle;
-  return [...char.classes.map((p) => p.classId), ...char.hybrids, ...(apostle ? [`apostle-${apostle.god}`] : [])];
+  const defender = char.devotion.defender;
+  return [...char.classes.map((p) => p.classId), ...char.hybrids, ...(apostle ? [`apostle-${apostle.god}`] : []), ...(apostle && defender ? [`apostle-${defender}`] : [])];
 }
 
 export function ownsTree(char: Character, treeId: string): boolean {
@@ -22,14 +23,18 @@ export function ownsTree(char: Character, treeId: string): boolean {
 /** Apostle tree points: base, +1 per character level since ascension, +1 per 2 paragon levels. */
 export function apostlePoints(char: Character, treeId: string): number {
   const a = char.devotion.apostle;
-  if (!a || treeId !== `apostle-${a.god}`) return 0;
-  return APOSTLESHIP.basePoints + Math.max(0, char.level - a.level) + Math.floor(char.paragonLevel / 2);
+  if (!a) return 0;
+  const paragon = Math.floor(char.paragonLevel / 2);
+  if (treeId === `apostle-${a.god}`) return APOSTLESHIP.basePoints + Math.max(0, char.level - a.level) + paragon;
+  if (char.devotion.defender && treeId === `apostle-${char.devotion.defender}`) return APOSTLESHIP.basePoints + Math.max(0, char.level - (char.devotion.defenderLevel ?? char.level)) + paragon;
+  return 0;
 }
 
 /** Apostle passives weaken while a Divine Edict has been neglected. */
 export function treePassiveMultiplier(char: Character, treeId: string): number {
   const a = char.devotion.apostle;
-  return a?.neglected && treeId === `apostle-${a.god}` ? APOSTLESHIP.neglectMultiplier : 1;
+  const isApostleTree = a !== undefined && (treeId === `apostle-${a.god}` || (char.devotion.defender !== undefined && treeId === `apostle-${char.devotion.defender}`));
+  return a?.neglected && isApostleTree ? APOSTLESHIP.neglectMultiplier : 1;
 }
 
 /** Hybrid points: a base on unlock, plus 1 per 2 combined class levels above 25. */
