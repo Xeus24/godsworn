@@ -162,6 +162,8 @@ export interface MapEntity {
   locked?: boolean;
   trapped?: boolean;
   hidden?: boolean;
+  /** A saint's hidden shrine: ref is the patron god, `saint` the saint (see data/saints.ts). */
+  saint?: string;
   /** A cache that opens only to an exploration skill of this rank (Swimming, Climbing, Lockpicking...). */
   gate?: { skill: 'swimming' | 'climbing' | 'ancientScript' | 'animalSpeech' | 'lockpicking' | 'detectTraps'; rank: number };
   /** Only shown once this lore page has been found (secret lairs). */

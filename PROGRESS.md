@@ -813,6 +813,17 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase8.test.ts` (10: counts, books, lost-art gates, Grimoires, casting every new battle skill, board sizes and gates, caches, Masters, guarded techniques); 693 unit tests, 8 e2e, build and playtest pass.
 - **Not done / cut:** gated caches are chest-like pickups, not new sub-maps (no new tiles or areas); the six exploration skills have no use in dialogue or elsewhere yet; Social skills are stat passives (no new dialogue checks beyond CHA); Masters are one duel each, with no unique dialogue per rank; the General screen has 14 tabs and the paragon tabs were not checked at phone width.
 
+### Expansion phase 9: the Greater Pantheon
+- **14 major gods and the Nameless One.** Lyssara (Dreams & the Moon, ice), Ordrun (Earth & Endurance, physical), Seraphel (Wind & Freedom, lightning) and Mirrin (Memory & Time, arcane) in `src/data/godsGreater.ts`. Each is a full kit like the original ten: identity, likes and dislikes, offerings, a battle prayer and a divine intervention, 3 minor and 6 major blessings, an Apostle (two rites, a Divine Avatar, a four-stage weapon, a Divine blessing and a skill tree), a follower, a Divine general skill with its battle skill, two Divine items, a priest with a temple (Thornwick, Frosthold, Sandhaven, Brightwater) and two shrine zones each. The old gods return the new gods' rivalries and alliances so every link stays mutual, and the Twilight peace ending now ends four more feuds.
+- **God questlines: 4 to 8 per god (112 in all).** The Tithe, the Vigil, Against (the rival god) and the Covenant are generated beside the original four from per-god tables.
+- **Apostle trees: 20 to 30 nodes**, via two new Ascendant lanes in `buildApostleTree`.
+- **8 minor saints** (`src/data/saints.ts`): Wenlock, Orrel, Brenna, Qadir, Ysmay, Corvane, Hruldar and Nul. Each has a lore page, a hidden shrine that appears on the map only once the page is found, five free minor blessings (one a day, stacking across saints via `grantSaintBoon`; `BlessingDef.saint`), and two short side quests. Visiting all eight gives the Reliquary of the Eight (a relic). Blessings: 140 to 180.
+- **Pantheon politics:** 6 events (`src/data/story/politics.ts`) where two gods clash over a town (Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere): side with either (favor, a feud) or mediate with WIS or CHA 40 (peace). The priest talks about the changed town ever after.
+- **God dialogue:** 20 reactive lines per god (`src/data/godLines.ts`: four for each of a stranger, Acknowledged, Favored, Devoted and Exalted), spoken at shrines (`godLine`).
+- **Shrines: 88.** Every zone keeps ten gods' wayshrines (the rest are placed after the core map so existing layouts hold) plus 8 hidden saint shrines; 24 wayshrines are sealed and open only to an exploration skill of enough rank (Swimming, Climbing, Read Ancient Script, Animal Speech, Lockpicking, Detect Traps).
+- Tests: `tests/expansionPhase9.test.ts` (10); 703 unit tests, 8 e2e, build and playtest pass.
+- **Not done / cut:** no per-god Act-5-style apostle story chapters (30-45 minutes each) or reactive lines at story moments beyond shrines; no relics or birth signs for the four new gods; the pantheon politics events do not change shop stock or prices, only the priest's talk, favor and the feud; the Apostle tree and Pantheon screens were not checked in the browser.
+
 ## Known bugs
 - None known.
 

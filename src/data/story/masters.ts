@@ -1,6 +1,6 @@
 import type { EncounterDef, EnemyDef } from '../../engine/combat/types';
 import type { DialogueDef, NpcDef, QuestDef } from '../../engine/quests/types';
-import { choice, dialogue, fight, foe, level, near, say, stage, startFight, talk } from './helpers';
+import { check, choice, dialogue, fight, foe, level, near, say, stage, startFight, stat, talk } from './helpers';
 
 /**
  * Fifteen hidden Masters, two per zone (one in the last). Each waits near a waypoint once you are
@@ -72,7 +72,7 @@ export const MASTER_QUESTS: QuestDef[] = MASTERS.map((m, i): QuestDef => {
 
 export const MASTER_DIALOGUES: DialogueDef[] = MASTERS.map((m) =>
   dialogue(`master-${m.id}-meet`, {
-    start: say(`master-${m.id}`, m.line, { choices: [choice('“Test me, then.”', 'go', [startFight(`master-${m.id}`)]), choice('“Not today.”', 'later')] }),
+    start: say(`master-${m.id}`, m.line, { choices: [choice('“Test me, then.”', 'go', [startFight(`master-${m.id}`)]), check(stat(m.magic ? 'wis' : 'str', 25), `[${m.magic ? 'WIS' : 'STR'} 25] “I have come a long way for this. I am ready.”`, 'go', [startFight(`master-${m.id}`)]), choice('“Not today.”', 'later')] }),
     go: say(`master-${m.id}`, '“Good. No holding back; I will not.”'),
     later: say(`master-${m.id}`, '“Then come back when you can. I am not going anywhere.”'),
   }),

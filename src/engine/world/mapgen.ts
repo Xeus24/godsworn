@@ -1,9 +1,12 @@
+import { SAINTS } from '../../data/saints';
 import { HIDDEN_LORE, SECRET_BOSSES } from '../../data/world/hidden';
 import { content, type Content } from '../../data';
 import { Rng } from '../core/rng';
 import type { DungeonDef, EncounterGroup, MapEntity, TileMap, ZoneDef } from './types';
 
 export const ZONE_W = 60;
+/** Gods' shrines in every zone (the old and new gods together). */
+export const WAYSHRINES_PER_ZONE = 10;
 export const ZONE_H = 36;
 export const DUNGEON_W = 46;
 export const DUNGEON_H = 30;
@@ -156,7 +159,7 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
     add({ id: `dungeon-${d}`, kind: 'dungeon', x: p[0], y: p[1], ref: d, label: c.dungeons.get(d).name });
   });
   zone.shrines.forEach((god, i) => {
-    const p = spot(...span(i * 2 + 1, 4));
+    const p = spot(...span((i * 2 + 1) % 4, 4));
     add({ id: `shrine-${god}`, kind: 'shrine', x: p[0], y: p[1], ref: god, label: c.pantheon.get(god).shrine });
   });
   const boss = spot(...span(3, 4), true);
@@ -241,6 +244,23 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   for (const sb of SECRET_BOSSES.filter((x) => x.zone === zone.id)) {
     const p = spotFor();
     if (p) add({ id: `secret-${sb.id}`, kind: 'worldBoss', x: p[0], y: p[1], ref: sb.enemy, requires: sb.requires, label: c.enemies.get(sb.enemy).name });
+  }
+
+  // Wayshrines: every zone keeps ten gods' shrines in all. A third are puzzle-locked, sealed until an exploration skill breaks them.
+  const wayGods = c.pantheon.ids().filter((g) => !zone.shrines.includes(g));
+  const rotated = [...wayGods.slice(zone.order % Math.max(1, wayGods.length)), ...wayGods.slice(0, zone.order % Math.max(1, wayGods.length))];
+  rotated.slice(0, Math.max(0, WAYSHRINES_PER_ZONE - zone.shrines.length)).forEach((god, i) => {
+    const p = spotFor();
+    if (!p) return;
+    const sealed = i % 3 === 0;
+    const gate = GATE_ROTATION[(zone.order + i) % GATE_ROTATION.length]!;
+    add({ id: `shrine-${god}`, kind: 'shrine', x: p[0], y: p[1], ref: god, label: sealed ? `Sealed ${c.pantheon.get(god).shrine}` : c.pantheon.get(god).shrine, ...(sealed ? { gate: { skill: gate.skill, rank: Math.min(9, zone.order + 1) } } : {}) });
+  });
+
+  // Hidden saint shrines: they show only once the saint's lore page has been found.
+  for (const s of SAINTS.filter((x) => x.zone === zone.id)) {
+    const p = spotFor();
+    if (p) add({ id: `saint-${s.id}`, kind: 'shrine', x: p[0], y: p[1], ref: s.patron, saint: s.id, requires: s.lore, label: `Shrine of ${s.name}` });
   }
 
   // Exploration caches: three per zone that only an exploration skill of enough rank can open.

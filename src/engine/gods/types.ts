@@ -92,6 +92,8 @@ export interface BlessingDef {
   /** Minor blessings: duration in battles and price. */
   battles?: number;
   favorCost?: number;
+  /** Saint blessings come from a hidden saint shrine, not the god's shrine, and stack with other saints'. */
+  saint?: string;
 }
 
 /** A character's relationship with the pantheon. */

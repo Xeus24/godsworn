@@ -38,7 +38,7 @@ describe('favor tiers', () => {
   it('every god (but the hidden one) has rules, 3 minor and 6 major blessings', () => {
     const visible = content.gods.filter((g) => !g.hidden);
     expect(content.pantheon.size).toBe(visible.length);
-    expect(content.blessings.filter((b) => b.kind === 'minor')).toHaveLength(visible.length * 3);
+    expect(content.blessings.filter((b) => b.kind === 'minor' && !b.saint)).toHaveLength(visible.length * 3);
     expect(content.blessings.filter((b) => b.kind === 'major' && b.rarity !== 'divine')).toHaveLength(visible.length * 6);
   });
 });

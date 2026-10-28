@@ -1,4 +1,5 @@
 import type { Element, PrimaryStat } from '../engine/stats/types';
+import { GREATER_GODS } from './godsGreater';
 
 /**
  * Identity of each god. Favor rules, likes/dislikes, blessings and
@@ -18,7 +19,7 @@ export interface GodDef {
   hidden?: boolean;
 }
 
-export const GODS: GodDef[] = [
+const BASE_GODS: GodDef[] = [
   {
     id: 'solenne',
     name: 'Solenne',
@@ -131,3 +132,5 @@ export const GODS: GodDef[] = [
     hidden: true,
   },
 ];
+
+export const GODS: GodDef[] = [...BASE_GODS.filter((g) => g.id !== 'nameless'), ...GREATER_GODS, ...BASE_GODS.filter((g) => g.id === 'nameless')];

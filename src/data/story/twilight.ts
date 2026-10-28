@@ -28,6 +28,8 @@ const FEUDS: [string, string][] = [
   ['vex', 'grimvald'],
   ['nymira', 'aurelis'],
 ];
+/** Feuds the four newer gods joined; peace ends them too. */
+const NEW_FEUDS: [string, string][] = [['kael', 'lyssara'], ['vex', 'ordrun'], ['grimvald', 'seraphel'], ['morrath', 'mirrin']];
 const DAWN = ['solenne', 'kael', 'thalor', 'grimvald', 'aurelis'];
 const DUSK = ['morrath', 'hesha', 'ysolde', 'vex', 'nymira'];
 const politics = (a: string, b: string, relation: 'rival' | 'ally' | 'peace'): ActionDef => ({ kind: 'politics', a, b, relation });
@@ -123,7 +125,7 @@ export const TWILIGHT_QUESTS: QuestDef[] = [
 const councilChoices = [
   check(any(stat('wis', 30), APOSTLE, { kind: 'rep', faction: 'order-of-dawn', min: 1500 }), 'Enough. Every one of these feuds is older than its reasons. End them.', 'peace', [
     setFlag('twilight-court', 'peace'),
-    ...FEUDS.map(([a, b]) => politics(a, b, 'peace')),
+    ...[...FEUDS, ...NEW_FEUDS].map(([a, b]) => politics(a, b, 'peace')),
     ...[...DAWN, ...DUSK].map((g) => favor(g, 15)),
   ]),
   choice('I stand with the Court of Dawn.', 'dawn', [

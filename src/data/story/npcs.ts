@@ -1,3 +1,4 @@
+import { GREATER_PRIEST_NPCS } from '../godsGreater';
 import { GREATER_CLASSES } from '../classesGreater';
 import type { NpcDef } from '../../engine/quests/types';
 import { questActive } from './helpers';
@@ -53,6 +54,8 @@ export const TOWN_NPCS: NpcDef[] = [
 ];
 
 /** The eight class mentors, found in every town's arena. */
+export const TEMPLE_NPCS: NpcDef[] = GREATER_PRIEST_NPCS;
+
 export const MENTOR_NPCS: NpcDef[] = [
   ['warrior', 'Sword-Master Bram', 'human', 6, '#8a96a8', '“Stand straight. Shoulders back. Now, what do you want?”'],
   ['mage', 'Archmage Velis', 'elf', 2, '#3a5ab0', '“If you are here to learn, sit. If you are here to watch, stand further back. Further.”'],

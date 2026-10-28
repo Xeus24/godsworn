@@ -22,7 +22,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'meadowlands', gather: { mining: ['iron-ore'], herbalism: ['healroot', 'manabloom'], fishing: ['river-trout'] }, name: 'The Meadowlands', order: 1, levels: [1, 8], biome: 'meadow', town: 'brightwater',
     description: 'Rolling farmland where the road begins. Goblins raid the outlying farms.',
-    encounterRate: 0.06, dungeons: ['goblin-warren'], worldBoss: 'bramblehorn', shrines: ['solenne', 'hesha'],
+    encounterRate: 0.06, dungeons: ['goblin-warren'], worldBoss: 'bramblehorn', shrines: ['solenne', 'hesha', 'mirrin'],
     weather: [{ id: 'clear', weight: 5 }, { id: 'rain', weight: 2 }, { id: 'fog', weight: 1 }],
     encounters: [
       grp(4, ['green-slime', 'green-slime']), grp(3, ['giant-rat', 'giant-rat', 'giant-rat']), grp(3, ['meadow-wolf', 'meadow-wolf']),
@@ -35,7 +35,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'whisperwood', gather: { mining: ['iron-ore'], herbalism: ['healroot', 'manabloom', 'fireweed'], fishing: ['river-trout'] }, name: 'The Whisperwood', order: 2, levels: [8, 16], biome: 'forest', town: 'thornwick',
     description: 'An old forest that talks in its sleep. The dead walk on the old battlefield.',
-    encounterRate: 0.07, dungeons: ['spider-hollow', 'old-crypt'], worldBoss: 'gnarlroot', shrines: ['ysolde', 'morrath'],
+    encounterRate: 0.07, dungeons: ['spider-hollow', 'old-crypt'], worldBoss: 'gnarlroot', shrines: ['ysolde', 'morrath', 'lyssara'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'rain', weight: 2 }, { id: 'fog', weight: 2 }],
     encounters: [
       grp(4, ['dire-wolf', 'dire-wolf']), grp(3, ['dire-wolf', '^forest-spider', '^forest-spider']), grp(3, ['treant-sapling', '^will-o-wisp']),
@@ -48,7 +48,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'sunken-caves', gather: { mining: ['mithril-ore', 'iron-ore'], herbalism: ['fireweed', 'manabloom'], fishing: ['river-trout', 'silverfin'] }, threat: 110, name: 'The Sunken Caves', order: 3, levels: [16, 24], biome: 'cave',
     description: 'Flooded caverns under the hills, glittering with crystal and full of things that like the dark.',
-    encounterRate: 0.08, dungeons: ['drowned-grotto'], worldBoss: 'abyssal-crab', shrines: ['nymira'],
+    encounterRate: 0.08, dungeons: ['drowned-grotto'], worldBoss: 'abyssal-crab', shrines: ['nymira', 'ordrun'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'fog', weight: 1 }],
     encounters: [
       grp(4, ['^cave-bat', '^cave-bat', '^cave-bat']), grp(3, ['crystal-golem', '^cave-bat']), grp(3, ['drowned-sailor', 'drowned-sailor']),
@@ -60,7 +60,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'ashen-desert', gather: { mining: ['mithril-ore'], herbalism: ['fireweed', 'frostleaf'], fishing: ['silverfin'] }, threat: 70, name: 'The Ashen Desert', order: 4, levels: [24, 32], biome: 'desert', town: 'sandhaven',
     description: 'Grey dunes over a buried empire. The sun is merciless, and so are the raiders.',
-    encounterRate: 0.07, dungeons: ['sun-king-tomb'], worldBoss: 'sandworm', shrines: ['kael', 'solenne'],
+    encounterRate: 0.07, dungeons: ['sun-king-tomb'], worldBoss: 'sandworm', shrines: ['kael', 'solenne', 'seraphel'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'heatwave', weight: 3 }, { id: 'sandstorm', weight: 2 }],
     encounters: [
       grp(4, ['sand-scorpion', 'sand-scorpion']), grp(3, ['desert-raider', 'desert-raider', '^desert-raider']), grp(3, ['mummy', 'mummy'], { time: 'night' }),
@@ -72,7 +72,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'frostspire', gather: { mining: ['adamant-ore', 'mithril-ore'], herbalism: ['frostleaf', 'sunpetal'], fishing: ['silverfin'] }, threat: 60, name: 'Frostspire', order: 5, levels: [32, 40], biome: 'snow', town: 'frosthold',
     description: 'The mountains where the giants built a spire of ice. It never stops snowing.',
-    encounterRate: 0.07, dungeons: ['ice-palace'], worldBoss: 'frost-wyrm', shrines: ['aurelis', 'thalor'],
+    encounterRate: 0.07, dungeons: ['ice-palace'], worldBoss: 'frost-wyrm', shrines: ['aurelis', 'thalor', 'lyssara'],
     weather: [{ id: 'snow', weight: 4 }, { id: 'clear', weight: 2 }, { id: 'fog', weight: 1 }],
     encounters: [
       grp(4, ['frost-wolf', 'frost-wolf', 'frost-wolf']), grp(3, ['yeti', '^ice-elemental']), grp(3, ['frost-giant']),
@@ -84,7 +84,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'stormcoast', gather: { mining: ['adamant-ore'], herbalism: ['sunpetal', 'frostleaf'], fishing: ['silverfin', 'ember-eel'] }, threat: 45, name: 'The Stormcoast', order: 6, levels: [40, 48], biome: 'coast', town: 'saltmere',
     description: 'Cliffs, wrecks and pirate coves under a sky that is always about to break.',
-    encounterRate: 0.07, dungeons: ['leviathan-wreck', 'smugglers-den'], worldBoss: 'storm-roc', shrines: ['nymira', 'grimvald'],
+    encounterRate: 0.07, dungeons: ['leviathan-wreck', 'smugglers-den'], worldBoss: 'storm-roc', shrines: ['nymira', 'grimvald', 'seraphel'],
     weather: [{ id: 'storm', weight: 3 }, { id: 'rain', weight: 3 }, { id: 'clear', weight: 2 }],
     encounters: [
       grp(4, ['corsair', 'corsair', '^corsair']), grp(3, ['sea-serpent']), grp(3, ['^harpy', '^harpy']), grp(2, ['corsair', '^siren']),
@@ -96,7 +96,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'volcanic-rift', gather: { mining: ['starmetal-ore', 'adamant-ore'], herbalism: ['sunpetal', 'dreamleaf'], fishing: ['ember-eel'] }, threat: 5, name: 'The Volcanic Rift', order: 7, levels: [48, 55], biome: 'volcanic',
     description: 'The world split open here. The fire underneath is still awake.',
-    encounterRate: 0.08, dungeons: ['fallen-forge'], worldBoss: 'ember-matriarch', shrines: ['thalor', 'kael'],
+    encounterRate: 0.08, dungeons: ['fallen-forge'], worldBoss: 'ember-matriarch', shrines: ['thalor', 'kael', 'ordrun'],
     weather: [{ id: 'ashfall', weight: 4 }, { id: 'heatwave', weight: 2 }, { id: 'clear', weight: 1 }],
     encounters: [
       grp(4, ['lava-hound', 'lava-hound']), grp(3, ['magma-elemental', '^fire-imp']), grp(3, ['obsidian-golem']),
@@ -108,7 +108,7 @@ export const ZONES: ZoneDef[] = [
   {
     id: 'dark-citadel', gather: { mining: ['starmetal-ore'], herbalism: ['dreamleaf'], fishing: ['ember-eel'] }, name: 'The Dark Citadel', order: 8, levels: [55, 60], biome: 'citadel',
     description: 'A fortress of black stone where the sky has the wrong color. Something unwritten waits inside.',
-    encounterRate: 0.09, dungeons: ['black-throne'], worldBoss: 'unwritten-herald', shrines: ['morrath', 'vex'],
+    encounterRate: 0.09, dungeons: ['black-throne'], worldBoss: 'unwritten-herald', shrines: ['morrath', 'vex', 'mirrin'],
     weather: [{ id: 'blood-moon', weight: 2 }, { id: 'fog', weight: 2 }, { id: 'clear', weight: 1 }],
     encounters: [
       grp(4, ['void-knight', 'void-knight']), grp(3, ['fallen-paladin', '^shadow-fiend']), grp(2, ['bone-dragon']),

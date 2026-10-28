@@ -68,11 +68,10 @@ describe('the Trial of Apostleship', () => {
     expect(canAscend(s.player, 'kael').ok).toBe(true);
   });
 
-  it('each god has a 20-25 node apostle tree, an avatar, 4 weapon stages and edicts', () => {
+  it('each god has a 30-node apostle tree, an avatar, 4 weapon stages and edicts', () => {
     for (const g of content.pantheon.all()) {
       const nodes = treeOf(`apostle-${g.id}`).nodes.length;
-      expect(nodes).toBeGreaterThanOrEqual(20);
-      expect(nodes).toBeLessThanOrEqual(25);
+      expect(nodes).toBe(30);
       expect(content.skills.get(content.apostles.get(g.id).avatar).ultimate).toBe(true);
       expect(content.edicts.filter((e) => e.god === g.id).length).toBeGreaterThan(0);
     }

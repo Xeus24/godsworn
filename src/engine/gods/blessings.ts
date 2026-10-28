@@ -140,9 +140,24 @@ export function chooseOffer(char: Character, god: string, id: string, c: Content
 export function canReceiveMinor(char: Character, id: string, c: Content = content): BlessingResult {
   const b = c.blessings.find(id);
   if (!b || b.kind !== 'minor') return fail('Unknown blessing.');
+  if (b.saint) return fail('Only the saint’s own hidden shrine grants this.');
   if (!atLeast(char, b.god, DEVOTION.minorBlessingTier)) return fail(`${c.gods.get(b.god).name} will not bless you.`);
   if ((char.devotion.favor[b.god] ?? 0) < (b.favorCost ?? 0)) return fail(`Needs ${b.favorCost} favor to spend.`);
   return { ok: true };
+}
+
+/** A saint's boon: a timed buff that stacks with other saints' (one per saint), free of favor. */
+export function grantSaintBoon(char: Character, id: string, scale: number, c: Content = content): TimedBuff {
+  const b = c.blessings.get(id);
+  const buff: TimedBuff = {
+    id: `blessing:${b.id}`,
+    name: `${b.name} (${b.saint})`,
+    god: `saint:${b.saint}`,
+    battlesLeft: b.battles ?? 10,
+    modifiers: b.modifiers.map((m) => ({ ...m, value: Math.round(m.value * scale * 10) / 10 })),
+  };
+  char.timedBuffs = [...char.timedBuffs.filter((t) => t.god !== buff.god), buff];
+  return buff;
 }
 
 /** Grants a minor blessing as a timed buff (replacing any other minor blessing from that god). The caller spends the favor. */

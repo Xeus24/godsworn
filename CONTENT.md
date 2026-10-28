@@ -265,10 +265,11 @@ Generated from the data files by `npm run content:md`.
 | **Ring of the Everlasting Flame** | Starsilver Ring | 60 | +40% Fire Damage; 20% chance on cast to Burn every enemy; Burning enemies spread Burn when they die |
 | **Reaper King's Scythe** | Godforged Scythe | 54 | +35% Shadow Damage; Attacks against enemies below 20% HP always crit; Kills heal 10% of max HP and reduce cooldowns by 1 |
 
-### Relics (10)
+### Relics (11)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
+| **Reliquary of the Eight** | Ancient Relic | 30 | +8% increased Max HP; +10% Status Resist; Eight small bones in eight small boxes, and each one hums a different note; Use: Eight Voices: Heal the party for 20% of max HP and give +15% damage for 3 turns.; Awakens (Win 100 battles while wearing it.): +8% max HP, +15% healing power |
 | **Shard of the First Dawn** | Ancient Relic | 10 | +10% increased Divine Power; +10% Holy Damage; A splinter of the sun from the morning the world began; Use: First Light: Holy light sears all enemies for 120% DIV.; Awakens (Slay 50 undead while wearing it.): +20% holy damage |
 | **Horn of Kael** | Ancient Relic | 10 | +10% increased Physical Attack; Blown before the first war, it has never sounded a retreat; Use: Call to Arms: The party deals +25% damage for 3 turns.; Awakens (Win 25 battles while wearing it.): +30% crit damage |
 | **Eye of Morrath** | Ancient Relic | 15 | +15% Shadow Damage; It watches the dying, and they watch back; Use: The Last Look: Curse and Fear a target for 2 turns.; Awakens (Slay 5 bosses while wearing it.): +25% shadow damage, +4% lifesteal |
@@ -280,7 +281,7 @@ Generated from the data files by `npm run content:md`.
 | **Grimvald's Ledger** | Ancient Relic | 10 | +30% Gold Find; Every debt ever owed, in very small handwriting; Use: Collect the Debt: Weaken the target, make it Vulnerable, and pocket 25 gold.; Awakens (Pray at shrines 30 times while carrying it.): +40% gold find, +15% magic find |
 | **The Thousandth Page** | Ancient Relic | 20 | +10% increased Magic Attack; +5% Cooldown Reduction; Torn from Aurelis’s own book. The words rearrange when you are not looking; Use: Turn the Page: Reduce all cooldowns by 2 turns and restore 50 MP.; Awakens (Win 40 battles while wearing it.): +8% cooldown reduction, +10% XP |
 
-### Divine items (favor-gated drops, plus each god-bound weapon stage) (60)
+### Divine items (favor-gated drops, plus each god-bound weapon stage) (84)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -304,6 +305,14 @@ Generated from the data files by `npm run content:md`.
 | **Mantle of Mercy** | Adamant Pauldrons | 32 | +12% increased Max HP; +20% Healing Received; The first time you fall below 30% HP, heal 35% |
 | **Hammer of the Golden Scale** | Adamant Mace | 32 | +40% Gold Find; +10% increased Physical Attack; Kills grant 12 gold |
 | **Merchant-Prince’s Ring** | Gold Ring | 20 | +30% Gold Find; +8 Luck; Smells faintly of other people’s money |
+| **Crescent of Lyssara** | Ironwood Staff | 20 | +20% Ice Damage; +8 Wisdom; 20% more damage at night |
+| **Pillow of the Moon** | Platinum Amulet | 32 | +6 HP Regen; +20% Status Resist |
+| **Cornerstone** | Mithril Warhammer | 20 | +20% Physical Damage; +8 Vitality; A weapon that does not tire |
+| **Plinth of Patience** | Adamant Shield | 32 | +22% increased Defense; 6% less Damage Taken |
+| **Wind-Chime of Seraphel** | Gold Amulet | 20 | +15% Lightning Damage; +8% Dodge |
+| **Cloak of Open Roads** | Spellweave Shawl | 32 | +10% increased Speed; +20% Status Resist |
+| **Hourglass of Mirrin** | Gold Amulet | 20 | +18% Arcane Damage; +6% Cooldown Reduction |
+| **Ledger of Hours** | Sage's Tome | 32 | +15% increased Magic Attack; +10% XP Gain |
 | **Dawnbreaker** | Mithril Mace | 1 | +15% Holy Damage; +6 Faith; +10% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
 | **Dawnbreaker, Risen** | Adamant Mace | 30 | +25% Holy Damage; +10 Faith; +15% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
 | **Dawnbreaker, Zenith** | Starmetal Mace | 45 | +35% Holy Damage; +14 Faith; +20% increased Divine Power; God-bound: only Solenne's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Solenne's power |
@@ -344,6 +353,22 @@ Generated from the data files by `npm run content:md`.
 | **Ledger’s Edge, Audited** | Adamant Axe | 30 | +25% Physical Damage; +10 Luck; +15% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
 | **Ledger’s Edge, Compounded** | Starmetal Axe | 45 | +35% Physical Damage; +14 Luck; +20% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Grimvald's power |
 | **Ledger’s Edge, the Golden Scale** | Godforged Axe | 60 | +50% Physical Damage; +20 Luck; +30% increased Divine Power; God-bound: only Grimvald's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Grimvald's power |
+| **Crescent Rod** | Ironwood Staff | 1 | +15% Ice Damage; +6 Wisdom; +10% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Crescent Rod, Waxing** | Elderwood Staff | 30 | +25% Ice Damage; +10 Wisdom; +15% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Crescent Rod, Full** | Moonwood Staff | 45 | +35% Ice Damage; +14 Wisdom; +20% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Lyssara's power |
+| **Crescent Rod, the Moon Between Dreams** | Worldtree Staff | 60 | +50% Ice Damage; +20 Wisdom; +30% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Lyssara's power |
+| **Keystone** | Mithril Warhammer | 1 | +15% Physical Damage; +6 Vitality; +10% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Keystone, Set** | Adamant Warhammer | 30 | +25% Physical Damage; +10 Vitality; +15% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Keystone, Bearing** | Starmetal Warhammer | 45 | +35% Physical Damage; +14 Vitality; +20% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ordrun's power |
+| **Keystone, the Unmoved** | Godforged Warhammer | 60 | +50% Physical Damage; +20 Vitality; +30% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ordrun's power |
+| **Windpiercer** | Ironwood Bow | 1 | +15% Lightning Damage; +6 Dexterity; +10% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Windpiercer, Fledged** | Elderwood Bow | 30 | +25% Lightning Damage; +10 Dexterity; +15% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Windpiercer, Soaring** | Moonwood Bow | 45 | +35% Lightning Damage; +14 Dexterity; +20% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Seraphel's power |
+| **Windpiercer, the Open Road** | Worldtree Bow | 60 | +50% Lightning Damage; +20 Dexterity; +30% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Seraphel's power |
+| **Hourglass Staff** | Ironwood Staff | 1 | +15% Arcane Damage; +6 Intelligence; +10% increased Divine Power; God-bound: only Mirrin's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Hourglass Staff, Running** | Elderwood Staff | 30 | +25% Arcane Damage; +10 Intelligence; +15% increased Divine Power; God-bound: only Mirrin's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Hourglass Staff, Turned** | Moonwood Staff | 45 | +35% Arcane Damage; +14 Intelligence; +20% increased Divine Power; God-bound: only Mirrin's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Mirrin's power |
+| **Hourglass Staff, the Keeper** | Worldtree Staff | 60 | +50% Arcane Damage; +20 Intelligence; +30% increased Divine Power; God-bound: only Mirrin's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Mirrin's power |
 
 ### Item sets (10)
 
@@ -562,7 +587,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (178)
+### Enemies (190)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -662,6 +687,10 @@ Generated from the data files by `npm run content:md`.
 | **Herald of Aurelis** | 1 | punisher | spirit, divine | back | caster | Wrath of Aurelis | arcane +50% |
 | **Herald of Hesha** | 1 | punisher | spirit, divine | back | caster | Wrath of Hesha | holy +50% |
 | **Herald of Grimvald** | 1 | punisher | spirit, divine | back | caster | Wrath of Grimvald | physical +50% |
+| **Herald of Lyssara** | 1 | punisher | spirit, divine | back | caster | Wrath of Lyssara | ice +50% |
+| **Herald of Ordrun** | 1 | punisher | spirit, divine | back | caster | Wrath of Ordrun | physical +50% |
+| **Herald of Seraphel** | 1 | punisher | spirit, divine | back | caster | Wrath of Seraphel | lightning +50% |
+| **Herald of Mirrin** | 1 | punisher | spirit, divine | back | caster | Wrath of Mirrin | arcane +50% |
 | **Aspect of Solenne** | 30 | boss | spirit, divine | front | aggressive | Wrath of Solenne, Judgement of Solenne | holy +60% |
 | **Aspect of Morrath** | 30 | boss | spirit, divine | front | aggressive | Wrath of Morrath, Judgement of Morrath | shadow +60% |
 | **Aspect of Kael** | 30 | boss | spirit, divine | front | aggressive | Wrath of Kael, Judgement of Kael | physical +60% |
@@ -672,6 +701,10 @@ Generated from the data files by `npm run content:md`.
 | **Aspect of Aurelis** | 30 | boss | spirit, divine | front | aggressive | Wrath of Aurelis, Judgement of Aurelis | arcane +60% |
 | **Aspect of Hesha** | 30 | boss | spirit, divine | front | aggressive | Wrath of Hesha, Judgement of Hesha | holy +60% |
 | **Aspect of Grimvald** | 30 | boss | spirit, divine | front | aggressive | Wrath of Grimvald, Judgement of Grimvald | physical +60% |
+| **Aspect of Lyssara** | 30 | boss | spirit, divine | front | aggressive | Wrath of Lyssara, Judgement of Lyssara | ice +60% |
+| **Aspect of Ordrun** | 30 | boss | spirit, divine | front | aggressive | Wrath of Ordrun, Judgement of Ordrun | physical +60% |
+| **Aspect of Seraphel** | 30 | boss | spirit, divine | front | aggressive | Wrath of Seraphel, Judgement of Seraphel | lightning +60% |
+| **Aspect of Mirrin** | 30 | boss | spirit, divine | front | aggressive | Wrath of Mirrin, Judgement of Mirrin | arcane +60% |
 | **Unsworn Zealot** | 4 | normal | humanoid, cultist, unsworn | front | aggressive | Crushing Swing | holy -15% |
 | **Unsworn Adept** | 5 | normal | humanoid, cultist, unsworn | back | caster | Shadow Bolt, Goblin Hex | shadow +20%, holy -15% |
 | **Hollow Knight** | 30 | normal | humanoid, unsworn, void | front | aggressive | Dark Cleave, Shield Bash | void +30%, holy -20% |
@@ -744,10 +777,14 @@ Generated from the data files by `npm run content:md`.
 | **Scribe of Aurelis** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Aurelis | arcane +40% |
 | **Hearth-Keeper of Hesha** | 1 | elite | spirit, divine, follower | back | healer | Crude Mending, Wrath of Hesha | holy +40% |
 | **Coin-Golem of Grimvald** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Grimvald | physical +40% |
+| **Moth of Lyssara** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Lyssara | ice +40% |
+| **Cairn-Guard of Ordrun** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Ordrun | physical +40% |
+| **Gust-Sprite of Seraphel** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Seraphel | lightning +40% |
+| **Hour-Clerk of Mirrin** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Mirrin | arcane +40% |
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (263)
+### Encounters (283)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -860,6 +897,18 @@ Generated from the data files by `npm run content:md`.
 | **Trial of Grimvald: the Ordeal** | 30 | Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Gauntlet** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Aspect** | 30 | Aspect of Grimvald, Herald of Grimvald |
+| **Trial of Lyssara: the Ordeal** | 30 | Herald of Lyssara, Herald of Lyssara |
+| **Trial of Lyssara: the Gauntlet** | 30 | Herald of Lyssara, Herald of Lyssara, Herald of Lyssara |
+| **Trial of Lyssara: the Aspect** | 30 | Aspect of Lyssara, Herald of Lyssara |
+| **Trial of Ordrun: the Ordeal** | 30 | Herald of Ordrun, Herald of Ordrun |
+| **Trial of Ordrun: the Gauntlet** | 30 | Herald of Ordrun, Herald of Ordrun, Herald of Ordrun |
+| **Trial of Ordrun: the Aspect** | 30 | Aspect of Ordrun, Herald of Ordrun |
+| **Trial of Seraphel: the Ordeal** | 30 | Herald of Seraphel, Herald of Seraphel |
+| **Trial of Seraphel: the Gauntlet** | 30 | Herald of Seraphel, Herald of Seraphel, Herald of Seraphel |
+| **Trial of Seraphel: the Aspect** | 30 | Aspect of Seraphel, Herald of Seraphel |
+| **Trial of Mirrin: the Ordeal** | 30 | Herald of Mirrin, Herald of Mirrin |
+| **Trial of Mirrin: the Gauntlet** | 30 | Herald of Mirrin, Herald of Mirrin, Herald of Mirrin |
+| **Trial of Mirrin: the Aspect** | 30 | Aspect of Mirrin, Herald of Mirrin |
 | **Trouble on the Road** | 5 | Goblin Cutthroat, Goblin Cutthroat, Goblin Shaman |
 | **Trouble on the Road** | 12 | Dire Wolf, Whisperwood Spider, Will-o'-Wisp |
 | **Trouble on the Road** | 28 | Desert Raider, Sand Scorpion, Dust Elemental |
@@ -975,6 +1024,10 @@ Generated from the data files by `npm run content:md`.
 | **Aurelis’s Chained Herald** | 50 | Herald of Aurelis, Hollow Knight, Oathburner |
 | **Hesha’s Chained Herald** | 50 | Herald of Hesha, Hollow Knight, Oathburner |
 | **Grimvald’s Chained Herald** | 50 | Herald of Grimvald, Hollow Knight, Oathburner |
+| **Lyssara’s Chained Herald** | 50 | Herald of Lyssara, Hollow Knight, Oathburner |
+| **Ordrun’s Chained Herald** | 50 | Herald of Ordrun, Hollow Knight, Oathburner |
+| **Seraphel’s Chained Herald** | 50 | Herald of Seraphel, Hollow Knight, Oathburner |
+| **Mirrin’s Chained Herald** | 50 | Herald of Mirrin, Hollow Knight, Oathburner |
 | **The Hollow Choir** | 62 | Erased Knight, Hollow Chorister, Hollow Chorister |
 | **The Erased** | 66 | Erased Knight, Erased Knight, False Herald |
 | **Heralds of the Dusk** | 72 | Herald of Morrath, Herald of Vex |
@@ -998,6 +1051,10 @@ Generated from the data files by `npm run content:md`.
 | **Aurelis’s Herald** | 25 | Herald of Aurelis, Herald of Aurelis |
 | **Hesha’s Herald** | 25 | Herald of Hesha, Herald of Hesha |
 | **Grimvald’s Herald** | 25 | Herald of Grimvald, Herald of Grimvald |
+| **Lyssara’s Herald** | 25 | Herald of Lyssara, Herald of Lyssara |
+| **Ordrun’s Herald** | 25 | Herald of Ordrun, Herald of Ordrun |
+| **Seraphel’s Herald** | 25 | Herald of Seraphel, Herald of Seraphel |
+| **Mirrin’s Herald** | 25 | Herald of Mirrin, Herald of Mirrin |
 | **The Cult Circle** | 14 | Skeleton Soldier, Dark Cultist, Dark Cultist |
 | **The Blight Root** | 13 | Blighted Treant, Treant Sapling, Treant Sapling |
 | **Raiders at the Pass** | 29 | Desert Raider, Desert Raider, Sand Scorpion |
@@ -1021,7 +1078,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-81 class trees, 1696 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+85 class trees, 1696 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -1516,7 +1573,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## General skills (81)
 
 <!-- general:start -->
-175 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+179 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -1687,6 +1744,10 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Rite of Knowing** | divine | Divine | Revelation | Revelation in battle. Passive: +1 INT per rank. |
 | **Rite of Mercy** | divine | Divine | Hearthlight | Hearthlight in battle. Passive: +3 healing power per rank. |
 | **Rite of Tithes** | divine | Divine | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
+| **Rite of Dreams** | divine | Divine | Lullaby | Lullaby in battle. Passive: +2% ice damage per rank. |
+| **Rite of Endurance** | divine | Divine | Stone Stance | Stone Stance in battle. Passive: +2% max HP per rank. |
+| **Rite of the Road** | divine | Divine | Gale | Gale in battle. Passive: +0.6 dodge per rank. |
+| **Rite of Hours** | divine | Divine | Borrowed Hour | Borrowed Hour in battle. Passive: +0.5% cooldown reduction per rank. |
 | **Void Pact** | forbidden | Relic | Void Pact | Void Pact in battle. Passive: +3% void damage per rank. |
 | **Margin Walker** | forbidden | Relic |  | Passive: +1 dodge and +4 void resistance per rank, but 3% less Favor Gain per rank. |
 | **Unmake** | forbidden | Relic | Unmake | Unmake in battle. Passive: +2% damage per rank, but 2% less healing received per rank. |
@@ -1880,33 +1941,41 @@ Favor runs from -100 to 1200. Tiers: Hated (-50 or less), Distrusted, Neutral (0
 
 | God | Rivals / allies | Likes | Dislikes | Offerings | Prayer (battle) | Intervention |
 |---|---|---|---|---|---|---|
-| **Solenne**, Sun & Justice | Morrath / Hesha | Smiting the undead (+3); Ending cultists (+3); Wielding holy light (+0.5); Victories under the sun (+1); Helping people in need (+4) | Raising the dead (-2); Fleeing from evil (-2) | Values arms and armor for her crusaders. | **Sunburst**: Holy light sears every enemy (60% Divine Power). (15 favor) | **The Unclouded Eye**: Solenne’s gaze burns every enemy as she raises you. |
-| **Morrath**, Death & Endings | Solenne / Vex | Felling mighty foes (+5); Raising the dead (+2); Shadow arts (+0.5); Victories by night (+1) | Cheating death with healing (-0.25); Holy light (-0.5) | Collects the strange things the dead leave behind. | **Death’s Toll**: Curse and Weaken every enemy for 2 turns. (15 favor) | **Not Yet**: Morrath turns you away from the Last Door, and the shadows take payment from your foes. |
-| **Kael**, War & Glory | Hesha / Thalor | Winning battles (+2); Defeating champions (+4); Mighty blows (+0.5) | Cowardice (-5); Defeat (-3) | Loves good weapons above all things. | **Battle Cry**: +25% damage for you for 3 turns, and you gain Haste. (15 favor) | **Not Like This**: Kael refuses you a coward’s death: you rise in a red rage. |
-| **Ysolde**, Nature & the Hunt | Thalor / Nymira | Hunting beasts (+2); Nature magic (+0.5); The bow (+0.25) | Wasteful salvaging (-1); Wildfire (-0.25) | Accepts herbs, hides and food with joy. | **Huntress’s Mark**: Mark every enemy Vulnerable and Slow them for 2 turns. (15 favor) | **The Green Hour**: Vines bind your foes as the forest closes your wounds. |
-| **Vex**, Trickery & Luck | Grimvald / Morrath | Lucky strikes (+1); Stealing (+2); Uncovering the unknown (+1); Gambling (+3) | Boring caution (-2); Losing (badly) (-1) | Will take anything shiny. Especially gold. | **Loaded Dice**: +30 crit chance and +15 dodge for 3 turns. (15 favor) | **Double or Nothing**: Vex flips a coin for your life. It lands on its edge. |
-| **Thalor**, Forge & Craft | Ysolde / Kael | Improving your gear (+4); Crafting (+2); Reclaiming metal (+1); Fire (+0.5) | Neglecting your gear (-3); Cold that cracks steel (-0.25) | Loves rare ores and well-made armor. | **Forge-Blessed**: A shield of 20% max HP and +30% defense for 3 turns. (15 favor) | **Tempered**: Thalor reforges you in the heat of battle. |
+| **Solenne**, Sun & Justice | Morrath / Hesha, Ordrun | Smiting the undead (+3); Ending cultists (+3); Wielding holy light (+0.5); Victories under the sun (+1); Helping people in need (+4) | Raising the dead (-2); Fleeing from evil (-2) | Values arms and armor for her crusaders. | **Sunburst**: Holy light sears every enemy (60% Divine Power). (15 favor) | **The Unclouded Eye**: Solenne’s gaze burns every enemy as she raises you. |
+| **Morrath**, Death & Endings | Solenne, Mirrin / Vex, Lyssara | Felling mighty foes (+5); Raising the dead (+2); Shadow arts (+0.5); Victories by night (+1) | Cheating death with healing (-0.25); Holy light (-0.5) | Collects the strange things the dead leave behind. | **Death’s Toll**: Curse and Weaken every enemy for 2 turns. (15 favor) | **Not Yet**: Morrath turns you away from the Last Door, and the shadows take payment from your foes. |
+| **Kael**, War & Glory | Hesha, Lyssara / Thalor | Winning battles (+2); Defeating champions (+4); Mighty blows (+0.5) | Cowardice (-5); Defeat (-3) | Loves good weapons above all things. | **Battle Cry**: +25% damage for you for 3 turns, and you gain Haste. (15 favor) | **Not Like This**: Kael refuses you a coward’s death: you rise in a red rage. |
+| **Ysolde**, Nature & the Hunt | Thalor / Nymira, Seraphel | Hunting beasts (+2); Nature magic (+0.5); The bow (+0.25) | Wasteful salvaging (-1); Wildfire (-0.25) | Accepts herbs, hides and food with joy. | **Huntress’s Mark**: Mark every enemy Vulnerable and Slow them for 2 turns. (15 favor) | **The Green Hour**: Vines bind your foes as the forest closes your wounds. |
+| **Vex**, Trickery & Luck | Grimvald, Ordrun / Morrath, Seraphel | Lucky strikes (+1); Stealing (+2); Uncovering the unknown (+1); Gambling (+3) | Boring caution (-2); Losing (badly) (-1) | Will take anything shiny. Especially gold. | **Loaded Dice**: +30 crit chance and +15 dodge for 3 turns. (15 favor) | **Double or Nothing**: Vex flips a coin for your life. It lands on its edge. |
+| **Thalor**, Forge & Craft | Ysolde / Kael, Ordrun | Improving your gear (+4); Crafting (+2); Reclaiming metal (+1); Fire (+0.5) | Neglecting your gear (-3); Cold that cracks steel (-0.25) | Loves rare ores and well-made armor. | **Forge-Blessed**: A shield of 20% max HP and +30% defense for 3 turns. (15 favor) | **Tempered**: Thalor reforges you in the heat of battle. |
 | **Nymira**, Seas & Storms | Aurelis / Ysolde | Storm-struck kills (+2); Lightning (+0.5); Frost (+0.5) | Fire (-0.5); Staying ashore (-1) | Pearls, gems and things from the deep. | **Call the Storm**: Lightning strikes every enemy (50% Divine Power) and soaks them Wet. (15 favor) | **The Tide Turns**: A wave of cold water lifts you to your feet and drags your foes under. |
-| **Aurelis**, Knowledge & Magic | Nymira / Grimvald | Reading skillbooks (+10); Uncovering secrets (+2); Arcane study (+0.5) | Abandoning an experiment (-1); Destroying craftsmanship (-0.5) | Books, scrolls and curiosities. | **Arcane Insight**: Restore 40 MP and reduce your cooldowns by 2. (15 favor) | **Footnote**: Aurelis amends the record: you did not die after all. |
-| **Hesha**, Hearth & Mercy | Kael / Solenne | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5); Sparing a beaten foe (+10) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
-| **Grimvald**, Wealth & Trade | Vex / Aurelis | Earning gold (per 100) (+1); Profitable work (+0.5) | Losing money (-3); Theft (-1) | Gold. Honest, countable gold. | **Tithe**: Shield 25% of max HP and gain +20% gold find for this battle. (15 favor) | **Debt Forgiven**: Grimvald writes off your death as a bad debt. |
+| **Aurelis**, Knowledge & Magic | Nymira / Grimvald, Mirrin | Reading skillbooks (+10); Uncovering secrets (+2); Arcane study (+0.5) | Abandoning an experiment (-1); Destroying craftsmanship (-0.5) | Books, scrolls and curiosities. | **Arcane Insight**: Restore 40 MP and reduce your cooldowns by 2. (15 favor) | **Footnote**: Aurelis amends the record: you did not die after all. |
+| **Hesha**, Hearth & Mercy | Kael / Solenne, Lyssara | Healing (+0.5); Resting and caring for yourself (+3); Healing magic (+0.5); Sparing a beaten foe (+10) | Killing people (-0.5); Disturbing the dead (-1) | Food, potions and gold for the poor. | **Hearth’s Warmth**: Heal 30% of max HP and cure Poison, Bleed and Burn. (15 favor) | **Mercy**: Hesha holds you close until the pain passes. |
+| **Grimvald**, Wealth & Trade | Vex, Seraphel / Aurelis | Earning gold (per 100) (+1); Profitable work (+0.5) | Losing money (-3); Theft (-1) | Gold. Honest, countable gold. | **Tithe**: Shield 25% of max HP and gain +20% gold find for this battle. (15 favor) | **Debt Forgiven**: Grimvald writes off your death as a bad debt. |
+| **Lyssara**, Dreams & the Moon | Kael / Morrath, Hesha, Mirrin | Resting well (+2); Victories by moonlight (+1.5); Sparing the sleeping and the beaten (+4); Moonlit cold (+0.5) | Brawling in the glare of noon (-0.5); Waking people to rob them (-3) | Likes small strange things from dreams, and old books. | **Lullaby of the Moon**: Every enemy has a 60% chance to fall asleep for 2 turns (a hit wakes them). (15 favor) | **Dreamed Away**: Lyssara folds you into a dream; you wake whole, and the fight is slow to follow. |
+| **Ordrun**, Earth & Endurance | Vex / Thalor, Solenne | Winning, patiently (+1.5); Outlasting great foes (+3); Building something that will stand (+2); Finishing what you promised (+3) | Giving up the ground (-4); Trusting luck over work (-2) | Respects armor, stone and ore. | **Stone Stance**: Shield yourself for 30% of max HP and take 25% less damage for 3 turns. (15 favor) | **Enduring**: Ordrun sets his hand on your shoulder, and the ground itself holds you up. |
+| **Seraphel**, Wind & Freedom | Grimvald / Ysolde, Vex | Setting the beaten free (+4); Knowing when to leave (+1); Lightning strikes (+0.5); Taking a chance (+1.5) | Binding creatures to your will (-1.5); Locking things into place (-1) | Likes things that travel: feathers, maps, letters. | **Free as the Wind**: Gain Haste for 2 turns, and the party gains +20 dodge for 3 turns. (15 favor) | **Carried Off**: A gust lifts you clear; you land, breathless, with the wind at your back. |
+| **Mirrin**, Memory & Time | Morrath / Aurelis, Lyssara | Learning what was written (+3); Uncovering what things were (+3); Keeping an old promise (+2); Letting time pass properly (+1) | Letting the story end early (-2); Breaking things with a past (-2); Gambling with what is already settled (-2) | Treasures books, relics and anything with a date on it. | **A Moment Borrowed**: Take an extra turn immediately and Regenerate for 2 turns. (15 favor) | **It Has Not Happened Yet**: Mirrin turns the hour back; the blow never lands, and you stand where you stood a breath ago. |
 
-### Blessings (100)
+### Blessings (180)
 
 Minor blessings last 10 battles and cost favor. Major blessings are offered 3 at a time when a tier is first reached, stay active while the tier holds, and fill 1-3 slots (more at levels 25 and 50). Rival gods' blessings cannot be slotted together.
 
 | God | Minor | Major (tier) |
 |---|---|---|
-| Solenne | **Dawnlight**: +15% holy damage.<br>**Ward of Day**: +10% defense.<br>**Judgement**: +20% damage against undead. | **Radiance** (acknowledged): +10% holy damage and +5 FAI.<br>**Vigil** (acknowledged): +8% max HP.<br>**Swift Justice** (favored): 20% chance on hit to deal bonus holy damage (40% Divine Power).<br>**Daybreak** (acknowledged): 20% more damage during the day.<br>**Aegis of Dawn** (devoted): Start every battle with Divine Protection for 1 turn and +15% holy damage.<br>**The Unclouded Eye** (exalted): +25% holy damage; your critical hits ignore half of defense.<br>**Sunsworn** (apostle): Your hits have a 25% chance to call down a pillar of light (80% Divine Power). |
+| Solenne | **Dawnlight**: +15% holy damage.<br>**Ward of Day**: +10% defense.<br>**Judgement**: +20% damage against undead.<br>**Small Sun**: +12% holy damage.<br>**Wick and Wax**: +10% max MP.<br>**Steady Flame**: +10% fire resist and ice resist.<br>**Lantern-Bearer**: +8 accuracy.<br>**Held Breath**: +8% status resist. | **Radiance** (acknowledged): +10% holy damage and +5 FAI.<br>**Vigil** (acknowledged): +8% max HP.<br>**Swift Justice** (favored): 20% chance on hit to deal bonus holy damage (40% Divine Power).<br>**Daybreak** (acknowledged): 20% more damage during the day.<br>**Aegis of Dawn** (devoted): Start every battle with Divine Protection for 1 turn and +15% holy damage.<br>**The Unclouded Eye** (exalted): +25% holy damage; your critical hits ignore half of defense.<br>**Sunsworn** (apostle): Your hits have a 25% chance to call down a pillar of light (80% Divine Power). |
 | Morrath | **Shade**: +15% shadow damage.<br>**Grave Chill**: +10 status chance.<br>**The Toll**: +20% damage against enemies below 50% HP. | **Raven’s Eye** (acknowledged): +10% shadow damage and +5 INT.<br>**Patience of the Grave** (acknowledged): +10% status resist.<br>**Soul Harvest** (favored): Kills restore 10% of max HP.<br>**Nightfall** (acknowledged): 20% more damage at night.<br>**Legion of the Last Door** (devoted): Summoning skills raise one extra minion.<br>**Keeper’s Reprieve** (exalted): Once per battle, survive a killing blow with 1 HP; +15% shadow damage.<br>**Deathless** (apostle): Kills restore 15% of max HP and summon a skeleton (twice per battle). |
-| Kael | **Fury**: +10% damage.<br>**Keen Blade**: +15% crit damage.<br>**Glory**: +20% damage while above 50% HP. | **Strength of the Banner** (acknowledged): +6 STR.<br>**Veteran** (acknowledged): +5% crit chance.<br>**First Blood** (favored): Always act first in the opening round.<br>**Warlust** (acknowledged): Kills grant +20% damage for 2 turns.<br>**Champion** (devoted): Deal 25% more damage to bosses; +10% damage.<br>**The Red Banner** (exalted): +20% damage and +15% crit damage; attacks on enemies below 20% HP always crit.<br>**Glorybound** (apostle): Every kill grants +15% damage for the rest of the battle (up to 3 times). |
-| Ysolde | **Thorn**: +15% nature damage.<br>**Stalker**: +8 dodge.<br>**The Hunt**: +20% damage against beasts. | **Grace of the Deer** (acknowledged): +6 DEX.<br>**Hunter’s Eye** (acknowledged): +10% damage with Ranged skills.<br>**Green Venom** (favored): 20% chance on hit to Poison.<br>**Wild Heart** (acknowledged): +4 HP regeneration and +5% speed.<br>**Mother of the Pack** (devoted): A spirit stag joins you at the start of every battle.<br>**The Antlered Moon** (exalted): +25% nature damage; damage over time can crit.<br>**Wildborn** (apostle): A spirit stag joins you each battle, and your hits have a 25% chance to Poison. |
+| Kael | **Fury**: +10% damage.<br>**Keen Blade**: +15% crit damage.<br>**Glory**: +20% damage while above 50% HP.<br>**Hot Sand**: +10% fire damage.<br>**Blistered Feet**: +8% max HP.<br>**Long Horizon**: +6 speed.<br>**Banner of Dust**: +8% damage.<br>**Thirst**: +6 STR. | **Strength of the Banner** (acknowledged): +6 STR.<br>**Veteran** (acknowledged): +5% crit chance.<br>**First Blood** (favored): Always act first in the opening round.<br>**Warlust** (acknowledged): Kills grant +20% damage for 2 turns.<br>**Champion** (devoted): Deal 25% more damage to bosses; +10% damage.<br>**The Red Banner** (exalted): +20% damage and +15% crit damage; attacks on enemies below 20% HP always crit.<br>**Glorybound** (apostle): Every kill grants +15% damage for the rest of the battle (up to 3 times). |
+| Ysolde | **Thorn**: +15% nature damage.<br>**Stalker**: +8 dodge.<br>**The Hunt**: +20% damage against beasts.<br>**Mossfoot**: +8 dodge.<br>**Barkskin**: +10% defense.<br>**Seed-Luck**: +12% nature damage.<br>**Green Quiet**: +10% status resist.<br>**Hunter’s Rest**: +6 DEX. | **Grace of the Deer** (acknowledged): +6 DEX.<br>**Hunter’s Eye** (acknowledged): +10% damage with Ranged skills.<br>**Green Venom** (favored): 20% chance on hit to Poison.<br>**Wild Heart** (acknowledged): +4 HP regeneration and +5% speed.<br>**Mother of the Pack** (devoted): A spirit stag joins you at the start of every battle.<br>**The Antlered Moon** (exalted): +25% nature damage; damage over time can crit.<br>**Wildborn** (apostle): A spirit stag joins you each battle, and your hits have a 25% chance to Poison. |
 | Vex | **Beginner’s Luck**: +5 LUK.<br>**Sleight**: +6% crit chance.<br>**Jackpot**: +30% gold find and +20% magic find. | **Fortune’s Favorite** (acknowledged): +15% magic find.<br>**Quick Fingers** (acknowledged): +5 dodge and +2 speed.<br>**Gambler’s Edge** (favored): +25% crit damage, but -5 accuracy.<br>**Now You Don’t** (acknowledged): Begin every battle in Stealth.<br>**Two-Faced Coin** (devoted): Critical hits have a 25% chance to steal 5 gold and reduce your cooldowns by 1.<br>**The Smiling Coin** (exalted): +10 LUK, +10% crit chance and +25% magic find.<br>**Fortune’s Own** (apostle): Critical hits have a 35% chance to reduce your cooldowns by 1 and steal 10 gold. |
-| Thalor | **Ember**: +15% fire damage.<br>**Tempered Plate**: +12% defense.<br>**Honed Edge**: +10% physical attack. | **Iron Sinew** (acknowledged): +4 STR and +4 VIT.<br>**Anvil Skin** (acknowledged): +10% defense.<br>**Forgefire** (favored): 20% chance on hit to Burn.<br>**Mastercraft** (acknowledged): No speed penalty for off-class armor; +5% max HP.<br>**Bulwark** (devoted): Take 10% less damage.<br>**The Anvil-Father** (exalted): +20% defense, +20% fire damage, and Burns spread when burning enemies die.<br>**Forgeborn** (apostle): Take 12% less damage; hits have a 25% chance to Burn. |
-| Nymira | **Spark**: +15% lightning damage.<br>**Sea Frost**: +15% ice damage.<br>**High Tide**: +3 MP regeneration. | **Current** (acknowledged): +3 speed.<br>**The Depths** (acknowledged): +6 INT.<br>**Squall** (favored): Lightning skills deal 20% more damage.<br>**Shatterstorm** (acknowledged): Ice damage against Burning enemies always Shatters; +10% ice damage.<br>**Eye of the Hurricane** (devoted): Each turn, 25% chance to strike a random enemy with lightning (60% Divine Power).<br>**Mother of Tides** (exalted): +20% lightning and ice damage, and 20% chance for spells to cast twice.<br>**Stormborn** (apostle): Each turn, 30% chance to strike a random enemy with lightning (80% Divine Power). |
+| Thalor | **Ember**: +15% fire damage.<br>**Tempered Plate**: +12% defense.<br>**Honed Edge**: +10% physical attack.<br>**Hot Iron**: +12% fire damage.<br>**Quenched**: +10% defense.<br>**Hammer Hand**: +8% physical attack.<br>**Slag-Proof**: +12% status resist.<br>**Tongs**: +6 VIT. | **Iron Sinew** (acknowledged): +4 STR and +4 VIT.<br>**Anvil Skin** (acknowledged): +10% defense.<br>**Forgefire** (favored): 20% chance on hit to Burn.<br>**Mastercraft** (acknowledged): No speed penalty for off-class armor; +5% max HP.<br>**Bulwark** (devoted): Take 10% less damage.<br>**The Anvil-Father** (exalted): +20% defense, +20% fire damage, and Burns spread when burning enemies die.<br>**Forgeborn** (apostle): Take 12% less damage; hits have a 25% chance to Burn. |
+| Nymira | **Spark**: +15% lightning damage.<br>**Sea Frost**: +15% ice damage.<br>**High Tide**: +3 MP regeneration.<br>**Salt in the Hair**: +12% lightning damage.<br>**Held Door**: +10% defense.<br>**Tideproof**: +10% ice resist and lightning resist.<br>**Wet Wood**: +8% max HP.<br>**Lighthouse Eyes**: +10 accuracy. | **Current** (acknowledged): +3 speed.<br>**The Depths** (acknowledged): +6 INT.<br>**Squall** (favored): Lightning skills deal 20% more damage.<br>**Shatterstorm** (acknowledged): Ice damage against Burning enemies always Shatters; +10% ice damage.<br>**Eye of the Hurricane** (devoted): Each turn, 25% chance to strike a random enemy with lightning (60% Divine Power).<br>**Mother of Tides** (exalted): +20% lightning and ice damage, and 20% chance for spells to cast twice.<br>**Stormborn** (apostle): Each turn, 30% chance to strike a random enemy with lightning (80% Divine Power). |
 | Aurelis | **Rune-Lit**: +15% arcane damage.<br>**Focus**: +10% max MP.<br>**Studious**: +15% XP. | **Bright Mind** (acknowledged): +4 INT and +4 WIS.<br>**Marginalia** (acknowledged): +3% cooldown reduction.<br>**Living Library** (favored): +10% XP and +2 MP regeneration.<br>**Arcanum** (acknowledged): Spells deal 15% more damage.<br>**Echoing Word** (devoted): 20% chance for spells to cast a second time for free.<br>**The Thousand-Page** (exalted): +25% arcane damage, +10% magic attack and +5% cooldown reduction.<br>**Lorebound** (apostle): 20% chance for spells to cast twice; +10% cooldown reduction. |
-| Hesha | **Warmth**: +3 HP regeneration.<br>**Gentle Hands**: +15 healing power.<br>**Home Cooking**: +10% max HP. | **Kindness** (acknowledged): +4 WIS and +4 FAI.<br>**Shelter** (acknowledged): +10% healing received.<br>**Merciful** (favored): Half of your overhealing becomes a shield.<br>**Banked Embers** (acknowledged): Heal 5% of max HP at the start of each turn.<br>**Hearthguard** (devoted): The first time you fall below 30% HP each battle, heal 40%.<br>**Keeper of the Hearth** (exalted): +25 healing power, +15% max HP, and take 8% less damage.<br>**Hearthbound** (apostle): Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. |
+| Hesha | **Warmth**: +3 HP regeneration.<br>**Gentle Hands**: +15 healing power.<br>**Home Cooking**: +10% max HP.<br>**Steady Oars**: +8% max HP.<br>**Cool Hands**: +3 HP regeneration.<br>**Patient Tide**: +10% healing power.<br>**Dry Bandage**: +10% status resist.<br>**Long Night**: +6 VIT. | **Kindness** (acknowledged): +4 WIS and +4 FAI.<br>**Shelter** (acknowledged): +10% healing received.<br>**Merciful** (favored): Half of your overhealing becomes a shield.<br>**Banked Embers** (acknowledged): Heal 5% of max HP at the start of each turn.<br>**Hearthguard** (devoted): The first time you fall below 30% HP each battle, heal 40%.<br>**Keeper of the Hearth** (exalted): +25 healing power, +15% max HP, and take 8% less damage.<br>**Hearthbound** (apostle): Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. |
 | Grimvald | **Lucky Coin**: +25% gold find.<br>**Balanced Ledger**: +5% defense and +5% damage.<br>**Compound Interest**: +15% magic find. | **Heavy Purse** (acknowledged): +20% gold find.<br>**Fair Scale** (acknowledged): +5 LUK.<br>**Investment** (favored): +10% XP and +10% gold find.<br>**Vault** (acknowledged): Start every battle with a shield of 15% max HP.<br>**Dividend** (devoted): Kills grant 10 gold.<br>**The Golden Scale** (exalted): +40% gold find, +25% magic find and +10% damage.<br>**Goldbound** (apostle): Kills grant 15 gold; +50% gold find and +30% magic find. |
+| Lyssara | **Moonlit**: +15% ice damage.<br>**Lull**: +10 status chance.<br>**Lucid**: +20% damage against sleeping enemies.<br>**Cold Moon**: +12% ice damage.<br>**Soft Footfall**: +8 dodge.<br>**Slow Heartbeat**: +4 HP regeneration.<br>**Pillow of Frost**: +12% status resist.<br>**Lucid Hour**: +8 WIS. | **Tide of Sleep** (acknowledged): +10% ice damage and +5 WIS.<br>**Deep Rest** (acknowledged): +3 HP regeneration.<br>**Moonrise** (acknowledged): 20% more damage at night.<br>**Silver Thread** (favored): +10% status chance and +10% status resist.<br>**Waking Dream** (devoted): Start every battle with Haste for 1 turn; +15% ice damage.<br>**The Moon Between Dreams** (exalted): +25% ice damage; once per battle, survive a killing blow with 1 HP.<br>**Moonborn** (apostle): Enemies start battle drowsy: 25% chance to Slow each. +20% ice damage and 10% less damage taken. |
+| Ordrun | **Stone**: +10% defense.<br>**Root**: +10% max HP.<br>**Anvil**: +20% damage while above 50% HP. | **Granite Grit** (acknowledged): +8% max HP and +5 VIT.<br>**Living Wall** (acknowledged): +10% defense and +10% magic resist.<br>**Unmoved** (acknowledged): +15% status resist.<br>**Bedrock** (favored): Take 8% less damage.<br>**Fault Line** (devoted): 15% chance on hit to Stun the target; +10% damage.<br>**The Unmoved** (exalted): +15% max HP and 12% less damage taken; once per battle, survive a killing blow with 1 HP.<br>**Mountainborn** (apostle): Take 14% less damage; 20% chance to Stun on hit. |
+| Seraphel | **Gale**: +10% speed.<br>**Updraft**: +10 dodge.<br>**Wanderlust**: +20% lightning damage. | **Light as a Feather** (acknowledged): +8 dodge and +5 DEX.<br>**Thunderhead** (acknowledged): +10% lightning damage and +4% crit chance.<br>**Unshackled** (acknowledged): +20% status resist.<br>**Tailwind** (favored): Always act first in the opening round.<br>**Windwalker** (devoted): Each turn, 20% chance to strike a random enemy with lightning (60% Divine Power); +10% speed.<br>**The Open Road** (exalted): +20% lightning damage, +15 dodge and +10% speed.<br>**Windborn** (apostle): Each turn, 25% chance to strike a random enemy with lightning (70% Divine Power). +20% lightning damage and +15 dodge. |
+| Mirrin | **Recall**: +10 accuracy.<br>**Patience**: +10% cooldown reduction.<br>**Hindsight**: +20% damage against enemies you have already hit.<br>**Clear Recall**: +10 accuracy.<br>**Index**: +12% arcane damage.<br>**Unlost**: +10% cooldown reduction.<br>**Blank Page**: +10% magic resist.<br>**Remembered**: +10% XP. | **The Record** (acknowledged): +10% arcane damage and +5 INT.<br>**Long Memory** (acknowledged): +10% XP.<br>**Spare Hours** (acknowledged): +8% cooldown reduction and +2 MP regeneration.<br>**Echo of the Hour** (favored): Your spells have a chance to be cast twice.<br>**Folded Moment** (devoted): Start every battle with Haste for 2 turns; +15% arcane damage.<br>**The Keeper of What Was** (exalted): +20% arcane damage and +15% cooldown reduction; once per battle, survive a killing blow with 1 HP.<br>**Hourborn** (apostle): Spells may echo; +20% arcane damage and 15% cooldown reduction. |
 
 ### Divine general skills
 
@@ -1922,6 +1991,10 @@ Minor blessings last 10 battles and cost favor. Major blessings are offered 3 at
 | **Rite of Knowing** | Aurelis | Revelation | Revelation in battle. Passive: +1 INT per rank. |
 | **Rite of Mercy** | Hesha | Hearthlight | Hearthlight in battle. Passive: +3 healing power per rank. |
 | **Rite of Tithes** | Grimvald | Golden Guard | Golden Guard in battle. Passive: +4% gold find per rank. |
+| **Rite of Dreams** | Lyssara | Lullaby | Lullaby in battle. Passive: +2% ice damage per rank. |
+| **Rite of Endurance** | Ordrun | Stone Stance | Stone Stance in battle. Passive: +2% max HP per rank. |
+| **Rite of the Road** | Seraphel | Gale | Gale in battle. Passive: +0.6 dodge per rank. |
+| **Rite of Hours** | Mirrin | Borrowed Hour | Borrowed Hour in battle. Passive: +0.5% cooldown reduction per rank. |
 <!-- gods:end -->
 
 ## Apostleship
@@ -1941,8 +2014,12 @@ Exalted favor plus the god's three-stage Trial of Apostleship (two rounds of her
 | **Aurelis** | **Avatar of Knowing**: Become the Thousand-Page for 3 turns: +50% damage and +5 MP regeneration; every enemy takes 200% Divine Power arcane damage and is Silenced. | Margin of Stars → Margin of Stars, Annotated → Margin of Stars, Illuminated → Margin of Stars, the Thousand-Page (Staff) | **Lorebound**: 20% chance for spells to cast twice; +10% cooldown reduction. | **Word of Unmaking**: 180% Divine Power arcane damage; Silences (40%).<br>**The Thousand Pages**: Pages whirl around you: restore 30 MP, reduce cooldowns by 2, and +20% damage for 2 turns. | Keystone: +35% arcane damage, -15% max HP. / Omniscience: Skills have a 25% chance to reduce your cooldowns by 1. |
 | **Hesha** | **Avatar of the Hearth**: Become the Keeper of the Hearth for 3 turns: take 40% less damage and gain +30 healing power; every enemy takes 150% Divine Power holy damage, and you heal fully. | Hearthstaff → Hearthstaff, Kindled → Hearthstaff, Ever-Lit → Hearthstaff, Keeper of the Hearth (Staff) | **Hearthbound**: Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. | **Mercy of the Hearth**: Heal the party for 120% Divine Power and remove Poison and Bleed.<br>**Gentle Rebuke**: 130% Divine Power holy damage that Weakens; heal 8% of max HP. | Keystone: +40 healing power, -20% damage. / Hearth Eternal |
 | **Grimvald** | **Avatar of Wealth**: Become the Golden Scale for 3 turns: +40% damage and a golden shield; every enemy takes 160% Divine Power and you gain 50 gold. | Ledger’s Edge → Ledger’s Edge, Audited → Ledger’s Edge, Compounded → Ledger’s Edge, the Golden Scale (Axe) | **Goldbound**: Kills grant 15 gold; +50% gold find and +30% magic find. | **Golden Rebuke**: A strike of solid gold for 120% ATK + 60% Divine Power; steal 10 gold.<br>**Audit**: Every enemy is Weakened and Vulnerable for 2 turns; you gain a shield of 20% max HP. | Keystone: +60% gold find and +20% damage, but take 10% more damage. / The Golden Scale: Start every battle with a shield of 20% max HP. |
+| **Lyssara** | **Avatar of the Moon**: Become the Moon Between Dreams for 3 turns: +40% damage and +30 dodge; every enemy takes 180% Divine Power ice damage and may fall asleep. | Crescent Rod → Crescent Rod, Waxing → Crescent Rod, Full → Crescent Rod, the Moon Between Dreams (Staff) | **Moonborn**: Enemies start battle drowsy: 25% chance to Slow each. +20% ice damage and 10% less damage taken. | **Moonbeam**: A pale beam for 170% Divine Power ice damage; 30% chance to put the target to sleep.<br>**Moon Veil**: Shield yourself for 25% of max HP and slip into Stealth for 2 turns. | Keystone: +20% damage at night is permanent, but -10% max HP. / Moon Between Dreams: Start every battle with a shield of 20% max HP. |
+| **Ordrun** | **Avatar of the Mountain**: Become the Unmoved for 3 turns: +35% damage and +50% defense; every enemy takes 170% Divine Power damage and is Slowed. | Keystone → Keystone, Set → Keystone, Bearing → Keystone, the Unmoved (Warhammer) | **Mountainborn**: Take 14% less damage; 20% chance to Stun on hit. | **Landslide**: Stone falls on the front row: 120% ATK + 60% Divine Power physical damage. Heavy stagger.<br>**Hold the Line**: Shield yourself for 30% of max HP and gain +30% defense for 3 turns; enemies must target you. | Keystone: take 15% less damage, -8 speed. / The Mountain Remains: Start every battle with a shield of 25% max HP. |
+| **Seraphel** | **Avatar of the Open Road**: Become the Wind for 3 turns: +35% damage and Haste; every enemy takes 190% Divine Power lightning damage. | Windpiercer → Windpiercer, Fledged → Windpiercer, Soaring → Windpiercer, the Open Road (Bow) | **Windborn**: Each turn, 25% chance to strike a random enemy with lightning (70% Divine Power). +20% lightning damage and +15 dodge. | **Cutting Wind**: A razor gust: 110% ATK + 50% Divine Power lightning damage to every enemy.<br>**Slipstream**: Ride the wind: Haste for 3 turns and +25 dodge for 2. | Keystone: +15 dodge and +10% speed, -10% max HP. / The Road Goes On: Start every battle with Haste for 2 turns. |
+| **Mirrin** | **Avatar of the Hour**: Become the Keeper of What Was for 3 turns: +35% damage and 20% cooldown reduction; every enemy takes 170% Divine Power arcane damage and is Slowed. You act again at once. | Hourglass Staff → Hourglass Staff, Running → Hourglass Staff, Turned → Hourglass Staff, the Keeper (Staff) | **Hourborn**: Spells may echo; +20% arcane damage and 15% cooldown reduction. | **Hour Strike**: A blow that lands a moment before it is thrown: 160% Divine Power arcane damage; 25% chance to Slow.<br>**Recall the Moment**: Rewind: restore your best health of the last three turns and clear debuffs. | Keystone: +20% cooldown reduction, -10% max HP. / It Has Already Happened: Start every battle with Haste for 2 turns. |
 
-### Divine Edicts (34)
+### Divine Edicts (50)
 
 Each like of your god becomes an edict: do it a number of times within 20 battles. Fulfilled: +40 favor and gold. Ignored: -30 favor and apostle passives at 75% until the next edict is fulfilled.
 
@@ -1956,6 +2033,10 @@ Each like of your god becomes an edict: do it a number of times within 20 battle
 - **Aurelis:** Reading skillbooks: 1 time; Uncovering secrets: 6 times; Arcane study: 20 times
 - **Hesha:** Healing: 20 times; Resting and caring for yourself: 4 times; Healing magic: 20 times
 - **Grimvald:** Earning gold (per 100): 12 times; Profitable work: 20 times
+- **Lyssara:** Resting well: 6 times; Victories by moonlight: 8 times; Sparing the sleeping and the beaten: 3 times; Moonlit cold: 20 times
+- **Ordrun:** Winning, patiently: 8 times; Outlasting great foes: 4 times; Building something that will stand: 6 times; Finishing what you promised: 4 times
+- **Seraphel:** Setting the beaten free: 3 times; Knowing when to leave: 12 times; Lightning strikes: 20 times; Taking a chance: 8 times
+- **Mirrin:** Learning what was written: 4 times; Uncovering what things were: 4 times; Keeping an old promise: 6 times; Letting time pass properly: 12 times
 <!-- apostles:end -->
 
 ## The World
@@ -1965,14 +2046,14 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 
 | Zone | Levels | Town | Dungeons (boss) | World boss | Shrines | Weather | Threat |
 |---|---|---|---|---|---|---|---|
-| **The Meadowlands** | 1-8 | Brightwater | The Goblin Warren (Grukk the Goblin King, lv 8) | Bramblehorn | Solenne, Hesha | Clear, Rain, Fog | 0% |
-| **The Whisperwood** | 8-16 | Thornwick | Spider Hollow (The Broodmother, lv 14); The Old Crypt (The Bone Lord, lv 16) | Gnarlroot the Elder | Ysolde, Morrath | Clear, Rain, Fog | 0% |
-| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira | Clear, Fog | 110% |
-| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne | Clear, Heatwave, Sandstorm | 70% |
-| **Frostspire** | 32-40 | Frosthold | The Ice Palace (The Frost Queen, lv 39) | Skaldr the Frost Wyrm | Aurelis, Thalor | Snow, Clear, Fog | 60% |
-| **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald | Thunderstorm, Rain, Clear | 45% |
-| **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael | Ashfall, Heatwave, Clear | 5% |
-| **The Dark Citadel** | 55-60 | - | The Black Throne (Commander of the Black Throne, lv 60) | The Unwritten Herald | Morrath, Vex | Blood Moon, Fog, Clear | 0% |
+| **The Meadowlands** | 1-8 | Brightwater | The Goblin Warren (Grukk the Goblin King, lv 8) | Bramblehorn | Solenne, Hesha, Mirrin | Clear, Rain, Fog | 0% |
+| **The Whisperwood** | 8-16 | Thornwick | Spider Hollow (The Broodmother, lv 14); The Old Crypt (The Bone Lord, lv 16) | Gnarlroot the Elder | Ysolde, Morrath, Lyssara | Clear, Rain, Fog | 0% |
+| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira, Ordrun | Clear, Fog | 110% |
+| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne, Seraphel | Clear, Heatwave, Sandstorm | 70% |
+| **Frostspire** | 32-40 | Frosthold | The Ice Palace (The Frost Queen, lv 39) | Skaldr the Frost Wyrm | Aurelis, Thalor, Lyssara | Snow, Clear, Fog | 60% |
+| **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald, Seraphel | Thunderstorm, Rain, Clear | 45% |
+| **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael, Ordrun | Ashfall, Heatwave, Clear | 5% |
+| **The Dark Citadel** | 55-60 | - | The Black Throne (Commander of the Black Throne, lv 60) | The Unwritten Herald | Morrath, Vex, Mirrin | Blood Moon, Fog, Clear | 0% |
 
 ### Zone enemies
 
@@ -1989,10 +2070,10 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 
 | Town | Zone | Temple | Faction hall | Housing |
 |---|---|---|---|---|
-| **Brightwater** | The Meadowlands | Solenne, Hesha | Order of the Dawn | yes |
-| **Thornwick** | The Whisperwood | Ysolde, Vex | Wardens of the Wild | - |
-| **Sandhaven** | The Ashen Desert | Kael, Thalor | The Iron Legion | - |
-| **Frosthold** | Frostspire | Aurelis, Morrath | The Mages’ Guild | - |
+| **Brightwater** | The Meadowlands | Solenne, Hesha, Mirrin | Order of the Dawn | yes |
+| **Thornwick** | The Whisperwood | Ysolde, Vex, Lyssara | Wardens of the Wild | - |
+| **Sandhaven** | The Ashen Desert | Kael, Thalor, Seraphel | The Iron Legion | - |
+| **Frosthold** | Frostspire | Aurelis, Morrath, Ordrun | The Mages’ Guild | - |
 | **Saltmere** | The Stormcoast | Nymira, Grimvald | The Thieves’ Den | yes |
 
 ### Weather
@@ -2030,9 +2111,9 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **Trophy Room** | 3000 | Displays world boss trophies: +2% damage per different world boss slain. |
 | **Vault** | 2500 / 7000 | An extra stash tab, and +5% gold find per level. |
 
-### Lore pages (31)
+### Lore pages (39)
 
-**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel)
+**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **The Ferryman’s Ledger** (The Meadowlands), **The Root-Reader’s Notes** (The Whisperwood), **A Candle-Stub, Wrapped in a Prayer** (The Sunken Caves), **Footprints in Glass** (The Ashen Desert), **The Sleepwalker’s Diary** (Frostspire), **A Sailor’s Last Letter** (The Stormcoast), **An Anvil with a Handprint** (The Volcanic Rift), **A Page with a Missing Heading** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel)
 <!-- world:end -->
 
 ## The Economy
@@ -2159,7 +2240,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-427 quests, 133 NPCs, 183 dialogues, 6 companions, 6 endings.
+521 quests, 137 NPCs, 207 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -2184,7 +2265,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
-### Side quests (50)
+### Side quests (72)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -2203,6 +2284,28 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **A Master: Warden Kesh** | 52 | starts by itself | Speak with Warden Kesh (talk); Best Warden Kesh (fight) |
 | **A Master: The Cinder Sage** | 53 | starts by itself | Speak with The Cinder Sage (talk); Best The Cinder Sage (fight) |
 | **A Master: The Last Veteran** | 58 | starts by itself | Speak with The Last Veteran (talk); Best The Last Veteran (fight) |
+| **Saint Wenlock the Tireless** | 8 | starts by itself | Pray at the shrine of Saint Wenlock the Tireless (state) |
+| **Wenlock the Tireless’s Errand** | 12 | starts by itself | Cull the creatures of the meadow (kill) |
+| **Saint Orrel of the Roots** | 8 | starts by itself | Pray at the shrine of Saint Orrel of the Roots (state) |
+| **Orrel of the Roots’s Errand** | 12 | starts by itself | Cull the creatures of the Whisperwood (kill) |
+| **Saint Brenna Candlewright** | 8 | starts by itself | Pray at the shrine of Saint Brenna Candlewright (state) |
+| **Brenna Candlewright’s Errand** | 12 | starts by itself | Clear the Sunken Caves (kill) |
+| **Saint Qadir Dustwalker** | 8 | starts by itself | Pray at the shrine of Saint Qadir Dustwalker (state) |
+| **Qadir Dustwalker’s Errand** | 12 | starts by itself | Cull the creatures of the Ashen Desert (kill) |
+| **Saint Ysmay of the Long Night** | 8 | starts by itself | Pray at the shrine of Saint Ysmay of the Long Night (state) |
+| **Ysmay of the Long Night’s Errand** | 12 | starts by itself | Cull the creatures of the Frostspire (kill) |
+| **Saint Corvane the Drowned** | 8 | starts by itself | Pray at the shrine of Saint Corvane the Drowned (state) |
+| **Corvane the Drowned’s Errand** | 12 | starts by itself | Cull the creatures of the Stormcoast (kill) |
+| **Saint Hruldar Ashhand** | 8 | starts by itself | Pray at the shrine of Saint Hruldar Ashhand (state) |
+| **Hruldar Ashhand’s Errand** | 12 | starts by itself | Cull the creatures of the Volcanic Rift (kill) |
+| **Saint Nul, Who Was Forgotten** | 8 | starts by itself | Pray at the shrine of Saint Nul, Who Was Forgotten (state) |
+| **Nul, Who Was Forgotten’s Errand** | 12 | starts by itself | Cull the creatures of the Dark Citadel (kill) |
+| **Dawn and Dusk** | 18 | starts by itself | Speak with the priest (talk) |
+| **The Grove and the Forge** | 24 | starts by itself | Speak with the priest (talk) |
+| **The Banner and the Pillow** | 30 | starts by itself | Speak with the priest (talk) |
+| **The Index and the Hour** | 36 | starts by itself | Speak with the priest (talk) |
+| **The Tide and the Toll** | 44 | starts by itself | Speak with the priest (talk) |
+| **The Trick and the Stone** | 50 | starts by itself | Speak with the priest (talk) |
 | **Rats in the Cellar** | 2 | Marta | Kill giant rats (kill) |
 | **Where’s Biscuit?** | 3 | Tobin Furrow | Find Biscuit (talk) |
 | **Roots for the Hearth** | 3 | Sister Wenna | Gather healroot (collect) |
@@ -2275,7 +2378,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **A Song for the Drowned** | 42 | Marisol Tidesong | Bring Marisol safely to the shore (escort); Hold off the drowned (fight); Listen to the song (talk) |
 | **The Leviathan’s Lullaby** | 47 | Marisol Tidesong | Silence the Drowned Choir (fight); Stand with Marisol (talk) |
 
-### God questlines (40)
+### God questlines (112)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -2283,42 +2386,114 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Will of Solenne** | 16 | High Lector Amara | Smite the undead (kill); Bring an offering to the temple (deliver) |
 | **Solenne’s Herald** | 26 | High Lector Amara | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Solenne** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Solenne** | 12 | High Lector Amara | Bring the tithe (deliver) |
+| **The Vigil of Solenne** | 20 | High Lector Amara | Put the restless dead to rest (kill) |
+| **Against Morrath** | 30 | High Lector Amara | Defeat the herald of Morrath (fight) |
+| **The Covenant of Solenne** | 40 | High Lector Amara | Offer the shards (deliver) |
 | **Pilgrim of Morrath** | 8 | The Pale Warden | Pray at the Raven Cairn in The Whisperwood (visit); Pray at the Raven Cairn in The Dark Citadel (visit) |
 | **The Will of Morrath** | 16 | The Pale Warden | Bring an end to the mighty (elites and bosses) (kill); Bring an offering to the temple (deliver) |
 | **Morrath’s Herald** | 26 | The Pale Warden | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Morrath** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Morrath** | 12 | The Pale Warden | Bring the tithe (deliver) |
+| **The Vigil of Morrath** | 20 | The Pale Warden | Fell elites and champions (kill) |
+| **Against Solenne** | 30 | The Pale Warden | Defeat the herald of Solenne (fight) |
+| **The Covenant of Morrath** | 40 | The Pale Warden | Offer the shards (deliver) |
 | **Pilgrim of Kael** | 8 | Warpriest Tavus | Pray at the Banner Stone in The Ashen Desert (visit); Pray at the Banner Stone in The Volcanic Rift (visit) |
 | **The Will of Kael** | 16 | Warpriest Tavus | Win battles (deed); Bring an offering to the temple (deliver) |
 | **Kael’s Herald** | 26 | Warpriest Tavus | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Kael** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Kael** | 12 | Warpriest Tavus | Bring the tithe (deliver) |
+| **The Vigil of Kael** | 20 | Warpriest Tavus | Defeat bosses and their lieutenants (kill) |
+| **Against Hesha** | 30 | Warpriest Tavus | Defeat the herald of Hesha (fight) |
+| **The Covenant of Kael** | 40 | Warpriest Tavus | Offer the shards (deliver) |
 | **Pilgrim of Ysolde** | 8 | Mother Thessa | Pray at the Antler Grove in The Whisperwood (visit) |
 | **The Will of Ysolde** | 16 | Mother Thessa | Hunt beasts (kill); Bring an offering to the temple (deliver) |
 | **Ysolde’s Herald** | 26 | Mother Thessa | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Ysolde** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Ysolde** | 12 | Mother Thessa | Bring the tithe (deliver) |
+| **The Vigil of Ysolde** | 20 | Mother Thessa | Cull the beasts of the Whisperwood (kill) |
+| **Against Thalor** | 30 | Mother Thessa | Defeat the herald of Thalor (fight) |
+| **The Covenant of Ysolde** | 40 | Mother Thessa | Offer the shards (deliver) |
 | **Pilgrim of Vex** | 8 | Grinning Jack | Pray at the Crooked Coin in The Dark Citadel (visit) |
 | **The Will of Vex** | 16 | Grinning Jack | Land lucky strikes (critical hits) (deed); Bring an offering to the temple (deliver) |
 | **Vex’s Herald** | 26 | Grinning Jack | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Vex** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Vex** | 12 | Grinning Jack | Bring the tithe (deliver) |
+| **The Vigil of Vex** | 20 | Grinning Jack | Gamble and win (or lose gloriously) three times (deed) |
+| **Against Grimvald** | 30 | Grinning Jack | Defeat the herald of Grimvald (fight) |
+| **The Covenant of Vex** | 40 | Grinning Jack | Offer the shards (deliver) |
 | **Pilgrim of Thalor** | 8 | Forgemaster Brunhild | Pray at the Anvil Shrine in Frostspire (visit); Pray at the Anvil Shrine in The Volcanic Rift (visit) |
 | **The Will of Thalor** | 16 | Forgemaster Brunhild | Craft something at the Workshop (deed); Bring an offering to the temple (deliver) |
 | **Thalor’s Herald** | 26 | Forgemaster Brunhild | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Thalor** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Thalor** | 12 | Forgemaster Brunhild | Bring the tithe (deliver) |
+| **The Vigil of Thalor** | 20 | Forgemaster Brunhild | Craft six things at the Workshop (deed) |
+| **Against Ysolde** | 30 | Forgemaster Brunhild | Defeat the herald of Ysolde (fight) |
+| **The Covenant of Thalor** | 40 | Forgemaster Brunhild | Offer the shards (deliver) |
 | **Pilgrim of Nymira** | 8 | Tidecaller Maren | Pray at the Tide Pool Shrine in The Sunken Caves (visit); Pray at the Tide Pool Shrine in The Stormcoast (visit) |
 | **The Will of Nymira** | 16 | Tidecaller Maren | Clear the flooded Sunken Caves of their creatures (kill); Bring an offering to the temple (deliver) |
 | **Nymira’s Herald** | 26 | Tidecaller Maren | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Nymira** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Nymira** | 12 | Tidecaller Maren | Bring the tithe (deliver) |
+| **The Vigil of Nymira** | 20 | Tidecaller Maren | Clear the Stormcoast of what the tide brought (kill) |
+| **Against Aurelis** | 30 | Tidecaller Maren | Defeat the herald of Aurelis (fight) |
+| **The Covenant of Nymira** | 40 | Tidecaller Maren | Offer the shards (deliver) |
 | **Pilgrim of Aurelis** | 8 | Loremaster Ivo | Pray at the Lectern Shrine in Frostspire (visit) |
 | **The Will of Aurelis** | 16 | Loremaster Ivo | Uncover the unknown (identify items) (deed); Bring an offering to the temple (deliver) |
 | **Aurelis’s Herald** | 26 | Loremaster Ivo | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Aurelis** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Aurelis** | 12 | Loremaster Ivo | Bring the tithe (deliver) |
+| **The Vigil of Aurelis** | 20 | Loremaster Ivo | Read skillbooks and Grimoires (deed) |
+| **Against Nymira** | 30 | Loremaster Ivo | Defeat the herald of Nymira (fight) |
+| **The Covenant of Aurelis** | 40 | Loremaster Ivo | Offer the shards (deliver) |
 | **Pilgrim of Hesha** | 8 | Sister Wenna | Pray at the Hearthstone in The Meadowlands (visit) |
 | **The Will of Hesha** | 16 | Sister Wenna | Rest and care for yourself (camp, inn or home) (deed); Bring an offering to the temple (deliver) |
 | **Hesha’s Herald** | 26 | Sister Wenna | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Hesha** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Hesha** | 12 | Sister Wenna | Bring the tithe (deliver) |
+| **The Vigil of Hesha** | 20 | Sister Wenna | Rest and recover six times (deed) |
+| **Against Kael** | 30 | Sister Wenna | Defeat the herald of Kael (fight) |
+| **The Covenant of Hesha** | 40 | Sister Wenna | Offer the shards (deliver) |
 | **Pilgrim of Grimvald** | 8 | Factor Goldmere | Pray at the Counting Stone in The Stormcoast (visit) |
 | **The Will of Grimvald** | 16 | Factor Goldmere | Show your prosperity: have 1,500 gold to your name (state); Bring an offering to the temple (deliver) |
 | **Grimvald’s Herald** | 26 | Factor Goldmere | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Grimvald** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Grimvald** | 12 | Factor Goldmere | Bring the tithe (deliver) |
+| **The Vigil of Grimvald** | 20 | Factor Goldmere | Grow your fortune to 5,000 gold (state) |
+| **Against Vex** | 30 | Factor Goldmere | Defeat the herald of Vex (fight) |
+| **The Covenant of Grimvald** | 40 | Factor Goldmere | Offer the shards (deliver) |
+| **Pilgrim of Lyssara** | 8 | Sleepless Orsa | Pray at the Moonwell in The Whisperwood (visit); Pray at the Moonwell in Frostspire (visit) |
+| **The Will of Lyssara** | 16 | Sleepless Orsa | Rest and sleep well (camp, inn or home) (deed); Bring an offering to the temple (deliver) |
+| **Lyssara’s Herald** | 26 | Sleepless Orsa | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Lyssara** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Lyssara** | 12 | Sleepless Orsa | Bring the tithe (deliver) |
+| **The Vigil of Lyssara** | 20 | Sleepless Orsa | Rest and dream six times (deed) |
+| **Against Kael** | 30 | Sleepless Orsa | Defeat the herald of Kael (fight) |
+| **The Covenant of Lyssara** | 40 | Sleepless Orsa | Offer the shards (deliver) |
+| **Pilgrim of Ordrun** | 8 | Keeper Dag | Pray at the Standing Stone in The Sunken Caves (visit); Pray at the Standing Stone in The Volcanic Rift (visit) |
+| **The Will of Ordrun** | 16 | Keeper Dag | Build something that lasts (craft at the Workshop) (deed); Bring an offering to the temple (deliver) |
+| **Ordrun’s Herald** | 26 | Keeper Dag | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Ordrun** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Ordrun** | 12 | Keeper Dag | Bring the tithe (deliver) |
+| **The Vigil of Ordrun** | 20 | Keeper Dag | Outlast elites and champions (kill) |
+| **Against Vex** | 30 | Keeper Dag | Defeat the herald of Vex (fight) |
+| **The Covenant of Ordrun** | 40 | Keeper Dag | Offer the shards (deliver) |
+| **Pilgrim of Seraphel** | 8 | Wanderer Pip | Pray at the Windbell in The Ashen Desert (visit); Pray at the Windbell in The Stormcoast (visit) |
+| **The Will of Seraphel** | 16 | Wanderer Pip | Land lightning-quick strikes (critical hits) (deed); Bring an offering to the temple (deliver) |
+| **Seraphel’s Herald** | 26 | Wanderer Pip | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Seraphel** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Seraphel** | 12 | Wanderer Pip | Bring the tithe (deliver) |
+| **The Vigil of Seraphel** | 20 | Wanderer Pip | Land twenty critical hits (deed) |
+| **Against Grimvald** | 30 | Wanderer Pip | Defeat the herald of Grimvald (fight) |
+| **The Covenant of Seraphel** | 40 | Wanderer Pip | Offer the shards (deliver) |
+| **Pilgrim of Mirrin** | 8 | Archivist Tamsin | Pray at the Hourglass Shrine in The Meadowlands (visit); Pray at the Hourglass Shrine in The Dark Citadel (visit) |
+| **The Will of Mirrin** | 16 | Archivist Tamsin | Uncover the past (identify items) (deed); Bring an offering to the temple (deliver) |
+| **Mirrin’s Herald** | 26 | Archivist Tamsin | Pass the herald’s test (fight) |
+| **Trial of Apostleship: Mirrin** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
+| **The Tithe of Mirrin** | 12 | Archivist Tamsin | Bring the tithe (deliver) |
+| **The Vigil of Mirrin** | 20 | Archivist Tamsin | Identify six items (deed) |
+| **Against Morrath** | 30 | Archivist Tamsin | Defeat the herald of Morrath (fight) |
+| **The Covenant of Mirrin** | 40 | Archivist Tamsin | Offer the shards (deliver) |
 
 ### Class trials (150)
 
@@ -2597,10 +2772,10 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 ### People
 
-- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
-- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Fenn Ashwhistle (Lone Hunter), Sylwen (Last Singer of the Old Grove), Mawri Longtail (Packmother of Thornwick), Quillith of the Hours (Warden of Between), Fennel Greenwhistle (Canopy-Warden), Morwen Twice-Buried (Keeper of the Returned), Lady Ressa Vael (Your Mother’s Cousin), Master Orrin Quill (Archivist Emeritus), Old Tarn Whitebrow (Master Tracker)
-- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
-- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
+- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Archivist Tamsin (Priest of Mirrin), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
+- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Sleepless Orsa (Priest of Lyssara), Fenn Ashwhistle (Lone Hunter), Sylwen (Last Singer of the Old Grove), Mawri Longtail (Packmother of Thornwick), Quillith of the Hours (Warden of Between), Fennel Greenwhistle (Canopy-Warden), Morwen Twice-Buried (Keeper of the Returned), Lady Ressa Vael (Your Mother’s Cousin), Master Orrin Quill (Archivist Emeritus), Old Tarn Whitebrow (Master Tracker)
+- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
+- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld
 <!-- story:end -->
@@ -2612,7 +2787,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss), 50 of its own turns (boss), 60 of its own turns (worldBoss), and grows angrier every 4 turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.
 
-45 scripted bosses:
+49 scripted bosses:
 
 | Boss | Phases | Telegraphs |
 |---|---|---|
@@ -2659,6 +2834,10 @@ Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss)
 | Aspect of Aurelis (enrages at 80) | - | - |
 | Aspect of Hesha (enrages at 80) | - | - |
 | Aspect of Grimvald (enrages at 80) | - | - |
+| Aspect of Lyssara (enrages at 80) | - | - |
+| Aspect of Ordrun (enrages at 80) | - | - |
+| Aspect of Seraphel (enrages at 80) | - | - |
+| Aspect of Mirrin (enrages at 80) | - | - |
 | The Nameless One | 66%: **The Blank Page** (adds False Herald); 33%: **Unwriting** (+25% Damage Bonus) | Unmaking every 5 turns; Doom Mark every 5 turns from phase 2 |
 | The Last Light | 60%: **Ten Voices** (15% more Speed); 30%: **Last Rites** (+25% Damage Bonus) (heals or shields) | Final Judgment every 4 turns |
 
@@ -2765,7 +2944,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 - **Unwritten Salve** (Heretic): Heals 50% of max HP at once, but leaves you Vulnerable for 2 turns.
 - **Tear of a Dead God** (Unwritten): Unmakes the air: heavy void damage to every enemy, Corrupting them.
 
-**Apostle followers** (an Apostle calls one from the Pantheon; it counts as 0.4 of a companion for enemy scaling): Sunguard of Solenne, Raven of Morrath, Einherjar of Kael, Wolf of Ysolde, Shade of Vex, Forge-Thrall of Thalor, Tide-Singer of Nymira, Scribe of Aurelis, Hearth-Keeper of Hesha, Coin-Golem of Grimvald.
+**Apostle followers** (an Apostle calls one from the Pantheon; it counts as 0.4 of a companion for enemy scaling): Sunguard of Solenne, Raven of Morrath, Einherjar of Kael, Wolf of Ysolde, Shade of Vex, Forge-Thrall of Thalor, Tide-Singer of Nymira, Scribe of Aurelis, Hearth-Keeper of Hesha, Coin-Golem of Grimvald, Moth of Lyssara, Cairn-Guard of Ordrun, Gust-Sprite of Seraphel, Hour-Clerk of Mirrin.
 
 **The Defender path** (NG+3+): an Apostle who has passed a second, non-rival god's trial may defend that god too: its Divine blessing in one more slot, the Apostle tier with it, and the title "Defender of X".
 <!-- ngplus:end -->

@@ -311,9 +311,27 @@ export function buildApostleTree(god: ApostleGodInfo, spec: ApostleSpec): SkillT
     lane('d3', 3, ['d2'], { kind: 'minor', name: 'Blessed', maxRank: MINOR_RANKS, modifiers: [flat('blessingPower', 5)] }),
     lane('d4', 4, ['d3'], { kind: 'notable', name: `Chosen of ${god.name}`, maxRank: 1, text: 'Your Divine Avatar charges faster.', modifiers: [flat('ultimateGain', 15), flat('favorGain', 10)] }),
   ];
+  // The Ascendant lanes (phase 9): ten more nodes that grow the tree from 20 to 30.
+  const ascend = (key: string, lane_: number, tier: number, parents: string[], node: Pick<TreeNodeDef, 'kind' | 'name' | 'maxRank'> & Partial<TreeNodeDef>): TreeNodeDef => ({
+    ...lane(key, tier, parents, node),
+    lane: lane_,
+    x: 60 + lane_ * LANE_W,
+  });
+  const ascendant: TreeNodeDef[] = [
+    ascend('e1', 5, 1, [], { kind: 'minor', name: `${god.name}'s Hand`, maxRank: MINOR_RANKS, modifiers: [flat(element, 3)] }),
+    ascend('e2', 5, 2, ['e1'], { kind: 'minor', name: 'Reverent Stride', maxRank: MINOR_RANKS, modifiers: [flat(s1, 2)] }),
+    ascend('e3', 5, 3, ['e2'], { kind: 'minor', name: 'Steadfast Prayer', maxRank: MINOR_RANKS, modifiers: [pct('divinePower', 2)] }),
+    ascend('e4', 5, 4, ['e3'], { kind: 'notable', name: `Voice of ${god.name}`, maxRank: 1, text: 'Your blessings are stronger and favor comes easier.', modifiers: [flat('blessingPower', 10), flat('favorGain', 10)] }),
+    ascend('e5', 5, 5, ['e4'], { kind: 'minor', name: 'Hallowed Ground', maxRank: MINOR_RANKS, modifiers: [flat(s2, 2)] }),
+    ascend('e6', 5, 6, ['e5'], { kind: 'notable', name: `Ascendant of ${god.name}`, maxRank: 1, text: 'Your divine power burns brighter.', modifiers: [pct('divinePower', 8), flat(element, 8)] }),
+    ascend('e7', 5, 7, ['e6'], { kind: 'notable', name: 'Apotheosis', maxRank: 1, text: 'The last step: the god’s gift at its fullest.', modifiers: [flat('damageBonus', 8), pct('maxHp', 5)] }),
+    ascend('f1', 6, 3, ['e2'], { kind: 'minor', name: 'Pilgrim’s Road', maxRank: MINOR_RANKS, modifiers: [pct('maxHp', 2)] }),
+    ascend('f2', 6, 4, ['f1'], { kind: 'minor', name: 'Sanctified Ward', maxRank: MINOR_RANKS, modifiers: [flat('statusResist', 3)] }),
+    ascend('f3', 6, 5, ['f2'], { kind: 'notable', name: 'Shared Burden', maxRank: 1, text: 'You take less damage and heal a little each turn.', modifiers: [more('damageTaken', -5), flat('hpRegen', 3)] }),
+  ];
   return {
     ...tree,
     branches: tree.branches.map((b) => ({ ...b, tierGate: APOSTLE_TIER_GATE })),
-    nodes: [...tree.nodes, ...devotion],
+    nodes: [...tree.nodes, ...devotion, ...ascendant],
   };
 }

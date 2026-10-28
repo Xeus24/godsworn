@@ -1,10 +1,12 @@
 import type { UniqueItemDef } from '../../engine/items/types';
+import { SAINT_RELIC } from '../saints';
 
 /**
  * Relics: ancient artifacts with an active ability and lore. Each starts
  * dormant and awakens after its owner completes a deed while wearing it.
  */
 export const RELICS: UniqueItemDef[] = [
+  SAINT_RELIC,
   {
     id: 'shard-of-the-first-dawn', name: 'Shard of the First Dawn', rarity: 'relic', baseId: 'ancient-relic', level: 10,
     modifiers: [{ stat: 'divinePower', type: 'percent', value: 10 }, { stat: 'holyDamage', type: 'flat', value: 10 }],

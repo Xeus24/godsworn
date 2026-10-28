@@ -6,10 +6,11 @@ import type { SkillTreeDef } from '../../engine/skills/treeTypes';
 import { GODS } from '../gods';
 import { PANTHEON } from '../pantheon';
 import { buildApostleTree } from '../trees/builder';
+import { GREATER_APOSTLES } from '../godsGreater';
 import { APOSTLES_A } from './apostlesA';
 import { APOSTLES_B } from './apostlesB';
 
-const CONTENT = [...APOSTLES_A, ...APOSTLES_B];
+const CONTENT = [...APOSTLES_A, ...APOSTLES_B, ...GREATER_APOSTLES];
 const godOf = (id: string) => GODS.find((g) => g.id === id) as (typeof GODS)[number];
 
 export const APOSTLES: ApostleDef[] = CONTENT.map((a) => ({ god: a.god, avatar: a.avatar.id, weapon: a.weapon }));

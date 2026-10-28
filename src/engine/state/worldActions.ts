@@ -7,7 +7,10 @@ import { characterStats, restoreFull } from '../character/stats';
 import type { EncounterDef } from '../combat/types';
 import { gainGatheringXp, gatherYield, gatheringLevel } from '../economy/crafting';
 import { favorTiers, type DeedOccurrence } from '../gods/devotion';
-import { createItem } from '../items/generate';
+import { createItem, generateGear } from '../items/generate';
+import { SAINT_RELIC, SAINTS } from '../../data/saints';
+import { grantSaintBoon } from '../gods/blessings';
+import { godLine } from '../gods/lines';
 import { addItem, canAdd, countOf, createInventory, STASH_TAB_SIZE, takeQuantity } from '../items/inventory';
 import { rollLoot } from '../items/loot';
 import { equippedItems } from '../items/equipment';
@@ -303,7 +306,9 @@ export class WorldActions {
         return { kind: 'map', message: `${mapFor(to.map).name}` };
       }
       case 'shrine':
-        return { kind: 'moved', message: `${content.pantheon.get(e.ref as string).shrine}: you may pray to ${content.gods.get(e.ref as string).name} here (Pantheon, P).` };
+        if (e.saint) return { kind: 'moved', message: this.saintShrine(e) };
+        if (e.gate && !this.world.used[usedKey(map.id, e.id)]) return { kind: 'moved', message: this.openShrine(e) };
+        return { kind: 'moved', message: `${content.pantheon.get(e.ref as string).shrine}: you may pray to ${content.gods.get(e.ref as string).name} here (Pantheon, P). ${godLine(this.s.player, e.ref as string, this.s.rng)}`.trim() };
       case 'waypoint': {
         if (!this.world.waypoints.includes(map.id)) {
           this.world.waypoints.push(map.id);
@@ -377,6 +382,55 @@ export class WorldActions {
     this.s.items.receiveLoot(items, gold);
     this.changed('dig');
     return `You dig up ${t.name}: ${content.items.get(prize.baseId).name}${bonus ? `, ${content.items.get(bonus.baseId).name}` : ''} and ${gold} gold.`;
+  }
+
+  /** A puzzle-locked shrine: the right exploration skill at the right rank breaks its seal for good. */
+  private openShrine(e: MapEntity): string {
+    const gate = e.gate!;
+    const have = utilityRank(this.s.player, gate.skill);
+    if (have < gate.rank) return `${e.label ?? 'A sealed shrine'}: a seal holds it shut. It needs ${EXPLORATION_NAMES[gate.skill]} at rank ${gate.rank}${have > 0 ? ` (you have ${have})` : ' (slot it in the General skills)'}.`;
+    this.world.used[usedKey(this.map.id, e.id)] = this.day;
+    trainGeneral(this.s.player, GENERAL_FOR[gate.skill], 15);
+    this.toast('info', `The seal on ${e.label ?? 'the shrine'} gives way.`);
+    this.changed('shrine');
+    return `The seal gives way. ${content.pantheon.get(e.ref as string).shrine}: you may pray to ${content.gods.get(e.ref as string).name} here (Pantheon, P). ${godLine(this.s.player, e.ref as string, this.s.rng)}`.trim();
+  }
+
+  /** A hidden saint's shrine: a free stacking boon once a day, and the Reliquary when all eight are found. */
+  private saintShrine(e: MapEntity): string {
+    const saint = SAINTS.find((x) => x.id === e.saint);
+    if (!saint) return '';
+    const p = this.s.player;
+    const key = usedKey(this.map.id, e.id);
+    const first = !this.s.state.flags[`saint:${saint.id}`];
+    if (first) {
+      this.s.setFlag(`saint:${saint.id}`, true);
+      this.toast('quest', `A saint’s shrine: ${saint.name}.`);
+    }
+    const notes: string[] = [first ? `${saint.name}, ${saint.title.toLowerCase()}.` : `${saint.name} remembers you.`];
+    if (this.world.used[key] === this.day) {
+      notes.push('You have already been blessed today.');
+    } else {
+      this.world.used[key] = this.day;
+      const blessings = content.blessings.filter((b) => b.saint === saint.id);
+      const pick = blessings[this.day % blessings.length];
+      if (pick) {
+        grantSaintBoon(p, pick.id, 1);
+        notes.push(`${pick.name}: ${pick.description} (10 battles, stacks with other saints).`);
+      }
+    }
+    const found = SAINTS.filter((x) => this.s.state.flags[`saint:${x.id}`]).length;
+    if (found === SAINTS.length && !this.s.state.flags['saint:relic']) {
+      this.s.setFlag('saint:relic', true);
+      const relic = generateGear({ rng: this.s.rng, itemLevel: 30, newUid: () => this.s.newUid() }, { uniqueId: SAINT_RELIC.id });
+      this.s.items.receiveLoot([relic], 0);
+      this.toast('quest', 'All eight saints found: the Reliquary of the Eight is yours.');
+      notes.push('All eight saints are found. The Reliquary of the Eight is yours.');
+    } else {
+      notes.push(`Saints found: ${found}/${SAINTS.length}.`);
+    }
+    this.changed('shrine');
+    return notes.join(' ');
   }
 
   /** An exploration cache: the matching skill at the right rank opens it; the haul is two chests' worth. */

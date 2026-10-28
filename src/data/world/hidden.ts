@@ -1,4 +1,5 @@
 import type { LoreDef } from '../../engine/world/types';
+import { SAINT_LORE } from '../saints';
 
 /**
  * The world's secrets for the six hidden classes: clue pages tucked into the zones (read in the Codex),
@@ -7,6 +8,7 @@ import type { LoreDef } from '../../engine/world/types';
 const crimson = (n: number, zone: string, title: string, text: string): LoreDef => ({ id: `crimson-page-${n}`, zone, title: `Crimson Page ${['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'][n - 1]}: ${title}`, text });
 
 export const HIDDEN_LORE: LoreDef[] = [
+  ...SAINT_LORE,
   crimson(1, 'meadowlands', 'The Shape of a Pulse', 'Blood is not a liquid. It is a promise the body makes to itself, again and again, until it forgets how not to. (Six more pages. A library has a missing wing.)'),
   crimson(2, 'whisperwood', 'What the Roots Drink', 'The Wardens never asked why the old oaks were so red in autumn. They were told it was the light. It was the light, in a sense.'),
   crimson(3, 'sunken-caves', 'A Tide That Chose', 'Every drowned sailor in the grotto is missing exactly the same amount of blood. Someone is tidy. Someone is very tidy.'),

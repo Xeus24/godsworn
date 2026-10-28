@@ -1,3 +1,4 @@
+import { GREATER_PANTHEON } from './godsGreater';
 import type { FavorDeed, InterventionDef, OfferingPrefs, PrayerDef } from '../engine/gods/types';
 
 /**
@@ -21,7 +22,7 @@ export interface PantheonDef {
   temple: string;
 }
 
-export const PANTHEON: PantheonDef[] = [
+const BASE_PANTHEON: PantheonDef[] = [
   {
     id: 'solenne', alignment: 'Lawful Good', personality: 'Stern, fair and impossible to fool.', rivals: ['morrath'], allies: ['hesha'],
     shrine: 'Sunstone Shrine', temple: 'Cathedral of the Open Eye',
@@ -188,3 +189,19 @@ export const PANTHEON: PantheonDef[] = [
     intervention: { name: 'Debt Forgiven', text: 'Grimvald writes off your death as a bad debt.', effects: [{ kind: 'shield', percentMaxHp: 50, target: 'self' }, { kind: 'gold', amount: 100 }] },
   },
 ];
+
+/** The new gods name their rivals and allies; the old gods return the favor so every link is mutual. */
+export const PANTHEON: PantheonDef[] = (() => {
+  const all = [...BASE_PANTHEON, ...GREATER_PANTHEON];
+  for (const g of GREATER_PANTHEON) {
+    for (const r of g.rivals) {
+      const other = all.find((p) => p.id === r);
+      if (other && !other.rivals.includes(g.id)) other.rivals.push(g.id);
+    }
+    for (const a of g.allies) {
+      const other = all.find((p) => p.id === a);
+      if (other && !other.allies.includes(g.id)) other.allies.push(g.id);
+    }
+  }
+  return all;
+})();

@@ -88,7 +88,7 @@ describe('maps', () => {
       const m = mapFor(z.id);
       const kinds = m.entities.map((e) => e.kind);
       expect(kinds.filter((k) => k === 'dungeon')).toHaveLength(z.dungeons.length);
-      expect(kinds.filter((k) => k === 'shrine')).toHaveLength(z.shrines.length);
+      expect(kinds.filter((k) => k === 'shrine').length).toBeGreaterThanOrEqual(z.shrines.length);
       expect(kinds).toContain('waypoint');
       expect(kinds).toContain('worldBoss');
       expect(kinds.filter((k) => k === 'town')).toHaveLength(z.town ? 1 : 0);

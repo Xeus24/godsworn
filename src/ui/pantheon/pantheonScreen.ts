@@ -22,7 +22,8 @@ import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { el, type Screen } from '../screen';
 
 /** Emblem drawn beside each god (reuses the shared pixel glyphs). */
-const GOD_GLYPH: Record<string, string> = { solenne: 'sun', morrath: 'skull', kael: 'swords', ysolde: 'leaf', vex: 'note', thalor: 'flame', nymira: 'bolt', aurelis: 'star', hesha: 'temple', grimvald: 'coin' };
+import { GREATER_GLYPHS } from '../../data/godsGreater';
+const GOD_GLYPH: Record<string, string> = { solenne: 'sun', morrath: 'skull', kael: 'swords', ysolde: 'leaf', vex: 'note', thalor: 'flame', nymira: 'bolt', aurelis: 'star', hesha: 'temple', grimvald: 'coin', ...GREATER_GLYPHS };
 const godGlyph = (id: string): HTMLCanvasElement => uiGlyph(GOD_GLYPH[id] ?? 'star');
 
 const TIER_CLASS: Record<string, string> = { hated: 'danger', distrusted: 'warn', neutral: 'dim', acknowledged: 'ok', favored: 'ok', devoted: 'gold', exalted: 'gold', apostle: 'gold' };
@@ -215,7 +216,7 @@ export class PantheonScreen implements Screen {
         el('div', { class: 'blessing-grid' }, ...offer.map((id) => this.blessingButton(content.blessings.get(id), this.btn('Accept', () => this.say(s.devotion.chooseOffer(g.id, id)), false, 'primary')))),
       );
     }
-    const minors = content.blessings.filter((b) => b.god === g.id && b.kind === 'minor');
+    const minors = content.blessings.filter((b) => b.god === g.id && b.kind === 'minor' && !b.saint);
     panel.append(
       el('h3', {}, 'Minor blessings'),
       el('div', { class: 'blessing-grid' }, ...minors.map((b) => this.blessingButton(b, this.btn('Receive', () => this.say(s.devotion.receiveMinor(b.id)), favor < (b.favorCost ?? 0) || !atLeast(p, g.id, DEVOTION.minorBlessingTier))))),

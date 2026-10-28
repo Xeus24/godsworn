@@ -4,9 +4,9 @@ import { flat, more, pct, tag } from './trees/builder';
 type Spec = Omit<BlessingDef, 'kind' | 'god'>;
 
 /** Minor blessings last 10 battles and cost favor at a shrine. */
-const minor = (god: string, s: Omit<Spec, 'rarity'> & { rarity?: Spec['rarity'] }): BlessingDef => ({ rarity: 'common', battles: 10, favorCost: 20, ...s, god, kind: 'minor' });
+export const minor = (god: string, s: Omit<Spec, 'rarity'> & { rarity?: Spec['rarity'] }): BlessingDef => ({ rarity: 'common', battles: 10, favorCost: 20, ...s, god, kind: 'minor' });
 /** Major blessings are offered at devotion tiers: 3 uncommon (Acknowledged), 1 rare (Favored), 1 epic (Devoted), 1 legendary (Exalted). */
-const major = (god: string, s: Spec): BlessingDef => ({ ...s, god, kind: 'major' });
+export const major = (god: string, s: Spec): BlessingDef => ({ ...s, god, kind: 'major' });
 
 export const BLESSINGS: BlessingDef[] = [
   // ---------------- Solenne ----------------

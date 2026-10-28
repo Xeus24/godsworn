@@ -1,5 +1,6 @@
 import type { AiProfile, EnemyDef } from '../engine/combat/types';
 import { GODS } from './gods';
+import { GREATER_FOLLOWERS } from './godsGreater';
 
 /** What each god sends to walk beside its Apostle. */
 const FOLLOWER_NAMES: Record<string, { name: string; ai: AiProfile; row: 'front' | 'back'; description: string }> = {
@@ -22,7 +23,7 @@ const FOLLOWER_NAMES: Record<string, { name: string; ai: AiProfile; row: 'front'
  * for how much tougher enemies become.
  */
 export const FOLLOWERS: EnemyDef[] = GODS.filter((g) => !g.hidden).map((g) => {
-  const f = FOLLOWER_NAMES[g.id] ?? { name: `Follower of ${g.name}`, ai: 'aggressive' as AiProfile, row: 'front' as const, description: '' };
+  const f = FOLLOWER_NAMES[g.id] ?? GREATER_FOLLOWERS[g.id] ?? { name: `Follower of ${g.name}`, ai: 'aggressive' as AiProfile, row: 'front' as const, description: '' };
   const caster = f.ai === 'caster' || f.ai === 'healer';
   return {
     id: `follower-${g.id}`,

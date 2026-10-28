@@ -2,10 +2,10 @@ import type { DungeonDef, EncounterGroup, TownDef } from '../../engine/world/typ
 
 /** The five towns along the road. Each honors two gods; some host a faction hall or houses for sale. */
 export const TOWNS: TownDef[] = [
-  { id: 'brightwater', name: 'Brightwater', zone: 'meadowlands', description: 'A market town by a clear river, where most adventurers begin.', temple: ['solenne', 'hesha'], faction: 'order-of-dawn', housing: true, innCostPerLevel: 4 },
-  { id: 'thornwick', name: 'Thornwick', zone: 'whisperwood', description: 'A village of hunters and herbalists in the Whisperwood’s edge.', temple: ['ysolde', 'vex'], faction: 'wardens', innCostPerLevel: 5, extraShops: ['black-market'] },
-  { id: 'sandhaven', name: 'Sandhaven', zone: 'ashen-desert', description: 'A walled oasis of mercenaries and caravans.', temple: ['kael', 'thalor'], faction: 'iron-legion', innCostPerLevel: 6, extraShops: ['gambler'] },
-  { id: 'frosthold', name: 'Frosthold', zone: 'frostspire', description: 'A scholars’ fortress carved into the mountain, warm inside and quiet.', temple: ['aurelis', 'morrath'], faction: 'mages-guild', innCostPerLevel: 7 },
+  { id: 'brightwater', name: 'Brightwater', zone: 'meadowlands', description: 'A market town by a clear river, where most adventurers begin.', temple: ['solenne', 'hesha', 'mirrin'], faction: 'order-of-dawn', housing: true, innCostPerLevel: 4 },
+  { id: 'thornwick', name: 'Thornwick', zone: 'whisperwood', description: 'A village of hunters and herbalists in the Whisperwood’s edge.', temple: ['ysolde', 'vex', 'lyssara'], faction: 'wardens', innCostPerLevel: 5, extraShops: ['black-market'] },
+  { id: 'sandhaven', name: 'Sandhaven', zone: 'ashen-desert', description: 'A walled oasis of mercenaries and caravans.', temple: ['kael', 'thalor', 'seraphel'], faction: 'iron-legion', innCostPerLevel: 6, extraShops: ['gambler'] },
+  { id: 'frosthold', name: 'Frosthold', zone: 'frostspire', description: 'A scholars’ fortress carved into the mountain, warm inside and quiet.', temple: ['aurelis', 'morrath', 'ordrun'], faction: 'mages-guild', innCostPerLevel: 7 },
   { id: 'saltmere', name: 'Saltmere', zone: 'stormcoast', description: 'A port of smugglers, sailors and very good fish.', temple: ['nymira', 'grimvald'], faction: 'thieves-den', housing: true, innCostPerLevel: 8, extraShops: ['gambler', 'black-market'] },
 ];
 
