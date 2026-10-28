@@ -46,6 +46,11 @@ export function gainResource(b: Battle, x: Combatant, id: string, amount: number
   // Small pools (combo, chi...) stay whole numbers.
   x.resources[resId] = def.max <= 10 ? Math.floor(next + 1e-9) : Math.round(next * 10) / 10;
   if (x.resources[resId] !== before) b.emit({ type: 'resource', targetId: x.id });
+  if (def.overflow && value > 0 && x.resources[resId] >= def.max) {
+    x.resources[resId] = def.overflow.reset;
+    b.log(`${x.name}: ${def.overflow.text}`);
+    applyEffects(b, x, def.overflow.effects, [x]);
+  }
 }
 
 function addUltimate(b: Battle, x: Combatant, amount: number): void {

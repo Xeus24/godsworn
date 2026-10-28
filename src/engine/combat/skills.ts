@@ -224,6 +224,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
     if (!canUseSkill(b, x, skill).ok) return false;
     payCosts(b, x, skill);
   }
+  if (!opts.free && !opts.echo && skill.id !== 'echo-of-the-hour') x.lastSkill = { id: skillId, rank, ...(targetId ? { targetId } : {}) };
   const targets = resolveTargets(b, x, skill, targetId);
   if (skill.targeting !== 'randomEnemies' && skill.targeting !== 'self' && targets.length === 0 && (skill.damage || skill.heal)) return false;
   const known = x.skills.find((s) => s.id === skillId);

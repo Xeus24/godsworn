@@ -4,6 +4,7 @@ import type { ScalingStat, SkillDef, SkillTargeting } from '../../engine/skills/
 import type { SkillTag } from '../skillTags';
 import type { ModifierSpec } from '../../engine/stats/modifiers';
 import type { Element, StatId } from '../../engine/stats/types';
+import type { Condition } from '../../engine/stats/conditions';
 import type { MinorSpec, ModSpec, PassiveSpec } from './builder';
 
 /**
@@ -72,15 +73,15 @@ export const trg = (id: string, trigger: TriggerType, effects: EffectSpec[], ext
 // ---------------------------------------------------------------- tree specs
 
 type K = 'f' | 'p' | 'm';
-const mod = (stat: StatId, v: number, k: K): ModifierSpec => ({ stat, type: k === 'f' ? 'flat' : k === 'p' ? 'percent' : 'more', value: v });
+const mod = (stat: StatId, v: number, k: K, condition?: Condition): ModifierSpec => ({ stat, type: k === 'f' ? 'flat' : k === 'p' ? 'percent' : 'more', value: v, ...(condition ? { condition } : {}) });
 
 /** A minor node: one stat. `k`: f flat, p percent, m "more". */
 export const mn = (name: string, stat: StatId, v: number, k: K = 'f'): MinorSpec => ({ name, mods: [mod(stat, v, k)] });
 /** A passive: text, up to two stats, optional triggers and flags. */
-export const pas = (name: string, text: string, mods: [StatId, number, K?][] = [], triggers?: TriggeredEffect[], flags?: string[]): PassiveSpec => ({
+export const pas = (name: string, text: string, mods: [StatId, number, K?, Condition?][] = [], triggers?: TriggeredEffect[], flags?: string[]): PassiveSpec => ({
   name,
   text,
-  ...(mods.length ? { mods: mods.map(([s, v, k]) => mod(s, v, k ?? 'f')) } : {}),
+  ...(mods.length ? { mods: mods.map(([s, v, k, c]) => mod(s, v, k ?? 'f', c)) } : {}),
   ...(triggers ? { triggers } : {}),
   ...(flags ? { flags } : {}),
 });

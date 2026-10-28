@@ -141,7 +141,7 @@ export function createEnemy(def: EnemyDef, id: string, level = def.level, row: R
   const t = TIER_SCALING[def.tier] ?? { xp: 1 };
   x.kind = 'enemy';
   x.enemyId = def.id;
-  x.types = [...def.types];
+  x.types = [...def.types, ...(def.ai === 'caster' || def.ai === 'summoner' ? ['caster'] : [])];
   x.tier = def.tier;
   x.ai = def.ai;
   x.flags = [...(def.flags ?? [])];

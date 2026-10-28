@@ -61,7 +61,17 @@ export type EffectSpec =
   /** Summons an ally; `consumeCorpse` requires and uses up a fallen enemy. */
   | { kind: 'summon'; summonId: string; consumeCorpse?: boolean }
   /** The owner takes `share` percent of the damage the targets would take, for `duration` of the owner's turns (the Knight's guard). */
-  | { kind: 'guard'; share: number; duration: number; target?: EffectTarget };
+  | { kind: 'guard'; share: number; duration: number; target?: EffectTarget }
+  /** Moves a unit along the turn timeline: `turns` > 0 delays its next turn, < 0 brings it forward (-1 on yourself is an extra turn). */
+  | { kind: 'timeShift'; turns: number; target?: EffectTarget }
+  /** Winds a unit back to its best health of the last three turns and clears its harmful statuses. */
+  | { kind: 'rewind'; target?: EffectTarget }
+  /** Repeats the last skill the owner used, free. */
+  | { kind: 'echo' }
+  /** Paints a sigil: for `charges` enemy turns, whatever starts one takes these effects. */
+  | { kind: 'sigil'; name: string; charges: number; effects: EffectSpec[] }
+  /** Reshapes the battlefield: the named terrain replaces the last, its statuses falling on foes and allies for `duration` turns. */
+  | { kind: 'terrain'; terrain: string; duration: number };
 
 export type EffectKind = EffectSpec['kind'];
 

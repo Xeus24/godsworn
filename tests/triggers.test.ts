@@ -103,6 +103,11 @@ describe('dispatchProcs', () => {
       startSong: (s) => log.push(`song ${s.song}`),
       summon: (s) => log.push(`summon ${s.summonId}`),
       guard: (s) => log.push(`guard ${s.share}`),
+      timeShift: (s) => log.push(`shift ${s.turns}`),
+      rewind: () => log.push('rewind'),
+      echo: () => log.push('echo'),
+      sigil: (s) => log.push(`sigil ${s.name}`),
+      terrain: (s) => log.push(`terrain ${s.terrain}`),
     };
     const t = new TriggerSystem(new Rng(8));
     t.register(

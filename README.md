@@ -105,7 +105,7 @@ In battle:
 
 **General skills (L):** any class can learn these from **skillbooks**, which drop from enemies and chests. Read a book (right-click it) to learn its skill or gain a rank, or **Study** it at the Library to keep the book (costs gold and a few days). You have 2 slots, plus one every 10 levels up to 50. Only slotted skills work: passives add stats, utility skills act on their own (Appraise identifies for free, Foraging and Scavenging find materials after battles, Tinkering saves durability, Camping speeds rests). Battle skills show in the combat Skills menu with a ◇. Slotted skills train as you use them. **Grimoires** teach another class's signature skill at 70% power.
 
-There are fourteen classes: the original eight plus the Knight, Druid, Warlock, Summoner, Alchemist and Shaman, each with its own resource, three specializations and a five-quest questline after its trial.
+There are twenty classes: the original eight plus the Knight, Druid, Warlock, Summoner, Alchemist, Shaman, Chronomancer, Artificer, Dancer, Inkweaver, Witch Hunter and Geomancer, each with its own resource, three specializations and a five-quest questline after its trial.
 
 You start with your class's weapon, some armor, potions and a Scroll of Identify. On the inventory screen:
 

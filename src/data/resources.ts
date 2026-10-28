@@ -30,6 +30,8 @@ export interface ResourceDef {
   color: string;
   description: string;
   gains?: ResourceGains;
+  /** When the pool fills, these effects hit its owner and the pool drops to `reset` (the Artificer's overheat). */
+  overflow?: { effects: import('../engine/effects/types').EffectSpec[]; reset: number; text: string };
 }
 
 const BASE_RESOURCES: ResourceDef[] = [

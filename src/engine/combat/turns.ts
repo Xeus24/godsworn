@@ -105,8 +105,26 @@ export function advance(b: Battle): BattleEvent[] {
   return b.drain();
 }
 
+function fireSigils(b: Battle, x: Combatant): void {
+  if (x.side !== 'enemy' || b.sigils.length === 0) return;
+  for (const sg of [...b.sigils]) {
+    const owner = b.get(sg.ownerId);
+    if (!owner?.alive) {
+      b.sigils = b.sigils.filter((s) => s !== sg);
+      continue;
+    }
+    b.log(`${x.name} steps on the ${sg.name}.`);
+    applyEffects(b, owner, sg.effects, [x]);
+    sg.charges--;
+    if (sg.charges <= 0) b.sigils = b.sigils.filter((s) => s !== sg);
+    if (!x.alive) return;
+  }
+}
+
 function beginTurn(b: Battle, x: Combatant): void {
   x.defending = false;
+  x.hpHistory = [...(x.hpHistory ?? []), x.hp].slice(-3);
+  if (b.terrain && x.side === 'party' && x.kind === 'hero' && --b.terrain.turns <= 0) b.terrain = undefined;
   if (x.side === 'enemy') b.chain = { count: 0, lastSide: 'enemy' };
   tickStatusesAtTurnStart(b, x);
   if (!x.alive) return;
@@ -120,6 +138,7 @@ function beginTurn(b: Battle, x: Combatant): void {
     if (gains?.perTurnWhileSinging) gainResource(b, x, x.resourceId, gains.perTurnWhileSinging);
   }
   fireTrigger(b, x, 'onTurnStart');
+  fireSigils(b, x);
 }
 
 /** Closes a turn: durations, cooldowns, resource decay, timed summons, next initiative. */

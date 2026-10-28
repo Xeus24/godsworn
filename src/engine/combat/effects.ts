@@ -137,6 +137,48 @@ export function applyEffect(b: Battle, owner: Combatant, e: EffectSpec, defaults
     case 'summon':
       summon(b, owner, e.summonId, e.consumeCorpse ?? false);
       return;
+    case 'timeShift':
+      for (const t of resolveEffectTargets(b, owner, e.target ?? (e.turns < 0 ? 'self' : 'allEnemies'), defaults)) {
+        const delay = 100 / Math.max(1, b.stats(t).speed);
+        // The unit acting now still adds its own delay when its turn closes, so an extra turn needs room below "now".
+        const floor = b.current === t ? b.time - delay : b.time;
+        t.nextAt = Math.max(floor, t.nextAt + e.turns * delay);
+      }
+      b.log(e.turns < 0 ? 'Time folds forward.' : 'Time slows.');
+      return;
+    case 'rewind':
+      for (const t of resolveEffectTargets(b, owner, supportive(e.target), defaults)) {
+        const best = Math.max(t.hp, ...(t.hpHistory ?? []));
+        const restored = Math.min(t.maxHp, best) - t.hp;
+        if (restored > 0) {
+          t.hp += restored;
+          b.emit({ type: 'heal', targetId: t.id, amount: restored });
+        }
+        for (const s of [...t.statuses]) if (b.c.statuses.find(s.id)?.kind === 'debuff') removeStatus(b, t, s.id);
+        b.log(`${t.name} is wound back.`);
+      }
+      return;
+    case 'echo': {
+      const last = owner.lastSkill;
+      if (!last) return;
+      useSkill(b, owner, last.id, last.rank, last.targetId, { free: true, echo: true });
+      return;
+    }
+    case 'sigil':
+      b.sigils.push({ ownerId: owner.id, name: e.name, charges: e.charges, effects: e.effects });
+      b.log(`${owner.name} paints the ${e.name}.`);
+      return;
+    case 'terrain': {
+      // The new terrain replaces the old: strip every terrain status, then lay the new one on each side.
+      for (const x of b.combatants) x.statuses = x.statuses.filter((s) => !s.id.startsWith('terrain-'));
+      b.terrain = { id: e.terrain, turns: e.duration };
+      for (const x of b.alive()) {
+        const id = `terrain-${e.terrain}-${x.side === owner.side ? 'ally' : 'foe'}`;
+        if (b.c.statuses.has(id)) applyStatus(b, owner, x, id, { duration: e.duration, unresistable: true });
+      }
+      b.log(`The ground turns: ${e.terrain}.`);
+      return;
+    }
     case 'guard':
       for (const t of resolveEffectTargets(b, owner, supportive(e.target), defaults)) {
         if (t.id === owner.id) continue;

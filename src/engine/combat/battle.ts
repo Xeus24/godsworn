@@ -55,6 +55,10 @@ export class Battle {
   current: Combatant | undefined;
   /** Consecutive party hits on one target. */
   chain: { targetId?: string; count: number; lastSide?: Side } = { count: 0 };
+  /** Sigils painted on the field: they fire when an enemy starts a turn. */
+  sigils: { ownerId: string; name: string; charges: number; effects: import('../effects/types').EffectSpec[] }[] = [];
+  /** The terrain in force, if any. */
+  terrain?: { id: string; turns: number };
   readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, generalUses: {}, tagUses: {}, summons: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];

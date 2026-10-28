@@ -217,6 +217,10 @@ export interface Combatant {
   stance?: string;
   /** Guarded by an ally: that ally takes `share` percent of the damage dealt to this unit. */
   guard?: { by: string; share: number; turns: number };
+  /** The last skill used (for Echo). */
+  lastSkill?: { id: string; rank: number; targetId?: string };
+  /** Health at the start of recent turns (for Rewind). */
+  hpHistory?: number[];
   songs: string[];
   classId?: string;
   basicAttack: { element: Element; ranged: boolean; magic: boolean; name: string };

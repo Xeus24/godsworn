@@ -41,6 +41,12 @@ export const SKILL_TAGS = [
   'Totem',
   'Spirit',
   'Brew',
+  'Time',
+  'Gadget',
+  'Dance',
+  'Sigil',
+  'Terrain',
+  'Mark',
 ] as const;
 
 export type SkillTag = (typeof SKILL_TAGS)[number];
