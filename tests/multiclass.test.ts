@@ -81,7 +81,7 @@ describe('class slots and trials', () => {
   });
 
   it('every class has a trial encounter with its mentor', () => {
-    for (const cls of content.classes.all()) {
+    for (const cls of content.classes.all().filter((c) => !c.hidden)) {
       const trial = content.classTrials.get(cls.id);
       expect(content.encounters.get(trial.encounter).enemies.some((e) => e.enemyId === `mentor-${cls.id}`)).toBe(true);
     }

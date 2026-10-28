@@ -92,7 +92,7 @@ describe('maps', () => {
       expect(kinds).toContain('waypoint');
       expect(kinds).toContain('worldBoss');
       expect(kinds.filter((k) => k === 'town')).toHaveLength(z.town ? 1 : 0);
-      expect(m.entities.filter((e) => e.kind === 'lore')).toHaveLength(z.lore.length);
+      expect(m.entities.filter((e) => e.kind === 'lore' && z.lore.includes(e.ref as string))).toHaveLength(z.lore.length);
     }
   });
 });

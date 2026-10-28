@@ -27,6 +27,7 @@ export function canAddClass(char: Character, classId: string, ngPlus: number, c:
     if (char.classes.length === 1) return fail(`A second class opens at level ${MULTICLASS.secondaryLevel}.`);
     return fail(`A third class opens at level ${MULTICLASS.tertiaryLevel} in NG+${MULTICLASS.tertiaryNgPlus} or later.`);
   }
+  if (c.classes.get(classId).hidden && !char.unlockedClasses.includes(classId)) return fail('A secret class: its questline is yet to be found.');
   const trial = trialFor(classId, c);
   if (trial && !char.trialsWon.includes(trial)) return fail(`Win the ${c.encounters.get(trial).name} first.`);
   return { ok: true };

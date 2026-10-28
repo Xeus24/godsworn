@@ -219,6 +219,8 @@ export interface Combatant {
   guard?: { by: string; share: number; turns: number };
   /** The last skill used (for Echo). */
   lastSkill?: { id: string; rank: number; targetId?: string };
+  /** A skill taken from an enemy, waiting to be cast. */
+  borrowed?: { id: string; rank: number };
   /** Health at the start of recent turns (for Rewind). */
   hpHistory?: number[];
   songs: string[];
@@ -300,6 +302,8 @@ export interface BattleTally {
   itemsUsed: Record<string, number>;
   /** Skill uses by heroes, for mastery. */
   skillUses: Record<string, number>;
+  /** Enemy ids stolen from this battle. */
+  stolen: string[];
   /** Uses of skills granted by general skills, keyed by general skill id, for training. */
   generalUses: Record<string, number>;
   /** Hero skill uses per tag (gods like or dislike some kinds of magic). */

@@ -27,6 +27,8 @@ export interface StatusDef {
   dot?: { element: Element; powerRatio: number; percentMaxHp?: number };
   /** Healing per turn as % of max HP. */
   hot?: { percentMaxHp: number };
+  /** Removed as soon as the bearer takes damage (sleep). */
+  breakOnDamage?: boolean;
   /** Lose the turn entirely (stun, freeze). */
   skipTurn?: boolean;
   /** Chance (0..1) to lose the turn (fear). */

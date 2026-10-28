@@ -10,7 +10,7 @@ import { applyEffects } from '../src/engine/combat/effects';
 import { Rng } from '../src/engine/core/rng';
 import { makeHero } from './helpers';
 
-const NEW = GREATER_CLASSES.map((g) => g.def.id).slice(6);
+const NEW = GREATER_CLASSES.map((g) => g.def.id).slice(6, 12);
 
 function duel(classId: string, enemyId = 'goblin-cutthroat', enemyLevel = 15) {
   const char = makeHero({ classId });
@@ -25,7 +25,7 @@ function duel(classId: string, enemyId = 'goblin-cutthroat', enemyLevel = 15) {
 describe('the second six classes', () => {
   it('are Chronomancer, Artificer, Dancer, Inkweaver, Witch Hunter and Geomancer', () => {
     expect(NEW).toEqual(['chronomancer', 'artificer', 'dancer', 'inkweaver', 'witchhunter', 'geomancer']);
-    expect(content.classes.size).toBe(20);
+    expect(content.classes.size).toBeGreaterThanOrEqual(20);
   });
 
   it('each has a resource, 3 specializations, 80+ nodes, a trial, a 5-quest line and a class-bound Legendary', () => {

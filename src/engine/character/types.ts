@@ -101,6 +101,10 @@ export interface Character {
   trees: Record<string, ClassTreeState>;
   /** Mastery XP per skill id (uses in battle). */
   mastery: Record<string, number>;
+  /** Hidden classes the hero has unlocked (secret questlines): they can then be taken up as a secondary class. */
+  unlockedClasses: string[];
+  /** Enemy types the hero has stolen from (the Hollow Hand's secret). */
+  stolen: string[];
   /** Skills evolved into a stronger form: base skill id -> evolved skill id (data/evolutions.ts). */
   evolved: Record<string, string>;
   /** Known general skills (from skillbooks and Grimoires). */

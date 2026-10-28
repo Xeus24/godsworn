@@ -76,6 +76,8 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     trees: {},
     mastery: {},
     evolved: {},
+    unlockedClasses: [],
+    stolen: [],
     generalSkills: {},
     generalSlots: [],
     bonusGeneralSlots: 0,

@@ -160,6 +160,7 @@ export function applyDamage(
   target.shield -= absorbed;
   const dealt = amount - absorbed;
   target.hp = Math.max(0, target.hp - dealt);
+  if (dealt > 0) for (const s of [...target.statuses]) if (b.c.statuses.find(s.id)?.breakOnDamage) removeStatus(b, target, s.id);
   b.emit({ type: 'damage', sourceId: source.id, targetId: target.id, amount, element: info.element, crit: info.crit, absorbed, dot: info.dot });
 
   const hpShare = dealt / Math.max(1, target.maxHp);

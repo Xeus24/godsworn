@@ -68,6 +68,12 @@ export type EffectSpec =
   | { kind: 'rewind'; target?: EffectTarget }
   /** Repeats the last skill the owner used, free. */
   | { kind: 'echo' }
+  /** Lifts gold and a token from enemies, and counts them as stolen from (Pickpocket). */
+  | { kind: 'steal'; gold: number }
+  /** Takes the target's last skill and holds it, to be cast later. */
+  | { kind: 'stealSkill'; target?: EffectTarget }
+  /** Casts the held skill free, and lets it go. */
+  | { kind: 'castBorrowed' }
   /** Paints a sigil: for `charges` enemy turns, whatever starts one takes these effects. */
   | { kind: 'sigil'; name: string; charges: number; effects: EffectSpec[] }
   /** Reshapes the battlefield: the named terrain replaces the last, its statuses falling on foes and allies for `duration` turns. */

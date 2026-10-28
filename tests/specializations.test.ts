@@ -19,7 +19,7 @@ describe('specializations', () => {
   it('every class has three, each with a 12-node branch and its own ultimate', () => {
     for (const cls of content.classes.all()) {
       const specs = specializationsFor(cls.id);
-      expect(specs).toHaveLength(3);
+      expect(specs).toHaveLength(cls.hidden ? 2 : 3);
       const tree = treeOf(cls.id);
       for (const spec of specs) {
         expect(tree.nodes.filter((n) => n.branch === spec.id)).toHaveLength(12);

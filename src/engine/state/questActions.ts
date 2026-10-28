@@ -442,6 +442,12 @@ export class QuestActions {
           if (!this.q.active[q.id] && (!this.q.completed[q.id] || q.repeatable)) this.begin(q);
           break;
         }
+        case 'unlockClass':
+          if (!s.player.unlockedClasses.includes(a.classId)) {
+            s.player.unlockedClasses.push(a.classId);
+            s.bus.emit('toast', { kind: 'level', text: `A secret path opens: the ${content.classes.get(a.classId).name}. Take it up as a secondary class from any arena.` });
+          }
+          break;
         case 'setFlag':
           s.setFlag(a.flag, a.value ?? true);
           break;

@@ -59,7 +59,7 @@ export class Battle {
   sigils: { ownerId: string; name: string; charges: number; effects: import('../effects/types').EffectSpec[] }[] = [];
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
-  readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, generalUses: {}, tagUses: {}, summons: 0 };
+  readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], generalUses: {}, tagUses: {}, summons: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];
   private uid = 0;

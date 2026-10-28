@@ -29,6 +29,14 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return p.raceId === cond.raceId;
     case 'background':
       return p.backgroundId === cond.backgroundId;
+    case 'lorePages':
+      return cond.ids.every((id) => state.world.lore.includes(id));
+    case 'allInns':
+      return c.towns.all().every((t) => state.flags[`inn:${t.id}`]);
+    case 'stolen':
+      return p.stolen.length >= cond.min;
+    case 'deathless':
+      return state.stats.deaths === 0;
     case 'stat':
       return characterBaseStats(p, c)[cond.stat] >= cond.min;
     case 'favor':
@@ -163,6 +171,14 @@ export function describe(cond: Cond, c: Content = content): string {
       return c.races.get(cond.raceId).name;
     case 'background':
       return c.backgrounds.get(cond.backgroundId).name;
+    case 'lorePages':
+      return `${cond.ids.length} pages`;
+    case 'allInns':
+      return 'Every inn';
+    case 'stolen':
+      return `${cond.min} thefts`;
+    case 'deathless':
+      return 'Never fallen';
     case 'stat':
       return `${STAT_LABEL[cond.stat] ?? cond.stat} ${cond.min}`;
     case 'favor':

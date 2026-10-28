@@ -21,7 +21,7 @@ const BASE_ROWS: Record<string, Row> = {
   bard: ['hesha', 'drowned-grotto', ['tide-hag', '^drowned-sailor'], ['bone-lord', 'restless-ghost', 'restless-ghost'], ['Tuning Up', 'The Rival Troupe', 'The Echoing Grotto', 'The Silent Hall', 'Encore'], ['“Every act starts with a tuning. Visit Hesha’s shrine, who loves a warm hall, and play your first note.”', '“A rival troupe is sabotaging us. Win the crowd back.”', '“The grotto has a perfect echo. Use it.”', '“A hall has gone silent, and something is drinking the sound. Make it sing.”', '“Every bard gets one encore. Come and see how I spent mine.”'], '“The audience doesn’t remember the songs. They remember how they felt. How will you make them feel?”', '“Like the song was always theirs.”', '“A voice made for a hall of eight hundred. Use it.”', '“I’ll take the stage.”', 'Voice of the Last Encore'],
 };
 
-const ROWS: Record<string, Row> = { ...BASE_ROWS, ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.questline])) };
+const ROWS: Record<string, Row> = { ...BASE_ROWS, ...Object.fromEntries(GREATER_CLASSES.flatMap((g) => (g.questline ? [[g.def.id, g.questline]] : []))) };
 
 const LEVELS = [12, 16, 20, 25, 30];
 const CLASS_PACK: Record<string, string[]> = {

@@ -52,8 +52,8 @@ const BASE_CLASS_TRIALS: ClassTrialDef[] = [
   { classId: 'bard', encounter: 'trial-bard', quote: 'Keep up with the rhythm, darling, or get left behind.' },
 ];
 
-export const CLASS_TRIALS: ClassTrialDef[] = [...BASE_CLASS_TRIALS, ...GREATER_CLASSES.map((g) => ({ classId: g.def.id, encounter: `trial-${g.def.id}`, quote: g.trial.quote }))];
-export const MENTORS: EnemyDef[] = [...BASE_MENTORS, ...GREATER_CLASSES.map((g) => g.mentor)];
+export const CLASS_TRIALS: ClassTrialDef[] = [...BASE_CLASS_TRIALS, ...GREATER_CLASSES.flatMap((g) => (g.trial ? [{ classId: g.def.id, encounter: `trial-${g.def.id}`, quote: g.trial.quote }] : []))];
+export const MENTORS: EnemyDef[] = [...BASE_MENTORS, ...GREATER_CLASSES.flatMap((g) => (g.mentor ? [g.mentor] : []))];
 
 
 /** Twelve hybrid prestige classes from class pairs, and the Sun Knight (Paladin + Apostle of Solenne). */
@@ -82,7 +82,7 @@ const trialSupport: Record<string, EncounterDef['enemies']> = {
   necromancer: [{ enemyId: 'skeleton-soldier' }],
   monk: [],
   bard: [{ enemyId: 'bandit-thug' }],
-  ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.trial.support])),
+  ...Object.fromEntries(GREATER_CLASSES.flatMap((g) => (g.trial ? [[g.def.id, g.trial.support]] : []))),
 };
 
 const mentorOf = (classId: string): string => `mentor-${classId}`;

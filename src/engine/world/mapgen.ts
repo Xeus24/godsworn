@@ -1,3 +1,4 @@
+import { HIDDEN_LORE, SECRET_BOSSES } from '../../data/world/hidden';
 import { content, type Content } from '../../data';
 import { Rng } from '../core/rng';
 import type { DungeonDef, EncounterGroup, MapEntity, TileMap, ZoneDef } from './types';
@@ -213,6 +214,23 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
       add({ id: `dig-${t.id}`, kind: 'dig', x, y, ref: t.id, label: 'Dig spot' });
       break;
     }
+  }
+
+  // Secrets for the hidden classes: extra clue pages and the elder drakes' lairs, placed with the same separate generator.
+  const spotFor = (): [number, number] | undefined => {
+    for (let tries = 0; tries < 400 && candidates.length; tries++) {
+      const p = digRng.pick(candidates);
+      if (!entities.some((e) => Math.abs(e.x - p[0]) + Math.abs(e.y - p[1]) < 4)) return p;
+    }
+    return undefined;
+  };
+  for (const l of HIDDEN_LORE.filter((x) => x.zone === zone.id)) {
+    const p = spotFor();
+    if (p) add({ id: `lore-${l.id}`, kind: 'lore', x: p[0], y: p[1], ref: l.id });
+  }
+  for (const sb of SECRET_BOSSES.filter((x) => x.zone === zone.id)) {
+    const p = spotFor();
+    if (p) add({ id: `secret-${sb.id}`, kind: 'worldBoss', x: p[0], y: p[1], ref: sb.enemy, requires: sb.requires, label: c.enemies.get(sb.enemy).name });
   }
 
   // Nothing may stand on scenery.

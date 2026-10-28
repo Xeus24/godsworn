@@ -89,6 +89,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     }
   }
 
+  for (const id of b.tally.stolen) if (!p.stolen.includes(id)) p.stolen.push(id);
   rewards.generalUps = s.general.trainAfterBattle(b);
 
   for (const kill of b.tally.kills) {

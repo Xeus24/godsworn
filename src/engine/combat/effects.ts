@@ -137,6 +137,38 @@ export function applyEffect(b: Battle, owner: Combatant, e: EffectSpec, defaults
     case 'summon':
       summon(b, owner, e.summonId, e.consumeCorpse ?? false);
       return;
+    case 'steal': {
+      for (const t of resolveEffectTargets(b, owner, undefined, defaults)) {
+        if (t.side === owner.side || !t.enemyId) continue;
+        // Bosses cling to what they own.
+        const bossy = t.tier === 'boss' || t.tier === 'worldBoss';
+        if (bossy || !b.rng.chance(0.8)) {
+          b.log(`${owner.name} reaches for ${t.name}'s pockets and comes away empty.`);
+          continue;
+        }
+        b.tally.goldFound += e.gold + t.level * 4;
+        if (!b.tally.stolen.includes(t.enemyId)) b.tally.stolen.push(t.enemyId);
+        b.log(`${owner.name} lifts something from ${t.name}.`);
+      }
+      return;
+    }
+    case 'stealSkill':
+      for (const t of resolveEffectTargets(b, owner, e.target ?? 'target', defaults)) {
+        const last = t.lastSkill;
+        if (t.side === owner.side || !last || !b.c.skills.has(last.id)) continue;
+        owner.borrowed = { id: last.id, rank: last.rank };
+        b.log(`${owner.name} takes ${b.c.skills.get(last.id).name} from ${t.name}.`);
+        return;
+      }
+      b.log(`${owner.name} finds nothing to take.`);
+      return;
+    case 'castBorrowed': {
+      const held = owner.borrowed;
+      if (!held) return;
+      delete owner.borrowed;
+      useSkill(b, owner, held.id, held.rank, undefined, { free: true, echo: true });
+      return;
+    }
     case 'timeShift':
       for (const t of resolveEffectTargets(b, owner, e.target ?? (e.turns < 0 ? 'self' : 'allEnemies'), defaults)) {
         const delay = 100 / Math.max(1, b.stats(t).speed);

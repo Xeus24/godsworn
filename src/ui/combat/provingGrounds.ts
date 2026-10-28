@@ -157,6 +157,20 @@ export class ProvingGroundsScreen implements Screen {
           ...(!won && atLevel && !open && quest ? [el('div', { class: 'dim small' }, s.state.quests.active[quest.id] ? `Finish the errand of “${quest.name}” first.` : `Talk to the trainer to begin “${quest.name}”.`)] : []),
         );
       });
+    const secretCards = (p.unlockedClasses ?? [])
+      .filter((id) => !p.classes.some((cp) => cp.classId === id))
+      .map((id) => {
+        const cls = content.classes.get(id);
+        const check = canAddClass(p, id, s.state.ngPlus);
+        return el(
+          'div',
+          { class: 'trainer-card panel' },
+          el('div', { class: 'trainer-id' }, el('div', { class: 'enc-head' }, el('b', { style: `color:${cls.color}` }, cls.name), el('span', { class: 'enc-tag ok' }, 'Secret class'))),
+          el('div', { class: 'dim small' }, cls.tagline),
+          btn(`Take up ${cls.name}`, () => this.say(s.multiclass.addClass(id)), !check.ok, 'primary'),
+          ...(!check.ok ? [el('div', { class: 'dim small' }, check.reason)] : []),
+        );
+      });
     const hybridCards = hybridsFor(p).map((h) => {
       const enc = content.encounters.get(h.trial);
       const unlocked = p.hybrids.includes(h.id);
@@ -191,7 +205,7 @@ export class ProvingGroundsScreen implements Screen {
       el('h3', {}, 'Class Trainers'),
       el('p', { class: 'dim small' }, intro),
       ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-      ...(p.classes.length < slots || p.classes.length === 1 ? [el('div', { class: 'trainer-grid' }, ...classCards)] : []),
+      ...(p.classes.length < slots || p.classes.length === 1 ? [el('div', { class: 'trainer-grid' }, ...classCards, ...secretCards)] : []),
       ...(hybridCards.length
         ? [el('h3', {}, 'Hybrid Trials'), el('p', { class: 'dim small' }, `With both classes at level ${MULTICLASS.hybridLevel}, face both mentors to unlock a hybrid prestige class and its tree.`), el('div', { class: 'trainer-grid' }, ...hybridCards)]
         : []),

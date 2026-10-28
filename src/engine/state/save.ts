@@ -116,6 +116,8 @@ export function migrate(raw: Json): Json {
   // Version 18 phase 3: five builds per class, evolved skills.
   for (const holder of [p, ...Object.values(obj(obj(state.party).companions)).map((comp) => obj(obj(comp).character))]) {
     holder.evolved ??= {};
+    holder.unlockedClasses ??= [];
+    holder.stolen ??= [];
     for (const st of Object.values(obj(holder.trees))) {
       const builds = (obj(st).builds as Json[]) ?? [];
       while (builds.length < BUILD_SLOTS) builds.push(emptyBuild(builds.length) as unknown as Json);

@@ -15,6 +15,14 @@ export type Cond =
   | { kind: 'level'; min: number }
   | { kind: 'class'; classId: string }
   | { kind: 'race'; raceId: string }
+  /** Every one of these lore pages has been found. */
+  | { kind: 'lorePages'; ids: string[] }
+  /** Slept at an inn in every town. */
+  | { kind: 'allInns' }
+  /** Stolen from this many different enemy types. */
+  | { kind: 'stolen'; min: number }
+  /** No defeat so far this playthrough. */
+  | { kind: 'deathless' }
   | { kind: 'background'; backgroundId: string }
   | { kind: 'stat'; stat: PrimaryStat; min: number }
   | { kind: 'favor'; god: string; tier: DevotionTier }
@@ -165,6 +173,8 @@ export type ActionDef =
   | { kind: 'ending'; ending: string }
   | { kind: 'title'; title: string }
   | { kind: 'restore' }
+  /** Unlocks a hidden class (it can then be taken up as a secondary class). */
+  | { kind: 'unlockClass'; classId: string }
   | { kind: 'toast'; text: string }
   /** The companion's personal quest is done: their oath perk is earned. */
   | { kind: 'oath'; companion: string }

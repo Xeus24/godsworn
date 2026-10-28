@@ -162,6 +162,8 @@ export interface MapEntity {
   locked?: boolean;
   trapped?: boolean;
   hidden?: boolean;
+  /** Only shown once this lore page has been found (secret lairs). */
+  requires?: string;
   /** Enemy groups. */
   group?: EncounterGroup;
   /** Gathering nodes: the skill used. */

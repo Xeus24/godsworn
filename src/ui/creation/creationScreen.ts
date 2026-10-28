@@ -119,7 +119,7 @@ export class CreationScreen implements Screen {
       name: pickRandom(RANDOM_NAMES),
       portrait: Math.floor(Math.random() * PORTRAIT_VARIANTS),
       raceId: pickRandom(content.races.all().filter((r) => raceUnlocked(r, highestNgPlus(), storyCleared())).map((r) => r.id)),
-      classId: pickRandom(content.classes.ids()),
+      classId: pickRandom(content.classes.all().filter((k) => !k.hidden).map((k) => k.id)),
       birthSignId: pickRandom(content.birthSigns.ids()),
       background: pickRandom(content.backgrounds.ids()),
       hardcore: this.choice.hardcore,
@@ -166,7 +166,7 @@ export class CreationScreen implements Screen {
       ),
       this.group(
         'Class',
-        content.classes.all(),
+        content.classes.all().filter((k) => !k.hidden),
         this.choice.classId,
         (c) => [c.name, `${c.role} · ${'★'.repeat(c.difficulty)}${'☆'.repeat(3 - c.difficulty)}`],
         (id) => (this.choice.classId = id),

@@ -480,9 +480,11 @@ export class WorldActions {
 
   /** A night at the inn: full HP/MP, 8 hours, and Well Rested (+5% damage, 3 battles). */
   stayAtInn(): WorldResult {
-    if (!this.inTown()) return fail('Find a town first.');
+    const town = this.inTown();
+    if (!town) return fail('Find a town first.');
     if (!this.s.spendGold(this.innCost(), 'inn')) return fail(`A room costs ${this.innCost()} gold.`);
     this.sleep();
+    this.s.setFlag(`inn:${town}`, true);
     this.toast('info', 'You sleep in a warm bed and wake Well Rested.');
     return { ok: true };
   }

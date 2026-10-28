@@ -62,7 +62,7 @@ export const MENTOR_NPCS: NpcDef[] = [
   ['necromancer', 'The Pale Tutor', 'human', 0, '#5a4a7a', '“Do not be alarmed by the skeletons. They are teaching assistants.”'],
   ['monk', 'Master Ren', 'human', 3, '#e0a040', '“…”'],
   ['bard', 'Lyra Silvertongue', 'elf', 7, '#e05aa0', '“Darling! You have the face of someone with a story. Let’s make it a good one.”'],
-  ...GREATER_CLASSES.map((g): [string, string, string, number, string, string] => [g.def.id, g.mentorNpc.name, g.mentorNpc.race, g.mentorNpc.portrait, g.mentorNpc.color, g.mentorNpc.greeting]),
+  ...GREATER_CLASSES.flatMap((g): [string, string, string, number, string, string][] => (g.mentorNpc ? [[g.def.id, g.mentorNpc.name, g.mentorNpc.race, g.mentorNpc.portrait, g.mentorNpc.color, g.mentorNpc.greeting]] : [])),
 ].map(([cls, name, race, portrait, color, greeting]) => ({ id: `mentor-${cls}`, name: name as string, title: `${(cls as string)[0]?.toUpperCase()}${(cls as string).slice(1)} Trainer`, place: 'arena' as const, race: race as string, portrait: portrait as number, color: color as string, greeting: greeting as string }));
 
 /** People met only at quest markers in the field (and things that speak). */

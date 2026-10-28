@@ -106,6 +106,9 @@ describe('dispatchProcs', () => {
       timeShift: (s) => log.push(`shift ${s.turns}`),
       rewind: () => log.push('rewind'),
       echo: () => log.push('echo'),
+      steal: (s) => log.push(`steal ${s.gold}`),
+      stealSkill: () => log.push('stealSkill'),
+      castBorrowed: () => log.push('castBorrowed'),
       sigil: (s) => log.push(`sigil ${s.name}`),
       terrain: (s) => log.push(`terrain ${s.terrain}`),
     };

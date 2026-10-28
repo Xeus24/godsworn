@@ -70,6 +70,7 @@ export function runesDone(world: WorldState, map: TileMap): boolean {
  */
 export function entityActive(world: WorldState, map: TileMap, e: MapEntity, day: number): boolean {
   if (e.kind === 'dig' && !world.treasureMaps.includes(e.ref as string)) return false;
+  if (e.requires && !world.lore.includes(e.requires)) return false;
   const usedDay = world.used[usedKey(map.id, e.id)];
   if (usedDay === undefined) return true;
   if (e.kind === 'worldBoss') return day - usedDay >= WORLD_BOSS_RESPAWN_DAYS;

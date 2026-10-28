@@ -40,6 +40,7 @@ import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
 import { FORBIDDEN_COMBAT_SKILLS, FORBIDDEN_SKILLS } from './general/forbidden';
 import { BLESSINGS } from './blessings';
 import { TREASURES, TREASURE_ITEMS } from './world/treasures';
+import { HIDDEN_LORE } from './world/hidden';
 import { DYES, FRAMES } from './appearance';
 import { BACKGROUNDS } from './backgrounds';
 import { PANTHEON } from './pantheon';
@@ -142,7 +143,7 @@ export const content = {
   weather: new ContentTable('weather', WEATHER),
   factions: new ContentTable('faction', FACTIONS),
   houseRooms: new ContentTable('house room', HOUSE_ROOMS),
-  lore: new ContentTable('lore page', LORE),
+  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE]),
   professions: new ContentTable('profession', PROFESSIONS),
   recipes: new ContentTable('recipe', RECIPES),
   shops: new ContentTable('shop', SHOPS),
@@ -439,7 +440,7 @@ export function validateContent(c: Content = content): void {
     v.check(c.skills.find(sp.ultimate)?.ultimate === true, `${where}: ${sp.ultimate} is not an ultimate`);
     v.check(c.trees.find(sp.classId)?.branches.some((b) => b.spec === sp.id) === true, `${where}: no tree branch`);
   }
-  for (const cls of c.classes.all()) v.check(c.specializations.filter((s) => s.classId === cls.id).length === 3, `class ${cls.id}: needs 3 specializations`);
+  for (const cls of c.classes.all()) v.check(c.specializations.filter((s) => s.classId === cls.id).length === (cls.hidden ? 2 : 3), `class ${cls.id}: needs ${cls.hidden ? 2 : 3} specializations`);
   for (const g of c.generalSkills.all()) {
     const where = `general skill ${g.id}`;
     if (g.combatSkill) v.ref(c.skills, g.combatSkill, where);
@@ -545,7 +546,7 @@ export function validateContent(c: Content = content): void {
   // ---- Multiclassing ----
   for (const cls of c.classes.all()) {
     const trial = c.classTrials.find(cls.id);
-    v.check(trial !== undefined, `class ${cls.id}: no class trial`);
+    v.check(trial !== undefined || cls.hidden === true, `class ${cls.id}: no class trial`);
     if (trial) v.ref(c.encounters, trial.encounter, `class trial ${cls.id}`);
   }
   for (const h of c.hybrids.all()) {
@@ -603,6 +604,9 @@ function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, wher
       return v.ref(c.races, cond.raceId, where);
     case 'background':
       return v.ref(c.backgrounds, cond.backgroundId, where);
+    case 'lorePages':
+      for (const id of cond.ids) v.ref(c.lore, id, where);
+      return;
     case 'favor':
     case 'trialStage':
       return v.ref(c.gods, cond.god, where);

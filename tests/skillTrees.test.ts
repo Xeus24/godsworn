@@ -48,7 +48,7 @@ describe('tree content', () => {
       expect(secrets, cls.id).toHaveLength((BASE_CLASS_IDS as readonly string[]).includes(cls.id) ? 4 : 0);
       const classBranches = new Set(tree.branches.filter((b) => !b.spec && !b.id.endsWith('.secrets')).map((b) => b.id));
       expect(classBranches.size, cls.id).toBe(4);
-      expect(tree.branches.filter((b) => b.spec), cls.id).toHaveLength(3);
+      expect(tree.branches.filter((b) => b.spec), cls.id).toHaveLength(cls.hidden ? 2 : 3);
       const classNodes = tree.nodes.filter((n) => classBranches.has(n.branch));
       expect(classNodes.length, cls.id).toBeGreaterThanOrEqual(50);
       expect(classNodes.length, cls.id).toBeLessThanOrEqual(70);

@@ -180,7 +180,7 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (54)
+### Legendaries (60)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -196,6 +196,12 @@ Generated from the data files by `npm run content:md`.
 | **Penumbra Quill** | Elderwood Wand | 25 | +12% Shadow Damage; +12% increased Magic Attack; 30% chance when you cast a sigil skill to gain 5 Ink; Gain 10 Ink when you kill an enemy |
 | **Ash and Argent** | Adamant Rapier | 25 | +12% Holy Damage; +12% increased Physical Attack; 20% chance on hit to Mark the target; Gain 10 Conviction when you kill an enemy |
 | **Keystone of the World** | Sapphire Orb | 25 | +12% increased Magic Attack; +10% increased Defense; 35% chance when you raise terrain to gain 6 Ley; Shield yourself for 3% of max HP at the start of each turn |
+| **The Seventh-Page Chalice** | Sapphire Orb | 28 | +12% increased Magic Attack; +5% Lifesteal; Kills grant 12 Blood and heal 6% of max HP; Below 30% HP, once per battle: heal 15% of max HP |
+| **The Ledger of Fifty** | Adamant Dagger | 40 | +12% increased Physical Attack; +20% Gold Find; 30% chance on hit to gain 4 Guile; Below 30% HP, once per battle: vanish and heal 10% |
+| **Pillow of All Beds** | Sapphire Orb | 42 | +12% increased Magic Attack; +10% Status Chance; Gain 4 Slumber at the start of each turn; 15% chance when hit to put the attacker to sleep for a turn |
+| **The Fourfold Fang** | Adamant Spear | 56 | +12% increased Physical Attack; +25% Crit Damage; 30% chance on hit to gain 4 Dragonfire; Below 30% HP, once per battle: shield yourself for 30% of max HP |
+| **Crossbar of the Last Puppet** | Elderwood Wand | 34 | +12% increased Magic Attack; +10% Status Chance; Gain 1 String at the start of each turn; Kills grant 2 Strings |
+| **The Fourth Question** | Adamant Greatsword | 60 | +15% increased Physical Attack; +15% Void Damage; Kills grant 12 Dominion; Below 30% HP, once per battle: shield yourself for 30% and heal 15% |
 | **Emberheart** | Mithril Sword | 20 | +20% Fire Damage; +15% increased Physical Attack; 25% chance on hit to Burn the target |
 | **Widowmaker** | Adamant Greatsword | 30 | +40% Crit Damage; Attacks against enemies below 20% HP always crit |
 | **Grudgebearer** | Steel Axe | 10 | +15% Resource Gain; Gain 6 Rage whenever you are hit |
@@ -478,7 +484,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (35)
+### Status effects (38)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -517,8 +523,11 @@ Generated from the data files by `npm run content:md`.
 | **Sand Cover** | buff | The dunes hide you: +10% dodge. |
 | **Scorched Ground** | debuff | The floor is lava: 4% of max HP lost to fire each turn. |
 | **Heat Shield** | buff | The heat feeds you: +8% damage. |
+| **Dream Sleep** | debuff | Asleep: loses its turns. Any damage wakes it. |
+| **Nightmare** | debuff | Tormented: loses 3% of max HP each turn and may flinch away (25% to lose its turn). |
+| **Strung** | debuff | On a string: deals 20% less damage, acts 10% slower and takes 10% more damage. |
 
-### Class ultimates and traits (20)
+### Class ultimates and traits (26)
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
@@ -542,12 +551,18 @@ Generated from the data files by `npm run content:md`.
 | Inkweaver | **Indelible** | Write it so it cannot be unwritten: 250% MAG shadow damage to every enemy, a sigil on the field for 3 turns, and the party gains +20% damage for 3 turns. | **Steady Hand**: 95% more max HP, 30% less damage taken, 80% more magic attack, +60% damage and 6% lifesteal. |
 | Witch Hunter | **Inquisitor’s Verdict** | The verdict is read: 250% ATK holy damage to every enemy and Mark on all; you gain 40 Conviction and +20% damage for 3 turns. | **Unshaken Faith**: 95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage. |
 | Geomancer | **Leyline Surge** | The lines of the world answer: 260% MAG damage to every enemy, the party is healed for 20% and gains +20% damage for 3 turns, and you gain 50 Ley. | **Rooted Power**: 95% more max HP, 30% less damage taken, 45% more magic attack and +30% damage. |
+| Hemomancer | **Crimson Ascension** | You become the blood: 260% MAG shadow damage to every enemy, heal 25%, and gain +30% damage and 15% lifesteal for 3 turns. | **Thick as Blood**: 95% more max HP, 30% less damage taken, 60% more magic attack, +50% damage and 12% lifesteal. |
+| Hollow Hand | **The Hollow Hand Closes** | Everything is yours: 260% ATK to every enemy; your Guile fills, and the party gains +20% damage and +15% crit for 3 turns. | **Nothing in Your Hands**: 95% more max HP, 30% less damage taken, 35% more physical attack, +50% damage and +10% crit chance. |
+| Dreamwalker | **Wake the World** | Everyone wakes at once: 280% MAG arcane damage to every enemy, the party is healed for 25% and gains +25% damage for 3 turns. | **Awake in Every Bed**: 110% more max HP, 40% less damage taken, 70% more magic attack and +80% damage. |
+| Dragonsoul | **The Fifth Voice** | A voice no drake has: 260% ATK to every enemy, +25% damage and +25% crit damage for 3 turns, and full Dragonfire. | **Four Voices**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
+| Puppeteer | **Exit, Stage Left** | You step out of the strings: 250% MAG to every enemy, heal 20%, and the party takes 25% less damage for 3 turns. | **Hands Behind the Curtain**: 95% more max HP, 30% less damage taken, 60% more magic attack and +50% damage. |
+| Hollow King | **The Hollow Crown** | You wear it: 260% ATK void damage to every enemy; you gain +30% damage and 25% less damage taken for 3 turns and full Dominion. | **Unfallen**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
-**Stances (12):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.)
+**Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (148)
+### Enemies (163)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -689,6 +704,21 @@ Generated from the data files by `npm run content:md`.
 | **False Herald** | 66 | elite | spirit, void, divine | front | caster | Void Rend, Curse of Ages | void +50%, holy +20% |
 | **The Nameless One** | 80 | boss | spirit, void, divine | front | caster | Corruption Wave, Void Rend, Curse of Ages | void +80%, shadow +40%, holy -20% |
 | **The Last Light** | 80 | boss | spirit, divine | front | caster | Arc Lightning, Curse of Ages, Harden | holy +70%, void -30% |
+| **Rime, Elder Drake of the Glacier** | 40 | worldBoss | dragon, drake, elder | front | aggressive | Frost Breath, Savage Bite, Grave Chill, Enrage | ice +90%, fire -40%, holy +10% |
+| **Tempest, Elder Drake of the Eye** | 47 | worldBoss | dragon, drake, elder | front | aggressive | Thunderstorm, Savage Bite, Arc Lightning, Enrage | lightning +90%, ice -30% |
+| **Cinder, Elder Drake of the Rift** | 55 | worldBoss | dragon, drake, elder | front | aggressive | Magma Burst, Savage Bite, Tremor, Enrage | fire +90%, ice -40% |
+| **The Grave-King Drake** | 60 | worldBoss | dragon, drake, elder, undead | front | aggressive | Grave Chill, Void Rend, Corruption Wave, Curse of Ages, Enrage | shadow +90%, void +50%, holy -40% |
+| **Crimson Acolyte** | 26 | normal | humanoid, cultist | back | caster | Shadow Bolt, Goblin Hex | holy -15% |
+| **The Sanguine Archivist** | 32 | boss | humanoid, cultist, caster | back | caster | Shadow Bolt, Curse of Ages, Crude Mending, Enrage | shadow +40%, holy -25% |
+| **Hollow Hand Fence** | 30 | normal | humanoid, bandit | front | aggressive | Dirty Stab, Cutlass Flurry |  |
+| **The Tally-Keeper** | 38 | boss | humanoid, bandit | front | aggressive | Now You See Me, Dirty Stab, Cutlass Flurry, Enrage |  |
+| **Nightmare Hound** | 40 | normal | spirit, nightmare | front | aggressive | Savage Bite, Banshee Wail | shadow +40%, holy -20% |
+| **The Insomniac** | 44 | boss | spirit, nightmare, caster | back | caster | Banshee Wail, Shadow Bolt, Curse of Ages, Enrage | shadow +50%, arcane +30%, holy -20% |
+| **Wind-Up Soldier** | 28 | normal | construct, puppet | front | aggressive | Shield Bash | physical +20%, lightning -25% |
+| **Jester Puppet** | 29 | normal | construct, puppet | front | assassin | Goblin Hex, Dirty Stab |  |
+| **The Last Puppet** | 34 | boss | construct, puppet | front | aggressive | Dark Cleave, Goblin Hex, Tremor, Enrage | physical +25%, lightning -30% |
+| **Hollow Courtier** | 58 | normal | humanoid, void, hollow | front | aggressive | Dark Cleave, Shield Bash | void +40%, holy -20% |
+| **Warden of the Riddle Crown** | 60 | boss | humanoid, void, hollow, caster | front | caster | Void Rend, Curse of Ages, Corruption Wave, Enrage | void +60%, shadow +40%, holy +10% |
 | **Sunguard of Solenne** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Solenne | holy +40% |
 | **Raven of Morrath** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Morrath | shadow +40% |
 | **Einherjar of Kael** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Kael | physical +40% |
@@ -700,9 +730,9 @@ Generated from the data files by `npm run content:md`.
 | **Hearth-Keeper of Hesha** | 1 | elite | spirit, divine, follower | back | healer | Crude Mending, Wrath of Hesha | holy +40% |
 | **Coin-Golem of Grimvald** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Grimvald | physical +40% |
 
-**Summons (44):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll
+**Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (204)
+### Encounters (216)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -788,6 +818,18 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 28 | Desert Raider, Sand Scorpion, Dust Elemental |
 | **Trouble on the Road** | 36 | Yeti, Frost Wolf, Ice Witch |
 | **Trouble on the Road** | 44 | Corsair, Corsair, Siren |
+| **The Secret’s Guard** | 30 | Crimson Acolyte, Crimson Acolyte, Crimson Acolyte |
+| **Trial of the Hemomancer** | 34 | The Sanguine Archivist, Crimson Acolyte, Crimson Acolyte |
+| **The Secret’s Guard** | 42 | Hollow Hand Fence, Hollow Hand Fence, Hollow Hand Fence |
+| **Trial of the Hollow Hand** | 46 | The Tally-Keeper, Hollow Hand Fence, Hollow Hand Fence |
+| **The Secret’s Guard** | 44 | Nightmare Hound, Nightmare Hound |
+| **Trial of the Dreamwalker** | 48 | The Insomniac, Nightmare Hound, Nightmare Hound |
+| **The Secret’s Guard** | 58 | Lava Hound, Magma Elemental, Fire Imp |
+| **Trial of the Dragonsoul** | 60 | Magma Elemental, Obsidian Golem, Lava Hound |
+| **The Secret’s Guard** | 32 | Wind-Up Soldier, Wind-Up Soldier, Jester Puppet |
+| **Trial of the Puppeteer** | 36 | The Last Puppet, Wind-Up Soldier, Jester Puppet |
+| **The Secret’s Guard** | 60 | Hollow Courtier, Hollow Courtier, Hollow Courtier |
+| **Trial of the Hollow King** | 60 | Warden of the Riddle Crown, Hollow Courtier, Hollow Courtier |
 | **Trouble on the Road** | 16 | Desert Raider, Desert Raider, Goblin Shaman |
 | **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
 | **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Skeleton Soldier |
@@ -917,7 +959,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-43 class trees, 1312 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+49 class trees, 1696 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -1107,6 +1149,60 @@ Generated from the data files by `npm run content:md`.
 | The Sand | **Dust Storm** (Thick Storm, Biting Storm); **Quicksand** (Deep Sand, Cheap Sand) | Sand-Walker, Blinding Grit | Dune-Runner / Parched | Whirlwind Mind: +25% dodge, but 15% less max HP. | Sandshaper’s Gift |
 | The Lava | **Magma Vent** (Wider Vent, Searing Vent); **Eruption** (Bigger Eruption, Quick Eruption) | Lava Walker, Molten Core | Obsidian Skin / Pyroclast | Volcanic: +30% fire damage, but 15% more damage taken. | Child of the Rift |
 
+### Hemomancer (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Letting | **Blood Lance** (Deep Cut, Clean Cut); **Crimson Tithe** (Long Draught, Hard Draught) | Hemomancer’s Grace, Pulse | Bleeder / Transfusion | Open Veins: +30% damage, but you lose 2% max HP at the start of each turn. | Crimson Prince |
+| The Sanguine | **Hemorrhage** (Hot Blood, Red Tide); **Blood Nova** (Wider Ring, Clotting Ring) | Bloodthirst, Frenzy | Haemorrhage Master / Open Wound | Bloodbath: Kills heal 15% of max HP, but you take 10% more damage. | Lord of the Wound |
+| The Vitae | **Transfuse** (Generous, Cheap Gift); **Blood Pact** (Deep Pact, Cheap Pact) | Blood Brother, Shared Pulse | Lifegiver / Thick Blood | Heart of the Party: +35% healing power, but 15% less damage. | Fount of Life |
+| The Crimson Court | **Sanguine Thrall** (Hardy Thrall, Quick Thrall); **Crimson Veil** (Thick Veil, Quick Veil) | Thrall Master, Court of Blood | Armored Court / Vigorous Court | Blood Monarch: Thralls last twice as long, but cost 30% more HP. | Crowned in Red |
+
+### Hollow Hand (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Pickpocket | **Light Fingers** (Quick Pockets, Deep Pockets); **Grand Larceny** (Bigger Score, Cheap Job) | Five-Finger Discount, Practiced | Sharp Hands / Light Step | Take Everything: +30% damage, but 15% less max HP. | Master Thief |
+| The Borrowing | **Borrow Spell** (Easy Mark, Deep Take); **Spend the Loan** (Interest, Quick Return) | Borrowed Power, Library Card | Fast Fingers / Deep Memory | Spell Sponge: Take 15% less damage from spells, but 10% less damage dealt. | Archthief of Magic |
+| The Fence | **Sleight of Hand** (Longer Sleight, Quick Sleight); **Smoke and Mirrors** (Thicker Smoke, Smoke Bomb) | Slip Away, Honor Among Thieves | Cat Burglar / Gambler | Nobody Saw: +20% dodge and 15% more gold, but 15% less defense. | Fence of Legends |
+| The Hollow | **Hollow Touch** (Hollower, Dread Touch); **Vanishing Trick** (Cheaper Trick, Quicker Trick) | Nothing There, Cold Reach | Empty Hand / Empty Heart | The Hollow Hand: +25% damage, +15% dodge, but you cannot be healed. | Hollow Crown of Thieves |
+
+### Dreamwalker (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Lullabies | **Lullaby** (Longer Lullaby, Soft Notes); **Drowsy Song** (Wider Song, Cheap Song) | Heavy Eyelids, Counting Sheep | Cradlesong / Late Night | Everyone Sleeps: +30% status chance, but 15% less damage dealt. | Sandman’s Voice |
+| Nightmares | **Nightmare Touch** (Vivid, Lingering); **Terror Dream** (Waking Terror, Cold Sweat) | Bad Dreams, Fear Itself | Haunting / Insomnia | Waking Nightmare: +30% damage to Nightmared enemies, but 10% more damage taken. | Lord of Nightmares |
+| Dream Eating | **Dream Eater** (Hungrier, Fuller); **Wake-Up Call** (Rude Awakening, Cheap Alarm) | Satisfying Meal, Sleeper’s Prey | Gourmand / Digestion | Insatiable: +8% lifesteal, but your skills cost 20% more Slumber. | Dream Glutton |
+| Lucid Dreaming | **Dreamveil** (Deeper Veil, Quick Veil); **Sleepwalk** (Cheap Walk, Quick Walk) | Lucidity, Control | Awake in the Dream / Dream Logic | Between Waking and Sleep: 25% less damage taken, but 15% less damage dealt. | Master of the Waking Dream |
+
+### Dragonsoul (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Ember Voice | **Aspect of Ember** (Banked Fire, Lava Skin); **Ember Breath** (Hotter Breath, Searing) | Burning Heart, Smoldering | Blaze / Scorch | Cinder Dragon: +30% fire damage, but 15% less defense. | Voice of the Ember |
+| The Rime Voice | **Aspect of Rime** (Frost Mantle, Rime Mind); **Rime Breath** (Colder Breath, Hoarfrost) | Frozen Heart, Cold Patience | Blizzard / Deep Winter | Glacial Dragon: +25% defense, but 10% less damage. | Voice of the Rime |
+| The Tempest Voice | **Aspect of Tempest** (Static Mantle, Eye of the Storm); **Tempest Breath** (Forked Breath, Thunder Breath) | Stormbringer, Windborne | Thunderhead / Skybound | Storm Dragon: +10 speed and +20% lightning damage, but 15% less max HP. | Voice of the Tempest |
+| The Grave Voice | **Aspect of the Grave** (Crowned in Ash, Grave Mantle); **Grave Breath** (Foul Breath, Grave Chill) | Bargained Life, Curse of the King | Ruin / Undying | Grave-King’s Bargain: Survive a killing blow once per battle, but 10% less damage. | Voice of the Grave |
+
+### Puppeteer (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Strings | **String Up** (Tighter Knot, Longer Line); **Yank** (Hard Yank, Cheap Yank) | Master of Strings, Backstage | Silk Thread / Steel Thread | Tied to Everything: +30% damage to Strung enemies, but 10% less to others. | Puppetmaster |
+| The Marionettes | **Puppet Show** (Oaken Knight, Quick Rehearsal); **Jester’s Gambit** (Sharper Jester, Quick Jest) | Stage Hands, Full Cast | Sturdy Puppets / Clever Puppets | The Show Goes On: Puppets last twice as long, but cost 30% more Strings. | Impresario |
+| Stagecraft | **Curtain Drop** (Heavy Curtain, Black Curtain); **Spotlight** (Bright Spotlight, Quick Cue) | Dramatic Timing, Good Review | Encore / Standing Ovation | All the World: +25% party damage, but you take 15% more. | Director’s Cut |
+| Grand Guignol | **Dead Man’s Dance** (Macabre, Gruesome); **Cut the Strings** (Sharp Scissors, Quick Snip) | Cheap Thrills, Final Curtain | Gallows Humor / Sharp Wit | No Intermission: +30% finisher damage, but you lose 10% max HP. | Curtain of Blood |
+
+### Hollow King (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Decrees | **Decree: Kneel** (Heavy Decree, Swift Decree); **Decree: Silence** (Broad Decree, Cheap Decree) | Obeyed, Reign | Absolute Authority / Silent Court | Law of the Hollow: +30% damage, but you cannot be healed by others. | The Hollow King’s Word |
+| The Court | **Summon the Court** (Larger Court, Quick Court); **Royal Guard** (Thicker Guard, Quick Guard) | Knights of Nothing, Full Court | Hardy Court / Fleet Court | Everyone Remembered: Court members last twice as long, but cost 30% more Dominion. | Sovereign of the Hollow |
+| The Crown | **Crown Strike** (Weighty, Dominating); **Hollow Mantle** (Thicker Mantle, Quick Mantle) | Crowned, Weight of Rule | Regal Might / Regal Poise | Unfallen: Survive a killing blow once per battle, but 10% less damage. | The Weight Is Mine |
+| The Void Throne | **Throne of Nothing** (Bigger Void, Cold Void); **Abdicate** (Deeper Rest, Quick Rest) | Absent, Empty Throne | Entropy’s Rule / Echoing Halls | Nobody Rules: +25% void damage and +15% dodge, but 15% less max HP. | King of Nothing |
+
 ### Tree skills
 
 | Skill | Class | Cost | CD | Description |
@@ -1234,6 +1330,41 @@ Generated from the data files by `npm run content:md`.
 | **Quicksand** | Geomancer | 15 Ley | 2 | Spend 15 Ley: an enemy sinks: 150% MAG physical damage, Slow, and Weaken. |
 | **Magma Vent** | Geomancer | free | 3 | The field becomes Lava for 3 turns (foes burn each turn); every enemy takes 100% MAG fire damage. Gain 10 Ley. |
 | **Eruption** | Geomancer | 40 Ley | 4 | Spend 40 Ley: the ground opens: 240% MAG fire damage to every enemy and Stun chance. |
+| **Hemorrhage** | Hemomancer | free | 1 | Lose 5% max HP: the target bleeds heavily: 120% MAG damage and three stacks of Bleed. Gain 8 Blood. |
+| **Blood Nova** | Hemomancer | free | 2 | Lose 8% max HP: a ring of blood for 130% MAG shadow damage to every enemy. Gain 15 Blood. |
+| **Transfuse** | Hemomancer | free | 2 | Lose 10% max HP: give it to an ally: they are healed for 30% of their max HP. Gain 10 Blood. |
+| **Blood Pact** | Hemomancer | 25 Blood | 4 | Spend 25 Blood: for 3 turns you gain +30% damage and 15% lifesteal. |
+| **Sanguine Thrall** | Hemomancer | free | 4 | Lose 10% max HP: shape a thrall of blood that fights beside you for 7 turns. |
+| **Crimson Veil** | Hemomancer | 25 Blood | 3 | Spend 25 Blood: a veil of blood shields you for 25% of max HP. |
+| **Grand Larceny** | Hollow Hand | 25 Guile | 3 | Spend 25 Guile: 280% ATK, a certain theft, and 40% more gold from it. |
+| **Spend the Loan** | Hollow Hand | 15 Guile | 1 | Spend 15 Guile: cast the skill you are holding, free. |
+| **Sleight of Hand** | Hollow Hand | free | 4 | Gain +25% crit chance and +15% dodge for 3 turns, and a Guile surge. Gain 15 Guile. |
+| **Smoke and Mirrors** | Hollow Hand | 15 Guile | 4 | Spend 15 Guile: vanish into Stealth and gain +20% dodge for 2 turns. |
+| **Hollow Touch** | Hollow Hand | free | 2 | Reach into what makes them tick: 150% ATK shadow damage and Silence. Gain 8 Guile. |
+| **Vanishing Trick** | Hollow Hand | 20 Guile | 5 | Spend 20 Guile: vanish, and act again at once. |
+| **Drowsy Song** | Dreamwalker | 20 Slumber | 3 | Spend 20 Slumber: every enemy has a 55% chance to fall asleep for 2 turns. |
+| **Terror Dream** | Dreamwalker | 25 Slumber | 3 | Spend 25 Slumber: every enemy is Nightmared and may flee in Fear. |
+| **Dream Eater** | Dreamwalker | 20 Slumber | 2 | Spend 20 Slumber: feed on a dream for 240% MAG arcane damage and heal 12% of max HP. |
+| **Wake-Up Call** | Dreamwalker | 15 Slumber | 3 | Spend 15 Slumber: a harsh awakening for 320% MAG arcane damage… the sleeper gets no defense against it. |
+| **Dreamveil** | Dreamwalker | 15 Slumber | 4 | Spend 15 Slumber: the party gains +15% dodge and 25% magic resist for 3 turns. |
+| **Sleepwalk** | Dreamwalker | 20 Slumber | 5 | Spend 20 Slumber: step out of your body: shield yourself for 15% and act again at once. |
+| **Aspect of Rime** | Dragonsoul | free | 0 | Take the Rime aspect: +25% ice damage and +20% defense; basic attacks may Slow. Gain 10 Dragonfire. |
+| **Rime Breath** | Dragonsoul | 30 Dragonfire | 2 | Rime aspect, 30 Dragonfire: a blast of cold: 160% ATK to every enemy, Slow, and a chance to Freeze. |
+| **Aspect of Tempest** | Dragonsoul | free | 0 | Take the Tempest aspect: +25% lightning damage and +8 speed; basic attacks may Stun. Gain 10 Dragonfire. |
+| **Tempest Breath** | Dragonsoul | 30 Dragonfire | 2 | Tempest aspect, 30 Dragonfire: lightning forks through the enemy line: 80% ATK, four times, at random enemies. |
+| **Aspect of the Grave** | Dragonsoul | free | 0 | Take the Grave aspect: +25% shadow damage and 8% lifesteal; basic attacks may Curse. Gain 10 Dragonfire. |
+| **Grave Breath** | Dragonsoul | 30 Dragonfire | 2 | Grave aspect, 30 Dragonfire: a breath of ruin: 150% ATK to every enemy, Curse and Weaken; heal 10%. |
+| **Jester’s Gambit** | Puppeteer | 1 Strings | 3 | Spend 1 String: a Jester Doll joins in for 7 turns, throwing hexes. |
+| **Curtain Drop** | Puppeteer | 2 Strings | 3 | Spend 2 Strings: the curtain falls on every enemy: 90% MAG physical damage and a 40% chance to Stun. Gain 1 String. |
+| **Spotlight** | Puppeteer | free | 4 | The whole party gains +20% crit chance and +10% damage for 3 turns. Gain 2 Strings. |
+| **Dead Man’s Dance** | Puppeteer | 2 Strings | 2 | Spend 2 Strings: make them dance: 180% MAG shadow damage, Fear and Weaken. |
+| **Cut the Strings** | Puppeteer | free | 2 | Spend all Strings: a clean cut: 200% MAG, plus 60% per String spent, and the target’s Strung ends. |
+| **Decree: Silence** | Hollow King | 20 Dominion | 3 | Spend 20 Dominion: every enemy is Silenced and Weakened for 2 turns, and takes 70% ATK void damage. |
+| **Royal Guard** | Hollow King | 25 Dominion | 5 | Spend 25 Dominion: a Hollow Herald guards the party for 7 turns and you are shielded for 15%. |
+| **Crown Strike** | Hollow King | free | 0 | A blow with the weight of a throne: 230% ATK void damage. Gain 10 Dominion. |
+| **Hollow Mantle** | Hollow King | 20 Dominion | 4 | Spend 20 Dominion: wrap yourself in nothing: take 30% less damage and shield yourself for 15% for 3 turns. |
+| **Throne of Nothing** | Hollow King | 30 Dominion | 3 | Spend 30 Dominion: the throne of nothing: 150% ATK void damage to every enemy and Weaken. |
+| **Abdicate** | Hollow King | free | 5 | Put the weight down: heal 25% of max HP and gain 20 Dominion. |
 <!-- trees:end -->
 
 ## Not yet added
@@ -1242,7 +1373,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-60 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+72 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
@@ -1306,6 +1437,18 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | Geomancer | **Quakecaller**: Make the world shake, and stand on the part that doesn’t. | Seismic Slam (Harder Slam, Cracking Slam) | **Worldbreaker**: The earth gives way: 330% MAG physical damage to every enemy, Stun on all, and the field is Quake until the end of the fight. | Lord of the Quake: +15% magic attack and +10% damage. |
 | Geomancer | **Crystalmancer**: Grow fortresses where there was only floor. | Prismatic Lance (Brighter Lance, Piercing Lance) | **Crystal Cathedral**: A cathedral of crystal grows: the party is shielded for 30%, takes 30% less damage for 3 turns, and every enemy takes 230% MAG arcane damage. | Master of Facets: +15% magic attack and 10% less damage taken. |
 | Geomancer | **Sandshaper**: The dunes move when you ask them to. | Mirage Sands (Longer Mirage, Biting Mirage) | **Dune Sea**: An ocean of sand: 250% MAG physical damage to every enemy; they are Blinded, Slowed and Weakened; the field is Sand until the end. | Master of the Dunes: +15% magic attack and +10% dodge. |
+| Hemomancer | **Bloodlord**: Take everything, and call it thrift. | Crimson Feast (Bigger Feast, Gorging) | **Exsanguinate**: Every enemy’s blood leaves at once: 300% MAG shadow damage to all and Bleed; you heal 30%. | Lord of Red: +15% magic attack and 8% lifesteal. |
+| Hemomancer | **Bloodwarden**: The blood you spend, they keep. | Vein Ward (Thicker Ward, Longer Ward) | **Tide of Life**: A red tide: the party is healed for 50% and gains +25% damage for 3 turns; every enemy takes 150% MAG shadow damage. | Warden of the Red: +20% healing power and 10% less damage taken. |
+| Hollow Hand | **Magpie**: Everything shiny is yours. | Ransack (Bigger Haul, Fourth Pocket) | **Fifty Hands**: Fifty hands at once: ten cuts of 60% ATK at random enemies, each stealing, and you gain full Guile. | King of Thieves: +15% physical attack and +10% crit chance. |
+| Hollow Hand | **Echo Thief**: You do not steal the spell. You steal that it happened. | Mirror Theft (Deeper Mirror, Cheaper Mirror) | **The Perfect Heist**: A job so clean no one notices: 300% ATK to every enemy, steals from each, and you act again at once. | Archthief of Echoes: +15% magic attack and +10% cooldown reduction. |
+| Dreamwalker | **Sandman**: Rest is a weapon, too. | Dust of Dreams (More Dust, Cheap Dust) | **Eternal Night**: Night falls on the whole field: every enemy sleeps for 3 turns, and you and the party gain +30% damage and 25% less damage taken for 3 turns. | The Sandman: +15% magic attack and sleep lasts a turn longer. |
+| Dreamwalker | **Nightmare Lord**: Make the dream bite back. | Living Nightmare (Hungry Hound, Cold Hound) | **Night Terror**: Every enemy’s worst dream: 260% MAG shadow damage, Nightmare and Fear on all; two Dream Hounds join you. | Nightmare Sovereign: +15% magic attack and hounds last twice as long. |
+| Dragonsoul | **Wyrmblood**: Pure fury, four fires. | Draconic Fury (More Claws, Savage Fury) | **The Ascendant Dragon**: You are every drake: all four breaths in one: 300% ATK to every enemy, Burn, Freeze chance and Curse; you gain +30% damage for 3 turns. | The Wyrm Reborn: +15% physical attack and +10% crit chance. |
+| Dragonsoul | **Scalebound**: The hoard guards itself. | Adamant Scales (Thicker Scales, Quick Scales) | **The Drake Throne**: You sit the throne of all four: 240% ATK to every enemy, the party is healed for 30% and gains Divine Protection. | Hoard-King: +15% max HP and 12% less damage taken. |
+| Puppeteer | **Master Marionettist**: A whole cast, always. | Puppet Army (Third Puppet, Quick Rehearsal) | **The Final Act**: The stage fills: 260% MAG damage to every enemy, a Wooden Knight and a Jester Doll appear, and every enemy is Strung. | The Whole Troupe: +15% magic attack and puppets last twice as long. |
+| Puppeteer | **Stringbinder**: Strings on everything, all at once. | Tangle (Wide Tangle, Snarl) | **The Grand Puppet Show**: Every enemy dances: 240% MAG to all, Charmed for a turn and Strung; you act again at once. | The Hand Behind All Hands: +15% magic attack and +10% status chance. |
+| Hollow King | **Usurper**: Take the crown from whoever wears it. | Regicide (Deeper Cut, Cheaper Cut) | **Dethrone**: No more crowns: 350% ATK void damage to every enemy, Weakened and Silenced. | The Throne Is Mine: +15% physical attack and +10% crit chance. |
+| Hollow King | **Sovereign**: Rule so well that no one remembers the king was hollow. | Royal Command (Louder Command, Quick Command) | **Age of the Hollow**: The hollow age begins: 240% ATK void damage to every enemy, the party is healed for 25%, Hasted and gains +30% damage for 3 turns. | The Hollow Made Whole: +15% max HP, 12% less damage taken and +15% blessing power. |
 <!-- specializations:end -->
 
 ## General skills (81)
@@ -1646,9 +1789,9 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **Trophy Room** | 3000 | Displays world boss trophies: +2% damage per different world boss slain. |
 | **Vault** | 2500 / 7000 | An extra stash tab, and +5% gold find per level. |
 
-### Lore pages (16)
+### Lore pages (31)
 
-**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel)
+**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel)
 <!-- world:end -->
 
 ## The Economy
@@ -1775,7 +1918,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-349 quests, 112 NPCs, 143 dialogues, 6 companions, 6 endings.
+379 quests, 118 NPCs, 167 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -1920,10 +2063,40 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Grimvald’s Herald** | 26 | Factor Goldmere | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Grimvald** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
 
-### Class trials (120)
+### Class trials (150)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **The Seventh Page** | 26 | starts by itself | Read all seven Crimson Pages (state) |
+| **The Red Library** | 28 | starts by itself | Reach the secret place (visit); Speak to Maelis Vane (talk) |
+| **Blood Price** | 30 | starts by itself | Defeat the secret’s guard (fight) |
+| **What the Veins Remember** | 32 | starts by itself | Answer Maelis Vane (talk) |
+| **Crimson Ascension** | 34 | starts by itself | Face the secret’s master (fight); Speak to Maelis Vane (talk) |
+| **Fifty Pockets** | 38 | starts by itself | You have stolen from fifty kinds of foe (state) |
+| **The Counting House** | 40 | starts by itself | Reach the secret place (visit); Speak to Old Fingers Quill (talk) |
+| **A Thief’s Dues** | 42 | starts by itself | Defeat the secret’s guard (fight) |
+| **The Last Lesson in Lifting** | 44 | starts by itself | Answer Old Fingers Quill (talk) |
+| **The Fiftieth Mark** | 46 | starts by itself | Face the secret’s master (fight); Speak to Old Fingers Quill (talk) |
+| **Every Bed in the World** | 40 | starts by itself | You have slept in every inn (state) |
+| **The Waking Crypt** | 42 | starts by itself | Reach the secret place (visit); Speak to Sleepy Mab (talk) |
+| **A Dream That Bites** | 44 | starts by itself | Defeat the secret’s guard (fight) |
+| **The Keeper’s Bargain** | 46 | starts by itself | Answer Sleepy Mab (talk) |
+| **The Insomniac’s Hour** | 48 | starts by itself | Face the secret’s master (fight); Speak to Sleepy Mab (talk) |
+| **Four Keys** | 56 | starts by itself | The four elder drakes are slain (state) |
+| **The Forge That Remembers** | 57 | starts by itself | Reach the secret place (visit); Speak to Karsa Wyrmtongue (talk) |
+| **The Brood Gathers** | 58 | starts by itself | Defeat the secret’s guard (fight) |
+| **What the Drakes Left Behind** | 59 | starts by itself | Answer Karsa Wyrmtongue (talk) |
+| **The Fifth Voice** | 60 | starts by itself | Face the secret’s master (fight); Speak to Karsa Wyrmtongue (talk) |
+| **The Four Automata** | 28 | starts by itself | Wake the Clockwork Theatre: set the four automata in order (juggler, clown, queen, horse) (sequence) |
+| **The Sunken Stage** | 30 | starts by itself | Reach the secret place (visit); Speak to Marionette Ilse (talk) |
+| **The Cast of Tin** | 32 | starts by itself | Defeat the secret’s guard (fight) |
+| **The Director’s Notes** | 34 | starts by itself | Answer Marionette Ilse (talk) |
+| **The Last Puppet** | 36 | starts by itself | Face the secret’s master (fight); Speak to Marionette Ilse (talk) |
+| **Never Fallen** | 60 | starts by itself | Reach the Black Throne’s door and look at the crown (visit) |
+| **The Hollow Court** | 60 | starts by itself | Reach the secret place (visit); Speak to The Voice in the Crown (talk) |
+| **Three Questions** | 60 | starts by itself | Defeat the secret’s guard (fight) |
+| **The Fourth Question** | 60 | starts by itself | Answer The Voice in the Crown (talk) |
+| **The Hollow Crown** | 60 | starts by itself | Face the secret’s master (fight); Speak to The Voice in the Crown (talk) |
 | **A Soldier’s Oath** | 12 | Sword-Master Bram | Reach the shrine of Kael (visit) |
 | **The Shield Wall** | 16 | Sword-Master Bram | Defeat the trouble on the road (fight) |
 | **Hold the Crypt** | 20 | Sword-Master Bram | Clear old crypt (clear) |
@@ -2113,6 +2286,12 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Inkweaver | -30% | - |
 | Witch Hunter | -30% | - |
 | Geomancer | -30% | - |
+| Hemomancer | -30% | - |
+| Hollow Hand | -30% | - |
+| Dreamwalker | -30% | - |
+| Dragonsoul | -30% | - |
+| Puppeteer | -30% | - |
+| Hollow King | -30% | - |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
