@@ -36,6 +36,7 @@ import { evolvedSkills, EVOLUTIONS } from './evolutions';
 import { buildBooks } from './general/books';
 import { grimoireSkills, GRIMOIRES } from './general/grimoires';
 import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
+import { GREATER_GENERAL_COMBAT, GREATER_GENERAL_SKILLS } from './general/greater';
 import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
 import { FORBIDDEN_COMBAT_SKILLS, FORBIDDEN_SKILLS } from './general/forbidden';
 import { BLESSINGS } from './blessings';
@@ -74,10 +75,10 @@ import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS];
+const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS];
 const ALL_SKILLS = [...BASE_SKILLS, ...evolvedSkills((id) => BASE_SKILLS.find((s) => s.id === id) as (typeof BASE_SKILLS)[number])];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
-const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
+const ALL_GENERAL = [...GENERAL_SKILLS, ...GREATER_GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
 
 /**
  * The game's content, assembled from the data files in this folder. Engine

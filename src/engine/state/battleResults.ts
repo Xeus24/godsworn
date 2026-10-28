@@ -7,6 +7,8 @@ import { characterStats, restoreFull } from '../character/stats';
 import type { Battle } from '../combat/battle';
 import type { BattleOutcome } from '../combat/types';
 import { equippedItems } from '../items/equipment';
+import { countOf } from '../items/inventory';
+import { createItem } from '../items/generate';
 import { rollLoot } from '../items/loot';
 import { itemName } from '../items/naming';
 import { recordDeed } from '../items/relics';
@@ -129,6 +131,12 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
       });
       rewards.gold += loot.gold;
       rewards.items.push(...loot.items);
+    }
+    for (const kill of b.tally.kills) {
+      const book = content.enemies.get(kill.enemyId).teaches;
+      const def = book ? content.items.find(book) : undefined;
+      const taught = def?.category === 'book' ? def.teaches : undefined;
+      if (book && taught && !p.generalSkills[taught] && countOf(s.state.inventory, book) === 0) rewards.items.push(createItem(book, 1, () => s.newUid()));
     }
     rewards.gold += b.tally.goldFound;
     const reward = getDifficulty(p.difficulty).reward;

@@ -562,7 +562,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (163)
+### Enemies (178)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -719,6 +719,21 @@ Generated from the data files by `npm run content:md`.
 | **The Last Puppet** | 34 | boss | construct, puppet | front | aggressive | Dark Cleave, Goblin Hex, Tremor, Enrage | physical +25%, lightning -30% |
 | **Hollow Courtier** | 58 | normal | humanoid, void, hollow | front | aggressive | Dark Cleave, Shield Bash | void +40%, holy -20% |
 | **Warden of the Riddle Crown** | 60 | boss | humanoid, void, hollow, caster | front | caster | Void Rend, Curse of Ages, Corruption Wave, Enrage | void +60%, shadow +40%, holy +10% |
+| **Pell the Wheelwright** | 6 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **Gaffer Orn** | 7 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **Hedge-Witch Ilsa** | 12 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
+| **Brother Tuck** | 14 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
+| **Maul Stonebeard** | 20 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **Tidewife Naia** | 22 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
+| **Windspeaker Thessaly** | 28 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **Sister Zhao** | 30 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **Hermit Aldous** | 36 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **The Pale Candle** | 38 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
+| **Skipper Mags** | 44 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
+| **Lanternkeeper Tolle** | 46 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **Warden Kesh** | 52 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **The Cinder Sage** | 53 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
+| **The Last Veteran** | 58 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
 | **Sunguard of Solenne** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Solenne | holy +40% |
 | **Raven of Morrath** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Morrath | shadow +40% |
 | **Einherjar of Kael** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Kael | physical +40% |
@@ -732,7 +747,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (248)
+### Encounters (263)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -862,6 +877,21 @@ Generated from the data files by `npm run content:md`.
 | **Trial of the Puppeteer** | 36 | The Last Puppet, Wind-Up Soldier, Jester Puppet |
 | **The Secret’s Guard** | 60 | Hollow Courtier, Hollow Courtier, Hollow Courtier |
 | **Trial of the Hollow King** | 60 | Warden of the Riddle Crown, Hollow Courtier, Hollow Courtier |
+| **Master: Pell the Wheelwright** | 6 | Pell the Wheelwright |
+| **Master: Gaffer Orn** | 7 | Gaffer Orn |
+| **Master: Hedge-Witch Ilsa** | 12 | Hedge-Witch Ilsa |
+| **Master: Brother Tuck** | 14 | Brother Tuck |
+| **Master: Maul Stonebeard** | 20 | Maul Stonebeard |
+| **Master: Tidewife Naia** | 22 | Tidewife Naia |
+| **Master: Windspeaker Thessaly** | 28 | Windspeaker Thessaly |
+| **Master: Sister Zhao** | 30 | Sister Zhao |
+| **Master: Hermit Aldous** | 36 | Hermit Aldous |
+| **Master: The Pale Candle** | 38 | The Pale Candle |
+| **Master: Skipper Mags** | 44 | Skipper Mags |
+| **Master: Lanternkeeper Tolle** | 46 | Lanternkeeper Tolle |
+| **Master: Warden Kesh** | 52 | Warden Kesh |
+| **Master: The Cinder Sage** | 53 | The Cinder Sage |
+| **Master: The Last Veteran** | 58 | The Last Veteran |
 | **Trouble on the Road** | 16 | Desert Raider, Desert Raider, Goblin Shaman |
 | **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
 | **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Skeleton Soldier |
@@ -1486,7 +1516,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## General skills (81)
 
 <!-- general:start -->
-92 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+175 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -1556,6 +1586,77 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Tracker** | survival | Uncommon |  | Passive: +2% damage against beasts per rank. |
 | **Monster Hunter** (level 15) | survival | Epic |  | Passive: +2% damage against undead, plants and constructs per rank. |
 | **Meditation** | survival | Uncommon |  | Passive: +1 MP regeneration per rank. |
+| **Shield Wall** | defensive | Uncommon | Shield Wall | Take less damage and draw attacks. |
+| **Fortify** | defensive | Common | Fortify | A shield from nowhere. |
+| **Deflect** | defensive | Rare | Deflect | Turn spells aside. |
+| **Rally** | defensive | Rare | Rally | Heal and harden the party. |
+| **Stand Firm** | defensive | Uncommon | Stand Firm | Shrug off crowd control. |
+| **Plate Discipline** | defensive | Common |  | Passive: +2% defense per rank. |
+| **Ward Mastery** | defensive | Uncommon |  | Passive: +2% magic resist per rank. |
+| **Shrug It Off** (level 10) | defensive | Rare |  | Passive: -0.5% damage taken per rank. |
+| **Dodge Training** | defensive | Uncommon |  | Passive: +0.6 dodge per rank. |
+| **Second Skin** | defensive | Uncommon |  | Passive: +2% status resist per rank. |
+| **Bulwark Training** | defensive | Rare |  | Passive: +1.5% max HP and +1% defense per rank. |
+| **Hardened Will** | defensive | Rare |  | Passive: +1.5% status resist and +0.5 MP regeneration per rank. |
+| **Unbroken** (level 20) | defensive | Epic |  | Passive: +3 HP regeneration and +1% max HP per rank. |
+| **Elemental Bulwark** | defensive | Epic |  | Passive: +1.5% resistance to fire, ice and lightning per rank. |
+| **Persuade** | social | Uncommon |  | Passive: +1 CHA per rank, for dialogue checks and prices. |
+| **Intimidate** | social | Uncommon |  | Passive: +1 CHA and +0.5% damage per rank. |
+| **Deceive** | social | Uncommon |  | Passive: +1 CHA and +0.4 dodge per rank. |
+| **Barter** | social | Uncommon |  | Passive: +1.5% shop barter per rank (shops pay a little more and charge a little less). |
+| **Diplomacy** | social | Rare |  | Passive: +2% favor gain and +1 CHA per rank. |
+| **Leadership** | social | Rare |  | Passive: +1% damage and +1% max HP per rank. |
+| **Charm** | social | Uncommon |  | Passive: +1 CHA and +0.5 LUK per rank. |
+| **Etiquette** | social | Common |  | Passive: +1 CHA and +1% barter per rank. |
+| **Oratory** | social | Rare |  | Passive: +3% favor gain per rank. |
+| **Gossip** | social | Uncommon |  | Passive: +1.5% XP per rank; people tell you things. |
+| **Bluff** | social | Uncommon |  | Passive: +0.4 crit chance and +1 CHA per rank. |
+| **Negotiator** | social | Rare |  | Passive: +2% gold find and +1% barter per rank. |
+| **Swimming** | exploration | Common |  | Reach caches beneath the waterline. Rank gates how deep. |
+| **Climbing** | exploration | Common |  | Reach caches on cliffs and ruins. Rank gates how steep. |
+| **Read Ancient Script** | exploration | Uncommon |  | Read sealed inscriptions and open the doors they guard. |
+| **Animal Speech** | exploration | Uncommon |  | Ask the locals where the old burrows are. |
+| **Moonlit Step** | lost | Rare | Moonlit Step | An elven dance of haste. |
+| **Ancestral Roar** | lost | Rare | Ancestral Roar | An orcish war-rite. |
+| **Feral Rend** | lost | Rare | Feral Rend | Claws the civilized forgot. |
+| **Halo Flicker** | lost | Rare | Halo Flicker | A nephilim’s light, flared on purpose. |
+| **Glamour** | lost | Rare | Glamour | A fae trick of the eye. |
+| **Phalanx Drill** | lost | Rare | Phalanx Drill | What the sergeants never wrote down. |
+| **Runeforged Hide** | lost | Rare |  | Passive: +2.5% defense and +2% max HP per rank. |
+| **Indomitable Spirit** | lost | Rare |  | Passive: +3% XP and +1% max HP per rank. |
+| **Step Between** | lost | Rare |  | Passive: +0.8 dodge and +0.4 crit chance per rank. |
+| **Alley Instincts** | lost | Rare |  | Passive: +0.8 dodge and +2% gold find per rank. |
+| **Marginalia** | lost | Rare |  | Passive: +2% magic attack and +1% cooldown reduction per rank. |
+| **Sea Legs** | lost | Rare |  | Passive: +3% ice resist, +3% lightning resist and +1% speed per rank. |
+| **Rime Lance** (level 30) | legendary | Legendary | Rime Lance | Taught by the Rime drake’s last breath. |
+| **Tempest Call** (level 30) | legendary | Legendary | Tempest Call | The eye of the storm answers. |
+| **Ember Breath** (level 30) | legendary | Legendary | Ember Breath | A drake’s fire, borrowed. |
+| **Grave Bargain** (level 30) | legendary | Legendary | Grave Bargain | A dead king’s terms. |
+| **Crimson Tithe** (level 28) | legendary | Legendary | Crimson Tithe | The Red Library collects. |
+| **The Fiftieth Mark** (level 28) | legendary | Legendary | The Fiftieth Mark | The counting house’s last entry. |
+| **Every Bed in the World** (level 28) | legendary | Legendary | Every Bed in the World | The Insomniac’s only secret. |
+| **The Last Tableau** (level 28) | legendary | Legendary | The Last Tableau | The final puppet’s final scene. |
+| **Riddle of the Crown** (level 32) | legendary | Legendary | Riddle of the Crown | A question without an answer. |
+| **The Empty Court** (level 32) | legendary | Legendary | The Empty Court | Nobody bows to nobody. |
+| **Iron Lotus** | master | Epic | Iron Lotus | Four blooming strikes. |
+| **Pale Flame** | master | Epic | Pale Flame | A fire that does not warm. |
+| **Hushed Arrow** | master | Epic | Hushed Arrow | Loosed between heartbeats. |
+| **Tide Turned** | master | Epic | Tide Turned | The sea’s own mending. |
+| **Dwarven Reckoning** | master | Epic | Dwarven Reckoning | A debt repaid in stone. |
+| **Saint’s Patience** | master | Epic | Saint’s Patience | A prayer held ten years. |
+| **Wolf Pact** | master | Epic | Wolf Pact | A wolf of the old pack. |
+| **The Drowned Bell** | master | Epic | The Drowned Bell | A bell tolls beneath the sea. |
+| **Master’s Grip** | master | Epic |  | Passive: +3% physical attack and +1 crit chance per rank. |
+| **Master’s Spark** | master | Epic |  | Passive: +3% magic attack and +1% cooldown reduction per rank. |
+| **Master’s Calm** | master | Epic |  | Passive: +2% max HP and +2% status resist per rank. |
+| **Master’s Eye** | master | Epic |  | Passive: +1.5 accuracy and +8% crit damage per rank. |
+| **Master’s Luck** | master | Epic |  | Passive: +2 LUK and +2% magic find per rank. |
+| **Master’s Faith** | master | Epic |  | Passive: +3% divine power and +2% healing power per rank. |
+| **Master’s Stride** | master | Epic |  | Passive: +1% speed and +0.6 dodge per rank. |
+| **Battle Trance** (level 18) | combat | Epic |  | Passive: +1.5% damage and +0.5% lifesteal per rank. |
+| **Spell Focus** (level 10) | combat | Rare |  | Passive: +2% magic attack and +1% MP per rank. |
+| **Wilderness Lore** | survival | Uncommon |  | Passive: +2% nature resist and +1% max HP per rank. |
+| **Veteran** | survival | Rare |  | Passive: +1% XP and +1% defense per rank. |
 | **Shield Slam (Grimoire)** (level 15) | grimoire | Epic | Shield Slam | Use the Shield Slam skill of another class at 70% power. |
 | **Flame Wave (Grimoire)** (level 15) | grimoire | Epic | Flame Wave | Use the Flame Wave skill of another class at 70% power. |
 | **Fan of Knives (Grimoire)** (level 15) | grimoire | Epic | Fan of Knives | Use the Fan of Knives skill of another class at 70% power. |
@@ -1564,6 +1665,18 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Death Coil (Grimoire)** (level 15) | grimoire | Epic | Death Coil | Use the Death Coil skill of another class at 70% power. |
 | **Meditation (Grimoire)** (level 20) | grimoire | Legendary | Meditation | Use the Meditation skill of another class at 70% power. |
 | **Soothing Melody (Grimoire)** (level 15) | grimoire | Epic | Soothing Melody | Use the Soothing Melody skill of another class at 70% power. |
+| **Guard Ally (Grimoire)** (level 15) | grimoire | Epic | Guard Ally | Use the Guard Ally skill of another class at 70% power. |
+| **Wild Bloom (Grimoire)** (level 15) | grimoire | Epic | Wild Bloom | Use the Wild Bloom skill of another class at 70% power. |
+| **Siphon Soul (Grimoire)** (level 15) | grimoire | Epic | Siphon Soul | Use the Siphon Soul skill of another class at 70% power. |
+| **Spirit Lance (Grimoire)** (level 15) | grimoire | Epic | Spirit Lance | Use the Spirit Lance skill of another class at 70% power. |
+| **Hurled Flask (Grimoire)** (level 15) | grimoire | Epic | Hurled Flask | Use the Hurled Flask skill of another class at 70% power. |
+| **Earthbind (Grimoire)** (level 15) | grimoire | Epic | Earthbind | Use the Earthbind skill of another class at 70% power. |
+| **Withering Years (Grimoire)** (level 15) | grimoire | Epic | Withering Years | Use the Withering Years skill of another class at 70% power. |
+| **Overcharge Shot (Grimoire)** (level 15) | grimoire | Epic | Overcharge Shot | Use the Overcharge Shot skill of another class at 70% power. |
+| **Whirling Cut (Grimoire)** (level 15) | grimoire | Epic | Whirling Cut | Use the Whirling Cut skill of another class at 70% power. |
+| **Ink Bolt (Grimoire)** (level 15) | grimoire | Epic | Ink Bolt | Use the Ink Bolt skill of another class at 70% power. |
+| **Silver Lash (Grimoire)** (level 15) | grimoire | Epic | Silver Lash | Use the Silver Lash skill of another class at 70% power. |
+| **Shaking Ground (Grimoire)** (level 15) | grimoire | Epic | Shaking Ground | Use the Shaking Ground skill of another class at 70% power. |
 | **Rite of Dawn** | divine | Divine | Sunlance | Sunlance in battle. Passive: +2% holy damage per rank. |
 | **Rite of Endings** | divine | Divine | Last Rites | Last Rites in battle. Passive: +2% shadow damage per rank. |
 | **Rite of War** | divine | Divine | Avatar of War | Avatar of War in battle. Passive: +1 STR per rank. |
@@ -2046,7 +2159,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-412 quests, 118 NPCs, 168 dialogues, 6 companions, 6 endings.
+427 quests, 133 NPCs, 183 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -2071,10 +2184,25 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
-### Side quests (35)
+### Side quests (50)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **A Master: Pell the Wheelwright** | 6 | starts by itself | Speak with Pell the Wheelwright (talk); Best Pell the Wheelwright (fight) |
+| **A Master: Gaffer Orn** | 7 | starts by itself | Speak with Gaffer Orn (talk); Best Gaffer Orn (fight) |
+| **A Master: Hedge-Witch Ilsa** | 12 | starts by itself | Speak with Hedge-Witch Ilsa (talk); Best Hedge-Witch Ilsa (fight) |
+| **A Master: Brother Tuck** | 14 | starts by itself | Speak with Brother Tuck (talk); Best Brother Tuck (fight) |
+| **A Master: Maul Stonebeard** | 20 | starts by itself | Speak with Maul Stonebeard (talk); Best Maul Stonebeard (fight) |
+| **A Master: Tidewife Naia** | 22 | starts by itself | Speak with Tidewife Naia (talk); Best Tidewife Naia (fight) |
+| **A Master: Windspeaker Thessaly** | 28 | starts by itself | Speak with Windspeaker Thessaly (talk); Best Windspeaker Thessaly (fight) |
+| **A Master: Sister Zhao** | 30 | starts by itself | Speak with Sister Zhao (talk); Best Sister Zhao (fight) |
+| **A Master: Hermit Aldous** | 36 | starts by itself | Speak with Hermit Aldous (talk); Best Hermit Aldous (fight) |
+| **A Master: The Pale Candle** | 38 | starts by itself | Speak with The Pale Candle (talk); Best The Pale Candle (fight) |
+| **A Master: Skipper Mags** | 44 | starts by itself | Speak with Skipper Mags (talk); Best Skipper Mags (fight) |
+| **A Master: Lanternkeeper Tolle** | 46 | starts by itself | Speak with Lanternkeeper Tolle (talk); Best Lanternkeeper Tolle (fight) |
+| **A Master: Warden Kesh** | 52 | starts by itself | Speak with Warden Kesh (talk); Best Warden Kesh (fight) |
+| **A Master: The Cinder Sage** | 53 | starts by itself | Speak with The Cinder Sage (talk); Best The Cinder Sage (fight) |
+| **A Master: The Last Veteran** | 58 | starts by itself | Speak with The Last Veteran (talk); Best The Last Veteran (fight) |
 | **Rats in the Cellar** | 2 | Marta | Kill giant rats (kill) |
 | **Where’s Biscuit?** | 3 | Tobin Furrow | Find Biscuit (talk) |
 | **Roots for the Hearth** | 3 | Sister Wenna | Gather healroot (collect) |

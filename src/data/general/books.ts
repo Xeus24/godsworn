@@ -17,7 +17,7 @@ export function buildBooks(skills: readonly GeneralSkillDef[]): BookDef[] {
   return skills.map((g) => {
     const tier = BOOK_TIERS[g.rarity] ?? { value: 100, level: 1 };
     const grimoire = g.category === 'grimoire';
-    const prefix = g.category === 'divine' ? 'Scripture' : g.category === 'forbidden' ? 'Forbidden Tome' : 'Skillbook';
+    const prefix = g.category === 'divine' ? 'Scripture' : g.category === 'forbidden' ? 'Forbidden Tome' : g.category === 'legendary' ? 'Legendary Technique' : g.category === 'master' ? 'Master’s Lesson' : g.category === 'lost' ? 'Lost Art' : 'Skillbook';
     return {
       id: `book-${g.id}`,
       name: grimoire ? `Grimoire: ${g.name.replace(' (Grimoire)', '')}` : `${prefix}: ${g.name}`,

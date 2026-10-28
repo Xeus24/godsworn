@@ -19,20 +19,22 @@ import { TWILIGHT_DIALOGUES, TWILIGHT_ENCOUNTERS, TWILIGHT_ENDINGS, TWILIGHT_ENE
 export { COMPANIONS };
 export const ALL_ENDINGS = [...ENDINGS, ...TWILIGHT_ENDINGS];
 export { QUEST_ITEMS } from './items';
+import { GUARDED_TECHNIQUES } from '../general/greater';
 import { STORY_ENEMIES as BASE_STORY_ENEMIES } from './enemies';
+import { MASTER_DIALOGUES, MASTER_ENCOUNTERS, MASTER_ENEMIES, MASTER_NPCS, MASTER_QUESTS } from './masters';
 import { HIDDEN_ENEMIES } from './hiddenEnemies';
 import { HIDDEN_DIALOGUES, HIDDEN_ENCOUNTERS, HIDDEN_NPCS, HIDDEN_QUESTS, HIDDEN_RUMORS } from './hiddenLines';
-export const STORY_ENEMIES = [...BASE_STORY_ENEMIES, ...TWILIGHT_ENEMIES, ...HIDDEN_ENEMIES];
+export const STORY_ENEMIES = [...BASE_STORY_ENEMIES, ...TWILIGHT_ENEMIES, ...HIDDEN_ENEMIES, ...MASTER_ENEMIES].map((e) => (GUARDED_TECHNIQUES[e.id] ? { ...e, teaches: `book-${GUARDED_TECHNIQUES[e.id]}` } : e));
 
 const LINES = buildLines([...RACE_LINES, ...BACKGROUND_LINES]);
 
-export const QUESTS: QuestDef[] = [...LINES.quests, ...HIDDEN_QUESTS, ...CLASS_LINE_QUESTS, ...MAIN_QUESTS, ...TWILIGHT_QUESTS, ...SIDE_QUESTS, ...THIRD_SLOT_QUESTS, ...GOD_QUESTS, ...CLASS_QUESTS, ...HYBRID_QUESTS, ...FACTION_QUESTS, ...COMPANION_QUESTS, ...BOUNTIES];
+export const QUESTS: QuestDef[] = [...LINES.quests, ...HIDDEN_QUESTS, ...MASTER_QUESTS, ...CLASS_LINE_QUESTS, ...MAIN_QUESTS, ...TWILIGHT_QUESTS, ...SIDE_QUESTS, ...THIRD_SLOT_QUESTS, ...GOD_QUESTS, ...CLASS_QUESTS, ...HYBRID_QUESTS, ...FACTION_QUESTS, ...COMPANION_QUESTS, ...BOUNTIES];
 
-export const DIALOGUES: DialogueDef[] = [...LINES.dialogues, ...HIDDEN_DIALOGUES, ...CLASS_LINE_DIALOGUES, ...patchMainDialogues(MAIN_DIALOGUES), ...CHECK_DIALOGUES, ...TWILIGHT_DIALOGUES, ...SIDE_DIALOGUES, ...THIRD_SLOT_DIALOGUES, ...FACTION_DIALOGUES, ...COMPANION_DIALOGUES, ...TRIAL_DIALOGUES];
+export const DIALOGUES: DialogueDef[] = [...LINES.dialogues, ...HIDDEN_DIALOGUES, ...MASTER_DIALOGUES, ...CLASS_LINE_DIALOGUES, ...patchMainDialogues(MAIN_DIALOGUES), ...CHECK_DIALOGUES, ...TWILIGHT_DIALOGUES, ...SIDE_DIALOGUES, ...THIRD_SLOT_DIALOGUES, ...FACTION_DIALOGUES, ...COMPANION_DIALOGUES, ...TRIAL_DIALOGUES];
 
-export const NPCS: NpcDef[] = [...TOWN_NPCS, ...MENTOR_NPCS, ...FIELD_NPCS, ...TWILIGHT_NPCS, ...COMPANION_NPCS, ...LINES.npcs, ...HIDDEN_NPCS].map((n) => (NPC_TOPICS[n.id] || CHECK_TOPICS[n.id] || HIDDEN_RUMORS.some((r) => r.npc === n.id) ? { ...n, topics: [...(n.topics ?? []), ...(NPC_TOPICS[n.id] ?? []), ...(CHECK_TOPICS[n.id] ?? []), ...rumorTopics(n.id)] } : n));
+export const NPCS: NpcDef[] = [...TOWN_NPCS, ...MENTOR_NPCS, ...FIELD_NPCS, ...TWILIGHT_NPCS, ...COMPANION_NPCS, ...LINES.npcs, ...HIDDEN_NPCS, ...MASTER_NPCS].map((n) => (NPC_TOPICS[n.id] || CHECK_TOPICS[n.id] || HIDDEN_RUMORS.some((r) => r.npc === n.id) ? { ...n, topics: [...(n.topics ?? []), ...(NPC_TOPICS[n.id] ?? []), ...(CHECK_TOPICS[n.id] ?? []), ...rumorTopics(n.id)] } : n));
 
-export const QUEST_ENCOUNTERS: EncounterDef[] = [...LINE_ENCOUNTERS, ...HIDDEN_ENCOUNTERS, ...CLASS_LINE_ENCOUNTERS, ...MAIN_ENCOUNTERS, ...TWILIGHT_ENCOUNTERS, ...SIDE_ENCOUNTERS, ...GOD_ENCOUNTERS, ...FACTION_ENCOUNTERS, ...COMPANION_ENCOUNTERS];
+export const QUEST_ENCOUNTERS: EncounterDef[] = [...LINE_ENCOUNTERS, ...HIDDEN_ENCOUNTERS, ...MASTER_ENCOUNTERS, ...CLASS_LINE_ENCOUNTERS, ...MAIN_ENCOUNTERS, ...TWILIGHT_ENCOUNTERS, ...SIDE_ENCOUNTERS, ...GOD_ENCOUNTERS, ...FACTION_ENCOUNTERS, ...COMPANION_ENCOUNTERS];
 
 function rumorTopics(npcId: string): NonNullable<NpcDef['topics']> {
   return HIDDEN_RUMORS.filter((r) => r.npc === npcId).map((r) => ({ id: `rumor-${r.cls}`, text: r.topic, dialogue: `rumor-${r.cls}`, once: true }));

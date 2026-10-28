@@ -47,6 +47,8 @@ export function canLearnGeneral(char: Character, id: string, c: Content = conten
   if (rank >= def.maxRank) return fail(`${def.name} is already at max rank.`);
   const req = def.requirements;
   if (req?.level && char.level < req.level) return fail(`Requires level ${req.level}.`);
+  if (req?.races && !req.races.includes(char.raceId)) return fail(`A lost art of the ${req.races.map((r) => c.races.get(r).name).join(' and ')}.`);
+  if (req?.backgrounds && !(char.backgroundId && req.backgrounds.includes(char.backgroundId))) return fail(`A lost art of the ${req.backgrounds.map((r) => c.backgrounds.get(r).name).join(' and ')} background.`);
   if (req?.stats) {
     const base = characterBaseStats(char, c);
     for (const [stat, need] of Object.entries(req.stats)) {

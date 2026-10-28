@@ -15,6 +15,12 @@ const CATEGORY_LABEL: Record<GeneralCategory, string> = {
   grimoire: 'Grimoires',
   divine: 'Divine',
   forbidden: 'Forbidden',
+  defensive: 'Defensive',
+  social: 'Social',
+  exploration: 'Exploration',
+  lost: 'Lost Arts',
+  legendary: 'Legendary',
+  master: 'Masters',
 };
 
 /**
@@ -85,7 +91,7 @@ export class GeneralScreen implements Screen {
 
   private list(): HTMLElement {
     const p = this.session.player;
-    const filters: (typeof this.filter)[] = ['known', 'all', 'combat', 'elemental', 'utility', 'survival', 'grimoire'];
+    const filters: (typeof this.filter)[] = ['known', 'all', 'combat', 'elemental', 'utility', 'survival', 'defensive', 'social', 'exploration', 'lost', 'legendary', 'master', 'grimoire'];
     const tabs = filters.map((f) => {
       const b = el('button', { class: `tab${this.filter === f ? ' active' : ''}` }, f === 'known' ? 'Known' : f === 'all' ? 'All' : CATEGORY_LABEL[f]);
       b.addEventListener('click', () => {

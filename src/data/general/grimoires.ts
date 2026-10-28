@@ -14,6 +14,18 @@ export const GRIMOIRES: GrimoireDef[] = [
   { id: 'grimoire-death-coil', skill: 'death-coil', classId: 'necromancer', powerMult: 0.7, rarity: 'epic', level: 15 },
   { id: 'grimoire-meditation', skill: 'meditation', classId: 'monk', powerMult: 0.7, rarity: 'legendary', level: 20 },
   { id: 'grimoire-soothing-melody', skill: 'soothing-melody', classId: 'bard', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-guard-ally', skill: 'guard-ally', classId: 'knight', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-wild-bloom', skill: 'g-wild-bloom', classId: 'druid', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-siphon-soul', skill: 'siphon-soul', classId: 'warlock', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-spirit-lance', skill: 'spirit-lance', classId: 'summoner', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-hurled-flask', skill: 'g-hurled-flask', classId: 'alchemist', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-earthbind', skill: 'earthbind', classId: 'shaman', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-withering-years', skill: 'withering-years', classId: 'chronomancer', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-overcharge-shot', skill: 'overcharge-shot', classId: 'artificer', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-whirling-cut', skill: 'whirling-cut', classId: 'dancer', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-ink-bolt', skill: 'ink-bolt', classId: 'inkweaver', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-silver-lash', skill: 'silver-lash', classId: 'witchhunter', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-shaking-ground', skill: 'shaking-ground', classId: 'geomancer', powerMult: 0.7, rarity: 'epic', level: 15 },
 ];
 
 /** Each Grimoire becomes a general skill in the 'grimoire' category. */

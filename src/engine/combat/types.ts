@@ -53,6 +53,8 @@ export interface EnemyDef {
   /** XP at its own level before tier scaling. */
   xp: number;
   lootTable: string;
+  /** A secret boss's guarded technique: the skillbook it drops, once, until learned. */
+  teaches?: string;
   description: string;
   palette: { main: string; accent: string };
 }

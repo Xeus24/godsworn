@@ -3,13 +3,13 @@ import type { ModifierSpec } from '../stats/modifiers';
 import type { PrimaryStats } from '../stats/types';
 import type { SkillPatch } from './treeTypes';
 
-export type GeneralCategory = 'combat' | 'elemental' | 'utility' | 'survival' | 'grimoire' | 'divine' | 'forbidden';
+export type GeneralCategory = 'combat' | 'elemental' | 'utility' | 'survival' | 'grimoire' | 'divine' | 'forbidden' | 'defensive' | 'social' | 'exploration' | 'lost' | 'legendary' | 'master';
 
 /**
  * Out-of-combat effects some general skills have. Each scales with rank;
  * `perRank` is the step per rank (see engine/skills/general.ts for use).
  */
-export type UtilityKind = 'appraise' | 'camping' | 'foraging' | 'scavenging' | 'tinkering' | 'lockpicking' | 'detectTraps' | 'haggle';
+export type UtilityKind = 'appraise' | 'camping' | 'foraging' | 'scavenging' | 'tinkering' | 'lockpicking' | 'detectTraps' | 'haggle' | 'swimming' | 'climbing' | 'ancientScript' | 'animalSpeech';
 
 /** A class-agnostic skill anyone can learn from a skillbook. Ranks 1-10. */
 export interface GeneralSkillDef {
@@ -33,7 +33,8 @@ export interface GeneralSkillDef {
   heresy?: number;
   /** Mechanic flags granted while slotted (e.g. armorTraining). */
   flags?: string[];
-  requirements?: { level?: number; stats?: Partial<PrimaryStats> };
+  /** Lost arts need a race or a background; the rest need level and stats. */
+  requirements?: { level?: number; stats?: Partial<PrimaryStats>; races?: string[]; backgrounds?: string[] };
 }
 
 /** A Grimoire teaches a signature skill of one class to anyone, at reduced power. */

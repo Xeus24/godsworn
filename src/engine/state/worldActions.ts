@@ -12,7 +12,7 @@ import { addItem, canAdd, countOf, createInventory, STASH_TAB_SIZE, takeQuantity
 import { rollLoot } from '../items/loot';
 import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
-import { utilityChance } from '../skills/general';
+import { trainGeneral, utilityChance, utilityRank } from '../skills/general';
 import { applyRep, FACTION_FAVOR_SHARE, judgeFactions, rankOf, repOf, type RepChange } from '../world/factions';
 import { canBuyHouse, buyHouse, roomCost, roomLevel, upgradeRoom } from '../world/housing';
 import { mapFor } from '../world/mapgen';
@@ -73,6 +73,9 @@ const LOCKPICK_RETRY = 60;
 const TRAP_DAMAGE = 0.15;
 
 /** The overworld on a running game: walking, exploring, towns, factions and your house. */
+const EXPLORATION_NAMES = { swimming: 'Swimming', climbing: 'Climbing', ancientScript: 'Read Ancient Script', animalSpeech: 'Animal Speech', lockpicking: 'Lockpicking', detectTraps: 'Detect Traps' } as const;
+const GENERAL_FOR = { swimming: 'swimming', climbing: 'climbing', ancientScript: 'read-ancient-script', animalSpeech: 'animal-speech', lockpicking: 'lockpicking', detectTraps: 'detect-traps' } as const;
+
 export class WorldActions {
   pending: PendingFight | undefined;
   /** Fractional minutes of riding not yet spent. */
@@ -318,7 +321,7 @@ export class WorldActions {
         return { kind: 'moved', message: `${lore.title}: “${lore.text}”` };
       }
       case 'chest':
-        return { kind: 'moved', message: this.openChest(e) };
+        return { kind: 'moved', message: e.gate ? this.openCache(e) : this.openChest(e) };
       case 'dig':
         return { kind: 'moved', message: this.dig(e) };
       case 'rune': {
@@ -374,6 +377,30 @@ export class WorldActions {
     this.s.items.receiveLoot(items, gold);
     this.changed('dig');
     return `You dig up ${t.name}: ${content.items.get(prize.baseId).name}${bonus ? `, ${content.items.get(bonus.baseId).name}` : ''} and ${gold} gold.`;
+  }
+
+  /** An exploration cache: the matching skill at the right rank opens it; the haul is two chests' worth. */
+  private openCache(e: MapEntity): string {
+    const gate = e.gate!;
+    const p = this.s.player;
+    const have = utilityRank(p, gate.skill);
+    const name = e.label ?? 'Cache';
+    if (have < gate.rank) return `${name}: this needs ${EXPLORATION_NAMES[gate.skill]} at rank ${gate.rank}${have > 0 ? ` (you have ${have})` : ' (slot it in the General skills)'}.`;
+    const map = this.map;
+    this.world.used[usedKey(map.id, e.id)] = this.day;
+    const level = worldLevel(map.level[1], this.s.state.ngPlus);
+    const stats = characterStats(p);
+    let gold = 0;
+    let kept = 0;
+    for (let i = 0; i < 2; i++) {
+      const loot = rollLoot('chest', { rng: this.s.rng, itemLevel: level + 2, newUid: () => this.s.newUid(), magicFind: stats.magicFind + 25, goldFind: stats.goldFind, ngPlus: this.s.state.ngPlus, sourceTier: 'chest', favorTiers: favorTiers(p) });
+      const got = this.s.items.receiveLoot(loot.items, loot.gold);
+      gold += loot.gold;
+      kept += got.kept.length;
+    }
+    trainGeneral(p, GENERAL_FOR[gate.skill], 20);
+    this.changed('chest');
+    return `${name}: your ${EXPLORATION_NAMES[gate.skill]} pays off. ${gold} gold and ${kept} item${kept === 1 ? '' : 's'}.`;
   }
 
   /** Opens a chest: locked chests need a Skeleton Key or Lockpicking; traps hurt unless detected. */

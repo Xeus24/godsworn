@@ -3,7 +3,8 @@ import { content } from '../../data';
 import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { difficultyIndex } from '../../data/difficulty';
 import { allocatedTotal, respecCost } from '../../engine/character/attributes';
-import { paragonRank } from '../../engine/character/paragon';
+import { boardPoints, paragonRank } from '../../engine/character/paragon';
+import { PARAGON_BOARDS, type ParagonBoard } from '../../data/paragon';
 import { levelProgress, xpToNext } from '../../engine/character/progression';
 import { characterStatsDetailed } from '../../engine/character/stats';
 import { MULTICLASS } from '../../data/progression';
@@ -41,6 +42,7 @@ export class CharacterScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
   private confirmNgPlus = false;
+  private paragonBoard: ParagonBoard = 'offense';
 
   constructor(
     private readonly session: GameSession,
@@ -175,16 +177,27 @@ export class CharacterScreen implements Screen {
       paragon.append(el('p', { class: 'dim small' }, `Unlocks at level ${s.state.levelCap}. Every level beyond the cap grants a paragon point.`));
     } else {
       paragon.append(el('div', { class: p.paragonPoints > 0 ? 'points-available' : 'dim' }, `${p.paragonPoints} paragon points`));
-      for (const node of content.paragon.all()) {
+      const tabs = el('div', { class: 'tabs' });
+      for (const board of PARAGON_BOARDS) {
+        const tab = el('button', { class: `tab${this.paragonBoard === board.id ? ' active' : ''}` }, `${board.name} (${boardPoints(p, board.id)})`);
+        tab.addEventListener('click', () => {
+          this.paragonBoard = board.id;
+          this.render();
+        });
+        tabs.append(tab);
+      }
+      paragon.append(tabs, el('p', { class: 'dim small' }, PARAGON_BOARDS.find((b) => b.id === this.paragonBoard)?.blurb ?? ''));
+      for (const node of content.paragon.filter((n) => n.board === this.paragonBoard)) {
         const rank = paragonRank(p, node.id);
+        const gated = node.gate > 0 && boardPoints(p, node.board) < node.gate;
         const plus = el('button', { class: 'tiny', 'aria-label': `Spend a point on ${node.name}` }, '+');
         const locked = node.minDifficulty !== undefined && difficultyIndex(p.difficulty) < difficultyIndex(node.minDifficulty);
-        plus.disabled = locked || p.paragonPoints <= 0 || rank >= node.maxRank;
+        plus.disabled = locked || gated || p.paragonPoints <= 0 || rank >= node.maxRank;
         plus.addEventListener('click', () => {
           s.spendParagon(node.id);
           this.render();
         });
-        const row = el('div', { class: locked ? 'stat-row attr dim' : 'stat-row attr' }, el('span', {}, locked ? `${node.name} 🔒` : node.name), el('b', {}, `${rank}/${node.maxRank}`), el('span', {}, ''), plus);
+        const row = el('div', { class: locked || gated ? 'stat-row attr dim' : 'stat-row attr' }, el('span', {}, locked || gated ? `${node.name} 🔒` : node.name), el('b', {}, `${rank}/${node.maxRank}`), el('span', {}, ''), plus);
         attachTooltip(row, () => node.description);
         paragon.append(row);
       }

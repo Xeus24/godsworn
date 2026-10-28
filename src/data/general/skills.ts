@@ -5,17 +5,17 @@ import type { RarityId } from '../../engine/items/types';
 import { flat, pct } from '../trees/builder';
 
 /** General combat skills rank up to 10, so per-rank scaling is gentler than class skills. */
-function combat(s: Omit<SkillDef, 'source' | 'maxRank'>): SkillDef {
+export function combat(s: Omit<SkillDef, 'source' | 'maxRank'>): SkillDef {
   return { ...s, source: 'general', maxRank: 10 };
 }
 
-const dmg = (stat: 'physicalAttack' | 'magicAttack' | 'divinePower', multiplier: number, perRank = multiplier * 0.06, hits?: number) => ({
+export const dmg = (stat: 'physicalAttack' | 'magicAttack' | 'divinePower', multiplier: number, perRank = multiplier * 0.06, hits?: number) => ({
   stat,
   multiplier,
   perRank,
   ...(hits ? { hits } : {}),
 });
-const status = (s: string, duration: number, chance?: number, target?: 'self' | 'target' | 'allEnemies' | 'allAllies'): EffectSpec => ({
+export const status = (s: string, duration: number, chance?: number, target?: 'self' | 'target' | 'allEnemies' | 'allAllies'): EffectSpec => ({
   kind: 'applyStatus',
   status: s,
   duration,

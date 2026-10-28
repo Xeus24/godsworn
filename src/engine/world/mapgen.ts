@@ -9,6 +9,16 @@ export const DUNGEON_W = 46;
 export const DUNGEON_H = 30;
 
 /** A stable 32-bit hash of a string, so each map is generated the same way every time. */
+/** The six exploration skills and what each one opens. */
+export const GATE_ROTATION = [
+  { skill: 'swimming', name: 'Sunken Cache' },
+  { skill: 'climbing', name: 'Cliffside Cache' },
+  { skill: 'ancientScript', name: 'Sealed Vault' },
+  { skill: 'animalSpeech', name: 'Burrow Hoard' },
+  { skill: 'lockpicking', name: 'Strongbox Vault' },
+  { skill: 'detectTraps', name: 'Trapped Reliquary' },
+] as const;
+
 export function hashString(s: string): number {
   let h = 2166136261;
   for (let i = 0; i < s.length; i++) {
@@ -231,6 +241,14 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   for (const sb of SECRET_BOSSES.filter((x) => x.zone === zone.id)) {
     const p = spotFor();
     if (p) add({ id: `secret-${sb.id}`, kind: 'worldBoss', x: p[0], y: p[1], ref: sb.enemy, requires: sb.requires, label: c.enemies.get(sb.enemy).name });
+  }
+
+  // Exploration caches: three per zone that only an exploration skill of enough rank can open.
+  for (let i = 0; i < 3; i++) {
+    const p = spotFor();
+    if (!p) continue;
+    const gate = GATE_ROTATION[(zone.order + i * 2) % GATE_ROTATION.length]!;
+    add({ id: `cache-${i + 1}`, kind: 'chest', x: p[0], y: p[1], gate: { skill: gate.skill, rank: Math.min(10, zone.order + 1) }, label: gate.name });
   }
 
   // Nothing may stand on scenery.
