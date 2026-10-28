@@ -37,10 +37,12 @@ export const DERIVED_FORMULAS: Record<DerivedStat, LinearFormula> = {
   accuracy: { base: 90, coefficients: { dex: 0.2 } },
   // Turn order. Each point of DEX is worth half a point of speed.
   speed: { base: 10, coefficients: { dex: 0.5 } },
+  // Barter = CHA x 0.4%
+  barter: { base: 0, coefficients: { cha: 0.4 } },
   lifesteal: { base: 0 },
   shieldPierce: { base: 0 },
   cooldownReduction: { base: 0 },
-  statusChance: { base: 0, coefficients: { luk: 0.2 } },
+  statusChance: { base: 0, coefficients: { luk: 0.2, cha: 0.1 } },
   statusResist: { base: 0, coefficients: { wis: 0.3, vit: 0.1 } },
   goldFind: { base: 0, coefficients: { luk: 1 } },
   magicFind: { base: 0, coefficients: { luk: 0.5 } },
@@ -53,7 +55,7 @@ export const DERIVED_FORMULAS: Record<DerivedStat, LinearFormula> = {
   damageBonus: { base: 0 },
   // Percentage of incoming damage taken; 100 = normal.
   damageTaken: { base: 100 },
-  resourceGain: { base: 0 },
+  resourceGain: { base: 0, coefficients: { cha: 0.3 } },
   ultimateGain: { base: 0 },
   hpRegen: { base: 0 },
   mpRegen: { base: 0, coefficients: { wis: 0.1 } },
@@ -74,6 +76,8 @@ export const STAT_CAPS: Partial<Record<StatId, StatCap>> = {
   wis: { min: 0 },
   luk: { min: 0 },
   fai: { min: 0 },
+  cha: { min: 0 },
+  barter: { min: 0, max: 25 },
   critChance: { min: 0, max: 60 },
   dodge: { min: 0, max: 35 },
   cooldownReduction: { min: 0, max: 40 },

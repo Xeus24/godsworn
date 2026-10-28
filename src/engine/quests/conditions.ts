@@ -27,6 +27,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return p.classes.some((x) => x.classId === cond.classId);
     case 'race':
       return p.raceId === cond.raceId;
+    case 'background':
+      return p.backgroundId === cond.backgroundId;
     case 'stat':
       return characterBaseStats(p, c)[cond.stat] >= cond.min;
     case 'favor':
@@ -148,7 +150,7 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
   }
 }
 
-const STAT_LABEL: Record<string, string> = { str: 'STR', dex: 'DEX', int: 'INT', vit: 'VIT', wis: 'WIS', luk: 'LUK', fai: 'FAI' };
+const STAT_LABEL: Record<string, string> = { str: 'STR', dex: 'DEX', int: 'INT', vit: 'VIT', wis: 'WIS', luk: 'LUK', fai: 'FAI', cha: 'CHA' };
 
 /** A short tag for a dialogue choice's requirement, e.g. "WIS 20" or "Favored by Hesha". Empty when there is nothing worth showing. */
 export function describe(cond: Cond, c: Content = content): string {
@@ -159,6 +161,8 @@ export function describe(cond: Cond, c: Content = content): string {
       return c.classes.get(cond.classId).name;
     case 'race':
       return c.races.get(cond.raceId).name;
+    case 'background':
+      return c.backgrounds.get(cond.backgroundId).name;
     case 'stat':
       return `${STAT_LABEL[cond.stat] ?? cond.stat} ${cond.min}`;
     case 'favor':

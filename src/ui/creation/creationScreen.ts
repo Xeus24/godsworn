@@ -1,6 +1,6 @@
 import { content } from '../../data';
 import { raceUnlocked, raceUnlockText } from '../../engine/character/races';
-import { endgameSeen, highestNgPlus } from '../profile';
+import { endgameSeen, highestNgPlus, storyCleared } from '../profile';
 import { DEFAULT_DIFFICULTY, DIFFICULTIES, type DifficultyId } from '../../data/difficulty';
 import { createCharacter, NAME_MAX_LENGTH, validateName } from '../../engine/character/create';
 import type { Character } from '../../engine/character/types';
@@ -15,6 +15,7 @@ export interface CreationChoice {
   raceId: string;
   classId: string;
   birthSignId: string;
+  background: string;
   hardcore: boolean;
   challenges: string[];
   difficulty: DifficultyId;
@@ -33,6 +34,7 @@ export class CreationScreen implements Screen {
     raceId: 'human',
     classId: 'warrior',
     birthSignId: 'the-forge',
+    background: 'soldier',
     hardcore: false,
     challenges: [],
     difficulty: DEFAULT_DIFFICULTY,
@@ -116,9 +118,10 @@ export class CreationScreen implements Screen {
     this.choice = {
       name: pickRandom(RANDOM_NAMES),
       portrait: Math.floor(Math.random() * PORTRAIT_VARIANTS),
-      raceId: pickRandom(content.races.all().filter((r) => raceUnlocked(r, highestNgPlus())).map((r) => r.id)),
+      raceId: pickRandom(content.races.all().filter((r) => raceUnlocked(r, highestNgPlus(), storyCleared())).map((r) => r.id)),
       classId: pickRandom(content.classes.ids()),
       birthSignId: pickRandom(content.birthSigns.ids()),
+      background: pickRandom(content.backgrounds.ids()),
       hardcore: this.choice.hardcore,
       challenges: this.choice.challenges,
       difficulty: this.choice.difficulty,
@@ -154,11 +157,11 @@ export class CreationScreen implements Screen {
       ),
       this.group(
         'Race',
-        content.races.all().filter((r) => !r.unlock || endgameSeen()),
+        content.races.all().filter((r) => !r.unlock || endgameSeen() || ('clear' in r.unlock && storyCleared())),
         this.choice.raceId,
-        (r) => [r.name, raceUnlocked(r, highestNgPlus()) ? r.passive.name : `Locked: ${raceUnlockText(r)}`],
+        (r) => [r.name, raceUnlocked(r, highestNgPlus(), storyCleared()) ? r.passive.name : `Locked: ${raceUnlockText(r)}`],
         (id) => (this.choice.raceId = id),
-        (r) => !raceUnlocked(r, highestNgPlus()),
+        (r) => !raceUnlocked(r, highestNgPlus(), storyCleared()),
         'race',
       ),
       this.group(
@@ -169,6 +172,13 @@ export class CreationScreen implements Screen {
         (id) => (this.choice.classId = id),
         undefined,
         'class',
+      ),
+      this.group(
+        'Background',
+        content.backgrounds.all(),
+        this.choice.background,
+        (b) => [b.name, Object.entries(b.statBonus).map(([k, v]) => `+${v} ${k.toUpperCase()}`).join(' ')],
+        (id) => (this.choice.background = id),
       ),
       this.group(
         'Birth Sign',

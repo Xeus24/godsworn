@@ -198,7 +198,8 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.mp = Math.min(char.mp, x.maxMp);
   x.classId = cls?.id;
   x.ai = cls?.id === 'cleric' ? 'healer' : 'aggressive';
-  x.flags = [...new Set([...equipmentFlags(char, c), ...treeFlags(char, c), ...generalFlags(char, c), ...blessingFlags(char, c)])];
+  const race = c.races.get(char.raceId);
+  x.flags = [...new Set([...(race.flags ?? []), ...(race.noPotions ? ['noPotions'] : []), ...equipmentFlags(char, c), ...treeFlags(char, c), ...generalFlags(char, c), ...blessingFlags(char, c)])];
   x.triggers = [...equipmentTriggers(char, c), ...treeTriggers(char, c), ...blessingTriggers(char, c)];
   x.weaponTypes = equippedWeaponTypes(char, c);
   x.skills = knownSkills(char, c).map((k) => ({

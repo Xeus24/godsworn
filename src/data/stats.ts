@@ -40,6 +40,8 @@ const BASE_INFO: StatInfo[] = [
     description: 'Raises divine power, blessing strength and favor gain.',
     format: 'int',
   },
+  { id: 'cha', name: 'Charisma', short: 'CHA', description: 'Lowers shop prices, wins persuasion checks, pleases companions and drives the Bard.', format: 'int' },
+  { id: 'barter', name: 'Barter', short: 'BART', description: 'Share off shop prices; shops also pay a little more. Max 25%.', format: 'percent' },
   { id: 'weaponDamage', name: 'Weapon Damage', short: 'WDMG', description: 'Damage from your weapon.', format: 'int' },
   { id: 'weaponMagic', name: 'Weapon Magic', short: 'WMAG', description: 'Magic from your weapon.', format: 'int' },
   { id: 'relicPower', name: 'Relic Power', short: 'RELIC', description: 'Power from your relic.', format: 'int' },

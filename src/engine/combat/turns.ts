@@ -235,6 +235,7 @@ function useItem(b: Battle, x: Combatant, itemId: string, targetId?: string): { 
   if (!base || base.category !== 'consumable') return { ok: false, reason: 'That is not usable.' };
   if (base.usableIn === 'field') return { ok: false, reason: 'That cannot be used in battle.' };
   const action = base.action;
+  if (x.flags.includes('noPotions') && action.kind === 'effects' && action.effects.some((e) => e.kind === 'heal' || e.kind === 'restoreMp')) return { ok: false, reason: 'Your frame cannot drink potions. Use Field Repair.' };
   const target = targetId ? b.get(targetId) : undefined;
   if (action.kind === 'revive' && (!target || target.alive || target.side !== x.side || target.kind === 'summon')) {
     return { ok: false, reason: 'Choose a fallen ally.' };

@@ -7,8 +7,8 @@ import { mapFor } from '../../engine/world/mapgen';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-const KIND_ORDER: QuestKind[] = ['main', 'twilight', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'bounty'];
-const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', twilight: 'Twilight of the Gods', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', bounty: 'Bounties' };
+const KIND_ORDER: QuestKind[] = ['main', 'twilight', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'racial', 'background', 'bounty'];
+const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', twilight: 'Twilight of the Gods', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', racial: 'Your People', background: 'Your Past', bounty: 'Bounties' };
 
 /** Where an objective points you: a marker's place, an NPC's town, a zone. */
 export function objectiveWhere(s: GameSession, q: QuestDef, o: ObjectiveDef): string {

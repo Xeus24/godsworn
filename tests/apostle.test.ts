@@ -22,7 +22,7 @@ import { settleBattle } from '../src/engine/state/battleResults';
 import { GameSession } from '../src/engine/state/gameState';
 import { atShrine, makeHero } from './helpers';
 
-const STATS = { str: 999, dex: 999, int: 999, vit: 999, wis: 999, luk: 999, fai: 999 };
+const STATS = { str: 999, dex: 999, int: 999, vit: 999, wis: 999, luk: 999, fai: 999, cha: 0 };
 
 function exalted(god = 'kael', classId = 'mage', level = 32): GameSession {
   const hero = makeHero({ classId });

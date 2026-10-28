@@ -61,6 +61,7 @@ export function renderPreview(char: Character, hardcore: boolean): HTMLElement {
     el('p', { class: 'dim small' }, `Homeland: ${race.flavor.homeland}`),
     el('p', {}, race.flavor.lore),
     el('p', { class: 'dim' }, race.flavor.saying),
+    ...(char.backgroundId ? [el('h3', {}, `Background: ${content.backgrounds.get(char.backgroundId).name}`), el('p', {}, content.backgrounds.get(char.backgroundId).description), el('p', { class: 'dim small' }, `Starts with ${content.backgrounds.get(char.backgroundId).item.qty}× ${content.items.get(content.backgrounds.get(char.backgroundId).item.itemId).name}.`)] : []),
     el('h3', {}, sign.name),
     el('p', {}, el('span', { style: `color:${god.color}` }, `${god.name}, ${god.domain}. `), sign.description),
   );

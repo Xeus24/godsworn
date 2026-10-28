@@ -2,6 +2,7 @@ import { content } from '../../data';
 import { DIFFICULTIES, getDifficulty, type DifficultyId } from '../../data/difficulty';
 import { difficultyChoices } from '../../engine/character/difficultyChange';
 import { dyeCost, learnDye, setDye, setFrame, setTransmog, SKIN_SLOTS, skinLabel, skinsFor, syncAppearance } from '../../engine/items/appearance';
+import { mendWithMaterial } from '../../engine/items/use';
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
@@ -89,4 +90,18 @@ export function wardrobePanel(session: GameSession, rerender: () => void): HTMLE
   });
 
   return el('section', { class: 'panel' }, el('h3', {}, 'Wardrobe'), el('label', { class: 'small' }, 'Portrait frame ', frame), ...rows, learn, msg);
+}
+
+/** The Forged mend with materials instead of potions. */
+export function mendPanel(session: GameSession, rerender: () => void): HTMLElement[] {
+  const p = session.player;
+  if (!content.races.get(p.raceId).noPotions) return [];
+  const msg = el('div', { class: 'dim small' }, 'Potions do nothing for a Forged frame. One ore, leather or wood from your pack restores 35% max HP out of battle.');
+  const b = el('button', {}, 'Mend with a material');
+  b.addEventListener('click', () => {
+    const r = mendWithMaterial(p, session.state.inventory);
+    msg.textContent = r.ok ? r.message : r.reason;
+    if (r.ok) rerender();
+  });
+  return [el('section', { class: 'panel' }, el('h3', {}, 'Mend'), b, msg)];
 }

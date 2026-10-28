@@ -15,6 +15,7 @@ export type Cond =
   | { kind: 'level'; min: number }
   | { kind: 'class'; classId: string }
   | { kind: 'race'; raceId: string }
+  | { kind: 'background'; backgroundId: string }
   | { kind: 'stat'; stat: PrimaryStat; min: number }
   | { kind: 'favor'; god: string; tier: DevotionTier }
   /** Apostle of this god, or of any god when `god` is omitted. */
@@ -197,7 +198,7 @@ export interface StageDef {
   onComplete?: ActionDef[];
 }
 
-export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty';
+export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background';
 
 export interface RewardDef {
   /** Share of the quest level's XP-to-next-level (0.3 = 30% of a level). */

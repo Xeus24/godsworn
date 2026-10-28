@@ -10,7 +10,9 @@ import type { Character } from '../character/types';
 import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
-import { createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
+import { createItem } from '../items/generate';
+import { learnGeneral } from '../skills/general';
+import { addItem, createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
 import type { ItemCategory, ItemInstance } from '../items/types';
 import { DEFAULT_LOOT_FILTER, type LootFilterSettings } from '../items/lootFilter';
 import { applyStartingKit } from '../items/use';
@@ -230,6 +232,11 @@ export class GameSession {
     if (kit) {
       const result = applyStartingKit(player, session.state.inventory, kit, () => session.newUid());
       if (!result.ok) throw new Error(`Starting kit failed: ${result.reason}`);
+    }
+    const bg = player.backgroundId ? content.backgrounds.find(player.backgroundId) : undefined;
+    if (bg) {
+      addItem(session.state.inventory, createItem(bg.item.itemId, bg.item.qty, () => session.newUid()));
+      learnGeneral(player, bg.skill);
     }
     // Begin at full HP and MP with the starting gear on.
     restoreFull(session.player);

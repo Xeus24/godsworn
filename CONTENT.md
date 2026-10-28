@@ -505,7 +505,7 @@ Generated from the data files by `npm run content:md`.
 | Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
 | Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, +50% damage, 90% more max HP, 28% less damage taken and 11% lifesteal. |
 | Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
-| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +85% damage, 50% more max HP, 18% less damage taken and 4% lifesteal. |
+| Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +85% damage, 50% more max HP, 18% less damage taken, 4% lifesteal and +1 attack per point of CHA. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
@@ -654,7 +654,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
-### Encounters (127)
+### Encounters (132)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -723,6 +723,11 @@ Generated from the data files by `npm run content:md`.
 | **Trial of Grimvald: the Ordeal** | 30 | Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Gauntlet** | 30 | Herald of Grimvald, Herald of Grimvald, Herald of Grimvald |
 | **Trial of Grimvald: the Aspect** | 30 | Aspect of Grimvald, Herald of Grimvald |
+| **Trouble on the Road** | 5 | Goblin Cutthroat, Goblin Cutthroat, Goblin Shaman |
+| **Trouble on the Road** | 12 | Dire Wolf, Whisperwood Spider, Will-o'-Wisp |
+| **Trouble on the Road** | 28 | Desert Raider, Sand Scorpion, Dust Elemental |
+| **Trouble on the Road** | 36 | Yeti, Frost Wolf, Ice Witch |
+| **Trouble on the Road** | 44 | Corsair, Corsair, Siren |
 | **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
 | **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
 | **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
@@ -1413,7 +1418,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-144 quests, 69 NPCs, 70 dialogues, 6 companions, 6 endings.
+237 quests, 100 NPCs, 123 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -1643,11 +1648,11 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 ### People
 
-- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Brother Aldric (Priest of Solenne)
-- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Fenn Ashwhistle (Lone Hunter)
-- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Korga Ironhide (Sellsword)
-- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Ilyra Vael (Guild Mage)
-- **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned)
+- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
+- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Fenn Ashwhistle (Lone Hunter), Sylwen (Last Singer of the Old Grove), Mawri Longtail (Packmother of Thornwick), Quillith of the Hours (Warden of Between), Fennel Greenwhistle (Canopy-Warden), Morwen Twice-Buried (Keeper of the Returned), Lady Ressa Vael (Your Mother’s Cousin), Master Orrin Quill (Archivist Emeritus), Old Tarn Whitebrow (Master Tracker)
+- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
+- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
+- **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue
 <!-- story:end -->
 

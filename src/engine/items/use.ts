@@ -26,6 +26,7 @@ export function useConsumableInField(char: Character, inv: Inventory, index: num
   if (char.level < base.level) return fail(`Requires level ${base.level}.`);
 
   const action = base.action;
+  if (c.races.get(char.raceId).noPotions && action.kind === 'effects' && action.effects.some((e) => e.kind === 'heal' || e.kind === 'restoreMp')) return fail('Your frame cannot drink potions. Mend with ore instead.');
   const stats = characterStats(char, {}, c);
   let message: string;
   switch (action.kind) {
@@ -109,4 +110,25 @@ export function applyStartingKit(
     }
   }
   return { ok: true };
+}
+
+/** Share of max HP one ore, leather or wood material restores when a Forged hero mends outside battle. */
+export const MEND_SHARE = 0.35;
+
+/** A Forged hero mends with materials from the pack: one ore, hide or plank restores 35% max HP. */
+export function mendWithMaterial(char: Character, inv: Inventory, c: Content = content): UseResult {
+  if (!c.races.get(char.raceId).noPotions) return fail('Only the Forged mend with materials.');
+  const stats = characterStats(char, {}, c);
+  if (char.hp >= stats.maxHp) return fail('You are already whole.');
+  const index = inv.slots.findIndex((it) => {
+    if (!it) return false;
+    const b = baseOf(it, c);
+    return b.category === 'material' && (b.kind === 'ore' || b.kind === 'leather' || b.kind === 'wood');
+  });
+  if (index < 0) return fail('You need ore, leather or wood in your pack.');
+  const item = inv.slots[index];
+  consumeOne(inv, index);
+  const before = char.hp;
+  char.hp = Math.min(stats.maxHp, char.hp + Math.round(stats.maxHp * MEND_SHARE));
+  return { ok: true, message: `You mend with ${item ? baseOf(item, c).name : 'spare material'}: +${char.hp - before} HP.` };
 }

@@ -1,3 +1,4 @@
+import { GREATER_RACES } from './racesGreater';
 import type { ModifierSpec } from '../engine/stats/modifiers';
 import { ELEMENTS, type PrimaryStats } from '../engine/stats/types';
 
@@ -21,8 +22,16 @@ export interface RaceDef {
   bonusSkillPointEvery?: number;
   /** Discount on crafting costs, 0..100 (Dwarf). */
   craftingDiscount?: number;
-  /** Hidden until a hero of yours has reached this New Game+ tier (on any save). */
-  unlock?: { ngPlus: number };
+  /** Hidden until a hero of yours has reached this New Game+ tier, or finished the story once (on any save). */
+  unlock?: { ngPlus: number } | { clear: true };
+  /** Battle flags (`immune:poison`...) the race always carries. */
+  flags?: string[];
+  /** Constructs cannot drink potions (they mend with materials and Field Repair instead). */
+  noPotions?: boolean;
+  /** Percent added to shop prices (a people the towns distrust). */
+  shopMarkup?: number;
+  /** Swims anywhere: water never blocks them (used by exploration gates). */
+  swims?: boolean;
 }
 
 export const RACES: RaceDef[] = [
@@ -263,4 +272,5 @@ export const RACES: RaceDef[] = [
     activeSkill: 'primordial-unmaking',
     bonusSkillPointEvery: 5,
   },
+  ...GREATER_RACES,
 ];

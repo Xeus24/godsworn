@@ -3,7 +3,7 @@ import { calculateStats, calculateStatsDetailed } from '../src/engine/stats/calc
 import type { Modifier } from '../src/engine/stats/modifiers';
 import { ALL_STATS, type PrimaryStats } from '../src/engine/stats/types';
 
-const base = (v = 10): PrimaryStats => ({ str: v, dex: v, int: v, vit: v, wis: v, luk: v, fai: v });
+const base = (v = 10): PrimaryStats => ({ str: v, dex: v, int: v, vit: v, wis: v, luk: v, fai: v, cha: v });
 const m = (stat: Modifier['stat'], type: Modifier['type'], value: number, extra: Partial<Modifier> = {}): Modifier => ({
   stat,
   type,

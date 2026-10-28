@@ -4,6 +4,8 @@ const KEY = 'godsworn:profile';
 interface Profile {
   highestNgPlus: number;
   endgame: boolean;
+  /** Any hero of yours has reached an ending. */
+  cleared: boolean;
 }
 
 function read(): Profile {
@@ -11,9 +13,9 @@ function read(): Profile {
     const raw = localStorage.getItem(KEY);
     const p = raw ? (JSON.parse(raw) as Partial<Profile>) : {};
     const n = Number(p.highestNgPlus);
-    return { highestNgPlus: Number.isFinite(n) ? n : 0, endgame: p.endgame === true || n > 0 };
+    return { highestNgPlus: Number.isFinite(n) ? n : 0, endgame: p.endgame === true || n > 0, cleared: p.cleared === true || p.endgame === true || n > 0 };
   } catch {
-    return { highestNgPlus: 0, endgame: false };
+    return { highestNgPlus: 0, endgame: false, cleared: false };
   }
 }
 
@@ -45,6 +47,17 @@ export function recordEndgame(): void {
 /** Remembers a tier (only ever raises the record). */
 export function recordNgPlus(tier: number): void {
   if (tier <= profile.highestNgPlus) return;
-  profile = { highestNgPlus: tier, endgame: true };
+  profile = { highestNgPlus: tier, endgame: true, cleared: true };
+  store();
+}
+
+/** True once any hero of yours has finished the story. */
+export function storyCleared(): boolean {
+  return profile.cleared;
+}
+
+export function recordClear(): void {
+  if (profile.cleared) return;
+  profile = { ...profile, cleared: true };
   store();
 }

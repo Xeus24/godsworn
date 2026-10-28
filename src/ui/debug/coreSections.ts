@@ -133,7 +133,7 @@ export function registerCoreSections(panel: DebugPanel, getSession: () => GameSe
     render: (refresh) => {
       const stats = calculateStats({
         level: 10,
-        base: { str: 10, dex: 10, int: 10, vit: 10, wis: 10, luk: 10, fai: 10 },
+        base: { str: 10, dex: 10, int: 10, vit: 10, wis: 10, luk: 10, fai: 10, cha: 10 },
         modifiers: sample.filter((m) => m.on).map((m) => m.mod),
       });
       const toggles = sample.map((m) =>

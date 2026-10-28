@@ -38,6 +38,46 @@ const PALETTES: Record<string, RacePalette> = {
     hairs: ['#5a3a1a', '#8a6a3a', '#2a2a2a', '#c8c0b0'],
     clothes: ['#4a5a2a', '#6a4a2a', '#2a4a5a', '#5a2a3a'],
   },
+  'wood-elf': {
+    skins: ['#d8c4a0', '#c8b088', '#b89c78', '#e0d0b0'],
+    hairs: ['#5a3a1a', '#3a5a2a', '#8a6a3a', '#2a2a1a', '#c8a85a'],
+    clothes: ['#3a5a2a', '#5a4a2a', '#2a4a3a', '#6a5a3a'],
+  },
+  ashborn: {
+    skins: ['#b0604a', '#8a4a3a', '#6a3a30', '#c87a5a'],
+    hairs: ['#2a1a1a', '#5a1a1a', '#e8a030', '#151515'],
+    clothes: ['#5a2a1a', '#3a2a2a', '#7a3a1a', '#2a2a2a'],
+  },
+  tidekin: {
+    skins: ['#7ab0c8', '#5a98b8', '#8ac8c0', '#6aa0a8'],
+    hairs: ['#2a5a7a', '#3a8a8a', '#1a3a5a', '#7ac8d8'],
+    clothes: ['#2a5a7a', '#3a7a6a', '#5a6a9a', '#2a4a5a'],
+  },
+  scaleborn: {
+    skins: ['#7a9a4a', '#a8a050', '#6a8a5a', '#9a7a3a'],
+    hairs: ['#4a5a2a', '#7a5a2a', '#3a3a2a', '#a8803a'],
+    clothes: ['#8a6a3a', '#6a4a2a', '#9a8a5a', '#5a4a3a'],
+  },
+  shadekin: {
+    skins: ['#5a5a78', '#484868', '#6a6a88', '#3a3a58'],
+    hairs: ['#e8e8f8', '#a8a8d8', '#151525', '#7a5ac8'],
+    clothes: ['#252535', '#3a2a4a', '#1a1a2a', '#2a3a4a'],
+  },
+  forged: {
+    skins: ['#8a929a', '#a8a090', '#7a8288', '#b0905a'],
+    hairs: ['#5a5a62', '#8a6a3a', '#3a3a42', '#a89060'],
+    clothes: ['#4a4a52', '#5a4a3a', '#3a424a', '#6a5a4a'],
+  },
+  revenant: {
+    skins: ['#b8c0b0', '#a0a898', '#c8c8c0', '#98a8a0'],
+    hairs: ['#d8d8d0', '#7a7a80', '#2a2a30', '#8a9a98'],
+    clothes: ['#3a3a40', '#2a3a3a', '#4a3a3a', '#303040'],
+  },
+  hearthfolk: {
+    skins: ['#f4c8a0', '#e8b088', '#d89a70', '#f8d8b8'],
+    hairs: ['#8a5a2a', '#c9a66b', '#a33a1c', '#5a3a1a', '#e8c880'],
+    clothes: ['#a85a3a', '#5a8a4a', '#c8a050', '#7a5a8a'],
+  },
   nephilim: {
     skins: ['#f8e8d8', '#d8c0a8', '#a88868', '#e8d0c0'],
     hairs: ['#fff4c0', '#e8e8f8', '#d8a838', '#c8b8e8'],
@@ -122,7 +162,7 @@ export function drawPortrait(canvas: HTMLCanvasElement, raceId: string, variant:
   for (const [y, , r] of head) if (y > 10) px(r - 1, y, 1, 1, skinDark);
 
   // Ears (race-specific).
-  if (raceId === 'elf' || raceId === 'fae') {
+  if (raceId === 'elf' || raceId === 'fae' || raceId === 'wood-elf') {
     px(6, 11, 3, 2); px(5, 9, 2, 2); px(7, 13, 2, 3);
     px(23, 11, 3, 2); px(25, 9, 2, 2); px(23, 13, 2, 3);
   } else if (raceId === 'gnome') {

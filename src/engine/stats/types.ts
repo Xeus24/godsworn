@@ -1,6 +1,6 @@
 /** Stat identifiers shared by the whole engine. */
 
-export const PRIMARY_STATS = ['str', 'dex', 'int', 'vit', 'wis', 'luk', 'fai'] as const;
+export const PRIMARY_STATS = ['str', 'dex', 'int', 'vit', 'wis', 'luk', 'fai', 'cha'] as const;
 export type PrimaryStat = (typeof PRIMARY_STATS)[number];
 
 export const ELEMENTS = [
@@ -36,6 +36,7 @@ export const DERIVED_STATS = [
   'speed',
   'lifesteal',
   'shieldPierce',
+  'barter',
   'cooldownReduction',
   'statusChance',
   'statusResist',
@@ -84,5 +85,5 @@ export function isPrimaryStat(value: string): value is PrimaryStat {
 }
 
 export function emptyPrimaryStats(): PrimaryStats {
-  return { str: 0, dex: 0, int: 0, vit: 0, wis: 0, luk: 0, fai: 0 };
+  return { str: 0, dex: 0, int: 0, vit: 0, wis: 0, luk: 0, fai: 0, cha: 0 };
 }

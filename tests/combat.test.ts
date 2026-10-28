@@ -42,7 +42,7 @@ describe('damage formula', () => {
   });
 
   it('applies crit damage and stays within variance', () => {
-    const base = calculateStats({ level: 1, base: { str: 10, dex: 10, int: 10, vit: 10, wis: 10, luk: 10, fai: 10 }, modifiers: [] });
+    const base = calculateStats({ level: 1, base: { str: 10, dex: 10, int: 10, vit: 10, wis: 10, luk: 10, fai: 10, cha: 0 }, modifiers: [] });
     const target = { ...base, defense: 0, physicalResist: 0, damageTaken: 100 };
     const rng = new Rng(4);
     for (let i = 0; i < 200; i++) {
@@ -56,12 +56,12 @@ describe('damage formula', () => {
   });
 
   it('returns negative damage for absorbed elements', () => {
-    const s = calculateStats({ level: 1, base: { str: 10, dex: 10, int: 10, vit: 10, wis: 10, luk: 10, fai: 10 }, modifiers: [] });
+    const s = calculateStats({ level: 1, base: { str: 10, dex: 10, int: 10, vit: 10, wis: 10, luk: 10, fai: 10, cha: 0 }, modifiers: [] });
     expect(computeDamage({ power: 100, element: 'fire', attacker: s, target: { ...s, fireResist: 150 }, crit: false }, new Rng(1))).toBeLessThan(0);
   });
 
   it('clamps hit chance', () => {
-    const s = calculateStats({ level: 1, base: { str: 0, dex: 0, int: 0, vit: 0, wis: 0, luk: 0, fai: 0 }, modifiers: [] });
+    const s = calculateStats({ level: 1, base: { str: 0, dex: 0, int: 0, vit: 0, wis: 0, luk: 0, fai: 0, cha: 0 }, modifiers: [] });
     expect(hitChance({ ...s, accuracy: 10 }, { ...s, dodge: 90 })).toBe(COMBAT.hitChance.min);
     expect(hitChance({ ...s, accuracy: 100 }, { ...s, dodge: 0 })).toBe(100);
   });

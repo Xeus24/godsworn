@@ -44,7 +44,15 @@ export const DOLL = {
     'primordial': [
       'base__shadow',
       'base__shadow'
-    ]
+    ],
+    'wood-elf': ['base__elf_male', 'base__elf_female'],
+    'ashborn': ['base__demigod_male', 'base__demigod_male'],
+    'tidekin': ['base__draconian_green_male', 'base__draconian_green_female'],
+    'scaleborn': ['base__kobold_male_new', 'base__kobold_female_new'],
+    'shadekin': ['base__shadow', 'base__shadow'],
+    'forged': ['base__ogre_male', 'base__ogre_female'],
+    'revenant': ['base__shadow', 'base__shadow'],
+    'hearthfolk': ['base__halfling_male', 'base__halfling_female']
   },
   'hair': [
     'hair__short_black',

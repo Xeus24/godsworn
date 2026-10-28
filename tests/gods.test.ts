@@ -200,7 +200,7 @@ describe('divine items', () => {
     blade.identified = true;
     expect(canEquip(hero, blade, 'mainHand', characterStats(hero) as never).ok).toBe(false);
     hero.devotion.favor.kael = 260;
-    expect(canEquip(hero, blade, 'mainHand', { str: 999, dex: 999, int: 999, vit: 999, wis: 999, luk: 999, fai: 999 }).ok).toBe(true);
+    expect(canEquip(hero, blade, 'mainHand', { str: 999, dex: 999, int: 999, vit: 999, wis: 999, luk: 999, fai: 999, cha: 0 }).ok).toBe(true);
   });
 });
 

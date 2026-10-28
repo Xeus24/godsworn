@@ -9,7 +9,7 @@ import { DOLL } from './dcssDoll';
  */
 const DEFAULT_SCALE = 3;
 const OUTLINE = '#120c18';
-const HAIRED = new Set(['human', 'elf', 'dwarf', 'gnome', 'fae', 'nephilim']);
+const HAIRED = new Set(['human', 'elf', 'dwarf', 'gnome', 'fae', 'nephilim', 'wood-elf', 'hearthfolk']);
 
 interface Layer {
   name: string;

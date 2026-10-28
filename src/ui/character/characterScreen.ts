@@ -12,7 +12,7 @@ import { masteryPointsEarned } from '../../engine/skills/treeOwners';
 import { availablePoints, earnedPoints, knownSkills, masteryPointsLeft } from '../../engine/skills/tree';
 import type { GameSession } from '../../engine/state/gameState';
 import { ELEMENTS, PRIMARY_STATS, type StatId } from '../../engine/stats/types';
-import { difficultyPanel, wardrobePanel } from './appearancePanel';
+import { difficultyPanel, mendPanel, wardrobePanel } from './appearancePanel';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { formatStat, skillCard, statBreakdownTooltip } from '../format';
@@ -200,7 +200,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, this.titles(), difficultyPanel(this.session, this.render), wardrobePanel(this.session, this.render), ...(late || own ? [this.stable()] : []), ...(late ? [this.legacy()] : []), classes, this.reputation(), skills, ...(late ? [paragon] : [])),
+          el('div', { class: 'sheet-col' }, this.titles(), difficultyPanel(this.session, this.render), ...mendPanel(this.session, this.render), wardrobePanel(this.session, this.render), ...(late || own ? [this.stable()] : []), ...(late ? [this.legacy()] : []), classes, this.reputation(), skills, ...(late ? [paragon] : [])),
         ),
       ),
     );

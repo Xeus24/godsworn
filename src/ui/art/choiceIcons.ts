@@ -65,6 +65,26 @@ const BIRTH_ART: Record<string, Art> = {
     rows: ['....yyyy....', '..yyYYYYyy..', '.yYYYddYYYy.', '.yYYdYYdYYy.', 'yYYYdYYYYYYy', 'yYYYdddYYYYy', 'yYYYdYYdYYYy', '.yYYdYYdYYy.', '.yYYYddYYYy.', '..yyYYYYyy..', '....yyyy....', '............'],
     colors: { y: '#c8901a', Y: '#ffd84a', d: '#8a5a12' },
   },
+  'the-antler': {
+    rows: ['............', '.a..a..a..a.', '.aa.a..a.aa.', '..aaa..aaa..', '...aaaaaa...', '....aaaa....', '....bbbb....', '...bbbbbb...', '...bbkkbb...', '....bbbb....', '.....bb.....', '............'],
+    colors: { a: '#a8825a', b: '#8a5a32', k: '#1a1020' },
+  },
+  'the-tide': {
+    rows: ['............', '............', '..ww....ww..', '.wWWw..wWWw.', '.wWWWwwWWWw.', 'wWWWWWWWWWWw', 'wwwwwwwwwwww', '.wWWWwwWWWw.', '..wwww.wwww.', '............', '............', '............'],
+    colors: { w: '#3a78c8', W: '#8ac8f0' },
+  },
+  'the-hearth': {
+    rows: ['.....r......', '....rrr.....', '...rroorr...', '..rrooyorr..', '..rroyyorr..', '..rrooyorr..', '...rrooorr..', '..bbbbbbbbb.', '.bbbbbbbbbbb', '.bbbbbbbbbbb', '............', '............'],
+    colors: { r: '#c8402a', o: '#f08a2a', y: '#ffd84a', b: '#5a4a3a' },
+  },
+  'the-ledger': {
+    rows: ['............', '.gggggggggg.', '.gGGGGGGGGg.', '.gGkkkkkkGg.', '.gGGGGGGGGg.', '.gGkkkkkGGg.', '.gGGGGGGGGg.', '.gGkkkkkkGg.', '.gGGGGGGGGg.', '.gggggggggg.', '............', '............'],
+    colors: { g: '#4a6a3a', G: '#8ab070', k: '#2a3a20' },
+  },
+  'the-hollow': {
+    rows: ['............', '....vvvv....', '..vvVVVVvv..', '.vVV....VVv.', '.vV..vv..Vv.', '.vV.vvvv.Vv.', '.vV..vv..Vv.', '.vVV....VVv.', '..vvVVVVvv..', '....vvvv....', '............', '............'],
+    colors: { v: '#3a1a5a', V: '#8a4ad0' },
+  },
   'the-tome': {
     rows: ['............', '.bbbbbbbbbb.', '.bBBBBBBBBb.', '.bBwwwwwwBb.', '.bBBBBBBBBb.', '.bBwwwwwBBb.', '.bBBBBBBBBb.', '.bBwwwwwwBb.', '.bBBBBBBBBb.', '.bbbbbbbbbb.', '............', '............'],
     colors: { b: '#4a2a6a', B: '#7a4aa8', w: '#e8dcb8' },
@@ -75,6 +95,7 @@ const BIRTH_ART: Record<string, Art> = {
 const SKIN: Record<string, string> = {
   human: '#e8b078', elf: '#f0d8b0', dwarf: '#d89a6a', orc: '#6aa84a', beastkin: '#c8883a', nephilim: '#f4e8d0',
   gnome: '#e8a890', fae: '#b8e8d8', giant: '#a8b8c8', dragon: '#c83a3a', primordial: '#6a4ab0',
+  'wood-elf': '#d8c4a0', ashborn: '#b0604a', tidekin: '#7ab0c8', scaleborn: '#7a9a4a', shadekin: '#5a5a78', forged: '#8a929a', revenant: '#b8c0b0', hearthfolk: '#f4c8a0',
 };
 
 function raceArt(id: string): Art {
@@ -85,6 +106,30 @@ function raceArt(id: string): Art {
     rows[r] = (rows[r] as string).slice(0, c) + ch + (rows[r] as string).slice(c + 1);
   };
   switch (id) {
+    case 'wood-elf':
+      set(2, 0, 'e'); set(2, 1, 'e'); set(2, 10, 'e'); set(2, 11, 'e');
+      break;
+    case 'ashborn':
+      set(4, 4, 'Y'); set(4, 7, 'Y'); colors.Y = '#ffb030'; set(0, 3, 'h'); set(0, 8, 'h'); colors.h = '#3a2a2a';
+      break;
+    case 'tidekin':
+      set(3, 0, 'w'); set(4, 0, 'w'); set(3, 11, 'w'); set(4, 11, 'w'); colors.w = '#4a98c8';
+      break;
+    case 'scaleborn':
+      set(0, 4, 'h'); set(0, 7, 'h'); set(1, 5, 'h'); set(1, 6, 'h'); colors.h = '#5a7a30'; set(4, 4, 'Y'); set(4, 7, 'Y'); colors.Y = '#e8d030';
+      break;
+    case 'shadekin':
+      set(4, 4, 'Y'); set(4, 7, 'Y'); colors.Y = '#c8a0ff'; set(2, 0, 'e'); set(2, 11, 'e');
+      break;
+    case 'forged':
+      set(4, 4, 'Y'); set(4, 7, 'Y'); colors.Y = '#60d8ff'; set(6, 5, 'm'); set(6, 6, 'm'); colors.m = '#4a4a52';
+      break;
+    case 'revenant':
+      set(4, 4, 'Y'); set(4, 7, 'Y'); colors.Y = '#a0f0c0'; set(6, 4, 'm'); set(6, 7, 'm'); colors.m = '#4a5a50';
+      break;
+    case 'hearthfolk':
+      set(1, 4, 'h'); set(1, 7, 'h'); colors.h = '#8a5a2a';
+      break;
     case 'elf':
       set(2, 0, 'e'); set(2, 1, 'e'); set(2, 10, 'e'); set(2, 11, 'e'); set(1, 1, '.');
       break;

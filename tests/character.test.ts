@@ -10,7 +10,7 @@ describe('character creation', () => {
   it('combines class base stats with racial bonuses', () => {
     const hero = makeHero({ raceId: 'human', classId: 'warrior' });
     // Warrior base + Human +1 to everything.
-    expect(characterBaseStats(hero)).toEqual({ str: 10, dex: 6, int: 3, vit: 9, wis: 4, luk: 5, fai: 4 });
+    expect(characterBaseStats(hero)).toEqual({ str: 10, dex: 6, int: 3, vit: 9, wis: 4, luk: 5, fai: 4, cha: 3 });
   });
 
   it('starts at full HP and MP', () => {
@@ -109,8 +109,11 @@ describe('class growth', () => {
 
   it('every class has roughly equal stat budgets', () => {
     for (const cls of content.classes.all()) {
-      const baseSum = Object.values(cls.baseStats).reduce((a, b) => a + b, 0);
-      const growthSum = Object.values(cls.growth).reduce((a, b) => a + b, 0);
+      // Charisma is a separate budget: classes differ on purpose (Bard 9, Necromancer 2).
+      const { cha: _b, ...base } = cls.baseStats;
+      const { cha: _g, ...growth } = cls.growth;
+      const baseSum = Object.values(base).reduce((a, b) => a + b, 0);
+      const growthSum = Object.values(growth).reduce((a, b) => a + b, 0);
       expect(baseSum, cls.id).toBe(34);
       expect(growthSum, cls.id).toBeCloseTo(5, 5);
     }

@@ -1,5 +1,6 @@
 import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
+import { characterStats } from '../character/stats';
 import type { Character } from '../character/types';
 import { Rng } from '../core/rng';
 import { tierIndex, tierOf } from '../gods/devotion';
@@ -60,16 +61,17 @@ export function buyDiscount(shop: ShopDef, town: string, char: Character, c: Con
     const rank = f.ranks.indexOf(rankOf(f, repOf(char, f.id)) ?? (f.ranks[0] as never));
     d += Math.max(0, rank - FACTION_SHOP_RANK) * FACTION_DISCOUNT_PER_RANK;
   }
-  return Math.min(0.4, d);
+  return Math.min(0.4, d + characterStats(char).barter / 100);
 }
 
 export function buyPrice(item: ItemInstance, shop: ShopDef, town: string, char: Character, c: Content = content): number {
-  return Math.max(1, Math.round(itemValue(item, c) * shop.markup * (1 - buyDiscount(shop, town, char, c))));
+  const distrust = 1 + (c.races.get(char.raceId).shopMarkup ?? 0) / 100;
+  return Math.max(1, Math.round(itemValue(item, c) * shop.markup * distrust * (1 - buyDiscount(shop, town, char, c))));
 }
 
 /** What a shop pays: 25% of value, +2% per Haggle rank. */
 export function sellPrice(item: ItemInstance, char: Character, c: Content = content): number {
-  return Math.max(1, Math.round(sellValue(item, c) * (1 + generalRank(char, 'haggle') * 0.02)));
+  return Math.max(1, Math.round(sellValue(item, c) * (1 + generalRank(char, 'haggle') * 0.02 + characterStats(char).barter / 200)));
 }
 
 /**

@@ -6,7 +6,7 @@ import './ui/general/general.css';
 import './ui/pantheon/pantheon.css';
 import { content, validateContent } from './data';
 import { endgameUnlocked } from './engine/endgame/unlocked';
-import { endgameSeen, highestNgPlus, recordEndgame, recordNgPlus } from './ui/profile';
+import { endgameSeen, highestNgPlus, recordClear, recordEndgame, recordNgPlus, storyCleared } from './ui/profile';
 import type { Character } from './engine/character/types';
 import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
@@ -188,11 +188,20 @@ function attach(s: GameSession): void {
   s.bus.on('levelUp', () => checkEndgame(s, true));
   s.bus.on('stateChanged', ({ reason }) => {
     checkEndgame(s, true);
+    if (s.state.quests.ending && !storyCleared()) {
+      recordClear();
+      for (const race of content.races.all()) {
+        if (race.unlock && 'clear' in race.unlock) {
+          toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
+          new UnlockOverlay(`New race unlocked: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose it when you create a new hero.']).open();
+        }
+      }
+    }
     if (reason === 'ngPlus') {
       const before = highestNgPlus();
       recordNgPlus(s.state.ngPlus);
       for (const race of content.races.all()) {
-        if (race.unlock && race.unlock.ngPlus > before && race.unlock.ngPlus <= s.state.ngPlus) {
+        if (race.unlock && 'ngPlus' in race.unlock && race.unlock.ngPlus > before && race.unlock.ngPlus <= s.state.ngPlus) {
           toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
           new UnlockOverlay(`New race unlocked: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose it when you create a new hero.']).open();
         }

@@ -29,6 +29,7 @@ import type { Character } from './types';
 export function characterBaseStats(char: Character, c: Content = content): PrimaryStats {
   const out = emptyPrimaryStats();
   const race = c.races.get(char.raceId);
+  const bg = char.backgroundId ? c.backgrounds.find(char.backgroundId) : undefined;
   for (const progress of char.classes) {
     const cls = c.classes.get(progress.classId);
     const primary = progress.slot === 'primary';
@@ -40,7 +41,7 @@ export function characterBaseStats(char: Character, c: Content = content): Prima
     }
   }
   for (const stat of PRIMARY_STATS) {
-    out[stat] = Math.floor(out[stat] + 1e-9) + (race.statBonus[stat] ?? 0) + char.allocated[stat];
+    out[stat] = Math.floor(out[stat] + 1e-9) + (race.statBonus[stat] ?? 0) + (bg?.statBonus[stat] ?? 0) + char.allocated[stat];
   }
   return out;
 }

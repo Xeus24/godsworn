@@ -29,6 +29,7 @@ import { SKILL_TAGS } from './skillTags';
 import { ENCOUNTERS, ENEMIES, SUMMONS } from './enemies';
 import { ENEMY_SKILLS } from './skills/enemy';
 import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
+import { GREATER_RACIAL_SKILLS } from './skills/racialGreater';
 import { ULTIMATE_SKILLS } from './skills/ultimates';
 import { CLASS_TREE_SKILLS, finalizeTrees, SPECIALIZATIONS } from './trees';
 import { buildBooks } from './general/books';
@@ -39,6 +40,7 @@ import { FORBIDDEN_COMBAT_SKILLS, FORBIDDEN_SKILLS } from './general/forbidden';
 import { BLESSINGS } from './blessings';
 import { TREASURES, TREASURE_ITEMS } from './world/treasures';
 import { DYES, FRAMES } from './appearance';
+import { BACKGROUNDS } from './backgrounds';
 import { PANTHEON } from './pantheon';
 import { PUNISHER_SKILLS, PUNISHERS } from './punishers';
 import { APOSTLE_BLESSINGS, APOSTLE_TRIALS, APOSTLES, ASPECT_SKILLS, ASPECTS, DIVINE_WEAPONS, EDICTS } from './apostles';
@@ -69,7 +71,7 @@ import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS];
+const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
 
@@ -95,6 +97,7 @@ export const content = {
   skills: new ContentTable('skill', ALL_SKILLS),
   races: new ContentTable('race', RACES),
   birthSigns: new ContentTable('birth sign', BIRTH_SIGNS),
+  backgrounds: new ContentTable('background', BACKGROUNDS),
   classes: new ContentTable('class', CLASSES),
   paragon: new ContentTable('paragon node', PARAGON_NODES),
   mechanics: new ContentTable('mechanic', MECHANICS),
@@ -590,6 +593,8 @@ function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, wher
       return v.ref(c.classes, cond.classId, where);
     case 'race':
       return v.ref(c.races, cond.raceId, where);
+    case 'background':
+      return v.ref(c.backgrounds, cond.backgroundId, where);
     case 'favor':
     case 'trialStage':
       return v.ref(c.gods, cond.god, where);

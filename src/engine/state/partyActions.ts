@@ -140,17 +140,22 @@ export class PartyActions {
     this.changed('approval');
   }
 
+  /** Your Charisma makes companions warmer to what pleases them (+0.5% per point) and no harsher to what does not. */
+  private charm(amount: number): number {
+    return amount > 0 ? amount * (1 + characterStats(this.s.player).cha / 200) : amount;
+  }
+
   /** Companions in the party judge what they saw (one batch per battle or action). */
   onDeeds(occurrences: readonly DeedOccurrence[]): void {
     for (const comp of this.members()) {
-      const amount = judgeCompanion(this.def(comp.id), occurrences);
+      const amount = this.charm(judgeCompanion(this.def(comp.id), occurrences));
       if (amount !== 0) this.adjust(comp.id, amount, Math.abs(amount) < 1);
     }
   }
 
   private onFavor(god: string, delta: number): void {
     for (const comp of this.members()) {
-      const amount = favorApproval(this.def(comp.id), god, delta);
+      const amount = this.charm(favorApproval(this.def(comp.id), god, delta));
       if (amount !== 0) this.adjust(comp.id, amount, Math.abs(amount) < 1);
     }
   }

@@ -40,6 +40,8 @@ export interface Character {
   /** Portrait variant index for the race's portrait set. */
   portrait: number;
   raceId: string;
+  /** Who the hero was before the oath (data/backgrounds.ts); absent on older saves. */
+  backgroundId?: string;
   birthSignId: string;
   hardcore: boolean;
   /** Challenge modes chosen at creation (see data/challenges.ts). */

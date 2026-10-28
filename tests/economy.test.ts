@@ -82,17 +82,18 @@ describe('shops', () => {
   it('Haggle, temple favor and faction rank give discounts', () => {
     const hero = makeHero();
     const temple = content.shops.get('temple');
-    expect(buyDiscount(temple, 'brightwater', hero)).toBe(0);
+    const charm = buyDiscount(temple, 'brightwater', hero);
+    expect(charm).toBeCloseTo(0.012);
     learnGeneral(hero, 'haggle');
     hero.generalSkills.haggle = { rank: 5, xp: 0 };
-    expect(buyDiscount(temple, 'brightwater', hero)).toBeCloseTo(0.05);
+    expect(buyDiscount(temple, 'brightwater', hero) - charm).toBeCloseTo(0.05);
     hero.devotion.favor.solenne = 600;
-    expect(buyDiscount(temple, 'brightwater', hero)).toBeCloseTo(0.15);
+    expect(buyDiscount(temple, 'brightwater', hero) - charm).toBeCloseTo(0.15);
     const faction = content.shops.get('faction');
     expect(shopOpen(faction, 'brightwater', hero, false).ok).toBe(false);
     applyRep(hero, { 'order-of-dawn': 800 });
     expect(shopOpen(faction, 'brightwater', hero, false).ok).toBe(true);
-    expect(buyDiscount(faction, 'brightwater', hero)).toBeCloseTo(0.1);
+    expect(buyDiscount(faction, 'brightwater', hero) - charm).toBeCloseTo(0.1);
   });
 
   it('the Black Market only trades at night', () => {

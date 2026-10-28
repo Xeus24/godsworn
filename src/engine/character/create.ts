@@ -18,6 +18,7 @@ export interface NewCharacterOptions {
   hardcore?: boolean;
   challenges?: string[];
   difficulty?: DifficultyId;
+  background?: string;
   id?: string;
 }
 
@@ -37,6 +38,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
   c.races.get(opts.raceId);
   c.classes.get(opts.classId);
   c.birthSigns.get(opts.birthSignId);
+  if (opts.background) c.backgrounds.get(opts.background);
 
   const char: Character = {
     id: opts.id ?? 'hero',
@@ -44,6 +46,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     portrait: Math.max(0, Math.floor(opts.portrait)),
     raceId: opts.raceId,
     birthSignId: opts.birthSignId,
+    ...(opts.background ? { backgroundId: opts.background } : {}),
     hardcore: opts.hardcore ?? false,
     challenges: [...(opts.challenges ?? [])],
     stable: { pets: [], mounts: [] },
