@@ -1,5 +1,5 @@
 import { COMBAT } from '../../data/combat';
-import { masteryLevel, masteryMultiplier, MAX_MASTERY } from '../skills/mastery';
+import { masteryLevel, masteryMultiplier, MASTERED_LEVEL } from '../skills/mastery';
 import { applyPatch } from '../skills/patch';
 import { powerAtRank, type SkillDef } from '../skills/types';
 import type { Battle } from './battle';
@@ -226,7 +226,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
   const targets = resolveTargets(b, x, skill, targetId);
   if (skill.targeting !== 'randomEnemies' && skill.targeting !== 'self' && targets.length === 0 && (skill.damage || skill.heal)) return false;
   const known = x.skills.find((s) => s.id === skillId);
-  const mastered = known?.mastery !== undefined && masteryLevel(known.mastery) >= MAX_MASTERY;
+  const mastered = known?.mastery !== undefined && masteryLevel(known.mastery) >= MASTERED_LEVEL;
   const label = `${mastered ? '\u2726 ' : ''}${skill.name}${opts.echo ? ' (Echo)' : ''}`;
   b.emit({ type: 'action', actorId: x.id, label, targets: targets.map((t) => t.id) });
   if (x.kind === 'hero' && !opts.free && skillId !== BASIC_ATTACK_ID) {

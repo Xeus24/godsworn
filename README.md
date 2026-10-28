@@ -90,9 +90,9 @@ In battle:
 - **Learning:** double-click (or shift-click) a node to learn it, right-click to refund. Deeper tiers unlock after 5 points per tier in that branch.
 - **Active skills:** each has two **modifier** nodes that change how it works; pick one in the details panel.
 - **Keystones:** big power with a real downside.
-- **Builds:** you have three. Switch between them for free; each remembers its own tree, hotbar and (optionally) gear.
+- **Builds:** you have five. Switch between them for free; each remembers its own tree, hotbar and (optionally) gear.
 - **Hotbar:** fill it from the panel on the right.
-- **Mastery:** the more you use a skill, the stronger it gets.
+- **Mastery:** the more you use a skill, the stronger it gets (10 levels: Mastered at 5, Grandmaster at 10, which turns on your class's perk and lets the skill evolve once your class questline reaches the right quest). Secret nodes appear in the tree when you do something worth remembering. Share a build with Export build and Import.
 - **Specializations:** at class level 20, choose one of three (in the sidebar). It adds a fifth branch and replaces your ultimate. Before then you can preview each branch. The first choice is free; switching costs 100 gold × level and refunds the old branch.
 
 **Multiclassing:** at level 15 you can take a second class. Beat its mentor in a **trial** (at the arena of any town), then take up the class. It starts at level 1 with its own skills, tree, resource and specialization. Set how class XP is shared on the character sheet (presets or **Focus**, which feeds your lowest class). Keystones and capstones in a secondary tree also need a **Mastery Point** (one per 10 levels of that class). Armor only your secondary class allows slows you a little, unless you learn **Armor Training**.

@@ -1,5 +1,7 @@
 import { content } from '../../data';
 import { createEndgameState } from '../endgame/types';
+import { BUILD_SLOTS } from '../skills/treeTypes';
+import { emptyBuild } from '../skills/tree';
 import { createAppearanceState } from '../items/appearance';
 import { createGameStats, GAME_NAME, GameSession, SAVE_VERSION, type GameState } from './gameState';
 
@@ -111,6 +113,15 @@ export function migrate(raw: Json): Json {
     for (const [slot, piece] of Object.entries(pieces)) if (typeof piece === 'string') pieces[slot] = { uid: piece, name: 'a saved piece' };
   }
   state.stash = stash;
+  // Version 18 phase 3: five builds per class, evolved skills.
+  for (const holder of [p, ...Object.values(obj(obj(state.party).companions)).map((comp) => obj(obj(comp).character))]) {
+    holder.evolved ??= {};
+    for (const st of Object.values(obj(holder.trees))) {
+      const builds = (obj(st).builds as Json[]) ?? [];
+      while (builds.length < BUILD_SLOTS) builds.push(emptyBuild(builds.length) as unknown as Json);
+      obj(st).builds = builds;
+    }
+  }
   // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
   p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
   const world = obj(state.world);

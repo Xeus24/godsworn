@@ -75,6 +75,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     skills: Object.fromEntries(startingSkillIds(opts.raceId, opts.classId, c).map((id) => [id, 1])),
     trees: {},
     mastery: {},
+    evolved: {},
     generalSkills: {},
     generalSlots: [],
     bonusGeneralSlots: 0,

@@ -761,6 +761,16 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase2.test.ts` plus updates to character, economy and race tests: 639 unit tests, 8 e2e, build and playtest pass.
 - Not done from section 2: 5 birth signs (phase 9), race-gated dialogue lines beyond questlines and checks are limited to the voice lines, and the personal questlines use the same quest shape (their text is specific, their mechanics are not).
 
+### Expansion phase 3: deepening the existing eight classes
+- **Mastery 5 to 10** (`engine/skills/mastery.ts`): ten thresholds up to 2,600 uses. Levels 1-5 add 3% power each, 6-10 add 1.5% each (22.5% at the top). Level 5 stays "Mastered" (`MASTERED_LEVEL`: the look, the achievements, the Mastered condition); level 10 is **Grandmaster**.
+- **Grandmaster perks** (`data/masteryPerks.ts`): one per class, all different (Unbroken, Arcane Overflow, Ghost Hands, Saint's Grace, Unerring, Death's Understudy, Still Water, Standing Ovation), active while any skill of that class is at mastery 10 and shown in the Skills sidebar.
+- **Hidden nodes** (`data/trees/hidden.ts`, 32): four per class on a "Secrets" branch, invisible until a feat is met (kill a boss, mastery 5 with a skill, slay 3 world bosses, class level 40; `engine/skills/feats.ts`). Class trees were already 100 nodes, above the 80+ target, so the delta is these 4 plus specialization branches that exist.
+- **Skill evolutions** (`data/evolutions.ts`, 24): three per class, e.g. Firebolt to Phoenix Bolt. A skill at mastery 10 whose class quest (quest 3, 4 or 5 of the questline) is done evolves from the tree's detail panel; the evolved skill takes its place on every hotbar and keeps its mastery. Evolved skills are the base skill at 1.35-1.45x power plus new effects.
+- **Five builds** per class (was 3; old saves are padded) and **share codes**: Export build copies a `GSB1-` code, Import applies it to the active build after checking nodes, ranks, tier gates, parents, points and secret nodes.
+- **Class questlines** (`data/story/classLines.ts`, 40 quests): five per class from its mentor after the trial, ending in a conversation with a class reply, a CHA reply and a plain reply, a title and skill points. Quests are of the kinds visit shrine, road fight, dungeon clear, boss fight, boss fight plus conversation.
+- Tests: `tests/expansionPhase3.test.ts` (7); 646 unit tests, 8 e2e, build and playtest pass; checked in the browser (5 builds, Share, perk panel).
+- Not done: Grandmaster costs 2,600 uses per skill, so it is an endgame goal that this pass did not balance by playtest; evolved skills are derived from base skills rather than hand-built; hidden-node and evolution text shows in the tree detail panel but has no tutorial.
+
 ## Known bugs
 - None known.
 

@@ -34,6 +34,7 @@ export const SKILL_TAGS = [
   'Void',
   'Divine',
   'Racial',
+  'Evolved',
 ] as const;
 
 export type SkillTag = (typeof SKILL_TAGS)[number];

@@ -32,6 +32,7 @@ import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
 import { GREATER_RACIAL_SKILLS } from './skills/racialGreater';
 import { ULTIMATE_SKILLS } from './skills/ultimates';
 import { CLASS_TREE_SKILLS, finalizeTrees, SPECIALIZATIONS } from './trees';
+import { evolvedSkills, EVOLUTIONS } from './evolutions';
 import { buildBooks } from './general/books';
 import { grimoireSkills, GRIMOIRES } from './general/grimoires';
 import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
@@ -71,7 +72,8 @@ import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const ALL_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS];
+const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS];
+const ALL_SKILLS = [...BASE_SKILLS, ...evolvedSkills((id) => BASE_SKILLS.find((s) => s.id === id) as (typeof BASE_SKILLS)[number])];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
 
@@ -98,6 +100,7 @@ export const content = {
   races: new ContentTable('race', RACES),
   birthSigns: new ContentTable('birth sign', BIRTH_SIGNS),
   backgrounds: new ContentTable('background', BACKGROUNDS),
+  evolutions: new ContentTable('evolution', EVOLUTIONS),
   classes: new ContentTable('class', CLASSES),
   paragon: new ContentTable('paragon node', PARAGON_NODES),
   mechanics: new ContentTable('mechanic', MECHANICS),
@@ -375,6 +378,11 @@ export function validateContent(c: Content = content): void {
   }
   for (const g of c.generalSkills.all()) {
     if (g.heresy !== undefined) v.check(g.category === 'forbidden' && g.heresy < HERESY.tiers.length, `general skill ${g.id}: heresy needs a forbidden skill and a real tier`);
+  }
+  for (const e of c.evolutions.all()) {
+    v.ref(c.skills, e.from, `evolution ${e.id}`);
+    v.ref(c.quests, e.quest, `evolution ${e.id}`);
+    v.ref(c.classes, e.classId, `evolution ${e.id}`);
   }
   for (const t of c.treasures.all()) v.ref(c.zones, t.zone, `treasure ${t.id}`);
   for (const f of c.frames.all()) if (f.achievement) v.ref(c.achievements, f.achievement, `frame ${f.id}`);

@@ -654,7 +654,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
 
-### Encounters (132)
+### Encounters (156)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -728,6 +728,30 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 28 | Desert Raider, Sand Scorpion, Dust Elemental |
 | **Trouble on the Road** | 36 | Yeti, Frost Wolf, Ice Witch |
 | **Trouble on the Road** | 44 | Corsair, Corsair, Siren |
+| **Trouble on the Road** | 16 | Desert Raider, Desert Raider, Goblin Shaman |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Skeleton Soldier |
+| **Trouble on the Road** | 16 | Will-o'-Wisp, Will-o'-Wisp, Dark Cultist |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Bandit Thug, Bandit Archer, Bandit Thug |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Cutthroat |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Skeleton Soldier, Skeleton Soldier, Restless Ghost |
+| **A Test of Nerve** | 25 | The Bone Lord, Restless Ghost |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
+| **Trouble on the Road** | 16 | Dark Cultist, Dark Cultist, Restless Ghost |
+| **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
+| **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Restless Ghost |
+| **Trouble on the Road** | 16 | Wyld Boar, Dire Wolf, Whisperwood Spider |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Shaman |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Bandit Archer, Bandit Thug, Dark Cultist |
+| **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
+| **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
 | **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
 | **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
 | **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
@@ -797,9 +821,9 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-31 class trees, 512 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+31 class trees, 544 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
-### Warrior (64 nodes)
+### Warrior (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -807,8 +831,9 @@ Generated from the data files by `npm run content:md`.
 | Fury | **Rampage** (Unrelenting, Bloodthirst); **Enrage** (Frenzy, Blood Rage) | Battle Trance, Raging Blows | Seething / Controlled Fury | Blood Frenzy: Keystone: +8% lifesteal, but healing you receive is halved. | Avatar of War |
 | Protection | **Shield Wall** (Bulwark, Last Bastion); **Shield Slam** (Concussive Slam, Ricochet) | Iron Skin, Second Wind | Stalwart / Thorns | Unbreakable: Keystone: take 20% less damage, but deal 20% less. | Immortal |
 | Warcraft | **Battle Shout** (Commanding Shout, Intimidating Shout); **Whirlwind** (Bladestorm, Sweeping Strikes) | Opportunist, Momentum | Veteran / Brute | Glory Hound: Keystone: +15% damage and +25% XP, but -15% defense. | Unstoppable Force |
+| Secrets |  | Scar Tissue, Veteran’s Grip, Unyielding, Warlord’s Mark |  | :  |  |
 
-### Mage (64 nodes)
+### Mage (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -816,8 +841,9 @@ Generated from the data files by `npm run content:md`.
 | Cryomancy | **Frost Shard** (Ice Lance, Glacial Spike); **Frost Nova** (Deep Freeze, Blizzard) | Frostbite, Winter’s Embrace | Ice Armor / Cold Snap | Absolute Zero: Keystone: +30% ice damage and +15% status chance, but 15% less speed. | Heart of Winter |
 | Stormcalling | **Lightning Bolt** (Overcharge, Static); **Chain Lightning** (Forked Lightning, Thunderstorm) | Conductor, Eye of the Storm | Stormcaller’s Fury / Rain Dance | Glass Cannon: Keystone: +35% damage, but -25% max HP. | Tempest |
 | Arcana | **Arcane Missiles** (Barrage, Seeking Missiles); **Mana Shield** (Reflective Shield, Arcane Ward) | Arcane Intellect, Clarity | Evocation / Spell Echo | Blood Magic: Keystone: skills cost HP instead of MP. +15% magic attack. | Archmage |
+| Secrets |  | Ember Memory, Echoing Bolt, Leyline Reader, Archmage’s Insight |  | :  |  |
 
-### Rogue (64 nodes)
+### Rogue (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -825,8 +851,9 @@ Generated from the data files by `npm run content:md`.
 | Shadow | **Vanish** (Shadowstep, Smoke Bomb); **Eviscerate** (Kidney Shot, Envenom) | Shadow Dance, Ruthlessness | Night Stalker / Daylight Blade | Living Shadow: Keystone: +12% dodge, but -15% max HP. | Umbral Lord |
 | Trickery | **Fan of Knives** (Razor Fan, Twin Fans); **Cheap Shot** (Blinding Powder, Dirty Tricks) | Pickpocket, Misdirection | Fleet-Footed / Tough as Nails | Gambler’s Edge: Keystone: +20% crit chance, but -15 accuracy. | Trickster’s Gambit |
 | Poisons | **Poison Blade** (Deadly Poison, Crippling Poison); **Toxic Cloud** (Miasma, Lingering Toxins) | Virulence, Festering | Toxicologist / Antidote | Plague Lord: Keystone: +25% status chance, but -20% physical damage. | Venom Master |
+| Secrets |  | Knife in the Dark, Muscle Memory, Ghost of the Road, Master of the Shadow Trade |  | :  |  |
 
-### Cleric (64 nodes)
+### Cleric (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -834,8 +861,9 @@ Generated from the data files by `npm run content:md`.
 | Smiting | **Smite** (Judgement, Radiance); **Holy Fire** (Purifying Flames, Consecration) | Undead Bane, Searing Light | Zeal / Wrath | Crusader: Keystone: +25% divine power, but -30% healing power. | Wrath of the Heavens |
 | Discipline | **Power Word: Shield** (Aegis, Barrier); **Penance** (Atonement, Contrition) | Inner Focus, Divine Aegis | Rapture / Borrowed Time | Penitent: Keystone: take 15% less damage, but deal 15% less. | Power Infusion |
 | Benediction | **Blessing of Might** (Blessing of Kings, Blessing of Haste); **Holy Nova** (Radiant Nova, Healing Nova) | Faithful, Grace | Pilgrim / Templar | Zealotry: Keystone: +25% damage, but -20% status resist. | Avatar of Light |
+| Secrets |  | Hallowed Ground, Practiced Mercy, Witness of Giants, Saint-in-Waiting |  | :  |  |
 
-### Ranger (64 nodes)
+### Ranger (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -843,8 +871,9 @@ Generated from the data files by `npm run content:md`.
 | Beast Mastery | **Sic 'Em** (Go for the Throat, Feral Frenzy); **Call of the Wild** (Pack Leader, Primal Bond) | Beast Within, Kill Command | Alpha / Lone Wolf | Spirit Bond: Keystone: take 15% less damage, but deal 10% less. | Lord of Beasts |
 | Survival | **Serpent Sting** (Viper Sting, Scorpid Sting); **Explosive Shot** (Cluster Bomb, Napalm) | Survivalist, Toxic Expertise | Camouflage / Trap Master | Hunter’s Instinct: Keystone: +10% dodge, but -20% defense. | Apex Predator |
 | Wilds | **Arrow Barrage** (Hail of Arrows, Focused Barrage); **Nature’s Grace** (Wild Growth, Thornskin) | Windwalker, Wind Shear | Hunter’s Mark / Nature’s Ally | Untamed: Keystone: +10 speed, but -15% max HP. | Storm of Arrows |
+| Secrets |  | Trophy Hunter, Steady Hand, Giant-Tracker, Legend of the Wild |  | :  |  |
 
-### Necromancer (64 nodes)
+### Necromancer (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -852,8 +881,9 @@ Generated from the data files by `npm run content:md`.
 | Blight | **Plague** (Contagion, Pestilence); **Decay** (Rot, Blight Wave) | Virulent Plague, Epidemic | Withering / Necrosis | Plaguebearer: Keystone: +25% status chance, but -30% nature resist. | Pestilent Lord |
 | Souls | **Soul Bolt** (Soul Rend, Twin Souls); **Soul Harvest** (Reaping, Soul Feast) | Soul Siphon, Dark Harvest | Soulstorm / Hoarder | Blood Pact: Keystone: skills cost HP instead of MP. +20% shadow damage. | Lord of Souls |
 | Death | **Death Coil** (Dark Mending, Unholy Coil); **Curse of Agony** (Curse of Weakness, Mass Curse) | Death’s Embrace, Fear Itself | Night Terror / Morbid | Undying: Keystone: +15 HP per turn, but healing you receive is halved. | Avatar of Death |
+| Secrets |  | Grave Courtesy, Familiar Bones, Collector of Last Breaths, Lord of Quiet Rows |  | :  |  |
 
-### Monk (64 nodes)
+### Monk (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -861,8 +891,9 @@ Generated from the data files by `npm run content:md`.
 | Way of the Crane | **Crane Stance** (Serene Crane, Crane Wings); **Crane Kick** (Sweeping Kick, Healing Kick) | Crane’s Grace, Counterstrike | Iron Body / Flowing Water | Stillness: Keystone: take 20% less damage, but 15% less speed. | Thousand Cranes |
 | Way of the Serpent | **Serpent Stance** (Coiled, Venomous Stance); **Viper Strike** (Neurotoxin, Twin Fangs) | Serpent’s Patience, Constrict | Venom Mastery / Slippery | Cold-Blooded: Keystone: +25% status chance, but -10% max HP. | Serpent God |
 | Way of the Spirit | **Chi Burst** (Spirit Wave, Chi Explosion); **Meditation** (Transcendence, Focus Mind) | Spirit Flow, Ki Mastery | Enlightenment / Harmony | Ascetic: Keystone: +20% max HP, but -10% damage. | Way of the Open Hand |
+| Secrets |  | Still Mind, Open Palm, Walker Among Giants, One With the Road |  | :  |  |
 
-### Bard (64 nodes)
+### Bard (68 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -870,6 +901,7 @@ Generated from the data files by `npm run content:md`.
 | Ward | **Ballad of Warding** (Resonant Ward, Stalwart Chorus); **Soothing Melody** (Lullaby of Rest, Cleansing Chord) | Warding Chords, Second Verse | Hearthsong / Bulwark Rhythm | Pacifist’s Song: Keystone: +40% healing power, but -25% damage. | Song of Sanctuary |
 | Discord | **Discordant Note** (Shattering Note, Dissonance); **Cacophony** (Deafening, Mind Shatter) | Jarring Rhythm, Feedback | Hex Song / Nerve Pinch | Atonal: Keystone: +30% status chance, but -15 accuracy. | Maestro of Madness |
 | Showmanship | **Jig of Swiftness** (Quickstep, Hearthside Lullaby); **Dazzling Display** (Grand Display, Blinding Light) | Crowd Pleaser, Standing Ovation | Lucky Break / Showboat | Fortune’s Fool: Keystone: +25 LUK, but -20% defense. | Star of the Show |
+| Secrets |  | Opening Number, Perfect Pitch, Songs of Three Giants, Headliner |  | :  |  |
 
 ### Tree skills
 
@@ -1418,7 +1450,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-237 quests, 100 NPCs, 123 dialogues, 6 companions, 6 endings.
+277 quests, 100 NPCs, 131 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -1563,10 +1595,50 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Grimvald’s Herald** | 26 | Factor Goldmere | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Grimvald** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
 
-### Class trials (8)
+### Class trials (48)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **A Soldier’s Oath** | 12 | Sword-Master Bram | Reach the shrine of Kael (visit) |
+| **The Shield Wall** | 16 | Sword-Master Bram | Defeat the trouble on the road (fight) |
+| **Hold the Crypt** | 20 | Sword-Master Bram | Clear old crypt (clear) |
+| **The Broken Line** | 25 | Sword-Master Bram | Face the test of nerve (fight) |
+| **Standard-Bearer** | 30 | Sword-Master Bram | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The First Footnote** | 12 | Archmage Velis | Reach the shrine of Aurelis (visit) |
+| **Ink and Static** | 16 | Archmage Velis | Defeat the trouble on the road (fight) |
+| **The Webbed Library** | 20 | Archmage Velis | Clear spider hollow (clear) |
+| **The Ember Thesis** | 25 | Archmage Velis | Face the test of nerve (fight) |
+| **The Last Lecture** | 30 | Archmage Velis | Face the final lesson (fight); Speak to your mentor (talk) |
+| **Light Fingers** | 12 | Nell the Knife | Reach the shrine of Morrath (visit) |
+| **The Back Door** | 16 | Nell the Knife | Defeat the trouble on the road (fight) |
+| **A Warren of Locks** | 20 | Nell the Knife | Clear goblin warren (clear) |
+| **The Crown Job** | 25 | Nell the Knife | Face the test of nerve (fight) |
+| **Honor Among Ghosts** | 30 | Nell the Knife | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The Healer’s Vow** | 12 | Mother Aurelie | Reach the shrine of Solenne (visit) |
+| **Mercy in the Field** | 16 | Mother Aurelie | Defeat the trouble on the road (fight) |
+| **The Crypt Beneath** | 20 | Mother Aurelie | Clear old crypt (clear) |
+| **The Unquiet Bishop** | 25 | Mother Aurelie | Face the test of nerve (fight) |
+| **A Candle in the Dark** | 30 | Mother Aurelie | Face the final lesson (fight); Speak to your mentor (talk) |
+| **First Blood, Fair Game** | 12 | Warden Sylas | Reach the shrine of Ysolde (visit) |
+| **The Wounded Elk** | 16 | Warden Sylas | Defeat the trouble on the road (fight) |
+| **The Silk Forest** | 20 | Warden Sylas | Clear spider hollow (clear) |
+| **The Great Alpha** | 25 | Warden Sylas | Face the test of nerve (fight) |
+| **Last Arrow** | 30 | Warden Sylas | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The Honest Dead** | 12 | The Pale Tutor | Reach the shrine of Morrath (visit) |
+| **A Funeral for the Forgotten** | 16 | The Pale Tutor | Defeat the trouble on the road (fight) |
+| **The Drowned Ledger** | 20 | The Pale Tutor | Clear drowned grotto (clear) |
+| **The Hag’s Debt** | 25 | The Pale Tutor | Face the test of nerve (fight) |
+| **A Quiet Appointment** | 30 | The Pale Tutor | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The Empty Bowl** | 12 | Master Ren | Reach the shrine of Hesha (visit) |
+| **The Road of a Thousand Steps** | 16 | Master Ren | Defeat the trouble on the road (fight) |
+| **The Warren Within** | 20 | Master Ren | Clear goblin warren (clear) |
+| **The Broken Bell** | 25 | Master Ren | Face the test of nerve (fight) |
+| **One Breath** | 30 | Master Ren | Face the final lesson (fight); Speak to your mentor (talk) |
+| **Tuning Up** | 12 | Lyra Silvertongue | Reach the shrine of Hesha (visit) |
+| **The Rival Troupe** | 16 | Lyra Silvertongue | Defeat the trouble on the road (fight) |
+| **The Echoing Grotto** | 20 | Lyra Silvertongue | Clear drowned grotto (clear) |
+| **The Silent Hall** | 25 | Lyra Silvertongue | Face the test of nerve (fight) |
+| **Encore** | 30 | Lyra Silvertongue | Face the final lesson (fight); Speak to your mentor (talk) |
 | **Trial of the Warrior** | 15 | Sword-Master Bram | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Mage** | 15 | Archmage Velis | Read a skillbook (deed); Win the trial (state) |
 | **Trial of the Rogue** | 15 | Nell the Knife | Land 12 critical hits (deed); Win the trial (state) |

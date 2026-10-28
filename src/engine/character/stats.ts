@@ -1,4 +1,5 @@
 import { petModifiers } from './stable';
+import { masteryPerkModifiers } from '../skills/masteryPerks';
 import { challengeHeroModifiers } from './challenges';
 import { difficultyMeets } from './difficultyChange';
 import { heresyModifiers } from '../gods/heresy';
@@ -64,7 +65,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...withSource(getDifficulty(char.difficulty).bonuses, `difficulty:${char.difficulty}`));
   for (const m of ACHIEVEMENT_MILESTONES) if ((char.achievementPoints ?? 0) >= m.points) mods.push(...withSource(m.modifiers, `achievements:${m.points}`));
   mods.push(...equipmentModifiers(char, c));
-  mods.push(...treeModifiers(char, c));
+  mods.push(...treeModifiers(char, c), ...masteryPerkModifiers(char, c));
   mods.push(...generalModifiers(char, c));
   mods.push(...offClassArmorModifiers(char, c));
   mods.push(...divineModifiers(char, characterBaseStats(char, c), c));

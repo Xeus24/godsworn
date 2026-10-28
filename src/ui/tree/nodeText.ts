@@ -1,5 +1,5 @@
 import { content } from '../../data';
-import { MASTERY_THRESHOLDS, masteryLevel, MAX_MASTERY } from '../../engine/skills/mastery';
+import { MASTERED_LEVEL, MASTERY_THRESHOLDS, masteryLevel, masteryPowerBonus, MAX_MASTERY } from '../../engine/skills/mastery';
 import type { TreeNodeDef } from '../../engine/skills/treeTypes';
 import { skillCard } from '../format';
 import { formatModifier } from '../items/itemText';
@@ -32,7 +32,7 @@ export function describeNode(node: TreeNodeDef, rank: number, lockedReason?: str
     if (mastery !== undefined) {
       const lvl = masteryLevel(mastery);
       const next = MASTERY_THRESHOLDS[lvl];
-      lines.push(el('div', { class: lvl >= MAX_MASTERY ? 'tip-unique' : 'tip-desc' }, lvl >= MAX_MASTERY ? '✦ Mastered (+15% power)' : `Mastery ${lvl}/${MAX_MASTERY}: ${mastery}/${next} uses (+${lvl * 3}% power)`));
+      lines.push(el('div', { class: lvl >= MASTERED_LEVEL ? 'tip-unique' : 'tip-desc' }, lvl >= MAX_MASTERY ? `✦✦ Grandmaster (+${Math.round(masteryPowerBonus(lvl) * 1000) / 10}% power, class perk active)` : `${lvl >= MASTERED_LEVEL ? '✦ Mastered. ' : ''}Mastery ${lvl}/${MAX_MASTERY}: ${mastery}/${next} uses (+${Math.round(masteryPowerBonus(lvl) * 1000) / 10}% power)`));
     }
   }
   if (node.variant) {

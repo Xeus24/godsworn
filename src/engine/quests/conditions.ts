@@ -4,7 +4,7 @@ import { characterBaseStats } from '../character/stats';
 import { atLeast, tierName } from '../gods/devotion';
 import { countHeld } from '../items/inventory';
 import { killsByType, knowledgeLevel, slayerRank } from '../bestiary/bestiary';
-import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
+import { MASTERED_LEVEL, masteryLevel } from '../skills/mastery';
 import type { GameState } from '../state/gameState';
 import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
@@ -108,7 +108,7 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
     case 'paragon':
       return p.paragonLevel >= cond.min;
     case 'mastered':
-      return Object.values(p.mastery).filter((xp) => masteryLevel(xp) >= MAX_MASTERY).length >= cond.min;
+      return Object.values(p.mastery).filter((xp) => masteryLevel(xp) >= MASTERED_LEVEL).length >= cond.min;
     case 'companions':
       return Object.values(state.party.companions).filter((x) => !x.left && (cond.minApproval === undefined || x.approval >= cond.minApproval)).length >= cond.min;
     case 'dungeons':

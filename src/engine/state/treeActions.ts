@@ -14,6 +14,8 @@ import {
   treeState,
   type TreeResult,
 } from '../skills/tree';
+import { exportBuild, importBuild } from '../skills/buildCode';
+import { canEvolve, evolveSkill } from '../skills/evolution';
 import type { GameSession } from './gameState';
 
 /** Skill tree and build actions on a running game. */
@@ -82,6 +84,27 @@ export class TreeActions {
 
   setVariant(classId: string, skillId: string, nodeId: string | null): TreeResult {
     return this.done(setVariant(this.s.player, classId, skillId, nodeId), 'tree');
+  }
+
+  /** The active build as a share code. */
+  exportBuild(classId: string): string {
+    return exportBuild(this.s.player, classId);
+  }
+
+  importBuild(classId: string, code: string): TreeResult {
+    return this.done(importBuild(this.s.player, classId, code), 'tree');
+  }
+
+  canEvolve(skillId: string) {
+    return canEvolve(this.s.player, this.s.state.quests.completed, skillId);
+  }
+
+  /** Evolves a Grandmaster skill whose class quest is done. */
+  evolve(skillId: string): TreeResult {
+    const r = evolveSkill(this.s.player, this.s.state.quests.completed, skillId);
+    if (!r.ok) return r;
+    this.s.bus.emit('toast', { kind: 'level', text: `${r.evolution.name}: your skill has evolved!` });
+    return this.done({ ok: true }, 'evolve');
   }
 
   setHotbar(slot: number, skillId: string | null): TreeResult {

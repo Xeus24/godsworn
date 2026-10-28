@@ -3,6 +3,7 @@ import type { Character } from '../character/types';
 import type { TriggeredEffect } from '../effects/types';
 import type { Modifier } from '../stats/modifiers';
 import { MULTICLASS } from '../../data/progression';
+import { describeFeat, featMet } from './feats';
 import { earnedTreePoints, masteryPointsEarned, needsMasteryPoint, ownedTreeIds, ownsTree, treePassiveMultiplier } from './treeOwners';
 import { BUILD_SLOTS, HOTBAR_SIZE, type ClassTreeState, type SkillPatch, type SkillTreeDef, type TreeBuild, type TreeNodeDef } from './treeTypes';
 
@@ -110,6 +111,7 @@ export function canAllocate(char: Character, classId: string, nodeId: string, c:
   if (rankOf(build, nodeId) === 0 && needsMasteryPoint(char, node) && masteryPointsLeft(char, classId, c) < 1) {
     return fail(`Needs a Mastery Point (a secondary class earns one every ${MULTICLASS.masteryPointEvery} class levels).`);
   }
+  if (node.feat && !featMet(char, node.feat, classId)) return fail('Hidden: ' + describeFeat(node.feat, c));
   const spec = tree.branches.find((b) => b.id === node.branch)?.spec;
   if (spec && char.classes.find((p) => p.classId === classId)?.specialization !== spec) {
     return fail(`Choose the ${c.specializations.find(spec)?.name ?? spec} specialization first.`);
@@ -261,7 +263,8 @@ export function knownSkills(char: Character, c: Content = content): KnownSkill[]
   return [...ranks].map(([id, rank]) => {
     const max = c.skills.get(id).maxRank;
     const v = patches.get(id);
-    return { id, rank: Math.min(max, rank), ...(v ? { patch: v.patch, variantNode: v.node } : {}) };
+    // An evolved skill stands in for its base skill (the tree node still earns the ranks).
+    return { id: char.evolved?.[id] ?? id, rank: Math.min(max, rank), ...(v ? { patch: v.patch, variantNode: v.node } : {}) };
   });
 }
 

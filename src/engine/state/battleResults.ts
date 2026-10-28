@@ -12,7 +12,7 @@ import { itemName } from '../items/naming';
 import { recordDeed } from '../items/relics';
 import { favorTiers } from '../gods/devotion';
 import { utilityChance } from '../skills/general';
-import { MAX_MASTERY, masteryLevel } from '../skills/mastery';
+import { MASTERED_LEVEL, MAX_MASTERY, masteryLevel } from '../skills/mastery';
 import type { ItemInstance } from '../items/types';
 import { wearItem, wearItemPercent } from '../items/upkeep';
 import { tickTimedBuffs } from '../items/use';
@@ -85,7 +85,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     if (after > before) {
       rewards.masteryUps.push([skillId, after]);
       const name = content.skills.get(skillId).name;
-      s.bus.emit('toast', { kind: 'level', text: after >= MAX_MASTERY ? `${name} mastered!` : `${name}: mastery ${after}` });
+      s.bus.emit('toast', { kind: 'level', text: after >= MAX_MASTERY ? `${name}: Grandmaster!` : after === MASTERED_LEVEL ? `${name} mastered!` : `${name}: mastery ${after}` });
     }
   }
 

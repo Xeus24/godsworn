@@ -101,6 +101,8 @@ export interface Character {
   trees: Record<string, ClassTreeState>;
   /** Mastery XP per skill id (uses in battle). */
   mastery: Record<string, number>;
+  /** Skills evolved into a stronger form: base skill id -> evolved skill id (data/evolutions.ts). */
+  evolved: Record<string, string>;
   /** Known general skills (from skillbooks and Grimoires). */
   generalSkills: Record<string, GeneralSkillProgress>;
   /** Slotted general skills (only slotted ones are active). */

@@ -1,3 +1,4 @@
+import type { Feat } from './feats';
 import type { SkillTag } from '../../data/skillTags';
 import type { EffectSpec, TriggeredEffect } from '../effects/types';
 import type { EquipSlot } from '../items/types';
@@ -57,6 +58,8 @@ export interface TreeNodeDef {
   flags?: string[];
   /** Choice nodes in the same group are mutually exclusive. */
   choiceGroup?: string;
+  /** Hidden until this feat is met (secret nodes). */
+  feat?: Feat;
   /** Layout position (tree units), set by the builder. */
   x: number;
   y: number;
@@ -83,7 +86,7 @@ export interface SkillTreeDef {
 }
 
 export const HOTBAR_SIZE = 8;
-export const BUILD_SLOTS = 3;
+export const BUILD_SLOTS = 5;
 
 /** One saved build: tree allocation, skill modifiers, hotbar and (optionally) gear. */
 export interface TreeBuild {

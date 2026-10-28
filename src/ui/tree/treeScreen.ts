@@ -1,5 +1,8 @@
 import { content } from '../../data';
-import { masteryLevel, masteryProgress, MAX_MASTERY } from '../../engine/skills/mastery';
+import { featMet } from '../../engine/skills/feats';
+import { MASTERY_PERKS } from '../../data/masteryPerks';
+import { grandmasterClasses } from '../../engine/skills/masteryPerks';
+import { MASTERED_LEVEL, masteryLevel, masteryProgress } from '../../engine/skills/mastery';
 import {
   activeBuild,
   availablePoints,
@@ -176,9 +179,13 @@ export class TreeScreen implements Screen {
   private visibleTree(tree: SkillTreeDef): SkillTreeDef {
     const chosen = chosenSpec(this.session.player, this.classId)?.id;
     const shown = chosen ?? this.previewSpec ?? specializationsFor(this.classId)[0]?.id;
-    const branches = tree.branches.filter((b) => !b.spec || b.spec === shown);
+    const p = this.session.player;
+    // Secret nodes stay out of sight until their feat is met (or the hero already bought them).
+    const revealed = (n: TreeNodeDef): boolean => !n.feat || featMet(p, n.feat, this.classId) || (activeBuild(p, this.classId).ranks[n.id] ?? 0) > 0;
+    const nodes = tree.nodes.filter(revealed);
+    const branches = tree.branches.filter((b) => (!b.spec || b.spec === shown) && (!b.id.endsWith('.secrets') || nodes.some((n) => n.branch === b.id)));
     const ids = new Set(branches.map((b) => b.id));
-    return { ...tree, branches, nodes: tree.nodes.filter((n) => ids.has(n.branch)) };
+    return { ...tree, branches, nodes: nodes.filter((n) => ids.has(n.branch)) };
   }
 
   private graph(full: SkillTreeDef): HTMLElement {
@@ -423,6 +430,8 @@ export class TreeScreen implements Screen {
       saveGear,
       reset,
       el('p', { class: 'dim small' }, 'Switching builds is free and re-equips the build’s saved gear from your bags.'),
+      this.sharePanel(),
+      ...this.perkPanel(),
       el('h3', {}, 'Find'),
       search,
       center,
@@ -480,6 +489,18 @@ export class TreeScreen implements Screen {
       unlearn.disabled = rank === 0;
       unlearn.addEventListener('click', () => this.say(this.session.trees.refund(this.classId, node.id)));
       panel.append(el('div', { class: 'row' }, learn, unlearn));
+      // Evolution for a Grandmaster skill.
+      if (node.kind === 'active' && node.skill) {
+        const evo = this.session.trees.canEvolve(node.skill);
+        const known = content.evolutions.all().find((e) => e.from === node.skill);
+        if (known) {
+          const already = p.evolved[node.skill];
+          const btn = el('button', { class: 'primary' }, already ? `Evolved: ${content.skills.get(already).name}` : `Evolve into ${known.name}`);
+          btn.disabled = !evo.ok;
+          btn.addEventListener('click', () => this.say(this.session.trees.evolve(node.skill as string)));
+          panel.append(el('h3', {}, 'Evolution'), el('p', { class: 'small' }, known.description), btn, ...(!evo.ok && !already ? [el('p', { class: 'dim small' }, evo.reason)] : []));
+        }
+      }
       // Modifier choice for active skills.
       const skillId = node.skill ?? node.variant?.skill;
       if (skillId) {
@@ -503,6 +524,29 @@ export class TreeScreen implements Screen {
     return panel;
   }
 
+  /** Share code export and import for the active build. */
+  private sharePanel(): HTMLElement {
+    const code = el('textarea', { rows: '2', 'aria-label': 'Build code', placeholder: 'Paste a build code here…', class: 'build-code' }) as HTMLTextAreaElement;
+    const exportBtn = el('button', {}, 'Export build');
+    exportBtn.addEventListener('click', () => {
+      code.value = this.session.trees.exportBuild(this.classId);
+      code.select();
+      void navigator.clipboard?.writeText(code.value).catch(() => undefined);
+      this.message = 'Build code copied (or select it below).';
+    });
+    const importBtn = el('button', {}, 'Import into this build');
+    importBtn.addEventListener('click', () => this.say(this.session.trees.importBuild(this.classId, code.value)));
+    return el('div', {}, el('h3', {}, 'Share'), code, el('div', { class: 'row' }, exportBtn, importBtn));
+  }
+
+  /** The class's Grandmaster perk, and whether it is active. */
+  private perkPanel(): HTMLElement[] {
+    const perk = MASTERY_PERKS[this.classId];
+    if (!perk) return [];
+    const active = grandmasterClasses(this.session.player).includes(this.classId);
+    return [el('h3', {}, 'Grandmaster perk'), el('div', { class: active ? 'tip-unique small' : 'dim small' }, `${perk.name}: ${perk.description} ${active ? '(active)' : '(reach mastery 10 with any skill of this class)'}`)];
+  }
+
   private hotbarEditor(): HTMLElement {
     const p = this.session.player;
     const bar = hotbar(p);
@@ -510,7 +554,7 @@ export class TreeScreen implements Screen {
     const slots = bar.map((id, i) => {
       const skill = id ? content.skills.find(id) : undefined;
       const lvl = id ? masteryLevel(p.mastery[id] ?? 0) : 0;
-      const b = el('button', { class: `hotbar-slot${this.pickingSlot === i ? ' picking' : ''}${lvl >= MAX_MASTERY ? ' mastered' : ''}` }, el('span', { class: 'hk' }, String(i + 1)), skill ? `${lvl >= MAX_MASTERY ? '✦ ' : ''}${skill.name}` : '(empty)');
+      const b = el('button', { class: `hotbar-slot${this.pickingSlot === i ? ' picking' : ''}${lvl >= MASTERED_LEVEL ? ' mastered' : ''}` }, el('span', { class: 'hk' }, String(i + 1)), skill ? `${lvl >= MASTERED_LEVEL ? '✦ ' : ''}${skill.name}` : '(empty)');
       if (id) {
         b.append(el('div', { class: 'mastery-bar' }, el('div', { style: `width:${masteryProgress(p.mastery[id] ?? 0) * 100}%` })));
         attachTooltip(b, () => skillCard(content.skills.get(id), known.find((k) => k.id === id)?.rank ?? 1));
