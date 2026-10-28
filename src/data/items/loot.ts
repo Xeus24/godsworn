@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from '../classesGreater';
 import type { RarityId } from '../../engine/items/types';
 
 /** Something a loot table can produce. */
@@ -134,4 +135,5 @@ export const STARTING_KITS: Record<string, StartingKitItem[]> = {
   necromancer: [{ itemId: 'scythe-t1', equip: true }, { itemId: 'cloth-chest-t1', equip: true }, { itemId: 'cloth-gloves-t1', equip: true }, ...SHARED_KIT],
   monk: [{ itemId: 'fist-t1', equip: true }, { itemId: 'fist-t1', equip: true }, { itemId: 'leather-chest-t1', equip: true }, { itemId: 'cloth-legs-t1', equip: true }, ...SHARED_KIT],
   bard: [{ itemId: 'instrument-t1', equip: true }, { itemId: 'leather-chest-t1', equip: true }, { itemId: 'leather-cloak-t1', equip: true }, ...SHARED_KIT],
+  ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.kit])),
 };

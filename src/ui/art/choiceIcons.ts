@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from '../../data/classesGreater';
 /**
  * Small pixel icons for the character-creation cards (difficulty, race, class,
  * birth sign). Each icon is a 12x12 string map: one character per pixel,
@@ -226,7 +227,7 @@ export function choiceIcon(kind: ChoiceKind, id: string, index = 0, count = 1, t
   let art: Art;
   switch (kind) {
     case 'class':
-      art = CLASS_ART[id] ?? { rows: Array(SIZE).fill('..tttttttt..'), colors: { t: tint } };
+      art = CLASS_ART[id] ?? GREATER_CLASSES.find((g) => g.def.id === id)?.art ?? { rows: Array(SIZE).fill('..tttttttt..'), colors: { t: tint } };
       break;
     case 'birth':
       art = BIRTH_ART[id] ?? { rows: Array(SIZE).fill('..tttttttt..'), colors: { t: tint } };

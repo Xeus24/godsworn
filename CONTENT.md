@@ -180,10 +180,16 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (42)
+### Legendaries (48)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
+| **Oathkeeper’s Aegis** | Adamant Shield | 25 | 12% less Damage Taken; +10% increased Max HP; Gain 6 Resolve whenever you are hit; Below 30% HP, once per battle: shield yourself for 25% of max HP |
+| **Heartwood Staff** | Elderwood Staff | 25 | +20% Resource Gain; +15% increased Magic Attack; 35% chance on casting a form skill to gain 4 Primal Spirit; In Treant form, heal 3% of max HP at the end of each turn |
+| **Ledger of the Pact** | Sage's Tome | 25 | +12% increased Magic Attack; +10% Shadow Damage; Gain 12 Pact Power on kills; Below 30% HP, once per battle: lose all Fel Taint and heal 10% of max HP |
+| **Choirstaff** | Elderwood Staff | 25 | +12% increased Magic Attack; +20% Resource Gain; 30% chance when you cast a summoning skill to gain 5 Bond; At the end of each turn, the party gains +6% damage for 2 turns |
+| **Philosopher’s Satchel** | Adamant Dagger | 25 | +12% increased Magic Attack; +25% Resource Gain; 25% chance when you brew to refund 1 Reagent; Heal 2% of max HP at the start of each of your turns |
+| **Stormcaller’s Maul** | Adamant Warhammer | 25 | +15% Lightning Damage; +12% increased Magic Attack; Gain 10 Ancestral Spirit on kills; Critical hits call a thunderclap for 60% MAG lightning damage to every enemy |
 | **Emberheart** | Mithril Sword | 20 | +20% Fire Damage; +15% increased Physical Attack; 25% chance on hit to Burn the target |
 | **Widowmaker** | Adamant Greatsword | 30 | +40% Crit Damage; Attacks against enemies below 20% HP always crit |
 | **Grudgebearer** | Steel Axe | 10 | +15% Resource Gain; Gain 6 Rage whenever you are hit |
@@ -466,7 +472,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (23)
+### Status effects (24)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -493,8 +499,9 @@ Generated from the data files by `npm run content:md`.
 | **Winding Up** | buff | Winding up a devastating attack for its next turn. Break its stagger bar to interrupt it, or Defend. |
 | **Enraged** | buff | The fight has gone on too long: +40% damage and 10% more speed per stack, growing over time. |
 | **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
+| **Fel Taint** | buff | Corruption you carry: +3% damage per stack, but it eats 0.6% of your max HP each turn per stack. |
 
-### Class ultimates and traits (8)
+### Class ultimates and traits (14)
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
@@ -506,12 +513,18 @@ Generated from the data files by `npm run content:md`.
 | Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, +50% damage, 90% more max HP, 28% less damage taken and 11% lifesteal. |
 | Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
 | Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +85% damage, 50% more max HP, 18% less damage taken, 4% lifesteal and +1 attack per point of CHA. |
+| Knight | **Oathkeeper’s Judgement** | Judge the field: 220% ATK holy damage to every enemy and a 15% shield for the party. | **Sworn Shield**: 80% more max HP, 30% less damage taken, 35% more physical attack, +40% damage and 6% lifesteal and attacks that ignore 60% of enemy shields. |
+| Druid | **Wrath of the Grove** | The grove answers: 230% MAG nature damage to every enemy and Poison. | **Wild Heart**: 90% more max HP, 30% less damage taken, 25% more physical and magic attack, +40% damage and 6% lifesteal in any form. |
+| Warlock | **Pact Fulfilled** | Your patron collects what is owed: 260% MAG damage of your pact’s element to every enemy, +25% damage for 3 turns. | **Pact-Bound**: 40% more magic attack, 45% more max HP, 20% less damage taken and 10% lifesteal. |
+| Summoner | **Spirit Tempest** | Every spirit you hold at once: 240% MAG arcane damage to every enemy; your spirits and you gain +25% damage for 3 turns. | **Called and Answered**: 95% more max HP, 30% less damage taken, 45% more magic attack, +45% damage, +10% resource gain and 5% lifesteal. |
+| Alchemist | **Grand Alembic** | Everything at once: 250% MAG fire damage to every enemy, the party is healed for 20% and gains +20% damage for 3 turns. | **Practiced Hands**: 95% more max HP, 30% less damage taken, +25% damage, +10% crit damage and 6% lifesteal. |
+| Shaman | **Ancestral Wrath** | Every shaman who came before you strikes at once: 250% MAG lightning damage to every enemy; the party is healed for 15%. | **Elder’s Blessing**: 95% more max HP, 30% less damage taken, 25% more magic attack, +45% damage, +10% healing power and 5% lifesteal. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
-**Stances (3):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.)
+**Stances (11):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.)
 
-### Enemies (136)
+### Enemies (142)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -589,6 +602,12 @@ Generated from the data files by `npm run content:md`.
 | **The Pale Tutor** | 15 | miniboss | humanoid, mentor | back | summoner | Grasp of the Grave, Dark Pact, Grave Chill | shadow +40%, holy -25% |
 | **Master Ren** | 15 | miniboss | humanoid, mentor | front | aggressive | Hundred Fists, Master’s Riposte |  |
 | **Lyra Silvertongue** | 15 | miniboss | humanoid, mentor | back | caster | Discordant Note, Pack Howl |  |
+| **Ser Haldane Vael** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, War Cry, Master’s Riposte |  |
+| **Elder Maeve Thornwood** | 15 | miniboss | humanoid, mentor | front | aggressive | Root Lash, Savage Bite, Antler Gore | nature +40%, fire -25% |
+| **Magister Corvane Ash** | 15 | miniboss | humanoid, mentor | back | caster | Dark Pact, Shadow Bolt, Goblin Hex | shadow +40%, fire +20%, holy -25% |
+| **Calling-Mother Isaure** | 15 | miniboss | humanoid, mentor | back | summoner | Grasp of the Grave, Dark Pact, Crude Mending | arcane +30%, shadow +20% |
+| **Apothecary Dunmore Pell** | 15 | miniboss | humanoid, mentor | back | caster | Lesson in Fire, Crude Mending, Goblin Hex | fire +30%, nature +30% |
+| **Voice-of-Stone Tamsin** | 15 | miniboss | humanoid, mentor | front | caster | Thunderstorm, Crude Mending, Root Lash | lightning +40%, nature +20% |
 | **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50% |
 | **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50% |
 | **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50% |
@@ -652,9 +671,9 @@ Generated from the data files by `npm run content:md`.
 | **Hearth-Keeper of Hesha** | 1 | elite | spirit, divine, follower | back | healer | Crude Mending, Wrath of Hesha | holy +40% |
 | **Coin-Golem of Grimvald** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Grimvald | physical +40% |
 
-**Summons (6):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant
+**Summons (39):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem
 
-### Encounters (156)
+### Encounters (180)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -680,6 +699,12 @@ Generated from the data files by `npm run content:md`.
 | **Trial: The Pale Tutor** | 15 | The Pale Tutor, Skeleton Soldier |
 | **Trial: Master Ren** | 15 | Master Ren |
 | **Trial: Lyra Silvertongue** | 15 | Lyra Silvertongue, Bandit Thug |
+| **Trial: Ser Haldane Vael** | 15 | Ser Haldane Vael, Bandit Thug |
+| **Trial: Elder Maeve Thornwood** | 15 | Elder Maeve Thornwood, Wyld Boar |
+| **Trial: Magister Corvane Ash** | 15 | Magister Corvane Ash, Will-o'-Wisp |
+| **Trial: Calling-Mother Isaure** | 15 | Calling-Mother Isaure, Will-o'-Wisp |
+| **Trial: Apothecary Dunmore Pell** | 15 | Apothecary Dunmore Pell, Goblin Cutthroat |
+| **Trial: Voice-of-Stone Tamsin** | 15 | Voice-of-Stone Tamsin, Bandit Thug |
 | **Trial of the Spellblade** | 36 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
 | **Trial of the Warpriest** | 36 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
 | **Trial of the Deathknight** | 36 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
@@ -752,6 +777,24 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 16 | Bandit Archer, Bandit Thug, Dark Cultist |
 | **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
 | **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Skeleton Soldier, Skeleton Soldier |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
+| **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Shaman |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Restless Ghost |
 | **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
 | **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
 | **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
@@ -821,7 +864,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-31 class trees, 544 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+37 class trees, 928 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -903,6 +946,60 @@ Generated from the data files by `npm run content:md`.
 | Showmanship | **Jig of Swiftness** (Quickstep, Hearthside Lullaby); **Dazzling Display** (Grand Display, Blinding Light) | Crowd Pleaser, Standing Ovation | Lucky Break / Showboat | Fortune’s Fool: Keystone: +25 LUK, but -20% defense. | Star of the Show |
 | Secrets |  | Opening Number, Perfect Pitch, Songs of Three Giants, Headliner |  | :  |  |
 
+### Knight (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Shield Oath | **Guard Ally** (Shared Burden, Mending Guard); **Bulwark Stand** (Immovable, Counter-Stance) | Sworn Protector, Interposed | Shieldbearer / Warden’s Oath | Living Wall: 25% less damage taken and +20% max HP, but you deal 15% less damage. | Shield of the Realm |
+| The Sword Oath | **Oath Strike** (Sworn Edge, Binding Oath); **Avenging Blow** (Sanctified Steel, Righteous Fury) | Vengeful, Smite the Wicked | Punishing Strikes / Oathbreaker’s Bane | Crusader’s Zeal: +25% damage, but your guards last a turn less (they take 15% more damage). | Blade of the Oath |
+| The Banner Oath | **Knight’s Standard** (Long Standard, Battle Colors); **Inspiring Charge** (Spur Onward, Lance Charge) | Standard-Bearer, Pride of the Line | Tactician / Beacon | Unity of Steel: Party-wide buffs last a turn longer, but cost 30% more Resolve. | Banner That Never Falls |
+| Iron Discipline | **Steel Resolve** (Deep Breath, Cleansing Resolve); **Last Stand** (Unyielding, Dying Light) | Tempered, Grit | Unflinching / Iron Constitution | Unbreakable: Once per battle, survive a killing blow with 1 HP. 10% less damage dealt. | Death’s Doorkeeper |
+
+### Druid (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Heart of the Bear | **Bear Form** (Thick Hide, Bristling Fur); **Maul** (Rending Maul, Crushing Maul) | Den Mother, Roar of the Bear | Stonehide / Salmon Run | Unbreakable Bear: +40% max HP and 15% less damage taken, but you cannot enter Owl form. | Great Bear |
+| Heart of the Wolf | **Wolf Form** (Hunting Pack, Blood Scent); **Rending Bite** (Hamstring, Frenzy Bite) | Alpha, Run Down | Lone Wolf / Pack Leader | Feral Fury: +30% damage and +10% crit chance, but 15% more damage taken. | Dire Form |
+| Heart of the Owl | **Moonfire** (Silver Flame, Hungry Flame); **Owl Form** (Night Vision, Silent Wings) | Night’s Watch, Celestial Rhythm | Eclipse Born / Starsight | Lunar Tide: +30% magic attack, but physical attacks deal 25% less damage. | Moonlit Sage |
+| Heart of the Grove | **Treant Form** (Deep Roots, Blossoming); **Rejuvenate** (Lifebloom, Thorned Mending) | Grovewarden, Seed of Life | Evergreen / Sylvan Ward | Heart of the Wood: +35% healing power, but 15% less damage dealt. | Ancient Grove |
+
+### Warlock (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Cinder Pact | **Pact of Cinders** (Burning Oath, Ashen Vow); **Hellfire** (Searing, Spreading Flame) | Demon’s Due, Pact Hunger | Hellbound / Smoldering | Blood Price: Spells cost HP instead of MP, and +25% damage. | Cinder Lord’s Chosen |
+| The Hollow Pact | **Pact of the Hollow Star** (Starless Oath, Dim Light); **Void Rift** (Wide Rift, Entropic) | Star’s Gaze, Entropy’s Tithe | Event Horizon / Cold Calculation | Hollow Heart: +30% void damage, but 15% less max HP. | Voice of the Star |
+| The Thorn Pact | **Pact of Thorns** (Thorned Oath, Queen’s Favor); **Withering Hex** (Deep Hex, Spiteful Hex) | Cursed Ground, Thorns of Spite | Bargain’s Edge / Blackthorn | Glamoured: +20% dodge and +10% status chance, but 15% less defense. | Queen’s Own |
+| The Tithe | **Siphon Soul** (Deep Draught, Stolen Strength); **Purge Taint** (Quick Purge, Cleansing Fire) | Collector’s Discipline, Open Ledger | Debt Collector / Unspent | Corruption Embraced: Fel Taint makes you stronger: +50% damage at 5+ stacks, but you cannot Purge. | The Books Balance |
+
+### Summoner (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Bond | **Spirit Lance** (Bound Lance, Piercing Lance); **Soulbind** (Tighter Bond, Shared Strength) | Kindred, Open Contract | Deep Well / Quick Calling | One Shared Heart: Your spirits and you deal 15% more damage, but you take 15% more. | Soulbound |
+| The Elements | **Elemental Surge** (Searing Surge, Frozen Surge); **Conduit** (Wide Conduit, Overflow) | Elemental Harmony, Storm Heart | Wildfire / Deep Winter | Primordial Pull: +30% elemental damage, but healing is 20% weaker. | Elementalist’s Chord |
+| The Guardians | **Spirit Ward** (Deep Ward, Quick Ward); **Sacrifice** (Gentle Sacrifice, Willing Offering) | Shared Shield, Refuge | Stalwart Spirits / Gentle Guardians | Warded Heart: 25% less damage taken, but 20% less damage dealt. | Sanctuary |
+| The Ritual | **Greater Summoning** (Twinned Call, Hurried Rite); **Banish** (Hard Banishment, Long Banishment) | Master of Rites, Final Offering | Binder’s Patience / Stolen Names | Soul Debt: Spirits last twice as long, but cost 40% more Bond. | The Last Door |
+
+### Alchemist (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Bombcraft | **Flask of Fire** (Napalm, Splash Flask); **Frost Grenade** (Cold Snap, Bigger Boom) | Pyromaniac, Chain Reaction | Shaped Charge / Wide Blast | Unstable Mixture: +25% damage, but you take 10% more damage. | Master Grenadier |
+| Mutations | **Mutagen of Might** (Steady Dose, Bitter Dose); **Mutagen of Swiftness** (Quicker Dose, Dosed Reflexes) | Tolerance, Adrenal Surge | Regenerative / Berserk Mutation | Beast Within: +35% physical attack and +10% lifesteal, but no healing from other sources. | Perfected Mutation |
+| Remedies | **Restorative Draught** (Stronger Draught, Soothing Draught); **Antidote Mist** (Wider Mist, Fast Mist) | Bedside Manner, Triage | Apothecary’s Eye / Second Dose | Miracle Cure: +35% healing power, but 15% less damage dealt. | Master Apothecary |
+| Transmutation | **Quicksilver Tonic** (Quicker Silver, Silver Shield); **Philosopher’s Gambit** (Rich Residue, Bright Reaction) | Lead to Gold, Reagent Reuse | Catalyst / Transmuter’s Luck | Philosopher’s Stone: +15% resource gain, but 10% less max HP. | The Great Work |
+
+### Shaman (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Storm Voice | **Lightning Lash** (Forked Lash, Static Charge); **Storm Totem** (Quick Totem, Charged Totem) | Storm-Touched, Chain Fury | Overcharged / Grounded | Lightning Rod: +30% lightning damage, but 15% more damage taken. | Voice of the Storm |
+| The Earth Voice | **Stoneward Totem** (Deep Totem, Quick Stone); **Earthbind** (Hard Bind, Cracked Bind) | Mountain Child, Tremor | Bedrock / Sturdy Totems | Stone Heart: 25% less damage taken and +20% max HP, but 15% less damage dealt. | Earthwarden’s Oath |
+| The Ancestors | **Call Ancestor** (Louder Call, Long Memory); **Spirit Walk** (Lighter Step, Between Worlds) | Voices of the Dead, Reverence | Lineage / Hollow Reed | Haunted: +30% healing power and +15% resource gain, but 15% less defense. | Chosen of the Line |
+| Flame and Tide | **Ember Totem** (Hotter Totem, Quick Ember); **Tide Totem** (Deep Tide, Fast Tide) | Totem Master, Hearth and Wave | Wildfire / High Tide | Totem Bond: Totems last twice as long, but each costs 30% more MP. | Master of Totems |
+
 ### Tree skills
 
 | Skill | Class | Cost | CD | Description |
@@ -957,6 +1054,43 @@ Generated from the data files by `npm run content:md`.
 | **Cacophony** | Bard | 16 MP | 3 | A wall of noise: 85% MAG to every enemy, Weaken, and a chance to Silence. |
 | **Jig of Swiftness** | Bard | 8 MP | 0 | Begin the Jig of Swiftness: allies gain 10% speed. |
 | **Dazzling Display** | Bard | 12 MP | 2 | A blinding show: three bursts of 75% MAG at random enemies, each may Blind. |
+| **Bulwark Stand** | Knight | 20 Resolve | 4 | Spend 20 Resolve: take 35% less damage for 2 turns and Taunt every enemy. |
+| **Avenging Blow** | Knight | 25 Resolve | 1 | Spend 25 Resolve: a holy blow for 300% ATK. |
+| **Knight’s Standard** | Knight | 25 Resolve | 5 | Spend 25 Resolve: the party gains +12% damage and +10% defense for 3 turns. |
+| **Inspiring Charge** | Knight | 25 Resolve | 4 | Spend 25 Resolve: charge for 150% ATK and Haste the party for 2 turns. |
+| **Steel Resolve** | Knight | free | 4 | Heal 15% of max HP and gain 15 Resolve. |
+| **Last Stand** | Knight | 40 Resolve | 7 | Spend 40 Resolve: for 2 turns take 50% less damage, heal 10% of max HP now. |
+| **Maul** | Druid | 20 Primal Spirit | 1 | Bear form, 20 Primal Spirit: a crushing swipe for 290% ATK that Taunts the target. |
+| **Wolf Form** | Druid | free | 0 | Shift into a wolf: +10% damage, +6 speed, +8% dodge; basic attacks cause Bleed. Gain 8 Primal Spirit. |
+| **Rending Bite** | Druid | 20 Primal Spirit | 1 | Wolf form, 20 Primal Spirit: a savage bite for 250% ATK and 2 stacks of Bleed. |
+| **Owl Form** | Druid | free | 0 | Shift into an owl: +15% magic attack and 8% cooldown reduction; basic attacks fire arcane bolts. Gain 8 Primal Spirit. |
+| **Treant Form** | Druid | free | 0 | Shift into a treant: +20% defense, regenerate, basic attacks heal you. Gain 8 Primal Spirit. |
+| **Rejuvenate** | Druid | 15 Primal Spirit | 1 | Natural or Treant form, 15 Primal Spirit: heal an ally for 140% DIV and give them Regeneration for 3 turns. |
+| **Hellfire** | Warlock | 20 Pact Power | 1 | Spend 20 Pact Power: 200% MAG fire damage to an enemy and Burn. You gain 1 Fel Taint. |
+| **Pact of the Hollow Star** | Warlock | free | 0 | Swear to the Hollow Star: +20% void damage; basic attacks may Weaken. Gain 10 Pact Power. |
+| **Void Rift** | Warlock | 20 Pact Power | 1 | Spend 20 Pact Power: tear a rift for 190% MAG void damage and Weaken. You gain 1 Fel Taint. |
+| **Pact of Thorns** | Warlock | free | 0 | Swear to the Thorned Queen: +10% crit chance, +20% nature damage; basic attacks may Slow. Gain 10 Pact Power. |
+| **Withering Hex** | Warlock | 15 Pact Power | 2 | Spend 15 Pact Power: curse an enemy: Curse, Vulnerable and 140% MAG shadow damage. You gain 1 Fel Taint. |
+| **Purge Taint** | Warlock | 15 Pact Power | 3 | Spend 15 Pact Power: burn the corruption out of you. Lose all Fel Taint and heal 12% of max HP. |
+| **Soulbind** | Summoner | 20 Bond | 4 | Spend 20 Bond: your spirits and you deal +25% damage for 3 turns. |
+| **Elemental Surge** | Summoner | 25 Bond | 3 | Spend 25 Bond: the elements answer: 150% MAG damage to every enemy (fire, ice and lightning). |
+| **Conduit** | Summoner | free | 4 | Channel your spirits: heal 12% of max HP, and gain 20 Bond. |
+| **Spirit Ward** | Summoner | 25 Bond | 4 | Spend 25 Bond: shield the party for 15% of max HP. |
+| **Sacrifice** | Summoner | 30 Bond | 5 | Spend 30 Bond: you take 10% max HP in damage, and your party is healed for 20%. |
+| **Greater Summoning** | Summoner | 35 Bond | 5 | Spend 35 Bond: a ritual that calls a Spirit Stag and a Wolf Companion together. |
+| **Banish** | Summoner | 25 Bond | 4 | Spend 25 Bond: send an enemy elsewhere for a moment: 130% MAG arcane damage and it is Stunned. |
+| **Frost Grenade** | Alchemist | 3 Reagents | 2 | Brew, 3 Reagents: a grenade of cold for 120% MAG ice damage to every enemy and Slow. |
+| **Mutagen of Might** | Alchemist | 3 Reagents | 4 | Brew, 3 Reagents: +30% physical attack and +15% damage for 3 turns, but you take 10% more damage. |
+| **Mutagen of Swiftness** | Alchemist | 2 Reagents | 4 | Brew, 2 Reagents: +15 speed and +15% dodge for 3 turns. |
+| **Antidote Mist** | Alchemist | 2 Reagents | 3 | Brew, 2 Reagents: a curative mist cleanses Poison, Bleed and Burn from the whole party and heals 6%. |
+| **Quicksilver Tonic** | Alchemist | 3 Reagents | 4 | Brew, 3 Reagents: an ally is Hasted for 3 turns and their cooldowns drop by 1. |
+| **Philosopher’s Gambit** | Alchemist | 4 Reagents | 3 | Brew, 4 Reagents: a volatile transmutation: 280% MAG arcane damage, and 60 gold spun from the residue. |
+| **Storm Totem** | Shaman | 15 MP | 3 | Spend 15 MP: raise a Storm Totem that arcs lightning through three enemies each turn for 6 turns. |
+| **Stoneward Totem** | Shaman | 12 MP | 3 | Spend 12 MP: raise a Stoneward Totem that shields the party for 6% of max HP every other turn. |
+| **Earthbind** | Shaman | 12 MP | 3 | Spend 12 MP: the ground grips every enemy: 90% MAG physical damage and Slow. |
+| **Call Ancestor** | Shaman | 30 Ancestral Spirit | 4 | Spend 30 Ancestral Spirit: the dead lend their strength: heal the party for 15% and grant +15% damage for 3 turns. |
+| **Spirit Walk** | Shaman | free | 4 | Step half out of the world: +20% dodge and +15% damage for 3 turns. Gain 15 Ancestral Spirit. |
+| **Tide Totem** | Shaman | 12 MP | 3 | Spend 12 MP: raise a Tide Totem that heals the party for 6% of max HP each turn. |
 <!-- trees:end -->
 
 ## Not yet added
@@ -965,7 +1099,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-24 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+42 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
@@ -993,6 +1127,24 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | Bard | **Virtuoso**: Pure musical genius, sharp enough to cut. | Masterpiece (Encore Performance, Crescendo Strike) | **Symphony of Destruction**: The final movement: 300% MAG arcane damage to every enemy. | Living Legend |
 | Bard | **Skald**: War-singer of the north. Songs that make heroes. | War Chant (Chant of Blood, Chant of Iron) | **Ragnarok Chorus**: A chorus to end the world: 250% MAG physical to every enemy, and the whole party goes Berserk. | Voice of Valhalla: Start every battle with the Song of Valor playing and the party Hasted. |
 | Bard | **Trickster**: Nothing is what it seems. | Misdirect (Confusion, Mirror Image) | **Grand Illusion**: Nothing is real: every enemy may be Charmed (70%), and the party vanishes into Stealth. | Master of Illusion: Crits may Charm the target. |
+| Knight | **Oathbound**: A holy tank: light that heals, a shield that burns. | Consecrated Ground (Radiant Footing, Healing Light) | **Oath Eternal**: The oath answers: 250% DIV holy damage to every enemy, the party is healed for 25% and gains Divine Protection. | Sun Sworn: +10% divine power and heal 5% of max HP at each turn start. |
+| Knight | **Dragoon**: A lancer who fights from above and lands like a comet. | Sky Lance (Higher Leap, Wyrmscale) | **Dragonfall**: Fall from the sky: 520% ATK to one enemy, and it is Stunned. | Lord of Lances: +12% physical attack; Sky Lance generates 15 Resolve. |
+| Knight | **Bulwark**: The wall that does not move, whatever it costs. | Immovable Wall (Thicker Shell, Spiked) | **Last Bastion**: The whole party is shielded for 35% of max HP and takes 30% less damage for 3 turns. | Bastion Eternal: 15% less damage taken and +10% max HP. |
+| Druid | **Wildheart**: Beast-shifter: fury in bear and wolf shapes. | Primal Rampage (Fury of Claws, Gory Frenzy) | **Avatar of the Wild**: You become every beast: 300% ATK to every enemy, heal 20%, and gain +25% damage for 3 turns. | Beastlord’s Will: +10% physical attack and +8% lifesteal in Bear and Wolf forms. |
+| Druid | **Moonsage**: Moon-sworn caster: starlight and silver fire. | Starfall (Meteoric, Cold Stars) | **Eclipse**: The sky goes dark: 280% MAG arcane damage to every enemy and they are Blinded; your party gains Haste. | Sage of the Silver Sky: +12% magic attack, 10% cooldown reduction. |
+| Druid | **Grovewarden**: The grove’s keeper: healing roots and thorned shields. | Verdant Embrace (Overgrowth, Thorn Ward) | **Worldroot**: The world’s oldest root rises: heal the party for 40%, grant Regeneration, and entangle every enemy for 150% MAG nature damage and Slow. | Eldest of the Grove: +15% healing power and Regeneration is stronger. |
+| Warlock | **Demonologist**: Commands demons: imps, infernals and the gate between. | Summon Imp (Twin Imps, Fiery Pact) | **Infernal Gate**: A gate opens: 240% MAG fire damage to every enemy, and a Hollow Infernal steps through to fight for you. | Lord of the Gate: +12% magic attack and summons last twice as long. |
+| Warlock | **Hexer**: A curse-spinner: slow, certain, inevitable. | Doom Hex (Deeper Doom, Lingering Doom) | **The Unraveling**: Every enemy’s fate comes undone: 220% MAG shadow damage, Curse, Vulnerable and Weaken on all. | Fate-Spinner: +12% magic attack and 10% cooldown reduction. |
+| Warlock | **Voidcaller**: A void-caller: erupt, collapse and call it good. | Void Eruption (Greater Eruption, Hollow Echo) | **Collapse**: The world folds in: 350% MAG void damage to every enemy; you lose all Fel Taint and heal 25%. | Heart of the Void: +15% magic attack and 8% lifesteal on void damage. |
+| Summoner | **Elementalist**: Calls the elements themselves: storms, waves and furnaces. | Elemental Storm (Greater Storm, Frostbound) | **Primal Convergence**: Every element at once: 300% MAG to every enemy, and your spirits are healed for 30%. | Four Winds: +15% magic attack. |
+| Summoner | **Spiritcaller**: A host of spirits at once: many hands, many voices. | Ancestral Call (Louder Call, Healing Chorus) | **Host of Spirits**: The whole host answers: 250% MAG arcane damage to every enemy, three spirits join you, and you regain 50 Bond. | Warden of Ghosts: +12% magic attack and Bond generation +15%. |
+| Summoner | **Golemancer**: Builds with spirit what stone cannot do alone. | Stone Bulwark (Thicker Stone, Quicker Stone) | **Colossus**: A colossus of living stone rises: 260% ATK-equivalent damage to every enemy and it fights for the rest of the battle. | Master Mason: +10% max HP and +10% damage; golems last twice as long. |
+| Alchemist | **Grenadier**: Fire everywhere, ideally away from you. | Cluster Bomb (More Bomblets, Sticky Bombs) | **Carpet of Fire**: The whole field burns: 280% MAG fire damage to every enemy and Burn that stacks. | Sapper-General: +15% magic attack; bombs may throw twice. |
+| Alchemist | **Mutagenist**: Make yourself a weapon, at some cost. | Chimeric Surge (Longer Surge, Harsher Surge) | **Perfect Form**: The mutation stabilizes: heal 40%, +50% damage and +20% defense for 4 turns, and 200% ATK to every enemy. | The Final Form: +15% physical attack, +12% max HP. |
+| Alchemist | **Apothecary**: Heal the whole party before it knows it’s hurt. | Panacea (Stronger Panacea, Long Panacea) | **Elixir of Life**: The final brew: the party is healed for 60%, fallen allies’ pain is gone, and everyone gains Regeneration and Divine Protection. | Physician of the Realm: +20% healing power and healing grants Regeneration. |
+| Shaman | **Stormshaman**: The storm walks beside you. | Thunderstrike (Bigger Bolt, Arc Bolt) | **Tempest Called**: The storm answers: 300% MAG lightning damage to every enemy, 30% Stun; your totems pulse again. | Child of Thunder: +15% magic attack and +10% crit chance. |
+| Shaman | **Spiritwalker**: Walk between worlds and bring the dead along. | Ancestral Guidance (Fuller Voice, Warding Voice) | **Host of Ancestors**: Your whole line stands behind you: heal the party for 45%, gain Regeneration and +30% damage for 3 turns, and 150% MAG damage to every enemy. | Between Worlds: +20% healing power and 10% less damage taken. |
+| Shaman | **Earthwarden**: A wall of stone with a voice. | Earthen Shield (Thicker Shield, Quick Shield) | **Mountain’s Wrath**: The mountain wakes: 260% MAG physical damage to every enemy, Stun, and the party takes 30% less damage for 3 turns. | Warden of the Mountain: +15% max HP and 12% less damage taken. |
 <!-- specializations:end -->
 
 ## General skills (81)
@@ -1113,6 +1265,12 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | Necromancer | **The Pale Tutor**: Nobody remembers their name. They prefer it that way. | Lv 15: The Pale Tutor, Skeleton Soldier | Grasp of the Grave, Dark Pact, Grave Chill |
 | Monk | **Master Ren**: Has not lost a sparring match in thirty years, or spoken in ten. | Lv 15: Master Ren | Hundred Fists, Master’s Riposte |
 | Bard | **Lyra Silvertongue**: Every insult she sings is technically a compliment. | Lv 15: Lyra Silvertongue, Bandit Thug | Discordant Note, Pack Howl |
+| Knight | **Ser Haldane Vael**: Has never once lost a position he was told to hold. | Lv 15: Ser Haldane Vael, Bandit Thug | Shield Bash, War Cry, Master’s Riposte |
+| Druid | **Elder Maeve Thornwood**: Has been a bear, a wolf and a hedge. Will not say which she prefers. | Lv 15: Elder Maeve Thornwood, Wyld Boar | Root Lash, Savage Bite, Antler Gore |
+| Warlock | **Magister Corvane Ash**: Keeps three contracts in a drawer. Reads them aloud when nervous. | Lv 15: Magister Corvane Ash, Will-o'-Wisp | Dark Pact, Shadow Bolt, Goblin Hex |
+| Summoner | **Calling-Mother Isaure**: Always has someone standing just behind her. You are not always sure who. | Lv 15: Calling-Mother Isaure, Will-o'-Wisp | Grasp of the Grave, Dark Pact, Crude Mending |
+| Alchemist | **Apothecary Dunmore Pell**: Missing two eyebrows and one opinion of safety. | Lv 15: Apothecary Dunmore Pell, Goblin Cutthroat | Lesson in Fire, Crude Mending, Goblin Hex |
+| Shaman | **Voice-of-Stone Tamsin**: Hears three conversations at once, and is quietly polite about all of them. | Lv 15: Voice-of-Stone Tamsin, Bandit Thug | Thunderstorm, Crude Mending, Root Lash |
 
 ### Hybrid prestige classes
 
@@ -1450,7 +1608,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-277 quests, 100 NPCs, 131 dialogues, 6 companions, 6 endings.
+313 quests, 106 NPCs, 137 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -1595,7 +1753,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Grimvald’s Herald** | 26 | Factor Goldmere | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Grimvald** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
 
-### Class trials (48)
+### Class trials (84)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -1639,6 +1797,36 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Echoing Grotto** | 20 | Lyra Silvertongue | Clear drowned grotto (clear) |
 | **The Silent Hall** | 25 | Lyra Silvertongue | Face the test of nerve (fight) |
 | **Encore** | 30 | Lyra Silvertongue | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The Oath Sworn** | 12 | Ser Haldane Vael | Reach the shrine of Solenne (visit) |
+| **A Wall of One** | 16 | Ser Haldane Vael | Defeat the trouble on the road (fight) |
+| **The Crypt Beneath the Hall** | 20 | Ser Haldane Vael | Clear old crypt (clear) |
+| **The Siege Within** | 25 | Ser Haldane Vael | Face the test of nerve (fight) |
+| **The Weight of the Shield** | 30 | Ser Haldane Vael | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The Four Shapes** | 12 | Elder Maeve Thornwood | Reach the shrine of Ysolde (visit) |
+| **The Hurt Wolf** | 16 | Elder Maeve Thornwood | Defeat the trouble on the road (fight) |
+| **The Silken Hollow** | 20 | Elder Maeve Thornwood | Clear spider hollow (clear) |
+| **The Hunger of the Wood** | 25 | Elder Maeve Thornwood | Face the test of nerve (fight) |
+| **What the Grove Asked** | 30 | Elder Maeve Thornwood | Face the final lesson (fight); Speak to your mentor (talk) |
+| **Read the Fine Print** | 12 | Magister Corvane Ash | Reach the shrine of Morrath (visit) |
+| **A Debt Comes Due** | 16 | Magister Corvane Ash | Defeat the trouble on the road (fight) |
+| **The Patron’s Archive** | 20 | Magister Corvane Ash | Clear old crypt (clear) |
+| **Collection** | 25 | Magister Corvane Ash | Face the test of nerve (fight) |
+| **The Last Clause** | 30 | Magister Corvane Ash | Face the final lesson (fight); Speak to your mentor (talk) |
+| **An Introduction** | 12 | Calling-Mother Isaure | Reach the shrine of Hesha (visit) |
+| **The Lost Familiar** | 16 | Calling-Mother Isaure | Defeat the trouble on the road (fight) |
+| **The Hollow of Many Legs** | 20 | Calling-Mother Isaure | Clear spider hollow (clear) |
+| **The Alpha’s Bargain** | 25 | Calling-Mother Isaure | Face the test of nerve (fight) |
+| **Who Answers** | 30 | Calling-Mother Isaure | Face the final lesson (fight); Speak to your mentor (talk) |
+| **Mortar and Pestle** | 12 | Apothecary Dunmore Pell | Reach the shrine of Hesha (visit) |
+| **The Spoiled Batch** | 16 | Apothecary Dunmore Pell | Defeat the trouble on the road (fight) |
+| **A Warren of Fumes** | 20 | Apothecary Dunmore Pell | Clear goblin warren (clear) |
+| **The Poisoner’s Rival** | 25 | Apothecary Dunmore Pell | Face the test of nerve (fight) |
+| **The Great Work** | 30 | Apothecary Dunmore Pell | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The First Totem** | 12 | Voice-of-Stone Tamsin | Reach the shrine of Kael (visit) |
+| **The Storm That Wouldn’t Stop** | 16 | Voice-of-Stone Tamsin | Defeat the trouble on the road (fight) |
+| **The Hollow of the Dead** | 20 | Voice-of-Stone Tamsin | Clear spider hollow (clear) |
+| **An Ancestor’s Quarrel** | 25 | Voice-of-Stone Tamsin | Face the test of nerve (fight) |
+| **The Long Table** | 30 | Voice-of-Stone Tamsin | Face the final lesson (fight); Speak to your mentor (talk) |
 | **Trial of the Warrior** | 15 | Sword-Master Bram | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Mage** | 15 | Archmage Velis | Read a skillbook (deed); Win the trial (state) |
 | **Trial of the Rogue** | 15 | Nell the Knife | Land 12 critical hits (deed); Win the trial (state) |
@@ -1647,6 +1835,12 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Trial of the Necromancer** | 15 | The Pale Tutor | Study death: destroy 8 undead (kill); Win the trial (state) |
 | **Trial of the Monk** | 15 | Master Ren | Rest twice (at camp, an inn or home) (deed); Win the trial (state) |
 | **Trial of the Bard** | 15 | Lyra Silvertongue | Collect 2 lore pages (state); Win the trial (state) |
+| **Trial of the Knight** | 15 | Ser Haldane Vael | Win 5 battles without losing a companion or falling yourself (deed); Win the trial (state) |
+| **Trial of the Druid** | 15 | Elder Maeve Thornwood | Win 5 battles in the wild (deed); Win the trial (state) |
+| **Trial of the Warlock** | 15 | Magister Corvane Ash | Land 10 critical hits (deed); Win the trial (state) |
+| **Trial of the Summoner** | 15 | Calling-Mother Isaure | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Alchemist** | 15 | Apothecary Dunmore Pell | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Shaman** | 15 | Voice-of-Stone Tamsin | Win 5 battles (deed); Win the trial (state) |
 
 ### Hybrid trials (13)
 
@@ -1704,6 +1898,12 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Necromancer | +65% | 50% more Max HP |
 | Monk | +30% | - |
 | Bard | +5% | 60% more Max HP, 20% less Damage Taken |
+| Knight | -30% | - |
+| Druid | -30% | - |
+| Warlock | -30% | - |
+| Summoner | -30% | - |
+| Alchemist | -30% | - |
+| Shaman | -30% | - |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
@@ -1725,7 +1925,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
 - **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
-- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue
+- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin
 <!-- story:end -->
 
 ## Bosses, elites, bestiary and achievements

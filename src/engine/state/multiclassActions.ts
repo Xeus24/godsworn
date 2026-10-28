@@ -16,6 +16,7 @@ export class MulticlassActions {
     if (!this.s.world.inTown()) return { ok: false, reason: 'Class trainers are in towns.' };
     const result = addClass(this.s.player, classId, this.s.state.ngPlus);
     if (result.ok) {
+      this.s.checkSpirits();
       const name = content.classes.get(classId).name;
       this.s.bus.emit('toast', { kind: 'level', text: `You take up the ${name} class. It gets 25% of class XP; change the split on the character sheet.` });
     }

@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from './classesGreater';
 import type { ModifierSpec } from '../engine/stats/modifiers';
 import type { PrimaryStats } from '../engine/stats/types';
 
@@ -34,7 +35,7 @@ export interface ClassDef {
   defaultRow: 'front' | 'back';
 }
 
-export const CLASSES: ClassDef[] = [
+const BASE_CLASSES: ClassDef[] = [
   {
     id: 'warrior',
     name: 'Warrior',
@@ -207,3 +208,6 @@ export const CLASSES: ClassDef[] = [
     defaultRow: 'back',
   },
 ];
+
+/** The eight original classes plus the Greater Pantheon classes. */
+export const CLASSES: ClassDef[] = [...BASE_CLASSES, ...GREATER_CLASSES.map((g) => g.def)];

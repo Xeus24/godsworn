@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { BASE_CLASS_IDS } from './helpers';
 import { content } from '../src/data';
 import { Rng } from '../src/engine/core/rng';
 import { createItem, generateGear, rarityWeights, rollAffixes, uniquePool, type GenerateContext } from '../src/engine/items/generate';
@@ -25,7 +26,8 @@ describe('content counts', () => {
     expect(content.itemSets.size).toBeGreaterThanOrEqual(10);
     expect(content.runewords.size).toBeGreaterThanOrEqual(15);
     expect(content.rarities.size).toBe(12);
-    for (const cls of content.classes.all()) {
+    // Sets for the Greater Pantheon classes arrive with the item expansion (phase 10).
+    for (const cls of content.classes.all().filter((c) => (BASE_CLASS_IDS as readonly string[]).includes(c.id))) {
       expect(content.itemSets.filter((s) => s.classId === cls.id).length, cls.id).toBe(1);
     }
   });

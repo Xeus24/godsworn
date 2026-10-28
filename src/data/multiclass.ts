@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from './classesGreater';
 import type { ClassTrialDef, HybridDef } from '../engine/character/multiclassTypes';
 import type { EncounterDef, EnemyDef } from '../engine/combat/types';
 import type { SkillDef } from '../engine/skills/types';
@@ -28,7 +29,7 @@ const mentor = (e: Omit<EnemyDef, 'family' | 'types' | 'level' | 'tier' | 'ai' |
 });
 
 /** The class trainers. Beat one in a trial to take up their class. */
-export const MENTORS: EnemyDef[] = [
+const BASE_MENTORS: EnemyDef[] = [
   mentor({ id: 'mentor-warrior', name: 'Sword-Master Bram', row: 'front', stats: { hp: 90, attack: 20, magic: 0, defense: 11, magicResist: 6, speed: 12, critChance: 10 }, skills: [{ id: 'mentor-riposte', weight: 2 }, { id: 'shield-bash' }, { id: 'war-cry' }], basicAttack: { element: 'physical', ranged: false, name: 'Longsword' }, description: 'Forty years a soldier, still never late for drill.', palette: { main: '#8a96a8', accent: '#c0392b' } }),
   mentor({ id: 'mentor-mage', name: 'Archmage Velis', row: 'back', ai: 'caster', stats: { hp: 55, attack: 5, magic: 19, defense: 4, magicResist: 12, speed: 10 }, resists: { fire: 30, ice: 30 }, skills: [{ id: 'mentor-meteor', weight: 2 }, { id: 'dazzle' }, { id: 'goblin-hex' }], basicAttack: { element: 'arcane', ranged: true, magic: true, name: 'Arcane Bolt' }, description: 'Tests students by setting them on fire. Gently.', palette: { main: '#3a5ab0', accent: '#ffd84a' } }),
   mentor({ id: 'mentor-rogue', name: 'Nell the Knife', row: 'front', stats: { hp: 60, attack: 16, magic: 0, defense: 5, magicResist: 5, speed: 16, dodge: 15, critChance: 15 }, skills: [{ id: 'mentor-vanish', weight: 2 }, { id: 'dirty-stab' }], basicAttack: { element: 'physical', ranged: false, name: 'Dagger' }, description: 'You will not see the lesson coming. That is the lesson.', palette: { main: '#2a2a34', accent: '#9a3ab0' } }),
@@ -40,7 +41,7 @@ export const MENTORS: EnemyDef[] = [
 ];
 
 /** Trials to earn a second (or third) class. */
-export const CLASS_TRIALS: ClassTrialDef[] = [
+const BASE_CLASS_TRIALS: ClassTrialDef[] = [
   { classId: 'warrior', encounter: 'trial-warrior', quote: 'Hold the line against me for one fight. Just one.' },
   { classId: 'mage', encounter: 'trial-mage', quote: 'Magic is not a gift. It is homework. Show me yours.' },
   { classId: 'rogue', encounter: 'trial-rogue', quote: 'Find me first. Then we talk.' },
@@ -50,6 +51,10 @@ export const CLASS_TRIALS: ClassTrialDef[] = [
   { classId: 'monk', encounter: 'trial-monk', quote: '…' },
   { classId: 'bard', encounter: 'trial-bard', quote: 'Keep up with the rhythm, darling, or get left behind.' },
 ];
+
+export const CLASS_TRIALS: ClassTrialDef[] = [...BASE_CLASS_TRIALS, ...GREATER_CLASSES.map((g) => ({ classId: g.def.id, encounter: `trial-${g.def.id}`, quote: g.trial.quote }))];
+export const MENTORS: EnemyDef[] = [...BASE_MENTORS, ...GREATER_CLASSES.map((g) => g.mentor)];
+
 
 /** Twelve hybrid prestige classes from class pairs, and the Sun Knight (Paladin + Apostle of Solenne). */
 export const HYBRIDS: HybridDef[] = [
@@ -77,6 +82,7 @@ const trialSupport: Record<string, EncounterDef['enemies']> = {
   necromancer: [{ enemyId: 'skeleton-soldier' }],
   monk: [],
   bard: [{ enemyId: 'bandit-thug' }],
+  ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.trial.support])),
 };
 
 const mentorOf = (classId: string): string => `mentor-${classId}`;

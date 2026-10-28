@@ -101,7 +101,8 @@ describe('quest content', () => {
     expect(kinds('main')).toBe(8);
     expect(kinds('side')).toBeGreaterThanOrEqual(30);
     expect(kinds('god')).toBe(40);
-    expect(kinds('class')).toBe(48);
+    // 8 trials + 5 quests per class (the Greater Pantheon classes add a trial and a line each).
+    expect(kinds('class')).toBe(8 + 5 * 8 + 6 * content.classes.all().filter((c) => !['warrior', 'mage', 'rogue', 'cleric', 'ranger', 'necromancer', 'monk', 'bard'].includes(c.id)).length);
     expect(kinds('hybrid')).toBe(content.hybrids.all().length);
     expect(kinds('faction')).toBe(15);
     expect(kinds('companion')).toBe(11);

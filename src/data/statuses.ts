@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from './classesGreater';
 import type { ModifierSpec } from '../engine/stats/modifiers';
 import type { Element } from '../engine/stats/types';
 
@@ -40,7 +41,7 @@ export interface StatusDef {
   taunt?: boolean;
 }
 
-export const STATUSES: StatusDef[] = [
+const BASE_STATUSES: StatusDef[] = [
   { id: 'burn', name: 'Burn', kind: 'debuff', glyph: 'Bu', color: '#ff7a2f', description: 'Takes fire damage each turn. Ice damage on a Burning target can Shatter.', stacking: 'stack', maxStacks: 3, dot: { element: 'fire', powerRatio: 0.18 } },
   { id: 'poison', name: 'Poison', kind: 'debuff', glyph: 'Po', color: '#7fd13b', description: 'Takes nature damage each turn and receives 5% less healing per stack.', stacking: 'stack', maxStacks: 5, dot: { element: 'nature', powerRatio: 0.1, percentMaxHp: 1 }, modifiers: [{ stat: 'healingReceived', type: 'flat', value: -5 }], perStack: true },
   { id: 'bleed', name: 'Bleed', kind: 'debuff', glyph: 'Bl', color: '#d22d3c', description: 'Takes physical damage each turn.', stacking: 'stack', maxStacks: 5, dot: { element: 'physical', powerRatio: 0.14 } },
@@ -65,3 +66,5 @@ export const STATUSES: StatusDef[] = [
   { id: 'enraged', name: 'Enraged', kind: 'buff', glyph: 'En', color: '#ff2a2a', description: 'The fight has gone on too long: +40% damage and 10% more speed per stack, growing over time.', stacking: 'stack', maxStacks: 6, perStack: true, modifiers: [{ stat: 'damageBonus', type: 'flat', value: 40 }, { stat: 'speed', type: 'more', value: 10 }] },
   { id: 'stealth', name: 'Stealth', kind: 'buff', glyph: 'Sh', color: '#9a9ab0', description: 'Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out.', stacking: 'refresh', maxStacks: 1, stealth: true },
 ];
+
+export const STATUSES: StatusDef[] = [...BASE_STATUSES, ...GREATER_CLASSES.flatMap((g) => g.extras?.statuses ?? [])];

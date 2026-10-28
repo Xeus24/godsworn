@@ -12,7 +12,7 @@ export type SkillTargeting =
   | 'ally'
   | 'allAllies';
 
-export type SkillSource = 'class' | 'racial' | 'general' | 'specialization' | 'hybrid' | 'apostle' | 'avatar' | 'ultimate' | 'enemy' | 'basic';
+export type SkillSource = 'class' | 'racial' | 'general' | 'specialization' | 'hybrid' | 'apostle' | 'avatar' | 'ultimate' | 'enemy' | 'basic' | 'spirit';
 
 /** Which attack stat a skill's damage or healing scales from. */
 export type ScalingStat = 'physicalAttack' | 'magicAttack' | 'divinePower';
@@ -66,6 +66,8 @@ export interface SkillDef {
   canMiss?: boolean;
   /** Extra stagger multiplier on hits (default 1). */
   stagger?: number;
+  /** Usable only while in one of these stances (the Druid's forms). */
+  stances?: string[];
 }
 
 /** Multiplier for a skill power at a given rank. */

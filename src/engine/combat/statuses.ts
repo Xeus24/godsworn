@@ -74,7 +74,17 @@ export function tickStatusesAtTurnStart(b: Battle, x: Combatant): void {
 }
 
 /** Counts statuses down at the end of the bearer's turn and removes expired ones. */
+/** A guardian's turn ends: guards it holds wear down by one turn. */
+function tickGuards(b: Battle, guardian: Combatant): void {
+  for (const ally of b.combatants) {
+    if (ally.guard?.by !== guardian.id) continue;
+    ally.guard.turns--;
+    if (ally.guard.turns <= 0) delete ally.guard;
+  }
+}
+
 export function tickStatusesAtTurnEnd(b: Battle, x: Combatant): void {
+  tickGuards(b, x);
   for (const s of [...x.statuses]) {
     s.turns--;
     if (s.turns <= 0) removeStatus(b, x, s.id);

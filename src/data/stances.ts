@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from './classesGreater';
 import type { EffectSpec } from '../engine/effects/types';
 import type { ModifierSpec } from '../engine/stats/modifiers';
 
@@ -14,7 +15,7 @@ export interface StanceDef {
   basicAttack: { multiplier: number; effects: EffectSpec[] };
 }
 
-export const STANCES: StanceDef[] = [
+const BASE_STANCES: StanceDef[] = [
   {
     id: 'tiger',
     name: 'Tiger',
@@ -43,3 +44,5 @@ export const STANCES: StanceDef[] = [
     basicAttack: { multiplier: 1.05, effects: [{ kind: 'applyStatus', status: 'poison', duration: 3, chance: 50 }] },
   },
 ];
+
+export const STANCES: StanceDef[] = [...BASE_STANCES, ...GREATER_CLASSES.flatMap((g) => g.extras?.stances ?? [])];

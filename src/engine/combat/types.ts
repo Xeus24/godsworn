@@ -215,6 +215,8 @@ export interface Combatant {
   nextAt: number;
   defending: boolean;
   stance?: string;
+  /** Guarded by an ally: that ally takes `share` percent of the damage dealt to this unit. */
+  guard?: { by: string; share: number; turns: number };
   songs: string[];
   classId?: string;
   basicAttack: { element: Element; ranged: boolean; magic: boolean; name: string };

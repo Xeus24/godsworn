@@ -54,6 +54,7 @@ export type Check = { ok: true } | { ok: false; reason: string };
 export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
   if (skill.id === BASIC_ATTACK_ID) return { ok: true };
   if (isSilenced(b, x)) return { ok: false, reason: 'Silenced' };
+  if (skill.stances && !skill.stances.includes(x.stance ?? 'natural')) return { ok: false, reason: `${skill.stances.map((s) => b.c.stances.find(s)?.name ?? s).join(' or ')} form only` };
   if (skill.ultimate && ((skill.id === x.avatarSkill && x.avatarUsed) || (skill.id === x.avatarSkill2 && x.avatarUsed2))) return { ok: false, reason: 'Once per battle' };
   if (skill.ultimate) return x.ultimate >= 100 ? { ok: true } : { ok: false, reason: `Ultimate ${Math.floor(x.ultimate)}%` };
   const cd = x.cooldowns[skill.id] ?? 0;

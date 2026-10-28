@@ -138,9 +138,19 @@ export function applyDamage(
   source: Combatant,
   target: Combatant,
   amount: number,
-  info: { element: Element; crit: boolean; dot?: boolean; staggerMult?: number; shieldPierce?: number },
+  info: { element: Element; crit: boolean; dot?: boolean; staggerMult?: number; shieldPierce?: number; guarded?: boolean },
 ): void {
   if (!target.alive || amount <= 0) return;
+  // A guardian takes a share of what would hit the one it guards.
+  const guardian = target.guard ? b.get(target.guard.by) : undefined;
+  if (target.guard && guardian?.alive && guardian.id !== target.id && !info.guarded) {
+    const moved = Math.round((amount * target.guard.share) / 100);
+    if (moved > 0) {
+      amount -= moved;
+      applyDamage(b, source, guardian, moved, { ...info, guarded: true });
+      if (amount <= 0) return;
+    }
+  }
   const absorbed = Math.min(Math.round(target.shield * (1 - (info.shieldPierce ?? 0) / 100)), amount);
   target.shield -= absorbed;
   const dealt = amount - absorbed;

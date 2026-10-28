@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from './classesGreater';
 /** How a resource fills up in combat, on top of skills that generate it. */
 export interface ResourceGains {
   /** Per damaging hit dealt. */
@@ -31,7 +32,7 @@ export interface ResourceDef {
   gains?: ResourceGains;
 }
 
-export const RESOURCES: ResourceDef[] = [
+const BASE_RESOURCES: ResourceDef[] = [
   {
     id: 'rage',
     name: 'Rage',
@@ -101,3 +102,5 @@ export const RESOURCES: ResourceDef[] = [
     gains: { perTurnWhileSinging: 10 },
   },
 ];
+
+export const RESOURCES: ResourceDef[] = [...BASE_RESOURCES, ...GREATER_CLASSES.map((g) => g.resource)];

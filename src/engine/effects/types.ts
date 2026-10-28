@@ -59,7 +59,9 @@ export type EffectSpec =
   /** Bard songs: a persistent party aura until replaced. */
   | { kind: 'startSong'; song: string }
   /** Summons an ally; `consumeCorpse` requires and uses up a fallen enemy. */
-  | { kind: 'summon'; summonId: string; consumeCorpse?: boolean };
+  | { kind: 'summon'; summonId: string; consumeCorpse?: boolean }
+  /** The owner takes `share` percent of the damage the targets would take, for `duration` of the owner's turns (the Knight's guard). */
+  | { kind: 'guard'; share: number; duration: number; target?: EffectTarget };
 
 export type EffectKind = EffectSpec['kind'];
 

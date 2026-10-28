@@ -102,6 +102,7 @@ describe('dispatchProcs', () => {
       setStance: (s) => log.push(`stance ${s.stance}`),
       startSong: (s) => log.push(`song ${s.song}`),
       summon: (s) => log.push(`summon ${s.summonId}`),
+      guard: (s) => log.push(`guard ${s.share}`),
     };
     const t = new TriggerSystem(new Rng(8));
     t.register(

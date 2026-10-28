@@ -2,6 +2,7 @@ import type { ObjectiveDef, QuestDef } from '../../engine/quests/types';
 import { CLASS_TRIALS, HYBRID_TRIAL_LEVEL, HYBRIDS } from '../multiclass';
 import { MULTICLASS } from '../progression';
 import { CLASSES } from '../classes';
+import { GREATER_CLASSES } from '../classesGreater';
 import { all, any, deed, kill, level, lines, not, stage, state, talk } from './helpers';
 import { GOD_PRIESTS } from './gods';
 
@@ -14,6 +15,7 @@ import { GOD_PRIESTS } from './gods';
 
 /** What each mentor asks first. Anyone can do these, whatever their class. */
 const ERRANDS: Record<string, ObjectiveDef> = {
+  ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.errand.objective])),
   warrior: deed('e', 'Win 5 battles', 5, { event: 'battleWon' }),
   mage: deed('e', 'Read a skillbook', 1, { event: 'bookRead' }),
   rogue: deed('e', 'Land 12 critical hits', 12, { event: 'crit' }),
@@ -25,6 +27,7 @@ const ERRANDS: Record<string, ObjectiveDef> = {
 };
 
 const ERRAND_LINES: Record<string, string> = {
+  ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.errand.line])),
   warrior: 'Win five fights, and come back standing.',
   mage: 'Read a skillbook. Any skillbook. You would be amazed how many people skip the reading.',
   rogue: 'Land a dozen critical hits. Clean ones. I will know.',

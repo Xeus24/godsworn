@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
+import { MASTERY_PERKS } from '../src/data/masteryPerks';
 import { characterModifiers } from '../src/engine/character/stats';
 import { MASTERY_THRESHOLDS, MAX_MASTERY, masteryMultiplier } from '../src/engine/skills/mastery';
 import { exportBuild, importBuild } from '../src/engine/skills/buildCode';
@@ -8,7 +9,7 @@ import { allocate, activeBuild, canAllocate, knownSkills, treeState } from '../s
 import { BUILD_SLOTS } from '../src/engine/skills/treeTypes';
 import { GameSession } from '../src/engine/state/gameState';
 import { deserialize, serialize } from '../src/engine/state/save';
-import { makeHero } from './helpers';
+import { BASE_CLASS_IDS, makeHero } from './helpers';
 
 describe('mastery to 10', () => {
   it('has ten levels, with Mastered at 5 and a smaller bonus afterwards', () => {
@@ -27,14 +28,14 @@ describe('mastery to 10', () => {
     const withPerk = characterModifiers(hero).filter((m) => m.source === 'grandmaster:rogue');
     expect(base).toBe(0);
     expect(withPerk.length).toBeGreaterThan(0);
-    const names = new Set(content.classes.all().map((c) => JSON.stringify(c.id)));
+    const names = new Set(BASE_CLASS_IDS.map((id) => JSON.stringify(MASTERY_PERKS[id]?.name)));
     expect(names.size).toBe(8);
   });
 });
 
 describe('hidden nodes', () => {
   it('every class has four, locked until their feat is met', () => {
-    for (const c of content.classes.all()) expect(content.trees.get(c.id).nodes.filter((n) => n.feat), c.id).toHaveLength(4);
+    for (const id of BASE_CLASS_IDS) expect(content.trees.get(id).nodes.filter((n) => n.feat), id).toHaveLength(4);
     const hero = makeHero({ classId: 'warrior' });
     hero.classes[0]!.skillPoints = 10;
     const node = 'warrior.secrets.1';
@@ -47,7 +48,7 @@ describe('hidden nodes', () => {
 
 describe('skill evolutions', () => {
   it('has three per class and replaces the base skill once earned', () => {
-    for (const c of content.classes.all()) expect(content.evolutions.filter((e) => e.classId === c.id), c.id).toHaveLength(3);
+    for (const id of BASE_CLASS_IDS) expect(content.evolutions.filter((e) => e.classId === id), id).toHaveLength(3);
     const hero = makeHero({ classId: 'mage' });
     expect(canEvolve(hero, {}, 'firebolt').ok).toBe(false);
     hero.mastery.firebolt = 2600;

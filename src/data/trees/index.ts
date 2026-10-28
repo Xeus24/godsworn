@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from '../classesGreater';
 import type { SkillTreeDef } from '../../engine/skills/treeTypes';
 import type { SkillDef } from '../../engine/skills/types';
 import { BARD_SKILLS, BARD_TREE } from './bard';
@@ -20,6 +21,7 @@ import type { SpecializationDef } from '../../engine/skills/generalTypes';
 
 /** Skills taught by class skill trees (starting skills live in skills/starter.ts). */
 export const CLASS_TREE_SKILLS: SkillDef[] = [
+  ...GREATER_CLASSES.flatMap((g) => g.skills),
   ...WARRIOR_SKILLS,
   ...MAGE_SKILLS,
   ...ROGUE_SKILLS,
@@ -35,7 +37,7 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...APOSTLE_SKILLS,
 ];
 
-const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES };
+const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES, ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.specs])) };
 
 /** Three specializations per class, chosen at class level 20. */
 export const SPECIALIZATIONS: SpecializationDef[] = Object.entries(SPEC_BRANCHES).flatMap(([classId, specs]) =>
@@ -52,7 +54,7 @@ const HYBRID_TREES: SkillTreeDef[] = Object.entries(HYBRID_BRANCHES).map(([id, b
 
 const RAW_TREES: SkillTreeDef[] = [
   ...APOSTLE_TREES,
-  ...[WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE].map((t) => withHidden(withSpecs(t, SPEC_BRANCHES[t.classId] ?? []))),
+  ...[WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE, ...GREATER_CLASSES.map((g) => g.tree)].map((t) => withHidden(withSpecs(t, SPEC_BRANCHES[t.classId] ?? []))),
   ...HYBRID_TREES,
 ];
 

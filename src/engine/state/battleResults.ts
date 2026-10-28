@@ -194,5 +194,6 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
 
   s.bus.emit('combatEnded', { encounterId: b.encounterId, result: b.outcome === 'ongoing' ? 'fled' : b.outcome });
   s.bus.emit('stateChanged', { reason: 'battle' });
+  s.checkSpirits();
   return rewards;
 }

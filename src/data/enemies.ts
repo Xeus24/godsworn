@@ -1,3 +1,4 @@
+import { GREATER_CLASSES } from './classesGreater';
 import type { EncounterDef, EnemyDef, SummonDef } from '../engine/combat/types';
 
 /**
@@ -146,7 +147,7 @@ export const ENEMIES: EnemyDef[] = [
 ];
 
 /** Allies raised or called in battle. */
-export const SUMMONS: SummonDef[] = [
+const BASE_SUMMONS: SummonDef[] = [
   {
     id: 'skeleton-warrior', name: 'Skeleton Warrior', family: 'undead', types: ['undead', 'summon'],
     stats: { hp: 40, attack: 6, magic: 0, defense: 5, magicResist: 3, speed: 9 },
@@ -202,3 +203,5 @@ export const ENCOUNTERS: EncounterDef[] = [
   { id: 'boar-charge', name: 'Boar Charge', description: 'The ground shakes.', level: 14, canFlee: true, enemies: [{ enemyId: 'wyld-boar' }, { enemyId: 'wyld-boar' }] },
   { id: 'alpha-hunt', name: 'Hunt of the Alpha', description: 'The Alpha and its pack.', level: 15, canFlee: true, enemies: [{ enemyId: 'alpha-wolf' }, { enemyId: 'dire-wolf' }, { enemyId: 'dire-wolf' }] },
 ];
+
+export const SUMMONS: SummonDef[] = [...BASE_SUMMONS, ...GREATER_CLASSES.flatMap((g) => g.extras?.summons ?? [])];

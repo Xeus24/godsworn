@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { BASE_CLASS_IDS } from './helpers';
 import { content } from '../src/data';
 import { characterStats } from '../src/engine/character/stats';
 import { Battle } from '../src/engine/combat/battle';
@@ -44,7 +45,7 @@ describe('tree content', () => {
     for (const cls of content.classes.all()) {
       const tree = treeOf(cls.id);
       const secrets = tree.nodes.filter((n) => n.feat);
-      expect(secrets, cls.id).toHaveLength(4);
+      expect(secrets, cls.id).toHaveLength((BASE_CLASS_IDS as readonly string[]).includes(cls.id) ? 4 : 0);
       const classBranches = new Set(tree.branches.filter((b) => !b.spec && !b.id.endsWith('.secrets')).map((b) => b.id));
       expect(classBranches.size, cls.id).toBe(4);
       expect(tree.branches.filter((b) => b.spec), cls.id).toHaveLength(3);

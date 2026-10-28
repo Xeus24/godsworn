@@ -26,3 +26,6 @@ export function atShrine(s: GameSession, god: string): void {
   }
   throw new Error(`No shrine of ${god}`);
 }
+
+/** The eight original classes: systems added in expansion phase 3 (secret nodes, evolutions, sets) cover these. */
+export const BASE_CLASS_IDS = ['warrior', 'mage', 'rogue', 'cleric', 'ranger', 'necromancer', 'monk', 'bard'] as const;

@@ -11,6 +11,7 @@ import { createGameEventBus, type GameEventBus } from '../core/gameEvents';
 import { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
 import { createItem } from '../items/generate';
+import { contractSpirits } from '../skills/spirits';
 import { learnGeneral } from '../skills/general';
 import { addItem, createInventory, createStash, type Inventory, type Stash } from '../items/inventory';
 import type { ItemCategory, ItemInstance } from '../items/types';
@@ -238,12 +239,18 @@ export class GameSession {
       addItem(session.state.inventory, createItem(bg.item.itemId, bg.item.qty, () => session.newUid()));
       learnGeneral(player, bg.skill);
     }
+    session.checkSpirits();
     // Begin at full HP and MP with the starting gear on.
     restoreFull(session.player);
     session.bus.emit('gameStarted', { seed: session.state.seed });
     // The story begins at once.
     session.quests.refresh();
     return session;
+  }
+
+  /** A Summoner contracts every spirit whose feat is now met. */
+  checkSpirits(): void {
+    for (const s of contractSpirits(this.player)) this.bus.emit('toast', { kind: 'quest', text: `A spirit answers: ${s.name} will fight beside you.` });
   }
 
   /** A fresh, unique item id for this save. */
@@ -288,6 +295,7 @@ export class GameSession {
     this.bus.emit('xpGained', { characterId: p.id, amount: total });
     this.party.shareXp(total);
     for (const level of result.levels) this.bus.emit('levelUp', { characterId: p.id, level });
+    if (result.levels.length > 0) this.checkSpirits();
     if (result.levels.length > 0) {
       // One toast per grant, however many levels it covered.
       this.bus.emit('toast', { kind: 'level', text: `Level ${p.level}! +${result.attributePoints} attribute points.` });

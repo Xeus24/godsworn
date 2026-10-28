@@ -137,6 +137,13 @@ export function applyEffect(b: Battle, owner: Combatant, e: EffectSpec, defaults
     case 'summon':
       summon(b, owner, e.summonId, e.consumeCorpse ?? false);
       return;
+    case 'guard':
+      for (const t of resolveEffectTargets(b, owner, supportive(e.target), defaults)) {
+        if (t.id === owner.id) continue;
+        t.guard = { by: owner.id, share: e.share, turns: e.duration };
+        b.log(`${owner.name} guards ${t.name}.`);
+      }
+      return;
   }
 }
 
