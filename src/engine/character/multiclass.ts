@@ -13,6 +13,7 @@ export function classSlotCount(char: Character, ngPlus: number): number {
   let slots = 1;
   if (char.level >= MULTICLASS.secondaryLevel) slots++;
   if (char.level >= MULTICLASS.tertiaryLevel && ngPlus >= MULTICLASS.tertiaryNgPlus) slots++;
+  else if (char.level >= MULTICLASS.thirdSlotLevel && char.thirdSlot) slots++;
   return slots;
 }
 
@@ -25,7 +26,7 @@ export function canAddClass(char: Character, classId: string, ngPlus: number, c:
   if (char.classes.some((p) => p.classId === classId)) return fail('You already follow this class.');
   if (char.classes.length >= classSlotCount(char, ngPlus)) {
     if (char.classes.length === 1) return fail(`A second class opens at level ${MULTICLASS.secondaryLevel}.`);
-    return fail(`A third class opens at level ${MULTICLASS.tertiaryLevel} in NG+${MULTICLASS.tertiaryNgPlus} or later.`);
+    return fail(`A third class opens at level ${MULTICLASS.thirdSlotLevel} after High Lector Amara’s errand, or at level ${MULTICLASS.tertiaryLevel} in NG+${MULTICLASS.tertiaryNgPlus}.`);
   }
   if (c.classes.get(classId).hidden && !char.unlockedClasses.includes(classId)) return fail('A secret class: its questline is yet to be found.');
   const trial = trialFor(classId, c);

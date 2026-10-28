@@ -103,6 +103,8 @@ export interface Character {
   mastery: Record<string, number>;
   /** Hidden classes the hero has unlocked (secret questlines): they can then be taken up as a secondary class. */
   unlockedClasses: string[];
+  /** The base game's third class slot, opened by High Lector Amara's errand (NG+2 opens it too). */
+  thirdSlot?: boolean;
   /** Enemy types the hero has stolen from (the Hollow Hand's secret). */
   stolen: string[];
   /** Skills evolved into a stronger form: base skill id -> evolved skill id (data/evolutions.ts). */

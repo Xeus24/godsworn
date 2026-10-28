@@ -175,6 +175,8 @@ export type ActionDef =
   | { kind: 'restore' }
   /** Unlocks a hidden class (it can then be taken up as a secondary class). */
   | { kind: 'unlockClass'; classId: string }
+  /** Opens the base-game third class slot. */
+  | { kind: 'unlockClassSlot' }
   | { kind: 'toast'; text: string }
   /** The companion's personal quest is done: their oath perk is earned. */
   | { kind: 'oath'; companion: string }

@@ -57,7 +57,7 @@ export const MENTORS: EnemyDef[] = [...BASE_MENTORS, ...GREATER_CLASSES.flatMap(
 
 
 /** Twelve hybrid prestige classes from class pairs, and the Sun Knight (Paladin + Apostle of Solenne). */
-export const HYBRIDS: HybridDef[] = [
+const BASE_HYBRIDS: HybridDef[] = [
   { id: 'spellblade', name: 'Spellblade', classes: ['warrior', 'mage'], trial: 'trial-spellblade', description: 'Steel and sorcery in one edge.' },
   { id: 'warpriest', name: 'Warpriest', classes: ['warrior', 'cleric'], trial: 'trial-warpriest', description: 'Prayer on the lips, a mace in the fist.' },
   { id: 'deathknight', name: 'Deathknight', classes: ['warrior', 'necromancer'], trial: 'trial-deathknight', description: 'A fallen champion who commands the grave.' },
@@ -72,6 +72,47 @@ export const HYBRIDS: HybridDef[] = [
   { id: 'plague-doctor', name: 'Plague Doctor', classes: ['cleric', 'necromancer'], trial: 'trial-plague-doctor', description: 'Cures and curses from the same bag.' },
   { id: 'sun-knight', name: 'Sun Knight', classes: ['warrior'], requires: { specialization: 'paladin', apostleOf: 'solenne' }, trial: 'trial-sun-knight', description: 'A Paladin sworn as Solenne’s Apostle: the sun with a sword.' },
 ];
+
+const pair = (id: string, name: string, classes: [string, string], description: string): HybridDef => ({ id, name, classes, trial: `trial-${id}`, description });
+const apostle = (id: string, name: string, classId: string, specialization: string, apostleOf: string, description: string): HybridDef => ({ id, name, classes: [classId], requires: { specialization, apostleOf }, trial: `trial-${id}`, description });
+
+/** Phase 7: 26 pairings of the newer classes and 6 more god-hybrids (a specialization plus Apostleship, like the Sun Knight). */
+const GREATER_HYBRIDS: HybridDef[] = [
+  pair('dread-knight', 'Dread Knight', ['knight', 'necromancer'], 'An oath sworn to the dead: iron, rot and loyalty.'),
+  pair('herbal-witch', 'Herbal Witch', ['druid', 'alchemist'], 'Every bloom has two uses; she knows both.'),
+  pair('timeblade', 'Timeblade', ['chronomancer', 'rogue'], 'A knife that arrives a heartbeat before the wielder.'),
+  pair('muse', 'Muse', ['dancer', 'bard'], 'The room belongs to whoever it cannot look away from.'),
+  pair('glyphmaster', 'Glyphmaster', ['inkweaver', 'mage'], 'Spells written once, read forever.'),
+  pair('grand-inquisitor', 'Grand Inquisitor', ['witchhunter', 'cleric'], 'Faith as a verdict, and a hunter to carry it out.'),
+  pair('mountainbreaker', 'Mountainbreaker', ['geomancer', 'warrior'], 'A fault line with a battle cry.'),
+  pair('golem-master', 'Golem Master', ['summoner', 'artificer'], 'Why fight when you can build someone to?'),
+  pair('crusader', 'Crusader', ['knight', 'cleric'], 'A knight with a cause and the faith to keep it.'),
+  pair('rune-knight', 'Rune Knight', ['knight', 'mage'], 'Armor etched with sentences that bite back.'),
+  pair('thornstalker', 'Thornstalker', ['druid', 'ranger'], 'The forest’s patience, with an edge.'),
+  pair('greenseer', 'Greenseer', ['druid', 'shaman'], 'Reads the spirits in the roots and answers them.'),
+  pair('dark-magus', 'Dark Magus', ['warlock', 'mage'], 'A scholar who read the forbidden footnote.'),
+  pair('hexblade', 'Hexblade', ['warlock', 'rogue'], 'A curse you can feel in the edge.'),
+  pair('soulbinder', 'Soulbinder', ['summoner', 'necromancer'], 'Souls are cheap, and a little lonely.'),
+  pair('spirit-lord', 'Spirit Lord', ['summoner', 'shaman'], 'A shaman’s ancestors and a summoner’s company.'),
+  pair('venomancer', 'Venomancer', ['alchemist', 'rogue'], 'Every blade was a vial first.'),
+  pair('transmuter', 'Transmuter', ['alchemist', 'mage'], 'Lead into gold, ice into fire, doubt into certainty.'),
+  pair('ghostfist', 'Ghostfist', ['shaman', 'monk'], 'A spirit walks the palm; the foe feels the weight.'),
+  pair('metronome', 'Metronome', ['chronomancer', 'bard'], 'Everything is a beat; she moves it.'),
+  pair('gadgeteer', 'Gadgeteer', ['artificer', 'rogue'], 'A coat of pockets and a pocket for every problem.'),
+  pair('ironclad', 'Ironclad', ['artificer', 'warrior'], 'A walking siege engine with a pressure gauge.'),
+  pair('windstep-master', 'Windstep Master', ['dancer', 'monk'], 'Footwork that is also a fist.'),
+  pair('silkblade', 'Silkblade', ['dancer', 'rogue'], 'A ribbon that is also a razor.'),
+  pair('lorekeeper', 'Lorekeeper', ['inkweaver', 'bard'], 'The saga that fights back.'),
+  pair('bounty-hunter', 'Bounty Hunter', ['witchhunter', 'ranger'], 'A name on a poster and silver in the quiver.'),
+  apostle('glorybound', 'Glorybound', 'warrior', 'warlord', 'kael', 'A Warlord sworn as Kael’s Apostle: a name that wins wars before the battle.'),
+  apostle('endbringer', 'Endbringer', 'necromancer', 'lich', 'morrath', 'A Lich sworn as Morrath’s Apostle: the last word of every sentence.'),
+  apostle('verdant-hunter', 'Verdant Hunter', 'ranger', 'beastmaster', 'ysolde', 'A Beastmaster sworn as Ysolde’s Apostle: the forest’s chosen hunter.'),
+  apostle('loremaster', 'Loremaster', 'mage', 'stormcaller', 'aurelis', 'A Stormcaller sworn as Aurelis’ Apostle: knowledge that crackles.'),
+  apostle('fortunes-fool', 'Fortune’s Fool', 'bard', 'trickster', 'vex', 'A Trickster sworn as Vex’s Apostle: a lucky joke at the right moment.'),
+  apostle('tempest-prophet', 'Tempest Prophet', 'shaman', 'stormshaman', 'nymira', 'A Stormshaman sworn as Nymira’s Apostle: the sea speaks through lightning.'),
+];
+
+export const HYBRIDS: HybridDef[] = [...BASE_HYBRIDS, ...GREATER_HYBRIDS];
 
 const trialSupport: Record<string, EncounterDef['enemies']> = {
   warrior: [{ enemyId: 'bandit-thug' }],

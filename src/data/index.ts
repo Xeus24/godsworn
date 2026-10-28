@@ -68,12 +68,13 @@ import { PROFESSIONS, RECIPES } from './economy/recipes';
 import { buildRecipeScrolls } from './economy/scrolls';
 import { SHOPS } from './economy/shops';
 import { STANCES } from './stances';
+import { TEAM_SKILLS } from './teamAttacks';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS];
+const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...DIVINE_COMBAT_SKILLS, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS];
 const ALL_SKILLS = [...BASE_SKILLS, ...evolvedSkills((id) => BASE_SKILLS.find((s) => s.id === id) as (typeof BASE_SKILLS)[number])];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
@@ -231,6 +232,7 @@ export function validateContent(c: Content = content): void {
   for (const skill of c.skills.all()) {
     const where = `skill ${skill.id}`;
     for (const tag of skill.tags) v.ref(c.skillTags, tag, where);
+    for (const partner of skill.team ?? []) v.check(c.classes.has(partner) || c.companions.has(partner), `${where}: unknown team partner "${partner}"`);
     if (skill.cost.resource) v.ref(c.resources, skill.cost.resource.id, where);
     if (skill.generates) v.ref(c.resources, skill.generates.resource, where);
     if (skill.finisher) v.ref(c.resources, skill.finisher.resource, where);

@@ -732,7 +732,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (216)
+### Encounters (248)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -783,6 +783,38 @@ Generated from the data files by `npm run content:md`.
 | **Trial of the Arcane Archer** | 36 | Warden Sylas, Dire Wolf, Archmage Velis, Will-o'-Wisp |
 | **Trial of the Plague Doctor** | 36 | Mother Aurelie, Skeleton Soldier, The Pale Tutor, Skeleton Soldier |
 | **Trial of the Sun Knight** | 36 | Sword-Master Bram, Bandit Thug, Herald of Solenne, Herald of Solenne |
+| **Trial of the Dread Knight** | 36 | Ser Haldane Vael, Bandit Thug, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Herbal Witch** | 36 | Elder Maeve Thornwood, Wyld Boar, Apothecary Dunmore Pell, Goblin Cutthroat |
+| **Trial of the Timeblade** | 36 | Hourkeeper Vessa Lund, Will-o'-Wisp, Nell the Knife, Goblin Cutthroat |
+| **Trial of the Muse** | 36 | Prima Odalys Ferne, Bandit Thug, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Glyphmaster** | 36 | Scribe-Mother Hallowe, Will-o'-Wisp, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Grand Inquisitor** | 36 | Inquisitor Sabine Crowe, Dark Cultist, Mother Aurelie, Skeleton Soldier |
+| **Trial of the Mountainbreaker** | 36 | Stonewife Orsa Keld, Will-o'-Wisp, Sword-Master Bram, Bandit Thug |
+| **Trial of the Golem Master** | 36 | Calling-Mother Isaure, Will-o'-Wisp, Foreman Iseult Brant, Bandit Archer |
+| **Trial of the Crusader** | 36 | Ser Haldane Vael, Bandit Thug, Mother Aurelie, Skeleton Soldier |
+| **Trial of the Rune Knight** | 36 | Ser Haldane Vael, Bandit Thug, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Thornstalker** | 36 | Elder Maeve Thornwood, Wyld Boar, Warden Sylas, Dire Wolf |
+| **Trial of the Greenseer** | 36 | Elder Maeve Thornwood, Wyld Boar, Voice-of-Stone Tamsin, Bandit Thug |
+| **Trial of the Dark Magus** | 36 | Magister Corvane Ash, Will-o'-Wisp, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Hexblade** | 36 | Magister Corvane Ash, Will-o'-Wisp, Nell the Knife, Goblin Cutthroat |
+| **Trial of the Soulbinder** | 36 | Calling-Mother Isaure, Will-o'-Wisp, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Spirit Lord** | 36 | Calling-Mother Isaure, Will-o'-Wisp, Voice-of-Stone Tamsin, Bandit Thug |
+| **Trial of the Venomancer** | 36 | Apothecary Dunmore Pell, Goblin Cutthroat, Nell the Knife, Goblin Cutthroat |
+| **Trial of the Transmuter** | 36 | Apothecary Dunmore Pell, Goblin Cutthroat, Archmage Velis, Will-o'-Wisp |
+| **Trial of the Ghostfist** | 36 | Voice-of-Stone Tamsin, Bandit Thug, Master Ren |
+| **Trial of the Metronome** | 36 | Hourkeeper Vessa Lund, Will-o'-Wisp, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Gadgeteer** | 36 | Foreman Iseult Brant, Bandit Archer, Nell the Knife, Goblin Cutthroat |
+| **Trial of the Ironclad** | 36 | Foreman Iseult Brant, Bandit Archer, Sword-Master Bram, Bandit Thug |
+| **Trial of the Windstep Master** | 36 | Prima Odalys Ferne, Bandit Thug, Master Ren |
+| **Trial of the Silkblade** | 36 | Prima Odalys Ferne, Bandit Thug, Nell the Knife, Goblin Cutthroat |
+| **Trial of the Lorekeeper** | 36 | Scribe-Mother Hallowe, Will-o'-Wisp, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Bounty Hunter** | 36 | Inquisitor Sabine Crowe, Dark Cultist, Warden Sylas, Dire Wolf |
+| **Trial of the Glorybound** | 36 | Sword-Master Bram, Bandit Thug, Herald of Kael, Herald of Kael |
+| **Trial of the Endbringer** | 36 | The Pale Tutor, Skeleton Soldier, Herald of Morrath, Herald of Morrath |
+| **Trial of the Verdant Hunter** | 36 | Warden Sylas, Dire Wolf, Herald of Ysolde, Herald of Ysolde |
+| **Trial of the Loremaster** | 36 | Archmage Velis, Will-o'-Wisp, Herald of Aurelis, Herald of Aurelis |
+| **Trial of the Fortune’s Fool** | 36 | Lyra Silvertongue, Bandit Thug, Herald of Vex, Herald of Vex |
+| **Trial of the Tempest Prophet** | 36 | Voice-of-Stone Tamsin, Bandit Thug, Herald of Nymira, Herald of Nymira |
 | **Trial of Solenne: the Ordeal** | 30 | Herald of Solenne, Herald of Solenne |
 | **Trial of Solenne: the Gauntlet** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne |
 | **Trial of Solenne: the Aspect** | 30 | Aspect of Solenne, Herald of Solenne |
@@ -959,7 +991,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-49 class trees, 1696 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+81 class trees, 1696 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -1555,7 +1587,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Multiclassing (8 trials, 13 hybrids)
 
 <!-- multiclass:start -->
-Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 13 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
+Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 45 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
 
 ### Class mentors and trials
 
@@ -1599,6 +1631,38 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Arcane Archer**: Every arrow a spell. | Ranger + Mage | **Arcane Shot** (Seeking Shot, Elemental Shot); **Arrow Nova** (Frost Nova, Storm Nova) | Spell Arrows, Arcane Barrage | Keystone: +30% damage, -25% defense. | Starfall: Open every battle with a free Arrow Nova. |
 | **Plague Doctor**: Cures and curses from the same bag. | Cleric + Necromancer | **Plague Flask** (Virulent Brew, Blinding Fumes); **Leech Cure** (Bloodletting, Panacea) | Epidemic, Contagion | Keystone: +20 status chance, -30 healing power. | Great Plague: Every battle opens with 3 stacks of Poison on every enemy. |
 | **Sun Knight**: A Paladin sworn as Solenne’s Apostle: the sun with a sword. | Warrior | **Solar Blade** (Zenith Strike, Sunfire Edge); **Sunshield** (Aegis of Noon, Daystar) | High Noon, Sun’s Champion | Keystone: +30% holy damage, -15% max MP. | Knight of the Unclouded Eye: Start every battle with Divine Protection and +20% damage for 3 turns. |
+| **Dread Knight**: An oath sworn to the dead: iron, rot and loyalty. | Knight + Necromancer | **Grave Lance** (Cold Iron, Heavy Lance); **Oath of the Dead** (Short Vigil, Dead Man’s Plate) | Terror Banner, Hollow Valor | Keystone: +25% damage, -15% max HP. | Lord of the Last Charge |
+| **Herbal Witch**: Every bloom has two uses; she knows both. | Druid + Alchemist | **Venom Bloom** (Nightshade, Overgrown); **Restorative Brew** (Quick Steep, Hedge Ward) | Poison and Cure, Kitchen Garden | Keystone: +25% damage, -20% healing power. | Witch of the Hedgerow |
+| **Timeblade**: A knife that arrives a heartbeat before the wielder. | Chronomancer + Rogue | **Hourglass Cut** (Sand in the Wound, Long Second); **Borrowed Seconds** (Skipped Beat, Stopped Clock) | Ahead of the Blade, Second Strike | Keystone: +20% damage, -10% max HP. | Master of Moments |
+| **Muse**: The room belongs to whoever it cannot look away from. | Dancer + Bard | **Dazzling Refrain** (Standing Ovation, Fortissimo); **Inspiring Encore** (Short Interval, Curtain Call) | Perfect Pitch, Fan Club | Keystone: +25% damage, -10% defense. | The Muse |
+| **Glyphmaster**: Spells written once, read forever. | Inkweaver + Mage | **Glyph Burst** (Brightlines, Bold Hand); **Warding Script** (Shorthand, Double Seal) | Runic Syntax, Indelible | Keystone: +25% damage, -15% max MP. | Master of Glyphs |
+| **Grand Inquisitor**: Faith as a verdict, and a hunter to carry it out. | Witch Hunter + Cleric | **Verdict Flame** (Penance, Zeal); **Hunt the Heretic** (Swift Judgment, Questioning) | Unforgiving, Witness | Keystone: +25% damage, -15% healing power. | Grand Inquisitor |
+| **Mountainbreaker**: A fault line with a battle cry. | Geomancer + Warrior | **Fault Line Cleave** (Landslide, Quake Weight); **Bedrock Stance** (Settled Stance, Stone Skin) | Tremor, Immovable | Keystone: +20% max HP, -10% speed. | Mountainbreaker |
+| **Golem Master**: Why fight when you can build someone to? | Summoner + Artificer | **Piston Barrage** (Pressure Burst, Overclocked); **Animate Construct** (Spare Parts, Riveted Plates) | Reinforced Frame, Master Builder | Keystone: +25% damage, -15% defense. | Golem Master |
+| **Crusader**: A knight with a cause and the faith to keep it. | Knight + Cleric | **Radiant Charge** (Sunburst, Holy Momentum); **Bulwark of Faith** (Rallying Cry, Shield of Dawn) | Holy War, Banner of Light | Keystone: +25% damage, -10% defense. | Lord Crusader |
+| **Rune Knight**: Armor etched with sentences that bite back. | Knight + Mage | **Runic Strike** (Branded, Etched Deep); **Runeplate** (Quick Etching, Warding Sigil) | Living Armor, Rune of Power | Keystone: +20% defense, -15% damage. | Rune Knight |
+| **Thornstalker**: The forest’s patience, with an edge. | Druid + Ranger | **Thornshot** (Barbed, Heavy Draw); **Hide in the Hedge** (Soft Step, Bramble Cloak) | Snare Craft, Ambusher | Keystone: +25% damage, -10% speed. | Thornstalker |
+| **Greenseer**: Reads the spirits in the roots and answers them. | Druid + Shaman | **Spirit Bloom** (Old Thorns, Wild Growth); **Seer’s Blessing** (Quick Vision, Barkskin) | Ancestral Green, Deep Roots | Keystone: +20% healing power, -15% damage. | Greenseer |
+| **Dark Magus**: A scholar who read the forbidden footnote. | Warlock + Mage | **Hexbolt** (Bad Omen, Greater Bargain); **Pact Shield** (Short Contract, Hollow Ward) | Patron’s Gift, Footnote | Keystone: +25% damage, -15% max HP. | Dark Magus |
+| **Hexblade**: A curse you can feel in the edge. | Warlock + Rogue | **Cursed Stab** (Festering Edge, Bitter Edge); **Shadow Pact** (Quick Bargain, Dark Mantle) | Grudge, Edge of Night | Keystone: +25% damage, -15% defense. | Hexblade |
+| **Soulbinder**: Souls are cheap, and a little lonely. | Summoner + Necromancer | **Soul Lash** (Frayed, Tight Knot); **Bind Soul** (Quick Binding, Soul Ward) | Chorus of the Bound, Soul Harvest | Keystone: +25% damage, -15% max HP. | Soulbinder |
+| **Spirit Lord**: A shaman’s ancestors and a summoner’s company. | Summoner + Shaman | **Ancestral Strike** (Ancient Grudge, Many Hands); **Call the Ancestors** (Short Rite, Elder Ward) | Lineage, Kinship | Keystone: +25% damage, -15% max HP. | Spirit Lord |
+| **Venomancer**: Every blade was a vial first. | Alchemist + Rogue | **Viper Fang** (Double Dose, Concentrate); **Smoke and Vials** (Fast Vial, Antidote) | Tolerance, Lethal Dose | Keystone: +25% damage, -15% max HP. | Venomancer |
+| **Transmuter**: Lead into gold, ice into fire, doubt into certainty. | Alchemist + Mage | **Transmuted Flame** (Gold Fever, Grand Work); **Philosopher’s Gift** (Quick Reaction, Inert Shell) | Catalyst, Lead to Gold | Keystone: +25% damage, -15% defense. | Transmuter |
+| **Ghostfist**: A spirit walks the palm; the foe feels the weight. | Shaman + Monk | **Ghost Palm** (Chill Touch, Weighted Palm); **Ancestral Calm** (Quick Breath, Veil of Elders) | Between Worlds, Palm of the Dead | Keystone: +15% dodge, -15% max HP. | Ghostfist |
+| **Metronome**: Everything is a beat; she moves it. | Chronomancer + Bard | **Syncopated Strike** (Off the Beat, Crescendo); **Perfect Tempo** (Rest Bar, Steady Count) | In Time, Downbeat | Keystone: +20% speed, -15% damage. | Metronome |
+| **Gadgeteer**: A coat of pockets and a pocket for every problem. | Artificer + Rogue | **Trick Shot** (Flash Powder, Overwound); **Tangle Wire** (Quick Draw, Padded Lining) | Contraption, Hidden Pockets | Keystone: +25% damage, -15% defense. | Gadgeteer |
+| **Ironclad**: A walking siege engine with a pressure gauge. | Artificer + Warrior | **Piston Slam** (Boiler Burst, Full Pressure); **Steam Armor** (Quick Vent, Riveted Skin) | Heavy Frame, Siege Mode | Keystone: +25% defense, -10% speed. | Ironclad |
+| **Windstep Master**: Footwork that is also a fist. | Dancer + Monk | **Gale Kick** (Cutting Wind, Spinning Heel); **Flowing Guard** (Quick Step, Reed Stance) | Flowing Form, Four Winds | Keystone: +15% dodge, -10% max HP. | Windstep Master |
+| **Silkblade**: A ribbon that is also a razor. | Dancer + Rogue | **Silken Cut** (Razor Thread, Long Pull); **Veil of Silk** (Quick Twirl, Second Veil) | Dance of Edges, Slip Away | Keystone: +25% crit damage, -10% max HP. | Silkblade |
+| **Lorekeeper**: The saga that fights back. | Inkweaver + Bard | **Inked Verse** (Footnote, Epic Meter); **Saga of Heroes** (Short Stanza, Binding) | Oral Tradition, Marginalia | Keystone: +25% damage, -15% max HP. | Lorekeeper |
+| **Bounty Hunter**: A name on a poster and silver in the quiver. | Witch Hunter + Ranger | **Marked Shot** (Dead or Alive, Heavy Bolt); **Posted Warrant** (Quick Reload, Iron Collar) | Reward Money, Dead Eye | Keystone: +25% damage, -10% defense. | Bounty Hunter |
+| **Glorybound**: A Warlord sworn as Kael’s Apostle: a name that wins wars before the battle. | Warrior | **Glory’s Edge** (Famous Blow, Epic Cleave); **Kael’s Roll Call** (Short Muster, Laurel Plate) | Songs Will Be Sung, Fearless | Keystone: +25% damage, -10% defense. | Glorybound |
+| **Endbringer**: A Lich sworn as Morrath’s Apostle: the last word of every sentence. | Necromancer | **Final Word** (Last Breath, Heavy Silence); **Reaper’s Reckoning** (Short Eulogy, Shroud) | Inevitable, Last Rites | Keystone: +25% damage, -15% max HP. | Endbringer |
+| **Verdant Hunter**: A Beastmaster sworn as Ysolde’s Apostle: the forest’s chosen hunter. | Ranger | **Hunt’s Arrow** (Wild Barb, Full Draw); **Call of the Hunt** (Fast Whistle, Leaf Mantle) | Ysolde’s Gaze, Pack Leader | Keystone: +25% damage, -15% max HP. | Verdant Hunter |
+| **Loremaster**: A Stormcaller sworn as Aurelis’ Apostle: knowledge that crackles. | Mage | **Index of Ruin** (Cross-Reference, Thick Volume); **Archive of Spells** (Quick Lookup, Reading Room) | Footnoted, Photographic | Keystone: +25% damage, -15% max HP. | Loremaster |
+| **Fortune’s Fool**: A Trickster sworn as Vex’s Apostle: a lucky joke at the right moment. | Bard | **Loaded Lyric** (Double or Nothing, High Roller); **Lucky Break** (Quick Shuffle, Rigged Table) | Vex’s Wink, Fool’s Luck | Keystone: +20% crit chance, -15% max HP. | Fortune’s Fool |
+| **Tempest Prophet**: A Stormshaman sworn as Nymira’s Apostle: the sea speaks through lightning. | Shaman | **Tidecall Bolt** (Brine, Thunderhead); **Storm’s Favor** (Quick Swell, Squall Ward) | Nymira’s Voice, Rogue Wave | Keystone: +25% damage, -15% defense. | Tempest Prophet |
 
 ### Hybrid skills
 
@@ -1630,6 +1694,70 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Leech Cure** | Plague Doctor | 10 MP | 2 | Heal an ally for 120% MATK and draw out Poison. |
 | **Solar Blade** | Sun Knight | 8 MP | 1 | A blade of noon for 140% ATK + 70% Divine Power holy damage; Blinds (30%). |
 | **Sunshield** | Sun Knight | 16 MP | 5 | Raise the sun: the party is shielded for 15% of max HP and gains Divine Protection for 1 turn. |
+| **Grave Lance** | Dread Knight | 8 MP | 1 | A lance of grave-iron for 160% ATK shadow damage; Fear (35%). |
+| **Oath of the Dead** | Dread Knight | 14 MP | 5 | The fallen kneel to their knight. A summoned ally fights beside you. |
+| **Venom Bloom** | Herbal Witch | 8 MP | 1 | A blossom that bursts in a poison cloud for 150% MAG nature damage; Poison (60%). |
+| **Restorative Brew** | Herbal Witch | 14 MP | 5 | A steaming cup passed down the line. Heal the party for 14% of max HP and Regenerate for 3 turns. |
+| **Hourglass Cut** | Timeblade | 8 MP | 1 | A cut that lands before it is swung for 150% ATK arcane damage; Slow (50%). |
+| **Borrowed Seconds** | Timeblade | 10 MP | 4 | Steal a few seconds from the next minute. Gain Haste for 2 turns and shield yourself for 8% of max HP. |
+| **Dazzling Refrain** | Muse | 8 MP | 1 | A phrase that turns every head for 140% MAG arcane damage; Charm (30%). |
+| **Inspiring Encore** | Muse | 14 MP | 5 | The crowd roars for more. The party gains +14% damage and +8% defense for 3 turns. |
+| **Glyph Burst** | Glyphmaster | 8 MP | 1 | A glyph that detonates on being read for 160% MAG arcane damage; Vulnerable (40%). |
+| **Warding Script** | Glyphmaster | 10 MP | 4 | Draw a circle and stand in it. Shield yourself for 18% of max HP and gain +15% damage for 2 turns. |
+| **Verdict Flame** | Grand Inquisitor | 8 MP | 1 | A sentence read in fire for 150% Divine Power holy damage; Burn (50%). |
+| **Hunt the Heretic** | Grand Inquisitor | 16 MP | 4 | Every sinner is named. 85% Divine Power holy damage to every enemy; Weaken for 2 turns. |
+| **Fault Line Cleave** | Mountainbreaker | 8 MP | 1 | A blow that splits the ground for 170% ATK physical damage; Stun (25%). |
+| **Bedrock Stance** | Mountainbreaker | 10 MP | 4 | Plant both feet and become the hill. Shield yourself for 22% of max HP and gain +15% damage for 2 turns. |
+| **Piston Barrage** | Golem Master | 8 MP | 1 | A volley from a hissing arm for 150% MAG physical damage; Stun (20%). |
+| **Animate Construct** | Golem Master | 14 MP | 5 | Bolts, plates and a spark. A summoned ally fights beside you. |
+| **Radiant Charge** | Crusader | 8 MP | 1 | A blazing lancer’s charge for 160% Divine Power holy damage; Blind (35%). |
+| **Bulwark of Faith** | Crusader | 14 MP | 5 | A wall of light behind your shield. The party gains +10% damage and +14% defense for 3 turns. |
+| **Runic Strike** | Rune Knight | 8 MP | 1 | A blow that leaves a glowing word for 150% ATK arcane damage; Weaken (45%). |
+| **Runeplate** | Rune Knight | 10 MP | 4 | Every plate flares with a ward. Shield yourself for 20% of max HP and gain +18% damage for 2 turns. |
+| **Thornshot** | Thornstalker | 8 MP | 1 | A barbed shot from the undergrowth for 150% ATK nature damage; Bleed (55%). |
+| **Hide in the Hedge** | Thornstalker | 10 MP | 4 | Fold into the brambles. Gain Stealth for 2 turns and shield yourself for 8% of max HP. |
+| **Spirit Bloom** | Greenseer | 8 MP | 1 | A bloom that remembers old wars for 140% MAG nature damage; Slow (45%). |
+| **Seer’s Blessing** | Greenseer | 14 MP | 5 | The roots sing, and wounds close. Heal the party for 16% of max HP and Regenerate for 3 turns. |
+| **Hexbolt** | Dark Magus | 8 MP | 1 | A bolt wrapped in a bargain for 170% MAG shadow damage; Curse (40%). |
+| **Pact Shield** | Dark Magus | 10 MP | 4 | The patron’s hand closes round you. Shield yourself for 20% of max HP and gain +18% damage for 2 turns. |
+| **Cursed Stab** | Hexblade | 8 MP | 1 | A stab that carries a grudge for 160% ATK shadow damage; Curse (45%). |
+| **Shadow Pact** | Hexblade | 10 MP | 4 | The dark lends you a step. Gain Haste for 2 turns and shield yourself for 8% of max HP. |
+| **Soul Lash** | Soulbinder | 8 MP | 1 | A lash of bound spirit for 150% MAG shadow damage; Weaken (50%). |
+| **Bind Soul** | Soulbinder | 14 MP | 5 | A spirit takes a body of bone. A summoned ally fights beside you. |
+| **Ancestral Strike** | Spirit Lord | 8 MP | 1 | A blow from a hundred hands for 150% MAG nature damage; Slow (45%). |
+| **Call the Ancestors** | Spirit Lord | 14 MP | 5 | The stag of the old kings answers. A summoned ally fights beside you. |
+| **Viper Fang** | Venomancer | 8 MP | 1 | A cut with a drop on the edge for 150% ATK nature damage; Poison (60%). |
+| **Smoke and Vials** | Venomancer | 10 MP | 4 | A pop, a puff, and you are not there. Gain Stealth for 2 turns and shield yourself for 8% of max HP. |
+| **Transmuted Flame** | Transmuter | 8 MP | 1 | A fire that was a frost a moment ago for 160% MAG fire damage; Burn (55%). |
+| **Philosopher’s Gift** | Transmuter | 14 MP | 5 | A pinch of the great work, shared. The party gains +14% damage and +8% defense for 3 turns. |
+| **Ghost Palm** | Ghostfist | 8 MP | 1 | A palm that arrives from the other side for 150% ATK physical damage; Weaken (45%). |
+| **Ancestral Calm** | Ghostfist | 10 MP | 4 | The ancestors hold your shoulders. Shield yourself for 18% of max HP and gain +12% damage for 2 turns. |
+| **Syncopated Strike** | Metronome | 8 MP | 1 | A hit on the off-beat for 140% MAG arcane damage; Slow (50%). |
+| **Perfect Tempo** | Metronome | 14 MP | 5 | The whole party falls in step. The party gains +12% damage and +6% defense for 3 turns. |
+| **Trick Shot** | Gadgeteer | 8 MP | 1 | A spring-loaded surprise for 150% ATK physical damage; Blind (40%). |
+| **Tangle Wire** | Gadgeteer | 16 MP | 4 | Trip wire across the room. 80% ATK physical damage to every enemy; Slow for 2 turns. |
+| **Piston Slam** | Ironclad | 8 MP | 1 | A steam-driven hammer blow for 170% ATK physical damage; Stun (25%). |
+| **Steam Armor** | Ironclad | 10 MP | 4 | Vent the boiler and brace. Shield yourself for 22% of max HP and gain +15% damage for 2 turns. |
+| **Gale Kick** | Windstep Master | 8 MP | 1 | A kick on a passing wind for 150% ATK physical damage; Slow (50%). |
+| **Flowing Guard** | Windstep Master | 10 MP | 4 | Bend like reeds. Shield yourself for 14% of max HP and gain +16% damage for 2 turns. |
+| **Silken Cut** | Silkblade | 8 MP | 1 | A ribbon drawn through the guard for 150% ATK shadow damage; Bleed (55%). |
+| **Veil of Silk** | Silkblade | 10 MP | 4 | The ribbons close round you. Gain Stealth for 2 turns and shield yourself for 8% of max HP. |
+| **Inked Verse** | Lorekeeper | 8 MP | 1 | A verse that bites the page and the foe for 140% MAG arcane damage; Silence (40%). |
+| **Saga of Heroes** | Lorekeeper | 14 MP | 5 | A story the party can hear itself in. The party gains +14% damage and +8% defense for 3 turns. |
+| **Marked Shot** | Bounty Hunter | 8 MP | 1 | A shot at a name on the list for 160% ATK physical damage; Vulnerable (45%). |
+| **Posted Warrant** | Bounty Hunter | 16 MP | 4 | Every face on the board, at once. 85% ATK physical damage to every enemy; Weaken for 2 turns. |
+| **Glory’s Edge** | Glorybound | 8 MP | 1 | A stroke made for the songs for 170% ATK physical damage; Weaken (50%). |
+| **Kael’s Roll Call** | Glorybound | 14 MP | 5 | Every name is read aloud. The party gains +16% damage and +8% defense for 3 turns. |
+| **Final Word** | Endbringer | 8 MP | 1 | A syllable that ends things for 170% MAG shadow damage; Curse (45%). |
+| **Reaper’s Reckoning** | Endbringer | 16 MP | 4 | Every ledger settled. 90% MAG shadow damage to every enemy; Weaken for 2 turns. |
+| **Hunt’s Arrow** | Verdant Hunter | 8 MP | 1 | An arrow the forest guides for 160% ATK nature damage; Bleed (55%). |
+| **Call of the Hunt** | Verdant Hunter | 14 MP | 5 | The pack comes at a whistle. A summoned ally fights beside you. |
+| **Index of Ruin** | Loremaster | 8 MP | 1 | A page torn out and thrown for 170% MAG lightning damage; Vulnerable (45%). |
+| **Archive of Spells** | Loremaster | 14 MP | 5 | A shelf of answers, shared. The party gains +14% damage and +6% defense for 3 turns. |
+| **Loaded Lyric** | Fortune’s Fool | 8 MP | 1 | A verse with a weighted die in it for 150% MAG arcane damage; Charm (35%). |
+| **Lucky Break** | Fortune’s Fool | 14 MP | 5 | The dice fall your way. The party gains +14% damage and +8% defense for 3 turns. |
+| **Tidecall Bolt** | Tempest Prophet | 8 MP | 1 | A bolt that smells of salt for 160% MAG lightning damage; Slow (45%). |
+| **Storm’s Favor** | Tempest Prophet | 14 MP | 5 | The waves lift everyone. The party gains +14% damage and +8% defense for 3 turns. |
 <!-- multiclass:end -->
 
 ## Gods, favor and blessings
@@ -1918,7 +2046,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-379 quests, 118 NPCs, 167 dialogues, 6 companions, 6 endings.
+412 quests, 118 NPCs, 168 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -1943,7 +2071,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
-### Side quests (34)
+### Side quests (35)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -1981,6 +2109,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Maps That Lie** | 56 | Archivist Senne | Survey the western gate (visit); Survey the heart of the Citadel (visit); Survey the far side (visit) |
 | **The Unwritten Page** | 58 | Loremaster Ivo | Read what the scribe writes (talk) |
 | **Kneeling in the Ash** | 58 | High Lector Amara | Free fallen paladins (kill); Go to the kneeling paladins (talk) |
+| **The Third Road** | 45 | High Lector Amara | Speak with High Lector Amara (talk) |
 
 ### Faction questlines (15)
 
@@ -2218,7 +2347,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Trial of the Witch Hunter** | 15 | Inquisitor Sabine Crowe | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Geomancer** | 15 | Stonewife Orsa Keld | Win 5 battles (deed); Win the trial (state) |
 
-### Hybrid trials (13)
+### Hybrid trials (45)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -2235,6 +2364,38 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Way of the Arcane Archer** | 36 | Warden Sylas | Speak with your other mentor (talk); Win the Trial of the Arcane Archer (state) |
 | **The Way of the Plague Doctor** | 36 | Mother Aurelie | Speak with your other mentor (talk); Win the Trial of the Plague Doctor (state) |
 | **The Way of the Sun Knight** | 36 | Sword-Master Bram | Speak with the priest (talk); Win the Trial of the Sun Knight (state) |
+| **The Way of the Dread Knight** | 36 | Ser Haldane Vael | Speak with your other mentor (talk); Win the Trial of the Dread Knight (state) |
+| **The Way of the Herbal Witch** | 36 | Elder Maeve Thornwood | Speak with your other mentor (talk); Win the Trial of the Herbal Witch (state) |
+| **The Way of the Timeblade** | 36 | Hourkeeper Vessa Lund | Speak with your other mentor (talk); Win the Trial of the Timeblade (state) |
+| **The Way of the Muse** | 36 | Prima Odalys Ferne | Speak with your other mentor (talk); Win the Trial of the Muse (state) |
+| **The Way of the Glyphmaster** | 36 | Scribe-Mother Hallowe | Speak with your other mentor (talk); Win the Trial of the Glyphmaster (state) |
+| **The Way of the Grand Inquisitor** | 36 | Inquisitor Sabine Crowe | Speak with your other mentor (talk); Win the Trial of the Grand Inquisitor (state) |
+| **The Way of the Mountainbreaker** | 36 | Stonewife Orsa Keld | Speak with your other mentor (talk); Win the Trial of the Mountainbreaker (state) |
+| **The Way of the Golem Master** | 36 | Calling-Mother Isaure | Speak with your other mentor (talk); Win the Trial of the Golem Master (state) |
+| **The Way of the Crusader** | 36 | Ser Haldane Vael | Speak with your other mentor (talk); Win the Trial of the Crusader (state) |
+| **The Way of the Rune Knight** | 36 | Ser Haldane Vael | Speak with your other mentor (talk); Win the Trial of the Rune Knight (state) |
+| **The Way of the Thornstalker** | 36 | Elder Maeve Thornwood | Speak with your other mentor (talk); Win the Trial of the Thornstalker (state) |
+| **The Way of the Greenseer** | 36 | Elder Maeve Thornwood | Speak with your other mentor (talk); Win the Trial of the Greenseer (state) |
+| **The Way of the Dark Magus** | 36 | Magister Corvane Ash | Speak with your other mentor (talk); Win the Trial of the Dark Magus (state) |
+| **The Way of the Hexblade** | 36 | Magister Corvane Ash | Speak with your other mentor (talk); Win the Trial of the Hexblade (state) |
+| **The Way of the Soulbinder** | 36 | Calling-Mother Isaure | Speak with your other mentor (talk); Win the Trial of the Soulbinder (state) |
+| **The Way of the Spirit Lord** | 36 | Calling-Mother Isaure | Speak with your other mentor (talk); Win the Trial of the Spirit Lord (state) |
+| **The Way of the Venomancer** | 36 | Apothecary Dunmore Pell | Speak with your other mentor (talk); Win the Trial of the Venomancer (state) |
+| **The Way of the Transmuter** | 36 | Apothecary Dunmore Pell | Speak with your other mentor (talk); Win the Trial of the Transmuter (state) |
+| **The Way of the Ghostfist** | 36 | Voice-of-Stone Tamsin | Speak with your other mentor (talk); Win the Trial of the Ghostfist (state) |
+| **The Way of the Metronome** | 36 | Hourkeeper Vessa Lund | Speak with your other mentor (talk); Win the Trial of the Metronome (state) |
+| **The Way of the Gadgeteer** | 36 | Foreman Iseult Brant | Speak with your other mentor (talk); Win the Trial of the Gadgeteer (state) |
+| **The Way of the Ironclad** | 36 | Foreman Iseult Brant | Speak with your other mentor (talk); Win the Trial of the Ironclad (state) |
+| **The Way of the Windstep Master** | 36 | Prima Odalys Ferne | Speak with your other mentor (talk); Win the Trial of the Windstep Master (state) |
+| **The Way of the Silkblade** | 36 | Prima Odalys Ferne | Speak with your other mentor (talk); Win the Trial of the Silkblade (state) |
+| **The Way of the Lorekeeper** | 36 | Scribe-Mother Hallowe | Speak with your other mentor (talk); Win the Trial of the Lorekeeper (state) |
+| **The Way of the Bounty Hunter** | 36 | Inquisitor Sabine Crowe | Speak with your other mentor (talk); Win the Trial of the Bounty Hunter (state) |
+| **The Way of the Glorybound** | 36 | Sword-Master Bram | Speak with the priest (talk); Win the Trial of the Glorybound (state) |
+| **The Way of the Endbringer** | 36 | The Pale Tutor | Speak with the priest (talk); Win the Trial of the Endbringer (state) |
+| **The Way of the Verdant Hunter** | 36 | Warden Sylas | Speak with the priest (talk); Win the Trial of the Verdant Hunter (state) |
+| **The Way of the Loremaster** | 36 | Archmage Velis | Speak with the priest (talk); Win the Trial of the Loremaster (state) |
+| **The Way of the Fortune’s Fool** | 36 | Lyra Silvertongue | Speak with the priest (talk); Win the Trial of the Fortune’s Fool (state) |
+| **The Way of the Tempest Prophet** | 36 | Voice-of-Stone Tamsin | Speak with the priest (talk); Win the Trial of the Tempest Prophet (state) |
 
 ### Bounties (repeatable daily) (10)
 

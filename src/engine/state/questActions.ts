@@ -448,6 +448,12 @@ export class QuestActions {
             s.bus.emit('toast', { kind: 'level', text: `A secret path opens: the ${content.classes.get(a.classId).name}. Take it up as a secondary class from any arena.` });
           }
           break;
+        case 'unlockClassSlot':
+          if (!s.player.thirdSlot) {
+            s.player.thirdSlot = true;
+            s.bus.emit('toast', { kind: 'level', text: 'A third calling opens. Take it up as a tertiary class from any arena (level 45).' });
+          }
+          break;
         case 'setFlag':
           s.setFlag(a.flag, a.value ?? true);
           break;

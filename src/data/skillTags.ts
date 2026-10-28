@@ -15,6 +15,7 @@ export const SKILL_TAGS = [
   'Debuff',
   'Summon',
   'Pet',
+  'Team',
   'Song',
   'Stance',
   'Movement',

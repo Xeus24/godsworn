@@ -83,6 +83,30 @@ export interface SkillOption {
   check: Check;
 }
 
+/** Whether `x` stands for a team-attack partner: a companion by id, anyone by primary class. */
+function isPartner(x: Combatant, token: string): boolean {
+  return x.id === `companion:${token}` || x.classId === token;
+}
+
+const TEAM_LISTS = new WeakMap<object, SkillDef[]>();
+function teamSkillList(b: Battle): SkillDef[] {
+  let list = TEAM_LISTS.get(b.c.skills);
+  if (!list) TEAM_LISTS.set(b.c.skills, (list = b.c.skills.filter((s) => s.team !== undefined)));
+  return list;
+}
+
+/** Dual techniques `x` may use now: it is one partner and the other is alive beside it. Charmed or summoned units never team up. */
+export function teamSkillsFor(b: Battle, x: Combatant): SkillDef[] {
+  if (x.kind !== 'hero' && x.kind !== 'companion') return [];
+  const mates = b.allies(x).filter((o) => o !== x && o.alive && (o.kind === 'hero' || o.kind === 'companion'));
+  if (mates.length === 0) return [];
+  return teamSkillList(b).filter((s) => {
+    const team = s.team!;
+    const [p, q] = team;
+    return (isPartner(x, p) && mates.some((m) => isPartner(m, q))) || (isPartner(x, q) && mates.some((m) => isPartner(m, p)));
+  });
+}
+
 /** Everything the combatant could use this turn: basic attack, known skills and the ultimate. */
 export function skillOptions(b: Battle, x: Combatant): SkillOption[] {
   const out: SkillOption[] = [{ skill: basicAttackSkill(b, x), rank: 1, check: { ok: true } }];
@@ -95,6 +119,7 @@ export function skillOptions(b: Battle, x: Combatant): SkillOption[] {
     if (skill.ultimate) continue;
     out.push({ skill, rank: s.rank, check: canUseSkill(b, x, skill) });
   }
+  for (const skill of teamSkillsFor(b, x)) out.push({ skill, rank: 1, check: canUseSkill(b, x, skill) });
   if (x.ultimateSkill) {
     const ult = b.c.skills.get(x.ultimateSkill);
     out.push({ skill: ult, rank: 1, check: canUseSkill(b, x, ult) });

@@ -30,6 +30,8 @@ export const MULTICLASS = {
   secondaryLevel: 15,
   /** Character level and NG+ tier to take a third class. */
   tertiaryLevel: 40,
+  /** Character level for the third slot opened by the late-story quest (outside NG+2). */
+  thirdSlotLevel: 45,
   tertiaryNgPlus: 2,
   /** Non-primary classes earn a Mastery Point every N class levels (for keystones and capstones). */
   masteryPointEvery: 10,
