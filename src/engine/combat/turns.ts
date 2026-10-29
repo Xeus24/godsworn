@@ -3,7 +3,10 @@ import type { Battle } from './battle';
 import { bossActed, bossTurnStart, bossWindUp, initBoss } from './bosses';
 import { applyEffects, fireTrigger, summon } from './effects';
 import { gainResource, healTarget, kill } from './hits';
-import { BASIC_ATTACK_ID, foesOf, useSkill } from './skills';
+import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
+import { featureTick, useFeature } from './features';
+import { talk } from './talk';
+import { BASIC_ATTACK_ID, foesOf, teamSkillsFor, useSkill, weaponArtsFor } from './skills';
 import { applyStatus, tickStatusesAtTurnEnd, tickStatusesAtTurnStart, turnBlocker } from './statuses';
 import type { Action, BattleEvent, Combatant } from './types';
 
@@ -32,7 +35,17 @@ export function startBattle(b: Battle): BattleEvent[] {
     if (b.hasFlag(x, 'stealthOnCombatStart')) applyStatus(b, x, x, 'stealth', { duration: 3, unresistable: true });
   }
   for (const x of [...b.combatants]) fireTrigger(b, x, 'onCombatStart');
+  // Ambush: they get the first round. Preemptive strike: you do, and they lose their opening turn.
+  if (b.opening) {
+    const losers = b.opening === 'ambush' ? b.alive('party') : b.alive('enemy');
+    for (const x of losers) x.nextAt += 100 / Math.max(1, b.stats(x).speed) + 0.5;
+    b.log(b.opening === 'ambush' ? 'Ambush! They were waiting for you.' : 'You strike first! They are caught flat-footed.');
+  }
   b.log('Battle start!');
+  for (const x of b.alive('enemy')) {
+    const lines = BOSS_LINES[x.enemyId ?? ''];
+    if (lines) b.log(`${x.name}: ${lines[0]}`);
+  }
   for (const x of b.alive('enemy')) {
     if (x.affixes?.length) b.log(`${x.name}: ${x.affixes.map((id) => b.c.eliteAffixes.get(id).description).join(' ')}`);
   }
@@ -129,6 +142,11 @@ function beginTurn(b: Battle, x: Combatant): void {
   tickStatusesAtTurnStart(b, x);
   if (!x.alive) return;
   bossTurnStart(b, x);
+  if (x.side === 'enemy' && !x.midSaid && x.hp <= x.maxHp / 2) {
+    x.midSaid = true;
+    const lines = BOSS_LINES[x.enemyId ?? ''];
+    if (lines) b.log(`${x.name}: ${lines[1]}`);
+  }
   const stats = b.stats(x);
   if (stats.hpRegen > 0) healTarget(b, x, x, stats.hpRegen);
   if (stats.hpRegen < 0) x.hp = Math.max(1, x.hp + stats.hpRegen);
@@ -139,6 +157,7 @@ function beginTurn(b: Battle, x: Combatant): void {
   }
   fireTrigger(b, x, 'onTurnStart');
   fireSigils(b, x);
+  featureTick(b, x);
 }
 
 /** Closes a turn: durations, cooldowns, resource decay, timed summons, next initiative. */
@@ -195,8 +214,10 @@ export function perform(b: Battle, action: Action): { ok: true; events: BattleEv
     case 'skill': {
       const known = x.skills.find((s) => s.id === action.skillId);
       const isUlt = x.ultimateSkill === action.skillId || x.avatarSkill === action.skillId || x.avatarSkill2 === action.skillId;
-      if (!known && !isUlt) return { ok: false, reason: 'Unknown skill.' };
-      if (!isUlt && !known?.general && x.hotbar && !x.hotbar.includes(action.skillId)) return { ok: false, reason: 'That skill is not on your hotbar.' };
+      // Team attacks and Weapon Arts come from the party and the weapon in hand, not from the skill list or the hotbar.
+      const extra = teamSkillsFor(b, x).some((s) => s.id === action.skillId) || weaponArtsFor(b, x).some((s) => s.id === action.skillId);
+      if (!known && !isUlt && !extra) return { ok: false, reason: 'Unknown skill.' };
+      if (!isUlt && !extra && !known?.general && x.hotbar && !x.hotbar.includes(action.skillId)) return { ok: false, reason: 'That skill is not on your hotbar.' };
       if (!useSkill(b, x, action.skillId, known?.rank ?? 1, action.targetId)) return { ok: false, reason: 'Cannot use that now.' };
       return done();
     }
@@ -217,6 +238,18 @@ export function perform(b: Battle, action: Action): { ok: true; events: BattleEv
         b.outcome = 'fled';
         b.emit({ type: 'end', outcome: 'fled' });
       }
+      return done();
+    }
+    case 'talk': {
+      const target = b.combatants.find((c) => c.id === action.targetId);
+      if (!target) return { ok: false, reason: 'No one there.' };
+      const r = talk(b, x, target, action.approach);
+      if (!r.ok) return r;
+      return done();
+    }
+    case 'interact': {
+      const r = useFeature(b, x, action.featureId);
+      if (!r.ok) return r;
       return done();
     }
     case 'item':

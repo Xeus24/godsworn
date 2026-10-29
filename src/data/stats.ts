@@ -24,6 +24,7 @@ export const ELEMENT_NAMES: Record<Element, string> = {
   shadow: 'Shadow',
   arcane: 'Arcane',
   void: 'Void',
+  earth: 'Earth',
 };
 
 const BASE_INFO: StatInfo[] = [

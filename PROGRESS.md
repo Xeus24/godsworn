@@ -833,6 +833,18 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase10.test.ts` (11); 714 unit tests, 8 e2e, build and playtest pass.
 - **Not done / cut:** Grandmaster recipes make an ordinary piece of top-tier gear (Flawless is not craftable); no town Renown or statues (a later phase); sets and legendary art reuse existing icons; the new town cards (Investments, furniture, pets) and the Legendary Codex were not checked in the browser; gadgets are not yet in any shop (only crafted and from the roaming merchants' consumable pool).
 
+### Expansion phase 11: combat additions
+- **Earth, the tenth element** (`earthDamage` and `earthResist` generate like the others; an earth tag, affix pair, Paragon family, boss-friendly colour). The Geomancer, Ordrun's Landslide and Earthquake now deal Earth. Constructs, golems, elementals and stone things resist it (40%); flying and spectral things are caught out by it (-25%).
+- **Statuses: nine more** (`NEW_STATUSES`): Sleep, Confuse, Petrify, Doom, Entangle, Mired, Marked, Inspired and Earthbound, with real effects (skipped turns, a doom that eats 8% of max HP and halves healing, stone that turns damage aside) and used by the new Weapon Arts, gadgets and terrain.
+- **Weapon Arts** (`src/data/weaponArts.ts`): two for each of the 26 weapon types, usable by anyone wielding one (`SkillDef.weaponArt`, `weaponArtsFor`); a Weapon Art menu in combat.
+- **Talk** (`engine/combat/talk.ts`): persuade (CHA, WIS and the foe's level and wounds), bribe (gold, paid from the purse at battle end), recruit (a beast fights beside you for the battle) and **spare** (a boss at 25% HP or less; half experience and some gold; mercy pleases the gods who like it). Undead, constructs, spirits, plants and demons never listen; story bosses, mentors, masters and punishers cannot be spared. Failing may Enrage the foe.
+- **Interactive terrain** (`engine/combat/features.ts`): explosive barrels (fire to every enemy), chandeliers (crush and stun the front row), holy ground (heals the party each turn; a prayer shields it) and lava (scorches the enemy front row); rolled by biome and zone (lava in the Volcanic Rift, chandeliers in dungeons, the Citadel and the Frostspire). An Environment menu uses them.
+- **Ambush and preemptive strikes:** a fight on the road may begin with an ambush (the enemy acts first; Detect Traps and Animal Speech lower the odds) or a preemptive strike (you act first; DEX raises the odds). Bosses and dungeon fights are exempt.
+- **Boss dialogue:** every boss, mini-boss that guards a dungeon and each god's Aspect has three lines (`data/bestiary/bossDialogue.ts`): before, at half health and after, spoken in the battle log.
+- **Fixed:** team attacks (phase 7) were listed in the skill menu but refused by `perform` ("Unknown skill"); they now work.
+- Tests: `tests/expansionPhase11.test.ts` (14); 728 unit tests, 8 e2e, build and playtest pass.
+- **Not done / cut:** the battle scene does not draw barrels, chandeliers or lava (the log and the Environment menu carry them); Talk has no per-enemy dialogue trees, only outcomes; recruited beasts last for one battle (no permanent pets from Talk); Earth has no dedicated class skills beyond the Geomancer and a few gods and gear; enemy Earth weaknesses follow family and type, not per-enemy tuning; the Talk, Weapon Art and Environment menus were not checked in the browser.
+
 ## Known bugs
 - None known.
 

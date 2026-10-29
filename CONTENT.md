@@ -502,10 +502,10 @@ Generated from the data files by `npm run content:md`.
 | **Crescent Rod, Waxing** | Elderwood Staff | 30 | +25% Ice Damage; +10 Wisdom; +15% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
 | **Crescent Rod, Full** | Moonwood Staff | 45 | +35% Ice Damage; +14 Wisdom; +20% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Lyssara's power |
 | **Crescent Rod, the Moon Between Dreams** | Worldtree Staff | 60 | +50% Ice Damage; +20 Wisdom; +30% increased Divine Power; God-bound: only Lyssara's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Lyssara's power |
-| **Keystone** | Mithril Warhammer | 1 | +15% Physical Damage; +6 Vitality; +10% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
-| **Keystone, Set** | Adamant Warhammer | 30 | +25% Physical Damage; +10 Vitality; +15% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
-| **Keystone, Bearing** | Starmetal Warhammer | 45 | +35% Physical Damage; +14 Vitality; +20% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ordrun's power |
-| **Keystone, the Unmoved** | Godforged Warhammer | 60 | +50% Physical Damage; +20 Vitality; +30% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ordrun's power |
+| **Keystone** | Mithril Warhammer | 1 | +15% Earth Damage; +6 Vitality; +10% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Keystone, Set** | Adamant Warhammer | 30 | +25% Earth Damage; +10 Vitality; +15% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
+| **Keystone, Bearing** | Starmetal Warhammer | 45 | +35% Earth Damage; +14 Vitality; +20% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ordrun's power |
+| **Keystone, the Unmoved** | Godforged Warhammer | 60 | +50% Earth Damage; +20 Vitality; +30% increased Divine Power; God-bound: only Ordrun's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Ordrun's power |
 | **Windpiercer** | Ironwood Bow | 1 | +15% Lightning Damage; +6 Dexterity; +10% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
 | **Windpiercer, Fledged** | Elderwood Bow | 30 | +25% Lightning Damage; +10 Dexterity; +15% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60 |
 | **Windpiercer, Soaring** | Moonwood Bow | 45 | +35% Lightning Damage; +14 Dexterity; +20% increased Divine Power; God-bound: only Seraphel's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Seraphel's power |
@@ -695,11 +695,11 @@ Generated from the data files by `npm run content:md`.
 
 **Gems (7 types × 5 grades):** ruby, sapphire, topaz, emerald, diamond, amethyst, onyx. Grades: Chipped, Flawed, Clear, Flawless, Perfect.
 
-### Affixes (110, 7 tiers each)
+### Affixes (112, 7 tiers each)
 
-**Prefixes (55):** Cruel (Physical Attack), Sharpened (Weapon Damage), Runed (Weapon Magic), Mystic (Magic Attack), Hallowed (Divine Power), Blazing (Fire Damage), Frozen (Ice Damage), Shocking (Lightning Damage), Venomous (Nature Damage), Radiant (Holy Damage), Umbral (Shadow Damage), Eldritch (Arcane Damage), Vampiric (Lifesteal), Precise (Crit Chance), Deadly (Crit Damage), Sturdy (Armor), Warded (Armor Resist), Fortified (Defense), Vital (Max HP), Glowing (Max MP), Swift (Speed), Pious (Blessing Power), Devout (Favor Gain), Gilded (Gold Find), Slaying (Damage Bonus), Brutal (Physical Damage), Keen (Accuracy), Ruthless (Crit Damage/Crit Chance), Quickened (Cooldown Reduction), Hardy (Max HP), Lucid (Max MP), Brilliant (Magic Attack), Stalwart (Damage Taken), Bloodthirsty (Lifesteal/Damage Bonus), Gleaming (Magic Find), Guarded (Defense/Armor Resist), Spellwoven (Magic Resist), Lively (HP Regen), Trickster’s (Dodge/Luck), Stormforged (Lightning Damage/Speed), Emberbound (Fire Damage/Status Chance), Frostbitten (Ice Damage/Status Chance), Sanctified (Holy Damage/Healing Power), Grave-Touched (Shadow Damage/Lifesteal), Thorned (Nature Damage/Defense), Blessed (Blessing Power/Favor Gain), Studious (XP Gain), Piercing (Shield Piercing), Commanding (Charisma), Haggler’s (Barter), Ironbound (Armor), Spirited (Resource Gain/MP Regen), Avenging (Damage Bonus), Wary (Status Resist/Dodge), Ancestral (Max HP/Max MP)
+**Prefixes (56):** Cruel (Physical Attack), Sharpened (Weapon Damage), Runed (Weapon Magic), Mystic (Magic Attack), Hallowed (Divine Power), Blazing (Fire Damage), Frozen (Ice Damage), Shocking (Lightning Damage), Venomous (Nature Damage), Radiant (Holy Damage), Umbral (Shadow Damage), Eldritch (Arcane Damage), Quaking (Earth Damage), Vampiric (Lifesteal), Precise (Crit Chance), Deadly (Crit Damage), Sturdy (Armor), Warded (Armor Resist), Fortified (Defense), Vital (Max HP), Glowing (Max MP), Swift (Speed), Pious (Blessing Power), Devout (Favor Gain), Gilded (Gold Find), Slaying (Damage Bonus), Brutal (Physical Damage), Keen (Accuracy), Ruthless (Crit Damage/Crit Chance), Quickened (Cooldown Reduction), Hardy (Max HP), Lucid (Max MP), Brilliant (Magic Attack), Stalwart (Damage Taken), Bloodthirsty (Lifesteal/Damage Bonus), Gleaming (Magic Find), Guarded (Defense/Armor Resist), Spellwoven (Magic Resist), Lively (HP Regen), Trickster’s (Dodge/Luck), Stormforged (Lightning Damage/Speed), Emberbound (Fire Damage/Status Chance), Frostbitten (Ice Damage/Status Chance), Sanctified (Holy Damage/Healing Power), Grave-Touched (Shadow Damage/Lifesteal), Thorned (Nature Damage/Defense), Blessed (Blessing Power/Favor Gain), Studious (XP Gain), Piercing (Shield Piercing), Commanding (Charisma), Haggler’s (Barter), Ironbound (Armor), Spirited (Resource Gain/MP Regen), Avenging (Damage Bonus), Wary (Status Resist/Dodge), Ancestral (Max HP/Max MP)
 
-**Suffixes (55):** of the Bear (Strength), of the Fox (Dexterity), of the Owl (Intelligence), of the Ox (Vitality), of the Sage (Wisdom), of the Magpie (Luck), of the Faithful (Faith), of the Titan (Strength/Vitality), of the Salamander (Fire Resist), of the Yeti (Ice Resist), of Grounding (Lightning Resist), of the Antidote (Nature Resist), of the Dawn (Holy Resist), of the Eclipse (Shadow Resist), of Nullification (Arcane Resist), of Prisms (all resists), of Haste (Cooldown Reduction), of Regeneration (HP Regen), of Meditation (MP Regen), of Evasion (Dodge), of Fortune (Magic Find), of Learning (XP Gain), of Mending (Healing Power), of Fury (Resource Gain), of Tenacity (Status Resist), of Affliction (Status Chance), of Accuracy (Accuracy), of the Wolf (Dexterity/Strength), of the Raven (Intelligence/Wisdom), of the Stag (Vitality/Dexterity), of the Dove (Faith/Wisdom), of the Hawk (Accuracy/Crit Chance), of the Badger (Defense/Status Resist), of the Serpent (Status Chance/Nature Damage), of the Phoenix (HP Regen/Fire Resist), of the Leviathan (Max HP/Ice Resist), of the Thunderbird (Speed/Lightning Resist), of the Sentinel (Damage Taken/Defense), of the Archmage (Magic Attack/Cooldown Reduction), of the Warlord (Physical Attack/Crit Damage), of the Saint (Healing Power/Blessing Power), of the Merchant (Gold Find/Barter), of the Scholar (XP Gain/MP Regen), of the Wanderer (Speed/Dodge), of the Dragon (Damage Bonus/Fire Damage), of the Deep (Max MP/MP Regen), of Dusk (Shadow Resist/Dodge), of Dawn (Holy Resist/HP Regen), of Reflection (Magic Resist/Arcane Resist), of the Void (Void Damage), of Patience (Cooldown Reduction/Status Resist), of Finality (Crit Damage), of Plenty (Magic Find/Gold Find), of Grace (Favor Gain/Luck), of Ascension (Ultimate Charge)
+**Suffixes (56):** of the Bear (Strength), of the Fox (Dexterity), of the Owl (Intelligence), of the Ox (Vitality), of the Sage (Wisdom), of the Magpie (Luck), of the Faithful (Faith), of the Titan (Strength/Vitality), of the Salamander (Fire Resist), of the Yeti (Ice Resist), of Grounding (Lightning Resist), of the Antidote (Nature Resist), of the Dawn (Holy Resist), of the Eclipse (Shadow Resist), of Nullification (Arcane Resist), of the Bedrock (Earth Resist), of Prisms (all resists), of Haste (Cooldown Reduction), of Regeneration (HP Regen), of Meditation (MP Regen), of Evasion (Dodge), of Fortune (Magic Find), of Learning (XP Gain), of Mending (Healing Power), of Fury (Resource Gain), of Tenacity (Status Resist), of Affliction (Status Chance), of Accuracy (Accuracy), of the Wolf (Dexterity/Strength), of the Raven (Intelligence/Wisdom), of the Stag (Vitality/Dexterity), of the Dove (Faith/Wisdom), of the Hawk (Accuracy/Crit Chance), of the Badger (Defense/Status Resist), of the Serpent (Status Chance/Nature Damage), of the Phoenix (HP Regen/Fire Resist), of the Leviathan (Max HP/Ice Resist), of the Thunderbird (Speed/Lightning Resist), of the Sentinel (Damage Taken/Defense), of the Archmage (Magic Attack/Cooldown Reduction), of the Warlord (Physical Attack/Crit Damage), of the Saint (Healing Power/Blessing Power), of the Merchant (Gold Find/Barter), of the Scholar (XP Gain/MP Regen), of the Wanderer (Speed/Dodge), of the Dragon (Damage Bonus/Fire Damage), of the Deep (Max MP/MP Regen), of Dusk (Shadow Resist/Dodge), of Dawn (Holy Resist/HP Regen), of Reflection (Magic Resist/Arcane Resist), of the Void (Void Damage), of Patience (Cooldown Reduction/Status Resist), of Finality (Crit Damage), of Plenty (Magic Find/Gold Find), of Grace (Favor Gain/Luck), of Ascension (Ultimate Charge)
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
@@ -846,7 +846,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (38)
+### Status effects (47)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -873,6 +873,15 @@ Generated from the data files by `npm run content:md`.
 | **Winding Up** | buff | Winding up a devastating attack for its next turn. Break its stagger bar to interrupt it, or Defend. |
 | **Enraged** | buff | The fight has gone on too long: +40% damage and 10% more speed per stack, growing over time. |
 | **Stealth** | buff | Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out. |
+| **Sleep** | debuff | Fast asleep: loses its turns until it takes damage. |
+| **Confuse** | debuff | Befuddled: 35% chance to lose the turn and 40 less accuracy. |
+| **Petrify** | debuff | Turned to stone: loses its turns, but takes 40% less damage and has double defense. |
+| **Doom** | debuff | Marked for the Last Door: loses 8% of max HP each turn and cannot be healed well (-50%). |
+| **Entangle** | debuff | Held by roots or wire: 25% chance to lose the turn, 20 less dodge and 20% less speed. |
+| **Mired** | debuff | Stuck in mud or sand: 25% less speed and 15 less dodge. |
+| **Marked** | debuff | A target painted on its back: takes 10% more damage and has 15 less dodge. |
+| **Inspired** | buff | +10% damage and +8% crit chance. |
+| **Earthbound** | buff | +25% defense and +30% earth resist, 5% less speed. |
 | **Fel Taint** | buff | Corruption you carry: +3% damage per stack, but it eats 0.6% of your max HP each turn per stack. |
 | **Overheated** | debuff | The machinery screams: take 25% more damage and burn for a little each turn. |
 | **Tempo** | buff | The rhythm is building: +4% damage and +2 speed per stack. |
@@ -933,67 +942,67 @@ Generated from the data files by `npm run content:md`.
 | **Giant Rat** | 1 | normal | beast, vermin | front | assassin | Plague Bite |  |
 | **Goblin Cutthroat** | 3 | normal | humanoid, goblin | front | assassin | Dirty Stab |  |
 | **Goblin Shaman** | 4 | normal | humanoid, goblin | back | healer | Goblin Hex, Crude Mending | fire +25% |
-| **Hollow Scarecrow** | 5 | normal | construct, cursed | front | support | Dreadful Caw | fire -50%, shadow +30%, nature +20% |
+| **Hollow Scarecrow** | 5 | normal | construct, cursed | front | support | Dreadful Caw | fire -50%, shadow +30%, nature +20%, earth +40% |
 | **Bandit Thug** | 6 | normal | humanoid, bandit | front | aggressive | Crushing Swing |  |
 | **Bandit Archer** | 6 | normal | humanoid, bandit | back | assassin | Pinning Shot, Volley |  |
 | **Goblin Warchief** | 7 | elite | humanoid, goblin | front | aggressive | Cleave, War Cry, Shield Bash |  |
 | **Dire Wolf** | 9 | normal | beast | front | aggressive | Savage Bite, Pack Howl |  |
 | **Whisperwood Spider** | 10 | normal | beast, insect | back | support | Web Spit, Venom Fang | nature +40%, fire -25% |
 | **Skeleton Soldier** | 10 | normal | undead | front | defensive | Shield Bash | physical +10%, nature +75%, shadow +50%, holy -50% |
-| **Restless Ghost** | 11 | normal | undead, spirit | back | caster | Grave Chill, Banshee Wail | physical +40%, shadow +60%, holy -50%, nature +50% |
+| **Restless Ghost** | 11 | normal | undead, spirit | back | caster | Grave Chill, Banshee Wail | physical +40%, shadow +60%, holy -50%, nature +50%, earth -25% |
 | **Treant Sapling** | 12 | normal | plant | front | defensive | Barkskin, Root Lash | fire -50%, nature +50%, physical +15%, lightning +20% |
-| **Will-o'-Wisp** | 12 | normal | elemental, spirit | back | caster | Dazzle | arcane +50%, physical +25%, shadow -25% |
+| **Will-o'-Wisp** | 12 | normal | elemental, spirit | back | caster | Dazzle | arcane +50%, physical +25%, shadow -25%, earth +40% |
 | **Dark Cultist** | 13 | normal | humanoid, cultist | back | summoner | Dark Pact, Shadow Bolt | shadow +30%, holy -20% |
 | **Wyld Boar** | 14 | normal | beast | front | aggressive | Gore Charge |  |
 | **Alpha of the Whisperwood** | 15 | elite | beast | front | aggressive | Savage Bite, Pack Howl, War Cry |  |
 | **Cave Bat** | 16 | normal | beast | back | aggressive | Screech, Dive Bomb |  |
-| **Crystal Golem** | 18 | normal | construct | front | aggressive | Crystal Shard, Harden | physical +30%, lightning -20% |
+| **Crystal Golem** | 18 | normal | construct | front | aggressive | Crystal Shard, Harden | physical +30%, lightning -20%, earth +40% |
 | **Drowned Sailor** | 19 | normal | undead | front | aggressive | Drown, Cutlass Flurry | ice +30%, holy -30% |
 | **Cave Serpent** | 20 | normal | beast, reptile | front | aggressive | Constrict, Venom Fang |  |
 | **Myconid Shambler** | 21 | normal | plant | back | caster | Spore Cloud, Crude Mending | nature +40%, fire -40% |
 | **Sand Scorpion** | 24 | normal | beast, insect | front | aggressive | Venom Sting |  |
 | **Desert Raider** | 25 | normal | humanoid, bandit | front | aggressive | Cutlass Flurry, Dirty Stab |  |
-| **Dust Elemental** | 27 | normal | elemental | back | caster | Sandstorm | physical +30% |
+| **Dust Elemental** | 27 | normal | elemental | back | caster | Sandstorm | physical +30%, earth +40% |
 | **Restless Mummy** | 28 | normal | undead | front | aggressive | Curse of Ages, Grave Chill | shadow +30%, fire -40% |
 | **Sand Drake** | 30 | normal | dragon, reptile | front | aggressive | Flame Breath, Savage Bite | fire +30% |
 | **Frost Wolf** | 32 | normal | beast | front | aggressive | Savage Bite, Pack Howl | ice +50%, fire -30% |
-| **Ice Elemental** | 34 | normal | elemental | back | caster | Ice Lance, Frost Breath | ice +80%, fire -50% |
-| **Yeti** | 35 | normal | beast | front | aggressive | Boulder Throw, War Cry | ice +40% |
-| **Frost Giant** | 37 | normal | giant | front | aggressive | Tremor, Boulder Throw | ice +50%, fire -30% |
+| **Ice Elemental** | 34 | normal | elemental | back | caster | Ice Lance, Frost Breath | ice +80%, fire -50%, earth +40% |
+| **Yeti** | 35 | normal | beast | front | aggressive | Boulder Throw, War Cry | ice +40%, earth +40% |
+| **Frost Giant** | 37 | normal | giant | front | aggressive | Tremor, Boulder Throw | ice +50%, fire -30%, earth +40% |
 | **Ice Witch** | 38 | normal | humanoid, cultist | back | caster | Ice Lance, Curse of Ages, Crude Mending | ice +50% |
-| **Siren** | 40 | normal | spirit | back | caster | Siren Song, Drown |  |
+| **Siren** | 40 | normal | spirit | back | caster | Siren Song, Drown | earth -25% |
 | **Corsair** | 41 | normal | humanoid, bandit | front | aggressive | Cutlass Flurry, Volley |  |
-| **Storm Elemental** | 43 | normal | elemental | back | caster | Arc Lightning | lightning +80%, ice -20% |
+| **Storm Elemental** | 43 | normal | elemental | back | caster | Arc Lightning | lightning +80%, ice -20%, earth +40% |
 | **Sea Serpent** | 45 | normal | beast, reptile | front | aggressive | Constrict, Drown | ice +30%, lightning -30% |
 | **Harpy** | 46 | normal | beast | back | aggressive | Dive Bomb, Screech |  |
-| **Magma Elemental** | 48 | normal | elemental | front | aggressive | Magma Burst, Harden | fire +80%, ice -40% |
+| **Magma Elemental** | 48 | normal | elemental | front | aggressive | Magma Burst, Harden | fire +80%, ice -40%, earth +40% |
 | **Fire Imp** | 49 | normal | demon | back | caster | Hellfire Bolt | fire +60%, holy -30% |
 | **Lava Hound** | 50 | normal | beast, demon | front | aggressive | Flame Breath, Savage Bite | fire +60%, ice -30% |
-| **Obsidian Golem** | 52 | normal | construct | front | aggressive | Tremor, Harden | physical +30%, fire +50% |
+| **Obsidian Golem** | 52 | normal | construct | front | aggressive | Tremor, Harden | physical +30%, fire +50%, earth +40% |
 | **Cultist of Ash** | 53 | normal | humanoid, cultist | back | summoner | Hellfire Bolt, Dark Pact | fire +40%, holy -20% |
 | **Void Knight** | 55 | normal | humanoid, void | front | aggressive | Dark Cleave, Shield Bash | void +50%, holy -20% |
 | **Shadow Fiend** | 56 | normal | demon | back | caster | Shadow Bolt, Curse of Ages | shadow +60%, holy -40% |
 | **Fallen Paladin** | 57 | normal | humanoid, undead | front | aggressive | Dark Cleave, Crude Mending, Curse of Ages | holy +30%, shadow +30% |
 | **Bone Dragon** | 58 | normal | undead, dragon | front | aggressive | Frost Breath, Savage Bite | shadow +50%, holy -40% |
-| **Void Wraith** | 59 | normal | spirit, void | back | caster | Void Rend, Corruption Wave | void +60%, physical +30% |
+| **Void Wraith** | 59 | normal | spirit, void | back | caster | Void Rend, Corruption Wave | void +60%, physical +30%, earth -25% |
 | **Grukk the Goblin King** | 8 | miniboss | humanoid, goblin | front | aggressive | Cleave, War Cry, Goblin Hex |  |
 | **The Broodmother** | 14 | miniboss | beast, insect | front | aggressive | Venom Fang, Web Spit, Pack Howl |  |
 | **The Bone Lord** | 16 | boss | undead | front | aggressive | Dark Pact, Grave Chill, Dark Cleave | shadow +40%, holy -30% |
-| **The Tide Hag** | 23 | boss | spirit | back | caster | Drown, Siren Song, Spore Cloud | ice +50% |
+| **The Tide Hag** | 23 | boss | spirit | back | caster | Drown, Siren Song, Spore Cloud | ice +50%, earth -25% |
 | **The Withered Sun-King** | 31 | boss | undead | front | aggressive | Curse of Ages, Sandstorm, Enrage | fire -30%, shadow +40% |
-| **The Frost Queen** | 39 | boss | humanoid, elemental | back | caster | Frost Breath, Ice Lance, Harden | ice +80%, fire -40% |
+| **The Frost Queen** | 39 | boss | humanoid, elemental | back | caster | Frost Breath, Ice Lance, Harden | ice +80%, fire -40%, earth +40% |
 | **Captain Redfang** | 44 | miniboss | humanoid, bandit | front | aggressive | Cutlass Flurry, Volley, Enrage |  |
 | **Leviathan Spawn** | 47 | boss | beast, reptile | front | aggressive | Constrict, Drown, Tremor | ice +40%, lightning -30% |
-| **The Magma Titan** | 54 | boss | elemental, giant | front | aggressive | Magma Burst, Tremor, Harden | fire +80%, ice -40% |
+| **The Magma Titan** | 54 | boss | elemental, giant | front | aggressive | Magma Burst, Tremor, Harden | fire +80%, ice -40%, earth +40% |
 | **Commander of the Black Throne** | 60 | boss | humanoid, void | front | aggressive | Dark Cleave, Void Rend, Corruption Wave, Enrage | void +60%, holy -20% |
 | **Bramblehorn** | 9 | worldBoss | beast | front | aggressive | Gore Charge, War Cry |  |
 | **Gnarlroot the Elder** | 17 | worldBoss | plant | front | aggressive | Root Lash, Barkskin, Spore Cloud | nature +50%, fire -40% |
 | **The Abyssal Crab** | 25 | worldBoss | beast | front | aggressive | Constrict, Harden, Tremor | physical +30%, lightning -30% |
 | **The Sandworm Colossus** | 33 | worldBoss | beast | front | aggressive | Tremor, Sandstorm, Constrict |  |
 | **Skaldr the Frost Wyrm** | 41 | worldBoss | dragon | front | aggressive | Frost Breath, Savage Bite, Enrage | ice +80%, fire -30% |
-| **The Storm Roc** | 49 | worldBoss | beast, elemental | front | aggressive | Arc Lightning, Dive Bomb, Screech | lightning +80% |
+| **The Storm Roc** | 49 | worldBoss | beast, elemental | front | aggressive | Arc Lightning, Dive Bomb, Screech | lightning +80%, earth +40% |
 | **The Ember Matriarch** | 56 | worldBoss | dragon | front | aggressive | Flame Breath, Magma Burst, Enrage | fire +80%, ice -30% |
-| **The Unwritten Herald** | 62 | worldBoss | spirit, void | front | aggressive | Corruption Wave, Void Rend, Curse of Ages | void +80%, holy -20% |
+| **The Unwritten Herald** | 62 | worldBoss | spirit, void | front | aggressive | Corruption Wave, Void Rend, Curse of Ages | void +80%, holy -20%, earth -25% |
 | **Sword-Master Bram** | 15 | miniboss | humanoid, mentor | front | aggressive | Master’s Riposte, Shield Bash, War Cry |  |
 | **Archmage Velis** | 15 | miniboss | humanoid, mentor | back | caster | Lesson in Fire, Dazzle, Goblin Hex | fire +30%, ice +30% |
 | **Nell the Knife** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
@@ -1014,66 +1023,66 @@ Generated from the data files by `npm run content:md`.
 | **Scribe-Mother Hallowe** | 15 | miniboss | humanoid, mentor | back | caster | Dazzle, Goblin Hex, Shadow Bolt | shadow +30%, arcane +30% |
 | **Inquisitor Sabine Crowe** | 15 | miniboss | humanoid, mentor | front | aggressive | Master’s Riposte, Dirty Stab, War Cry | shadow +25%, holy +25% |
 | **Stonewife Orsa Keld** | 15 | miniboss | humanoid, mentor | front | caster | Tremor, Harden, Root Lash | physical +20%, fire +20% |
-| **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50% |
-| **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50% |
-| **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50% |
-| **Herald of Ysolde** | 1 | punisher | spirit, divine | back | caster | Wrath of Ysolde | nature +50% |
-| **Herald of Vex** | 1 | punisher | spirit, divine | back | caster | Wrath of Vex | arcane +50% |
-| **Herald of Thalor** | 1 | punisher | spirit, divine | back | caster | Wrath of Thalor | fire +50% |
-| **Herald of Nymira** | 1 | punisher | spirit, divine | back | caster | Wrath of Nymira | lightning +50% |
-| **Herald of Aurelis** | 1 | punisher | spirit, divine | back | caster | Wrath of Aurelis | arcane +50% |
-| **Herald of Hesha** | 1 | punisher | spirit, divine | back | caster | Wrath of Hesha | holy +50% |
-| **Herald of Grimvald** | 1 | punisher | spirit, divine | back | caster | Wrath of Grimvald | physical +50% |
-| **Herald of Lyssara** | 1 | punisher | spirit, divine | back | caster | Wrath of Lyssara | ice +50% |
-| **Herald of Ordrun** | 1 | punisher | spirit, divine | back | caster | Wrath of Ordrun | physical +50% |
-| **Herald of Seraphel** | 1 | punisher | spirit, divine | back | caster | Wrath of Seraphel | lightning +50% |
-| **Herald of Mirrin** | 1 | punisher | spirit, divine | back | caster | Wrath of Mirrin | arcane +50% |
-| **Aspect of Solenne** | 30 | boss | spirit, divine | front | aggressive | Wrath of Solenne, Judgement of Solenne | holy +60% |
-| **Aspect of Morrath** | 30 | boss | spirit, divine | front | aggressive | Wrath of Morrath, Judgement of Morrath | shadow +60% |
-| **Aspect of Kael** | 30 | boss | spirit, divine | front | aggressive | Wrath of Kael, Judgement of Kael | physical +60% |
-| **Aspect of Ysolde** | 30 | boss | spirit, divine | front | aggressive | Wrath of Ysolde, Judgement of Ysolde | nature +60% |
-| **Aspect of Vex** | 30 | boss | spirit, divine | front | aggressive | Wrath of Vex, Judgement of Vex | arcane +60% |
-| **Aspect of Thalor** | 30 | boss | spirit, divine | front | aggressive | Wrath of Thalor, Judgement of Thalor | fire +60% |
-| **Aspect of Nymira** | 30 | boss | spirit, divine | front | aggressive | Wrath of Nymira, Judgement of Nymira | lightning +60% |
-| **Aspect of Aurelis** | 30 | boss | spirit, divine | front | aggressive | Wrath of Aurelis, Judgement of Aurelis | arcane +60% |
-| **Aspect of Hesha** | 30 | boss | spirit, divine | front | aggressive | Wrath of Hesha, Judgement of Hesha | holy +60% |
-| **Aspect of Grimvald** | 30 | boss | spirit, divine | front | aggressive | Wrath of Grimvald, Judgement of Grimvald | physical +60% |
-| **Aspect of Lyssara** | 30 | boss | spirit, divine | front | aggressive | Wrath of Lyssara, Judgement of Lyssara | ice +60% |
-| **Aspect of Ordrun** | 30 | boss | spirit, divine | front | aggressive | Wrath of Ordrun, Judgement of Ordrun | physical +60% |
-| **Aspect of Seraphel** | 30 | boss | spirit, divine | front | aggressive | Wrath of Seraphel, Judgement of Seraphel | lightning +60% |
-| **Aspect of Mirrin** | 30 | boss | spirit, divine | front | aggressive | Wrath of Mirrin, Judgement of Mirrin | arcane +60% |
+| **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50%, earth -25% |
+| **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50%, earth -25% |
+| **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50%, earth -25% |
+| **Herald of Ysolde** | 1 | punisher | spirit, divine | back | caster | Wrath of Ysolde | nature +50%, earth -25% |
+| **Herald of Vex** | 1 | punisher | spirit, divine | back | caster | Wrath of Vex | arcane +50%, earth -25% |
+| **Herald of Thalor** | 1 | punisher | spirit, divine | back | caster | Wrath of Thalor | fire +50%, earth -25% |
+| **Herald of Nymira** | 1 | punisher | spirit, divine | back | caster | Wrath of Nymira | lightning +50%, earth -25% |
+| **Herald of Aurelis** | 1 | punisher | spirit, divine | back | caster | Wrath of Aurelis | arcane +50%, earth -25% |
+| **Herald of Hesha** | 1 | punisher | spirit, divine | back | caster | Wrath of Hesha | holy +50%, earth -25% |
+| **Herald of Grimvald** | 1 | punisher | spirit, divine | back | caster | Wrath of Grimvald | physical +50%, earth -25% |
+| **Herald of Lyssara** | 1 | punisher | spirit, divine | back | caster | Wrath of Lyssara | ice +50%, earth -25% |
+| **Herald of Ordrun** | 1 | punisher | spirit, divine | back | caster | Wrath of Ordrun | earth +50% |
+| **Herald of Seraphel** | 1 | punisher | spirit, divine | back | caster | Wrath of Seraphel | lightning +50%, earth -25% |
+| **Herald of Mirrin** | 1 | punisher | spirit, divine | back | caster | Wrath of Mirrin | arcane +50%, earth -25% |
+| **Aspect of Solenne** | 30 | boss | spirit, divine | front | aggressive | Wrath of Solenne, Judgement of Solenne | holy +60%, earth -25% |
+| **Aspect of Morrath** | 30 | boss | spirit, divine | front | aggressive | Wrath of Morrath, Judgement of Morrath | shadow +60%, earth -25% |
+| **Aspect of Kael** | 30 | boss | spirit, divine | front | aggressive | Wrath of Kael, Judgement of Kael | physical +60%, earth -25% |
+| **Aspect of Ysolde** | 30 | boss | spirit, divine | front | aggressive | Wrath of Ysolde, Judgement of Ysolde | nature +60%, earth -25% |
+| **Aspect of Vex** | 30 | boss | spirit, divine | front | aggressive | Wrath of Vex, Judgement of Vex | arcane +60%, earth -25% |
+| **Aspect of Thalor** | 30 | boss | spirit, divine | front | aggressive | Wrath of Thalor, Judgement of Thalor | fire +60%, earth -25% |
+| **Aspect of Nymira** | 30 | boss | spirit, divine | front | aggressive | Wrath of Nymira, Judgement of Nymira | lightning +60%, earth -25% |
+| **Aspect of Aurelis** | 30 | boss | spirit, divine | front | aggressive | Wrath of Aurelis, Judgement of Aurelis | arcane +60%, earth -25% |
+| **Aspect of Hesha** | 30 | boss | spirit, divine | front | aggressive | Wrath of Hesha, Judgement of Hesha | holy +60%, earth -25% |
+| **Aspect of Grimvald** | 30 | boss | spirit, divine | front | aggressive | Wrath of Grimvald, Judgement of Grimvald | physical +60%, earth -25% |
+| **Aspect of Lyssara** | 30 | boss | spirit, divine | front | aggressive | Wrath of Lyssara, Judgement of Lyssara | ice +60%, earth -25% |
+| **Aspect of Ordrun** | 30 | boss | spirit, divine | front | aggressive | Wrath of Ordrun, Judgement of Ordrun | earth +60% |
+| **Aspect of Seraphel** | 30 | boss | spirit, divine | front | aggressive | Wrath of Seraphel, Judgement of Seraphel | lightning +60%, earth -25% |
+| **Aspect of Mirrin** | 30 | boss | spirit, divine | front | aggressive | Wrath of Mirrin, Judgement of Mirrin | arcane +60%, earth -25% |
 | **Unsworn Zealot** | 4 | normal | humanoid, cultist, unsworn | front | aggressive | Crushing Swing | holy -15% |
 | **Unsworn Adept** | 5 | normal | humanoid, cultist, unsworn | back | caster | Shadow Bolt, Goblin Hex | shadow +20%, holy -15% |
 | **Hollow Knight** | 30 | normal | humanoid, unsworn, void | front | aggressive | Dark Cleave, Shield Bash | void +30%, holy -20% |
 | **Oathburner** | 30 | normal | humanoid, cultist, unsworn | back | caster | Hellfire Bolt, Curse of Ages | fire +30%, holy -20% |
 | **Deacon Mott** | 6 | miniboss | humanoid, cultist, unsworn | back | caster | Shadow Bolt, Goblin Hex, Crude Mending | holy -10% |
 | **Varn the Hollow** | 14 | miniboss | humanoid, unsworn | back | assassin | Pinning Shot, Volley, Venom Fang |  |
-| **The Shard-Warden** | 22 | miniboss | construct, void | front | aggressive | Crystal Shard, Harden, Tremor | physical +25%, lightning -25%, void +40% |
+| **The Shard-Warden** | 22 | miniboss | construct, void | front | aggressive | Crystal Shard, Harden, Tremor | physical +25%, lightning -25%, void +40%, earth +40% |
 | **Captain Idris Kaur** | 30 | miniboss | humanoid, bandit, unsworn | front | aggressive | Cutlass Flurry, War Cry, Cleave |  |
 | **The Wight of Saint Orren** | 38 | boss | undead | front | aggressive | Grave Chill, Curse of Ages, Banshee Wail, Enrage | holy -30%, ice +40%, shadow +30% |
 | **Admiral Vey of the Black Tide** | 46 | boss | humanoid, unsworn | front | aggressive | Cutlass Flurry, Arc Lightning, Enrage | lightning +30%, ice +20% |
-| **The Severance Engine** | 53 | boss | construct, void | front | aggressive | Void Rend, Corruption Wave, Tremor, Enrage | void +50%, fire +30%, lightning -20% |
+| **The Severance Engine** | 53 | boss | construct, void | front | aggressive | Void Rend, Corruption Wave, Tremor, Enrage | void +50%, fire +30%, lightning -20%, earth +40% |
 | **Seryth the Oathbreaker** | 60 | boss | humanoid, unsworn, void | front | aggressive | Dark Cleave, Void Rend, Corruption Wave, Curse of Ages, Enrage | void +50%, holy +10% |
-| **Shadow of the Unwritten** | 60 | boss | spirit, void | front | caster | Corruption Wave, Void Rend, Curse of Ages, Enrage | void +80%, holy -25% |
+| **Shadow of the Unwritten** | 60 | boss | spirit, void | front | caster | Corruption Wave, Void Rend, Curse of Ages, Enrage | void +80%, holy -25%, earth -25% |
 | **Korga Ironhide** | 26 | boss | humanoid | front | aggressive | Cleave, War Cry |  |
 | **Legion Champion** | 32 | boss | humanoid | front | aggressive | Cleave, Shield Bash, War Cry, Enrage |  |
 | **Blighted Treant** | 13 | elite | plant | front | aggressive | Root Lash, Spore Cloud | nature +40%, fire -40% |
-| **Vault Guardian** | 46 | elite | construct | front | aggressive | Harden, Tremor | physical +20%, lightning -20% |
+| **Vault Guardian** | 46 | elite | construct | front | aggressive | Harden, Tremor | physical +20%, lightning -20%, earth +40% |
 | **The Bone Priest** | 16 | miniboss | undead, cultist | back | summoner | Dark Pact, Grave Chill | holy -30%, shadow +40% |
 | **Hask the Poacher** | 18 | elite | humanoid, bandit | back | assassin | Pinning Shot, Volley |  |
 | **Warchief Gorza** | 36 | miniboss | humanoid, unsworn | front | aggressive | Cleave, War Cry, Tremor |  |
-| **The Unwritten Page** | 40 | miniboss | spirit, void | front | caster | Corruption Wave, Curse of Ages | void +60%, arcane +30% |
-| **The Drowned Choir** | 46 | miniboss | spirit, undead | back | caster | Siren Song, Drown, Banshee Wail | ice +40%, lightning -20% |
-| **Mirage Keeper** | 28 | elite | elemental | front | caster | Sandstorm, Dazzle | fire +50%, ice -30% |
+| **The Unwritten Page** | 40 | miniboss | spirit, void | front | caster | Corruption Wave, Curse of Ages | void +60%, arcane +30%, earth -25% |
+| **The Drowned Choir** | 46 | miniboss | spirit, undead | back | caster | Siren Song, Drown, Banshee Wail | ice +40%, lightning -20%, earth -25% |
+| **Mirage Keeper** | 28 | elite | elemental | front | caster | Sandstorm, Dazzle | fire +50%, ice -30%, earth +40% |
 | **Nim the Herbalist** | 10 | normal | humanoid | back | healer | Crude Mending |  |
 | **Brannoc the Sled-Driver** | 34 | normal | humanoid | front | aggressive | Shield Bash |  |
 | **Marisol Tidesong** | 42 | normal | humanoid | back | support | Crude Mending |  |
 | **Caravan Master Oduya** | 26 | normal | humanoid | front | aggressive | Crushing Swing |  |
 | **Hollow Chorister** | 62 | normal | humanoid, cultist, void | back | caster | Corruption Wave, Shadow Bolt | void +30%, holy -20% |
 | **Erased Knight** | 64 | normal | humanoid, void | front | aggressive | Dark Cleave, Harden | void +40% |
-| **False Herald** | 66 | elite | spirit, void, divine | front | caster | Void Rend, Curse of Ages | void +50%, holy +20% |
-| **The Nameless One** | 80 | boss | spirit, void, divine | front | caster | Corruption Wave, Void Rend, Curse of Ages | void +80%, shadow +40%, holy -20% |
-| **The Last Light** | 80 | boss | spirit, divine | front | caster | Arc Lightning, Curse of Ages, Harden | holy +70%, void -30% |
+| **False Herald** | 66 | elite | spirit, void, divine | front | caster | Void Rend, Curse of Ages | void +50%, holy +20%, earth -25% |
+| **The Nameless One** | 80 | boss | spirit, void, divine | front | caster | Corruption Wave, Void Rend, Curse of Ages | void +80%, shadow +40%, holy -20%, earth -25% |
+| **The Last Light** | 80 | boss | spirit, divine | front | caster | Arc Lightning, Curse of Ages, Harden | holy +70%, void -30%, earth -25% |
 | **Rime, Elder Drake of the Glacier** | 40 | worldBoss | dragon, drake, elder | front | aggressive | Frost Breath, Savage Bite, Grave Chill, Enrage | ice +90%, fire -40%, holy +10% |
 | **Tempest, Elder Drake of the Eye** | 47 | worldBoss | dragon, drake, elder | front | aggressive | Thunderstorm, Savage Bite, Arc Lightning, Enrage | lightning +90%, ice -30% |
 | **Cinder, Elder Drake of the Rift** | 55 | worldBoss | dragon, drake, elder | front | aggressive | Magma Burst, Savage Bite, Tremor, Enrage | fire +90%, ice -40% |
@@ -1082,11 +1091,11 @@ Generated from the data files by `npm run content:md`.
 | **The Sanguine Archivist** | 32 | boss | humanoid, cultist, caster | back | caster | Shadow Bolt, Curse of Ages, Crude Mending, Enrage | shadow +40%, holy -25% |
 | **Hollow Hand Fence** | 30 | normal | humanoid, bandit | front | aggressive | Dirty Stab, Cutlass Flurry |  |
 | **The Tally-Keeper** | 38 | boss | humanoid, bandit | front | aggressive | Now You See Me, Dirty Stab, Cutlass Flurry, Enrage |  |
-| **Nightmare Hound** | 40 | normal | spirit, nightmare | front | aggressive | Savage Bite, Banshee Wail | shadow +40%, holy -20% |
-| **The Insomniac** | 44 | boss | spirit, nightmare, caster | back | caster | Banshee Wail, Shadow Bolt, Curse of Ages, Enrage | shadow +50%, arcane +30%, holy -20% |
-| **Wind-Up Soldier** | 28 | normal | construct, puppet | front | aggressive | Shield Bash | physical +20%, lightning -25% |
-| **Jester Puppet** | 29 | normal | construct, puppet | front | assassin | Goblin Hex, Dirty Stab |  |
-| **The Last Puppet** | 34 | boss | construct, puppet | front | aggressive | Dark Cleave, Goblin Hex, Tremor, Enrage | physical +25%, lightning -30% |
+| **Nightmare Hound** | 40 | normal | spirit, nightmare | front | aggressive | Savage Bite, Banshee Wail | shadow +40%, holy -20%, earth -25% |
+| **The Insomniac** | 44 | boss | spirit, nightmare, caster | back | caster | Banshee Wail, Shadow Bolt, Curse of Ages, Enrage | shadow +50%, arcane +30%, holy -20%, earth -25% |
+| **Wind-Up Soldier** | 28 | normal | construct, puppet | front | aggressive | Shield Bash | physical +20%, lightning -25%, earth +40% |
+| **Jester Puppet** | 29 | normal | construct, puppet | front | assassin | Goblin Hex, Dirty Stab | earth +40% |
+| **The Last Puppet** | 34 | boss | construct, puppet | front | aggressive | Dark Cleave, Goblin Hex, Tremor, Enrage | physical +25%, lightning -30%, earth +40% |
 | **Hollow Courtier** | 58 | normal | humanoid, void, hollow | front | aggressive | Dark Cleave, Shield Bash | void +40%, holy -20% |
 | **Warden of the Riddle Crown** | 60 | boss | humanoid, void, hollow, caster | front | caster | Void Rend, Curse of Ages, Corruption Wave, Enrage | void +60%, shadow +40%, holy +10% |
 | **Pell the Wheelwright** | 6 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
@@ -1104,20 +1113,20 @@ Generated from the data files by `npm run content:md`.
 | **Warden Kesh** | 52 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
 | **The Cinder Sage** | 53 | miniboss | humanoid, master | front | aggressive | Master’s Riposte, Shield Bash |  |
 | **The Last Veteran** | 58 | miniboss | humanoid, master | back | caster | Lesson in Fire, Crude Mending |  |
-| **Sunguard of Solenne** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Solenne | holy +40% |
-| **Raven of Morrath** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Morrath | shadow +40% |
-| **Einherjar of Kael** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Kael | physical +40% |
-| **Wolf of Ysolde** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Ysolde | nature +40% |
-| **Shade of Vex** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Vex | arcane +40% |
-| **Forge-Thrall of Thalor** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Thalor | fire +40% |
-| **Tide-Singer of Nymira** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Nymira | lightning +40% |
-| **Scribe of Aurelis** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Aurelis | arcane +40% |
-| **Hearth-Keeper of Hesha** | 1 | elite | spirit, divine, follower | back | healer | Crude Mending, Wrath of Hesha | holy +40% |
-| **Coin-Golem of Grimvald** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Grimvald | physical +40% |
-| **Moth of Lyssara** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Lyssara | ice +40% |
-| **Cairn-Guard of Ordrun** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Ordrun | physical +40% |
-| **Gust-Sprite of Seraphel** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Seraphel | lightning +40% |
-| **Hour-Clerk of Mirrin** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Mirrin | arcane +40% |
+| **Sunguard of Solenne** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Solenne | holy +40%, earth -25% |
+| **Raven of Morrath** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Morrath | shadow +40%, earth -25% |
+| **Einherjar of Kael** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Kael | physical +40%, earth -25% |
+| **Wolf of Ysolde** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Ysolde | nature +40%, earth -25% |
+| **Shade of Vex** | 1 | elite | spirit, divine, follower | back | aggressive | Wrath of Vex | arcane +40%, earth -25% |
+| **Forge-Thrall of Thalor** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Thalor | fire +40%, earth -25% |
+| **Tide-Singer of Nymira** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Nymira | lightning +40%, earth -25% |
+| **Scribe of Aurelis** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Aurelis | arcane +40%, earth -25% |
+| **Hearth-Keeper of Hesha** | 1 | elite | spirit, divine, follower | back | healer | Crude Mending, Wrath of Hesha | holy +40%, earth -25% |
+| **Coin-Golem of Grimvald** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Grimvald | physical +40%, earth -25% |
+| **Moth of Lyssara** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Lyssara | ice +40%, earth -25% |
+| **Cairn-Guard of Ordrun** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Ordrun | earth +40% |
+| **Gust-Sprite of Seraphel** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Seraphel | lightning +40%, earth -25% |
+| **Hour-Clerk of Mirrin** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Mirrin | arcane +40%, earth -25% |
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
@@ -2352,7 +2361,7 @@ Exalted favor plus the god's three-stage Trial of Apostleship (two rounds of her
 | **Hesha** | **Avatar of the Hearth**: Become the Keeper of the Hearth for 3 turns: take 40% less damage and gain +30 healing power; every enemy takes 150% Divine Power holy damage, and you heal fully. | Hearthstaff → Hearthstaff, Kindled → Hearthstaff, Ever-Lit → Hearthstaff, Keeper of the Hearth (Staff) | **Hearthbound**: Heal 6% of max HP at the start of each turn; half of overhealing becomes a shield. | **Mercy of the Hearth**: Heal the party for 120% Divine Power and remove Poison and Bleed.<br>**Gentle Rebuke**: 130% Divine Power holy damage that Weakens; heal 8% of max HP. | Keystone: +40 healing power, -20% damage. / Hearth Eternal |
 | **Grimvald** | **Avatar of Wealth**: Become the Golden Scale for 3 turns: +40% damage and a golden shield; every enemy takes 160% Divine Power and you gain 50 gold. | Ledger’s Edge → Ledger’s Edge, Audited → Ledger’s Edge, Compounded → Ledger’s Edge, the Golden Scale (Axe) | **Goldbound**: Kills grant 15 gold; +50% gold find and +30% magic find. | **Golden Rebuke**: A strike of solid gold for 120% ATK + 60% Divine Power; steal 10 gold.<br>**Audit**: Every enemy is Weakened and Vulnerable for 2 turns; you gain a shield of 20% max HP. | Keystone: +60% gold find and +20% damage, but take 10% more damage. / The Golden Scale: Start every battle with a shield of 20% max HP. |
 | **Lyssara** | **Avatar of the Moon**: Become the Moon Between Dreams for 3 turns: +40% damage and +30 dodge; every enemy takes 180% Divine Power ice damage and may fall asleep. | Crescent Rod → Crescent Rod, Waxing → Crescent Rod, Full → Crescent Rod, the Moon Between Dreams (Staff) | **Moonborn**: Enemies start battle drowsy: 25% chance to Slow each. +20% ice damage and 10% less damage taken. | **Moonbeam**: A pale beam for 170% Divine Power ice damage; 30% chance to put the target to sleep.<br>**Moon Veil**: Shield yourself for 25% of max HP and slip into Stealth for 2 turns. | Keystone: +20% damage at night is permanent, but -10% max HP. / Moon Between Dreams: Start every battle with a shield of 20% max HP. |
-| **Ordrun** | **Avatar of the Mountain**: Become the Unmoved for 3 turns: +35% damage and +50% defense; every enemy takes 170% Divine Power damage and is Slowed. | Keystone → Keystone, Set → Keystone, Bearing → Keystone, the Unmoved (Warhammer) | **Mountainborn**: Take 14% less damage; 20% chance to Stun on hit. | **Landslide**: Stone falls on the front row: 120% ATK + 60% Divine Power physical damage. Heavy stagger.<br>**Hold the Line**: Shield yourself for 30% of max HP and gain +30% defense for 3 turns; enemies must target you. | Keystone: take 15% less damage, -8 speed. / The Mountain Remains: Start every battle with a shield of 25% max HP. |
+| **Ordrun** | **Avatar of the Mountain**: Become the Unmoved for 3 turns: +35% damage and +50% defense; every enemy takes 170% Divine Power damage and is Slowed. | Keystone → Keystone, Set → Keystone, Bearing → Keystone, the Unmoved (Warhammer) | **Mountainborn**: Take 14% less damage; 20% chance to Stun on hit. | **Landslide**: Stone falls on the front row: 120% ATK earth damage. Heavy stagger.<br>**Hold the Line**: Shield yourself for 30% of max HP and gain +30% defense for 3 turns; enemies must target you. | Keystone: take 15% less damage, -8 speed. / The Mountain Remains: Start every battle with a shield of 25% max HP. |
 | **Seraphel** | **Avatar of the Open Road**: Become the Wind for 3 turns: +35% damage and Haste; every enemy takes 190% Divine Power lightning damage. | Windpiercer → Windpiercer, Fledged → Windpiercer, Soaring → Windpiercer, the Open Road (Bow) | **Windborn**: Each turn, 25% chance to strike a random enemy with lightning (70% Divine Power). +20% lightning damage and +15 dodge. | **Cutting Wind**: A razor gust: 110% ATK + 50% Divine Power lightning damage to every enemy.<br>**Slipstream**: Ride the wind: Haste for 3 turns and +25 dodge for 2. | Keystone: +15 dodge and +10% speed, -10% max HP. / The Road Goes On: Start every battle with Haste for 2 turns. |
 | **Mirrin** | **Avatar of the Hour**: Become the Keeper of What Was for 3 turns: +35% damage and 20% cooldown reduction; every enemy takes 170% Divine Power arcane damage and is Slowed. You act again at once. | Hourglass Staff → Hourglass Staff, Running → Hourglass Staff, Turned → Hourglass Staff, the Keeper (Staff) | **Hourborn**: Spells may echo; +20% arcane damage and 15% cooldown reduction. | **Hour Strike**: A blow that lands a moment before it is thrown: 160% Divine Power arcane damage; 25% chance to Slow.<br>**Recall the Moment**: Rewind: restore your best health of the last three turns and clear debuffs. | Keystone: +20% cooldown reduction, -10% max HP. / It Has Already Happened: Start every battle with Haste for 2 turns. |
 

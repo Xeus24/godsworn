@@ -1,3 +1,4 @@
+import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
 import { content, type Content } from '../../data';
 import type { Rng } from '../core/rng';
 import { TriggerSystem } from '../effects/triggers';
@@ -26,6 +27,9 @@ export interface BattleSetup {
   hooks?: BattleHooks;
   /** 0..1: how sharply enemies pick targets and skills (set by difficulty). */
   aiSharpness?: number;
+  features?: import('./types').FeatureKind[];
+  purse?: number;
+  opening?: 'ambush' | 'preemptive';
   c?: Content;
 }
 
@@ -57,9 +61,15 @@ export class Battle {
   chain: { targetId?: string; count: number; lastSide?: Side } = { count: 0 };
   /** Sigils painted on the field: they fire when an enemy starts a turn. */
   sigils: { ownerId: string; name: string; charges: number; effects: import('../effects/types').EffectSpec[] }[] = [];
+  /** Room features that can be used (barrels, chandeliers, holy ground, lava). */
+  features: import('./types').BattleFeature[] = [];
+  /** Gold on hand for bribes. */
+  purse = 0;
+  /** How the fight began: an ambush (they act first) or a preemptive strike (you do). */
+  opening?: 'ambush' | 'preemptive';
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
-  readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], generalUses: {}, tagUses: {}, summons: 0 };
+  readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];
   private uid = 0;
@@ -77,6 +87,9 @@ export class Battle {
     this.weather = setup.weather;
     this.hooks = setup.hooks ?? {};
     this.aiSharpness = setup.aiSharpness ?? 0.25;
+    this.features = (setup.features ?? []).map((kind, i) => ({ id: `feature-${i + 1}`, kind, used: false }));
+    this.purse = setup.purse ?? 0;
+    this.opening = setup.opening;
     this.triggers = new TriggerSystem(this.rng);
     for (const x of this.combatants) this.registerTriggers(x);
   }
@@ -182,7 +195,13 @@ export class Battle {
     if (this.outcome !== 'ongoing') return this.outcome;
     const partyStanding = this.alive('party').some((x) => x.kind === 'hero' || x.kind === 'companion');
     if (!partyStanding) this.outcome = 'defeat';
-    else if (this.alive('enemy').length === 0) this.outcome = 'victory';
+    else if (this.alive('enemy').length === 0) {
+      this.outcome = 'victory';
+      for (const x of this.combatants) {
+        const lines = x.side === 'enemy' && !x.departed ? BOSS_LINES[x.enemyId ?? ''] : undefined;
+        if (lines) this.log(`${x.name}: ${lines[2]}`);
+      }
+    }
     if (this.outcome !== 'ongoing') this.emit({ type: 'end', outcome: this.outcome });
     return this.outcome;
   }

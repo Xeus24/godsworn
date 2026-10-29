@@ -104,7 +104,7 @@ const LYSSARA: GreaterGod = {
 };
 
 const ORDRUN: GreaterGod = {
-  god: { id: 'ordrun', name: 'Ordrun', epithet: 'the Unmoved', domain: 'Earth & Endurance', element: 'physical', favoredStats: ['vit', 'str'], color: '#a8844a', symbol: 'A square stone with a single crack mended in gold' },
+  god: { id: 'ordrun', name: 'Ordrun', epithet: 'the Unmoved', domain: 'Earth & Endurance', element: 'earth', favoredStats: ['vit', 'str'], color: '#a8844a', symbol: 'A square stone with a single crack mended in gold' },
   pantheon: {
     id: 'ordrun', alignment: 'Lawful Neutral', personality: 'Slow to speak, slower to move, impossible to argue with.', rivals: ['vex'], allies: ['thalor', 'solenne'],
     shrine: 'Standing Stone', temple: 'The Foundation',
@@ -136,7 +136,7 @@ const ORDRUN: GreaterGod = {
   apostle: {
     god: 'ordrun',
     skills: [
-      rite({ id: 'landslide', name: 'Landslide', description: 'Stone falls on the front row: 120% ATK + 60% Divine Power physical damage. Heavy stagger.', tags: ['Attack', 'Melee', 'Physical', 'Divine', 'AoE'], element: 'physical', targeting: 'frontRow', cost: { mp: 12 }, cooldown: 2, stagger: 2, damage: { stat: 'physicalAttack', multiplier: 1.2, perRank: 0.1 }, effects: [{ kind: 'applyStatus', status: 'slow', duration: 2 }] }),
+      rite({ id: 'landslide', name: 'Landslide', description: 'Stone falls on the front row: 120% ATK earth damage. Heavy stagger.', tags: ['Attack', 'Melee', 'Earth', 'Divine', 'AoE'], element: 'earth', targeting: 'frontRow', cost: { mp: 12 }, cooldown: 2, stagger: 2, damage: { stat: 'physicalAttack', multiplier: 1.2, perRank: 0.1 }, effects: [{ kind: 'applyStatus', status: 'slow', duration: 2 }] }),
       rite({ id: 'hold-the-line', name: 'Hold the Line', description: 'Shield yourself for 30% of max HP and gain +30% defense for 3 turns; enemies must target you.', tags: ['Buff', 'Divine', 'Defensive'], element: 'physical', targeting: 'self', cost: { mp: 12 }, cooldown: 4, effects: [{ kind: 'shield', percentMaxHp: 30 }, { kind: 'buff', id: 'hold-the-line', duration: 3, modifiers: [{ stat: 'defense', type: 'percent', value: 30 }], target: 'self' }, { kind: 'applyStatus', status: 'taunt', duration: 2, target: 'self' }] }),
     ],
     avatar: avatar({ id: 'avatar-ordrun', name: 'Avatar of the Mountain', description: 'Become the Unmoved for 3 turns: +35% damage and +50% defense; every enemy takes 170% Divine Power damage and is Slowed.', element: 'physical', tags: ['Divine', 'AoE'], damage: 1.7, buff: [flat('damageBonus', 35), pct('defense', 50)], effects: [{ kind: 'applyStatus', status: 'slow', duration: 2, target: 'allEnemies' }] }),

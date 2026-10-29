@@ -12,7 +12,7 @@ export type SkillTargeting =
   | 'ally'
   | 'allAllies';
 
-export type SkillSource = 'class' | 'racial' | 'general' | 'specialization' | 'hybrid' | 'apostle' | 'avatar' | 'ultimate' | 'enemy' | 'basic' | 'spirit' | 'team';
+export type SkillSource = 'class' | 'racial' | 'general' | 'specialization' | 'hybrid' | 'apostle' | 'avatar' | 'ultimate' | 'enemy' | 'basic' | 'spirit' | 'team' | 'weaponArt';
 
 /** Which attack stat a skill's damage or healing scales from. */
 export type ScalingStat = 'physicalAttack' | 'magicAttack' | 'divinePower';
@@ -42,6 +42,8 @@ export interface SkillDef {
   source: SkillSource;
   /** Dual technique: usable by either partner (a class id or a companion id) while the other is alive in the party. */
   team?: [string, string];
+  /** A Weapon Art: usable by anyone wielding a weapon of this type. */
+  weaponArt?: string;
   tags: SkillTag[];
   element: Element;
   targeting: SkillTargeting;

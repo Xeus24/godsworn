@@ -82,6 +82,7 @@ const FAMILIES: Record<ParagonBoard, Fam[]> = {
     ['Tempest', 'lightningDamage', 'flat', 0.6, '% lightning damage'],
     ['Umbra', 'shadowDamage', 'flat', 0.6, '% shadow damage'],
     ['Verdancy', 'natureDamage', 'flat', 0.6, '% nature damage'],
+    ['Quarry', 'earthDamage', 'flat', 0.6, '% earth damage'],
     ['Aim', 'accuracy', 'flat', 0.6, ' accuracy'],
     ['Breaker', 'shieldPierce', 'flat', 0.5, '% shield pierce'],
   ],

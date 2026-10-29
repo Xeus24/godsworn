@@ -74,12 +74,22 @@ import { buildRecipeScrolls } from './economy/scrolls';
 import { SHOPS } from './economy/shops';
 import { STANCES } from './stances';
 import { TEAM_SKILLS } from './teamAttacks';
+import { WEAPON_ARTS } from './weaponArts';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
-const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...DIVINE_COMBAT_SKILLS, ...GREATER_DIVINE_COMBAT, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS];
+/** Earth (phase 11): constructs and stone things shrug it off; things that fly, swim or float are caught out by it. */
+function withEarth<T extends { types: string[]; family: string; resists?: Partial<Record<string, number>> }>(e: T): T {
+  if (e.resists?.earth !== undefined) return e;
+  const stone = e.family === 'golem' || e.types.some((x) => ['construct', 'golem', 'elemental', 'earth'].includes(x));
+  const airborne = e.family === 'bat' || e.types.some((x) => ['flying', 'ghost', 'wraith', 'spirit'].includes(x));
+  if (!stone && !airborne) return e;
+  return { ...e, resists: { ...e.resists, earth: stone ? 40 : -25 } };
+}
+
+const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...DIVINE_COMBAT_SKILLS, ...GREATER_DIVINE_COMBAT, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS, ...WEAPON_ARTS];
 const ALL_SKILLS = [...BASE_SKILLS, ...evolvedSkills((id) => BASE_SKILLS.find((s) => s.id === id) as (typeof BASE_SKILLS)[number])];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...GREATER_GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...GREATER_DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
@@ -125,7 +135,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS]),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS].map(withEarth)),
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', BOSS_SCRIPTS),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),

@@ -12,6 +12,9 @@ import { GameSession } from './engine/state/gameState';
 import type { EncounterDef } from './engine/combat/types';
 import type { Battle } from './engine/combat/battle';
 import { createEncounterBattle } from './engine/combat/setup';
+import { rollFeatures } from './engine/combat/features';
+import { utilityRank } from './engine/skills/general';
+import { characterStats } from './engine/character/stats';
 import { timeOfDay } from './engine/state/clock';
 import { CharacterScreen } from './ui/character/characterScreen';
 import { CombatScreen, inventoryHooks } from './ui/combat/combatScreen';
@@ -352,6 +355,17 @@ interface GauntletOptions {
   partyModifiers: ModifierSpec[];
 }
 
+/** On the road, a fight may begin with an ambush (they act first) or a preemptive strike (you do). */
+function openingFor(s: GameSession): { opening?: 'ambush' | 'preemptive' } {
+  const watchful = Math.min(8, utilityRank(s.player, 'detectTraps') + utilityRank(s.player, 'animalSpeech'));
+  const roll = s.rng.float(0, 100);
+  const ambush = Math.max(2, 12 - watchful * 1.2);
+  const preempt = 10 + Math.min(10, characterStats(s.player).dex / 10);
+  if (roll < ambush) return { opening: 'ambush' };
+  if (roll < ambush + preempt) return { opening: 'preemptive' };
+  return {};
+}
+
 function startFight(encounter: EncounterDef, level?: number, world = false, gauntlet?: GauntletOptions): void {
   const s = session;
   if (!s) return;
@@ -364,6 +378,10 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     timeOfDay: timeOfDay(s.state.clock),
     weather: s.world.weatherNow(),
     punisher,
+    purse: s.state.gold,
+    // The room itself: barrels, chandeliers, holy ground and lava, and who struck first on the road.
+    ...(world || !encounter.isBoss ? { features: rollFeatures(s.rng, s.world.map.biome, s.world.zone.id) } : {}),
+    ...(world && !encounter.isBoss ? openingFor(s) : {}),
     companions: s.party.battleMembers(),
     guests: [...s.quests.guests(), ...(follower ? [{ id: 'follower', enemyId: follower, ally: true }] : [])],
     // Rifts and the Boss Rush are already set at your level: no NG+ stretching.

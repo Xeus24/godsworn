@@ -45,6 +45,7 @@ const ELEMENT_PREFIX: Record<string, string> = {
   holy: 'Radiant',
   shadow: 'Umbral',
   arcane: 'Eldritch',
+  earth: 'Quaking',
 };
 
 const ELEMENT_SUFFIX: Record<string, string> = {
@@ -55,6 +56,7 @@ const ELEMENT_SUFFIX: Record<string, string> = {
   holy: 'of the Dawn',
   shadow: 'of the Eclipse',
   arcane: 'of Nullification',
+  earth: 'of the Bedrock',
 };
 
 const SPECS: AffixSpec[] = [

@@ -64,6 +64,10 @@ export interface EncounterOptions {
   /** A hated god's punisher joins the fight (god id). */
   punisher?: string;
   weather?: string;
+  /** Phase 11: room features, gold for bribes and how the fight began. */
+  features?: import('./types').FeatureKind[];
+  purse?: number;
+  opening?: 'ambush' | 'preemptive';
   /** Companions fighting beside the hero, with their bond perks. */
   companions?: { char: Character; extras: CompanionExtras }[];
   /** Extra modifiers on every enemy and on every party member (Rift affixes, challenge modes). */
@@ -155,6 +159,9 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     isBoss: encounter.isBoss,
     timeOfDay: opts.timeOfDay,
     ...(opts.weather ? { weather: opts.weather } : {}),
+    ...(opts.features ? { features: opts.features } : {}),
+    ...(opts.purse !== undefined ? { purse: opts.purse } : {}),
+    ...(opts.opening ? { opening: opts.opening } : {}),
     hooks: opts.hooks,
     aiSharpness: difficulty.enemy.aiSharpness,
     c,

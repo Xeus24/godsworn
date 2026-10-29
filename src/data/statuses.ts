@@ -69,4 +69,18 @@ const BASE_STATUSES: StatusDef[] = [
   { id: 'stealth', name: 'Stealth', kind: 'buff', glyph: 'Sh', color: '#9a9ab0', description: 'Hidden: the next attack is a guaranteed critical hit. Enemies cannot single you out.', stacking: 'refresh', maxStacks: 1, stealth: true },
 ];
 
-export const STATUSES: StatusDef[] = [...BASE_STATUSES, ...GREATER_CLASSES.flatMap((g) => g.extras?.statuses ?? [])];
+
+/** Phase 11: nine more statuses (the roster of ordinary statuses grows from 23 to 32). */
+const NEW_STATUSES: StatusDef[] = [
+  { id: 'sleep', name: 'Sleep', kind: 'debuff', glyph: 'Zz', color: '#9ab4ff', description: 'Fast asleep: loses its turns until it takes damage.', stacking: 'refresh', maxStacks: 1, skipTurn: true, breakOnDamage: true },
+  { id: 'confuse', name: 'Confuse', kind: 'debuff', glyph: '?!', color: '#e8a8e8', description: 'Befuddled: 35% chance to lose the turn and 40 less accuracy.', stacking: 'refresh', maxStacks: 1, skipChance: 0.35, modifiers: [{ stat: 'accuracy', type: 'flat', value: -40 }] },
+  { id: 'petrify', name: 'Petrify', kind: 'debuff', glyph: 'Pt', color: '#a8a8a0', description: 'Turned to stone: loses its turns, but takes 40% less damage and has double defense.', stacking: 'refresh', maxStacks: 1, skipTurn: true, modifiers: [{ stat: 'damageTaken', type: 'more', value: -40 }, { stat: 'defense', type: 'percent', value: 100 }] },
+  { id: 'doom', name: 'Doom', kind: 'debuff', glyph: 'Dm', color: '#401050', description: 'Marked for the Last Door: loses 8% of max HP each turn and cannot be healed well (-50%).', stacking: 'refresh', maxStacks: 1, dot: { element: 'shadow', powerRatio: 0, percentMaxHp: 8 }, modifiers: [{ stat: 'healingReceived', type: 'flat', value: -50 }] },
+  { id: 'entangle', name: 'Entangle', kind: 'debuff', glyph: 'En', color: '#5a8a3a', description: 'Held by roots or wire: 25% chance to lose the turn, 20 less dodge and 20% less speed.', stacking: 'refresh', maxStacks: 1, skipChance: 0.25, modifiers: [{ stat: 'dodge', type: 'flat', value: -20 }, { stat: 'speed', type: 'percent', value: -20 }] },
+  { id: 'mired', name: 'Mired', kind: 'debuff', glyph: 'Mr', color: '#8a6a3a', description: 'Stuck in mud or sand: 25% less speed and 15 less dodge.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'speed', type: 'percent', value: -25 }, { stat: 'dodge', type: 'flat', value: -15 }] },
+  { id: 'marked', name: 'Marked', kind: 'debuff', glyph: 'Mk', color: '#d84a2a', description: 'A target painted on its back: takes 10% more damage and has 15 less dodge.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'damageTaken', type: 'more', value: 10 }, { stat: 'dodge', type: 'flat', value: -15 }] },
+  { id: 'inspired', name: 'Inspired', kind: 'buff', glyph: 'In', color: '#ffd84a', description: '+10% damage and +8% crit chance.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'damageBonus', type: 'flat', value: 10 }, { stat: 'critChance', type: 'flat', value: 8 }] },
+  { id: 'earthbound', name: 'Earthbound', kind: 'buff', glyph: 'Eb', color: '#c8a064', description: '+25% defense and +30% earth resist, 5% less speed.', stacking: 'refresh', maxStacks: 1, modifiers: [{ stat: 'defense', type: 'percent', value: 25 }, { stat: 'earthResist', type: 'flat', value: 30 }, { stat: 'speed', type: 'percent', value: -5 }] },
+];
+
+export const STATUSES: StatusDef[] = [...BASE_STATUSES, ...NEW_STATUSES, ...GREATER_CLASSES.flatMap((g) => g.extras?.statuses ?? [])];

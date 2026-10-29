@@ -4,7 +4,9 @@ import { settings, updateSettings } from '../settings';
 import { content } from '../../data';
 import { chooseAction } from '../../engine/combat/ai';
 import type { Battle } from '../../engine/combat/battle';
-import { needsTarget, skillOptions, validTargets, type SkillOption } from '../../engine/combat/skills';
+import { needsTarget, skillOptions, validTargets, weaponArtsFor, type SkillOption } from '../../engine/combat/skills';
+import { FEATURE_INFO } from '../../engine/combat/features';
+import { talkOptions } from '../../engine/combat/talk';
 import { advance, perform, startBattle, timeline } from '../../engine/combat/turns';
 import type { Action, BattleEvent, Combatant } from '../../engine/combat/types';
 import { countOf, takeQuantity } from '../../engine/items/inventory';
@@ -37,7 +39,7 @@ const EVENT_DELAY: Partial<Record<BattleEvent['type'], number>> = {
   turn: 60,
 };
 
-type Menu = 'main' | 'skills' | 'items' | 'abilities';
+type Menu = 'main' | 'skills' | 'items' | 'abilities' | 'arts' | 'talk' | 'env';
 
 interface Pending {
   label: string;
@@ -391,7 +393,7 @@ export class CombatScreen implements Screen {
 
     if (this.menu === 'skills') {
       const items = options
-        .filter((o) => o.skill.id !== 'basic-attack')
+        .filter((o) => o.skill.id !== 'basic-attack' && !o.skill.weaponArt)
         .map((o) =>
           btn(
             `${o.skill.ultimate ? '★ ' : x.skills.find((k) => k.id === o.skill.id)?.general ? '◇ ' : ''}${o.skill.name}${o.check.ok ? '' : ` (${o.check.reason})`}`,
@@ -419,6 +421,27 @@ export class CombatScreen implements Screen {
         return b;
       });
       node.replaceChildren(title, el('div', { class: 'cmd-grid' }, ...(items.length ? items : [el('p', { class: 'dim small' }, 'No usable items.')]), back()));
+      return;
+    }
+    if (this.menu === 'arts') {
+      const arts = options.filter((o) => o.skill.weaponArt);
+      const items = arts.map((o) => btn(`${o.skill.name}${o.check.ok ? '' : ` (${o.check.reason})`}`, () => this.useSkillOption(x, o), !o.check.ok, () => el('div', {}, el('div', { class: 'tip-title' }, o.skill.name), el('div', {}, o.skill.description), el('div', { class: 'tip-desc' }, `${skillCostText(o.skill)}${o.skill.cooldown ? ` · ${o.skill.cooldown} turn cooldown` : ''}`))));
+      node.replaceChildren(title, el('div', { class: 'cmd-grid' }, ...items, back()));
+      return;
+    }
+    if (this.menu === 'talk') {
+      const rows = this.battle.alive('enemy').flatMap((t) =>
+        talkOptions(this.battle, x, t).map((o) => {
+          const label = o.approach === 'spare' ? `Spare ${t.name}` : o.approach === 'bribe' ? `Bribe ${t.name} (${o.cost}g)` : `${o.approach[0]!.toUpperCase()}${o.approach.slice(1)} ${t.name} (${Math.round(o.chance * 100)}%)`;
+          return btn(label, () => this.act({ kind: 'talk', actorId: x.id, targetId: t.id, approach: o.approach }), o.cost !== undefined && this.battle.purse < o.cost, () => o.approach === 'persuade' ? 'Talk it down. It leaves, and you get no spoils.' : o.approach === 'bribe' ? 'Pay it to go away.' : o.approach === 'recruit' ? 'Win a beast over; it fights for you this battle.' : 'It is beaten and ready to yield.');
+        }),
+      );
+      node.replaceChildren(title, el('div', { class: 'cmd-grid' }, ...(rows.length ? rows : [el('p', { class: 'dim small' }, 'Nothing here will listen. (Bosses can be spared when nearly beaten.)')]), back()));
+      return;
+    }
+    if (this.menu === 'env') {
+      const items = this.battle.features.map((f) => btn(`${FEATURE_INFO[f.kind].verb}${f.used ? ' (used)' : ''}`, () => this.act({ kind: 'interact', actorId: x.id, featureId: f.id }), f.used, () => `${FEATURE_INFO[f.kind].name}: ${FEATURE_INFO[f.kind].text}`));
+      node.replaceChildren(title, el('div', { class: 'cmd-grid' }, ...items, back()));
       return;
     }
     if (this.menu === 'abilities') {
@@ -449,6 +472,9 @@ export class CombatScreen implements Screen {
         btn(ultReady ? 'Skills ★' : 'Skills', () => ((this.menu = 'skills'), this.renderCommands())),
         btn('Items', () => ((this.menu = 'items'), this.renderCommands())),
         ...(x.abilities.length ? [btn('Abilities', () => ((this.menu = 'abilities'), this.renderCommands()))] : []),
+        ...(weaponArtsFor(this.battle, x).length ? [btn('Weapon Art', () => ((this.menu = 'arts'), this.renderCommands()))] : []),
+        btn('Talk', () => ((this.menu = 'talk'), this.renderCommands()), x.kind === 'summon'),
+        ...(this.battle.features.length ? [btn('Environment', () => ((this.menu = 'env'), this.renderCommands()))] : []),
         ...(x.prayer ? [this.prayButton(x, btn)] : []),
         btn('Defend (D)', () => this.act({ kind: 'defend', actorId: x.id }), false, () => 'Take half damage until your next turn and recover 5% MP.'),
         btn(`Swap to ${x.row === 'front' ? 'back' : 'front'} row`, () => this.act({ kind: 'swap', actorId: x.id }), false, () => 'Back row: take 25% less physical damage, but melee attacks need the front row.'),

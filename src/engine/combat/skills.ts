@@ -95,6 +95,16 @@ function teamSkillList(b: Battle): SkillDef[] {
   return list;
 }
 
+const ART_LISTS = new WeakMap<object, SkillDef[]>();
+
+/** Weapon Arts `x` can use: those of any weapon type it holds. */
+export function weaponArtsFor(b: Battle, x: Combatant): SkillDef[] {
+  if (x.kind !== 'hero' && x.kind !== 'companion') return [];
+  let list = ART_LISTS.get(b.c.skills);
+  if (!list) ART_LISTS.set(b.c.skills, (list = b.c.skills.filter((s) => s.weaponArt !== undefined)));
+  return list.filter((s) => x.weaponTypes.includes(s.weaponArt as string));
+}
+
 /** Dual techniques `x` may use now: it is one partner and the other is alive beside it. Charmed or summoned units never team up. */
 export function teamSkillsFor(b: Battle, x: Combatant): SkillDef[] {
   if (x.kind !== 'hero' && x.kind !== 'companion') return [];
@@ -119,6 +129,7 @@ export function skillOptions(b: Battle, x: Combatant): SkillOption[] {
     if (skill.ultimate) continue;
     out.push({ skill, rank: s.rank, check: canUseSkill(b, x, skill) });
   }
+  for (const skill of weaponArtsFor(b, x)) out.push({ skill, rank: 1, check: canUseSkill(b, x, skill) });
   for (const skill of teamSkillsFor(b, x)) out.push({ skill, rank: 1, check: canUseSkill(b, x, skill) });
   if (x.ultimateSkill) {
     const ult = b.c.skills.get(x.ultimateSkill);

@@ -13,6 +13,7 @@ export const ELEMENTS = [
   'shadow',
   'arcane',
   'void',
+  'earth',
 ] as const;
 export type Element = (typeof ELEMENTS)[number];
 

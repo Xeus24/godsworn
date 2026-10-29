@@ -20,7 +20,7 @@ describe('item counts', () => {
     expect(count('primordial')).toBe(20);
     expect(content.itemSets.size).toBe(26);
     expect(content.runewords.size).toBe(40);
-    expect(content.affixes.size).toBe(110);
+    expect(content.affixes.size).toBeGreaterThanOrEqual(110);
     expect(content.recipes.size).toBeGreaterThanOrEqual(220);
     expect(content.items.filter((i) => i.category === 'consumable').length).toBeGreaterThanOrEqual(90);
     expect(content.items.filter((i) => i.category === 'material').length).toBeGreaterThanOrEqual(60);

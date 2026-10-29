@@ -238,6 +238,12 @@ export interface Combatant {
   /** Fallen enemies leave a corpse that necromancy can consume. */
   corpse: boolean;
   reviveUsed: boolean;
+  /** Talked down or bribed away: gone from the fight, not killed. */
+  /** A boss has already spoken its half-health line. */
+  midSaid?: boolean;
+  departed?: boolean;
+  /** Won over by Talk: fights on the party's side for this battle. */
+  recruited?: boolean;
   lowHpFired: boolean;
   turnsTaken: number;
   /** Visuals. */
@@ -263,7 +269,17 @@ export type Action =
   | { kind: 'defend'; actorId: string }
   | { kind: 'swap'; actorId: string }
   | { kind: 'flee'; actorId: string }
-  | { kind: 'pray'; actorId: string; targetId?: string };
+  | { kind: 'pray'; actorId: string; targetId?: string }
+  | { kind: 'talk'; actorId: string; targetId: string; approach: 'persuade' | 'bribe' | 'recruit' | 'spare' }
+  | { kind: 'interact'; actorId: string; featureId: string };
+
+/** Something in the room a fighter can use (Phase 11): barrels burst, chandeliers fall, holy ground heals, lava burns. */
+export type FeatureKind = 'barrel' | 'chandelier' | 'holy' | 'lava';
+export interface BattleFeature {
+  id: string;
+  kind: FeatureKind;
+  used: boolean;
+}
 
 export type BattleEvent =
   | { type: 'turn'; actorId: string }
@@ -306,6 +322,10 @@ export interface BattleTally {
   skillUses: Record<string, number>;
   /** Enemy ids stolen from this battle. */
   stolen: string[];
+  /** Gold paid in bribes, and bosses and foes who were spared, talked down or won over. */
+  spent: number;
+  spared: string[];
+  talked: string[];
   /** Uses of skills granted by general skills, keyed by general skill id, for training. */
   generalUses: Record<string, number>;
   /** Hero skill uses per tag (gods like or dislike some kinds of magic). */

@@ -66,6 +66,7 @@ const ELEMENT_COLORS: Record<string, string> = {
   shadow: '#c08aff',
   arcane: '#ff8af0',
   void: '#b04aff',
+  earth: '#c8a064',
 };
 
 /**

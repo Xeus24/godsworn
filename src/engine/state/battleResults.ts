@@ -98,6 +98,9 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   }
 
   for (const id of b.tally.stolen) if (!p.stolen.includes(id)) p.stolen.push(id);
+  // Talk: bribes are paid whether or not the fight is won; mercy pleases the gods who like it.
+  if (b.tally.spent > 0) s.state.gold = Math.max(0, s.state.gold - b.tally.spent);
+  for (let i = 0; i < b.tally.spared.length + Math.ceil(b.tally.talked.length / 2); i++) s.devotion.deed('mercy');
   rewards.generalUps = s.general.trainAfterBattle(b);
 
   for (const kill of b.tally.kills) {
@@ -164,6 +167,13 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
       const def = book ? content.items.find(book) : undefined;
       const taught = def?.category === 'book' ? def.teaches : undefined;
       if (book && taught && !p.generalSkills[taught] && countOf(s.state.inventory, book) === 0) rewards.items.push(createItem(book, 1, () => s.newUid()));
+    }
+    // A spared boss is worth half its experience, and some gratitude in gold.
+    for (const id of b.tally.spared) {
+      const sparedFoe = b.combatants.find((c) => c.enemyId === id);
+      if (!sparedFoe) continue;
+      rewards.xp += Math.round(killXp(sparedFoe.xp, sparedFoe.level, p.level) * 0.5);
+      rewards.gold += sparedFoe.level * 20;
     }
     rewards.gold += b.tally.goldFound;
     const reward = getDifficulty(p.difficulty).reward;

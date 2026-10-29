@@ -33,6 +33,8 @@ export const SKILL_TAGS = [
   'Shadow',
   'Arcane',
   'Void',
+  'Earth',
+  'WeaponArt',
   'Divine',
   'Racial',
   'Evolved',
