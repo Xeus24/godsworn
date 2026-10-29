@@ -161,6 +161,8 @@ export type ConsumableAction =
   | { kind: 'expandInventory'; slots: number }
   | { kind: 'escape' }
   | { kind: 'revive'; hpPct: number }
+  /** Eases a regional meter (a Torch against Darkness, a Water-Skin against Heat). */
+  | { kind: 'meter'; meter: string; amount: number }
   /** Opens something somewhere else (a Rift Map at a town's Rift Gate). */
   | { kind: 'key'; text: string };
 

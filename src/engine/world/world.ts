@@ -40,7 +40,8 @@ export function createWorldState(c: Content = content): WorldState {
 
 /** The zone a map belongs to (a zone, or the zone of a dungeon). */
 export function zoneOf(mapId: string, c: Content = content): ZoneDef {
-  return c.zones.find(mapId) ?? c.zones.get(c.dungeons.get(mapId).zone);
+  const area = c.areas.find(mapId);
+  return c.zones.find(mapId) ?? (area ? c.zones.get(area.zone) : c.zones.get(c.dungeons.get(mapId).zone));
 }
 
 export const isDungeon = (mapId: string, c: Content = content): boolean => c.dungeons.has(mapId);
@@ -71,6 +72,8 @@ export function runesDone(world: WorldState, map: TileMap): boolean {
 export function entityActive(world: WorldState, map: TileMap, e: MapEntity, day: number): boolean {
   if (e.kind === 'dig' && !world.treasureMaps.includes(e.ref as string)) return false;
   if (e.requires && !world.lore.includes(e.requires)) return false;
+  if (e.tide && e.tide === 'low' && world.tideHigh) return false;
+  if (e.tide && e.tide === 'high' && !world.tideHigh) return false;
   const usedDay = world.used[usedKey(map.id, e.id)];
   if (usedDay === undefined) return true;
   if (e.kind === 'worldBoss') return day - usedDay >= WORLD_BOSS_RESPAWN_DAYS;
@@ -216,10 +219,20 @@ export function enterDungeon(world: WorldState, dungeon: string, day: number): v
 export function arrival(world: WorldState, from: string, exit: MapEntity, c: Content = content): { map: string; x: number; y: number } {
   const target = exit.ref as string;
   const map = mapFor(target, c);
+  if (exit.arrive === 'dock') return townSpot('saltmere', c);
+  if (exit.arrive === 'pass') {
+    const back = map.entities.find((e) => e.kind === 'exit' && e.arrive === 'pass' && e.ref === from);
+    if (back) {
+      for (const [dx, dy] of [[0, 1], [0, -1], [1, 0], [-1, 0]] as const) {
+        if (passable(world, map, back.x + dx, back.y + dy) && !entityAt(map, back.x + dx, back.y + dy)) return { map: target, x: back.x + dx, y: back.y + dy };
+      }
+      return { map: target, x: back.x, y: back.y };
+    }
+  }
   if (exit.arrive === 'west' && map.spawns.west) return { map: target, x: map.spawns.west[0], y: map.spawns.west[1] };
   if (exit.arrive === 'east' && map.spawns.east) return { map: target, x: map.spawns.east[0], y: map.spawns.east[1] };
   // Leaving a dungeon: stand next to its door in the zone.
-  const door = map.entities.find((e) => e.kind === 'dungeon' && e.ref === from);
+  const door = map.entities.find((e) => (e.kind === 'dungeon' || e.kind === 'area') && e.ref === from);
   if (door) {
     for (const [dx, dy] of [[0, 1], [0, -1], [1, 0], [-1, 0]] as const) {
       if (passable(world, map, door.x + dx, door.y + dy) && !entityAt(map, door.x + dx, door.y + dy)) return { map: target, x: door.x + dx, y: door.y + dy };

@@ -64,6 +64,7 @@ import { HERESY } from './heresy';
 import { FACTIONS } from './world/factions';
 import { HOUSE_ROOMS } from './world/housing';
 import { FURNITURE } from './world/furniture';
+import { AREA_LORE, AREAS } from './world/areas';
 import { INVESTMENTS } from './world/investments';
 import { LORE } from './world/lore';
 import { DUNGEONS, TOWNS } from './world/places';
@@ -159,9 +160,10 @@ export const content = {
   weather: new ContentTable('weather', WEATHER),
   factions: new ContentTable('faction', FACTIONS),
   furniture: new ContentTable('furniture', FURNITURE),
+  areas: new ContentTable('area', AREAS),
   investments: new ContentTable('investment', INVESTMENTS),
   houseRooms: new ContentTable('house room', HOUSE_ROOMS),
-  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE]),
+  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE, ...AREA_LORE]),
   professions: new ContentTable('profession', PROFESSIONS),
   recipes: new ContentTable('recipe', RECIPES),
   shops: new ContentTable('shop', SHOPS),

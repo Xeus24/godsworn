@@ -1,6 +1,7 @@
 import { content, type Content } from '../../data';
 import type { StartingKitItem } from '../../data/items/loot';
 import { characterStats } from '../character/stats';
+import { reduceMeter } from '../world/mechanics';
 import type { Character } from '../character/types';
 import type { Result } from './equipment';
 import { equipFromInventory } from './equipment';
@@ -54,6 +55,11 @@ export function useConsumableInField(char: Character, inv: Inventory, index: num
       char.timedBuffs = char.timedBuffs.filter((b) => b.id !== action.buffId);
       char.timedBuffs.push({ id: action.buffId, name: action.name, modifiers: action.modifiers, battlesLeft: action.battles });
       message = `${action.name}: active for ${action.battles} battles.`;
+      break;
+    }
+    case 'meter': {
+      if (!reduceMeter(char, action.meter, action.amount)) return fail('You have no need of that here.');
+      message = 'You feel better for it.';
       break;
     }
     case 'skillPoint': {

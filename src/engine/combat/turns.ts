@@ -41,6 +41,10 @@ export function startBattle(b: Battle): BattleEvent[] {
     for (const x of losers) x.nextAt += 100 / Math.max(1, b.stats(x).speed) + 0.5;
     b.log(b.opening === 'ambush' ? 'Ambush! They were waiting for you.' : 'You strike first! They are caught flat-footed.');
   }
+  if (b.volley > 0) {
+    for (const x of b.alive('enemy')) x.hp = Math.max(1, x.hp - Math.round((x.maxHp * b.volley) / 100));
+    b.log(`Your ship's guns thunder: a broadside tears into the enemy!`);
+  }
   b.log('Battle start!');
   for (const x of b.alive('enemy')) {
     const lines = BOSS_LINES[x.enemyId ?? ''];

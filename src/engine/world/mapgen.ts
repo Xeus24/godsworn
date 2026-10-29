@@ -1,4 +1,5 @@
 import { SAINTS } from '../../data/saints';
+import { PASSES, type AreaDef } from '../../data/world/areas';
 import { HIDDEN_LORE, SECRET_BOSSES } from '../../data/world/hidden';
 import { content, type Content } from '../../data';
 import { Rng } from '../core/rng';
@@ -271,6 +272,25 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
     add({ id: `cache-${i + 1}`, kind: 'chest', x: p[0], y: p[1], gate: { skill: gate.skill, rank: Math.min(10, zone.order + 1) }, label: gate.name });
   }
 
+  // Tidepool caches: uncovered at low tide only.
+  if (zone.mechanic === 'tides') {
+    for (let i = 0; i < 3; i++) {
+      const p = spotFor();
+      if (p) add({ id: `tidepool-${i + 1}`, kind: 'chest', x: p[0], y: p[1], tide: 'low', locked: false, trapped: false, label: 'Tidepool cache' });
+    }
+  }
+
+  // Side maps: four areas to explore from each zone (islands and sky areas are reached by ship and airship instead), and passes to zones that are not next door.
+  for (const area of c.areas.filter((a) => a.zone === zone.id && !a.access)) {
+    const p = spotFor();
+    if (p) add({ id: `area-${area.id}`, kind: 'area', x: p[0], y: p[1], ref: area.id, label: area.name });
+  }
+  for (const pass of PASSES.filter((x) => x.a === zone.id || x.b === zone.id)) {
+    const p = spotFor();
+    const to = pass.a === zone.id ? pass.b : pass.a;
+    if (p) add({ id: `pass-${pass.id}`, kind: 'exit', x: p[0], y: p[1], ref: to, arrive: 'pass', label: `${pass.name}: to ${c.zones.get(to).name}` });
+  }
+
   // Nothing may stand on scenery.
   for (const e of entities) if (e.kind !== 'exit') g.set(e.x, e.y, g.get(e.x, e.y) === '=' ? '=' : '.');
 
@@ -395,6 +415,120 @@ export function generateDungeon(d: DungeonDef, c: Content = content): TileMap {
   };
 }
 
+export const AREA_W = 48;
+export const AREA_H = 30;
+
+/** Terrain by theme: [tile, share] pairs scattered over open ground. */
+const THEME_TERRAIN: Record<string, [string, number][]> = {
+  grove: [['T', 0.16], ['H', 0.04]],
+  ruin: [['#', 0.08], ['T', 0.03]],
+  cave: [['#', 0.2]],
+  shore: [['~', 0.12], ['T', 0.04]],
+  camp: [['T', 0.07], ['#', 0.03]],
+  peak: [['#', 0.14], ['T', 0.03]],
+  oasis: [['~', 0.06], ['T', 0.06]],
+};
+
+/**
+ * A side map (Phase 12): open ground shaped by its theme, walled in, with a way out, two or three
+ * packs, a locked and a gated chest, a closet behind a cracked wall, a gathering node, a page of lore
+ * and, for ruins and peaks, a roaming champion pack.
+ */
+export function generateArea(area: AreaDef, c: Content = content): TileMap {
+  const zone = c.zones.get(area.zone);
+  const rng = new Rng(hashString(area.id));
+  const W = AREA_W;
+  const H = AREA_H;
+  const g = new Grid(W, H, '.');
+  for (let x = 0; x < W; x++) {
+    g.set(x, 0, '#');
+    g.set(x, H - 1, '#');
+  }
+  for (let y = 0; y < H; y++) {
+    g.set(0, y, '#');
+    g.set(W - 1, y, '#');
+  }
+  const terrain = THEME_TERRAIN[area.theme] ?? [];
+  for (let y = 2; y < H - 2; y++) {
+    for (let x = 2; x < W - 2; x++) {
+      for (const [tile, share] of terrain) {
+        if (rng.chance(share)) {
+          g.set(x, y, tile);
+          break;
+        }
+      }
+    }
+  }
+  // The way in, at the south-west edge, with a clear patch around it.
+  const ex = 2;
+  const ey = Math.floor(H / 2);
+  for (let dy = -2; dy <= 2; dy++) for (let dx = 0; dx <= 3; dx++) g.set(ex + dx, ey + dy, '.');
+  // Flood-fill from the way in; everything we place goes on reachable ground.
+  const reach = new Set<string>([`${ex},${ey}`]);
+  const queue: [number, number][] = [[ex, ey]];
+  while (queue.length) {
+    const [qx, qy] = queue.shift() as [number, number];
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+      const nx = qx + dx;
+      const ny = qy + dy;
+      if (reach.has(`${nx},${ny}`) || !['.', '='].includes(g.get(nx, ny))) continue;
+      reach.add(`${nx},${ny}`);
+      queue.push([nx, ny]);
+    }
+  }
+  const spots = [...reach].map((k) => k.split(',').map(Number) as [number, number]).filter(([x, y]) => x > 4 && x < W - 3 && y > 2 && y < H - 3);
+  const entities: MapEntity[] = [];
+  const add = (e: Omit<MapEntity, 'id'> & { id?: string }): void => {
+    entities.push({ id: e.id ?? `${e.kind}-${entities.length}`, ...e });
+  };
+  const spot = (): [number, number] => {
+    for (let tries = 0; tries < 300; tries++) {
+      const p = rng.pick(spots);
+      if (!entities.some((e) => Math.abs(e.x - p[0]) + Math.abs(e.y - p[1]) < 4) && Math.abs(p[0] - ex) + Math.abs(p[1] - ey) > 6) return p;
+    }
+    return rng.pick(spots);
+  };
+  add({ id: 'exit', kind: 'exit', x: 1, y: ey, ref: area.access ? 'stormcoast' : area.zone, arrive: area.access ? 'dock' : 'entrance', label: `Leave ${area.name}` });
+  g.set(1, ey, '.');
+  const packs = rng.int(2, 3);
+  for (let i = 0; i < packs; i++) {
+    const p = spot();
+    add({ id: `pack-${i}`, kind: 'enemies', x: p[0], y: p[1], group: pickGroup(zone.encounters, rng), label: 'Wanderers' });
+  }
+  if (area.theme === 'ruin' || area.theme === 'peak') {
+    const p = spot();
+    add({ id: 'champions', kind: 'enemies', x: p[0], y: p[1], group: pickGroup(zone.roaming.length ? zone.roaming : zone.encounters, rng), label: 'Champion pack' });
+  }
+  const c1 = spot();
+  add({ id: 'chest-0', kind: 'chest', x: c1[0], y: c1[1], locked: true, trapped: rng.chance(0.4) });
+  const c2 = spot();
+  const gate = GATE_ROTATION[hashString(area.id) % GATE_ROTATION.length]!;
+  add({ id: 'cache', kind: 'chest', x: c2[0], y: c2[1], gate: { skill: gate.skill, rank: Math.min(10, zone.order + 2) }, label: gate.name });
+  const n = spot();
+  const skill = (['mining', 'herbalism', 'fishing'] as const)[hashString(area.id + 'n') % 3]!;
+  add({ id: `node-${skill}`, kind: 'node', x: n[0], y: n[1], gather: skill, label: skill === 'mining' ? 'Ore vein' : skill === 'herbalism' ? 'Herb patch' : 'Fishing spot' });
+  const l = spot();
+  add({ id: `lore-${area.id}`, kind: 'lore', x: l[0], y: l[1], ref: `lore-area-${area.id}` });
+  // A closet behind a cracked wall in the north-east corner.
+  const kx = W - 6;
+  const ky = 3;
+  for (let yy = ky; yy < ky + 2; yy++) for (let xx = kx; xx < kx + 2; xx++) g.set(xx, yy, '.');
+  g.set(kx, ky + 2, 'X');
+  g.set(kx, ky + 3, '.');
+  add({ id: 'chest-hidden', kind: 'chest', x: kx + 1, y: ky, hidden: true, locked: false, trapped: false });
+  return {
+    id: area.id,
+    name: area.name,
+    biome: area.biome,
+    w: W,
+    h: H,
+    tiles: g.toString(),
+    entities,
+    spawns: { entrance: [ex, ey] },
+    level: [area.access ? zone.levels[1] : zone.levels[0], zone.levels[1] + (area.access ? 4 : 0)],
+  };
+}
+
 const cache = new Map<string, TileMap>();
 
 /** The map for a zone or dungeon id (generated once, then cached). */
@@ -402,7 +536,8 @@ export function mapFor(id: string, c: Content = content): TileMap {
   const hit = cache.get(id);
   if (hit) return hit;
   const zone = c.zones.find(id);
-  const map = zone ? generateZone(zone, c) : generateDungeon(c.dungeons.get(id), c);
+  const area = zone ? undefined : c.areas.find(id);
+  const map = zone ? generateZone(zone, c) : area ? generateArea(area, c) : generateDungeon(c.dungeons.get(id), c);
   cache.set(id, map);
   return map;
 }

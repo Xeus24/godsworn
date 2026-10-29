@@ -42,6 +42,8 @@ export interface ZoneDef {
   /** Roaming elite and champion groups placed on the map. */
   roaming: EncounterGroup[];
   lore: string[];
+  /** The regional mechanic (see data/world/mechanics.ts). */
+  mechanic?: string;
 }
 
 export interface TownDef {
@@ -146,7 +148,8 @@ export type EntityKind =
   | 'boss'
   | 'rune'
   | 'node'
-  | 'dig';
+  | 'dig'
+  | 'area';
 
 /** Something on a map: a door to elsewhere, a chest, a fight waiting to happen... */
 export interface MapEntity {
@@ -157,13 +160,15 @@ export interface MapEntity {
   /** Target id: town, dungeon, zone (exits), god (shrine), lore page, enemy (bosses). */
   ref?: string;
   /** Exits: which side of the target to arrive on. */
-  arrive?: 'west' | 'east' | 'entrance';
+  arrive?: 'west' | 'east' | 'entrance' | 'pass' | 'dock';
   /** Chests. */
   locked?: boolean;
   trapped?: boolean;
   hidden?: boolean;
   /** A saint's hidden shrine: ref is the patron god, `saint` the saint (see data/saints.ts). */
   saint?: string;
+  /** Only active at this tide (stormcoast tidepool caches). */
+  tide?: 'low' | 'high';
   /** A cache that opens only to an exploration skill of this rank (Swimming, Climbing, Lockpicking...). */
   gate?: { skill: 'swimming' | 'climbing' | 'ancientScript' | 'animalSpeech' | 'lockpicking' | 'detectTraps'; rank: number };
   /** Only shown once this lore page has been found (secret lairs). */
@@ -212,6 +217,10 @@ export interface WorldProgress {
   house?: HouseState;
   /** World bosses slain (enemy id -> count). */
   trophies: Record<string, number>;
+  /** The regional meter for the zone you are in (darkness, heat, cold...). */
+  meter?: { id: string; value: number };
+  /** Your ship (and airship) and the voyages it has made. */
+  ship?: { level: number; airship: boolean; voyages: number };
   /** Town businesses you have put money into (see data/world/investments.ts). */
   investments?: Record<string, { level: number; collected: number }>;
 }
@@ -219,6 +228,8 @@ export interface WorldProgress {
 /** Everything about the world the player has changed or seen. */
 export interface WorldState {
   position: WorldPosition;
+  /** The tide, set from the clock as you move. */
+  tideHigh?: boolean;
   /** Town you return to after a defeat (and the last one visited). */
   lastTown: string;
   /** Explored tiles per map, '1' for seen. */

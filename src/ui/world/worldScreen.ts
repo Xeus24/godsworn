@@ -20,6 +20,7 @@ import { monsterTile } from '../art/tileSprites';
 import { heroDoll } from '../art/heroDoll';
 import { equippedGearLook, equippedWeaponTypes } from '../../engine/items/equipment';
 import { drawWeather } from '../art/weatherFx';
+import { currentMeter, mechanicOf } from '../../engine/world/mechanics';
 import { WorldMapOverlay } from './worldMap';
 import type { Conversation } from '../../engine/state/conversation';
 import { objectiveLine } from '../../engine/state/conversation';
@@ -265,8 +266,25 @@ export class WorldScreen implements Screen {
         return tile(entityTile('rune', lit), () => entityIcon('rune', '', lit));
       }
       default:
-        return tile(entityTile(e.kind), () => entityIcon(e.kind));
+        return tile(entityTile(e.kind === 'area' ? 'dungeon' : e.kind), () => entityIcon(e.kind === 'area' ? 'dungeon' : e.kind));
     }
+  }
+
+  /** The region's rule: its meter, or the tide, and what it does. */
+  private regionPanel(): HTMLElement[] {
+    const s = this.session;
+    const zone = s.world.zone;
+    const def = mechanicOf(zone);
+    if (!def) return [];
+    const rows: HTMLElement[] = [el('div', { class: 'small', title: def.description }, def.name)];
+    const meter = currentMeter(s.player, zone);
+    if (meter) {
+      const v = Math.round(meter.value);
+      rows.push(el('div', { class: `small ${v >= 100 ? 'warn' : ''}` }, `${def.meter}: ${v}%`));
+    }
+    if (def.id === 'tides') rows.push(el('div', { class: 'small' }, `The tide is ${s.state.world.tideHigh ? 'high' : 'low'}.`));
+    rows.push(el('div', { class: 'dim small' }, def.description));
+    return rows;
   }
 
   private drawView(map: TileMap): void {
@@ -621,7 +639,7 @@ export class WorldScreen implements Screen {
     const day = this.session.state.clock.day;
     for (const e of map.entities) {
       if (!explored(w, map, e.x, e.y) || !entityActive(w, map, e, day)) continue;
-      const color = { town: '#ffd84a', dungeon: '#b070ff', shrine: content.gods.find(e.ref ?? '')?.color ?? '#fff', waypoint: '#6af0ff', worldBoss: '#ff3a3a', boss: '#ff3a3a', exit: '#ffffff', chest: '#c8a040', enemies: '#e06030' }[e.kind as string];
+      const color = { town: '#ffd84a', dungeon: '#b070ff', area: '#7ad8a8', shrine: content.gods.find(e.ref ?? '')?.color ?? '#fff', waypoint: '#6af0ff', worldBoss: '#ff3a3a', boss: '#ff3a3a', exit: '#ffffff', chest: '#c8a040', enemies: '#e06030' }[e.kind as string];
       if (color) dot(e.x, e.y, color);
     }
     for (const m of this.session.quests.markers(map.id)) dot(m.x, m.y, m.quest === this.session.state.quests.tracked ? '#ffd84a' : '#c08a3a');
@@ -696,6 +714,7 @@ export class WorldScreen implements Screen {
       el('div', { class: 'dim small' }, `${levels}${dungeon && s.state.world.dungeonsCleared.includes(dungeon.id) ? ' · cleared' : ''}`),
       el('div', { class: 'small' }, `${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
       ...(weather && !dungeon && weather.id !== 'clear' ? [el('div', { class: 'dim small' }, weather.description)] : []),
+      ...this.regionPanel(),
       this.minimap,
       ...this.trackedPanel(),
       el('div', { class: 'world-actions' }, ...actions),

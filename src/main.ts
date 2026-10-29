@@ -35,6 +35,7 @@ import { TreeScreen } from './ui/tree/treeScreen';
 import { MarketScreen } from './ui/world/marketScreen';
 import { TownScreen } from './ui/world/townScreen';
 import { WorkshopScreen } from './ui/world/workshopScreen';
+import { ShipScreen } from './ui/world/shipScreen';
 import { WorldScreen } from './ui/world/worldScreen';
 import './ui/world/world.css';
 import './ui/quests/quests.css';
@@ -333,11 +334,17 @@ function showWorld(): void {
 function showTown(town: string): void {
   audio().setTrack(moodForTown(town));
   audio().setWeather(undefined);
-  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), endgame: showEndgame, leave: showWorld, talk }, town));
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), harbor: () => showHarbor(town), endgame: showEndgame, leave: showWorld, talk }, town));
 }
 
 function showMarket(town: string): void {
   if (session) screens.show(new MarketScreen(session, nav, town, () => showTown(town)));
+}
+
+function showHarbor(town: string): void {
+  if (!session) return;
+  const s = session;
+  screens.show(new ShipScreen(s, nav, () => showTown(town), (encounter, level, volley) => startFight(encounter, level, true, undefined, volley)));
 }
 
 function showWorkshop(town: string): void {
@@ -366,7 +373,7 @@ function openingFor(s: GameSession): { opening?: 'ambush' | 'preemptive' } {
   return {};
 }
 
-function startFight(encounter: EncounterDef, level?: number, world = false, gauntlet?: GauntletOptions): void {
+function startFight(encounter: EncounterDef, level?: number, world = false, gauntlet?: GauntletOptions, volley?: number): void {
   const s = session;
   if (!s) return;
   inBattle = true;
@@ -379,6 +386,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     weather: s.world.weatherNow(),
     punisher,
     purse: s.state.gold,
+    ...(volley ? { volley } : {}),
     // The room itself: barrels, chandeliers, holy ground and lava, and who struck first on the road.
     ...(world || !encounter.isBoss ? { features: rollFeatures(s.rng, s.world.map.biome, s.world.zone.id) } : {}),
     ...(world && !encounter.isBoss ? openingFor(s) : {}),

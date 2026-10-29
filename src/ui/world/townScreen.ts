@@ -25,6 +25,8 @@ export interface TownNav {
   arena: () => void;
   market: () => void;
   workshop: () => void;
+  /** The harbor (Saltmere). */
+  harbor: () => void;
   /** Rift Gate and Boss Rush. */
   endgame: () => void;
   leave: () => void;
@@ -226,6 +228,7 @@ export class TownScreen implements Screen {
       ),
       this.card('Workshop', el('p', { class: 'small' }, 'Learn professions, craft, upgrade gear, reroll affixes, add sockets and raise quality.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
     );
+    if (t.id === 'saltmere') cards.push(this.card('Harbor', el('p', { class: 'small' }, 'Build a ship, set sail for the islands, and one day take to the air.'), this.btn('Go to the harbor', () => this.town.harbor(), false, 'primary')));
     const late = endgameUnlocked(s.state);
     const forSale = content.mounts.filter((m) => m.price !== undefined);
     const petsForSale = content.pets.filter((pt) => pt.price !== undefined);

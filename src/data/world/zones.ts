@@ -1,4 +1,5 @@
 import { GREATER_GATHER } from '../items/greaterEconomy';
+import { MECHANICS } from './mechanics';
 import type { EnemyTier } from '../../engine/combat/types';
 import type { EncounterGroup, ZoneDef } from '../../engine/world/types';
 
@@ -122,6 +123,7 @@ export const ZONES: ZoneDef[] = [
 
 // Phase 10: the newer raw materials join each zone's gathering tables.
 for (const z of ZONES) {
+  z.mechanic = MECHANICS.find((m) => m.zone === z.id)?.id;
   const more = GREATER_GATHER[z.id];
   if (!more) continue;
   for (const k of ['mining', 'herbalism', 'fishing'] as const) z.gather[k] = [...new Set([...z.gather[k], ...(more[k] ?? [])])];

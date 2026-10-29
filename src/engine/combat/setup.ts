@@ -68,6 +68,8 @@ export interface EncounterOptions {
   features?: import('./types').FeatureKind[];
   purse?: number;
   opening?: 'ambush' | 'preemptive';
+  /** A naval battle's opening broadside: share of each enemy's max HP. */
+  volley?: number;
   /** Companions fighting beside the hero, with their bond perks. */
   companions?: { char: Character; extras: CompanionExtras }[];
   /** Extra modifiers on every enemy and on every party member (Rift affixes, challenge modes). */
@@ -162,6 +164,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     ...(opts.features ? { features: opts.features } : {}),
     ...(opts.purse !== undefined ? { purse: opts.purse } : {}),
     ...(opts.opening ? { opening: opts.opening } : {}),
+    ...(opts.volley ? { volley: opts.volley } : {}),
     hooks: opts.hooks,
     aiSharpness: difficulty.enemy.aiSharpness,
     c,

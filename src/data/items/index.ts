@@ -13,6 +13,7 @@ import { PRIMORDIALS } from './primordials';
 import { RELICS } from './relics';
 import { RUNES } from './runes';
 import { SET_ITEMS as BASE_SET_ITEMS, ITEM_SETS as BASE_ITEM_SETS } from './sets';
+import { WORLD_CONSUMABLES } from './greaterWorld';
 import { GREATER_CONSUMABLES, GREATER_MATERIALS } from './greaterEconomy';
 import { GREATER_MYTHICS, GREATER_PRIMORDIALS, GREATER_RELICS } from './greaterRare';
 import { LIVING_ITEMS } from './greaterLiving';
@@ -32,6 +33,7 @@ export const ITEM_BASES: ItemBaseDef[] = [
   ...RUNES,
   ...CONSUMABLES,
   ...GREATER_CONSUMABLES,
+  ...WORLD_CONSUMABLES,
   ...MATERIALS,
   ...GREATER_MATERIALS,
   ...CURIOSITIES,

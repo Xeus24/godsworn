@@ -30,6 +30,7 @@ export interface BattleSetup {
   features?: import('./types').FeatureKind[];
   purse?: number;
   opening?: 'ambush' | 'preemptive';
+  volley?: number;
   c?: Content;
 }
 
@@ -67,6 +68,8 @@ export class Battle {
   purse = 0;
   /** How the fight began: an ambush (they act first) or a preemptive strike (you do). */
   opening?: 'ambush' | 'preemptive';
+  /** Naval battle: the ship's broadside at the start. */
+  volley = 0;
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
   readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
@@ -90,6 +93,7 @@ export class Battle {
     this.features = (setup.features ?? []).map((kind, i) => ({ id: `feature-${i + 1}`, kind, used: false }));
     this.purse = setup.purse ?? 0;
     this.opening = setup.opening;
+    this.volley = setup.volley ?? 0;
     this.triggers = new TriggerSystem(this.rng);
     for (const x of this.combatants) this.registerTriggers(x);
   }

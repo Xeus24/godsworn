@@ -16,9 +16,14 @@ import { addItem, canAdd, countOf, createInventory, STASH_TAB_SIZE, takeQuantity
 import { rollLoot } from '../items/loot';
 import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
+import { SIGHT } from '../world/world';
+import { sightRadius } from '../world/mechanics';
+import { mechanicEncounterMult, mechanicStep, resetMeter, tideIsHigh } from '../world/mechanics';
 import { trainGeneral, utilityChance, utilityRank } from '../skills/general';
 import { applyRep, FACTION_FAVOR_SHARE, judgeFactions, rankOf, repOf, type RepChange } from '../world/factions';
 import { collectInvestments, investmentCost, investmentLevel, raiseInvestment } from '../world/investments';
+import { AIRSHIP } from '../../data/world/ship';
+import { canBuildAirship, canUpgradeShip, destinations, navalChance, nextShip, volleyPercent } from '../world/ship';
 import { addFurniture, canBuyFurniture, canBuyHouse, buyHouse, roomCost, roomLevel, upgradeRoom } from '../world/housing';
 import { mapFor } from '../world/mapgen';
 import { grantMap, MAP_CHEST_CHANCE, treasureItemId } from '../world/treasure';
@@ -58,7 +63,9 @@ const fail = (reason: string): WorldResult => ({ ok: false, reason });
 export interface PendingFight {
   map: string;
   entity?: string;
-  kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss' | 'quest';
+  kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss' | 'quest' | 'sea';
+  /** A voyage in progress: where the ship was going. */
+  dest?: string;
 }
 
 export type StepResult =
@@ -157,7 +164,7 @@ export class WorldActions {
   /** Reveals the area around you (call after arriving anywhere). */
   look(): void {
     const p = this.world.position;
-    reveal(this.world, this.map, p.x, p.y);
+    reveal(this.world, this.map, p.x, p.y, sightRadius(this.s.player, this.zone, SIGHT));
   }
 
   private placeAt(map: string, x: number, y: number): void {
@@ -193,18 +200,41 @@ export class WorldActions {
     if (!exit) this.placeAt(map.id, nx, ny);
     this.s.advanceTime(this.stepMinutes(map.id));
     if (this.world.grace > 0) this.world.grace--;
+    this.world.tideHigh = tideIsHigh(this.s.state.clock.minute);
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
+    // The region's own rule: meters, vents and getting lost.
+    const mech = mechanicStep(this.s.player, this.zone, this.s.timeOfDay === 'night', tileAt(map, nx, ny) === '=', this.s.rng);
+    if (mech.harm) {
+      const stats = characterStats(this.s.player);
+      this.s.player.hp = Math.max(1, this.s.player.hp - Math.max(1, Math.round(stats.maxHp * mech.harm)));
+      this.changed('mechanic');
+    }
+    if (mech.lost) this.loseBearings();
+    if (mech.message) this.toast('warning', mech.message);
     // Random encounters roam the open zones, not dungeons or towns.
     if (!isDungeon(map.id) && this.world.grace === 0) {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
-      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1))) {
+      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh))) {
         const encounter = randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng);
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
       }
     }
     return { kind: 'moved' };
+  }
+
+  /** Lost in the wood: turned around to a random open spot a few tiles away. */
+  private loseBearings(): void {
+    const p = this.world.position;
+    const map = this.map;
+    for (let tries = 0; tries < 40; tries++) {
+      const x = p.x + this.s.rng.int(-9, 9);
+      const y = p.y + this.s.rng.int(-9, 9);
+      if (Math.abs(x - p.x) + Math.abs(y - p.y) < 5 || !passable(this.world, map, x, y) || entityAt(map, x, y)) continue;
+      this.placeAt(map.id, x, y);
+      return;
+    }
   }
 
   /** Steps onto (or uses) a quest marker. */
@@ -294,6 +324,7 @@ export class WorldActions {
     switch (e.kind) {
       case 'town': {
         const town = e.ref as string;
+        resetMeter(this.s.player);
         this.world.lastTown = town;
         this.collectHouse();
         this.s.items.applyStashRules();
@@ -308,6 +339,12 @@ export class WorldActions {
         this.world.grace = ENCOUNTER_GRACE;
         return { kind: 'map', message: `You enter ${dm.name}.` };
       }
+      case 'area': {
+        const am = mapFor(e.ref as string);
+        this.placeAt(am.id, am.spawns.entrance[0] + 1, am.spawns.entrance[1]);
+        this.world.grace = ENCOUNTER_GRACE;
+        return { kind: 'map', message: `You come to ${am.name}.` };
+      }
       case 'exit': {
         const to = arrival(this.world, map.id, e);
         this.placeAt(to.map, to.x, to.y);
@@ -319,6 +356,7 @@ export class WorldActions {
         if (e.gate && !this.world.used[usedKey(map.id, e.id)]) return { kind: 'moved', message: this.openShrine(e) };
         return { kind: 'moved', message: `${content.pantheon.get(e.ref as string).shrine}: you may pray to ${content.gods.get(e.ref as string).name} here (Pantheon, P). ${godLine(this.s.player, e.ref as string, this.s.rng)}`.trim() };
       case 'waypoint': {
+        resetMeter(this.s.player);
         if (!this.world.waypoints.includes(map.id)) {
           this.world.waypoints.push(map.id);
           this.toast('info', `Waypoint attuned: ${map.name}. Fast travel from the world map (M).`);
@@ -362,7 +400,7 @@ export class WorldActions {
     const map = this.map;
     const pool = this.zone.gather[skill];
     const itemId = this.s.rng.pick(pool);
-    const qty = gatherYield(gatheringLevel(this.s.player, skill), this.s.rng);
+    const qty = gatherYield(gatheringLevel(this.s.player, skill), this.s.rng) + (this.zone.mechanic === 'harvest' && skill === 'herbalism' ? 1 : 0);
     const item = createItem(itemId, qty, () => this.s.newUid());
     if (!canAdd(this.s.state.inventory, item)) return 'Your bags are full.';
     addItem(this.s.state.inventory, item);
@@ -519,6 +557,10 @@ export class WorldActions {
     const pending = this.pending;
     this.pending = undefined;
     this.world.grace = ENCOUNTER_GRACE;
+    if (pending?.kind === 'sea' && pending.dest && outcome !== 'defeat') {
+      this.arriveAt(pending.dest);
+      return;
+    }
     if (outcome === 'defeat') {
       const spot = townSpot(this.world.lastTown);
       this.placeAt(spot.map, spot.x, spot.y);
@@ -601,6 +643,72 @@ export class WorldActions {
     this.toast('quest', `You bought a house in ${content.towns.get(town).name}!`);
     this.changed('house');
     return { ok: true };
+  }
+
+  // ------------------------------------------------------------ ship and airship
+
+  /** Builds the first ship or upgrades it, at the harbor in Saltmere. */
+  upgradeShip(): WorldResult {
+    if (this.inTown() !== 'saltmere') return fail('The shipwrights are in Saltmere.');
+    const next = nextShip(this.s.player);
+    const check = canUpgradeShip(this.s.player, this.s.state.gold, this.s.state.inventory);
+    if (!next || !check.ok) return check.ok ? fail('Nothing to build.') : check;
+    this.s.spendGold(next.gold, 'ship');
+    for (const m of next.materials) takeQuantity(this.s.state.inventory, m.itemId, m.qty);
+    this.s.player.world.ship = { level: next.level, airship: this.s.player.world.ship?.airship ?? false, voyages: this.s.player.world.ship?.voyages ?? 0 };
+    this.toast('quest', next.level === 1 ? `The ${next.name} is yours. Where will you sail?` : `Your ship is now a ${next.name}.`);
+    this.changed('ship');
+    return { ok: true };
+  }
+
+  buildAirship(): WorldResult {
+    if (this.inTown() !== 'saltmere') return fail('The shipwrights are in Saltmere.');
+    const done = this.s.state.quests.completed[AIRSHIP.needsQuest] !== undefined;
+    const check = canBuildAirship(this.s.player, this.s.state.gold, this.s.state.inventory, done);
+    if (!check.ok) return check;
+    this.s.spendGold(AIRSHIP.gold, 'ship');
+    for (const m of AIRSHIP.materials) takeQuantity(this.s.state.inventory, m.itemId, m.qty);
+    const ship = this.s.player.world.ship as NonNullable<typeof this.s.player.world.ship>;
+    ship.airship = true;
+    this.toast('quest', `${AIRSHIP.name} rises from the dry dock. The sky is open.`);
+    this.changed('ship');
+    return { ok: true };
+  }
+
+  /**
+   * Sails (or flies) to a ship-only (or sky-only) area from Saltmere. A voyage by ship may meet a naval
+   * battle on the way: the result carries the encounter, and the voyage finishes when it is won or fled.
+   */
+  voyage(areaId: string): WorldResult | { ok: true; fight: { encounter: EncounterDef; level: number; volley: number } } {
+    if (this.inTown() !== 'saltmere') return fail('Voyages leave from the harbor at Saltmere.');
+    const dest = destinations(this.s.player).find((d) => d.id === areaId);
+    if (!dest) return fail('You do not know of such a place.');
+    if (dest.locked) return fail(dest.locked);
+    const area = content.areas.get(areaId);
+    const ship = this.s.player.world.ship as NonNullable<typeof this.s.player.world.ship>;
+    this.s.advanceTime(Math.round(dest.hours * 60));
+    if (area.access?.by === 'ship') {
+      ship.voyages++;
+      if (this.s.rng.chance(navalChance(this.s.player))) {
+        const zone = content.zones.get('stormcoast');
+        const encounter = randomEncounter(zone, this.weatherNow(), this.s.timeOfDay === 'night', this.s.player.level, this.s.rng);
+        encounter.id = `sea:${areaId}`;
+        encounter.name = 'Naval battle';
+        encounter.description = 'Something rises out of the swell beside your ship.';
+        this.pending = { map: this.world.position.map, kind: 'sea', dest: areaId };
+        return { ok: true, fight: { encounter, level: encounter.level, volley: volleyPercent(this.s.player) } };
+      }
+    }
+    this.arriveAt(areaId);
+    this.toast('info', `You arrive at ${area.name}.`);
+    return { ok: true };
+  }
+
+  private arriveAt(areaId: string): void {
+    const am = mapFor(areaId);
+    this.placeAt(am.id, am.spawns.entrance[0] + 1, am.spawns.entrance[1]);
+    this.world.grace = ENCOUNTER_GRACE;
+    this.changed('voyage');
   }
 
   /** Puts money into a town business (or raises it). */
