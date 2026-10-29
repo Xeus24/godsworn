@@ -1,4 +1,6 @@
 import { content } from '../../data';
+import { MinigameActions } from './minigameActions';
+import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
 import { spendParagonPoint } from '../character/paragon';
@@ -41,7 +43,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 19;
+export const SAVE_VERSION = 20;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -143,6 +145,8 @@ export interface GameState {
   rarityFound: Record<string, number>;
   /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
   legacy: { endings: string[] };
+  /** Fish, cards, dice, races, forging, digging and the arena ladder. */
+  minigames: MinigameState;
   /** Rifts and the Boss Rush: the run in progress and your records. */
   endgame: EndgameState;
 }
@@ -174,6 +178,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     achievements: {},
     rarityFound: {},
     legacy: { endings: [] },
+    minigames: createMinigameState(),
     endgame: createEndgameState(),
   };
 }
@@ -196,6 +201,7 @@ export class GameSession {
   readonly economy: EconomyActions;
   readonly quests: QuestActions;
   readonly party: PartyActions;
+  readonly minigames: MinigameActions;
   readonly achievements: AchievementActions;
   readonly endgame: EndgameActions;
 
@@ -211,6 +217,7 @@ export class GameSession {
     this.world = new WorldActions(this);
     this.economy = new EconomyActions(this);
     this.party = new PartyActions(this);
+    this.minigames = new MinigameActions(this);
     this.quests = new QuestActions(this);
     this.achievements = new AchievementActions(this);
     this.endgame = new EndgameActions(this);

@@ -121,7 +121,7 @@ describe('quest flow', () => {
     const s = newSession();
     expect(s.state.quests.active['main-1']).toBeDefined();
     expect(s.state.quests.tracked).toBe('main-1');
-    expect(SAVE_VERSION).toBe(19);
+    expect(SAVE_VERSION).toBe(20);
   });
 
   it('talking, markers, a branch on mercy and a recruit carry chapter one through', () => {

@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { createMinigameState } from '../minigames/state';
 import { createEndgameState } from '../endgame/types';
 import { BUILD_SLOTS } from '../skills/treeTypes';
 import { emptyBuild } from '../skills/tree';
@@ -126,6 +127,8 @@ export function migrate(raw: Json): Json {
   }
   // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
   p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
+  // Version 20 (minigames): fish, cards (a starter set) and records start fresh.
+  state.minigames ??= createMinigameState() as unknown as Json;
   // Version 19 (companions): camp scenes, chats and banter start at zero.
   for (const comp of Object.values(obj(obj(state.party).companions))) {
     const c = obj(comp);

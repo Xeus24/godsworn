@@ -1,4 +1,6 @@
 import { ContentTable, ContentValidator } from '../engine/content/registry';
+import { FISH } from './minigames/fish';
+import { CARDS } from './minigames/cards';
 import type { EffectSpec, TriggeredEffect } from '../engine/effects/types';
 import { isGearBase } from '../engine/items/types';
 import type { ModifierSpec } from '../engine/stats/modifiers';
@@ -176,6 +178,8 @@ export const content = {
   dialogues: new ContentTable('dialogue', DIALOGUES),
   companions: new ContentTable('companion', COMPANIONS),
   endings: new ContentTable('ending', ALL_ENDINGS),
+  fish: new ContentTable('fish', FISH),
+  cards: new ContentTable('card', CARDS),
   /** Ids of the secret lines (see data/story/secretLines.ts): flags `secret:<id>`. */
   secretLines: SECRET_LINE_IDS,
   achievements: new ContentTable('achievement', ACHIEVEMENTS),

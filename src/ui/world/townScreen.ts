@@ -27,6 +27,8 @@ export interface TownNav {
   workshop: () => void;
   /** The harbor (Saltmere). */
   harbor: () => void;
+  /** The pastimes: fishing, cards, dice, racing, the forge, digging and the arena ladder. */
+  games: () => void;
   /** Rift Gate and Boss Rush. */
   endgame: () => void;
   leave: () => void;
@@ -42,6 +44,7 @@ const CARD_ICONS: Record<string, string> = {
   Temple: 'temple',
   Market: 'market',
   Workshop: 'workshop',
+  Pastimes: 'arena',
   Stables: 'stables',
   'Rift Gate & Boss Rush': 'rift',
   'Arena & Class Trainers': 'arena',
@@ -228,6 +231,7 @@ export class TownScreen implements Screen {
       ),
       this.card('Workshop', el('p', { class: 'small' }, 'Learn professions, craft, upgrade gear, reroll affixes, add sockets and raise quality.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
     );
+    cards.push(this.card('Pastimes', el('p', { class: 'small' }, `${t.minigame ? `${t.name} is known for ${({ fishing: 'its fishing', dice: 'its dice tables', digging: 'treasure digging', forging: 'its forge contests', cards: 'Pantheon Cards', racing: 'mount racing' } as Record<string, string>)[t.minigame] ?? t.minigame}. ` : ''}Fishing, Pantheon Cards, tavern dice, mount racing, the forge, digging and the arena ladder.`), this.btn('Play', () => this.town.games(), false, 'primary')));
     if (t.id === 'saltmere') cards.push(this.card('Harbor', el('p', { class: 'small' }, 'Build a ship, set sail for the islands, and one day take to the air.'), this.btn('Go to the harbor', () => this.town.harbor(), false, 'primary')));
     const late = endgameUnlocked(s.state);
     const forSale = content.mounts.filter((m) => m.price !== undefined);

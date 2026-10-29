@@ -906,6 +906,13 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase18b.test.ts` (10); 798 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before). Not walked in the browser.
 - **Not done / cut:** the Clockwork Theatre, Riddle Crown, Crimson Pages, elder drakes and saints' shrines (phases 6 and 9) are listed in the secrets doc but not counted in the per-region numbers; there is no Completion tracker screen (phase 20); the puzzle order has no in-game clue beyond "west to east" and each theme's hint.
 
+### Expansion phase 18c: seven minigames
+- **Pastimes** in every town (a new card on the town screen opens `ui/world/minigameScreen.ts`, on the game the town is known for): rules are pure functions in `engine/minigames/` and `engine/state/minigameActions.ts` applies them to your gold and records (`GameState.minigames`, **save version 20**, older saves get a starter set of cards).
+- **Fishing:** 69 fish in 15 kinds of water (every region has water), rarer fish bite less and fight harder, some bite only by day or night; a timing bar for the strike; a fish log with weight records; spare fish sell. **Pantheon Cards:** 124 original cards (eight for each of the 14 gods, twelve neutral), seven spheres in a ring where each beats the next two (+3), five-round duels against 12 named opponents who stake a card, a hand picker. **Tavern Dice:** Ship, Captain and Crew with a wager. **Mount Racing:** five racers, your speed from your fastest mount, odds and bets. **The Forge:** five timed strikes, scored and paid by tier (Flawed to Masterwork). **Treasure Digging:** probe a 7x7 pit with hot/cold hints. **Arena Ladder:** 12 rungs of regional packs, your party fights each at once (no cost in health), title Arena Champion at the top.
+- Tests: `tests/expansionPhase18c.test.ts` (14); 812 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before). **The pastimes screen was only rendered in a test DOM, not played in the browser.**
+- **Not done / cut:** fish and cards have no art; no cards are sold or found in the world (only won); the forge game pays gold and does not feed the Workshop; the dig game is separate from treasure-map dig spots; the arena ladder is auto-resolved rather than a turn-by-turn fight; no gamepad support on this screen yet (phase 20).
+- **Phase 18 is now complete** (18a side quests and factions, 18b secrets, 18c minigames).
+
 ## Known bugs
 - None known.
 

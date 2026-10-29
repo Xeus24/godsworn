@@ -36,6 +36,7 @@ import { MarketScreen } from './ui/world/marketScreen';
 import { TownScreen } from './ui/world/townScreen';
 import { WorkshopScreen } from './ui/world/workshopScreen';
 import { ShipScreen } from './ui/world/shipScreen';
+import { MinigameScreen } from './ui/world/minigameScreen';
 import { WorldScreen } from './ui/world/worldScreen';
 import './ui/world/world.css';
 import './ui/quests/quests.css';
@@ -334,11 +335,15 @@ function showWorld(): void {
 function showTown(town: string): void {
   audio().setTrack(moodForTown(town));
   audio().setWeather(undefined);
-  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), harbor: () => showHarbor(town), endgame: showEndgame, leave: showWorld, talk }, town));
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), harbor: () => showHarbor(town), games: () => showGames(town), endgame: showEndgame, leave: showWorld, talk }, town));
 }
 
 function showMarket(town: string): void {
   if (session) screens.show(new MarketScreen(session, nav, town, () => showTown(town)));
+}
+
+function showGames(town: string): void {
+  if (session) screens.show(new MinigameScreen(session, nav, town, () => showTown(town)));
 }
 
 function showHarbor(town: string): void {
