@@ -2,6 +2,7 @@ import { GODS } from '../gods';
 import { BATCH1_BOSS_LINES } from '../regions/batch1';
 import { BATCH2_BOSS_LINES } from '../regions/batch2';
 import { BATCH3_BOSS_LINES } from '../regions/batch3';
+import { BATCH4_BOSS_LINES } from '../regions/batch4';
 import { SECRET_BOSS_LINES } from '../story/secretLines';
 
 /**
@@ -74,6 +75,7 @@ export const BOSS_LINES: Record<string, BossLines> = {
   ...BATCH1_BOSS_LINES,
   ...BATCH2_BOSS_LINES,
   ...BATCH3_BOSS_LINES,
+  ...BATCH4_BOSS_LINES,
   ...SECRET_BOSS_LINES,
   ...Object.fromEntries(GODS.filter((g) => !g.hidden).map((g) => [`aspect-${g.id}`, VOICE[g.id] ?? FALLBACK])),
 };

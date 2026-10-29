@@ -923,6 +923,13 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase19a.test.ts` (9); 821 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
 - **Not done yet (19b to 19d):** the six NG+ regions, the three NG+ classes, and the endgame modes (Endless Spire, Divine Trials, Arena Champions league, weekly seeded challenges, Pacifist). **Cut:** Ascension gives a title, a flag and rewards but no real follower mechanics or minor-god kit; no per-tier remixed boss *scripts* (the remix is affix-based).
 
+### Expansion phase 19b: six New Game+ regions
+- **The Celestial Realm, the Abyss, the Shattered Timeline, the Drowned Kingdom, the Clockwork City and the Godforge** (`src/data/regions/batch4.ts`): 26 regions in all. Each opens only from a tier of New Game+ (`ZoneDef.ngPlus`: 1, 1, 2, 2, 3, 3) through a pass from a late region (Skyreach, Merrowdeep, the Dark Citadel, the Shattered Isles, the Clockwork Foundry, the Volcanic Rift); before that the pass says it is shut, and the world map does not list the region.
+- Each has levels 76-90, 7 new enemies (42), 3 rare spawns, 2 dungeons with a trick, hard paths and checkpoints (12 dungeons: 57 in all), two dungeon bosses, a world boss, 4 side maps, 2 lore pages, boss lines and a regional questline (`region-<id>`, given by a sage in a town, needs the tier).
+- **Rules:** Radiance, Dread and Godfire (health-harm meters), Undertow (carries you back to where you came in) and Time-Slips and Overclock (vents that strike on any ground), each with a relief item (Veil Lens, Dread Ward, Undertow Charm, Quench Oil).
+- Tests: `tests/expansionPhase19b.test.ts` (5); 826 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
+- **Not done / cut:** no towns or shops in these regions (the sages are in earlier towns); no secrets for them in the per-region count; reused biome art and sprite families; not walked in the browser. **Still to do in phase 19:** 19c the three NG+ classes, 19d the endgame modes.
+
 ## Known bugs
 - None known.
 

@@ -36,7 +36,7 @@ export class WorldMapOverlay {
     // Quest markers by zone (a dungeon's markers count for its zone).
     const markers = s.quests.markers();
     const zoneOfMap = (map: string): string => content.dungeons.find(map)?.zone ?? map;
-    const zones = content.zones.all().sort((a, b) => a.order - b.order).map((z) => {
+    const zones = content.zones.all().filter((z) => !z.ngPlus || s.state.ngPlus >= z.ngPlus).sort((a, b) => a.order - b.order).map((z) => {
       const map = mapFor(z.id);
       const share = exploredShare(w, map);
       const known = share > 0 || w.waypoints.includes(z.id);

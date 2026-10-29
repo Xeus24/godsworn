@@ -1,5 +1,5 @@
 import type { QuestDef } from '../../engine/quests/types';
-import { clear, kill, level, stage } from '../story/helpers';
+import { all, clear, kill, level, stage } from '../story/helpers';
 
 /** One short regional questline per new region: meet the local power, clear a dungeon, bring down the world boss. */
 export const LINE = (id: string, name: string, zone: string, lvl: number, giver: string, giverLine: string, dungeon: string, dungeonName: string, boss: string, bossName: string): QuestDef => ({
@@ -31,4 +31,19 @@ export const BATCH3_QUESTS: QuestDef[] = [
   LINE('hollow-barrows', 'The Barrows: The Door Too Neat', 'hollow-barrows', 33, 'priest-ansel', '“The old barrows are open, and the dead are walking out. Go to the King’s Barrow, and ask the Hollow King Below to lie down.”', 'kings-barrow', 'the King’s Barrow', 'hollow-king-below', 'the Hollow King Below'),
   LINE('shattered-isles', 'The Isles: The Turning', 'shattered-isles', 41, 'harbormaster-fenn', '“Something huge stirs under the Isles, and the wreckers are lighting lamps again. Clear the Wrecked Armada, then face the Storm Leviathan.”', 'wrecked-armada', 'the Wrecked Armada', 'storm-leviathan', 'the Storm Leviathan'),
   LINE('skyreach', 'Skyreach: The Last Court', 'skyreach', 55, 'storm-chaser-vanya', '“The sky-realm still has a court, and the court still has a king. Take the Storm Bastion, and then meet the Sovereign of Skyreach.”', 'storm-bastion', 'the Storm Bastion', 'skyreach-sovereign', 'the Sovereign of Skyreach'),
+];
+
+/** The questline of a New Game+ region: shut until its tier, then the same shape as the others. */
+const NG_LINE = (id: string, name: string, zone: string, lvl: number, tier: number, giver: string, giverLine: string, dungeon: string, dungeonName: string, boss: string, bossName: string): QuestDef => ({
+  ...LINE(id, name, zone, lvl, giver, giverLine, dungeon, dungeonName, boss, bossName),
+  requires: all(level(lvl - 2), { kind: 'ngPlus', min: tier }),
+});
+
+export const BATCH4_QUESTS: QuestDef[] = [
+  NG_LINE('celestial-realm', 'The Realm: Relieved at Last', 'celestial-realm', 82, 1, 'archmage-oriel', '“There is a place above the sky where angels have stood guard since before the Citadel. They have not been relieved. Go and do it, and then see to Aurial.”', 'halls-of-the-seraphim', 'the Halls of the Seraphim', 'arch-seraph-aurial', 'Arch-Seraph Aurial'),
+  NG_LINE('the-abyss', 'The Abyss: What It Heard', 'the-abyss', 84, 1, 'harbor-queen-maris', '“Something at the bottom of the sea has begun to listen, and the drowned will not stop whispering. Go down to the Listening Deep, and then the Mother.”', 'listening-deep', 'the Listening Deep', 'the-abyssal-mother', 'the Abyssal Mother'),
+  NG_LINE('shattered-timeline', 'The Timeline: A Second Too Late', 'shattered-timeline', 86, 2, 'loremaster-thrain', '“The days are splitting and the Hall of Hours is the knot. Cut it, and then end the Last Tick before it runs out for everyone.”', 'hall-of-hours', 'the Hall of Hours', 'the-last-tick', 'the Last Tick'),
+  NG_LINE('drowned-kingdom', 'The Kingdom: Long Live the Queen', 'drowned-kingdom', 80, 2, 'harbormaster-quill', '“A kingdom sits under the sea and will not be told it has ended. The Throne of Tides first, then the Throne itself.”', 'throne-of-tides', 'the Throne of Tides', 'the-drowned-throne', 'the Drowned Throne'),
+  NG_LINE('clockwork-city', 'The City: Off the Clock', 'clockwork-city', 88, 3, 'engineer-lorne', '“There is a city that runs to a schedule no one wrote. I would like it to take a day off. Break the Great Works, and then the Great Gear.”', 'the-great-works', 'the Great Works', 'the-great-gear', 'the Great Gear'),
+  NG_LINE('the-godforge', 'The Forge: One More Hammer-Stroke', 'the-godforge', 88, 3, 'forge-matron-hilda', '“The forge where gods were made is still burning, and it is still making something. Go down to the Quenching Hall and see what, and then ask the Heart.”', 'the-quenching-hall', 'the Quenching Hall', 'the-godforge-heart', 'the Heart of the Godforge'),
 ];

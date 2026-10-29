@@ -703,7 +703,7 @@ Generated from the data files by `npm run content:md`.
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (139)
+### Consumables (143)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -843,6 +843,10 @@ Generated from the data files by `npm run content:md`.
 - Air Pearl: A pearl that holds a breath: -70 Pressure in Merrowdeep.
 - Grave Candle: A candle that burns for the dead: -70 Fading in the Hollow Barrows.
 - Breath Tonic: Fills the lungs with warmth: -70 Thin air in Skyreach.
+- Veil Lens: Takes the edge off the light: -70 Radiance in the Celestial Realm.
+- Dread Ward: A sigil against the deep: -70 Dread in the Abyss.
+- Undertow Charm: Anchors you to the road: -70 Undertow in the Drowned Kingdom.
+- Quench Oil: Cools the air around you: -70 Godfire in the Godforge.
 - Ward Salt: A pinch against the Unwritten: -60 Corruption in the Dark Citadel.
 
 **Materials (65):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment, Coal, Silver Ore, Steel Ingot, Mithril Ingot, Adamant Ingot, Starmetal Ingot, Yew Plank, Ironwood Plank, Wolf Pelt, Boar Hide, Bear Hide, Serpent Skin, Wyvern Leather, Wool Bolt, Spider Silk, Thread of Dawn, Wild Garlic, Thornberry, Moonpetal, Nightshade, Ghostcap, Salt Cod, Pike, Glass Eel, Venison, Boar Meat, Honeycomb, Sea Salt, Black Pepper, Saffron
@@ -944,7 +948,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (406)
+### Enemies (484)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1354,6 +1358,84 @@ Generated from the data files by `npm run content:md`.
 | **The Hollow King Below** | 37 | worldBoss | undead, humanoid | front | defensive | Void Rend, Grave Chill, Earthshatter |  |
 | **The Storm Leviathan** | 45 | worldBoss | beast, water | front | defensive | Drown, Arc Lightning, Earthshatter |  |
 | **The Sovereign of Skyreach** | 59 | worldBoss | humanoid, celestial | back | caster | Crude Mending, Arc Lightning, Doom Mark |  |
+| **Seraph Guard** | 78 | normal | celestial, humanoid | front | defensive | Shield Bash, War Cry |  |
+| **Choir Cherub** | 79 | normal | celestial, spirit | back | caster | Crude Mending, Dazzle | earth -25% |
+| **Star Hound** | 80 | normal | celestial, beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **Dawn Golem** | 81 | normal | construct, celestial | front | defensive | Crushing Blow, Harden | earth +40% |
+| **Fallen Orator** | 82 | normal | celestial, humanoid | back | caster | Curse of Ages, Doom Mark |  |
+| **Radiant Wyrm** | 83 | normal | dragon, celestial | front | aggressive | Constrict, Flame Breath |  |
+| **Halo Wraith** | 84 | normal | undead, celestial | back | caster | Banshee Wail, Dazzle |  |
+| **Abyssal Maw** | 80 | normal | beast, void | front | aggressive | Savage Bite, Void Rend |  |
+| **Dread Shade** | 81 | normal | undead, void | back | caster | Banshee Wail, Doom Mark |  |
+| **Null Knight** | 82 | normal | humanoid, void | front | defensive | Shield Bash, Void Rend |  |
+| **Lantern Leech** | 83 | normal | beast, void | front | aggressive | Plague Bite, Drown |  |
+| **Echo Hunter** | 84 | normal | beast, spirit | front | aggressive | Dive Bomb, Screech | earth -25% |
+| **Black Tide** | 85 | normal | elemental, void | front | aggressive | Drown, Crushing Swing | earth +40% |
+| **Void Priest** | 86 | normal | humanoid, void, cultist | back | caster | Crude Mending, Corruption Wave |  |
+| **Time Wisp** | 78 | normal | spirit, arcane | back | caster | Dazzle, Crystal Shard | earth -25% |
+| **Paradox Hound** | 80 | normal | beast, arcane | front | aggressive | Savage Bite, Pack Howl |  |
+| **Hourglass Knight** | 82 | normal | humanoid, construct | front | defensive | Shield Bash, Harden | earth +40% |
+| **Ruined Clockmaker** | 84 | normal | humanoid, arcane | back | caster | Doom Mark, Curse of Ages |  |
+| **Yesterday’s Wolf** | 85 | normal | beast, spirit | front | aggressive | Savage Bite, Banshee Wail | earth -25% |
+| **Fracture Wraith** | 87 | normal | undead, arcane | back | caster | Banshee Wail, Arc Lightning |  |
+| **Tomorrow’s Golem** | 88 | normal | construct, arcane | front | defensive | Crushing Blow, Earthshatter | earth +40% |
+| **Drowned Hussar** | 76 | normal | undead, humanoid | front | aggressive | Cutlass Flurry, Grave Chill |  |
+| **Kelp Queen** | 78 | normal | plant, humanoid | back | caster | Root Lash, Constrict |  |
+| **Crown Crab** | 80 | normal | beast | front | defensive | Harden, Crushing Blow |  |
+| **Siren Consort** | 82 | normal | humanoid, water | back | caster | Siren Song, Drown |  |
+| **Trident Guard** | 83 | normal | humanoid, water | front | defensive | Shield Bash, Arc Lightning |  |
+| **Leviathan Calf** | 85 | normal | beast, water | front | aggressive | Constrict, Drown |  |
+| **Pearl Lich** | 86 | normal | undead, humanoid | back | caster | Frost Breath, Doom Mark |  |
+| **Brass Citizen** | 80 | normal | construct, humanoid | front | aggressive | Dirty Stab, War Cry | earth +40% |
+| **Piston Giant** | 83 | normal | construct, giant | front | aggressive | Crushing Blow, Tremor | earth +40% |
+| **Whistle Wraith** | 84 | normal | spirit, construct | back | caster | Screech, Arc Lightning | earth +40% |
+| **Lathe Spider** | 85 | normal | construct, beast | front | aggressive | Web Spit, Venom Fang | earth +40% |
+| **Regent Guard** | 86 | normal | construct | front | defensive | Shield Bash, Harden | earth +40% |
+| **Arc Engine** | 88 | normal | construct, elemental | back | caster | Arc Lightning, Crystal Shard | earth +40% |
+| **Grinder Drone** | 89 | normal | construct | front | aggressive | Cleave, Gore Charge | earth +40% |
+| **Forge Seraph** | 84 | normal | celestial, elemental | front | aggressive | Cleave, Flame Breath | earth +40% |
+| **Godsteel Golem** | 85 | normal | construct, celestial | front | defensive | Harden, Crushing Blow | earth +40% |
+| **Spark Sprite** | 86 | normal | elemental | back | caster | Magma Burst, Dazzle | earth +40% |
+| **Quench Hound** | 87 | normal | beast, elemental | front | aggressive | Savage Bite, Frost Breath | earth +40% |
+| **Apprentice of Flame** | 88 | normal | humanoid, elemental | back | caster | Hellfire Bolt, Flame Breath | earth +40% |
+| **Slag Colossus** | 89 | normal | elemental, construct | front | defensive | Earthshatter, Magma Burst | earth +40% |
+| **Hammer-Saint** | 90 | normal | celestial, humanoid | front | aggressive | Crushing Blow, War Cry |  |
+| **The First Seraph** | 82 | elite | celestial | front | defensive | Shield Bash, War Cry |  |
+| **The Lamb of Gold** | 80 | elite | celestial, beast | front | aggressive | Savage Bite, Crude Mending |  |
+| **The Prism Choirmaster** | 84 | elite | celestial, humanoid | back | caster | Dazzle, Arc Lightning |  |
+| **The Listener** | 83 | elite | void, humanoid | back | caster | Banshee Wail, Doom Mark |  |
+| **Mother of Lanterns** | 85 | elite | beast, void | front | defensive | Drown, Plague Bite |  |
+| **The Dread King** | 87 | elite | undead, void | front | aggressive | Void Rend, Grave Chill |  |
+| **The Second Before** | 84 | elite | spirit, arcane | front | aggressive | Dazzle, Screech | earth -25% |
+| **Old Sandglass** | 86 | elite | construct, arcane | front | defensive | Harden, Crushing Blow | earth +40% |
+| **The Might-Have-Been** | 88 | elite | undead, spirit | back | caster | Banshee Wail, Curse of Ages | earth -25% |
+| **Admiral Brine** | 80 | elite | undead, humanoid | front | aggressive | Cutlass Flurry, War Cry |  |
+| **The Empress of Weed** | 82 | elite | plant, humanoid | back | caster | Root Lash, Spore Cloud |  |
+| **The Court Jester** | 85 | elite | humanoid, water | front | aggressive | Dirty Stab, Siren Song |  |
+| **The Tinker-Regent** | 84 | elite | construct, humanoid | front | aggressive | Cleave, War Cry | earth +40% |
+| **The Great Governor** | 87 | elite | construct | front | defensive | Harden, Arc Lightning | earth +40% |
+| **Siren of the Whistle** | 89 | elite | spirit, construct | back | caster | Screech, Dazzle | earth +40% |
+| **Smith of Last Things** | 88 | elite | humanoid, celestial | front | aggressive | Crushing Blow, Flame Breath |  |
+| **Cinder Seraph** | 89 | elite | celestial, elemental | front | aggressive | Flame Breath, Dive Bomb | earth +40% |
+| **The Godfire Wyrm** | 90 | elite | dragon, elemental | front | aggressive | Flame Breath, Constrict | earth +40% |
+| **The Throne Warden** | 83 | boss | celestial | front | defensive | Shield Bash, Harden, Enrage |  |
+| **The Voice of the Choir** | 86 | boss | celestial, spirit | back | caster | Dazzle, Doom Mark, Enrage | earth -25% |
+| **The Deep Sovereign** | 85 | boss | void, humanoid | front | defensive | Void Rend, Harden, Enrage |  |
+| **The Drowned Hour** | 88 | boss | spirit, void | back | caster | Banshee Wail, Drown, Enrage | earth -25% |
+| **The Chronarch** | 87 | boss | humanoid, arcane | back | caster | Doom Mark, Crystal Shard, Enrage |  |
+| **The Unmade Moment** | 89 | boss | spirit, arcane | back | caster | Dazzle, Curse of Ages, Enrage | earth -25% |
+| **The Court Chamberlain** | 83 | boss | undead, humanoid | front | defensive | Shield Bash, War Cry, Enrage |  |
+| **The Drowned Queen** | 86 | boss | humanoid, water | back | caster | Siren Song, Drown, Enrage |  |
+| **The Master Assembler** | 86 | boss | construct | front | aggressive | Cleave, Harden, Enrage | earth +40% |
+| **The Prime Regent** | 89 | boss | construct, humanoid | front | defensive | Shield Bash, Arc Lightning, Enrage | earth +40% |
+| **Forgewright Ember** | 88 | boss | humanoid, elemental | back | caster | Hellfire Bolt, Magma Burst, Enrage | earth +40% |
+| **The Unfinished God** | 90 | boss | celestial, construct | front | defensive | Crushing Blow, Flame Breath, Enrage | earth +40% |
+| **Arch-Seraph Aurial** | 86 | worldBoss | celestial | front | defensive | Shield Bash, Dazzle, Earthshatter |  |
+| **The Abyssal Mother** | 88 | worldBoss | void, beast | front | defensive | Drown, Void Rend, Earthshatter |  |
+| **The Last Tick** | 90 | worldBoss | spirit, arcane | back | caster | Doom Mark, Crystal Shard, Earthshatter | earth -25% |
+| **The Drowned Throne** | 88 | worldBoss | construct, water | front | defensive | Crushing Blow, Drown, Earthshatter | earth +40% |
+| **The Great Gear** | 90 | worldBoss | construct, giant | front | defensive | Crushing Blow, Tremor, Earthshatter | earth +40% |
+| **Heart of the Godforge** | 90 | worldBoss | celestial, elemental | front | defensive | Flame Breath, Earthshatter, Magma Burst | earth +40% |
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
@@ -2655,6 +2737,12 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **The Hollow Barrows** | 28-36 | - | The King’s Barrow (The Barrow Warden, lv 31); The Pyre Hall (The Pyre Matron, lv 33); The Black Ferry (The Ferry-Queen, lv 36) | The Hollow King Below | Morrath, Mirrin, Hesha | Fog, Clear, Blood Moon | 0% |
 | **The Shattered Isles** | 36-44 | Wreck’s End | The Wrecked Armada (The Wrecker-Lord, lv 40); The Reef Sanctum (The Kraken’s Daughter, lv 42) | The Storm Leviathan | Nymira, Seraphel, Vex | Thunderstorm, Rain, Clear, Fog | 0% |
 | **Skyreach** | 50-58 | - | The Storm Bastion (The Gale-Warden, lv 54); The Pillar Temple (The Pillar Colossus, lv 56); The High Vault (The Ruined Seraph, lv 58) | The Sovereign of Skyreach | Seraphel, Solenne, Aurelis | Clear, Thunderstorm, Snow | 0% |
+| **The Celestial Realm** | 78-86 | - | The Halls of the Seraphim (The Throne Warden, lv 82); The Choir Vault (The Voice of the Choir, lv 85) | Arch-Seraph Aurial | Solenne, Aurelis, Seraphel | Clear, Snow | 0% |
+| **The Abyss** | 80-88 | - | The Listening Deep (The Deep Sovereign, lv 84); The Lantern Trench (The Drowned Hour, lv 87) | The Abyssal Mother | Morrath, Mirrin, Lyssara | Fog, Clear, Blood Moon | 0% |
+| **The Shattered Timeline** | 78-90 | - | The Hall of Hours (The Chronarch, lv 84); The Broken Calendar (The Unmade Moment, lv 88) | The Last Tick | Mirrin, Aurelis, Vex | Fog, Clear, Thunderstorm | 0% |
+| **The Drowned Kingdom** | 76-86 | - | The Throne of Tides (The Court Chamberlain, lv 82); The Sunken Armory (The Drowned Queen, lv 85) | The Drowned Throne | Nymira, Lyssara, Grimvald | Thunderstorm, Rain, Fog | 0% |
+| **The Clockwork City** | 80-90 | - | The Great Works (The Master Assembler, lv 86); The Regent’s Tower (The Prime Regent, lv 89) | The Great Gear | Ordrun, Aurelis, Thalor | Ashfall, Clear, Thunderstorm | 0% |
+| **The Godforge** | 84-90 | - | The Quenching Hall (Forgewright Ember, lv 88); The Unfinished Pantheon (The Unfinished God, lv 90) | Heart of the Godforge | Thalor, Kael, Hesha | Ashfall, Heatwave, Clear | 0% |
 
 ### Zone enemies
 
@@ -2678,6 +2766,12 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 - **The Hollow Barrows:** Barrow Wight, Bone Sentinel, Grave Hound, Mourning Widow, Tomb-Robber Shade, Pyre Imp, Coffin Crawler, Ferryman’s Shade
 - **The Shattered Isles:** Reaver Gull, Reef Crab, Isle Pirate, Castaway Mage, Wreck Ghoul, Storm Petrel, Siren Scout, Driftwood Golem
 - **Skyreach:** Wind Hawk, Cloud Wraith, Skyreach Knight, Storm Priest, Floating Golem, Sky Serpent, Aerial Phantom, Gale Elemental
+- **The Celestial Realm:** Seraph Guard, Choir Cherub, Star Hound, Dawn Golem, Radiant Wyrm, Fallen Orator, Halo Wraith
+- **The Abyss:** Abyssal Maw, Dread Shade, Null Knight, Lantern Leech, Echo Hunter, Black Tide, Void Priest
+- **The Shattered Timeline:** Time Wisp, Ruined Clockmaker, Paradox Hound, Hourglass Knight, Yesterday’s Wolf, Fracture Wraith, Tomorrow’s Golem
+- **The Drowned Kingdom:** Drowned Hussar, Siren Consort, Crown Crab, Kelp Queen, Trident Guard, Leviathan Calf, Pearl Lich
+- **The Clockwork City:** Brass Citizen, Whistle Wraith, Piston Giant, Arc Engine, Lathe Spider, Regent Guard, Grinder Drone
+- **The Godforge:** Forge Seraph, Spark Sprite, Godsteel Golem, Apprentice of Flame, Quench Hound, Slag Colossus, Hammer-Saint
 
 ### Towns
 
@@ -2736,9 +2830,9 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **Trophy Room** | 3000 | Displays world boss trophies: +2% damage per different world boss slain. |
 | **Vault** | 2500 / 7000 | An extra stash tab, and +5% gold find per level. |
 
-### Lore pages (155)
+### Lore pages (191)
 
-**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **The Ferryman’s Ledger** (The Meadowlands), **The Root-Reader’s Notes** (The Whisperwood), **A Candle-Stub, Wrapped in a Prayer** (The Sunken Caves), **Footprints in Glass** (The Ashen Desert), **The Sleepwalker’s Diary** (Frostspire), **A Sailor’s Last Letter** (The Stormcoast), **An Anvil with a Handprint** (The Volcanic Rift), **A Page with a Missing Heading** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel), **Millbrook Fields** (The Meadowlands), **Hollow Barrow Hill** (The Meadowlands), **Wishing Well Glade** (The Meadowlands), **The Old Toll Bridge** (The Meadowlands), **Heartwood Clearing** (The Whisperwood), **Witches’ Hollow** (The Whisperwood), **The Fallen Giant** (The Whisperwood), **Mossgrave Pond** (The Whisperwood), **Glowshroom Gallery** (The Sunken Caves), **The Drowned Chapel** (The Sunken Caves), **The Echo Cistern** (The Sunken Caves), **Crystal Seam** (The Sunken Caves), **The Hidden Oasis** (The Ashen Desert), **The Buried Caravan** (The Ashen Desert), **Scorpion Warrens** (The Ashen Desert), **The Glass Plateau** (The Ashen Desert), **The Frozen Orchard** (Frostspire), **Avalanche Pass** (Frostspire), **The Ice-Fisher’s Camp** (Frostspire), **Starfall Crater** (Frostspire), **Wreckers’ Cove** (The Stormcoast), **Lightning-Rod Spire** (The Stormcoast), **Tidepool Terraces** (The Stormcoast), **Smuggler’s Lookout** (The Stormcoast), **The Cinder Orchard** (The Volcanic Rift), **Obsidian Quarry** (The Volcanic Rift), **The Slag Pits** (The Volcanic Rift), **The Ember Shrine** (The Volcanic Rift), **The Weeping Gardens** (The Dark Citadel), **The Ossuary Stair** (The Dark Citadel), **The Mirror Hall** (The Dark Citadel), **The Throne Gate** (The Dark Citadel), **Market Terrace** (Aurelane, the Capital), **Cathedral Close** (Aurelane, the Capital), **Scholars’ Row** (Aurelane, the Capital), **The Guild Quarter** (Aurelane, the Capital), **The Gilded Heights** (Aurelane, the Capital), **The Underbelly** (Aurelane, the Capital), **Lantern Pier** (The Moonfen Marshes), **The Orchard Edge** (The Moonfen Marshes), **The Witches’ Causeway** (The Moonfen Marshes), **Moon-Well Isle** (The Moonfen Marshes), **Gallows Hill** (The Thornreach Badlands), **Brigand Pass** (The Thornreach Badlands), **The Thornfield Ruins** (The Thornreach Badlands), **The Dry Well** (The Thornreach Badlands), **The Gem Cavern** (Khazrum, the Mountain City), **The Old Rail** (Khazrum, the Mountain City), **Smelter’s Row** (Khazrum, the Mountain City), **The Ancestors’ Hall** (Khazrum, the Mountain City), **The Lamplighters’ Trail** (The Gloamwood), **The Grey Lady’s Glade** (The Gloamwood), **The Hunters’ Lodge** (The Gloamwood), **Moth Hollow** (The Gloamwood), **The Mirror Dunes** (The Saltglass Flats), **The Lens Forge** (The Saltglass Flats), **The Sunk Galleon** (The Saltglass Flats), **The Salt Temple** (The Saltglass Flats), **The Coral Gardens** (Merrowdeep, the Drowned City), **The Sunken Docks** (Merrowdeep, the Drowned City), **The Bell Quarter** (Merrowdeep, the Drowned City), **The Whale-Road** (Merrowdeep, the Drowned City), **The Gear Yard** (The Clockwork Foundry), **Boiler Row** (The Clockwork Foundry), **The Spring Cellar** (The Clockwork Foundry), **The Tick Tower** (The Clockwork Foundry), **The Burned Granary** (Ashfold, the Prologue Village), **The Old Mill Race** (Ashfold, the Prologue Village), **Shepherd’s Rise** (Ashfold, the Prologue Village), **The Witch Oak** (Ashfold, the Prologue Village), **The First Barrow Gate** (The Hollow Barrows), **The Bone Orchard** (The Hollow Barrows), **The Pyre Fields** (The Hollow Barrows), **The Black River Bank** (The Hollow Barrows), **Rope-Bridge Isle** (The Shattered Isles), **The Wreckers’ Nest** (The Shattered Isles), **The Pearl Lagoon** (The Shattered Isles), **The Lighthouse Isle** (The Shattered Isles), **The Cloud Bridge** (Skyreach), **The Star Garden** (Skyreach), **The Fallen Observatory** (Skyreach), **The Wind Throne** (Skyreach), **Gull Rock** (The Stormcoast), **Kelp Hollow** (The Stormcoast), **Pirate’s Rest** (The Stormcoast), **Siren’s Reef** (The Stormcoast), **The Isle of Echoes** (The Sunken Caves), **The Drowned Lighthouse** (The Stormcoast), **The Cloud Orchard** (Frostspire), **The Cracked Observatory** (The Ashen Desert), **The Gale Temple** (The Stormcoast), **The Sunken-Sky Vault** (The Dark Citadel), **The Throne That Draws a Draft** (Aurelane, the Capital), **The River Beneath** (Aurelane, the Capital), **The Night the Moon Slipped** (The Moonfen Marshes), **On Lanterns** (The Moonfen Marshes), **The Toll Road** (The Thornreach Badlands), **A Hedge Is a Wall** (The Thornreach Badlands), **The Founding of Khazrum** (Khazrum, the Mountain City), **The Great Feud** (Khazrum, the Mountain City), **The Hour Between** (The Gloamwood), **On Lamplighters** (The Gloamwood), **The Sea That Left** (The Saltglass Flats), **The Lensmakers’ Creed** (The Saltglass Flats), **The Night the City Sank** (Merrowdeep, the Drowned City), **The Choir of the Deep** (Merrowdeep, the Drowned City), **The Engine** (The Clockwork Foundry), **The Gearwright’s Last Note** (The Clockwork Foundry), **The Night of the Inn** (Ashfold, the Prologue Village), **A Hearth, Left Burning** (Ashfold, the Prologue Village), **The Door That Is Too Neat** (The Hollow Barrows), **The Ferryman’s Fare** (The Hollow Barrows), **The Turning** (The Shattered Isles), **A Bridge for Every Debt** (The Shattered Isles), **The Day Skyreach Rose** (Skyreach), **On Cloud Bridges** (Skyreach)
+**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **The Ferryman’s Ledger** (The Meadowlands), **The Root-Reader’s Notes** (The Whisperwood), **A Candle-Stub, Wrapped in a Prayer** (The Sunken Caves), **Footprints in Glass** (The Ashen Desert), **The Sleepwalker’s Diary** (Frostspire), **A Sailor’s Last Letter** (The Stormcoast), **An Anvil with a Handprint** (The Volcanic Rift), **A Page with a Missing Heading** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel), **Millbrook Fields** (The Meadowlands), **Hollow Barrow Hill** (The Meadowlands), **Wishing Well Glade** (The Meadowlands), **The Old Toll Bridge** (The Meadowlands), **Heartwood Clearing** (The Whisperwood), **Witches’ Hollow** (The Whisperwood), **The Fallen Giant** (The Whisperwood), **Mossgrave Pond** (The Whisperwood), **Glowshroom Gallery** (The Sunken Caves), **The Drowned Chapel** (The Sunken Caves), **The Echo Cistern** (The Sunken Caves), **Crystal Seam** (The Sunken Caves), **The Hidden Oasis** (The Ashen Desert), **The Buried Caravan** (The Ashen Desert), **Scorpion Warrens** (The Ashen Desert), **The Glass Plateau** (The Ashen Desert), **The Frozen Orchard** (Frostspire), **Avalanche Pass** (Frostspire), **The Ice-Fisher’s Camp** (Frostspire), **Starfall Crater** (Frostspire), **Wreckers’ Cove** (The Stormcoast), **Lightning-Rod Spire** (The Stormcoast), **Tidepool Terraces** (The Stormcoast), **Smuggler’s Lookout** (The Stormcoast), **The Cinder Orchard** (The Volcanic Rift), **Obsidian Quarry** (The Volcanic Rift), **The Slag Pits** (The Volcanic Rift), **The Ember Shrine** (The Volcanic Rift), **The Weeping Gardens** (The Dark Citadel), **The Ossuary Stair** (The Dark Citadel), **The Mirror Hall** (The Dark Citadel), **The Throne Gate** (The Dark Citadel), **Market Terrace** (Aurelane, the Capital), **Cathedral Close** (Aurelane, the Capital), **Scholars’ Row** (Aurelane, the Capital), **The Guild Quarter** (Aurelane, the Capital), **The Gilded Heights** (Aurelane, the Capital), **The Underbelly** (Aurelane, the Capital), **Lantern Pier** (The Moonfen Marshes), **The Orchard Edge** (The Moonfen Marshes), **The Witches’ Causeway** (The Moonfen Marshes), **Moon-Well Isle** (The Moonfen Marshes), **Gallows Hill** (The Thornreach Badlands), **Brigand Pass** (The Thornreach Badlands), **The Thornfield Ruins** (The Thornreach Badlands), **The Dry Well** (The Thornreach Badlands), **The Gem Cavern** (Khazrum, the Mountain City), **The Old Rail** (Khazrum, the Mountain City), **Smelter’s Row** (Khazrum, the Mountain City), **The Ancestors’ Hall** (Khazrum, the Mountain City), **The Lamplighters’ Trail** (The Gloamwood), **The Grey Lady’s Glade** (The Gloamwood), **The Hunters’ Lodge** (The Gloamwood), **Moth Hollow** (The Gloamwood), **The Mirror Dunes** (The Saltglass Flats), **The Lens Forge** (The Saltglass Flats), **The Sunk Galleon** (The Saltglass Flats), **The Salt Temple** (The Saltglass Flats), **The Coral Gardens** (Merrowdeep, the Drowned City), **The Sunken Docks** (Merrowdeep, the Drowned City), **The Bell Quarter** (Merrowdeep, the Drowned City), **The Whale-Road** (Merrowdeep, the Drowned City), **The Gear Yard** (The Clockwork Foundry), **Boiler Row** (The Clockwork Foundry), **The Spring Cellar** (The Clockwork Foundry), **The Tick Tower** (The Clockwork Foundry), **The Burned Granary** (Ashfold, the Prologue Village), **The Old Mill Race** (Ashfold, the Prologue Village), **Shepherd’s Rise** (Ashfold, the Prologue Village), **The Witch Oak** (Ashfold, the Prologue Village), **The First Barrow Gate** (The Hollow Barrows), **The Bone Orchard** (The Hollow Barrows), **The Pyre Fields** (The Hollow Barrows), **The Black River Bank** (The Hollow Barrows), **Rope-Bridge Isle** (The Shattered Isles), **The Wreckers’ Nest** (The Shattered Isles), **The Pearl Lagoon** (The Shattered Isles), **The Lighthouse Isle** (The Shattered Isles), **The Cloud Bridge** (Skyreach), **The Star Garden** (Skyreach), **The Fallen Observatory** (Skyreach), **The Wind Throne** (Skyreach), **The Golden Stair** (The Celestial Realm), **The Cloud Garden** (The Celestial Realm), **The Ruin of Hymns** (The Celestial Realm), **The Sunset Camp** (The Celestial Realm), **The Lampless Shore** (The Abyss), **The Whispering Cave** (The Abyss), **The Sunken Observatory** (The Abyss), **The Mirror Reef** (The Abyss), **The Crack in Noon** (The Shattered Timeline), **The Dead Clocktower** (The Shattered Timeline), **The What-Might Grove** (The Shattered Timeline), **The Splinter Camp** (The Shattered Timeline), **The Courtiers’ Reef** (The Drowned Kingdom), **The Pearl Market** (The Drowned Kingdom), **The King’s Cistern** (The Drowned Kingdom), **The Crown Wreck** (The Drowned Kingdom), **Brass Avenue** (The Clockwork City), **The Gear Market** (The Clockwork City), **Boiler Park** (The Clockwork City), **The Whistle Yard** (The Clockwork City), **The Anvil Fields** (The Godforge), **The Quenching Pool** (The Godforge), **The Ember Cathedral** (The Godforge), **The Hammer Hall** (The Godforge), **Gull Rock** (The Stormcoast), **Kelp Hollow** (The Stormcoast), **Pirate’s Rest** (The Stormcoast), **Siren’s Reef** (The Stormcoast), **The Isle of Echoes** (The Sunken Caves), **The Drowned Lighthouse** (The Stormcoast), **The Cloud Orchard** (Frostspire), **The Cracked Observatory** (The Ashen Desert), **The Gale Temple** (The Stormcoast), **The Sunken-Sky Vault** (The Dark Citadel), **The Throne That Draws a Draft** (Aurelane, the Capital), **The River Beneath** (Aurelane, the Capital), **The Night the Moon Slipped** (The Moonfen Marshes), **On Lanterns** (The Moonfen Marshes), **The Toll Road** (The Thornreach Badlands), **A Hedge Is a Wall** (The Thornreach Badlands), **The Founding of Khazrum** (Khazrum, the Mountain City), **The Great Feud** (Khazrum, the Mountain City), **The Hour Between** (The Gloamwood), **On Lamplighters** (The Gloamwood), **The Sea That Left** (The Saltglass Flats), **The Lensmakers’ Creed** (The Saltglass Flats), **The Night the City Sank** (Merrowdeep, the Drowned City), **The Choir of the Deep** (Merrowdeep, the Drowned City), **The Engine** (The Clockwork Foundry), **The Gearwright’s Last Note** (The Clockwork Foundry), **The Night of the Inn** (Ashfold, the Prologue Village), **A Hearth, Left Burning** (Ashfold, the Prologue Village), **The Door That Is Too Neat** (The Hollow Barrows), **The Ferryman’s Fare** (The Hollow Barrows), **The Turning** (The Shattered Isles), **A Bridge for Every Debt** (The Shattered Isles), **The Day Skyreach Rose** (Skyreach), **On Cloud Bridges** (Skyreach), **The Long Watch** (The Celestial Realm), **The Falling** (The Celestial Realm), **What the Deep Hears** (The Abyss), **On the Lanterns** (The Abyss), **The Splitting** (The Shattered Timeline), **A Thousand Clocks** (The Shattered Timeline), **The Court That Would Not Rise** (The Drowned Kingdom), **The Crown and the Crab** (The Drowned Kingdom), **The Schedule** (The Clockwork City), **The Regent’s Confession** (The Clockwork City), **The First Strike** (The Godforge), **The Unfinished** (The Godforge)
 <!-- world:end -->
 
 ## The Economy
@@ -3013,7 +3107,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-758 quests, 240 NPCs, 503 dialogues, 14 companions, 15 endings.
+764 quests, 240 NPCs, 503 dialogues, 14 companions, 15 endings.
 
 ### Main story (54)
 
@@ -3099,7 +3193,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Echo of the Ninth Return** | 87 | starts by itself | Listen (talk) |
 | **Echo of the Tenth Return** | 90 | starts by itself | Listen (talk) |
 
-### Side quests (154)
+### Side quests (160)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -3156,6 +3250,12 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Barrows: The Door Too Neat** | 33 | Brother Ansel | Clear the King’s Barrow (clear); Defeat the Hollow King Below (kill) |
 | **The Isles: The Turning** | 41 | Harbormaster Fenn | Clear the Wrecked Armada (clear); Defeat the Storm Leviathan (kill) |
 | **Skyreach: The Last Court** | 55 | Vanya | Clear the Storm Bastion (clear); Defeat the Sovereign of Skyreach (kill) |
+| **The Realm: Relieved at Last** | 82 | Archmage Oriel | Clear the Halls of the Seraphim (clear); Defeat Arch-Seraph Aurial (kill) |
+| **The Abyss: What It Heard** | 84 | Maris Deepwater | Clear the Listening Deep (clear); Defeat the Abyssal Mother (kill) |
+| **The Timeline: A Second Too Late** | 86 | Thrain Oathkeeper | Clear the Hall of Hours (clear); Defeat the Last Tick (kill) |
+| **The Kingdom: Long Live the Queen** | 80 | Harbormaster Quill | Clear the Throne of Tides (clear); Defeat the Drowned Throne (kill) |
+| **The City: Off the Clock** | 88 | Engineer Lorne | Clear the Great Works (clear); Defeat the Great Gear (kill) |
+| **The Forge: One More Hammer-Stroke** | 88 | Forge-Matron Hilda | Clear the Quenching Hall (clear); Defeat the Heart of the Godforge (kill) |
 | **A Pinch of Salt** | 4 | Mabry Ladle | Craft three items (deed) |
 | **Stock and Stew** | 10 | Mabry Ladle | Craft six items (deed) |
 | **The Honey Question** | 18 | Mabry Ladle | Bring 2 × Honeycomb (deliver) |
@@ -4016,7 +4116,7 @@ Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every
 
 ### The Boss Rush
 
-At any town (level 30+): all 45 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
+At any town (level 30+): all 57 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
 
 ### Challenge modes
 

@@ -1,6 +1,7 @@
 import { BATCH1_ZONES } from '../regions/batch1';
 import { BATCH2_ZONES } from '../regions/batch2';
 import { BATCH3_ZONES } from '../regions/batch3';
+import { BATCH4_ZONES } from '../regions/batch4';
 import { GREATER_GATHER } from '../items/greaterEconomy';
 import { MECHANICS } from './mechanics';
 import type { EnemyTier } from '../../engine/combat/types';
@@ -124,7 +125,7 @@ const BASE_ZONES: ZoneDef[] = [
   },
 ];
 
-export const ZONES: ZoneDef[] = [...BASE_ZONES, ...BATCH1_ZONES, ...BATCH2_ZONES, ...BATCH3_ZONES];
+export const ZONES: ZoneDef[] = [...BASE_ZONES, ...BATCH1_ZONES, ...BATCH2_ZONES, ...BATCH3_ZONES, ...BATCH4_ZONES];
 
 // Phase 10: the newer raw materials join each zone's gathering tables.
 for (const z of ZONES) {

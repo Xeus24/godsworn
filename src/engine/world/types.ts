@@ -48,6 +48,8 @@ export interface ZoneDef {
   off?: boolean;
   /** Difficulty rank for gates and shrines when `order` is not meaningful (off-road regions). */
   tier?: number;
+  /** Opens only from this tier of New Game+ (the passes in are shut before it). */
+  ngPlus?: number;
 }
 
 export interface TownDef {

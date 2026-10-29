@@ -357,6 +357,8 @@ export class WorldActions {
       }
       case 'exit': {
         const to = arrival(this.world, map.id, e);
+        const need = content.zones.find(to.map)?.ngPlus;
+        if (need && this.s.state.ngPlus < need) return { kind: 'moved', message: `${e.label ?? 'The way'}: it is shut. It opens in New Game+${need}.` };
         this.placeAt(to.map, to.x, to.y);
         this.world.grace = ENCOUNTER_GRACE;
         return { kind: 'map', message: `${mapFor(to.map).name}` };

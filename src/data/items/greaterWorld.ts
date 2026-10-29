@@ -16,5 +16,9 @@ export const WORLD_CONSUMABLES: ConsumableDef[] = [
   meter('air-pearl', 'Air Pearl', 46, 95, 'A pearl that holds a breath: -70 Pressure in Merrowdeep.', 'pressure', 70),
   meter('grave-candle', 'Grave Candle', 30, 60, 'A candle that burns for the dead: -70 Fading in the Hollow Barrows.', 'fading', 70),
   meter('breath-tonic', 'Breath Tonic', 52, 110, 'Fills the lungs with warmth: -70 Thin air in Skyreach.', 'thinair', 70),
+  meter('veil-lens', 'Veil Lens', 78, 220, 'Takes the edge off the light: -70 Radiance in the Celestial Realm.', 'radiance', 70),
+  meter('dread-ward', 'Dread Ward', 80, 240, 'A sigil against the deep: -70 Dread in the Abyss.', 'dread', 70),
+  meter('undertow-charm', 'Undertow Charm', 76, 220, 'Anchors you to the road: -70 Undertow in the Drowned Kingdom.', 'undertow', 70),
+  meter('quench-oil', 'Quench Oil', 84, 260, 'Cools the air around you: -70 Godfire in the Godforge.', 'godfire', 70),
   meter('ward-salt', 'Ward Salt', 50, 120, 'A pinch against the Unwritten: -60 Corruption in the Dark Citadel.', 'corruption', 60),
 ];

@@ -41,5 +41,5 @@ export const FISH: FishDef[] = [
 export const ZONE_WATERS: Record<string, Water[]> = {
   meadowlands: ['river', 'pond'], whisperwood: ['river', 'pond'], 'sunken-caves': ['cave'], 'ashen-desert': ['oasis'], frostspire: ['ice'], stormcoast: ['sea'], 'volcanic-rift': ['lava'], 'dark-citadel': ['moat'],
   aurelane: ['river', 'pond'], moonfen: ['bog'], thornreach: ['oasis'], khazrum: ['cave'], gloamwood: ['pond', 'bog'], saltglass: ['brine'], merrowdeep: ['deep'], 'clockwork-foundry': ['slag'],
-  ashfold: ['pond'], 'hollow-barrows': ['black'], 'shattered-isles': ['lagoon', 'sea'], skyreach: ['cloud'],
+  ashfold: ['pond'], 'celestial-realm': ['cloud'], 'the-abyss': ['deep'], 'shattered-timeline': ['pond', 'black'], 'drowned-kingdom': ['deep', 'lagoon'], 'clockwork-city': ['slag'], 'the-godforge': ['lava'], 'hollow-barrows': ['black'], 'shattered-isles': ['lagoon', 'sea'], skyreach: ['cloud'],
 };
