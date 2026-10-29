@@ -105,7 +105,7 @@ describe('quest content', () => {
     // 8 trials + 5 quests per class (the Greater Pantheon classes add a trial and a line each).
     expect(kinds('class')).toBe(8 + 5 * 8 + content.classes.all().filter((c) => !['warrior', 'mage', 'rogue', 'cleric', 'ranger', 'necromancer', 'monk', 'bard'].includes(c.id)).reduce((n, c) => n + (c.hidden ? 5 : 6), 0));
     expect(kinds('hybrid')).toBe(content.hybrids.all().length);
-    expect(kinds('faction')).toBe(15);
+    expect(kinds('faction')).toBe(15 + 16);
     // 14 companions, five quests each, except the original six whose oath quest and recruit quest were already counted (11 before).
     expect(kinds('companion')).toBe(69);
     expect(content.endings.all().length).toBeGreaterThanOrEqual(3);

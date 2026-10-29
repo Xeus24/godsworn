@@ -892,6 +892,12 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase17.test.ts` (12) and `tests/campScreen.test.ts`; 783 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
 - **Not done / cut:** the camp friendships have no effect on the endings or epilogue yet (a flag is set); **there is no romance anywhere in the game, by design**; banter is not condition-aware (it does not react to zones or quests); only the first banter line a day is chosen at camp; companions' loyalty skills are reactive perks, not new hotbar skills; the original six did not get new bond trees.
 
+### Expansion phase 18a: 36 side quests and two more factions
+- **36 side quests in six chains of six** (`src/data/story/sideGreater.ts`): the lamps, the ledger, the stone feud, the drowned heirs, the caravan road and the hearth keepers. Each chain runs across six regions and starts after an older side quest from another region; every quest ends in a choice with a consequence (a flag, reputation, favor, gold) and a CHA-gated middle way. They add investigations (two clues), stealth (steal from foes), races (timed visits), escorts, crafting jobs and moral choices. Side quests are now 154; the mix is **~32% consequential, ~23% chained across regions and under 15% plain kill quests** (checked in `tests/expansionPhase18.test.ts`).
+- **Seven factions:** the **Lantern Concord** (hall in Lampfall, follows Mirrin) and the **Cog & Anvil Union** (hall in Ratchet, follows Ordrun), eight quests each (16), with ranks, perks, likes and dislikes, a reputation ladder the earlier quests can pay for, and a title at the end.
+- Tests: 5 new; 788 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
+- **Not done yet (phase 18b and 18c):** the 120+ secrets with per-region counters and `docs/SECRETS.md`, and the seven minigames (fishing with 60+ fish, Pantheon Cards with 120+ cards, arena ladder, forging timing, mount racing, tavern dice, treasure digging). The towns already name their minigame.
+
 ## Known bugs
 - None known.
 

@@ -2681,10 +2681,10 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **Mirewick** | The Moonfen Marshes | Lyssara, Ysolde | - | - |
 | **Briarhold** | The Thornreach Badlands | Kael, Vex | - | - |
 | **Khazrum** | Khazrum, the Mountain City | Thalor, Ordrun, Kael | - | yes |
-| **Lampfall** | The Gloamwood | Lyssara, Mirrin | - | - |
+| **Lampfall** | The Gloamwood | Lyssara, Mirrin | The Lantern Concord | - |
 | **Lensfall** | The Saltglass Flats | Seraphel, Solenne | - | - |
 | **Pearlgate** | Merrowdeep, the Drowned City | Nymira, Mirrin | - | yes |
-| **Ratchet** | The Clockwork Foundry | Ordrun, Thalor | - | - |
+| **Ratchet** | The Clockwork Foundry | Ordrun, Thalor | The Cog & Anvil Union | - |
 | **Ashfold** | Ashfold, the Prologue Village | Solenne, Hesha | - | - |
 | **Wreck’s End** | The Shattered Isles | Nymira, Seraphel | - | yes |
 
@@ -2711,6 +2711,8 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **The Iron Legion** | Sandhaven | Kael | Winning fights; Hunting bandits; Beating champions | +3% Defense / +6% Defense, +5 Crit Damage / +9% Defense, +10 Crit Damage / +12% Defense, +15 Crit Damage, +5 Damage Bonus |
 | **The Mages’ Guild** | Frosthold | Aurelis | Spellcasting; Reading skillbooks; Identifying artifacts | +3 Magic Attack / +4% Magic Attack, +5% Max MP / +7% Magic Attack, +8% Max MP / +10% Magic Attack, +12% Max MP, +3 Cooldown Reduction |
 | **The Thieves’ Den** | Saltmere | Vex | Stealing; Clean, precise work; Turning a profit (per 100 gold) | +5 Gold Find / +10 Gold Find, +2 Crit Chance / +15 Gold Find, +4 Crit Chance / +25 Gold Find, +6 Crit Chance, +10 Magic Find |
+| **The Lantern Concord** | Lampfall | Mirrin | Laying the dead to rest; Healing; Resting at a lit camp; Finishing what you start | +5 Status Resist / +10 Status Resist, +2 Dodge / +15 Status Resist, +4 Dodge, +3% Max HP / +20 Status Resist, +6 Dodge, +6% Max HP, +3 HP Regen |
+| **The Cog & Anvil Union** | Ratchet | Ordrun | Breaking rogue machines; Honest work; Getting paid | +3% Defense / +6% Defense, +3% Max HP / +9% Defense, +5% Max HP / +12% Defense, +8% Max HP, +5 Damage Bonus |
 
 ### House rooms
 
@@ -3000,7 +3002,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-691 quests, 240 NPCs, 379 dialogues, 14 companions, 10 endings.
+743 quests, 240 NPCs, 431 dialogues, 14 companions, 10 endings.
 
 ### Main story (54)
 
@@ -3071,7 +3073,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
-### Side quests (118)
+### Side quests (154)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -3192,12 +3194,64 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Maps That Lie** | 56 | Archivist Senne | Survey the western gate (visit); Survey the heart of the Citadel (visit); Survey the far side (visit) |
 | **The Unwritten Page** | 58 | Loremaster Ivo | Read what the scribe writes (talk) |
 | **Kneeling in the Ash** | 58 | High Lector Amara | Free fallen paladins (kill); Go to the kneeling paladins (talk) |
+| **The Lantern Count** | 18 | Warden Lissel | Search the Lantern Pier (visit); Follow the second clue (visit); Report (talk) |
+| **The Elder’s Ledger** | 24 | Elder Wick | Search the Lamplighters’ Trail (visit); Follow the second clue (visit); Report (talk) |
+| **The Black-Market Lamps** | 27 | Sister Benedicta | Steal from 4 foes (deed); Report (talk) |
+| **Glass for the Lamps** | 37 | Tamsin | Craft 3 items (deed); Report (talk) |
+| **A Bell for the Names** | 46 | Oriel | Put down 6 undeads (kill); Report (talk) |
+| **The Last Lamp** | 54 | Vanya | Reach the Wind Throne (visit); Report (talk) · timed |
+| **Smuggler’s Receipt** | 13 | Warden-Captain Ysra | Put down 5 bandits (kill); Report (talk) |
+| **The Pip Account** | 22 | Pip | Search the Underbelly arches (visit); Follow the second clue (visit); Report (talk) |
+| **The Toll on Paper** | 29 | Reeve Alma | Steal from 3 foes (deed); Report (talk) |
+| **Dust and Dividends** | 31 | Marshal Dara Vosk | Put down 6 bandits (kill); Report (talk) |
+| **Last Page, Wreck’s End** | 40 | Harbormaster Fenn | Put down 6 humanoids (kill); Report (talk) |
+| **The Saltmere Safe** | 43 | Harbormaster Quill | Search the harbor vaults (visit); Follow the second clue (visit); Report (talk) |
+| **Fifth Clan Rubbish** | 30 | Kip | Steal from 3 foes (deed); Report (talk) |
+| **The Frozen Question** | 36 | Archmage Oriel | Put down 5 elementals (kill); Report (talk) |
+| **A Cracked Hall** | 38 | Thane Borgrim Ironvein | Search the cracked hall (visit); Follow the second clue (visit); Report (talk) |
+| **The Ancestors’ Plaque** | 43 | Thrain Oathkeeper | Put down 6 undeads (kill); Report (talk) |
+| **Springs and Grudges** | 50 | Engineer Lorne | Craft 3 items (deed); Report (talk) |
+| **A Hall With a View** | 55 | Vanya | Reach the Cloud Bridge (visit); Report (talk) · timed |
+| **The Cellar’s Last Word** | 3 | Reeve Halwin | Put down 4 beasts (kill); Report (talk) |
+| **The Lantern at Mirewick** | 22 | Warden Lissel | Put down 5 undeads (kill); Report (talk) |
+| **The Uncle Below** | 33 | Brother Ansel | Search the Bone Orchard (visit); Follow the second clue (visit); Report (talk) |
+| **Pearls in the Ledger** | 39 | Harbormaster Fenn | Search the Pearl Lagoon (visit); Follow the second clue (visit); Report (talk) |
+| **A Bell for Saltmere** | 46 | Harbormaster Quill | Escort the heir (escort); Report (talk) |
+| **The Drowned Court’s Guest** | 47 | Maris Deepwater | Put down 6 humanoids (kill); Report (talk) |
+| **The Duke’s Wagons** | 23 | Captain Valeria Dunn | Escort the wagons (escort); Report (talk) |
+| **The Thorn Toll** | 28 | Warchief Ulrik | Steal from 4 foes (deed); Report (talk) |
+| **Mirror Road** | 36 | Sunni | Reach Lensfall (visit); Report (talk) · timed |
+| **Hilda’s Order** | 39 | Forge-Matron Hilda | Craft 4 items (deed); Report (talk) |
+| **The Rope Bridge Toll** | 42 | Sol | Escort the pack-mules (escort); Report (talk) |
+| **Shift Change** | 51 | Foreman Hask | Put down 6 constructs (kill); Report (talk) |
+| **A Fire for Ashfold** | 2 | Gran Pell | Craft 1 items (deed); Report (talk) |
+| **Marta’s Gilded Goose** | 8 | Marta | Put down 5 beasts (kill); Report (talk) |
+| **The Warden’s Winter** | 14 | Warden-Captain Ysra | Reach Thornwick (visit); Report (talk) · timed |
+| **Boat for a Ghost** | 19 | Garrow the Boatwright | Craft 2 items (deed); Report (talk) |
+| **The Last Hearth** | 22 | Warden-Captain Ysra | Search the Echo Cistern (visit); Follow the second clue (visit); Report (talk) |
+| **The Warden’s Hearth** | 26 | Ilen of the Dusk Watch | Put down 6 beasts (kill); Report (talk) |
 | **The Third Road** | 45 | High Lector Amara | Speak with High Lector Amara (talk) |
 
-### Faction questlines (15)
+### Faction questlines (31)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **Trim the Wicks** | 24 | Elder Wick | Put down 6 beasts (kill); Report (talk) |
+| **The Dark Post** | 25 | Elder Wick | Clear the dungeon (clear); Report (talk) |
+| **A Guide for the Lost** | 26 | Elder Wick | Escort the lost pilgrim (escort); Report (talk) |
+| **Oil and Ink** | 27 | Elder Wick | Craft 3 items (deed); Report (talk) |
+| **The Hunter’s Light** | 28 | Elder Wick | Put down 6 humanoids (kill); Report (talk) |
+| **Dusk Over Lampfall** | 29 | Elder Wick | Reach Lampfall (visit); Report (talk) · timed |
+| **The Stag’s Antlers** | 30 | Elder Wick | Clear the dungeon (clear); Report (talk) |
+| **The Eventide Stag** | 32 | Elder Wick | Put down 1 beasts (kill); Report (talk) |
+| **Dues and Doings** | 46 | Dagmar | Put down 6 constructs (kill); Report (talk) |
+| **A Safer Floor** | 47 | Dagmar | Craft 3 items (deed); Report (talk) |
+| **Strike Pay** | 48 | Dagmar | Steal from 4 foes (deed); Report (talk) |
+| **The Night Shift** | 49 | Dagmar | Put down 6 constructs (kill); Report (talk) |
+| **The Forged Veteran’s Pension** | 50 | Dagmar | Search the old signal tower (visit); Follow the second clue (visit); Report (talk) |
+| **Hold the Gates** | 51 | Dagmar | Clear the dungeon (clear); Report (talk) |
+| **The First Engine’s Grievance** | 53 | Dagmar | Clear the dungeon (clear); Report (talk) |
+| **A Fair Day’s Work** | 54 | Dagmar | Put down 1 constructs (kill); Report (talk) |
 | **Ashes to Ashes** | 6 | Commander Elric Vance | Destroy undead (kill) |
 | **The Cult Below** | 14 | Commander Elric Vance | Break the cult circle (fight) |
 | **Dawn’s Vigil** | 16 | Commander Elric Vance | Slay the Bone Lord (clear) |

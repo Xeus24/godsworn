@@ -11,7 +11,7 @@ const ranks = (perks: [FactionRank['modifiers'], FactionRank['modifiers'], Facti
 ];
 
 /**
- * Five factions. Reputation grows from the deeds they like (and shrinks
+ * Seven factions (the Lantern Concord and the Cog & Anvil Union joined in phase 18). Reputation grows from the deeds they like (and shrinks
  * from those they dislike); their rivals lose half of it. Gaining
  * reputation also earns their god a little favor.
  */
@@ -50,5 +50,19 @@ export const FACTIONS: FactionDef[] = [
     likes: [{ event: 'goldStolen', amount: 3, cap: 9, text: 'Stealing' }, { event: 'crit', amount: 0.5, cap: 3, text: 'Clean, precise work' }, { event: 'goldLooted', amount: 1, cap: 5, text: 'Turning a profit (per 100 gold)' }],
     dislikes: [{ event: 'battleLost', amount: -2, text: 'Getting caught' }],
     ranks: ranks([[flat('goldFind', 5)], [flat('goldFind', 10), flat('critChance', 2)], [flat('goldFind', 15), flat('critChance', 4)], [flat('goldFind', 25), flat('critChance', 6), flat('magicFind', 10)]]),
+  },
+  {
+    id: 'lantern-concord', name: 'The Lantern Concord', hall: 'lampfall', god: 'mirrin', rivals: [],
+    description: 'Lamplighters and trail-wardens who keep the roads lit and remember everyone who walked them.',
+    likes: [{ event: 'kill', enemyType: 'undead', amount: 2, text: 'Laying the dead to rest' }, { event: 'heal', amount: 0.3, cap: 2, text: 'Healing' }, { event: 'rest', amount: 1, text: 'Resting at a lit camp' }, { event: 'questDone', amount: 3, text: 'Finishing what you start' }],
+    dislikes: [{ event: 'battleFled', amount: -2, text: 'Leaving the lost behind' }],
+    ranks: ranks([[flat('statusResist', 5)], [flat('statusResist', 10), flat('dodge', 2)], [flat('statusResist', 15), flat('dodge', 4), pct('maxHp', 3)], [flat('statusResist', 20), flat('dodge', 6), pct('maxHp', 6), flat('hpRegen', 3)]]),
+  },
+  {
+    id: 'cog-union', name: 'The Cog & Anvil Union', hall: 'ratchet', god: 'ordrun', rivals: [],
+    description: 'Foundry workers, Forged and a few stubborn foremen who agree on exactly one thing: nobody works to death.',
+    likes: [{ event: 'kill', enemyType: 'construct', amount: 2, text: 'Breaking rogue machines' }, { event: 'craft', amount: 1, cap: 3, text: 'Honest work' }, { event: 'goldLooted', amount: 0.5, cap: 2, text: 'Getting paid' }],
+    dislikes: [{ event: 'salvage', amount: -1, text: 'Waste' }, { event: 'battleLost', amount: -1, text: 'Dropping the line' }],
+    ranks: ranks([[pct('defense', 3)], [pct('defense', 6), pct('maxHp', 3)], [pct('defense', 9), pct('maxHp', 5)], [pct('defense', 12), pct('maxHp', 8), flat('damageBonus', 5)]]),
   },
 ];
