@@ -43,8 +43,8 @@ describe('fourteen companions', () => {
     }
   });
 
-  it('six companions have friendship or romance scenes, three each', () => {
-    const rom = all().filter((c) => c.romance);
+  it('six companions have camp evenings, three each', () => {
+    const rom = all().filter((c) => c.scenes);
     expect(rom).toHaveLength(6);
     for (const c of rom) for (let i = 1; i <= 3; i++) expect(content.dialogues.has(`d-scene-${c.id}-${i}`), `${c.id} ${i}`).toBe(true);
   });
@@ -89,7 +89,7 @@ describe('the camp', () => {
     conv.choose(1);
     while (!conv.done) conv.choose(0);
     expect(s.state.party.companions.sable!.scenes).toBe(1);
-    expect(s.state.flags['romance-sable']).toBe('romance');
+    expect(s.state.flags['friend-sable']).toBe(true);
     expect(s.party.sceneBlocked('sable')).toContain('65');
     recruit(s, 'aldric', 90);
     expect(s.party.sceneBlocked('aldric')).toContain('no evenings');

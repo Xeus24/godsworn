@@ -94,14 +94,14 @@ export class PartyActions {
     const comp = this.get(id);
     const def = this.def(id);
     if (!comp || comp.left) return 'They are not with you.';
-    if (!def.romance) return 'They have no evenings to spare for this.';
+    if (!def.scenes) return 'They have no evenings to spare for this.';
     if (comp.scenes >= SCENE_APPROVAL.length) return 'You have shared everything there is to share.';
     const need = SCENE_APPROVAL[comp.scenes] ?? 100;
     if (comp.approval < need) return `They are not ready yet (${need} approval).`;
     return undefined;
   }
 
-  /** An evening with a companion: the next friendship or romance scene. */
+  /** An evening with a companion: the next camp scene. */
   campScene(id: string): Conversation | undefined {
     if (this.sceneBlocked(id) !== undefined) return undefined;
     const comp = this.get(id) as CompanionState;

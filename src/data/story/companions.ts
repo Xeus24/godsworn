@@ -2,7 +2,7 @@ import type { EncounterDef } from '../../engine/combat/types';
 import type { Cond, DialogueDef, NpcDef, QuestDef } from '../../engine/quests/types';
 import { flat, pct } from '../trees/builder';
 import { buildCompanions, GREATER_DIALOGUES, GREATER_QUESTS, type BaseCompanion } from './companionsGreater';
-import { ROMANCE_DIALOGUES } from './romance';
+import { CAMP_SCENE_DIALOGUES } from './campScenes';
 import { all, approve, at, check, choice, dialogue, encounter, escort, favor, fight, flag, gold, level, lines, mercy, near, rep, say, setFlag, stage, stat, talk } from './helpers';
 
 /**
@@ -250,7 +250,7 @@ export const COMPANION_QUESTS: QuestDef[] = [
 
 export const COMPANION_DIALOGUES: DialogueDef[] = [
   ...GREATER_DIALOGUES,
-  ...ROMANCE_DIALOGUES,
+  ...CAMP_SCENE_DIALOGUES,
   dialogue('d-aldric-lantern', {
     start: say('aldric', '“It’s smaller than I remembered.” He turns the Lantern over in his hands. It is cold. “It used to light the whole chapel.”', { next: 'n1' }),
     n1: say('aldric', '“The temple will want it back on the altar. That is where it belongs. Isn’t it?”', {
@@ -318,7 +318,7 @@ export const COMPANION_DIALOGUES: DialogueDef[] = [
       ],
     }),
     paid: say('sable', '“You actually paid it. With money. I have never been so insulted and so grateful at the same time.”'),
-    dice: say('narrator', 'You roll double sixes three times in a row. The collectors leave in silence. Sable stares at you with something like love.'),
+    dice: say('narrator', 'You roll double sixes three times in a row. The collectors leave in silence. Sable stares at you with something like awe.'),
     fight: say('sable', '“Oh, I like you.”'),
   }),
   lines('d-sable-recruit', [

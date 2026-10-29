@@ -51,8 +51,8 @@ export interface CompanionDef {
   loyalty: BondNodeDef;
   /** What makes them walk out besides low approval (a betrayal, a line crossed). */
   leaves: { cond: Cond; text: string };
-  /** Friendship and romance scenes at the camp. */
-  romance: boolean;
+  /** Evenings at the camp: three scenes as their trust grows. */
+  scenes: boolean;
 }
 
 export interface CompanionState {
@@ -69,7 +69,7 @@ export interface CompanionState {
   oath: boolean;
   /** Tree points are spent automatically; off means the player allocates them on the Party screen. */
   autoTree: boolean;
-  /** Camp scenes seen (0-3): friendship or romance, by the path chosen in the first. */
+  /** Camp scenes seen (0-3): evenings at the camp, each opening as their trust grows. */
   scenes: number;
   /** The in-game day of the last chat at camp (one a day each). */
   lastTalk: number;

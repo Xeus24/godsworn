@@ -146,13 +146,13 @@ export class PartyScreen implements Screen {
       return el('div', { class: 'party-gear-row bag' }, name, this.btn('Equip', () => this.say(s.party.equip(comp.id, i))));
     });
     const quests = [def.recruitQuest, def.personalQuest].map((id) => content.quests.get(id));
-    const rel = s.state.flags[`romance-${def.id}`];
+    const rel = s.state.flags[`friend-${def.id}`];
     const blocked = s.party.sceneBlocked(def.id);
     const camp = el(
       'div',
       { class: 'camp' },
       el('h3', {}, 'Camp'),
-      ...(rel ? [el('div', { class: 'small' }, rel === 'romance' ? `You and ${def.name.split(' ')[0]} are together.` : `${def.name.split(' ')[0]} is a dear friend.`)] : []),
+      ...(rel ? [el('div', { class: 'small' }, `${def.name.split(' ')[0]} is a dear friend.`)] : []),
       ...(this.banterLine ? [el('p', { class: 'small' }, `“${this.banterLine}”`)] : []),
       el(
         'div',
@@ -162,14 +162,14 @@ export class PartyScreen implements Screen {
           this.banterLine = r.ok ? ((r as { line?: string }).line ?? '') : '';
           this.say(r);
         }, comp.left),
-        ...(def.romance
+        ...(def.scenes
           ? [this.btn('Spend the evening', () => {
               const conv = s.party.campScene(def.id);
               if (conv) this.talk(conv);
             }, blocked !== undefined)]
           : []),
       ),
-      ...(def.romance && blocked ? [el('div', { class: 'dim small' }, blocked)] : []),
+      ...(def.scenes && blocked ? [el('div', { class: 'dim small' }, blocked)] : []),
       el('div', { class: 'small' }, `Loyalty (${LOYALTY_APPROVAL} approval): ${def.loyalty.name}. ${def.loyalty.description}`),
       el('div', { class: 'dim small' }, `Personal line: ${def.line.map((id) => `${s.state.quests.completed[id] ? '✓' : '·'} ${content.quests.get(id).name}`).join('  ')}`),
     );
