@@ -16,6 +16,9 @@ export const ACHIEVEMENT_CATEGORIES: { id: AchievementCategory; name: string }[]
   { id: 'challenge', name: 'Challenges' },
   { id: 'twilight', name: 'New Game+ & Twilight' },
   { id: 'endgame', name: 'Rifts & Boss Rush' },
+  { id: 'secrets', name: 'Secrets' },
+  { id: 'pastimes', name: 'Pastimes' },
+  { id: 'travel', name: 'Sea & Sky' },
 ];
 
 /** Achievement points are a running score; every milestone passed gives your hero a permanent bonus (all of them stack). */
@@ -34,11 +37,15 @@ export const ACHIEVEMENT_MILESTONES: AchievementMilestone[] = [
   { points: 2000, description: '+5% max HP and +2% crit chance', modifiers: [{ stat: 'maxHp', type: 'percent', value: 5 }, { stat: 'critChance', type: 'flat', value: 2 }] },
   { points: 2500, description: '+5% damage and +10% Magic Find', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 5 }, { stat: 'magicFind', type: 'flat', value: 10 }] },
   { points: 2900, description: 'Legend of the Age: +5% to all resistances and +5% damage', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 5 }, { stat: 'physicalResist', type: 'flat', value: 5 }, { stat: 'fireResist', type: 'flat', value: 5 }, { stat: 'iceResist', type: 'flat', value: 5 }, { stat: 'lightningResist', type: 'flat', value: 5 }, { stat: 'natureResist', type: 'flat', value: 5 }, { stat: 'arcaneResist', type: 'flat', value: 5 }, { stat: 'holyResist', type: 'flat', value: 5 }, { stat: 'shadowResist', type: 'flat', value: 5 }, { stat: 'voidResist', type: 'flat', value: 5 }] },
+  { points: 3600, description: '+5% XP gain and +5% favor gain', modifiers: [{ stat: 'xpGain', type: 'flat', value: 5 }, { stat: 'favorGain', type: 'flat', value: 5 }] },
+  { points: 4400, description: '+5% max HP and +5% gold find', modifiers: [{ stat: 'maxHp', type: 'percent', value: 5 }, { stat: 'goldFind', type: 'flat', value: 5 }] },
+  { points: 5200, description: '+4% damage and +3% crit chance', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 4 }, { stat: 'critChance', type: 'flat', value: 3 }] },
+  { points: 6000, description: 'Keeper of the Greater Pantheon: +10% Magic Find, +5% max HP and +5% damage', modifiers: [{ stat: 'magicFind', type: 'flat', value: 10 }, { stat: 'maxHp', type: 'percent', value: 5 }, { stat: 'damageBonus', type: 'flat', value: 5 }] },
 ];
 
 type Extra = Pick<AchievementDef, 'hidden' | 'title' | 'gold' | 'pet' | 'mount'>;
-const ach = (category: AchievementCategory) => (id: string, name: string, description: string, points: number, check: Cond, extra: Extra = {}): AchievementDef => ({ id, name, description, category, points, check, ...extra });
-const life = (stat: LifetimeStat, min: number): Cond => ({ kind: 'lifetime', stat, min });
+export const ach = (category: AchievementCategory) => (id: string, name: string, description: string, points: number, check: Cond, extra: Extra = {}): AchievementDef => ({ id, name, description, category, points, check, ...extra });
+export const life = (stat: LifetimeStat, min: number): Cond => ({ kind: 'lifetime', stat, min });
 
 const combat = ach('combat');
 const bosses = ach('bosses');

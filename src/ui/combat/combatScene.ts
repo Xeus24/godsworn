@@ -221,15 +221,15 @@ export class CombatScene {
         v.shield = Math.max(0, v.shield - e.absorbed);
         v.hp = Math.max(0, v.hp - (e.amount - e.absorbed));
         const color = ELEMENT_COLORS[e.element] ?? '#fff';
-        v.flash = 1;
+        v.flash = settings().reduceFlashing ? 0.25 : 1;
         v.flashColor = e.crit ? '255,230,120' : this.rgb(color);
-        v.shake = e.crit ? 1 : 0.5;
+        v.shake = settings().reduceFlashing ? 0 : e.crit ? 1 : 0.5;
         // DoT ticks are quiet; real hits get sparks, and crits shake the whole scene.
         const share = e.amount / Math.max(1, x.maxHp);
         if (!e.dot && !settings().reduceMotion) {
           const p = positions.get(e.targetId);
           if (p) this.burst(p.x, p.y - this.unitSize(x) / 2, e.crit ? '#ffd84a' : color, e.crit ? 16 : 8 + Math.min(8, Math.round(share * 40)));
-          if (e.crit) this.sceneShake = Math.max(this.sceneShake, 1);
+          if (e.crit && !settings().reduceFlashing) this.sceneShake = Math.max(this.sceneShake, 1);
         }
         float(e.targetId, `${e.crit ? 'CRIT ' : ''}${e.amount}`, e.crit ? '#ffd84a' : color, e.crit, e.dot ? 0.8 : 1 + Math.min(0.6, share * 3));
         return;
@@ -263,7 +263,7 @@ export class CombatScene {
         this.view(x).alpha = 0.99;
         const p = positions.get(e.targetId);
         if (p) this.burst(p.x, p.y - this.unitSize(x) / 2, '#c8c0d8', 18);
-        this.sceneShake = Math.max(this.sceneShake, 0.6);
+        if (!settings().reduceFlashing) this.sceneShake = Math.max(this.sceneShake, 0.6);
         return;
       }
       case 'revive': {

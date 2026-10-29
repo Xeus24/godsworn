@@ -1,3 +1,4 @@
+import { addRenown, questRenown, questTown } from '../world/renown';
 import { setRelation } from '../gods/devotion';
 import { content } from '../../data';
 import { restoreFull } from '../character/stats';
@@ -403,6 +404,11 @@ export class QuestActions {
       parts.push(`title “${r.title}”`);
     }
     s.bus.emit('questComplete', { questId: q.id });
+    const home = questTown(q);
+    if (home) {
+      const gained = addRenown(s.player, home, questRenown(q));
+      if (gained.tier) this.toast('quest', `${content.towns.get(home).name}: you are now ${gained.tier.name}.`);
+    }
     this.toast('quest', `Quest complete: ${q.name}${parts.length ? ` (${parts.join(', ')})` : ''}`);
     if (q.epilogue) this.toast('info', q.epilogue);
     if (r.favor) s.devotion.apply(r.favor, 'quest');

@@ -208,6 +208,13 @@ export function groupEncounter(group: EncounterGroup, id: string, name: string, 
   };
 }
 
+/** About one chest in ten is a mimic: fixed by where it stands, so reloading never changes it. */
+export function isMimic(mapId: string, entityId: string): boolean {
+  let h = 2166136261;
+  for (const ch of `${mapId}:${entityId}`) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  return h % 10 === 0 && !mapId.startsWith('town') && !entityId.includes('boss');
+}
+
 /** After the Sundering Bell the Unsworn walk everywhere: these join every zone's wandering packs. */
 export const DARKENED_GROUPS: EncounterGroup[] = [
   { weight: 2, enemies: [{ enemyId: 'unsworn-oathburner' }, { enemyId: 'unsworn-oathburner' }] },

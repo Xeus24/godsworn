@@ -84,7 +84,7 @@ export class SettingsOverlay extends Overlay {
       input.addEventListener('input', () => updateSettings({ [key]: Number(input.value) / 100 } as Partial<Settings>));
       return el('label', { class: 'setting-row' }, el('span', {}, label), input);
     };
-    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion'): HTMLElement => {
+    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion' | 'dyslexiaFont' | 'reduceFlashing' | 'highContrast'): HTMLElement => {
       const input = el('input', { type: 'checkbox' }) as HTMLInputElement;
       input.checked = s[key];
       input.addEventListener('change', () => updateSettings({ [key]: input.checked } as Partial<Settings>));
@@ -141,6 +141,12 @@ export class SettingsOverlay extends Overlay {
       el('h3', {}, 'Game'),
       check('Autosave (after battles, in towns and every few minutes)', 'autosave'),
       check('Reduce motion (no animations)', 'reduceMotion'),
+      el('h3', {}, 'Accessibility'),
+      select<Settings['colorblind']>('Colour-blind palette', [['off', 'Off'], ['deuteranopia', 'Deuteranopia (red-green)'], ['protanopia', 'Protanopia (red-green)'], ['tritanopia', 'Tritanopia (blue-yellow)'], ['mono', 'Monochrome']], s.colorblind, (v) => updateSettings({ colorblind: v })),
+      check('Dyslexia-friendly font (plain, wider spacing)', 'dyslexiaFont'),
+      check('Reduce flashing (no hit flashes, shake or lightning)', 'reduceFlashing'),
+      check('High contrast (bolder borders and focus rings)', 'highContrast'),
+      select<number>('Random encounters', [[0, 'None'], [0.5, 'Half'], [1, 'Normal'], [1.5, 'More'], [2, 'Double']], s.encounterRate, (v) => updateSettings({ encounterRate: v })),
       select<number>('Interface size', [[0.9, 'Small'], [1, 'Normal'], [1.15, 'Large'], [1.3, 'Larger'], [1.5, 'Huge']], s.textScale, (v) => updateSettings({ textScale: v })),
       el('div', { class: 'dim small' }, 'Settings are kept in this browser.'),
       button('Close', () => this.close(), false, 'primary'),

@@ -159,6 +159,28 @@ describe('walking', () => {
     expect(fight).toBe(true);
   });
 
+  it('the encounter-rate setting scales random fights and zero turns them off', () => {
+    const walk = (scale: number): number => {
+      const s = newSession(4);
+      s.encounterScale = scale;
+      let fights = 0;
+      for (let i = 0; i < 400; i++) {
+        s.state.world.grace = 0;
+        const p = s.state.world.position;
+        const map = s.world.map;
+        const dirs = ([[1, 0], [-1, 0], [0, 1], [0, -1]] as const).filter(([dx, dy]) => passable(s.state.world, map, p.x + dx, p.y + dy) && !map.entities.some((e) => e.x === p.x + dx && e.y === p.y + dy));
+        const [dx, dy] = dirs[i % dirs.length] ?? [0, 0];
+        if (s.world.step(dx, dy).kind === 'fight') {
+          fights++;
+          s.world.pending = undefined;
+        }
+      }
+      return fights;
+    };
+    expect(walk(0)).toBe(0);
+    expect(walk(2)).toBeGreaterThan(walk(0.5));
+  });
+
   it('exits lead to the next zone', () => {
     const s = newSession();
     const map = mapFor('meadowlands');

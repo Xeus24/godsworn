@@ -46,7 +46,8 @@ import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
 import { AUTOSAVE_SLOT, SaveSlots, serialize, type SaveStore } from './engine/state/save';
 import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay, UnlockOverlay } from './ui/menu/menus';
-import { applySettings, settings, updateSettings } from './ui/settings';
+import { startGlobalPad } from './ui/gamepad/globalPad';
+import { applySettings, onSettingsChange, settings, updateSettings } from './ui/settings';
 import './ui/menu/menu.css';
 import { audio } from './ui/audio/audio';
 import { syncAreaAudio } from './ui/audio/areaAudio';
@@ -179,6 +180,7 @@ function loadSlot(slot: string): string | undefined {
 /** Makes a session the running game: toasts, debug log, autosave and play time. */
 function attach(s: GameSession): void {
   session = s;
+  s.encounterScale = settings().encounterRate;
   lastAutosave = Date.now();
   recordNgPlus(s.state.ngPlus);
   checkEndgame(s, false);
@@ -480,7 +482,11 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('pagehide', () => autosave(0));
 
+startGlobalPad();
 applySettings();
+onSettingsChange((s) => {
+  if (session) session.encounterScale = s.encounterRate;
+});
 // A soft click for every button.
 document.addEventListener('click', (e) => {
   if (e.target instanceof HTMLButtonElement && !e.target.disabled) audio().play('click');

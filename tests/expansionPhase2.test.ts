@@ -85,8 +85,8 @@ describe('races and signs', () => {
     expect(shade.passive.modifiers.some((m) => m.stat === 'dodge' && m.condition?.kind === 'timeOfDay')).toBe(true);
   });
 
-  it('has 11 birth signs, each tied to a real god', () => {
-    expect(content.birthSigns.size).toBe(11);
+  it('has 16 birth signs (one per god, the Nameless One and the Unmarked), each tied to a real god', () => {
+    expect(content.birthSigns.size).toBe(16);
     for (const sign of content.birthSigns.all()) expect(content.gods.has(sign.god)).toBe(true);
   });
 });

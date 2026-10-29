@@ -238,6 +238,8 @@ export interface HouseState {
 /** Reputation, house and trophies travel with the character (they carry into NG+). */
 export interface WorldProgress {
   reputation: Record<string, number>;
+  /** Town renown (see data/world/renown.ts), by town id. */
+  renown?: Record<string, number>;
   house?: HouseState;
   /** World bosses slain (enemy id -> count). */
   trophies: Record<string, number>;

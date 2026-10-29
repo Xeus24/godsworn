@@ -39,6 +39,7 @@ const HAND: Record<string, BossLines> = {
   'legion-champion': ['“I have been dead longer than you have been alive. Stand ready.”', '“You fight like the living. Clumsily, and with love.”', '“Relieve me. I have stood watch long enough.”'],
   'the-nameless-one': ['“I am the first thing that was ever taken away.”', '“You are strong. You are also… not nothing.”', '“Then I have a name… after all…”'],
   'the-last-light': ['“Child of the broken world. This is the end of the story.”', '“Is this all there is? Then let it be enough.”', '“Light… forgive… the dark…”'],
+  'mimic-emperor': ['“Every chest you ever opened was my tithe collector.”', '“Hoard what you like. I own the lid!”', '“A fine… lid… to be buried under…”'],
   'elder-drake-rime': ['“Warm blood. Rare, in my glacier.”', '“The frost does not forget!”', '“Winter… passes…”'],
   'elder-drake-tempest': ['“Walk into the eye of the storm, mortal, and call it a plan.”', '“THE STORM TAKES YOU!”', '“The sky… is quiet…”'],
   'elder-drake-ember': ['“Ash is all that is left of my last guest.”', '“The fire in me is older than the sun!”', '“Embers… to ash…”'],

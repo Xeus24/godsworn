@@ -14,6 +14,7 @@ import { parseSearch, type ItemTest } from './search';
 import { capacityMeter, CELL_KEY, readCellSize, type CellSize, DRAG_TYPE, FILTER_CATEGORIES, FILTERS, focusKeyOf, GRID_COLS, groupOf, locKey, readView, ruleSummary, sameLoc, shortQty, VIEW_KEY, type Filter } from './inventoryShared';
 import { StashControls } from './stashControls';
 import { GamepadNav } from './gamepad';
+import { setPadOwned } from '../gamepad/globalPad';
 import { noRule, type TabRule } from '../../engine/items/tabRules';
 import { heroDoll } from '../art/heroDoll';
 import { heroSprite } from '../art/heroSprite';
@@ -94,8 +95,10 @@ export class InventoryScreen implements Screen {
     window.addEventListener('gamepaddisconnected', padEvent);
     this.padConnected = (navigator.getGamepads?.() ?? []).some(Boolean);
     this.pad.start();
+    setPadOwned(true);
     this.offs.push(
       () => this.pad.stop(),
+      () => setPadOwned(false),
       () => root.removeEventListener('focusin', this.onFocusIn),
       () => window.removeEventListener('gamepadconnected', padEvent),
       () => window.removeEventListener('gamepaddisconnected', padEvent),

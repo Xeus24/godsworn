@@ -8,6 +8,7 @@ import { MASTERED_LEVEL, masteryLevel } from '../skills/mastery';
 import type { GameState } from '../state/gameState';
 import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
+import { progressOf } from '../achievements/progress';
 import type { Cond } from './types';
 
 /** Is the quest active, done (at least once), or not begun? */
@@ -151,6 +152,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return new Set(state.legacy.endings.map((e) => e.split(':')[0])).size >= cond.min;
     case 'heresy':
       return p.devotion.heresy >= (cond.min ?? 0) && (cond.max === undefined || p.devotion.heresy < cond.max);
+    case 'progress':
+      return progressOf(state, cond.stat, cond.key, c) >= cond.min;
     case 'all':
       return cond.conds.every((x) => evaluate(state, x, c));
     case 'any':

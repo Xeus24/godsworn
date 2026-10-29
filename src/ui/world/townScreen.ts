@@ -1,3 +1,5 @@
+import { nextRenownTier, renownOf, renownTier, statueTowns } from '../../engine/world/renown';
+import { STATUE_POINTS } from '../../data/world/renown';
 import { uiGlyph } from '../art/uiGlyphs';
 import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { questLevel } from '../../engine/quests/quests';
@@ -209,6 +211,18 @@ export class TownScreen implements Screen {
         'The Inn',
         el('p', { class: 'small' }, 'A hot meal and a soft bed: full HP and MP, 8 hours pass, and you wake Well Rested (+5% damage for 3 battles).'),
         this.btn(`Rent a room (${s.world.innCost()}g)`, () => this.say(s.world.stayAtInn()), s.state.gold < s.world.innCost(), 'primary'),
+      ),
+    );
+    const renown = renownOf(p, this.townId);
+    const tier = renownTier(renown);
+    const next = nextRenownTier(renown);
+    cards.push(
+      this.card(
+        'Renown',
+        el('div', {}, `${t.name} thinks of you as: `, el('b', { class: tier.id === 'stranger' ? 'dim' : 'tip-good' }, tier.name), ` (${renown} renown${next ? `, ${next.name} at ${next.points}` : ''})`),
+        el('p', { class: 'small' }, tier.perk),
+        ...(renown >= STATUE_POINTS ? [el('p', { class: 'small', 'data-statue': t.id }, `In the square stands a statue of ${p.name}. Statues across the land: ${statueTowns(p).length}.`)] : []),
+        el('div', { class: 'dim small' }, 'Finish quests for this town’s people and clear the dungeons of its region.'),
       ),
     );
     const people = s.quests.townNpcs(this.townId);

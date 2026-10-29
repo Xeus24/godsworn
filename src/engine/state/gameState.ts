@@ -207,6 +207,8 @@ export class GameSession {
   readonly minigames: MinigameActions;
   readonly achievements: AchievementActions;
   readonly endgame: EndgameActions;
+  /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
+  encounterScale = 1;
 
   constructor(public state: GameState) {
     this.bus = createGameEventBus();

@@ -1,5 +1,6 @@
 import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
+import { renownDiscount } from '../world/renown';
 import { characterStats } from '../character/stats';
 import type { Character } from '../character/types';
 import { Rng } from '../core/rng';
@@ -71,7 +72,7 @@ export function buyDiscount(shop: ShopDef, town: string, char: Character, c: Con
     const rank = f.ranks.indexOf(rankOf(f, repOf(char, f.id)) ?? (f.ranks[0] as never));
     d += Math.max(0, rank - FACTION_SHOP_RANK) * FACTION_DISCOUNT_PER_RANK;
   }
-  return Math.min(0.4, d + characterStats(char).barter / 100);
+  return Math.min(0.4, d + characterStats(char).barter / 100 + renownDiscount(char, town));
 }
 
 export function buyPrice(item: ItemInstance, shop: ShopDef, town: string, char: Character, c: Content = content): number {

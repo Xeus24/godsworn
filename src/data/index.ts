@@ -29,6 +29,8 @@ import { RACES } from './races';
 import { RESOURCES } from './resources';
 import { SKILL_TAGS } from './skillTags';
 import { ENCOUNTERS, ENEMIES, SUMMONS } from './enemies';
+import { withFamily } from './families';
+import { MIMICS } from './mimics';
 import { ENEMY_SKILLS } from './skills/enemy';
 import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
 import { GREATER_RACIAL_SKILLS } from './skills/racialGreater';
@@ -58,6 +60,7 @@ import { DEEP_ENEMY_SKILLS } from './bestiary/skills';
 import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
 import { ELITE_AFFIXES } from './bestiary/affixes';
 import { ACHIEVEMENTS, ACHIEVEMENT_MILESTONES } from './achievements';
+import { ACHIEVEMENTS_GREATER } from './achievementsGreater';
 import { FOLLOWERS } from './followers';
 import { RIFT_AFFIXES } from './rifts';
 import { CHALLENGES } from './challenges';
@@ -142,7 +145,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES, ...BATCH4_ENEMIES].map(withEarth)),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES, ...BATCH4_ENEMIES, ...MIMICS].map(withEarth).map(withFamily)),
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', BOSS_SCRIPTS),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),
@@ -183,7 +186,7 @@ export const content = {
   cards: new ContentTable('card', CARDS),
   /** Ids of the secret lines (see data/story/secretLines.ts): flags `secret:<id>`. */
   secretLines: SECRET_LINE_IDS,
-  achievements: new ContentTable('achievement', ACHIEVEMENTS),
+  achievements: new ContentTable('achievement', [...ACHIEVEMENTS, ...ACHIEVEMENTS_GREATER]),
   treasures: new ContentTable('treasure map', TREASURES),
   dyes: new ContentTable('dye', DYES),
   frames: new ContentTable('portrait frame', FRAMES),

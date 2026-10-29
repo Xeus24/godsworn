@@ -1,6 +1,6 @@
 import type { Cond } from '../quests/types';
 
-export type AchievementCategory = 'combat' | 'bosses' | 'bestiary' | 'story' | 'gods' | 'hero' | 'exploration' | 'wealth' | 'companions' | 'challenge' | 'twilight' | 'endgame';
+export type AchievementCategory = 'combat' | 'bosses' | 'bestiary' | 'story' | 'gods' | 'hero' | 'exploration' | 'wealth' | 'companions' | 'challenge' | 'twilight' | 'endgame' | 'secrets' | 'pastimes' | 'travel';
 
 /** An achievement: earned the moment its condition holds, once per game. */
 export interface AchievementDef {

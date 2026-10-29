@@ -866,3 +866,36 @@ button:hover:not(:disabled) {
 .panel {
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4), inset 0 0 0 3px rgba(138, 107, 176, 0.08), 0 4px 10px rgba(0, 0, 0, 0.45);
 }
+
+/* ---------- Accessibility ---------- */
+/* Colour-blind palettes: the semantic colours (good/bad, rarity, status) move to hues that stay apart. */
+body.cb-deuteranopia, body.cb-protanopia { --ok: #4aa3ff; --danger: #ff9a1f; --r-uncommon: #4aa3ff; --r-rare: #f2f2f2; --r-epic: #ffd54a; --r-legendary: #ff7a1f; --r-set: #b05cff; --r-mythic: #ff5fa0; }
+body.cb-deuteranopia .tip-good, body.cb-protanopia .tip-good { color: #5db4ff; }
+body.cb-deuteranopia .tip-bad, body.cb-protanopia .tip-bad { color: #ffb347; }
+body.cb-tritanopia { --ok: #4fd3c4; --danger: #ff4f6a; --r-uncommon: #4fd3c4; --r-rare: #ff6aa0; --r-epic: #ffb0d0; --r-legendary: #ff4f4f; --r-set: #4fd3c4; --r-divine: #f2f2f2; }
+body.cb-tritanopia .tip-good { color: #5be0d0; }
+body.cb-tritanopia .tip-bad { color: #ff6a80; }
+body.cb-mono { filter: grayscale(1) contrast(1.1); }
+
+/* Dyslexia-friendly: a plain humanist sans, wider spacing and a taller line. */
+body.dyslexia-font, body.dyslexia-font * {
+  font-family: 'Atkinson Hyperlegible', 'Lexend', Verdana, 'Trebuchet MS', sans-serif !important;
+  letter-spacing: 0.04em;
+  word-spacing: 0.12em;
+}
+body.dyslexia-font { line-height: 1.6; }
+
+/* Reduce flashing: nothing pulses or glows. */
+body.reduce-flashing .sound-hint,
+body.reduce-flashing [class*='glow'],
+body.reduce-flashing [class*='pulse'] {
+  animation: none !important;
+}
+
+/* High contrast: bolder borders and an unmissable focus ring. */
+body.high-contrast { --border: #b9a0d8; --text-dim: #d4c8b8; }
+body.high-contrast :focus-visible { outline: 3px solid #fff !important; outline-offset: 2px; }
+body.high-contrast button, body.high-contrast .panel { border-width: 2px; }
+
+/* A controller moved focus: show where it is. */
+body.pad-active :focus { outline: 3px solid var(--gold-hi); outline-offset: 2px; }

@@ -11,10 +11,11 @@ import { Rng } from '../../engine/core/rng';
 import { itemIconUrl } from '../art/itemIcons';
 import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from '../combat/creatureSprites';
+import { completion, overallCompletion } from '../../engine/achievements/completion';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-type Tab = 'bestiary' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics';
+type Tab = 'bestiary' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
 const TABS: [Tab, string][] = [
   ['bestiary', 'Bestiary'],
   ['achievements', 'Achievements'],
@@ -22,6 +23,7 @@ const TABS: [Tab, string][] = [
   ['items', 'Legendary Codex'],
   ['maps', 'Maps'],
   ['statistics', 'Statistics'],
+  ['completion', 'Completion'],
 ];
 
 const TIER_NAMES: Record<string, string> = { normal: 'Normal', elite: 'Elite', champion: 'Champion', miniboss: 'Miniboss', boss: 'Boss', worldBoss: 'World Boss', punisher: 'Divine Punisher' };
@@ -107,7 +109,7 @@ export class CodexScreen implements Screen {
       });
       return b;
     }));
-    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.statistics();
+    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
     this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), tabs, body));
   };
 
@@ -334,6 +336,36 @@ export class CodexScreen implements Screen {
   }
 
   // ---------------------------------------------------------------- statistics
+
+  /** How much of the game this save has seen: every row as a bar, grouped, with an overall percentage. */
+  private completion(): HTMLElement {
+    const groups = completion(this.session.state);
+    return el(
+      'div',
+      { class: 'codex-scroll' },
+      el('h3', {}, `Overall: ${overallCompletion(groups)}% complete`),
+      el(
+        'div',
+        { class: 'codex-grid' },
+        ...groups.map((g) =>
+          el(
+            'section',
+            { class: 'panel' },
+            el('h3', {}, g.title),
+            ...g.rows.map((r) => {
+              const pct = r.total ? Math.round((r.have / r.total) * 100) : 0;
+              return el(
+                'div',
+                { class: 'completion-row' },
+                el('div', { class: 'codex-stat' }, el('span', {}, r.label), el('b', {}, `${r.have} / ${r.total}${r.have >= r.total ? ' ✓' : ''}`)),
+                el('div', { class: 'bar', role: 'progressbar', 'aria-valuenow': String(pct), 'aria-label': `${r.label} ${pct}%` }, el('div', { class: 'bar-fill', style: `width:${pct}%` })),
+              );
+            }),
+          ),
+        ),
+      ),
+    );
+  }
 
   private statistics(): HTMLElement {
     const s = this.session;

@@ -54,7 +54,9 @@ import {
   usedKey,
   weatherFor,
   zoneOf,
+  isMimic,
 } from '../world/world';
+import { addRenown, renownDiscount } from '../world/renown';
 import type { GameSession } from './gameState';
 import type { QuestMarker } from '../quests/quests';
 
@@ -65,7 +67,7 @@ const fail = (reason: string): WorldResult => ({ ok: false, reason });
 export interface PendingFight {
   map: string;
   entity?: string;
-  kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss' | 'quest' | 'sea';
+  kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss' | 'quest' | 'sea' | 'mimic';
   /** A voyage in progress: where the ship was going. */
   dest?: string;
 }
@@ -223,7 +225,7 @@ export class WorldActions {
     if (!isDungeon(map.id) && this.world.grace === 0) {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
-      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
+      if (this.s.encounterScale > 0 && this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * this.s.encounterScale * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
         const encounter = randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened']));
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
@@ -303,6 +305,24 @@ export class WorldActions {
     else this.s.player.stable.pet = id;
     this.changed('pet');
     return { ok: true };
+  }
+
+  /** Town renown: a toast when a new tier is reached. */
+  private gainRenown(town: string, amount: number): void {
+    const { tier } = addRenown(this.s.player, town, amount);
+    if (tier) this.toast('quest', `${content.towns.get(town).name}: you are now ${tier.name}.`);
+  }
+
+  /** The chest was a mimic: it bites first, and the treasure it was guarding is yours once it is down. */
+  private mimicFight(e: MapEntity): StepResult {
+    const level = fightLevel(this.map.level, this.s.player.level, this.s.rng);
+    const emperor = level >= 60 && this.s.rng.chance(0.08);
+    const id = emperor ? 'mimic-emperor' : level >= 68 ? 'void-mimic' : level >= 45 ? 'vault-mimic' : level >= 22 ? 'gilded-mimic' : 'chest-mimic';
+    const def = content.enemies.get(id);
+    const encounter = groupEncounter({ weight: 1, enemies: [{ enemyId: id }] }, `mimic:${this.map.id}:${e.id}`, emperor ? 'The Mimic Emperor!' : 'It was a mimic!', Math.max(def.level, level), { canFlee: !emperor, ...(emperor ? { isBoss: true } : {}) });
+    this.pending = { map: this.map.id, entity: e.id, kind: 'mimic' };
+    this.toast('warning', 'The chest opens its mouth.');
+    return { kind: 'fight', encounter, level: encounter.level };
   }
 
   private fight(e: MapEntity, kind: PendingFight['kind']): StepResult {
@@ -391,8 +411,10 @@ export class WorldActions {
         this.changed('lore');
         return { kind: 'moved', message: `${lore.title}: “${lore.text}”` };
       }
-      case 'chest':
+      case 'chest': {
+        if (!e.gate && isMimic(map.id, e.id)) return this.mimicFight(e);
         return { kind: 'moved', message: e.gate ? this.openCache(e) : this.openChest(e) };
+      }
       case 'dig':
         return { kind: 'moved', message: this.dig(e) };
       case 'secret':
@@ -664,6 +686,10 @@ export class WorldActions {
     const map = mapFor(pending.map);
     const e = map.entities.find((x) => x.id === pending.entity);
     this.world.used[usedKey(pending.map, pending.entity)] = this.day;
+    if (pending.kind === 'mimic' && e) {
+      // The real treasure was in its belly.
+      this.toast('loot', this.openChest({ ...e, locked: false, trapped: false }));
+    }
     if (pending.kind === 'worldBoss' && e?.ref) {
       const t = this.s.player.world.trophies;
       t[e.ref] = (t[e.ref] ?? 0) + 1;
@@ -674,6 +700,9 @@ export class WorldActions {
     if (pending.kind === 'boss' && !this.world.dungeonsCleared.includes(pending.map)) {
       this.world.dungeonsCleared.push(pending.map);
       this.toast('quest', `${map.name} cleared!`);
+      const home = content.dungeons.get(pending.map).zone;
+      const town = content.zones.find(home)?.town;
+      if (town) this.gainRenown(town, 8);
     }
     this.changed('world');
   }
@@ -699,7 +728,7 @@ export class WorldActions {
 
   innCost(): number {
     const town = this.inTown();
-    return town ? content.towns.get(town).innCostPerLevel * this.s.player.level : 0;
+    return town ? Math.round(content.towns.get(town).innCostPerLevel * this.s.player.level * (1 - renownDiscount(this.s.player, town))) : 0;
   }
 
   /** A night at the inn: full HP/MP, 8 hours, and Well Rested (+5% damage, 3 battles). */

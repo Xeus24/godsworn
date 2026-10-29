@@ -11,6 +11,8 @@ import type { LifetimeStat } from '../state/gameState';
  * A test on the game state, used by quest availability, dialogue choices,
  * conversation topics and story branches.
  */
+import type { ProgressStat } from '../achievements/progress';
+
 export type Cond =
   | { kind: 'level'; min: number }
   | { kind: 'class'; classId: string }
@@ -92,6 +94,8 @@ export type Cond =
   | { kind: 'defender' }
   /** Heresy at least `min` (or below `max`). */
   | { kind: 'heresy'; min?: number; max?: number }
+  /** A counter kept by a newer system (secrets, pastimes, the Spire, voyages...); see engine/achievements/progress.ts. */
+  | { kind: 'progress'; stat: ProgressStat; min: number; key?: string }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };

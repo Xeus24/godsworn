@@ -23,6 +23,16 @@ export interface Settings {
   reduceMotion: boolean;
   /** Text size multiplier. */
   textScale: number;
+  /** Palette swap for the common kinds of colour blindness. */
+  colorblind: 'off' | 'deuteranopia' | 'protanopia' | 'tritanopia' | 'mono';
+  /** A plainer, wider-spaced font with a taller line. */
+  dyslexiaFont: boolean;
+  /** No hit flashes, screen shake, lightning or pulsing glows. */
+  reduceFlashing: boolean;
+  /** Multiplies random encounters on the map: 0 turns them off, 1 is normal, 2 doubles them. */
+  encounterRate: number;
+  /** Larger, thicker outlines on focus and a stronger border on panels. */
+  highContrast: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -41,6 +51,11 @@ export const DEFAULT_SETTINGS: Settings = {
   autosave: true,
   reduceMotion: false,
   textScale: 1,
+  colorblind: 'off',
+  dyslexiaFont: false,
+  reduceFlashing: false,
+  encounterRate: 1,
+  highContrast: false,
 };
 
 const KEY = 'godsworn:settings';
@@ -83,4 +98,8 @@ export function applySettings(): void {
   // The stylesheets size everything in px, so scale the whole page rather than only the root font.
   document.documentElement.style.setProperty('zoom', String(current.textScale));
   document.body.classList.toggle('reduce-motion', current.reduceMotion);
+  document.body.classList.toggle('reduce-flashing', current.reduceFlashing || current.reduceMotion);
+  document.body.classList.toggle('dyslexia-font', current.dyslexiaFont);
+  document.body.classList.toggle('high-contrast', current.highContrast);
+  for (const mode of ['deuteranopia', 'protanopia', 'tritanopia', 'mono']) document.body.classList.toggle(`cb-${mode}`, current.colorblind === mode);
 }

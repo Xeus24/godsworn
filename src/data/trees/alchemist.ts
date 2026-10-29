@@ -108,7 +108,7 @@ export const ALCHEMIST: GreaterClass = {
     playstyle: 'Reagents build with every blow and kill. Spend them on brews: bombs for damage, mutagens for self-buffs, remedies for healing and transmutations for tricks.',
     role: 'Utility / versatile', difficulty: 2, color: '#6ab84a',
     mechanic: { name: 'Reagents and Brewing', description: 'Reagents build as you fight. Every Brew skill spends them: pick between bombs, mutagens, remedies and transmutations as the fight demands.' },
-    trait: { name: 'Practiced Hands', description: '95% more max HP, 30% less damage taken, +25% damage, +10% crit damage and 6% lifesteal.', modifiers: [{ stat: 'lifesteal', type: 'flat', value: 6 }, { stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'damageBonus', type: 'flat', value: 25 }, { stat: 'critDamage', type: 'flat', value: 10 }] },
+    trait: { name: 'Practiced Hands', description: '95% more max HP, 30% less damage taken, +100% damage, +10% crit damage and 6% lifesteal.', modifiers: [{ stat: 'lifesteal', type: 'flat', value: 6 }, { stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'damageBonus', type: 'flat', value: 100 }, { stat: 'critDamage', type: 'flat', value: 10 }] },
     resource: 'reagents',
     baseStats: { str: 3, dex: 6, int: 8, vit: 5, wis: 6, luk: 4, fai: 2, cha: 4 },
     growth: { str: 0.3, dex: 0.8, int: 1.5, vit: 0.8, wis: 0.9, luk: 0.5, fai: 0.2, cha: 0.5 },

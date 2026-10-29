@@ -11,6 +11,7 @@ const lane = (i: number, salt: number): number => {
   return n - Math.floor(n);
 };
 
+import { settings } from '../settings';
 export function drawWeather(g: CanvasRenderingContext2D, weather: string, w: number, h: number, now: number): void {
   const t = now / 1000;
   g.save();
@@ -34,7 +35,7 @@ export function drawWeather(g: CanvasRenderingContext2D, weather: string, w: num
         // A flash roughly every 7 seconds, with a quick second flicker.
         const c = t % 7;
         const flash = c < 0.12 ? 1 - c / 0.12 : c > 0.25 && c < 0.33 ? 0.5 * (1 - (c - 0.25) / 0.08) : 0;
-        if (flash > 0) {
+        if (flash > 0 && !settings().reduceFlashing) {
           g.fillStyle = `rgba(220,230,255,${(flash * 0.35).toFixed(3)})`;
           g.fillRect(0, 0, w, h);
         }
