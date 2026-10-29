@@ -45,6 +45,8 @@ export class Battle {
   readonly triggers: TriggerSystem;
   readonly c: Content;
   readonly encounterId: string;
+  /** Pacifist challenge: a foe that would die yields instead. */
+  pacifist = false;
   readonly canFlee: boolean;
   readonly isBoss: boolean;
   readonly timeOfDay: 'day' | 'night';

@@ -195,6 +195,17 @@ export function applyDamage(
     b.log(`${target.name} refuses to fall!`);
     return;
   }
+  if (b.pacifist && target.side === 'enemy' && source.side === 'party') {
+    // The Pacifist challenge: nothing dies by your hand. The foe yields and walks away.
+    target.hp = 1;
+    target.alive = false;
+    target.departed = true;
+    target.corpse = false;
+    b.tally.spared.push(target.enemyId ?? target.id);
+    b.log(`${target.name} yields. You let it go.`);
+    b.checkOutcome();
+    return;
+  }
   kill(b, target, source, info.element);
 }
 

@@ -4227,6 +4227,7 @@ At any town (level 30+): all 57 dungeon bosses in road order at your level, HP c
 - **Godless:** The gods never warm to you: you gain no favor (you can still lose it), so no blessings, prayers or interventions.
 - **Glass Cannon:** Half your max HP, but you deal 30% more damage.
 - **Nightmare:** Every enemy has 50% more HP and deals 40% more damage; you find far more (+100% Magic Find and Gold Find).
+- **Pacifist:** No one dies by your hand: a foe that would fall yields instead and walks away (it counts as spared, so no kills, no corpses and no loot from it). Bosses yield too.
 
 ### Primordial items (20)
 

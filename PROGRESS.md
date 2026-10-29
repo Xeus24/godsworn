@@ -940,6 +940,16 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase19c.test.ts` (4); 830 unit tests, 8 e2e and the build pass.
 - **Not done / cut:** no skill evolutions, hybrid prestige pairings or companions for these classes; the Grimoires are one each; art is the same simple sprite style. **Still to do in phase 19:** 19d, the endgame modes (Endless Spire, Divine Trials, Arena Champions league, weekly seeded challenges, Pacifist).
 
+### Expansion phase 19d: the endgame modes
+- **Four new runs** beside Rifts and the Boss Rush, all on the endgame screen and fought as gauntlets (`engine/state/endgameActions.ts`, numbers in `data/endgameModes.ts`; **save version 22**, older saves start the records empty):
+  - **The Endless Spire:** floors without end from level 50, 4% harder each; a guardian boss every fifth floor and a Rift twist every fifth (up to four). Leave standing and keep what you won; fall and the run ends. Your deepest floor is recorded.
+  - **The Divine Trials:** one for each of the 14 gods, a single fight against their Aspect with a theme of its own (`DIVINE_TRIALS`); needs Acknowledged favor with the god; clearing all fourteen earns the title Trialsworn.
+  - **The Arena Champions league:** a season is eight class champions (the arena's mentors, never your own class), harder with your rank; win the season to climb eight ranks, from Bronze to Champion (title Arena Champion of Champions).
+  - **The weekly seeded run:** six fights and three twists drawn from the ISO week's seed (`EndgameActions.weeklySeed`), the same for everyone that week; your best is kept per week and the prize (gold and two Rift Maps) is claimed once a week.
+- **The Pacifist challenge mode** (chosen at creation like the others, `pacifist` rule): in battle `Battle.pacifist` turns every killing blow from your side into a yield (the foe walks away and counts as spared); no kills, no corpses, no loot from it.
+- Tests: `tests/expansionPhase19d.test.ts` (8); 838 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
+- **Not done / cut:** the weekly seed comes from the player's own clock (no server, so no shared leaderboard); the Pacifist mode has no achievements or title of its own and does not change quests that demand kills; Divine Trials have no unique rewards beyond loot, gold and the title; not played in the browser. **Phase 19 is now complete** (19a to 19d); the true ending was built in 19a.
+
 ## Known bugs
 - None known.
 

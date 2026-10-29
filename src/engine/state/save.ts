@@ -127,6 +127,13 @@ export function migrate(raw: Json): Json {
   }
   // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
   p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
+  // Version 22 (endgame modes): the Spire, Divine Trials, league and weekly run start fresh.
+  const eg = obj(state.endgame);
+  eg.spire ??= { best: 0, runs: 0 };
+  eg.divine ??= {};
+  eg.league ??= { rank: 0, seasons: 0, fights: 0 };
+  eg.weekly ??= { seed: 0, best: 0, bestTurns: 0, claimed: false };
+  state.endgame = eg;
   // Version 21 (New Game+): world affixes start empty.
   state.ngAffixes ??= [] as unknown as Json;
   // Version 20 (minigames): fish, cards (a starter set) and records start fresh.

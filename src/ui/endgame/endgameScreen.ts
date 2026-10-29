@@ -1,7 +1,8 @@
 import { content } from '../../data';
 import { RIFTS } from '../../data/rifts';
 import { countHeld } from '../../engine/items/inventory';
-import { BOSS_RUSH } from '../../engine/state/endgameActions';
+import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
+import { BOSS_RUSH, EndgameActions } from '../../engine/state/endgameActions';
 import type { GameSession } from '../../engine/state/gameState';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
@@ -58,12 +59,12 @@ export class EndgameScreen implements Screen {
     return el(
       'section',
       { class: 'panel' },
-      el('h2', {}, a.kind === 'rift' ? `Rift tier ${a.tier}` : 'The Boss Rush'),
+      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}` }[a.kind]),
       el('div', { class: 'small' }, `Fight ${a.wave + 1} of ${a.fights.length} · ${a.turns} turns so far${a.gold ? ` · ${a.gold} gold won` : ''}`),
       ...(a.affixes.length ? [el('h3', {}, 'Rift affixes'), ...a.affixes.map((id) => { const d = content.riftAffixes.get(id); return el('div', { class: 'small' }, el('b', {}, d.name), ` ${d.description}`); })] : []),
       el('p', { class: 'dim small' }, a.kind === 'rift' ? `No rest between fights: only ${RIFTS.respitePct}% of HP and MP comes back between waves. Fall or flee and the Rift closes.` : 'No rest between bosses: HP and MP carry over. Fall and the Rush ends; your best is kept.'),
       el('div', { class: 'trial-grid' }, ...rows),
-      el('div', { class: 'row wrap' }, this.btn(next ? `Fight: ${next.encounter.name}` : 'Continue', () => this.fight(), !next, 'primary'), this.btn('Abandon the run', () => this.say(s.endgame.abandon()), false, 'danger')),
+      el('div', { class: 'row wrap' }, this.btn(next ? `Fight: ${next.encounter.name}` : 'Continue', () => this.fight(), !next, 'primary'), a.kind === 'spire' ? this.btn('Leave the Spire', () => this.say(s.endgame.leaveSpire())) : this.btn('Abandon the run', () => this.say(s.endgame.abandon()), false, 'danger')),
     );
   }
 
@@ -107,6 +108,50 @@ export class EndgameScreen implements Screen {
     );
   }
 
+  private spire(): HTMLElement {
+    const s = this.session;
+    const check = s.endgame.canStartSpire();
+    return el('section', { class: 'panel' }, el('h2', {}, 'The Endless Spire'),
+      el('p', { class: 'small' }, `Floors without end, one fight each, ${SPIRE.threatPerFloor}% harder every floor. A guardian waits every ${SPIRE.guardianEvery}th floor, and every ${SPIRE.affixEvery}th floor adds a twist (up to ${SPIRE.maxAffixes}). Fall and the run ends; leave standing and you keep what you won.`),
+      el('div', { class: 'small' }, `Deepest floor: ${s.state.endgame.spire.best} · runs: ${s.state.endgame.spire.runs}`),
+      this.btn('Climb the Spire', () => this.say(s.endgame.startSpire()), !check.ok, 'primary'), ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]));
+  }
+
+  private divine(): HTMLElement {
+    const s = this.session;
+    const e = s.state.endgame;
+    return el('section', { class: 'panel' }, el('h2', {}, 'The Divine Trials'),
+      el('p', { class: 'small' }, 'Each god tests you in person: one fight against their Aspect, with a theme of its own. A god must have taken notice of you (Acknowledged favor). Pass all fourteen to be called Trialsworn.'),
+      el('div', { class: 'small' }, `Passed: ${DIVINE_TRIALS.filter((t) => (e.divine[t.god]?.clears ?? 0) > 0).length} of ${DIVINE_TRIALS.length}`),
+      ...DIVINE_TRIALS.map((t) => {
+        const check = s.endgame.canStartDivine(t.god);
+        const done = (e.divine[t.god]?.clears ?? 0) > 0;
+        return el('div', { class: 'board-row' }, el('b', {}, `${done ? '✓ ' : ''}${t.name}`), el('div', { class: 'dim small' }, check.ok ? t.description : check.reason), this.btn('Face the Aspect', () => this.say(s.endgame.startDivine(t.god)), !check.ok));
+      }));
+  }
+
+  private league(): HTMLElement {
+    const s = this.session;
+    const l = s.state.endgame.league;
+    const check = s.endgame.canStartLeague();
+    return el('section', { class: 'panel' }, el('h2', {}, 'The Arena Champions League'),
+      el('p', { class: 'small' }, `A season is ${LEAGUE.fightsPerSeason} champions, the arena's mentors, one after another. Win the season to climb: ${LEAGUE.ranks.slice(1).join(', ')}.`),
+      el('div', { class: 'small' }, `Rank: ${LEAGUE.ranks[l.rank]} · seasons won: ${l.seasons} · champions beaten: ${l.fights}`),
+      this.btn('Begin a season', () => this.say(s.endgame.startLeague()), !check.ok, 'primary'), ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]));
+  }
+
+  private weekly(): HTMLElement {
+    const s = this.session;
+    const seed = EndgameActions.weeklySeed(new Date());
+    const w = s.state.endgame.weekly;
+    const check = s.endgame.canStartWeekly();
+    const mine = w.seed === seed ? w : undefined;
+    return el('section', { class: 'panel' }, el('h2', {}, `Weekly run ${seed}`),
+      el('p', { class: 'small' }, `${WEEKLY.fights} fights and ${WEEKLY.affixes} twists, the same for everyone this week. Clear it for ${WEEKLY.goldPerLevel} gold a level and ${WEEKLY.riftMaps} Rift Maps (once a week).`),
+      el('div', { class: 'small' }, mine ? `This week: ${mine.best} of ${WEEKLY.fights} fights${mine.best ? ` in ${mine.bestTurns} turns` : ''}${mine.claimed ? ' · prize claimed' : ''}` : 'Not yet attempted this week.'),
+      this.btn('Start the weekly run', () => this.say(s.endgame.startWeekly(seed)), !check.ok, 'primary'), ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]));
+  }
+
   private render = (): void => {
     if (!this.root) return;
     const s = this.session;
@@ -119,7 +164,7 @@ export class EndgameScreen implements Screen {
           'div',
           { class: 'codex-scroll' },
           ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush()),
+          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.weekly(), this.divine()),
           this.btn('Back to town', () => this.back()),
         ),
       ),

@@ -1,4 +1,5 @@
 import { content, type Content } from '../../data';
+import { hasRule } from '../character/challenges';
 import { remixFor, worldAffixModifiers } from '../ngplus/remix';
 import type { Character } from '../character/types';
 import type { Rng } from '../core/rng';
@@ -159,7 +160,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     seen.set(e.name, n + 1);
     e.name = `${e.name} ${String.fromCharCode(65 + n)}`;
   }
-  return new Battle({
+  const battle = new Battle({
     party,
     enemies,
     rng: opts.rng,
@@ -176,6 +177,8 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     aiSharpness: difficulty.enemy.aiSharpness,
     c,
   });
+  battle.pacifist = hasRule(hero, 'pacifist', c);
+  return battle;
 }
 
 /** Plays a whole battle with AI on both sides (simulations, tests, auto-battle). */
