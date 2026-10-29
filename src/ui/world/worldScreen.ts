@@ -1,4 +1,5 @@
 import { worldLevel } from '../../engine/ngplus/ngplus';
+import { secretCount } from '../../engine/world/secrets';
 import { content } from '../../data';
 import type { EncounterDef } from '../../engine/combat/types';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
@@ -285,8 +286,10 @@ export class WorldScreen implements Screen {
     const s = this.session;
     const zone = s.world.zone;
     const def = mechanicOf(zone);
-    if (!def) return [];
-    const rows: HTMLElement[] = [el('div', { class: 'small', title: def.description }, def.name)];
+    const count = secretCount(s.state, zone.id);
+    const secrets = el('div', { class: 'dim small', title: 'Cracked walls, gated finds, night-only paths, puzzles, beetles and fragments hide in every region.' }, `Secrets found here: ${count.found}/${count.total}`);
+    if (!def) return [secrets];
+    const rows: HTMLElement[] = [el('div', { class: 'small', title: def.description }, def.name), secrets];
     const meter = currentMeter(s.player, zone);
     if (meter) {
       const v = Math.round(meter.value);

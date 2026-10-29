@@ -1,4 +1,5 @@
 import { grantMount, grantPet, mountOf } from '../character/stable';
+import { allSecrets, secretById, secretCount, secretFlag, type SecretDef } from '../world/secrets';
 import type { UtilityKind } from '../skills/generalTypes';
 import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
@@ -203,6 +204,8 @@ export class WorldActions {
     if (this.world.grace > 0) this.world.grace--;
     this.world.tideHigh = tideIsHigh(this.s.state.clock.minute);
     this.world.moonFull = moonPhase(this.day) === 4;
+    this.world.night = this.s.timeOfDay === 'night';
+    this.world.bloodMoon = this.world.night && this.weatherNow() === 'blood-moon';
     this.s.party.ambientBanter();
     if (isDungeon(map.id)) this.world.dsteps = (this.world.dsteps ?? 0) + 1;
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
@@ -390,6 +393,8 @@ export class WorldActions {
         return { kind: 'moved', message: e.gate ? this.openCache(e) : this.openChest(e) };
       case 'dig':
         return { kind: 'moved', message: this.dig(e) };
+      case 'secret':
+        return this.secret(e);
       case 'rune': {
         this.world.used[usedKey(map.id, e.id)] = this.day;
         const done = runesDone(this.world, map);
@@ -424,6 +429,70 @@ export class WorldActions {
     if (up) this.toast('info', `${content.professions.get(skill).name} rises to ${up}.`);
     this.changed('gather');
     return `${e.label}: ${qty}× ${content.items.get(itemId).name}.`;
+  }
+
+  /** A secret: gated finds need their skill, puzzles want their stones in order, eggs may fight. Each is found once. */
+  private secret(e: MapEntity): StepResult {
+    const def = secretById(e.secret as string);
+    if (!def) return { kind: 'moved' };
+    const map = this.map;
+    if (e.gate) {
+      const have = exploreRank(this.s.player, e.gate.skill);
+      if (have < e.gate.rank) return { kind: 'moved', message: `Something is here, out of reach. It needs ${EXPLORATION_NAMES[e.gate.skill]} at rank ${e.gate.rank}${have > 0 ? ` (you have ${have})` : ' (slot it in the General skills)'}.` };
+      trainGeneral(this.s.player, GENERAL_FOR[e.gate.skill], 10);
+    }
+    if (def.stones) {
+      const puzzles = (this.world.puzzles ??= {});
+      const step = e.step as number;
+      const progress = puzzles[def.id] ?? 0;
+      if (step !== progress + 1) {
+        puzzles[def.id] = step === 1 ? 1 : 0;
+        return { kind: 'moved', message: step === 1 ? `${e.label}: the stone hums. (${def.puzzleHint})` : `${e.label}: the stones fall silent. ${def.puzzleHint} Begin again from the west.` };
+      }
+      puzzles[def.id] = step;
+      if (step < 3) return { kind: 'moved', message: `${e.label}: the stone hums, and the next one answers.` };
+      for (let i = 1; i <= 3; i++) this.world.used[usedKey(map.id, `secret-${def.id}#${i}`)] = this.day;
+      delete puzzles[def.id];
+      return { kind: 'moved', message: this.revealSecret(def) };
+    }
+    if (def.fight) {
+      this.pending = { map: map.id, entity: e.id, kind: 'roaming' };
+      const enc = content.encounters.get(def.fight);
+      this.s.setFlag(secretFlag(def.id), true);
+      this.changed('secret');
+      return { kind: 'fight', encounter: enc, level: Math.max(enc.level, this.s.player.level) };
+    }
+    this.world.used[usedKey(map.id, e.id)] = this.day;
+    return { kind: 'moved', message: this.revealSecret(def) };
+  }
+
+  /** The reward for a secret: what is found, gold, XP and a gem, rune or material; and the sets when they fill. */
+  private revealSecret(def: SecretDef): string {
+    const s = this.s;
+    s.setFlag(secretFlag(def.id), true);
+    const gold = Math.round(def.level * (def.kind === 'puzzle' ? 90 : 55));
+    const pool = content.items.filter((b) => ['gem', 'rune', 'material'].includes(b.category) && b.level <= def.level + 3 && b.level >= Math.max(1, def.level - 20));
+    const items = pool.length ? [createItem(s.rng.pick(pool).id, 1, () => s.newUid())] : [];
+    s.items.receiveLoot(items, gold);
+    s.grantXp(def.level * 30, true);
+    s.advanceTime(10);
+    const count = secretCount(s.state, def.zone);
+    s.bus.emit('toast', { kind: 'quest', text: `Secret found: ${def.name} (${count.found}/${count.total} in ${content.zones.get(def.zone).name}).` });
+    if (def.set === 'beetle') this.completeSet('beetle', 'beetles-complete', 12, 'Beetle-Keeper', 2400);
+    if (def.set === 'fragment') this.completeSet('fragment', 'fragments-complete', 14, 'Fragment-Gatherer', 4200);
+    this.changed('secret');
+    return `${def.name}: ${def.found} (${gold} gold${items[0] ? `, ${content.items.get(items[0].baseId).name}` : ''}).`;
+  }
+
+  private completeSet(set: 'beetle' | 'fragment', flag: string, size: number, title: string, gold: number): void {
+    const s = this.s;
+    if (s.state.flags[flag]) return;
+    const members = allSecrets().filter((d) => d.set === set);
+    if (members.length < size || !members.every((d) => s.state.flags[secretFlag(d.id)])) return;
+    s.setFlag(flag, true);
+    s.addGold(gold, 'quest');
+    if (!s.player.devotion.titles.includes(title)) s.player.devotion.titles.push(title);
+    s.bus.emit('toast', { kind: 'quest', text: set === 'beetle' ? 'All twelve golden beetles found: they gather in your pack and sing. Title earned: Beetle-Keeper.' : 'All fourteen god fragments found: they fit together into a small, warm key. Title earned: Fragment-Gatherer.' });
   }
 
   /** Digs up a treasure: its one-of-a-kind curiosity, gold, and a gem, rune, material or consumable. */

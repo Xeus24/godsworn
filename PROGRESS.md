@@ -898,6 +898,14 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: 5 new; 788 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
 - **Not done yet (phase 18b and 18c):** the 120+ secrets with per-region counters and `docs/SECRETS.md`, and the seven minigames (fishing with 60+ fish, Pantheon Cards with 120+ cards, arena ladder, forging timing, mount racing, tavern dice, treasure digging). The towns already name their minigame.
 
+### Expansion phase 18b: 199 secrets
+- **142 secrets on the map**, seven in each of the 20 regions (`data/world/secrets.ts` for the words, `engine/world/secrets.ts` for the rules): a cracked wall (Detect Traps), a find only Swimming, Climbing, Read Ancient Script, Animal Speech or Lockpicking reaches, a path that shows only at night, under a blood moon or at the full moon, a **three-stone puzzle** (constellation, bell, statue or music; touch the stones west to east), a **golden beetle** (12), a **god's fragment** (14), a cache and an oddity. New map entity `secret`, placed on reachable open ground of the region, its side maps and its dungeons; each is found once for gold, XP and a gem, rune or material. Completing the beetles (2,400 gold, title Beetle-Keeper) or the fragments (4,200 gold, title Fragment-Gatherer) pays out.
+- **Easter eggs:** the Talking Cat of Brightwater, the Mirror Hall (a fight against Your Reflection, who scales to you and has boss lines) and the Developer's Room in Skyreach.
+- **57 secret lines** said only to certain races (all 19), pasts (all 12), classes (all 20) and six pairings: topics on town people, once each, 25 gold (`data/story/secretLines.ts`).
+- **Per-region counter** on the world screen (`Secrets found here: n/m`) and the spoiler file `docs/SECRETS.md` (`npm run secrets:md`).
+- Tests: `tests/expansionPhase18b.test.ts` (10); 798 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before). Not walked in the browser.
+- **Not done / cut:** the Clockwork Theatre, Riddle Crown, Crimson Pages, elder drakes and saints' shrines (phases 6 and 9) are listed in the secrets doc but not counted in the per-region numbers; there is no Completion tracker screen (phase 20); the puzzle order has no in-game clue beyond "west to east" and each theme's hint.
+
 ## Known bugs
 - None known.
 

@@ -16,7 +16,8 @@
     "sim": "tsx scripts/simulate.ts",
     "sim:party": "tsx scripts/simulateParty.ts",
     "playtest": "tsx scripts/playtest.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "secrets:md": "tsx scripts/secretsDoc.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

@@ -162,7 +162,8 @@ export type EntityKind =
   | 'rune'
   | 'node'
   | 'dig'
-  | 'area';
+  | 'area'
+  | 'secret';
 
 /** Something on a map: a door to elsewhere, a chest, a fight waiting to happen... */
 export interface MapEntity {
@@ -184,6 +185,12 @@ export interface MapEntity {
   tide?: 'low' | 'high';
   /** Only active at the full moon (Moonfen's moonlit caches). */
   moon?: 'full';
+  /** A secret (see engine/world/secrets.ts): its id, and for puzzle stones which one it is (1-3). */
+  secret?: string;
+  step?: number;
+  /** Only there at night, or under a blood moon. */
+  night?: boolean;
+  blood?: boolean;
   /** A cache that opens only to an exploration skill of this rank (Swimming, Climbing, Lockpicking...). */
   gate?: { skill: 'swimming' | 'climbing' | 'ancientScript' | 'animalSpeech' | 'lockpicking' | 'detectTraps'; rank: number };
   /** Only shown once this lore page has been found (secret lairs). */
@@ -247,6 +254,11 @@ export interface WorldState {
   tideHigh?: boolean;
   /** True on the night of the full moon (Moonfen's moonlit caches). */
   moonFull?: boolean;
+  /** True at night, and under a blood moon (secrets that show only then). */
+  night?: boolean;
+  bloodMoon?: boolean;
+  /** Secret puzzles in progress: stones touched in order so far. */
+  puzzles?: Record<string, number>;
   /** Steps taken inside the current dungeon, for floodwater and timed gates. */
   dsteps?: number;
   /** The last checkpoint reached inside a dungeon: a defeat sends you back there. */

@@ -364,6 +364,13 @@ export function entityIcon(kind: string, tint = '#ffd84a', state = ''): HTMLCanv
       px('#c8a040', 1, 6, 10, 1);
       px(state === 'locked' ? '#d0d0d8' : '#ffd84a', 5, 6, 2, 3);
       break;
+    case 'secret':
+      px('#f8f0a0', 5, 1, 2, 10);
+      px('#f8f0a0', 1, 5, 10, 2);
+      px('#ffffff', 5, 5, 2, 2);
+      px('#c8a8f0', 3, 3, 1, 1);
+      px('#c8a8f0', 8, 8, 1, 1);
+      break;
     case 'dig':
       px('#5a3a1e', 1, 7, 10, 3);
       px('#7a5230', 2, 5, 8, 3);

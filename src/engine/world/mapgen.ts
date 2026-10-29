@@ -1,4 +1,5 @@
 import { SAINTS } from '../../data/saints';
+import { addSecrets } from './secrets';
 import { PASSES, type AreaDef } from '../../data/world/areas';
 import { HIDDEN_LORE, SECRET_BOSSES } from '../../data/world/hidden';
 import { content, type Content } from '../../data';
@@ -594,6 +595,7 @@ export function mapFor(id: string, c: Content = content): TileMap {
   const zone = c.zones.find(id);
   const area = zone ? undefined : c.areas.find(id);
   const map = zone ? generateZone(zone, c) : area ? generateArea(area, c) : generateDungeon(c.dungeons.get(id), c);
+  addSecrets(map, c);
   cache.set(id, map);
   return map;
 }

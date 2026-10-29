@@ -944,7 +944,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (405)
+### Enemies (406)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1089,6 +1089,7 @@ Generated from the data files by `npm run content:md`.
 | **Brannoc the Sled-Driver** | 34 | normal | humanoid | front | aggressive | Shield Bash |  |
 | **Marisol Tidesong** | 42 | normal | humanoid | back | support | Crude Mending |  |
 | **Caravan Master Oduya** | 26 | normal | humanoid | front | aggressive | Crushing Swing |  |
+| **Your Reflection** | 58 | boss | spirit, humanoid | front | aggressive | Dark Cleave, Void Rend, Enrage | earth -25% |
 | **Hollow Chorister** | 62 | normal | humanoid, cultist, void | back | caster | Corruption Wave, Shadow Bolt | void +30%, holy -20% |
 | **Erased Knight** | 64 | normal | humanoid, void | front | aggressive | Dark Cleave, Harden | void +40% |
 | **False Herald** | 66 | elite | spirit, void, divine | front | caster | Void Rend, Curse of Ages | void +50%, holy +20%, earth -25% |
@@ -1356,7 +1357,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (289)
+### Encounters (290)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1606,6 +1607,7 @@ Generated from the data files by `npm run content:md`.
 | **The Ferry-Queen** | 39 | The Ferry-Queen, Mourning Widow |
 | **The Gale-Warden’s Guard** | 51 | Skyreach Knight, Skyreach Knight, Storm Priest |
 | **The Oathless** | 58 | Void Knight, Void Knight, Void Wraith |
+| **Your Reflection** | 58 | Your Reflection |
 | **The Hollow Choir** | 62 | Erased Knight, Hollow Chorister, Hollow Chorister |
 | **The Erased** | 66 | Erased Knight, Erased Knight, False Herald |
 | **Heralds of the Dusk** | 72 | Herald of Morrath, Herald of Vex |
@@ -3002,7 +3004,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-743 quests, 240 NPCs, 431 dialogues, 14 companions, 10 endings.
+743 quests, 240 NPCs, 488 dialogues, 14 companions, 10 endings.
 
 ### Main story (54)
 

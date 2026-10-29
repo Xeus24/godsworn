@@ -81,7 +81,7 @@ import { TEAM_SKILLS } from './teamAttacks';
 import { WEAPON_ARTS } from './weaponArts';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
-import { ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
+import { SECRET_LINE_IDS, ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
 /** Earth (phase 11): constructs and stone things shrug it off; things that fly, swim or float are caught out by it. */
@@ -176,6 +176,8 @@ export const content = {
   dialogues: new ContentTable('dialogue', DIALOGUES),
   companions: new ContentTable('companion', COMPANIONS),
   endings: new ContentTable('ending', ALL_ENDINGS),
+  /** Ids of the secret lines (see data/story/secretLines.ts): flags `secret:<id>`. */
+  secretLines: SECRET_LINE_IDS,
   achievements: new ContentTable('achievement', ACHIEVEMENTS),
   treasures: new ContentTable('treasure map', TREASURES),
   dyes: new ContentTable('dye', DYES),
