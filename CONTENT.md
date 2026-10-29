@@ -1356,7 +1356,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (283)
+### Encounters (289)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1600,6 +1600,12 @@ Generated from the data files by `npm run content:md`.
 | **Ordrun’s Chained Herald** | 50 | Herald of Ordrun, Hollow Knight, Oathburner |
 | **Seraphel’s Chained Herald** | 50 | Herald of Seraphel, Hollow Knight, Oathburner |
 | **Mirrin’s Chained Herald** | 50 | Herald of Mirrin, Hollow Knight, Oathburner |
+| **Archivist Hobbes’s Hired Blades** | 25 | Rogue Watchman, Guild Enforcer, Gutter Mage |
+| **Lord Hartwell** | 29 | Lord Hartwell of the Stag Court, Dusk Dryad |
+| **The Sundering** | 38 | Hollow Knight, Hollow Knight, Oathburner |
+| **The Ferry-Queen** | 39 | The Ferry-Queen, Mourning Widow |
+| **The Gale-Warden’s Guard** | 51 | Skyreach Knight, Skyreach Knight, Storm Priest |
+| **The Oathless** | 58 | Void Knight, Void Knight, Void Wraith |
 | **The Hollow Choir** | 62 | Erased Knight, Hollow Chorister, Hollow Chorister |
 | **The Erased** | 66 | Erased Knight, Erased Knight, False Herald |
 | **Heralds of the Dusk** | 72 | Herald of Morrath, Herald of Vex |
@@ -2994,20 +3000,66 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-587 quests, 224 NPCs, 207 dialogues, 6 companions, 6 endings.
+633 quests, 232 NPCs, 303 dialogues, 6 companions, 10 endings.
 
-### Main story (8)
+### Main story (54)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **Embers of Ashfold** | 1 | Reeve Halwin | Speak with Reeve Halwin in Ashfold (talk); Drive off the beasts in the burned fields (kill); Report to Reeve Halwin in Ashfold (talk) |
+| **The Cellar Below** | 2 | Brother Ansel | Speak with Brother Ansel in Ashfold (talk); Clear the Ashfold Cellar (clear); Report to Brother Ansel in Ashfold (talk) |
+| **The Granary Terror** | 3 | Reeve Halwin | Speak with Reeve Halwin in Ashfold (talk); Put down the Granary Terror (kill); Report to Reeve Halwin in Ashfold (talk) |
 | **The Silent Shrine** | 3 | starts by itself | Speak with Brother Aldric in Brightwater (talk); Examine the silent shrine (talk); Drive off the Unsworn zealots (fight); Confront Deacon Mott (talk); Defeat Deacon Mott (fight); Report to Brother Aldric (talk) |
+| **Ash in the Grain** | 5 | starts by itself | Speak with Captain Reyna in Brightwater (talk); Break up the Unsworn raiders in the Meadowlands (kill); Report to Captain Reyna in Brightwater (talk) |
+| **The Warden’s Letter** | 9 | starts by itself | Speak with Warden-Captain Ysra in Thornwick (talk); Find the silent Warden outpost (visit); Report to Warden-Captain Ysra in Thornwick (talk) |
 | **Whispers in the Wood** | 11 | starts by itself | Speak with Warden-Captain Ysra in Thornwick (talk); Listen to the Heartwood (talk); Put down hollowed beasts in the Whisperwood (kill); Defeat Varn the Hollow (fight); Decide Varn’s fate (talk); Report to Warden-Captain Ysra (talk) |
+| **The Heartwood’s Warning** | 13 | starts by itself | Speak with Warden-Captain Ysra in Thornwick (talk); Clear Spider Hollow, where the drain feeds (clear); Report to Warden-Captain Ysra in Thornwick (talk) |
+| **Lanterns on the Fen** | 16 | starts by itself | Speak with Warden Lissel in Mirewick (talk); Clear the Drowned Orchard (clear); Report to Warden Lissel in Mirewick (talk) |
+| **The Road Under the Hills** | 18 | starts by itself | Speak with Warden-Captain Ysra in Thornwick (talk); Reach the mouth of the Sunken Caves (visit); Report to Warden-Captain Ysra in Thornwick (talk) |
 | **Beneath the Hills** | 19 | starts by itself | Enter the Sunken Caves (visit); Light the rune stones of the Drowned Grotto (runes); Defeat the Shard-Warden (fight); Decide what to do with the shard (talk) |
+| **The King’s Road** | 21 | starts by itself | Speak with Chancellor Ilreth in Aurelane (talk); Meet the Chancellor’s contact at the Cathedral Close (visit); Report to Chancellor Ilreth in Aurelane (talk) |
+| **Under the Capital** | 23 | starts by itself | Speak with Pip in the Underbelly (talk); Clear the Sewer Network (clear); Report to Pip in the Underbelly (talk) |
+| **The Chancellor’s Knife** | 28 | starts by itself | Speak with Captain Valeria in Aurelane (talk); Fight your way to the Gilded Vault’s ledgers (6 humanoids) (kill); Report to Captain Valeria in Aurelane (talk) |
+| **The Archivist’s Last Page** | 26 | starts by itself | Speak with Archivist Hobbes in Aurelane (talk); Face Archivist Hobbes in the Archive (fight); Report to Archivist Hobbes in Aurelane (talk) |
 | **Blades for Hire** | 27 | starts by itself | Speak with Marshal Dara in Sandhaven (talk); Raid the camp (fight); Bring the Unsworn orders to Marshal Dara (deliver); Defeat Captain Idris Kaur (fight); Decide Idris Kaur’s fate (talk); Report to Marshal Dara (talk) |
+| **Hour Between Hours** | 28 | starts by itself | Speak with Elder Wick in Lampfall (talk); Face Lord Hartwell of the Stag Court (fight); Report to Elder Wick in Lampfall (talk) |
+| **The Toll of Thorns** | 30 | starts by itself | Speak with Warchief Ulrik in Briarhold (talk); Clear the Raiders’ Warren (clear); Report to Warchief Ulrik in Briarhold (talk) |
+| **The Original Sky** | 33 | starts by itself | Speak with Lensmaster Quill in Lensfall (talk); Clear the Prism Mines (clear); Report to Lensmaster Quill in Lensfall (talk) |
 | **The Frozen Oath** | 35 | starts by itself | Speak with Archmage Oriel in Frosthold (talk); Answer the tomb door (talk); Lay the Wight of Saint Orren to rest (fight); Speak with Saint Orren (talk); Report to Archmage Oriel (talk) |
+| **The Sundering Bell** | 37 | starts by itself | Speak with Archmage Oriel in Frosthold (talk); Stop the bell from ringing (fight); Report to Archmage Oriel in Frosthold (talk) |
+| **The Barrow Road** | 38 | starts by itself | Speak with Brother Ansel in Ashfold (talk); Clear the King’s Barrow (clear); Report to Brother Ansel in Ashfold (talk) |
+| **The Black Ferry** | 39 | starts by itself | Speak with The Ferryman’s Shade (talk); Face the Ferry-Queen (fight); Report to The Ferryman’s Shade (talk) |
+| **What the Hollow King Keeps** | 40 | starts by itself | Speak with The Ferryman’s Shade (talk); Lay the Hollow King Below to rest (kill); Report to The Ferryman’s Shade (talk) |
+| **The Oathbreaker’s Day** | 41 | starts by itself | Speak with A Memory of Seryth (talk); Cross to the far bank (visit); Report to A Memory of Seryth (talk) |
+| **The Seventh Hall** | 42 | starts by itself | Speak with Thane Borgrim in Khazrum (talk); Clear the Ancestor Crypts (clear); Report to Thane Borgrim in Khazrum (talk) |
 | **The Black Tide** | 43 | starts by itself | Speak with Harbormaster Quill in Saltmere (talk); Repel the Black Tide raiders (fight); Defeat Admiral Vey (fight); Report to Harbormaster Quill (talk) · timed |
-| **The Forge of Severance** | 51 | starts by itself | Reach the edge of the Rift (visit); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Find the last of the Fallen Smiths (talk); Destroy the Severance Engine (fight) |
+| **The Evening Service** | 46 | starts by itself | Speak with Harbor-Queen Maris in Pearlgate (talk); Clear the Drowned Forum (clear); Report to Harbor-Queen Maris in Pearlgate (talk) |
+| **The Engine’s Cousin** | 50 | starts by itself | Speak with Engineer Lorne in Ratchet (talk); Shut down the Assembly Halls’ constructs (6) (kill); Report to Engineer Lorne in Ratchet (talk) |
+| **The Offer in the Night** | 49 | starts by itself | Speak with Ten in Ratchet (talk); Gather your companions at the campfire (visit); Report to Ten in Ratchet (talk) |
+| **The Rime Stair** | 50 | starts by itself | Speak with The Herald of the Winds (talk); Climb the Rime Stair into Skyreach (visit); Report to The Herald of the Winds (talk) |
+| **The Court of Winds** | 51 | starts by itself | Speak with The Herald of the Winds (talk); Break the Gale-Warden’s guard (fight); Report to The Herald of the Winds (talk) |
+| **The Summit of Fourteen** | 52 | starts by itself | Speak with The Herald of the Winds (talk); Stand in the middle of the ring (visit); Report to The Herald of the Winds (talk) |
+| **The Forge of Severance** | 51 | starts by itself | Reach the edge of the Rift (visit); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Free the chained herald (fight); Hear your god (talk); Find the last of the Fallen Smiths (talk); Destroy the Severance Engine (fight) |
+| **The Long Night** | 54 | starts by itself | Speak with The Last of the Fallen Smiths (talk); Light the cold anvil in the Rift (visit); Report to The Last of the Fallen Smiths (talk) |
+| **The Mirror Hall** | 56 | starts by itself | Speak with The Fallen Paladins (talk); Walk the Mirror Hall (visit); Report to The Fallen Paladins (talk) |
+| **The Last Oath** | 57 | starts by itself | Speak with The Fallen Paladins (talk); Defeat the Oathless (fight); Report to The Fallen Paladins (talk) |
+| **Eve of the Throne** | 58 | starts by itself | Speak with The Black Throne (talk); Climb the stair to the Throne room (visit); Report to The Black Throne (talk) |
 | **The Unsworn King** | 58 | starts by itself | Reach the Citadel gates (visit); Defeat the Commander of the Black Throne (clear); Face Seryth (talk); Defeat Seryth the Oathbreaker (fight); Destroy the Shadow of the Unwritten (fight); Stand before the Black Throne (talk) |
+| **The Morning After** | 60 | starts by itself | Speak with Captain Reyna in Brightwater (talk); Join the feast on the green (visit); Report to Captain Reyna in Brightwater (talk) |
+| **Solenne’s Charge** | 54 | starts by itself | Listen for Solenne (talk); Clear the Glass Cathedral (clear); Face Solenne’s Herald (fight); Hear Solenne’s word (talk) |
+| **Morrath’s Charge** | 54 | starts by itself | Listen for Morrath (talk); Clear the Ancestor Crypts (clear); Face Morrath’s Herald (fight); Hear Morrath’s word (talk) |
+| **Kael’s Charge** | 54 | starts by itself | Listen for Kael (talk); Clear the Raiders’ Warren (clear); Face Kael’s Herald (fight); Hear Kael’s word (talk) |
+| **Ysolde’s Charge** | 54 | starts by itself | Listen for Ysolde (talk); Clear the Rootmoth Warren (clear); Face Ysolde’s Herald (fight); Hear Ysolde’s word (talk) |
+| **Vex’s Charge** | 54 | starts by itself | Listen for Vex (talk); Clear the Gilded Vault (clear); Face Vex’s Herald (fight); Hear Vex’s word (talk) |
+| **Thalor’s Charge** | 54 | starts by itself | Listen for Thalor (talk); Clear the Deepforge (clear); Face Thalor’s Herald (fight); Hear Thalor’s word (talk) |
+| **Nymira’s Charge** | 54 | starts by itself | Listen for Nymira (talk); Clear the Coral Palace (clear); Face Nymira’s Herald (fight); Hear Nymira’s word (talk) |
+| **Aurelis’s Charge** | 54 | starts by itself | Listen for Aurelis (talk); Clear the Gear Cathedral (clear); Face Aurelis’s Herald (fight); Hear Aurelis’s word (talk) |
+| **Hesha’s Charge** | 54 | starts by itself | Listen for Hesha (talk); Clear the Pyre Hall (clear); Face Hesha’s Herald (fight); Hear Hesha’s word (talk) |
+| **Grimvald’s Charge** | 54 | starts by itself | Listen for Grimvald (talk); Clear the Mithril Vault (clear); Face Grimvald’s Herald (fight); Hear Grimvald’s word (talk) |
+| **Lyssara’s Charge** | 54 | starts by itself | Listen for Lyssara (talk); Clear Witchlight Hollow (clear); Face Lyssara’s Herald (fight); Hear Lyssara’s word (talk) |
+| **Ordrun’s Charge** | 54 | starts by itself | Listen for Ordrun (talk); Clear the Slag Furnace (clear); Face Ordrun’s Herald (fight); Hear Ordrun’s word (talk) |
+| **Seraphel’s Charge** | 54 | starts by itself | Listen for Seraphel (talk); Clear the Storm Bastion (clear); Face Seraphel’s Herald (fight); Hear Seraphel’s word (talk) |
+| **Mirrin’s Charge** | 54 | starts by itself | Listen for Mirrin (talk); Clear the Bell Ruin (clear); Face Mirrin’s Herald (fight); Hear Mirrin’s word (talk) |
 
 ### Twilight of the Gods (New Game+) (5)
 
@@ -3541,6 +3593,10 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **The Mended Oath** (title “Oathmender”): The Shadow of the Unwritten unravels, and Seryth kneels in the ash where the throne stood, holding Saint Orren’s ring. He does not ask to be forgiven. He goes west instead, alone, to every shrine he and his followers broke, and lights them again by hand, one by one. The gods do not speak to him. He does not need them to. People say that the mercy you showed on the road taught an Oathbreaker how to keep his word.
 - **The Unsworn Crown** (title “the Unsworn”): The Shadow is gone, and the Severance is yours: a seed of nothing in your palm. You could plant it. You could cut every thread between the world and its gods with a thought. For now you only hold it, and the gods, for the first time in their long lives, are afraid of a mortal. Seryth sits at your right hand on the Black Throne, and the shrines of the world burn a little dimmer, waiting to learn what you will do.
 - **The Free Blade** (title “Free Blade”): Seryth falls, and the Severance with him. No god guided your hand; you did it with steel, stubbornness and friends. The shrines light again, the priests give thanks to the heavens, and you let them. You know who walked the road. The gods know too. Some of them, perhaps, are a little embarrassed.
+- **The Concord of Fourteen** (title “Concordant”): The Shadow unravels, and Seryth takes your hand. The Fourteen come down from Skyreach to the Citadel’s broken gate, and for the first time in nine hundred years a mortal, a god and an Oathbreaker sit at the same table. The oaths are rewritten that night, with honesty on every side. It takes an evening. It takes a thousand years to live up to.
+- **The Quiet Sky** (title “Threadcutter”): You cut the last thread with the gods’ leave, as gently as a surgeon, and the sky goes still. The gods do not leave. They sit at the edge of the world and listen to what mortals do with a freedom nobody asked for. For a time it is lonely. Then the first children are born under a sky that does not watch them, and they look up anyway.
+- **The Ferrykeeper** (title “Ferrykeeper”): Seryth falls, and you take the oar. The Hollow Barrows have a new ferryman, and she never tires. She rows the dead across the black river and remembers every name. The living still come to the shore and leave coins. She says they need not. She keeps them anyway, and from each, a small clean candle.
+- **The Long Table** (title “Fireside”): You turn from the throne. It was never the throne you walked all this way for. At a table too long for the room, your companions pass bread and argue over who was bravest. The Unsworn King is a story by morning. You eat, and you listen, and you let it be a story. Outside, the shrines are lit, one by one, by people who were told they did not have to.
 - **The Twilight Ends** (title “Twilight-Bringer”), with a paragraph for each god’s Apostle: You speak the name. It is short, and old, and it sounds like a door closing gently. The Nameless One stops being nameless, and what has a name can be mourned, and what is mourned can rest. The gods do not thank you; gods rarely do. But the next morning every shrine in the land is burning, and in the margins of the oldest books, where the scraping was, someone has written one small word in a hand nobody recognizes.
 - **The Unwritten Crown** (title “the Unwritten”): The Last Light breaks, and ten gods scatter like startled birds. You sit on the Black Throne and pick up a crown that is not there. The Nameless One is beside you, and then it is inside you, and then there is no difference. The shrines stay lit; the priests still pray. But every prayer, now, passes your desk first. Somewhere in the oldest book there is a hole the shape of your name, and nothing shows through it at all.
 
@@ -3597,8 +3653,8 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Hadrik Cinderhand (Master Smith), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
 - **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ysenne Vael (Runewright), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Pao Lantern (Master Gemcutter), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
-- **Aurelane:** Chancellor Ilreth (Chancellor of the Realm), Captain Valeria Dunn (Captain of the Watch), Archivist Hobbes (Keeper of the Royal Archive), Madame Corvina (Guildmistress of Merchants), Sister Benedicta (Almoner of the Cathedral), Pip (Street Informant), Lord Maximilian Veyne (Noble of the Gilded Heights), Tam the Drover (Cattle-Driver), Mother Agatha (Mistress of the Orphanage)
-- **Mirewick:** Warden Lissel (Warden of the Stilts), Odo the Lamplighter (Keeper of the Lanterns), Granny Mirelle (Herb-Wife), Nym (Eel-Seller), Garrow the Boatwright (Maker of Punts), Sister Ilse (Moth-Priestess), Tib (Frog-Catcher), Bess (Innkeeper of the Dripping Eaves)
+- **Aurelane:** Chancellor Ilreth (Chancellor of the Realm), Captain Valeria Dunn (Captain of the Watch), Archivist Hobbes (Keeper of the Royal Archive), Madame Corvina (Guildmistress of Merchants), Sister Benedicta (Almoner of the Cathedral), Pip (Street Informant), Lord Maximilian Veyne (Noble of the Gilded Heights), Tam the Drover (Cattle-Driver), Mother Agatha (Mistress of the Orphanage), Cassia Veyne (Heir of the Gilded Heights), Bram (Orphanage Warden), Regent Pell (Guild Regent), Young Tam (Cattle-Driver)
+- **Mirewick:** Warden Lissel (Warden of the Stilts), Odo the Lamplighter (Keeper of the Lanterns), Granny Mirelle (Herb-Wife), Nym (Eel-Seller), Garrow the Boatwright (Maker of Punts), Sister Ilse (Moth-Priestess), Tib (Frog-Catcher), Bess (Innkeeper of the Dripping Eaves), Odile (Herb-Wife’s Niece)
 - **Briarhold:** Warchief Ulrik (Lord of Briarhold), Reeve Alma (Keeper of the Tolls), Kip (Scavenger Dealer), Oswin (Hedge-Priest of Kael), Brisa (Bone-Setter), Gorn (Pit Champion), Eda (Thorn-Gardener), Vask (Wandering Tinker)
 - **Khazrum:** Thane Borgrim Ironvein (High Thane of Khazrum), Forge-Matron Hilda (Mistress of the Deepforge), Dagna Stoneward (Runesmith), Gundrun (Deep-Miner), Olaf Barleyhand (Master Brewer), Thrain Oathkeeper (Loremaster of the Clans), Edda (Stonemason), Brokk (Warden of the Deep Roads)
 - **Lampfall:** Elder Wick (First Lamplighter), Ilen of the Dusk Watch (Warden of the Path), Olla (Moth-Keeper), Brenn (Lamp-Oil Seller), Sela (Hunters’ Widow), Grimble (Storyteller), Fenna (Night-Herbalist), Corra (Innkeeper of the Last Lamp)

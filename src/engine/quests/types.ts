@@ -227,8 +227,13 @@ export interface RewardDef {
   title?: string;
 }
 
+/** Where a main-story quest sits in the story's shape. */
+export type ActId = 'prologue' | 'act1' | 'act2' | 'act3' | 'act4' | 'act5' | 'epilogue';
+
 export interface QuestDef {
   id: string;
+  /** The Act of the main story this quest belongs to. */
+  act?: ActId;
   name: string;
   kind: QuestKind;
   /** Recommended level: also scales XP and gold rewards. */
@@ -303,6 +308,18 @@ export interface NpcDef {
   companion?: string;
   /** Hours of the day (0-24) this person is about; elsewhere at other times. Wraps past midnight if from > to. */
   schedule?: [from: number, to: number];
+  /** Gone once this flag is set (they met their fate at the midpoint). */
+  until?: string;
+  /** Only here once this flag is set (they took someone’s place). */
+  after?: string;
+}
+
+/** One slide of the epilogue: shown after the ending when its condition holds. */
+export interface EpilogueSlide {
+  id: string;
+  title: string;
+  text: string;
+  cond?: Cond;
 }
 
 export interface EndingDef {

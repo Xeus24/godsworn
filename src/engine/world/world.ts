@@ -206,9 +206,16 @@ export function groupEncounter(group: EncounterGroup, id: string, name: string, 
   };
 }
 
+/** After the Sundering Bell the Unsworn walk everywhere: these join every zone's wandering packs. */
+export const DARKENED_GROUPS: EncounterGroup[] = [
+  { weight: 2, enemies: [{ enemyId: 'unsworn-oathburner' }, { enemyId: 'unsworn-oathburner' }] },
+  { weight: 1, enemies: [{ enemyId: 'hollow-knight' }, { enemyId: 'unsworn-oathburner', row: 'back' }] },
+  { weight: 1, enemies: [{ enemyId: 'void-wraith', row: 'back' }, { enemyId: 'hollow-knight' }] },
+];
+
 /** A random encounter for this zone right now. */
-export function randomEncounter(zone: ZoneDef, weather: string, night: boolean, playerLevel: number, rng: Rng): EncounterDef {
-  const pool = groupsFor(zone.encounters, weather, night);
+export function randomEncounter(zone: ZoneDef, weather: string, night: boolean, playerLevel: number, rng: Rng, darkened = false): EncounterDef {
+  const pool = groupsFor(darkened ? [...zone.encounters, ...DARKENED_GROUPS] : zone.encounters, weather, night);
   const group = pickGroup(pool.length ? pool : zone.encounters, rng);
   return groupEncounter(group, `wild:${zone.id}`, zone.name, fightLevel(zone.levels, playerLevel, rng), { threat: zone.threat ?? 0 });
 }

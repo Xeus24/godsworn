@@ -79,6 +79,10 @@ const CHARGES: Record<string, { task: string; word: string }> = {
   aurelis: { task: 'The Unsworn are reading Aurelis’s herald like a book to learn how the Engine works. Close it.', word: 'Fascinating. Now, the Engine: hit the part that hums.' },
   hesha: { task: 'Hesha’s herald is chained and burning, and Hesha cannot bear it. Free her.', word: 'Thank you. Rest when you can. You never do.' },
   grimvald: { task: 'Grimvald’s herald has been pawned to the Engine. He wants his collateral back.', word: 'Debt settled. Now go and collect on Seryth.' },
+  lyssara: { task: 'Lyssara’s herald sleeps in chains, and the dream is being drained into the Engine. Wake it.', word: 'You woke it gently. That is the whole art.' },
+  ordrun: { task: 'Ordrun’s herald is bound to the Engine’s frame, holding it up. He will not let go. Make him.', word: 'Steady. Now go and be steadier than they are.' },
+  seraphel: { task: 'Seraphel’s herald is caged in a bellows, gasping for air. Let the wind out.', word: 'There it is! A little air in the room.' },
+  mirrin: { task: 'Mirrin’s herald is being unmade, its memories fed to the Engine one by one. Save what you can.', word: 'I remember you. I shall go on remembering.' },
 };
 
 const CHARGE_STAGES: StageDef[] = Object.entries(CHARGES).map(([god, ch]) =>
@@ -391,6 +395,10 @@ export const MAIN_DIALOGUES: DialogueDef[] = [
         check(flag('path', 'redeemed'), 'Help Seryth to his feet.', undefined, [{ kind: 'ending', ending: 'redeemed' }], { hideLocked: true }),
         check(flag('path', 'unsworn'), 'Close your hand around the Severance.', undefined, [{ kind: 'ending', ending: 'unsworn' }], { hideLocked: true }),
         check(all(not(APOSTLE), not(flag('path', 'redeemed')), not(flag('path', 'unsworn'))), 'Sheathe your weapon. Walk home.', undefined, [{ kind: 'ending', ending: 'freeblade' }], { hideLocked: true }),
+        check(all(flag('summit', 'reconcile'), flag('path', 'redeemed')), 'Call the Fourteen. Mend the oaths with Seryth beside you.', undefined, [{ kind: 'ending', ending: 'concord' }], { hideLocked: true }),
+        check(all(flag('summit', 'sever'), not(APOSTLE), not(flag('path', 'redeemed'))), 'Cut the last thread, gently, with the gods’ blessing.', undefined, [{ kind: 'ending', ending: 'quiet-sky' }], { hideLocked: true }),
+        check(all(flag('ferry-oar', 'taken'), not(flag('path', 'redeemed')), not(flag('path', 'unsworn'))), 'Take the oar. Row the dead home.', undefined, [{ kind: 'ending', ending: 'ferrykeeper' }], { hideLocked: true }),
+        check(all(flag('temptation-faced'), { kind: 'companions', min: 3, minApproval: 30 }, not(flag('path', 'unsworn'))), 'Turn from the throne. Go back to the fire, and the people around it.', undefined, [{ kind: 'ending', ending: 'long-table' }], { hideLocked: true }),
       ],
     }),
   }),
@@ -432,5 +440,29 @@ export const ENDINGS: EndingDef[] = [
     name: 'The Free Blade',
     title: 'Free Blade',
     text: 'Seryth falls, and the Severance with him. No god guided your hand; you did it with steel, stubbornness and friends. The shrines light again, the priests give thanks to the heavens, and you let them. You know who walked the road. The gods know too. Some of them, perhaps, are a little embarrassed.',
+  },
+  {
+    id: 'concord',
+    name: 'The Concord of Fourteen',
+    title: 'Concordant',
+    text: 'The Shadow unravels, and Seryth takes your hand. The Fourteen come down from Skyreach to the Citadel’s broken gate, and for the first time in nine hundred years a mortal, a god and an Oathbreaker sit at the same table. The oaths are rewritten that night, with honesty on every side. It takes an evening. It takes a thousand years to live up to.',
+  },
+  {
+    id: 'quiet-sky',
+    name: 'The Quiet Sky',
+    title: 'Threadcutter',
+    text: 'You cut the last thread with the gods’ leave, as gently as a surgeon, and the sky goes still. The gods do not leave. They sit at the edge of the world and listen to what mortals do with a freedom nobody asked for. For a time it is lonely. Then the first children are born under a sky that does not watch them, and they look up anyway.',
+  },
+  {
+    id: 'ferrykeeper',
+    name: 'The Ferrykeeper',
+    title: 'Ferrykeeper',
+    text: 'Seryth falls, and you take the oar. The Hollow Barrows have a new ferryman, and she never tires. She rows the dead across the black river and remembers every name. The living still come to the shore and leave coins. She says they need not. She keeps them anyway, and from each, a small clean candle.',
+  },
+  {
+    id: 'long-table',
+    name: 'The Long Table',
+    title: 'Fireside',
+    text: 'You turn from the throne. It was never the throne you walked all this way for. At a table too long for the room, your companions pass bread and argue over who was bravest. The Unsworn King is a story by morning. You eat, and you listen, and you let it be a story. Outside, the shrines are lit, one by one, by people who were told they did not have to.',
   },
 ];

@@ -578,7 +578,9 @@ export class QuestActions {
   townNpcs(town: string): NpcDef[] {
     const hour = this.s.state.clock.minute / 60;
     const about = (n: NpcDef): boolean => !n.schedule || (n.schedule[0] <= n.schedule[1] ? hour >= n.schedule[0] && hour < n.schedule[1] : hour >= n.schedule[0] || hour < n.schedule[1]);
-    return content.npcs.filter((n) => about(n) && n.town === town && (n.place === 'people' || n.place === 'temple') && !(n.companion && this.s.state.party.companions[n.companion] && !this.s.state.party.companions[n.companion]?.left));
+    const flags = this.s.state.flags;
+    const alive = (n: NpcDef): boolean => (!n.until || !flags[n.until]) && (!n.after || Boolean(flags[n.after]));
+    return content.npcs.filter((n) => about(n) && alive(n) && n.town === town && (n.place === 'people' || n.place === 'temple') && !(n.companion && this.s.state.party.companions[n.companion] && !this.s.state.party.companions[n.companion]?.left));
   }
 
   talkTo(npcId: string): Conversation | undefined {

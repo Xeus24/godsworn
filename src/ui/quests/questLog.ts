@@ -7,6 +7,7 @@ import { mapFor } from '../../engine/world/mapgen';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
+import { ACT_NAMES } from '../../data/story/acts';
 const KIND_ORDER: QuestKind[] = ['main', 'twilight', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'racial', 'background', 'bounty'];
 const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', twilight: 'Twilight of the Gods', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', racial: 'Your People', background: 'Your Past', bounty: 'Bounties' };
 
@@ -95,7 +96,7 @@ export class QuestLogScreen implements Screen {
     return el(
       'section',
       { class: 'panel quest-detail' },
-      el('div', { class: 'dim small' }, `${KIND_NAMES[q.kind]} · level ${questLevel(q, s.state.ngPlus)}${q.zone ? ` · ${content.zones.get(q.zone).name}` : ''}${giver ? ` · from ${giver.name}` : q.board ? ` · ${content.towns.get(q.board).name} quest board` : ''}`),
+      el('div', { class: 'dim small' }, `${q.act ? `${ACT_NAMES[q.act]} · ` : ''}${KIND_NAMES[q.kind]} · level ${questLevel(q, s.state.ngPlus)}${q.zone ? ` · ${content.zones.get(q.zone).name}` : ''}${giver ? ` · from ${giver.name}` : q.board ? ` · ${content.towns.get(q.board).name} quest board` : ''}`),
       el('h2', {}, q.name),
       el('p', { class: 'small' }, q.summary),
       ...(st

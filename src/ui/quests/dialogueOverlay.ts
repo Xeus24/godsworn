@@ -4,6 +4,7 @@ import type { GameSession } from '../../engine/state/gameState';
 import { drawPortrait } from '../art/portraits';
 import { el } from '../screen';
 
+import { epilogueSlides } from '../../engine/quests/epilogue';
 /**
  * A conversation in a modal: the speaker's portrait, what they say, and
  * numbered choices (keys 1-9). Locked choices show what they need. Closes
@@ -97,6 +98,35 @@ export class EndingOverlay {
       this.element.remove();
       onClose();
     });
+    // The epilogue: a slideshow of what became of the people and places of your story.
+    const slides = epilogueSlides(session.state);
+    let at = -1;
+    const slideTitle = el('h3', {});
+    const slideText = el('p', {});
+    const slideCount = el('div', { class: 'dim small' });
+    const next = el('button', {}, 'Begin the epilogue');
+    const back = el('button', { class: 'secondary' }, 'Back');
+    const show = (): void => {
+      const s = slides[at];
+      slideTitle.textContent = s?.title ?? '';
+      slideText.textContent = s?.text ?? '';
+      slideCount.textContent = s ? `${at + 1} of ${slides.length}` : '';
+      next.textContent = at < 0 ? 'Begin the epilogue' : at >= slides.length - 1 ? 'The end' : 'Next';
+      back.hidden = at <= 0;
+      done.hidden = at < slides.length - 1;
+      next.hidden = at >= slides.length - 1 && at >= 0;
+    };
+    next.addEventListener('click', () => {
+      at = Math.min(slides.length - 1, at + 1);
+      show();
+    });
+    back.addEventListener('click', () => {
+      at = Math.max(0, at - 1);
+      show();
+    });
+    done.hidden = slides.length > 0;
+    next.hidden = slides.length === 0;
+    back.hidden = true;
     this.element = el(
       'div',
       { class: 'dialogue-overlay ending-overlay', role: 'dialog', 'aria-label': 'Ending' },
@@ -109,7 +139,8 @@ export class EndingOverlay {
         ...(godText && ending?.god ? [el('p', { style: `color:${content.gods.get(ending.god).color}` }, godText)] : []),
         ...(def?.title ? [el('p', { class: 'dim small' }, `Title earned: ${def.title}.`)] : []),
         el('p', { class: 'dim small' }, `The world is still yours to explore. When you are ready, begin New Game+${session.state.ngPlus + 1} from the Character screen: the story starts over with your hero, and what comes after the twilight is another story.`),
-        done,
+        el('div', { class: 'epilogue' }, slideCount, slideTitle, slideText),
+        el('div', { class: 'row wrap' }, back, next, done),
       ),
     );
   }

@@ -5,6 +5,8 @@ import type { Conversation } from '../src/engine/state/conversation';
 import type { GameSession } from '../src/engine/state/gameState';
 import { mapFor } from '../src/engine/world/mapgen';
 import { townSpot } from '../src/engine/world/world';
+import { freeSlots } from '../src/engine/items/inventory';
+import { baseOf } from '../src/engine/items/lookup';
 
 /**
  * Plays the main story from wherever it stands to an ending, the way a
@@ -122,6 +124,10 @@ export function playStory(start: GameSession, opts: PlayOptions): PlayResult {
   let lastKey = '';
   let same = 0;
   while (!s.state.quests.ending && res.steps < 400) {
+    // A player sells their old gear as they go; so does the walkthrough, or the bags fill up with quest rewards.
+    const inv = s.state.inventory;
+    if (freeSlots(inv) < 8) inv.slots.forEach((it, i) => { if (it && baseOf(it).category !== 'quest') inv.slots[i] = null; });
+    s.state.overflow = [];
     const q = mainQuest(s);
     if (!q) {
       res.stuck = 'no main quest is active';

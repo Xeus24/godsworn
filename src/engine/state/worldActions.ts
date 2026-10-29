@@ -220,7 +220,7 @@ export class WorldActions {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
       if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
-        const encounter = randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng);
+        const encounter = randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened']));
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
       }
@@ -711,7 +711,7 @@ export class WorldActions {
       ship.voyages++;
       if (this.s.rng.chance(navalChance(this.s.player))) {
         const zone = content.zones.get('stormcoast');
-        const encounter = randomEncounter(zone, this.weatherNow(), this.s.timeOfDay === 'night', this.s.player.level, this.s.rng);
+        const encounter = randomEncounter(zone, this.weatherNow(), this.s.timeOfDay === 'night', this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened']));
         encounter.id = `sea:${areaId}`;
         encounter.name = 'Naval battle';
         encounter.description = 'Something rises out of the swell beside your ship.';

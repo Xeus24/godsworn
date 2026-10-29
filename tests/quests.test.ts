@@ -98,7 +98,8 @@ describe('quest content', () => {
 
   it('has the quest counts the spec asks for', () => {
     const kinds = (k: string) => content.quests.filter((q) => q.kind === k).length;
-    expect(kinds('main')).toBe(8);
+    // The Prologue (3), the original eight chapters, 29 new beats and an apostle chapter for each of 14 gods.
+    expect(kinds('main')).toBe(54);
     expect(kinds('side')).toBeGreaterThanOrEqual(30);
     expect(kinds('god')).toBe(8 * content.gods.all().filter((g) => !g.hidden).length);
     // 8 trials + 5 quests per class (the Greater Pantheon classes add a trial and a line each).
@@ -163,8 +164,8 @@ describe('quest flow', () => {
     finish(report);
     expect(s.state.quests.completed['main-1']).toBe(1);
     expect(s.state.party.companions.aldric?.inParty).toBe(true);
-    // Chapter two begins by itself.
-    expect(s.state.quests.active['main-2']).toBeDefined();
+    // The next beat of the road begins by itself (chapter two now follows two new beats).
+    expect(s.state.quests.active['a1-1']).toBeDefined();
   });
 
   it('a dialogue fight that is lost leaves a marker to try again', () => {

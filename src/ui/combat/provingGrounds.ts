@@ -187,10 +187,11 @@ export class ProvingGroundsScreen implements Screen {
         { class: 'trainer-card panel' },
         el('div', { class: 'trainer-top' }, this.mentorFace(`mentor-${h.classes[0] as string}`), el('div', { class: 'trainer-id' }, el('div', { class: 'enc-head' }, el('b', {}, h.name), el('span', { class: 'enc-tag warn' }, `Lv ${enc.level} trial`)), el('div', { class: 'small' }, h.classes.map((id) => content.classes.get(id).name).join(' + ')))),
         el('div', { class: 'dim small' }, h.description),
-        ...(unlocked ? [] : [this.talkButton(`mentor-${h.classes[0] as string}`)]),
+        // Every mentor: the hybrid quest sends you to counsel with the other one(s), who have no trainer card once you own their class.
+        ...(unlocked ? [] : h.classes.map((id) => this.talkButton(`mentor-${id}`))),
         action,
         ...(!unlocked && !won && !open.ok ? [el('div', { class: 'dim small' }, open.reason)] : []),
-        ...(!unlocked && !won && open.ok && !questOpen ? [el('div', { class: 'dim small' }, `Your ${content.classes.get(h.classes[0] as string).name} mentor has a quest for you first.`)] : []),
+        ...(!unlocked && !won && open.ok && !questOpen ? [el('div', { class: 'dim small' }, `Talk to your ${content.classes.get(h.classes[0] as string).name} mentor to begin the hybrid quest, then seek counsel from your other mentor${h.classes.length > 2 ? 's' : ''}.`)] : []),
       );
     });
     const slots = classSlotCount(p, s.state.ngPlus);

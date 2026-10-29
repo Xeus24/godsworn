@@ -428,6 +428,11 @@ export class WorldScreen implements Screen {
       // Dungeons are lit by torches: dark beyond a small circle around the hero.
       this.lightAround(g, hx + TILE / 2, hy + TILE / 2, cw, ch, '4,2,12', 0.05, 0.62, TILE * 3.5, TILE * 9);
     }
+    // After the Sundering Bell the whole world is a shade darker and colder.
+    if (s.state.flags['world-darkened'] && !isDungeon(map.id)) {
+      g.fillStyle = 'rgba(30,10,50,0.16)';
+      g.fillRect(0, 0, cw, ch);
+    }
     // A faint vignette frames the view in every light.
     const vig = g.createRadialGradient(cw / 2, ch / 2, Math.min(cw, ch) * 0.45, cw / 2, ch / 2, Math.max(cw, ch) * 0.75);
     vig.addColorStop(0, 'rgba(0,0,0,0)');

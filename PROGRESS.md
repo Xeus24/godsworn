@@ -875,6 +875,14 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase15.test.ts` (5); 761 unit tests, 8 e2e and the build pass. The playtest's alchemist run still loses `q-engine` in main-7 (as in phase 14).
 - **Not done / cut:** the Hollow Barrows' "party plays as ghosts" and Skyreach's airship-only entry are not built (both are ordinary regions reached by passes; the airship areas from phase 12 remain the sky-only secrets). Barrows and Skyreach have no town. Art is reused.
 
+### Expansion phase 16: the story in Acts
+- **Prologue + five Acts + Epilogue** (`src/data/story/acts.ts`): the original eight chapters keep their ids and sit in one chain with 29 new beats (`QuestDef.act`, shown in the quest log), a 3-quest Ashfold Prologue and one apostle chapter per god (14), for **54 main quests**. New beats: a mid-game **betrayal and framing** (Archivist Hobbes, a2-3/a2-4), the **Sundering Bell** midpoint (a3-1), an **underworld chapter** in the Hollow Barrows (ferry, Ferry-Queen, Hollow King and a choice about the oar), a **playable flashback** as Seryth (dialogue-driven, a3-5), the **companion-temptation crisis** (a4-2), the **Gods' Summit** (a4-5: reconcile, sever, obey or judge).
+- **World after the midpoint** (`world-darkened`): a darker, colder tint on the overworld, Unsworn packs join every zone's wandering encounters (`DARKENED_GROUPS`), and five NPCs meet their fate (`NpcDef.until`/`after`; stand-ins in Aurelane and Mirewick).
+- **Endings 6 to 10:** The Concord of Fourteen, The Quiet Sky, The Ferrykeeper and The Long Table, driven by Summit, ferry-oar and companion flags. **Epilogue slideshow:** 44 flag-driven slides (`data/story/epilogue.ts`, `engine/quests/epilogue.ts`), paged in the ending screen.
+- Fixes: the four new gods had no chapter-7 charge (an Apostle of Lyssara, Ordrun, Seraphel or Mirrin would have had no next stage); region bosses (phases 13-15) were double-scaled by tier and are now normal-foe base stats; playtest bags are trimmed between steps (more quest gear filled them).
+- Tests: `tests/expansionPhase16.test.ts` (9); 770 unit tests, 8 e2e, build pass. The playtest finishes 25 of 26 classes (the Alchemist loses the Court of Winds guard, as it lost the Severance Engine before).
+- **Not done / cut:** the flashback is a choice-driven scene, not a fight as the villain; apostle chapters are one dungeon, one herald and two god scenes (not 30-45 minutes each); main path length (6-8 hours) was not measured with a paced playtest; no save version change was needed (flags only).
+
 ## Known bugs
 - None known.
 
