@@ -3000,7 +3000,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-633 quests, 232 NPCs, 303 dialogues, 6 companions, 10 endings.
+691 quests, 240 NPCs, 379 dialogues, 14 companions, 10 endings.
 
 ### Main story (54)
 
@@ -3214,10 +3214,68 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Competition** | 44 | Mags | Defeat the pirate captain (clear) |
 | **Honor Among Thieves** | 47 | Mags | Meet the contact at the cove (talk); Report to Mags (talk) |
 
-### Companion quests (11)
+### Companion quests (69)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **Candles for the Fallen** | 8 | Brother Aldric | Lay five restless dead to rest in the Whisperwood (kill); Hear them out (talk) |
+| **The Hymn That Would Not Stop** | 11 | Brother Aldric | Clear the cave-singers from the Sunken Caves (kill); Hear them out (talk) |
+| **A Crisis of Faith** | 14 | Brother Aldric | Drive off the cultists preaching doubt in the Ashen Desert (kill); Hear them out (talk) |
+| **The Wolf Who Wasn’t Hers** | 12 | Fenn Ashwhistle | Drive off the wolves harrying her pack (kill); Hear them out (talk) |
+| **Mother’s Bow** | 14 | Fenn Ashwhistle | Recover her mother’s bow from the bandits who took it (kill); Hear them out (talk) |
+| **Winter Count** | 16 | Fenn Ashwhistle | Protect the winter-hunters at the Heartwood from the hollowed beasts (kill); Hear them out (talk) |
+| **The Drunk Who Knew Gorza** | 28 | Korga Ironhide | Break up the raiders who drink at Gorza’s old camp (kill); Hear them out (talk) |
+| **The Sand Before the Storm** | 31 | Korga Ironhide | Hunt the sand-drake nest that threatens the caravans (kill); Hear them out (talk) |
+| **A Warband’s Funeral** | 34 | Korga Ironhide | Lay the warband’s dead to rest in the dunes (kill); Hear them out (talk) |
+| **Overdue Notes** | 34 | Ilyra Vael | Retrieve her stolen notebooks from the wights of the Spire (kill); Hear them out (talk) |
+| **The Library That Burned** | 36 | Ilyra Vael | Defend the Guild’s outer library from frost elementals (kill); Hear them out (talk) |
+| **What the Guild Forbids** | 38 | Ilyra Vael | Hold off the Guild censors on the Spire road (kill); Hear them out (talk) |
+| **A Cut of the Take** | 42 | Sable | Shake down the smugglers who owe Sable a cut (kill); Hear them out (talk) |
+| **The Locksmith’s Daughter** | 43 | Sable | Rescue the locksmith’s daughter from the harbor press-gang (kill); Hear them out (talk) |
+| **The Jewel That Wasn’t** | 45 | Sable | Track down the fence who passed Sable a fake (kill); Hear them out (talk) |
+| **The Tide Chorus** | 43 | Marisol Tidesong | Quiet the drowned singing off the Stormcoast (kill); Hear them out (talk) |
+| **The Siren’s Request** | 44 | Marisol Tidesong | See a young siren safe from the harbor hunters (kill); Hear them out (talk) |
+| **A Song You Didn’t Write** | 46 | Marisol Tidesong | Drive the krakenspawn from the old shipwreck cove (kill); Hear them out (talk) |
+| **A Knight Without a Lord** | 24 | Sir Edrin Vale | Break the press-gang harassing the Aurelane docks (kill); Hear them out (talk) |
+| **The Hanged Man’s Widow** | 25 | Sir Edrin Vale | Carry the Watch’s apology to the widow in the Underbelly (kill); Hear them out (talk) |
+| **Dusk’s Saddle** | 26 | Sir Edrin Vale | Find and bury the knight’s old warhorse at the Aurelane commons (kill); Hear them out (talk) |
+| **The Crest in the Pocket** | 28 | Sir Edrin Vale | Stand the Gilded Gate against the Guild enforcers (kill); Hear them out (talk) |
+| **Crest Restored** | 29 | Sir Edrin Vale | Break the hangman’s guild that still keeps the gallows (kill); Hear them out (talk) |
+| **The Toad Who Would Be Mayor** | 17 | Thistle Underbough | Clear the Drowned Orchard of what stole Thistle’s pot (clear); Hear them out (talk) |
+| **The Frog Funeral** | 18 | Thistle Underbough | Drive the bog-lurkers from the Frog Road (kill); Hear them out (talk) |
+| **Moonpetal Season** | 19 | Thistle Underbough | Guard the moonpetal fields from the reed-hags (kill); Hear them out (talk) |
+| **A Bear in the Kitchen** | 20 | Thistle Underbough | Corral the great bear that has wandered into Mirewick (kill); Hear them out (talk) |
+| **Mother of Mayors** | 21 | Thistle Underbough | Lay the Fen’s restless drowned to rest so the lanterns can be lit again (kill); Hear them out (talk) |
+| **A Witch Let Go** | 26 | Thorne Valdis | Clear the hollow woodsmen from the Lamplighters’ Trail (kill); Hear them out (talk) |
+| **The Sister’s Birthday Card** | 27 | Thorne Valdis | Escort a warded letter through the Gloamwood (kill); Hear them out (talk) |
+| **The Cottage on the Hill** | 28 | Thorne Valdis | Clear a witch’s abandoned cottage of the creatures that moved in (kill); Hear them out (talk) |
+| **Silver for Smiling** | 29 | Thorne Valdis | Break the pact-cult that preys on the lamplighters (kill); Hear them out (talk) |
+| **Hearth Over Hunt** | 30 | Thorne Valdis | Hold the Lampfall road against the pact-bound shades (kill); Hear them out (talk) |
+| **The Boot Has Opinions** | 28 | Hrafna Greystone | Drive the raiders off the spirit-grove at Briarhold (kill); Hear them out (talk) |
+| **A Totem for the Road** | 29 | Hrafna Greystone | Cut the spirit-wood from the Thornreach thicket (kill); Hear them out (talk) |
+| **What the Dead Want** | 31 | Hrafna Greystone | Lay the Thornreach’s unmourned dead to rest (kill); Hear them out (talk) |
+| **The Last Chief** | 32 | Hrafna Greystone | Hold the old chief’s barrow against grave-robbers (kill); Hear them out (talk) |
+| **The Boot Speaks** | 33 | Hrafna Greystone | Walk the ancestors’ road to the Thornmother’s hollow (kill); Hear them out (talk) |
+| **Probably Stable** | 35 | Bexley Marrow | Clear the Prism Mines of what is eating Bexley’s reagent stores (clear); Hear them out (talk) |
+| **The Cure for Everything** | 36 | Bexley Marrow | Collect the quicksilver stolen by a rival apothecary (kill); Hear them out (talk) |
+| **The Gnome Who Taught Me** | 37 | Bexley Marrow | Find her old master’s lab in the salt dunes (kill); Hear them out (talk) |
+| **A Fever in Lensfall** | 38 | Bexley Marrow | Clear the plague-rats from the Lensfall wells (kill); Hear them out (talk) |
+| **The Cure for Regret** | 40 | Bexley Marrow | Secure the mirror-glass the cure needs from the Glass Cathedral road (kill); Hear them out (talk) |
+| **The Last Show on the Isles** | 38 | Zephyra Lark | Clear the reaver gulls from the Wreck’s End stage (kill); Hear them out (talk) |
+| **The Troupe That Left** | 39 | Zephyra Lark | Free the stranded troupe-wagon from the Isle pirates (kill); Hear them out (talk) |
+| **A Dance for the Wind** | 41 | Zephyra Lark | Reach the Gale Stone through the storm-petrels (kill); Hear them out (talk) |
+| **The Understudy** | 42 | Zephyra Lark | Guard her young understudy from the harbor bullies (kill); Hear them out (talk) |
+| **The Last Encore** | 43 | Zephyra Lark | Take the Wreck’s End stage back from the storm-spawn (kill); Hear them out (talk) |
+| **A Sandstone Heart** | 38 | Kessa Dunmere | Stop the rune guardians collapsing the Fourth Clan’s tunnel (kill); Hear them out (talk) |
+| **The Feud I Inherited** | 39 | Kessa Dunmere | Break up the clan skirmish in the Dwarf Road tunnels (kill); Hear them out (talk) |
+| **Sand in the Mortar** | 41 | Kessa Dunmere | Hold the hall of statues against the Foundry’s stray constructs (kill); Hear them out (talk) |
+| **A Hall With No Quarrel** | 42 | Kessa Dunmere | Clear the haunted Seventh Hall of the ancestors’ shades (kill); Hear them out (talk) |
+| **Cornerstone** | 43 | Kessa Dunmere | Set the first stone of the Peace Hall against the Stone Warden’s wrath (kill); Hear them out (talk) |
+| **Query: Friendship** | 49 | Tick | Shut down the rogue assemblers hunting the Forged in Ratchet (kill); Hear them out (talk) |
+| **Spare Gears** | 50 | Tick | Salvage clean gears from the Assembly Halls (kill); Hear them out (talk) |
+| **The Maker’s Workshop** | 51 | Tick | Reach Pennywhistle’s old workshop through the Foundry’s guards (kill); Hear them out (talk) |
+| **The Hum in the Bones** | 52 | Tick | Keep the First Engine’s call from reaching Tick in the old signal tower (kill); Hear them out (talk) |
+| **A Name of My Own** | 53 | Tick | Defend Ratchet’s foundling workshop from the First Engine’s drones (kill); Hear them out (talk) |
 | **The Lantern of Saint Ilse** | 16 | Brother Aldric | Defeat the Bone Priest (fight); Speak with Aldric about the Lantern (talk) |
 | **The Lone Hunter** | 11 | Fenn Ashwhistle | Bring down the alpha (fight); Speak with Fenn (talk) |
 | **The Last of the Pack** | 18 | Fenn Ashwhistle | Defeat Hask’s poachers (fight); Stand with Fenn (talk) |
@@ -3645,6 +3703,22 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
   - Bond: 20: Light Fingers (+10% gold find.) or Quick (+8 dodge.) · 40: The Knife Trick (+6% crit chance.) or Lucky Coin (+10% magic find and +5% damage.) · 60: Vanishing Act (Starts every battle in Stealth.) or Poisoned Blades (+12% Poison/Nature damage and +10 Status Chance.) · 80: Ace Up the Sleeve (+25% crit damage.) or Fortune Favors (+10% damage and +8% speed.) · Oath: Partner in Crime (+12% damage, +15% gold find; her crits Blind the target.)
 - **Marisol Tidesong**, Singer to the Drowned: Nephilim Bard (Skald), follows Nymira, met in Saltmere. Likes storm magic, music, a quiet night, good deeds; dislikes waking the dead, leaving people behind.
   - Bond: 20: Carrying Voice (+10% Magic Attack.) or Sea Shanty (+8% speed.) · 40: Storm Song (+15% Lightning damage.) or Calm Waters (+12 Healing Power and +10 Status Resist.) · 60: Chorus (Every ally starts battle Regenerating.) or Rising Tide (+15% Ultimate Charge.) · 80: Showstopper (+10% damage and +10% Magic Attack.) or Anchor (+15% max HP and +10 Ice and Lightning resistance.) · Oath: Lullaby of the Deep (+12% damage; starts every battle with a 10% shield on every ally.)
+- **Sir Edrin Vale**, Knight-Errant: Human Knight (Oathbound), follows Solenne, met in Aurelane. Likes finishing what you start, mercy, fighting raiders and cultists; dislikes running from a fight, stealing.
+  - Bond: 20: Shield Wall (+12% defense.) or Resolute (+10% max HP.) · 40: Oathkeeper (+10 Status Resist.) or Vigil (+6% cooldown reduction.) · 60: Standard-Bearer (+8% damage.) or Plate and Prayer (+12 Magic Resist.) · 80: Last Man Standing (+20% max HP.) or Honor Guard (+15% defense and +5 Healing Power.) · Oath: Crest Restored (+10% damage and +10% defense; he shields the party for 6% of max HP each turn he starts.)
+- **Thistle Underbough**, Fen Wanderer: Hearthfolk Druid (Wildheart), follows Lyssara, met in Mirewick. Likes nature magic, healing, a quiet night, mercy; dislikes raising the dead, waste.
+  - Bond: 20: Good Soup (+15 Healing Power.) or Green Thumb (+12% Nature damage.) · 40: Thick Hide (+10% max HP.) or Moonlit Step (+6 dodge.) · 60: Bear Hug (+12% physical attack.) or Owl Eyes (+6% crit chance.) · 80: Evergreen (+15% max HP.) or Wildheart (+10% damage and +10 Status Resist.) · Oath: Mother of Mayors (+8% max HP and +10 Healing Power; she heals the party 4% at the start of each of her turns.)
+- **Thorne Valdis**, Witch Hunter: Human Witch Hunter (Silver Duelist), follows Hesha, met in Lampfall. Likes putting the dead to rest, clean work, finishing what you start; dislikes raising the dead, stealing.
+  - Bond: 20: Silver Edge (+8% physical attack.) or Cold Eyes (+5% crit chance.) · 40: Warded (+12 Magic Resist.) or Quick Draw (+10% speed.) · 60: Hex-Breaker (+10 Status Resist.) or Hunter’s Mark (+12% damage.) · 80: Silver Heart (+20% crit damage.) or Lamp and Blade (+10% max HP and +5% crit chance.) · Oath: Hearth Over Hunt (+12% damage and +10 Magic Resist; her crits mark the target Vulnerable.)
+- **Hrafna Greystone**, Ancestor-Speaker: Orc Shaman (Spiritwalker), follows Thalor, met in Briarhold. Likes putting the dead to rest, a quiet night, finishing what you start; dislikes waste, running from a fight.
+  - Bond: 20: Totem Carver (+10% max MP.) or Spirit Ear (+8% Magic Attack.) · 40: Ancestral Hide (+10% max HP.) or Storm-Voice (+12% Lightning damage.) · 60: Grandmother’s Boot (+10 Status Resist.) or Earth Pulse (+12% Earth damage.) · 80: The Long Table (+10% damage.) or Voice of Many (+15% Magic Attack and +8% cooldown reduction.) · Oath: The Boot Speaks (+12% damage and +8% max HP; when she kills, her allies gain +8% damage for a turn.)
+- **Bexley Marrow**, Itinerant Alchemist: Gnome Alchemist (Grenadier), follows Mirrin, met in Lensfall. Likes fire and fury, healing, a gamble, finishing what you start; dislikes waste, losing.
+  - Bond: 20: Steady Hand (+8% Magic Attack.) or Reagent Pouch (+12% max MP.) · 40: Volatile (+12% Fire damage.) or Antidote (+12 Status Resist.) · 60: Quick Mixer (+8% cooldown reduction.) or Acid Splash (+12% Nature damage.) · 80: Master Brewer (+15% Healing Power and +8% damage.) or Controlled Burn (+15% Magic Attack.) · Oath: The Cure for Regret (+12% damage and +10 Healing Power; her flasks restore 3 MP to the party when they crit.)
+- **Zephyra Lark**, Wind-Dancer: Fae Dancer (Edgewhirl), follows Seraphel, met in Wreck’s End. Likes clean work, a gamble, a quiet night; dislikes running from a fight, raising the dead.
+  - Bond: 20: Light Step (+8 dodge.) or Pirouette (+8% speed.) · 40: Ribbon Edge (+6% crit chance.) or Encore (+10% Ultimate Charge.) · 60: Wind in the Hair (+10% speed.) or Veil of Silk (+10 dodge.) · 80: Curtain Call (+25% crit damage.) or Grand Jeté (+12% damage and +6 dodge.) · Oath: The Last Encore (+12% damage and +10% speed; a dodge hastens her for a turn.)
+- **Kessa Dunmere**, Stone-Singer: Dwarf Geomancer (Crystalmancer), follows Ordrun, met in Khazrum. Likes breaking machines, finishing what you start, a quiet night; dislikes running from a fight, waste.
+  - Bond: 20: Granite Skin (+12% defense.) or Seam-Seeker (+10% Earth damage.) · 40: Bedrock (+12% max HP.) or Crystal Focus (+8% Magic Attack.) · 60: Heavy Tread (+10 Status Resist.) or Sand-Shaper (+10 dodge.) · 80: Mountain’s Weight (+15% Earth damage.) or Foundation (+15% max HP and +8% defense.) · Oath: Cornerstone (+10% damage and +12% defense; she shields the party for 8% of max HP at the start of each battle.)
+- **Tick**, Forged Artificer: Forged Artificer (Engineer), follows Aurelis, met in Ratchet. Likes breaking machines, finishing what you start, clean work; dislikes losing, waste.
+  - Bond: 20: Calibrated (+6% crit chance.) or Reinforced (+10% defense.) · 40: Overclocked (+8% speed.) or Spare Parts (+10% max HP.) · 60: Targeting Array (+12% physical attack.) or Heat Sink (+10% Fire resistance.) · 80: Perfect Tolerance (+20% crit damage.) or Self-Repair (+15% max HP and +8% cooldown reduction.) · Oath: A Name of My Own (+12% damage and +8% speed; its crits knock the target Vulnerable.)
 
 ### People
 
@@ -3653,16 +3727,16 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Hadrik Cinderhand (Master Smith), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
 - **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ysenne Vael (Runewright), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Pao Lantern (Master Gemcutter), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
-- **Aurelane:** Chancellor Ilreth (Chancellor of the Realm), Captain Valeria Dunn (Captain of the Watch), Archivist Hobbes (Keeper of the Royal Archive), Madame Corvina (Guildmistress of Merchants), Sister Benedicta (Almoner of the Cathedral), Pip (Street Informant), Lord Maximilian Veyne (Noble of the Gilded Heights), Tam the Drover (Cattle-Driver), Mother Agatha (Mistress of the Orphanage), Cassia Veyne (Heir of the Gilded Heights), Bram (Orphanage Warden), Regent Pell (Guild Regent), Young Tam (Cattle-Driver)
-- **Mirewick:** Warden Lissel (Warden of the Stilts), Odo the Lamplighter (Keeper of the Lanterns), Granny Mirelle (Herb-Wife), Nym (Eel-Seller), Garrow the Boatwright (Maker of Punts), Sister Ilse (Moth-Priestess), Tib (Frog-Catcher), Bess (Innkeeper of the Dripping Eaves), Odile (Herb-Wife’s Niece)
-- **Briarhold:** Warchief Ulrik (Lord of Briarhold), Reeve Alma (Keeper of the Tolls), Kip (Scavenger Dealer), Oswin (Hedge-Priest of Kael), Brisa (Bone-Setter), Gorn (Pit Champion), Eda (Thorn-Gardener), Vask (Wandering Tinker)
-- **Khazrum:** Thane Borgrim Ironvein (High Thane of Khazrum), Forge-Matron Hilda (Mistress of the Deepforge), Dagna Stoneward (Runesmith), Gundrun (Deep-Miner), Olaf Barleyhand (Master Brewer), Thrain Oathkeeper (Loremaster of the Clans), Edda (Stonemason), Brokk (Warden of the Deep Roads)
-- **Lampfall:** Elder Wick (First Lamplighter), Ilen of the Dusk Watch (Warden of the Path), Olla (Moth-Keeper), Brenn (Lamp-Oil Seller), Sela (Hunters’ Widow), Grimble (Storyteller), Fenna (Night-Herbalist), Corra (Innkeeper of the Last Lamp)
-- **Lensfall:** Lensmaster Quill (Head of the Lensmakers), Brak (Salt-Cutter), Sunni (Caravan-Master), Zeal (Priestess of Seraphel), Tamsin (Glassblower), Hobb (Dune-Strider Racer), Pell (Night-Mapper), Yoon (Water-Seller)
+- **Aurelane:** Sir Edrin Vale (Knight-Errant), Chancellor Ilreth (Chancellor of the Realm), Captain Valeria Dunn (Captain of the Watch), Archivist Hobbes (Keeper of the Royal Archive), Madame Corvina (Guildmistress of Merchants), Sister Benedicta (Almoner of the Cathedral), Pip (Street Informant), Lord Maximilian Veyne (Noble of the Gilded Heights), Tam the Drover (Cattle-Driver), Mother Agatha (Mistress of the Orphanage), Cassia Veyne (Heir of the Gilded Heights), Bram (Orphanage Warden), Regent Pell (Guild Regent), Young Tam (Cattle-Driver)
+- **Mirewick:** Thistle Underbough (Fen Wanderer), Warden Lissel (Warden of the Stilts), Odo the Lamplighter (Keeper of the Lanterns), Granny Mirelle (Herb-Wife), Nym (Eel-Seller), Garrow the Boatwright (Maker of Punts), Sister Ilse (Moth-Priestess), Tib (Frog-Catcher), Bess (Innkeeper of the Dripping Eaves), Odile (Herb-Wife’s Niece)
+- **Briarhold:** Hrafna Greystone (Ancestor-Speaker), Warchief Ulrik (Lord of Briarhold), Reeve Alma (Keeper of the Tolls), Kip (Scavenger Dealer), Oswin (Hedge-Priest of Kael), Brisa (Bone-Setter), Gorn (Pit Champion), Eda (Thorn-Gardener), Vask (Wandering Tinker)
+- **Khazrum:** Kessa Dunmere (Stone-Singer), Thane Borgrim Ironvein (High Thane of Khazrum), Forge-Matron Hilda (Mistress of the Deepforge), Dagna Stoneward (Runesmith), Gundrun (Deep-Miner), Olaf Barleyhand (Master Brewer), Thrain Oathkeeper (Loremaster of the Clans), Edda (Stonemason), Brokk (Warden of the Deep Roads)
+- **Lampfall:** Thorne Valdis (Witch Hunter), Elder Wick (First Lamplighter), Ilen of the Dusk Watch (Warden of the Path), Olla (Moth-Keeper), Brenn (Lamp-Oil Seller), Sela (Hunters’ Widow), Grimble (Storyteller), Fenna (Night-Herbalist), Corra (Innkeeper of the Last Lamp)
+- **Lensfall:** Bexley Marrow (Itinerant Alchemist), Lensmaster Quill (Head of the Lensmakers), Brak (Salt-Cutter), Sunni (Caravan-Master), Zeal (Priestess of Seraphel), Tamsin (Glassblower), Hobb (Dune-Strider Racer), Pell (Night-Mapper), Yoon (Water-Seller)
 - **Pearlgate:** Maris Deepwater (Harbor-Queen of Pearlgate), Ulan (Captain of the Divers), Pim (Salvage-Dealer), Oriel (Bellkeeper), Sisi (Pearl-Trader), Halden (Choirmaster), Joss (Airbell Smith), Neris (Fishwife)
-- **Ratchet:** Foreman Hask (Shift Foreman of Ratchet), Engineer Lorne (Chief Engineer), Ten (Forged Veteran), Rosa (Steam-Medic), Nix (Gear-Scrapper), Dagmar (Union Representative), Ordwin (Priest of Ordrun), Wren (Wandering Tinker)
+- **Ratchet:** Tick (Forged Artificer), Foreman Hask (Shift Foreman of Ratchet), Engineer Lorne (Chief Engineer), Ten (Forged Veteran), Rosa (Steam-Medic), Nix (Gear-Scrapper), Dagmar (Union Representative), Ordwin (Priest of Ordrun), Wren (Wandering Tinker)
 - **Ashfold:** Reeve Halwin (Village Reeve), Gran Pell (Hearth-Keeper), Tobin (Farm Boy), Brannoc (Village Smith), Brother Ansel (Priest of Solenne), Dessa (Miller’s Wife), Orrin (Hunter), Mavis (Keeper of the Temporary Inn)
-- **Wreck’s End:** Harbormaster Fenn (Master of the Port), Jaya Brineheart (Queen of the Wreckers), Sol (Bridge-Weaver), Mari (Shell-Seller), Vanya (Storm-Chaser), Oakes (Salvage-Bosun), Trin (Gull-Keeper), Hedda (Matron of the Rope & Anchor)
+- **Wreck’s End:** Zephyra Lark (Wind-Dancer), Harbormaster Fenn (Master of the Port), Jaya Brineheart (Queen of the Wreckers), Sol (Bridge-Weaver), Mari (Shell-Seller), Vanya (Storm-Chaser), Oakes (Salvage-Bosun), Trin (Gull-Keeper), Hedda (Matron of the Rope & Anchor)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld
 <!-- story:end -->
 

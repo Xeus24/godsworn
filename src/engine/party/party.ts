@@ -12,6 +12,9 @@ import { withSource, type Modifier } from '../stats/modifiers';
 import type { StatBlock } from '../stats/types';
 import type { BondNodeDef, CompanionDef, CompanionState } from './types';
 
+/** Approval at which a companion's loyalty skill works. */
+export const LOYALTY_APPROVAL = 75;
+
 export const APPROVAL = {
   min: -100,
   max: 100,
@@ -54,7 +57,7 @@ export function clampApproval(n: number): number {
  */
 export function createCompanion(def: CompanionDef, level: number, newUid: () => string, c: Content = content, autoTree = true): CompanionState {
   const char = createCharacter({ id: def.id, name: def.name, portrait: def.portrait, raceId: def.raceId, classId: def.classId, birthSignId: def.birthSignId }, c);
-  const state: CompanionState = { id: def.id, character: char, approval: def.startApproval, bonds: [], inParty: false, left: false, oath: false, autoTree };
+  const state: CompanionState = { id: def.id, character: char, approval: def.startApproval, bonds: [], inParty: false, left: false, oath: false, autoTree, scenes: 0, lastTalk: -1, banter: 0 };
   if (level > 1) grantXp(char, totalXpForLevel(level), 80, c);
   develop(state, def, c);
   outfit(char, char.level, newUid, false, c);
@@ -91,6 +94,7 @@ export function bondNode(def: CompanionDef, id: string): BondNodeDef | undefined
 export function activeBonds(def: CompanionDef, state: CompanionState): BondNodeDef[] {
   const out = state.bonds.map((id) => bondNode(def, id)).filter((n): n is BondNodeDef => n !== undefined);
   if (state.oath) out.push(def.oath);
+  if (state.approval >= LOYALTY_APPROVAL) out.push(def.loyalty);
   return out;
 }
 

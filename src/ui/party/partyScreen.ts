@@ -4,7 +4,7 @@ import { canEquip, defaultSlot } from '../../engine/items/equipment';
 import { isGear } from '../../engine/items/lookup';
 import { itemName } from '../../engine/items/naming';
 import { EQUIP_SLOTS } from '../../engine/items/types';
-import { APPROVAL, activeBonds, approvalName, companionStats, openBondTiers } from '../../engine/party/party';
+import { APPROVAL, LOYALTY_APPROVAL, activeBonds, approvalName, companionStats, openBondTiers } from '../../engine/party/party';
 import type { CompanionDef, CompanionState } from '../../engine/party/types';
 import type { Conversation } from '../../engine/state/conversation';
 import type { GameSession } from '../../engine/state/gameState';
@@ -30,6 +30,7 @@ export class PartyScreen implements Screen {
   private offs: (() => void)[] = [];
   private selected: string | undefined;
   private message = '';
+  private banterLine = '';
 
   constructor(
     private readonly session: GameSession,
@@ -145,6 +146,33 @@ export class PartyScreen implements Screen {
       return el('div', { class: 'party-gear-row bag' }, name, this.btn('Equip', () => this.say(s.party.equip(comp.id, i))));
     });
     const quests = [def.recruitQuest, def.personalQuest].map((id) => content.quests.get(id));
+    const rel = s.state.flags[`romance-${def.id}`];
+    const blocked = s.party.sceneBlocked(def.id);
+    const camp = el(
+      'div',
+      { class: 'camp' },
+      el('h3', {}, 'Camp'),
+      ...(rel ? [el('div', { class: 'small' }, rel === 'romance' ? `You and ${def.name.split(' ')[0]} are together.` : `${def.name.split(' ')[0]} is a dear friend.`)] : []),
+      ...(this.banterLine ? [el('p', { class: 'small' }, `“${this.banterLine}”`)] : []),
+      el(
+        'div',
+        { class: 'row wrap' },
+        this.btn('Sit by the fire', () => {
+          const r = s.party.campTalk(def.id);
+          this.banterLine = r.ok ? ((r as { line?: string }).line ?? '') : '';
+          this.say(r);
+        }, comp.left),
+        ...(def.romance
+          ? [this.btn('Spend the evening', () => {
+              const conv = s.party.campScene(def.id);
+              if (conv) this.talk(conv);
+            }, blocked !== undefined)]
+          : []),
+      ),
+      ...(def.romance && blocked ? [el('div', { class: 'dim small' }, blocked)] : []),
+      el('div', { class: 'small' }, `Loyalty (${LOYALTY_APPROVAL} approval): ${def.loyalty.name}. ${def.loyalty.description}`),
+      el('div', { class: 'dim small' }, `Personal line: ${def.line.map((id) => `${s.state.quests.completed[id] ? '✓' : '·'} ${content.quests.get(id).name}`).join('  ')}`),
+    );
     return el(
       'section',
       { class: 'panel party-detail' },
@@ -152,7 +180,7 @@ export class PartyScreen implements Screen {
       el('p', { class: 'small' }, def.bio),
       el('div', { class: 'small' }, `Follows ${god.name}: approves when you earn ${god.name}’s favor${content.pantheon.get(def.god).rivals.length ? `, and frowns on favor with ${content.pantheon.get(def.god).rivals.map((r) => content.gods.get(r).name).join(', ')}` : ''}.`),
       el('div', { class: 'small' }, `Likes: ${def.likes.map((d) => d.text.toLowerCase()).join(', ')}. Dislikes: ${def.dislikes.map((d) => d.text.toLowerCase()).join(', ')}.`),
-      el('div', { class: 'dim small' }, `At ${APPROVAL.leave} approval they leave. Personal quest: ${quests[1]?.name ?? ''} (at 30 approval).`),
+      el('div', { class: 'dim small' }, `At ${APPROVAL.leave} approval they leave. Their personal line has five quests, ending with ${quests[1]?.name ?? ''} (at 30 approval).${def.leaves.text ? ' Something besides low approval can also send them away.' : ''}`),
       ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
       el('div', { class: 'row wrap' }, ...actions),
       el('div', { class: 'party-stats small' }, `HP ${ch.hp}/${stats.maxHp} · MP ${ch.mp}/${stats.maxMp}`, ...STATS.slice(2).map((k) => el('span', {}, `${content.stats.get(k).name} ${formatStat(k, stats[k])}`))),
@@ -160,6 +188,7 @@ export class PartyScreen implements Screen {
       el('div', { class: 'dim small' }, `Perks active: ${activeBonds(def, comp).map((n) => n.name).join(', ') || 'none yet'}.`),
       ...bond,
       oath,
+      camp,
       ...this.treePanel(comp, def),
       el('h3', {}, 'Gear'),
       el('div', { class: 'party-gear' }, ...gear),

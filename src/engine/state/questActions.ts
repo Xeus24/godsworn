@@ -342,6 +342,7 @@ export class QuestActions {
         changed = true;
       }
       if (changed) this.s.bus.emit('stateChanged', { reason: 'quest' });
+      this.s.party.checkLeaves();
     } finally {
       this.refreshing = false;
     }
@@ -487,6 +488,9 @@ export class QuestActions {
         case 'oath':
           s.party.grantOath(a.companion);
           break;
+        case 'scene':
+          s.party.finishScene(a.companion);
+          break;
         case 'deed':
           s.devotion.deeds([{ event: a.event, count: a.count ?? 1 }], 'quest');
           break;
@@ -581,6 +585,11 @@ export class QuestActions {
     const flags = this.s.state.flags;
     const alive = (n: NpcDef): boolean => (!n.until || !flags[n.until]) && (!n.after || Boolean(flags[n.after]));
     return content.npcs.filter((n) => about(n) && alive(n) && n.town === town && (n.place === 'people' || n.place === 'temple') && !(n.companion && this.s.state.party.companions[n.companion] && !this.s.state.party.companions[n.companion]?.left));
+  }
+
+  /** A stand-alone scene (camp) with someone: opens straight into the dialogue. */
+  scene(npcId: string, dialogueId: string): Conversation {
+    return new Conversation(this.s, content.npcs.get(npcId), undefined, dialogueId);
   }
 
   talkTo(npcId: string): Conversation | undefined {

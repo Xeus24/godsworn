@@ -180,6 +180,8 @@ export type ActionDef =
   | { kind: 'toast'; text: string }
   /** The companion's personal quest is done: their oath perk is earned. */
   | { kind: 'oath'; companion: string }
+  /** A camp scene with a companion ended: it counts, and the path (romance or friendship) is theirs. */
+  | { kind: 'scene'; companion: string }
   /** Hands in a stage at its turn-in NPC (used by the generated quest dialogue). */
   | { kind: 'turnIn'; quest: string }
   /** Hands over a delivery (used by the generated quest dialogue). */

@@ -33,7 +33,7 @@ describe('four more new regions', () => {
     expect(content.dungeons.size).toBeGreaterThanOrEqual(35);
     for (const id of NEW_ZONES) {
       const z = content.zones.get(id);
-      const people = content.npcs.filter((n) => n.town === z.town && n.place === 'people');
+      const people = content.npcs.filter((n) => n.town === z.town && n.place === 'people' && !n.companion);
       expect(people.length, id).toBeGreaterThanOrEqual(8);
       expect(people.every((n) => n.schedule), id).toBe(true);
       expect(content.towns.get(z.town as string).minigame, id).toBeDefined();

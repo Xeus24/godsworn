@@ -36,7 +36,7 @@ describe('the last four new regions', () => {
 
   it('the two new towns have eight scheduled people and a minigame', () => {
     for (const t of ['ashfold', 'wrecksend']) {
-      const people = content.npcs.filter((n) => n.town === t && n.place === 'people');
+      const people = content.npcs.filter((n) => n.town === t && n.place === 'people' && !n.companion);
       expect(people.length, t).toBeGreaterThanOrEqual(8);
       expect(people.every((n) => n.schedule), t).toBe(true);
       expect(content.towns.get(t).minigame, t).toBeDefined();

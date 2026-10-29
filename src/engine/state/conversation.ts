@@ -65,9 +65,11 @@ export class Conversation {
     private readonly s: GameSession,
     readonly npc: NpcDef,
     marker?: { quest: string; objective: string },
+    scene?: string,
   ) {
-    this.hub = marker === undefined;
+    this.hub = marker === undefined && scene === undefined;
     if (marker) this.openObjective(marker.quest, marker.objective);
+    if (scene) this.play(content.dialogues.get(scene));
   }
 
   // ------------------------------------------------------------ text

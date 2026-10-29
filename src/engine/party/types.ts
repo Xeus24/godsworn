@@ -2,6 +2,7 @@ import type { Character } from '../character/types';
 import type { TriggeredEffect } from '../effects/types';
 import type { FavorDeed } from '../gods/types';
 import type { ModifierSpec } from '../stats/modifiers';
+import type { Cond } from '../quests/types';
 
 /** One node of a companion's bond tree: a perk for that companion. */
 export interface BondNodeDef {
@@ -44,6 +45,14 @@ export interface CompanionDef {
   oath: BondNodeDef;
   recruitQuest: string;
   personalQuest: string;
+  /** The five quests of their personal line, in order (recruit first, oath last). */
+  line: string[];
+  /** The loyalty skill: a perk that works while they are devoted to you (75 approval). */
+  loyalty: BondNodeDef;
+  /** What makes them walk out besides low approval (a betrayal, a line crossed). */
+  leaves: { cond: Cond; text: string };
+  /** Friendship and romance scenes at the camp. */
+  romance: boolean;
 }
 
 export interface CompanionState {
@@ -60,6 +69,12 @@ export interface CompanionState {
   oath: boolean;
   /** Tree points are spent automatically; off means the player allocates them on the Party screen. */
   autoTree: boolean;
+  /** Camp scenes seen (0-3): friendship or romance, by the path chosen in the first. */
+  scenes: number;
+  /** The in-game day of the last chat at camp (one a day each). */
+  lastTalk: number;
+  /** How many banter lines they have said, to move through them in order. */
+  banter: number;
 }
 
 export interface PartyState {

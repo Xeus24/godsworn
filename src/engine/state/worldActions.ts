@@ -203,6 +203,7 @@ export class WorldActions {
     if (this.world.grace > 0) this.world.grace--;
     this.world.tideHigh = tideIsHigh(this.s.state.clock.minute);
     this.world.moonFull = moonPhase(this.day) === 4;
+    this.s.party.ambientBanter();
     if (isDungeon(map.id)) this.world.dsteps = (this.world.dsteps ?? 0) + 1;
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
     // The region's own rule: meters, vents and getting lost.

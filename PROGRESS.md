@@ -883,6 +883,15 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase16.test.ts` (9); 770 unit tests, 8 e2e, build pass. The playtest finishes 25 of 26 classes (the Alchemist loses the Court of Winds guard, as it lost the Severance Engine before).
 - **Not done / cut:** the flashback is a choice-driven scene, not a fight as the villain; apostle chapters are one dungeon, one herald and two god scenes (not 30-45 minutes each); main path length (6-8 hours) was not measured with a paced playtest; no save version change was needed (flags only).
 
+### Expansion phase 17: fourteen companions and the camp
+- **Eight new companions** (`src/data/story/companionsGreater.ts`): Sir Edrin Vale (Knight, Aurelane), Thistle Underbough (Druid, Mirewick), Thorne Valdis (Witch Hunter, Lampfall), Hrafna Greystone (Shaman, Briarhold), Bexley Marrow (Alchemist, Lensfall), Zephyra Lark (Dancer, Wreck's End), Kessa Dunmere (Geomancer, Khazrum) and Tick (Forged Artificer, Ratchet). Each has four bond tiers (8 perks), an oath perk, a god, likes and dislikes, a combat-tested class kit and a greeting.
+- **A five-quest personal line for all 14** (recruit, three steps, oath: 58 new quests with a choice that moves approval), a **loyalty skill** (works at 75 approval: `CompanionDef.loyalty`) and a **leave condition** besides low approval (`CompanionDef.leaves`; checked after every quest update; a crossed line or a betrayal, e.g. Zeph after the temptation scene, Sable after an `obey` Summit). Left companions are won back as before.
+- **Banter:** 30 lines each (420), opening up at 0, 25, 55 and 75 approval, shown at the **Camp** (a chat by the fire, once a day each, +1.5 approval) and now and then on the road (no dice are rolled, so fights are unaffected).
+- **Camp scenes:** Fenn, Ilyra, Sable, Marisol, Zeph and Thorne have three evenings each at 45, 65 and 85 approval; the first asks if you are friends or something more (`romance-<id>` flag), the next two follow that path. New `scene` action and stand-alone scene conversations. The Party screen has a Camp section with all of it, the loyalty skill and the personal line.
+- **Save version 19** (camp fields start at zero; migration tested).
+- Tests: `tests/expansionPhase17.test.ts` (12) and `tests/campScreen.test.ts`; 783 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
+- **Not done / cut:** romance and friendship have no effect on the endings or epilogue yet (flags are set for them); banter is not condition-aware (it does not react to zones or quests); only the first banter line a day is chosen at camp; companions' loyalty skills are reactive perks, not new hotbar skills; the original six did not get new bond trees.
+
 ## Known bugs
 - None known.
 

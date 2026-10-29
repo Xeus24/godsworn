@@ -126,6 +126,13 @@ export function migrate(raw: Json): Json {
   }
   // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
   p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
+  // Version 19 (companions): camp scenes, chats and banter start at zero.
+  for (const comp of Object.values(obj(obj(state.party).companions))) {
+    const c = obj(comp);
+    c.scenes ??= 0;
+    c.lastTalk ??= -1;
+    c.banter ??= 0;
+  }
   const world = obj(state.world);
   world.treasureMaps ??= [];
   state.world = world;

@@ -1,7 +1,8 @@
 import type { EncounterDef } from '../../engine/combat/types';
-import type { CompanionDef } from '../../engine/party/types';
 import type { Cond, DialogueDef, NpcDef, QuestDef } from '../../engine/quests/types';
 import { flat, pct } from '../trees/builder';
+import { buildCompanions, GREATER_DIALOGUES, GREATER_QUESTS, type BaseCompanion } from './companionsGreater';
+import { ROMANCE_DIALOGUES } from './romance';
 import { all, approve, at, check, choice, dialogue, encounter, escort, favor, fight, flag, gold, level, lines, mercy, near, rep, say, setFlag, stage, stat, talk } from './helpers';
 
 /**
@@ -10,7 +11,7 @@ import { all, approve, at, check, choice, dialogue, encounter, escort, favor, fi
  * (pick one of two perks at 20/40/60/80 approval) and an oath perk earned
  * by finishing their personal quest.
  */
-export const COMPANIONS: CompanionDef[] = [
+const BASE_COMPANIONS: BaseCompanion[] = [
   {
     id: 'aldric', name: 'Brother Aldric', title: 'Priest of Solenne', raceId: 'human', classId: 'cleric', birthSignId: 'the-dawn', portrait: 1, god: 'solenne', town: 'brightwater', specialization: 'saint', startApproval: 20,
     bio: 'A young priest of Brightwater who still believes the gods are listening. He prays very loudly at people.',
@@ -97,6 +98,8 @@ export const COMPANIONS: CompanionDef[] = [
   },
 ];
 
+export const COMPANIONS = buildCompanions(BASE_COMPANIONS);
+
 const GREETINGS: Record<string, string> = {
   aldric: '“Ah, {hero}. Solenne keep you. Have you eaten? You never eat.”',
   fenn: '“Hm.” The wolf at her side looks at you. Fenn looks at the wolf. “He says hello.”',
@@ -104,6 +107,14 @@ const GREETINGS: Record<string, string> = {
   ilyra: '“If this is about the library fines, I was never here.”',
   sable: '“Darling! You look rich. Are you rich? You look rich.”',
   marisol: '“Ho there, {hero}! The sea’s quiet today. Too quiet. Sing something?”',
+  edrin: '“Good day. I am Sir Edrin. I have no lord, but I have a very good sword and a great deal of regret.”',
+  thistle: '“Oh, hello! Have you eaten? You look like someone who has not. Sit. There is soup.”',
+  thorne: '“Keep your hands where I can see them. It is not personal. It is procedure.”',
+  hrafna: '“My grandmother says you are not as dull as you look. She says it kindly. Mostly.”',
+  bexley: '“Don’t touch that! Or do! Actually, it’s probably stable. Probably.”',
+  zeph: '“Darling! Are you here for the show? I have a show. There is always a show.”',
+  kessa: '“Mind the ceiling. Not that it will fall. Mostly. I am an expert on ceilings.”',
+  tick: '“Greeting. Query: is this a social call? I am practicing the concept.”',
 };
 
 /** Each companion's own NPC: met in their town, then spoken to from the Party screen. */
@@ -128,6 +139,7 @@ export const COMPANION_ENCOUNTERS: EncounterDef[] = [
 ];
 
 export const COMPANION_QUESTS: QuestDef[] = [
+  ...GREATER_QUESTS,
   // ---------------- Aldric ----------------
   {
     id: 'aldric-lantern', name: 'The Lantern of Saint Ilse', kind: 'companion', level: 16, zone: 'whisperwood', giver: 'aldric', requires: personal('aldric', 14),
@@ -237,6 +249,8 @@ export const COMPANION_QUESTS: QuestDef[] = [
 ];
 
 export const COMPANION_DIALOGUES: DialogueDef[] = [
+  ...GREATER_DIALOGUES,
+  ...ROMANCE_DIALOGUES,
   dialogue('d-aldric-lantern', {
     start: say('aldric', '“It’s smaller than I remembered.” He turns the Lantern over in his hands. It is cold. “It used to light the whole chapel.”', { next: 'n1' }),
     n1: say('aldric', '“The temple will want it back on the altar. That is where it belongs. Isn’t it?”', {

@@ -106,7 +106,8 @@ describe('quest content', () => {
     expect(kinds('class')).toBe(8 + 5 * 8 + content.classes.all().filter((c) => !['warrior', 'mage', 'rogue', 'cleric', 'ranger', 'necromancer', 'monk', 'bard'].includes(c.id)).reduce((n, c) => n + (c.hidden ? 5 : 6), 0));
     expect(kinds('hybrid')).toBe(content.hybrids.all().length);
     expect(kinds('faction')).toBe(15);
-    expect(kinds('companion')).toBe(11);
+    // 14 companions, five quests each, except the original six whose oath quest and recruit quest were already counted (11 before).
+    expect(kinds('companion')).toBe(69);
     expect(content.endings.all().length).toBeGreaterThanOrEqual(3);
     // Every objective type appears somewhere.
     const used = new Set(content.quests.all().flatMap((q) => q.stages.flatMap((st) => st.objectives.map((o) => o.kind))));
@@ -120,7 +121,7 @@ describe('quest flow', () => {
     const s = newSession();
     expect(s.state.quests.active['main-1']).toBeDefined();
     expect(s.state.quests.tracked).toBe('main-1');
-    expect(SAVE_VERSION).toBe(18);
+    expect(SAVE_VERSION).toBe(19);
   });
 
   it('talking, markers, a branch on mercy and a recruit carry chapter one through', () => {
