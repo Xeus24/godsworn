@@ -135,7 +135,7 @@ export class ProvingGroundsScreen implements Screen {
     };
     const atLevel = p.level >= MULTICLASS.secondaryLevel;
     const classCards = content.classTrials
-      .filter((t) => !p.classes.some((cp) => cp.classId === t.classId))
+      .filter((t) => !p.classes.some((cp) => cp.classId === t.classId) && s.state.ngPlus >= (content.classes.get(t.classId).ngPlus ?? 0))
       .map((t) => {
         const cls = content.classes.get(t.classId);
         const enc = content.encounters.get(t.encounter);

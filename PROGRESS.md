@@ -930,6 +930,16 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase19b.test.ts` (5); 826 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
 - **Not done / cut:** no towns or shops in these regions (the sages are in earlier towns); no secrets for them in the per-region count; reused biome art and sprite families; not walked in the browser. **Still to do in phase 19:** 19c the three NG+ classes, 19d the endgame modes.
 
+### Expansion phase 19c: three New Game+ classes
+- **Godslayer (NG+1), Voidwalker (NG+2) and Celestial (NG+3)** (`src/data/trees/ngClasses.ts`): 23 playable classes. Each has a resource (Defiance, Null, Halo), 15 skills, a four-branch tree plus three specializations (80 nodes), a trait, a mentor with a trial, a five-quest class line, a class-exclusive Legendary (Heaven's Quarrel, The Gap Between, Crown of the Dayspring), a Grimoire and creation-screen art.
+  - **Godslayer:** a bruiser that builds Defiance from blows dealt and taken and spends it on Rend Divinity, Blasphemy and Titan's Wrath. Specializations: Deicide (boss-killer), Blasphemer (curses), Titan-Bane (crowd-breaker).
+  - **Voidwalker:** a caster that builds Null from void spells and dodging and spends it on Unmake, Entropy Wave, Null Field and silences. Specializations: Nullblade, Rift-Caller, Hollow Seer.
+  - **Celestial:** a holy healer-caster that builds Halo from spells and heals and spends it on Benediction, Comet, Sunburst and Ascend. Specializations: Seraph, Starcaller, Oracle of Dawn.
+- **Unlock:** `ClassDef.ngPlus`. The creation screen shows them locked until any of your heroes reached that New Game+ tier; the arena trainer and `canAddClass` refuse them before it.
+- **Balance** (`scripts/classSweep.ts`, 20 fights each): ordinary fights 100% at levels 1-45 and 70-80% at 60, in line with Warrior, Mage and Cleric; Celestial is a little softer at the top.
+- Tests: `tests/expansionPhase19c.test.ts` (4); 830 unit tests, 8 e2e and the build pass.
+- **Not done / cut:** no skill evolutions, hybrid prestige pairings or companions for these classes; the Grimoires are one each; art is the same simple sprite style. **Still to do in phase 19:** 19d, the endgame modes (Endless Spire, Divine Trials, Arena Champions league, weekly seeded challenges, Pacifist).
+
 ## Known bugs
 - None known.
 

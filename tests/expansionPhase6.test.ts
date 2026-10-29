@@ -14,7 +14,7 @@ const HIDDEN = ['hemomancer', 'hollowhand', 'dreamwalker', 'dragonsoul', 'puppet
 
 describe('the six hidden classes', () => {
   it('exist, are flagged hidden, and have trees, a resource and a Legendary', () => {
-    expect(GREATER_CLASSES.map((g) => g.def.id).slice(12)).toEqual(HIDDEN);
+    expect(GREATER_CLASSES.map((g) => g.def.id).slice(12, 18)).toEqual(HIDDEN);
     for (const id of HIDDEN) {
       expect(content.classes.get(id).hidden, id).toBe(true);
       expect(content.trees.get(id).branches.filter((b) => b.spec), id).toHaveLength(2);

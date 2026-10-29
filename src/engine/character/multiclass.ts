@@ -24,6 +24,8 @@ export function trialFor(classId: string, c: Content = content): string | undefi
 export function canAddClass(char: Character, classId: string, ngPlus: number, c: Content = content): MulticlassResult {
   if (!c.classes.find(classId)) return fail('Unknown class.');
   if (char.classes.some((p) => p.classId === classId)) return fail('You already follow this class.');
+  const need = c.classes.get(classId).ngPlus;
+  if (need && ngPlus < need) return fail(`This class opens in New Game+${need}.`);
   if (char.classes.length >= classSlotCount(char, ngPlus)) {
     if (char.classes.length === 1) return fail(`A second class opens at level ${MULTICLASS.secondaryLevel}.`);
     return fail(`A third class opens at level ${MULTICLASS.thirdSlotLevel} after High Lector Amara’s errand, or at level ${MULTICLASS.tertiaryLevel} in NG+${MULTICLASS.tertiaryNgPlus}.`);

@@ -186,7 +186,7 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (160)
+### Legendaries (163)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -208,6 +208,9 @@ Generated from the data files by `npm run content:md`.
 | **The Fourfold Fang** | Adamant Spear | 56 | +12% increased Physical Attack; +25% Crit Damage; 30% chance on hit to gain 4 Dragonfire; Below 30% HP, once per battle: shield yourself for 30% of max HP |
 | **Crossbar of the Last Puppet** | Elderwood Wand | 34 | +12% increased Magic Attack; +10% Status Chance; Gain 1 String at the start of each turn; Kills grant 2 Strings |
 | **The Fourth Question** | Adamant Greatsword | 60 | +15% increased Physical Attack; +15% Void Damage; Kills grant 12 Dominion; Below 30% HP, once per battle: shield yourself for 30% and heal 15% |
+| **Heaven’s Quarrel** | Adamant Greataxe | 25 | +16% Damage Bonus; +15% Crit Damage; 35% chance on hit: gain 3 Defiance; Critical hits leave the target Vulnerable |
+| **The Gap Between** | Elderwood Staff | 25 | +18% Void Damage; +6% Dodge; 35% chance on cast: gain 4 Null; Dodging shields you for 8% of max HP |
+| **Crown of the Dayspring** | Sapphire Orb | 25 | +16% Healing Power; +14% Holy Damage; 40% chance when you heal: gain 4 Halo; Below 30% HP, once per battle: shield the party for 25% of max HP |
 | **Emberheart** | Mithril Sword | 20 | +20% Fire Damage; +15% increased Physical Attack; 25% chance on hit to Burn the target |
 | **Widowmaker** | Adamant Greatsword | 30 | +40% Crit Damage; Attacks against enemies below 20% HP always crit |
 | **Grudgebearer** | Steel Axe | 10 | +15% Resource Gain; Gain 6 Rage whenever you are hit |
@@ -913,7 +916,7 @@ Generated from the data files by `npm run content:md`.
 | **Nightmare** | debuff | Tormented: loses 3% of max HP each turn and may flinch away (25% to lose its turn). |
 | **Strung** | debuff | On a string: deals 20% less damage, acts 10% slower and takes 10% more damage. |
 
-### Class ultimates and traits (26)
+### Class ultimates and traits (29)
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
@@ -943,12 +946,15 @@ Generated from the data files by `npm run content:md`.
 | Dragonsoul | **The Fifth Voice** | A voice no drake has: 260% ATK to every enemy, +25% damage and +25% crit damage for 3 turns, and full Dragonfire. | **Four Voices**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
 | Puppeteer | **Exit, Stage Left** | You step out of the strings: 250% MAG to every enemy, heal 20%, and the party takes 25% less damage for 3 turns. | **Hands Behind the Curtain**: 95% more max HP, 30% less damage taken, 60% more magic attack and +50% damage. |
 | Hollow King | **The Hollow Crown** | You wear it: 260% ATK void damage to every enemy; you gain +30% damage and 25% less damage taken for 3 turns and full Dominion. | **Unfallen**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
+| Godslayer | **Heaven-Breaker** | The sky breaks: 430% ATK to every enemy, who are all Weakened for 3 turns. | **Heaven’s Bane**: 60% more max HP, 20% less damage taken, 35% more physical attack, +40% damage and 5% lifesteal. |
+| Voidwalker | **The Unmaking** | Everything leans toward nothing: 440% MAG void damage to every enemy. | **Hollow Mastery**: 50% more magic attack, 45% more max HP, 18% less damage taken, +40% damage and 4% lifesteal. |
+| Celestial | **Apotheosis** | For one moment you are all of it: 380% DIV holy to every enemy and a 20% heal for the party. | **Heavenly Body**: 45% more divine power, 40% more max HP, 20% less damage taken, +35% damage and +25 healing power. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (484)
+### Enemies (487)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1038,6 +1044,9 @@ Generated from the data files by `npm run content:md`.
 | **Scribe-Mother Hallowe** | 15 | miniboss | humanoid, mentor | back | caster | Dazzle, Goblin Hex, Shadow Bolt | shadow +30%, arcane +30% |
 | **Inquisitor Sabine Crowe** | 15 | miniboss | humanoid, mentor | front | aggressive | Master’s Riposte, Dirty Stab, War Cry | shadow +25%, holy +25% |
 | **Stonewife Orsa Keld** | 15 | miniboss | humanoid, mentor | front | caster | Tremor, Harden, Root Lash | physical +20%, fire +20% |
+| **Bruna Oathless** | 15 | miniboss | humanoid, mentor | front | aggressive | Cleave, War Cry, Master’s Riposte |  |
+| **Ilen of the Gap** | 15 | miniboss | humanoid, mentor | back | caster | Void Rend, Doom Mark, Master’s Riposte |  |
+| **Aurelia the Unwinged** | 15 | miniboss | humanoid, mentor | back | caster | Crude Mending, Dazzle, Master’s Riposte |  |
 | **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50%, earth -25% |
 | **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50%, earth -25% |
 | **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50%, earth -25% |
@@ -1439,7 +1448,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (299)
+### Encounters (311)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1477,6 +1486,9 @@ Generated from the data files by `npm run content:md`.
 | **Trial: Scribe-Mother Hallowe** | 15 | Scribe-Mother Hallowe, Will-o'-Wisp |
 | **Trial: Inquisitor Sabine Crowe** | 15 | Inquisitor Sabine Crowe, Dark Cultist |
 | **Trial: Stonewife Orsa Keld** | 15 | Stonewife Orsa Keld, Will-o'-Wisp |
+| **Trial: Bruna Oathless** | 15 | Bruna Oathless, Bandit Thug |
+| **Trial: Ilen of the Gap** | 15 | Ilen of the Gap, Dark Cultist |
+| **Trial: Aurelia the Unwinged** | 15 | Aurelia the Unwinged, Skeleton Soldier |
 | **Trial of the Spellblade** | 36 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
 | **Trial of the Warpriest** | 36 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
 | **Trial of the Deathknight** | 36 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
@@ -1656,6 +1668,15 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
 | **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
 | **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Skeleton Soldier, Skeleton Soldier |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
+| **The Final Lesson** | 30 | The Bone Lord, Skeleton Soldier, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Restless Ghost |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
 | **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
 | **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
 | **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
@@ -1749,7 +1770,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-85 class trees, 1696 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+88 class trees, 1888 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -1993,6 +2014,33 @@ Generated from the data files by `npm run content:md`.
 | The Crown | **Crown Strike** (Weighty, Dominating); **Hollow Mantle** (Thicker Mantle, Quick Mantle) | Crowned, Weight of Rule | Regal Might / Regal Poise | Unfallen: Survive a killing blow once per battle, but 10% less damage. | The Weight Is Mine |
 | The Void Throne | **Throne of Nothing** (Bigger Void, Cold Void); **Abdicate** (Deeper Rest, Quick Rest) | Absent, Empty Throne | Entropy’s Rule / Echoing Halls | Nobody Rules: +25% void damage and +15% dodge, but 15% less max HP. | King of Nothing |
 
+### Godslayer (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Defiance | **Defy the Heavens** (Wider Arc, Fanatic); **Rend Divinity** (Deeper Cut, Bleed the Divine) | Unbowed Spirit, Spit in the Eye | Bloody-Minded / Thick-Skulled | Nothing to Lose: +25% damage, but 10% more damage taken. | Heaven’s Quarrel |
+| Sacrilege | **Blasphemy** (Louder, Heresy); **Mortal Pride** (Swagger, Chin Up) | Unholy Sermon, No Gods, No Masters | Silver Tongue / Iron Pride | Blasphemer’s Crown: Debuffs you inflict last a turn longer, but your healing is 20% weaker. | Hymn of the Fallen |
+| The Unbroken | **Unbowed** (Second Wind, Spit It Out); **Last Defiance** (Rooted, Defiant Wall) | Bleeds Gold, Grit | Iron Constitution / Unflinching | Unkillable: Once per battle, survive a killing blow with 1 HP. 10% less damage dealt. | Death’s Doorkeeper |
+| The Slaying | **Sunder Halo** (Shattering, Halo-Breaker); **Titan’s Wrath** (Colossal Swing, Quake) | Colossus-Killer, Tower-Toppler | Bone-Breaker / Iron Reach | Everything Falls: +20% damage to bosses, but you take 8% more damage from them. | Slayer of the Slayers |
+
+### Voidwalker (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Absence | **Void Lance** (Deeper Lance, Siphon); **Unmake** (Unraveling, Hollowing) | Nothing Remains, Hunger | Voidtouched / Cold Focus | The Gap Between: +25% damage, but your shields are 30% weaker. | Vanishing Point |
+| Passage | **Step Between** (Lighter, Fade); **Vanish From Sight** (Long Absence, Returns Hungry) | Slipstream, Ghost Walk | Blink / Pale Hunter | Not Quite Here: 20% of hits miss you outright, but your max HP is 12% lower. | Between the Seconds |
+| Entropy | **Entropy Wave** (Broader Wave, Creeping Cold); **Null Field** (Wider Field, Bleak) | Slow Rot, All Things End | Withering Gaze / Cold Calm | Heat Death: Debuffs last a turn longer, but your direct damage is 10% lower. | Slow End |
+| Silence | **Silence the Spell** (Harder Silence, Lingering Quiet); **Hollow Shroud** (Thicker Nothing, Echoless) | Spellbreaker, Mind Like Glass | Still Waters / Null Armor | The Quiet Room: Immune to Silence and Curse, but +15% MP costs. | Hush of the Void |
+
+### Celestial (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Light | **Starlight** (Brighter, Warm); **Comet** (Hotter, Trailing Fire) | Haloed, Heaven’s Own | Blessed Fire / Wise Light | Burning Bright: +25% holy damage, but your healing is 20% weaker. | Dayspring |
+| Grace | **Benediction** (Deeper Blessing, Lasting); **Gentle Hand** (Soothing, Quick Mercy) | Mender’s Grace, Quiet Miracle | Merciful / Steady Hands | Selfless: Your heals are 25% stronger on others, but you receive 20% less healing. | Grace Abounding |
+| Aegis | **Radiant Ward** (Thicker Light, Mending Ward); **Ascend** (Higher, Radiant Rise) | Sanctuary, Halo of Plenty | Lightbound / Hale and Hearty | Last Light: Once per battle, survive a killing blow with 1 HP and heal 25%. 10% less damage dealt. | Dome of Dawn |
+| Guidance | **Guiding Light** (Long Road, Quicker Step); **Sunburst** (Wider Dawn, Dazzling) | Beacon of Hope, Waystation | Brisk / Far-Seeing | Pillar of Light: Party-wide buffs are 25% stronger, but cost 30% more Halo. | Light Before Dawn |
+
 ### Tree skills
 
 | Skill | Class | Cost | CD | Description |
@@ -2155,6 +2203,24 @@ Generated from the data files by `npm run content:md`.
 | **Hollow Mantle** | Hollow King | 20 Dominion | 4 | Spend 20 Dominion: wrap yourself in nothing: take 30% less damage and shield yourself for 15% for 3 turns. |
 | **Throne of Nothing** | Hollow King | 30 Dominion | 3 | Spend 30 Dominion: the throne of nothing: 150% ATK void damage to every enemy and Weaken. |
 | **Abdicate** | Hollow King | free | 5 | Put the weight down: heal 25% of max HP and gain 20 Dominion. |
+| **Rend Divinity** | Godslayer | 25 Defiance | 1 | Spend 25 Defiance: 290% ATK, and the target is left Vulnerable. |
+| **Blasphemy** | Godslayer | 20 Defiance | 3 | Spend 20 Defiance: a sneer for 90% ATK to every enemy that leaves them Weakened. |
+| **Mortal Pride** | Godslayer | free | 4 | Gain +20% damage and +15% defense for 3 turns, and 15 Defiance. |
+| **Unbowed** | Godslayer | free | 4 | Heal 15% of max HP, shake off Stun, and gain 15 Defiance. |
+| **Last Defiance** | Godslayer | 40 Defiance | 6 | Spend 40 Defiance: shield yourself for 30% of max HP and Taunt every enemy for 2 turns. |
+| **Titan’s Wrath** | Godslayer | 35 Defiance | 3 | Spend 35 Defiance: two sweeping blows for 170% ATK each to every enemy. |
+| **Unmake** | Voidwalker | 10 MP + 25 Null | 1 | Spend 25 Null: 290% MAG void damage; the target is left Vulnerable. |
+| **Vanish From Sight** | Voidwalker | free | 5 | Step out of the world for a moment: gain Stealth for 1 turn and 20 Null. |
+| **Entropy Wave** | Voidwalker | 12 MP + 20 Null | 3 | Spend 20 Null: 110% MAG void damage to every enemy, who are all left Slowed. |
+| **Null Field** | Voidwalker | 12 MP + 30 Null | 5 | Spend 30 Null: every enemy is Weakened and Cursed for 2 turns. |
+| **Silence the Spell** | Voidwalker | 8 MP + 15 Null | 3 | Spend 15 Null: 120% MAG damage, and the target is Silenced. |
+| **Hollow Shroud** | Voidwalker | free | 4 | A shroud of nothing: shield yourself for 20% of max HP and gain 10 Null. |
+| **Comet** | Celestial | 12 MP + 25 Halo | 2 | Spend 25 Halo: 280% DIV holy damage to one enemy. |
+| **Gentle Hand** | Celestial | 8 MP + 15 Halo | 2 | Spend 15 Halo: cleanse an ally of Burn, Poison, Bleed and Fear, and heal them a little. |
+| **Radiant Ward** | Celestial | 14 MP | 4 | Shield every ally for 14% of max HP, and gain 10 Halo. |
+| **Ascend** | Celestial | 14 MP + 40 Halo | 6 | Spend 40 Halo: you rise: take 40% less damage and heal 6% of max HP each turn for 3 turns. |
+| **Guiding Light** | Celestial | 12 MP | 5 | The party gains +10% speed and +8% crit chance for 3 turns, and you gain 15 Halo. |
+| **Sunburst** | Celestial | 16 MP + 30 Halo | 4 | Spend 30 Halo: 120% DIV holy damage to every enemy; they are all Blinded. |
 <!-- trees:end -->
 
 ## Not yet added
@@ -2163,7 +2229,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-72 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+81 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
@@ -2239,12 +2305,21 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | Puppeteer | **Stringbinder**: Strings on everything, all at once. | Tangle (Wide Tangle, Snarl) | **The Grand Puppet Show**: Every enemy dances: 240% MAG to all, Charmed for a turn and Strung; you act again at once. | The Hand Behind All Hands: +15% magic attack and +10% status chance. |
 | Hollow King | **Usurper**: Take the crown from whoever wears it. | Regicide (Deeper Cut, Cheaper Cut) | **Dethrone**: No more crowns: 350% ATK void damage to every enemy, Weakened and Silenced. | The Throne Is Mine: +15% physical attack and +10% crit chance. |
 | Hollow King | **Sovereign**: Rule so well that no one remembers the king was hollow. | Royal Command (Louder Command, Quick Command) | **Age of the Hollow**: The hollow age begins: 240% ATK void damage to every enemy, the party is healed for 25%, Hasted and gains +30% damage for 3 turns. | The Hollow Made Whole: +15% max HP, 12% less damage taken and +15% blessing power. |
+| Godslayer | **Deicide**: One target, one blow, one very quiet throne. | Deicide Strike (Surgical, Killing Joke) | **God-Killer**: Everything you have, once: 750% ATK to one enemy, and it is Vulnerable and Weakened. | The Last Deicide: +12% physical attack; Deicide Strike generates 15 Defiance. |
+| Godslayer | **Blasphemer**: Make the sacred sorry it ever was. | Curse the Heavens (Longer Curse, Spiteful) | **Unholy Sermon**: A sermon in iron: 260% ATK shadow to every enemy; they are Feared for 2 turns. | Voice of the Fallen: +10% damage; Curse the Heavens costs 5 Defiance less. |
+| Godslayer | **Titan-Bane**: The bigger they are, the harder they listen to you. | Giantfall (Higher Fall, Crushing) | **Avalanche of Bones**: The mountain comes down: 320% ATK earth damage to every enemy. | The Mountain Remembers: +12% max HP; Giantfall generates 10 Defiance. |
+| Voidwalker | **Nullblade**: A blade of nothing, held close. | Nullblade Strike (Edge of Absence, Drinks Light) | **Erasure**: Rub one enemy out: 760% MAG void damage, and it is Weakened and Vulnerable. | Edge of the World: +12% magic attack; Nullblade Strike generates 15 Null. |
+| Voidwalker | **Rift-Caller**: Open the world, and let the room fall in. | Open Rift (Wider Tear, Dragging Pull) | **The World Opens**: A great rift: 330% MAG void to every enemy, who are Slowed for 3 turns. | World Without Floor: +10% magic attack; Open Rift generates 10 Null. |
+| Voidwalker | **Hollow Seer**: See what is missing, then make sure everyone else does too. | Hollow Sight (Longer Sight, Pitiless) | **What Was Never**: Remove a moment: 300% MAG void damage to every enemy, who are also Cursed. | All-Seeing Nothing: +10% damage; Hollow Sight generates 15 Null. |
+| Celestial | **Seraph**: A healer who is mostly wings, and entirely there. | Seraph’s Embrace (Wide Wings, Sheltering) | **Light of Resurrection**: Heal the whole party for 45% of max HP and grant them Divine Protection. | Embrace of the Seraphim: +12% healing power; Seraph’s Embrace generates 15 Halo. |
+| Celestial | **Starcaller**: Call down what has been waiting up there. | Starfall Barrage (Heavier Stars, Searing) | **The Sky Opens**: The heavens descend: 340% DIV holy damage to every enemy. | Night Sky Made Flesh: +10% divine power; Starfall generates 10 Halo. |
+| Celestial | **Oracle of Dawn**: You saw this coming, and you told them. | Dawn Vision (Longer Vision, Brighter Vision) | **Prophecy Fulfilled**: What was foretold: the party is healed for 25%, hastened, and fights with +20% damage for 3 turns. | The Dawn Foretold: +10% damage; Dawn Vision generates 15 Halo. |
 <!-- specializations:end -->
 
 ## General skills (81)
 
 <!-- general:start -->
-179 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+182 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -2405,6 +2480,9 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Ink Bolt (Grimoire)** (level 15) | grimoire | Epic | Ink Bolt | Use the Ink Bolt skill of another class at 70% power. |
 | **Silver Lash (Grimoire)** (level 15) | grimoire | Epic | Silver Lash | Use the Silver Lash skill of another class at 70% power. |
 | **Shaking Ground (Grimoire)** (level 15) | grimoire | Epic | Shaking Ground | Use the Shaking Ground skill of another class at 70% power. |
+| **Sunder Halo (Grimoire)** (level 40) | grimoire | Legendary | Sunder Halo | Use the Sunder Halo skill of another class at 70% power. |
+| **Hollow Shroud (Grimoire)** (level 40) | grimoire | Legendary | Hollow Shroud | Use the Hollow Shroud skill of another class at 70% power. |
+| **Radiant Ward (Grimoire)** (level 40) | grimoire | Legendary | Radiant Ward | Use the Radiant Ward skill of another class at 70% power. |
 | **Rite of Dawn** | divine | Divine | Sunlance | Sunlance in battle. Passive: +2% holy damage per rank. |
 | **Rite of Endings** | divine | Divine | Last Rites | Last Rites in battle. Passive: +2% shadow damage per rank. |
 | **Rite of War** | divine | Divine | Avatar of War | Avatar of War in battle. Passive: +1 STR per rank. |
@@ -2458,6 +2536,9 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | Inkweaver | **Scribe-Mother Hallowe**: Fingers permanently black to the second knuckle. Insists it is a choice. | Lv 15: Scribe-Mother Hallowe, Will-o'-Wisp | Dazzle, Goblin Hex, Shadow Bolt |
 | Witch Hunter | **Inquisitor Sabine Crowe**: Has burned a great many books and apologizes to none. | Lv 15: Inquisitor Sabine Crowe, Dark Cultist | Master’s Riposte, Dirty Stab, War Cry |
 | Geomancer | **Stonewife Orsa Keld**: Asks the ground’s permission first. The ground has never once said no. | Lv 15: Stonewife Orsa Keld, Will-o'-Wisp | Tremor, Harden, Root Lash |
+| Godslayer | **Bruna Oathless**: She once hit a statue of a god so hard that it apologized. | Lv 15: Bruna Oathless, Bandit Thug | Cleave, War Cry, Master’s Riposte |
+| Voidwalker | **Ilen of the Gap**: You have the odd feeling you met them a moment from now. | Lv 15: Ilen of the Gap, Dark Cultist | Void Rend, Doom Mark, Master’s Riposte |
+| Celestial | **Aurelia the Unwinged**: She says she lost her wings in a wager. She does not say who won. | Lv 15: Aurelia the Unwinged, Skeleton Soldier | Crude Mending, Dazzle, Master’s Riposte |
 
 ### Hybrid prestige classes
 
@@ -3107,7 +3188,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-764 quests, 240 NPCs, 503 dialogues, 14 companions, 15 endings.
+782 quests, 243 NPCs, 506 dialogues, 14 companions, 15 endings.
 
 ### Main story (54)
 
@@ -3585,7 +3666,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Against Morrath** | 30 | Archivist Tamsin | Defeat the herald of Morrath (fight) |
 | **The Covenant of Mirrin** | 40 | Archivist Tamsin | Offer the shards (deliver) |
 
-### Class trials (150)
+### Class trials (168)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -3719,6 +3800,21 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Crystal Hollow** | 20 | Stonewife Orsa Keld | Clear spider hollow (clear) |
 | **The Grievance of the Hill** | 25 | Stonewife Orsa Keld | Face the test of nerve (fight) |
 | **Where the Lines Meet** | 30 | Stonewife Orsa Keld | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Rude Awakening** | 12 | Bruna Oathless | Reach the shrine of Kael (visit) |
+| **No Statues Here** | 16 | Bruna Oathless | Defeat the trouble on the road (fight) |
+| **The Crypt of the Kneeling** | 20 | Bruna Oathless | Clear old crypt (clear) |
+| **What the Nest Remembers** | 25 | Bruna Oathless | Face the test of nerve (fight) |
+| **The Throne Is Just a Chair** | 30 | Bruna Oathless | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The Space Under the Stair** | 12 | Ilen of the Gap | Reach the shrine of Morrath (visit) |
+| **Where the Road Was** | 16 | Ilen of the Gap | Defeat the trouble on the road (fight) |
+| **A Hole in the Hall** | 20 | Ilen of the Gap | Clear drowned grotto (clear) |
+| **What the Hag Forgot** | 25 | Ilen of the Gap | Face the test of nerve (fight) |
+| **Nothing, Politely** | 30 | Ilen of the Gap | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Small Sunrise** | 12 | Aurelia the Unwinged | Reach the shrine of Solenne (visit) |
+| **The Lamp That Wouldn’t** | 16 | Aurelia the Unwinged | Defeat the trouble on the road (fight) |
+| **The Crypt of Dim Things** | 20 | Aurelia the Unwinged | Clear old crypt (clear) |
+| **A Candle for the Drowned** | 25 | Aurelia the Unwinged | Face the test of nerve (fight) |
+| **What the Light Is For** | 30 | Aurelia the Unwinged | Face the final lesson (fight); Speak to your mentor (talk) |
 | **Trial of the Warrior** | 15 | Sword-Master Bram | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Mage** | 15 | Archmage Velis | Read a skillbook (deed); Win the trial (state) |
 | **Trial of the Rogue** | 15 | Nell the Knife | Land 12 critical hits (deed); Win the trial (state) |
@@ -3739,6 +3835,9 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Trial of the Inkweaver** | 15 | Scribe-Mother Hallowe | Read a skillbook (deed); Win the trial (state) |
 | **Trial of the Witch Hunter** | 15 | Inquisitor Sabine Crowe | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Geomancer** | 15 | Stonewife Orsa Keld | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Godslayer** | 15 | Bruna Oathless | Win 5 battles against elites or bosses (deed); Win the trial (state) |
+| **Trial of the Voidwalker** | 15 | Ilen of the Gap | Dodge, shield or Stealth through 5 victorious battles (deed); Win the trial (state) |
+| **Trial of the Celestial** | 15 | Aurelia the Unwinged | Win 5 battles without letting anyone fall (deed); Win the trial (state) |
 
 ### Hybrid trials (45)
 
@@ -3875,6 +3974,9 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Dragonsoul | -30% | - |
 | Puppeteer | -30% | - |
 | Hollow King | -30% | - |
+| Godslayer | -30% | - |
+| Voidwalker | -30% | - |
+| Celestial | -30% | - |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
@@ -3922,7 +4024,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Ratchet:** Tick (Forged Artificer), Foreman Hask (Shift Foreman of Ratchet), Engineer Lorne (Chief Engineer), Ten (Forged Veteran), Rosa (Steam-Medic), Nix (Gear-Scrapper), Dagmar (Union Representative), Ordwin (Priest of Ordrun), Wren (Wandering Tinker)
 - **Ashfold:** Reeve Halwin (Village Reeve), Gran Pell (Hearth-Keeper), Tobin (Farm Boy), Brannoc (Village Smith), Brother Ansel (Priest of Solenne), Dessa (Miller’s Wife), Orrin (Hunter), Mavis (Keeper of the Temporary Inn)
 - **Wreck’s End:** Zephyra Lark (Wind-Dancer), Harbormaster Fenn (Master of the Port), Jaya Brineheart (Queen of the Wreckers), Sol (Bridge-Weaver), Mari (Shell-Seller), Vanya (Storm-Chaser), Oakes (Salvage-Bosun), Trin (Gull-Keeper), Hedda (Matron of the Rope & Anchor)
-- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld
+- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld, Bruna Oathless, Ilen of the Gap, Aurelia the Unwinged
 <!-- story:end -->
 
 ## Bosses, elites, bestiary and achievements

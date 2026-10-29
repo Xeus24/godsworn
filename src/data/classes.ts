@@ -31,6 +31,8 @@ export interface ClassDef {
   ultimate: string;
   /** Summoned at the start of every battle (the Ranger's pet). */
   startingSummon?: string;
+  /** New Game+ class: offered once any hero of yours has reached this tier of New Game+. */
+  ngPlus?: number;
   /** Secret class: not offered at creation or by a trainer; a secret questline unlocks it. */
   hidden?: boolean;
   /** Where the class stands at the start of a battle. */

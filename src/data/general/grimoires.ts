@@ -26,6 +26,9 @@ export const GRIMOIRES: GrimoireDef[] = [
   { id: 'grimoire-ink-bolt', skill: 'ink-bolt', classId: 'inkweaver', powerMult: 0.7, rarity: 'epic', level: 15 },
   { id: 'grimoire-silver-lash', skill: 'silver-lash', classId: 'witchhunter', powerMult: 0.7, rarity: 'epic', level: 15 },
   { id: 'grimoire-shaking-ground', skill: 'shaking-ground', classId: 'geomancer', powerMult: 0.7, rarity: 'epic', level: 15 },
+  { id: 'grimoire-sunder-halo', skill: 'sunder-halo', classId: 'godslayer', powerMult: 0.7, rarity: 'legendary', level: 40 },
+  { id: 'grimoire-hollow-shroud', skill: 'hollow-shroud', classId: 'voidwalker', powerMult: 0.7, rarity: 'legendary', level: 40 },
+  { id: 'grimoire-radiant-ward', skill: 'radiant-ward', classId: 'celestial', powerMult: 0.7, rarity: 'legendary', level: 40 },
 ];
 
 /** Each Grimoire becomes a general skill in the 'grimoire' category. */

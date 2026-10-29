@@ -34,7 +34,7 @@ describe('general skills', () => {
     expect(canLearnGeneral(orc, 'ancestral-roar').ok).toBe(true);
   });
 
-  it('has Grimoires for all 20 playable classes', () => {
+  it('has Grimoires for all 23 playable classes', () => {
     const covered = new Set(content.grimoires.all().map((g) => g.classId));
     for (const c of content.classes.all().filter((k) => !k.hidden)) expect(covered.has(c.id), c.id).toBe(true);
   });
