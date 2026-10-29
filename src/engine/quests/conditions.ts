@@ -137,6 +137,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return p.hardcore;
     case 'ngPlus':
       return state.ngPlus >= cond.min;
+    case 'defender':
+      return Boolean(p.devotion.defender);
     case 'challenge':
       return p.challenges.includes(cond.challenge);
     case 'riftTier':
@@ -163,6 +165,8 @@ const STAT_LABEL: Record<string, string> = { str: 'STR', dex: 'DEX', int: 'INT',
 /** A short tag for a dialogue choice's requirement, e.g. "WIS 20" or "Favored by Hesha". Empty when there is nothing worth showing. */
 export function describe(cond: Cond, c: Content = content): string {
   switch (cond.kind) {
+    case 'defender':
+      return 'Defender of a second god';
     case 'level':
       return `Level ${cond.min}`;
     case 'class':

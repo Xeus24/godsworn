@@ -112,7 +112,7 @@ describe('Twilight of the Gods', () => {
     expect(s.state.flags['twilight-faithful']).toBe(true);
     expect(s.player.devotion.heresy).toBe(0);
 
-    done(s, 'main-8');
+    done(s, 'main-8', 'twilight-5a', 'twilight-5c');
     step(s, 'twilight-5');
     expect(s.state.quests.active['twilight-5']?.stage).toBe('nameless');
     step(s, 'twilight-5');
@@ -129,7 +129,7 @@ describe('Twilight of the Gods', () => {
     step(s, 'twilight-4', 'Write my name');
     expect(s.player.devotion.heresy).toBeGreaterThanOrEqual(40);
     expect(s.player.devotion.titles).toContain('Heretic');
-    done(s, 'main-8');
+    done(s, 'main-8', 'twilight-5a', 'twilight-5c');
     step(s, 'twilight-5');
     expect(s.state.quests.active['twilight-5']?.stage).toBe('light');
     step(s, 'twilight-5');

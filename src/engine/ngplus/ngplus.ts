@@ -1,5 +1,6 @@
 import { content } from '../../data';
 import { NG_PLUS } from '../../data/ngPlus';
+import { WORLD_AFFIXES } from '../../data/ngAffixes';
 import { PROGRESSION } from '../../data/progression';
 import { restoreFull } from '../character/stats';
 import { createQuestState } from '../quests/types';
@@ -11,12 +12,24 @@ import { createWorldState } from '../world/world';
 export function worldLevel(level: number, ngPlus: number): number {
   if (ngPlus <= 0 || level >= NG_PLUS.levelFrom) return level;
   const t = (Math.max(1, level) - 1) / (NG_PLUS.levelFrom - 1);
-  return Math.round(NG_PLUS.levelFrom + t * (NG_PLUS.levelTo - NG_PLUS.levelFrom));
+  const top = NG_PLUS.levelTo + Math.floor(((Math.min(ngPlus, NG_PLUS.maxTier) - 1) * (NG_PLUS.levelToMax - NG_PLUS.levelTo)) / (NG_PLUS.maxTier - 1));
+  return Math.round(NG_PLUS.levelFrom + t * (top - NG_PLUS.levelFrom));
 }
 
 /** Extra enemy HP and damage (percent) at this NG+ tier. */
 export function ngThreat(ngPlus: number): number {
   return Math.max(0, ngPlus - 1) * NG_PLUS.threatPerTier;
+}
+
+/** Two new world affixes join the playthrough at the start of each tier (none repeat). */
+export function rollWorldAffixes(s: GameSession): void {
+  const have = s.state.ngAffixes;
+  const pool = WORLD_AFFIXES.filter((a) => !have.includes(a.id));
+  for (let i = 0; i < NG_PLUS.affixesPerTier && pool.length; i++) {
+    const pick = s.rng.pick(pool);
+    pool.splice(pool.indexOf(pick), 1);
+    have.push(pick.id);
+  }
 }
 
 export type NgPlusResult = { ok: true; tier: number } | { ok: false; reason: string };
@@ -40,6 +53,8 @@ export function startNgPlus(s: GameSession): NgPlusResult {
   if (!check.ok) return check;
   const st = s.state;
   st.ngPlus = check.tier;
+  st.ngAffixes = [];
+  for (let t = 1; t <= check.tier; t++) rollWorldAffixes(s);
   st.levelCap = Math.max(st.levelCap, PROGRESSION.ngPlusLevelCap);
   const lore = st.world.lore;
   st.world = createWorldState();
@@ -52,6 +67,7 @@ export function startNgPlus(s: GameSession): NgPlusResult {
   }
   st.clock = createClock();
   st.flags = Object.fromEntries(Object.entries(st.flags).filter(([k]) => k.startsWith(NG_PLUS.legacyFlagPrefix)));
+  st.flags['ng-tier'] = check.tier;
   st.economy = { bought: {}, buyback: [] };
   delete st.endgame.active;
   restoreFull(s.player);

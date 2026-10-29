@@ -1,5 +1,6 @@
 import type { EncounterDef, EnemyDef } from '../../engine/combat/types';
 import type { ActionDef, Cond, DialogueDef, EndingDef, NpcDef, QuestDef } from '../../engine/quests/types';
+import { FINALE_CHOICES } from './twilightPaths';
 import { all, any, at, check, choice, dialogue, encounter, favor, fight, flag, foe, near, not, questDone, say, setFlag, stage, stat, talk, visit } from './helpers';
 
 /**
@@ -110,7 +111,7 @@ export const TWILIGHT_QUESTS: QuestDef[] = [
     epilogue: 'Whatever you answered, it wrote it down.',
   },
   {
-    id: 'twilight-5', name: 'Twilight of the Gods', kind: 'twilight', level: 80, zone: 'dark-citadel', auto: true, requires: all(NG, questDone('twilight-4'), questDone('main-8')),
+    id: 'twilight-5', name: 'Twilight of the Gods', kind: 'twilight', level: 80, zone: 'dark-citadel', auto: true, requires: all(NG, questDone('twilight-5c'), questDone('main-8')),
     summary: 'The Black Throne is empty again, and the sky above the Citadel has no color at all. This is where it ends, one way or the other.',
     stages: [
       stage('throne', 'Return to the Black Throne.', [visit('v', 'Reach the Black Throne', near('black-throne', 'boss', undefined, 'The colorless throne', { key: 'tw5', distance: 2 }))], { next: [{ cond: HERETIC, stage: 'light' }, { cond: not(HERETIC), stage: 'nameless' }] }),
@@ -193,12 +194,7 @@ export const TWILIGHT_DIALOGUES: DialogueDef[] = [
     refuse: say('nameless-voice', '“They all say that.” It does not sound angry. It sounds patient. “Come to the Black Throne, then, and we will see who is written down at the end.”'),
   }),
   dialogue('d-tw5-end', {
-    start: say('narrator', 'The Citadel is silent. Above it, color creeps back into the sky, or something else does.', {
-      choices: [
-        check(not(HERETIC), 'Say its name, the one they scraped away, so that it can finally rest.', undefined, [{ kind: 'ending', ending: 'twilight-dawn' }], { hideLocked: true }),
-        check(HERETIC, 'Sit on the throne. Pick up the crown of nothing.', undefined, [{ kind: 'ending', ending: 'twilight-unwritten' }], { hideLocked: true }),
-      ],
-    }),
+    start: say('narrator', 'The Citadel is silent. Above it, color creeps back into the sky, or something else does.', { choices: FINALE_CHOICES }),
   }),
 ];
 

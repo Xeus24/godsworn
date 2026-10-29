@@ -43,7 +43,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 20;
+export const SAVE_VERSION = 21;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -145,6 +145,8 @@ export interface GameState {
   rarityFound: Record<string, number>;
   /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
   legacy: { endings: string[] };
+  /** The world affixes of this New Game+ playthrough (two added per tier). */
+  ngAffixes: string[];
   /** Fish, cards, dice, races, forging, digging and the arena ladder. */
   minigames: MinigameState;
   /** Rifts and the Boss Rush: the run in progress and your records. */
@@ -179,6 +181,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     rarityFound: {},
     legacy: { endings: [] },
     minigames: createMinigameState(),
+    ngAffixes: [],
     endgame: createEndgameState(),
   };
 }

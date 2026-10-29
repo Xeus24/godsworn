@@ -12,6 +12,10 @@ export const NG_PLUS = {
    */
   levelFrom: 60,
   levelTo: 80,
+  /** Each tier past the first lifts the top of that range, until NG+10 reaches the new level cap of 90. */
+  levelToMax: 90,
+  /** World affixes added at the start of each tier. */
+  affixesPerTier: 2,
   /** Every NG+ tier past the first gives enemies this much more HP and damage (percent). */
   threatPerTier: 25,
   /** Flags that survive into the next playthrough start with this. */

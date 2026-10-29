@@ -1,7 +1,7 @@
 /** Leveling numbers. The formulas that use them live in engine/character/progression.ts. */
 export const PROGRESSION = {
   levelCap: 60,
-  ngPlusLevelCap: 80,
+  ngPlusLevelCap: 90,
   /** XP to next level = floor(xpBase x level ^ xpExponent). */
   xpBase: 100,
   xpExponent: 1.55,

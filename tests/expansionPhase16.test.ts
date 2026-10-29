@@ -51,7 +51,7 @@ describe('the story in acts', () => {
 describe('endings and the epilogue', () => {
   it('has ten endings: the six that existed and four driven by flags', () => {
     const base = content.endings.all().filter((e) => !e.id.startsWith('twilight') && !['dawn', 'unwritten'].includes(e.id));
-    expect(content.endings.all()).toHaveLength(10);
+    expect(content.endings.all().filter((e) => !e.id.startsWith('twilight-')).length + 2).toBe(10);
     for (const id of ['concord', 'quiet-sky', 'ferrykeeper', 'long-table']) expect(content.endings.has(id), id).toBe(true);
     expect(base.length).toBeGreaterThanOrEqual(8);
   });

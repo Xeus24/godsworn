@@ -1357,7 +1357,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (290)
+### Encounters (299)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1616,6 +1616,15 @@ Generated from the data files by `npm run content:md`.
 | **Guardians of the Margin** | 76 | Erased Knight, False Herald, Hollow Chorister |
 | **The Nameless One** | 80 | The Nameless One |
 | **The Last Light** | 80 | The Last Light |
+| **Solenne, Corrupted** | 78 | Herald of Solenne, False Herald |
+| **Morrath, Corrupted** | 78 | Herald of Morrath, False Herald |
+| **Kael, Corrupted** | 78 | Herald of Kael, False Herald |
+| **Nymira, Corrupted** | 78 | Herald of Nymira, False Herald |
+| **Aurelis, Corrupted** | 78 | Herald of Aurelis, False Herald |
+| **Grimvald, Corrupted** | 78 | Herald of Grimvald, False Herald |
+| **The Trial of Followers** | 78 | Erased Knight, Erased Knight, False Herald |
+| **The Weight of Two Oaths** | 78 | False Herald, Erased Knight, Hollow Chorister |
+| **The Gate of the Margin** | 79 | Erased Knight, Erased Knight, False Herald, Hollow Chorister |
 | **Ardath’s Honor Guard** | 15 | Skeleton Soldier, Skeleton Soldier, Restless Ghost |
 | **Wolves at the Gate** | 12 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
 | **The Mirage’s Anger** | 28 | Dust Elemental, Mirage Keeper, Dust Elemental |
@@ -3004,7 +3013,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-743 quests, 240 NPCs, 488 dialogues, 14 companions, 10 endings.
+758 quests, 240 NPCs, 503 dialogues, 14 companions, 15 endings.
 
 ### Main story (54)
 
@@ -3065,7 +3074,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Seraphel’s Charge** | 54 | starts by itself | Listen for Seraphel (talk); Clear the Storm Bastion (clear); Face Seraphel’s Herald (fight); Hear Seraphel’s word (talk) |
 | **Mirrin’s Charge** | 54 | starts by itself | Listen for Mirrin (talk); Clear the Bell Ruin (clear); Face Mirrin’s Herald (fight); Hear Mirrin’s word (talk) |
 
-### Twilight of the Gods (New Game+) (5)
+### Twilight of the Gods (New Game+) (20)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -3074,6 +3083,21 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **War in Heaven** | 72 | starts by itself | Stand before the council of heralds (talk); Defeat the heralds of the Dusk (fight); Defeat the heralds of the Dawn (fight); Unmask the False Heralds (fight); Leave the council grounds (visit) |
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
+| **The Crossroads** | 77 | starts by itself | Choose a door (talk) |
+| **The Six Who Fell** | 78 | starts by itself | Defeat the corrupted Solenne (fight); Defeat the corrupted Morrath (fight); Defeat the corrupted Kael (fight); Defeat the corrupted Nymira (fight); Defeat the corrupted Aurelis (fight); Defeat the corrupted Grimvald (fight); Stand among the empty thrones (talk) |
+| **A Place at the Table** | 78 | starts by itself | Find the unclaimed hill (visit); Speak the rite (talk); Pass the Trial of Followers (fight) |
+| **Two Oaths, One Hand** | 78 | starts by itself | Bear the Weight of Two Oaths (fight); Hear your gods (talk) |
+| **The Last Approach** | 79 | starts by itself | Break through the Gate of the Margin (fight); Rest a moment (talk) |
+| **Echo of the First Return** | 63 | starts by itself | Listen (talk) |
+| **Echo of the Second Return** | 66 | starts by itself | Listen (talk) |
+| **Echo of the Third Return** | 69 | starts by itself | Listen (talk) |
+| **Echo of the Fourth Return** | 72 | starts by itself | Listen (talk) |
+| **Echo of the Fifth Return** | 75 | starts by itself | Listen (talk) |
+| **Echo of the Sixth Return** | 78 | starts by itself | Listen (talk) |
+| **Echo of the Seventh Return** | 81 | starts by itself | Listen (talk) |
+| **Echo of the Eighth Return** | 84 | starts by itself | Listen (talk) |
+| **Echo of the Ninth Return** | 87 | starts by itself | Listen (talk) |
+| **Echo of the Tenth Return** | 90 | starts by itself | Listen (talk) |
 
 ### Side quests (154)
 
@@ -3713,6 +3737,11 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **The Long Table** (title “Fireside”): You turn from the throne. It was never the throne you walked all this way for. At a table too long for the room, your companions pass bread and argue over who was bravest. The Unsworn King is a story by morning. You eat, and you listen, and you let it be a story. Outside, the shrines are lit, one by one, by people who were told they did not have to.
 - **The Twilight Ends** (title “Twilight-Bringer”), with a paragraph for each god’s Apostle: You speak the name. It is short, and old, and it sounds like a door closing gently. The Nameless One stops being nameless, and what has a name can be mourned, and what is mourned can rest. The gods do not thank you; gods rarely do. But the next morning every shrine in the land is burning, and in the margins of the oldest books, where the scraping was, someone has written one small word in a hand nobody recognizes.
 - **The Unwritten Crown** (title “the Unwritten”): The Last Light breaks, and ten gods scatter like startled birds. You sit on the Black Throne and pick up a crown that is not there. The Nameless One is beside you, and then it is inside you, and then there is no difference. The shrines stay lit; the priests still pray. But every prayer, now, passes your desk first. Somewhere in the oldest book there is a hole the shape of your name, and nothing shows through it at all.
+- **The Pantheon Falls** (title “Godslayer”): Six thrones are empty. The Nameless One has nothing left to borrow and goes out like a candle in a closed room. The surviving gods do not speak to you, then they do, one at a time, quietly, and none of them say thank you. They say: do not do it again. You say you will not. It is the only promise you have ever kept without being asked.
+- **The New God** (title “Minor God”): A shrine on a hill nobody claimed, a name nobody had, and a crowd that grows slowly and does not shout. You answer prayers the way a neighbor answers a knock. The older gods send gifts, awkwardly, and a note from Hesha that says only: “Welcome. The soup is on.” You are not the god of anything large. You are, to a great many people, exactly enough.
+- **The Two Oaths** (title “Twice-Sworn”): You kneel to two gods and rise with both of their hands on your shoulders. They do not agree about much. They agree about you. The Nameless One, with nothing left to turn against you, turns instead toward the sea, and is carried out on the tide like a name no one meant to forget.
+- **The Last Bargain** (title “the Nameless Heir”): You rise with the Nameless One’s hand in yours, and it does not let go. It has no name. You give it yours, a little at a time, and it takes only what you can spare. In the villages they say a new god walks the road in the dusk. Nobody can say what it is the god of. Everybody agrees it is kind.
+- **The Dawn After** (title “Namebearer”): You have stood at the end of every road: you have broken the six, you have been a god, you have carried two oaths. You speak the whole name, and the name is not a word. It is a long, quiet list of everyone who was ever forgotten, and the Nameless One is the last entry. It listens to itself being read. Then there is light on the Black Throne, ordinary and low, like the first morning of a long journey. The sky has its color back. Every god, including the new ones, stands in it.
 
 ### Companions
 
@@ -3934,7 +3963,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 ## New Game+, heresy and the Defender path
 
 <!-- ngplus:start -->
-- **New Game+** (up to NG+10) after any ending: the hero, gear, bags, stash, gold, companions, achievements, statistics and lore pages carry over; the story, quests, map, calendar and shops start again. The level cap rises to 80, world levels 1–60 stretch over 60–80, and each tier past the first adds +25% enemy HP and damage.
+- **New Game+** (up to NG+10) after any ending: the hero, gear, bags, stash, gold, companions, achievements, statistics and lore pages carry over; the story, quests, map, calendar and shops start again. The level cap rises to 90, world levels 1–60 stretch over 60–80, and each tier past the first adds +25% enemy HP and damage.
 - **Heresy** (0–150): each point costs 1.5 favor with every god; atonement at a temple costs 2 gold × level per point. The Nameless One rewards: slaying the gods’ heralds (+3), wielding the void (+0.4), unmaking what the void made (+0.5).
 
 | Heresy tier | From | Effect |

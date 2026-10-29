@@ -1,4 +1,5 @@
 import { content, type Content } from '../../data';
+import { remixFor, worldAffixModifiers } from '../ngplus/remix';
 import type { Character } from '../character/types';
 import type { Rng } from '../core/rng';
 import { chooseAction } from './ai';
@@ -77,6 +78,8 @@ export interface EncounterOptions {
   partyModifiers?: ModifierSpec[];
   /** New Game+ tier: enemy levels follow the world's NG+ levels, and later tiers add threat. */
   ngPlus?: number;
+  /** The playthrough's world affixes (ids, see data/ngAffixes.ts). */
+  ngAffixes?: readonly string[];
   /** NPCs being escorted or fighting beside you: AI-controlled allies built from enemy definitions. `ally` ones (apostle followers) count as part of a companion for party scaling. */
   guests?: { id: string; enemyId: string; ally?: boolean }[];
   c?: Content;
@@ -111,6 +114,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   for (const g of opts.guests ?? []) party.push(createGuest(g.id, g.enemyId, hero.level, c));
   const ng = opts.ngPlus ?? 0;
   const hardMode = challengeEnemyModifiers(hero, c);
+  const worldMods = worldAffixModifiers(opts.ngAffixes ?? []);
   // Champion packs share one roll of affixes; each elite rolls its own.
   let packAffixes: string[] | undefined;
   const enemies = encounter.enemies.map((e, i) => {
@@ -120,6 +124,8 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng) + difficulty.enemy.levelBonus, e.row ?? def.row, c);
     if (encounter.threat) applyThreat(enemy, encounter.threat);
     if (ngThreat(ng) > 0) applyThreat(enemy, ngThreat(ng), ngThreat(ng), 'ngPlus');
+    if (worldMods.enemy.length) addModifiers(enemy, worldMods.enemy, 'ngPlus');
+    if (ng >= 2 && (def.tier === 'boss' || def.tier === 'worldBoss')) applyAffixes(enemy, remixFor(def.id, ng), c);
     const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
     const n = affixCount(def.tier);
     if (n > 0) {
@@ -133,6 +139,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     return enemy;
   });
   if (opts.partyModifiers?.length) for (const x of party) addModifiers(x, opts.partyModifiers, 'rift');
+  if (worldMods.party.length) for (const x of party) addModifiers(x, worldMods.party, 'ngPlus');
   if (opts.punisher) {
     const def = c.enemies.get(`punisher-${opts.punisher}`);
     const punisher = createEnemy(def, 'punisher', worldLevel(opts.level ?? encounter.level, ng) + 2 + difficulty.enemy.levelBonus, def.row, c);

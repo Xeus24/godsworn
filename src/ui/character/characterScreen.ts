@@ -1,4 +1,5 @@
 import { canStartNgPlus, startNgPlus } from '../../engine/ngplus/ngplus';
+import { WORLD_AFFIXES } from '../../data/ngAffixes';
 import { content } from '../../data';
 import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { difficultyIndex } from '../../data/difficulty';
@@ -268,6 +269,7 @@ export class CharacterScreen implements Screen {
       { class: 'panel' },
       el('h3', {}, 'Legacy'),
       el('div', { class: 'small' }, s.state.ngPlus > 0 ? `New Game+${s.state.ngPlus} · level cap ${s.state.levelCap}` : 'First playthrough'),
+      ...(s.state.ngAffixes.length ? [el('div', { class: 'small dim' }, `World affixes: ${s.state.ngAffixes.map((id) => WORLD_AFFIXES.find((a) => a.id === id)?.name ?? id).join(', ')}.`)] : []),
       ...(endings.length ? [el('div', { class: 'dim small' }, `Endings reached before: ${endings.join(', ')}`)] : []),
       begin,
       ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),

@@ -88,6 +88,8 @@ export type Cond =
   | { kind: 'endingsSeen'; min: number }
   /** A New Game+ tier at least `min`. */
   | { kind: 'ngPlus'; min: number }
+  /** The hero is a Defender: serving a second god beside their own. */
+  | { kind: 'defender' }
   /** Heresy at least `min` (or below `max`). */
   | { kind: 'heresy'; min?: number; max?: number }
   | { kind: 'all'; conds: Cond[] }

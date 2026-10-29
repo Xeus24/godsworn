@@ -127,6 +127,8 @@ export function migrate(raw: Json): Json {
   }
   // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
   p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
+  // Version 21 (New Game+): world affixes start empty.
+  state.ngAffixes ??= [] as unknown as Json;
   // Version 20 (minigames): fish, cards (a starter set) and records start fresh.
   state.minigames ??= createMinigameState() as unknown as Json;
   // Version 19 (companions): camp scenes, chats and banter start at zero.

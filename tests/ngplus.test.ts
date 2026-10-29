@@ -68,7 +68,7 @@ describe('starting New Game+', () => {
     finish(s);
     expect(startNgPlus(s).ok).toBe(true);
     expect(s.state.ngPlus).toBe(1);
-    expect(s.state.levelCap).toBe(80);
+    expect(s.state.levelCap).toBe(90);
     expect(s.player.level).toBe(level);
     expect(s.state.gold).toBe(gold);
     expect(s.state.party.companions.korga).toBeDefined();

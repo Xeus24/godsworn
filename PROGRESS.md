@@ -913,6 +913,16 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - **Not done / cut:** fish and cards have no art; no cards are sold or found in the world (only won); the forge game pays gold and does not feed the Workshop; the dig game is separate from treasure-map dig spots; the arena ladder is auto-resolved rather than a turn-by-turn fight; no gamepad support on this screen yet (phase 20).
 - **Phase 18 is now complete** (18a side quests and factions, 18b secrets, 18c minigames).
 
+### Expansion phase 19a: New Game+ gets variety and Twilight grows to eight chapters
+- **Level cap 90** in New Game+; the top of the world's levels climbs with each tier (NG+1 as before, NG+10 reaches 89 at the hardest content).
+- **World affixes** (`data/ngAffixes.ts`, 44 of them: element twists, enemy stats, burdens on your party and mixed bargains): two join at the start of each tier and stay for that playthrough (`GameState.ngAffixes`, **save version 21**), applied to every ordinary fight; listed on the Character screen's Legacy panel.
+- **Remixed bosses:** from NG+2 every boss wears elite affixes (one at NG+2-4, two at 5-7, three from 8), stable for a boss and tier (`engine/ngplus/remix.ts`).
+- **Twilight of the Gods in eight chapters** (`data/story/twilightPaths.ts`): the Crossroads (5), a chapter for the path you choose (6), the Last Approach (7) and the finale (8, the old fifth). **Godslayer** fights six corrupted gods, **Ascension** raises a shrine and passes a trial of followers (you name what you are the god of), **Defender** (needs a second god: new `defender` condition) bears the weight of two oaths.
+- **Endings:** four new NG+ endings (The Pantheon Falls, The New God, The Two Oaths, The Last Bargain for a heretic who ascends) and **The Dawn After**, the true ending, offered once all three paths are walked (legacy flags `legacy:path-*` survive each New Game+). Old saves mid-arc still finish with the Dawn or the Unwritten Crown.
+- **An echo for each of the ten tiers** (`ng-echo-N`): a scene of its own with a choice, set off by the tier flag `ng-tier`.
+- Tests: `tests/expansionPhase19a.test.ts` (9); 821 unit tests, 8 e2e and the build pass; the playtest finishes 25 of 26 (Alchemist, as before).
+- **Not done yet (19b to 19d):** the six NG+ regions, the three NG+ classes, and the endgame modes (Endless Spire, Divine Trials, Arena Champions league, weekly seeded challenges, Pacifist). **Cut:** Ascension gives a title, a flag and rewards but no real follower mechanics or minor-god kit; no per-tier remixed boss *scripts* (the remix is affix-based).
+
 ## Known bugs
 - None known.
 

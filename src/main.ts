@@ -398,7 +398,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     companions: s.party.battleMembers(),
     guests: [...s.quests.guests(), ...(follower ? [{ id: 'follower', enemyId: follower, ally: true }] : [])],
     // Rifts and the Boss Rush are already set at your level: no NG+ stretching.
-    ...(gauntlet ? { enemyModifiers: gauntlet.enemyModifiers, partyModifiers: gauntlet.partyModifiers } : { ngPlus: s.state.ngPlus }),
+    ...(gauntlet ? { enemyModifiers: gauntlet.enemyModifiers, partyModifiers: gauntlet.partyModifiers } : { ngPlus: s.state.ngPlus, ngAffixes: s.state.ngAffixes }),
     ...(level !== undefined ? { level } : {}),
   });
   currentBattle = battle;
