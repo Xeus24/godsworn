@@ -144,8 +144,8 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   const zones = c.zones.all().sort((a, b) => a.order - b.order);
   const prev = zones.find((z) => z.order === zone.order - 1);
   const next = zones.find((z) => z.order === zone.order + 1);
-  if (prev) add({ id: 'exit-west', kind: 'exit', x: 0, y: westY, ref: prev.id, arrive: 'east', label: prev.name });
-  if (next) add({ id: 'exit-east', kind: 'exit', x: W - 1, y: eastY, ref: next.id, arrive: 'west', label: next.name });
+  if (prev && !zone.off && !prev.off) add({ id: 'exit-west', kind: 'exit', x: 0, y: westY, ref: prev.id, arrive: 'east', label: prev.name });
+  if (next && !zone.off && !next.off) add({ id: 'exit-east', kind: 'exit', x: W - 1, y: eastY, ref: next.id, arrive: 'west', label: next.name });
 
   // Points of interest spread west to east.
   const span = (i: number, n: number): [number, number] => [Math.floor(((W - 8) * i) / n) + 4, Math.floor(((W - 8) * (i + 1)) / n) + 4];
@@ -249,13 +249,13 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
 
   // Wayshrines: every zone keeps ten gods' shrines in all. A third are puzzle-locked, sealed until an exploration skill breaks them.
   const wayGods = c.pantheon.ids().filter((g) => !zone.shrines.includes(g));
-  const rotated = [...wayGods.slice(zone.order % Math.max(1, wayGods.length)), ...wayGods.slice(0, zone.order % Math.max(1, wayGods.length))];
+  const rotated = [...wayGods.slice(tierOf(zone) % Math.max(1, wayGods.length)), ...wayGods.slice(0, tierOf(zone) % Math.max(1, wayGods.length))];
   rotated.slice(0, Math.max(0, WAYSHRINES_PER_ZONE - zone.shrines.length)).forEach((god, i) => {
     const p = spotFor();
     if (!p) return;
     const sealed = i % 3 === 0;
-    const gate = GATE_ROTATION[(zone.order + i) % GATE_ROTATION.length]!;
-    add({ id: `shrine-${god}`, kind: 'shrine', x: p[0], y: p[1], ref: god, label: sealed ? `Sealed ${c.pantheon.get(god).shrine}` : c.pantheon.get(god).shrine, ...(sealed ? { gate: { skill: gate.skill, rank: Math.min(9, zone.order + 1) } } : {}) });
+    const gate = GATE_ROTATION[(tierOf(zone) + i) % GATE_ROTATION.length]!;
+    add({ id: `shrine-${god}`, kind: 'shrine', x: p[0], y: p[1], ref: god, label: sealed ? `Sealed ${c.pantheon.get(god).shrine}` : c.pantheon.get(god).shrine, ...(sealed ? { gate: { skill: gate.skill, rank: Math.min(9, tierOf(zone) + 1) } } : {}) });
   });
 
   // Hidden saint shrines: they show only once the saint's lore page has been found.
@@ -268,8 +268,8 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   for (let i = 0; i < 3; i++) {
     const p = spotFor();
     if (!p) continue;
-    const gate = GATE_ROTATION[(zone.order + i * 2) % GATE_ROTATION.length]!;
-    add({ id: `cache-${i + 1}`, kind: 'chest', x: p[0], y: p[1], gate: { skill: gate.skill, rank: Math.min(10, zone.order + 1) }, label: gate.name });
+    const gate = GATE_ROTATION[(tierOf(zone) + i * 2) % GATE_ROTATION.length]!;
+    add({ id: `cache-${i + 1}`, kind: 'chest', x: p[0], y: p[1], gate: { skill: gate.skill, rank: Math.min(10, tierOf(zone) + 1) }, label: gate.name });
   }
 
   // Tidepool caches: uncovered at low tide only.
@@ -277,6 +277,14 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
     for (let i = 0; i < 3; i++) {
       const p = spotFor();
       if (p) add({ id: `tidepool-${i + 1}`, kind: 'chest', x: p[0], y: p[1], tide: 'low', locked: false, trapped: false, label: 'Tidepool cache' });
+    }
+  }
+
+  // Moonlit caches: only at the full moon.
+  if (zone.mechanic === 'moon') {
+    for (let i = 0; i < 3; i++) {
+      const p = spotFor();
+      if (p) add({ id: `moonlit-${i + 1}`, kind: 'chest', x: p[0], y: p[1], moon: 'full', locked: false, trapped: false, label: 'Moonlit cache' });
     }
   }
 
@@ -402,6 +410,46 @@ export function generateDungeon(d: DungeonDef, c: Content = content): TileMap {
     add({ id: 'chest-hidden', kind: 'chest', x: cx + 1, y: cy, hidden: true, locked: false, trapped: false });
   }
 
+  // Phase 13 additions use their own generator, so every older dungeon keeps its layout.
+  const extra = new Rng(hashString(`${d.id}:extra`));
+  // A second hidden room, a checkpoint, the dungeon's trick and (if it has one) a hard path.
+  const closet = (room: Room, id: string, kind: 'chest' | 'hard'): void => {
+    const above = room.y > 2 + (kind === 'hard' ? 5 : 4);
+    const w = kind === 'hard' ? 4 : 2;
+    const h = kind === 'hard' ? 3 : 2;
+    const kx = room.x + 1;
+    const wallY = above ? room.y - 1 : room.y + room.h;
+    const ky = above ? room.y - 1 - h : room.y + room.h + 1;
+    if (!g.inside(kx + w, ky) || !g.inside(kx, ky + h) || ky < 1 || ky + h > g.h - 1) return;
+    if (g.get(kx, wallY) !== '#') return;
+    for (let yy = ky; yy < ky + h; yy++) for (let xx = kx; xx < kx + w; xx++) g.set(xx, yy, '_');
+    g.set(kx, wallY, 'X');
+    if (kind === 'chest') add({ id, kind: 'chest', x: kx + 1, y: ky, hidden: true, locked: false, trapped: false });
+    else {
+      add({ id: `${id}-pack`, kind: 'enemies', x: kx + 2, y: ky + 1, group: pickGroup(d.encounters, extra), label: 'Champion pack' });
+      add({ id: `${id}-hoard`, kind: 'chest', x: kx + w - 1, y: ky, hidden: true, locked: true, trapped: true, label: 'Hard-path hoard' });
+    }
+  };
+  if (rooms.length >= 5) {
+    for (let i = rooms.length - 2; i >= 2 && !entities.some((e) => e.id === 'chest-hidden-2'); i--) closet(rooms[i] as Room, 'chest-hidden-2', 'chest');
+  }
+  if (d.hard && rooms.length >= 5) closet(rooms[Math.max(2, Math.floor(rooms.length / 2))] as Room, 'hard', 'hard');
+  const mid = rooms[Math.floor(rooms.length / 2)] as Room;
+  const [mx, my] = center(mid);
+  add({ id: 'checkpoint', kind: 'waypoint', x: mx - 1, y: my, label: 'Checkpoint' });
+  if (d.gimmick === 'flood' || d.gimmick === 'cycle') {
+    // Two corridor stretches either flood or are gated.
+    const stretches = [Math.max(0, Math.floor(rooms.length / 3) - 1), Math.min(rooms.length - 2, Math.floor((2 * rooms.length) / 3))];
+    for (const i of stretches) {
+      const a = center(rooms[i] as Room);
+      const b = center(rooms[i + 1] as Room);
+      const x1 = (rooms[i] as Room).x + (rooms[i] as Room).w;
+      const x2 = (rooms[i + 1] as Room).x - 1;
+      for (let x = x1; x <= x2; x++) if (g.get(x, a[1]) === '_' && !entities.some((e) => e.x === x && e.y === a[1])) g.set(x, a[1], d.gimmick === 'flood' ? 'w' : 'd');
+      void b;
+    }
+  }
+
   return {
     id: d.id,
     name: d.name,
@@ -415,6 +463,9 @@ export function generateDungeon(d: DungeonDef, c: Content = content): TileMap {
   };
 }
 
+/** Difficulty rank of a zone for gates and shrines. */
+export const tierOf = (zone: ZoneDef): number => zone.tier ?? zone.order;
+
 export const AREA_W = 48;
 export const AREA_H = 30;
 
@@ -427,6 +478,7 @@ const THEME_TERRAIN: Record<string, [string, number][]> = {
   camp: [['T', 0.07], ['#', 0.03]],
   peak: [['#', 0.14], ['T', 0.03]],
   oasis: [['~', 0.06], ['T', 0.06]],
+  district: [],
 };
 
 /**
@@ -449,6 +501,10 @@ export function generateArea(area: AreaDef, c: Content = content): TileMap {
     g.set(W - 1, y, '#');
   }
   const terrain = THEME_TERRAIN[area.theme] ?? [];
+  // Districts are streets and city blocks: buildings of six by four with three-tile lanes between them.
+  if (area.theme === 'district') {
+    for (let by = 3; by + 4 < H - 2; by += 8) for (let bx = 6; bx + 6 < W - 2; bx += 9) for (let yy = by; yy < by + 4; yy++) for (let xx = bx; xx < bx + 6; xx++) g.set(xx, yy, yy === by + 3 && xx === bx + 2 ? '.' : '#');
+  }
   for (let y = 2; y < H - 2; y++) {
     for (let x = 2; x < W - 2; x++) {
       for (const [tile, share] of terrain) {
@@ -503,7 +559,7 @@ export function generateArea(area: AreaDef, c: Content = content): TileMap {
   add({ id: 'chest-0', kind: 'chest', x: c1[0], y: c1[1], locked: true, trapped: rng.chance(0.4) });
   const c2 = spot();
   const gate = GATE_ROTATION[hashString(area.id) % GATE_ROTATION.length]!;
-  add({ id: 'cache', kind: 'chest', x: c2[0], y: c2[1], gate: { skill: gate.skill, rank: Math.min(10, zone.order + 2) }, label: gate.name });
+  add({ id: 'cache', kind: 'chest', x: c2[0], y: c2[1], gate: { skill: gate.skill, rank: Math.min(10, tierOf(zone) + 2) }, label: gate.name });
   const n = spot();
   const skill = (['mining', 'herbalism', 'fishing'] as const)[hashString(area.id + 'n') % 3]!;
   add({ id: `node-${skill}`, kind: 'node', x: n[0], y: n[1], gather: skill, label: skill === 'mining' ? 'Ore vein' : skill === 'herbalism' ? 'Herb patch' : 'Fishing spot' });

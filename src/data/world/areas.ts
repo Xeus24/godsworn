@@ -1,7 +1,8 @@
 import type { Biome } from '../../engine/world/types';
+import { BATCH1_AREAS } from '../regions/batch1';
 
 /** What kind of place an area is: it shapes the terrain and what is lying about. */
-export type AreaTheme = 'grove' | 'ruin' | 'cave' | 'shore' | 'camp' | 'peak' | 'oasis';
+export type AreaTheme = 'grove' | 'ruin' | 'cave' | 'shore' | 'camp' | 'peak' | 'oasis' | 'district';
 
 /**
  * A side map reached from a zone (Phase 12): a clearing, ruin, cave or camp with its own enemies,
@@ -80,6 +81,7 @@ const BIOME: Record<AreaTheme, (zone: string) => Biome> = {
   camp: (z) => (z === 'frostspire' ? 'snow' : z === 'stormcoast' ? 'coast' : 'meadow'),
   peak: (z) => (z === 'frostspire' ? 'snow' : z === 'ashen-desert' ? 'desert' : z === 'stormcoast' ? 'coast' : 'forest'),
   oasis: () => 'desert',
+  district: () => 'meadow',
 };
 
 const make = (rows: Row[], access?: (i: number) => AreaDef['access']): AreaDef[] =>
@@ -87,6 +89,7 @@ const make = (rows: Row[], access?: (i: number) => AreaDef['access']): AreaDef[]
 
 export const AREAS: AreaDef[] = [
   ...make(LAND),
+  ...BATCH1_AREAS,
   ...make(SEA, (i) => ({ by: 'ship', level: [1, 1, 2, 2, 3, 4][i] ?? 1 })),
   ...make(SKY, () => ({ by: 'airship', level: 1 })),
 ];
@@ -108,4 +111,12 @@ export const PASSES: PassDef[] = [
   { id: 'ash-road', name: 'The Ash Road', a: 'ashen-desert', b: 'volcanic-rift' },
   { id: 'drovers-trail', name: 'Drovers’ Trail', a: 'meadowlands', b: 'ashen-desert' },
   { id: 'black-causeway', name: 'The Black Causeway', a: 'stormcoast', b: 'dark-citadel' },
+  // The first four new regions (phase 13).
+  { id: 'kings-road', name: 'The King’s Road', a: 'meadowlands', b: 'aurelane' },
+  { id: 'river-road', name: 'The River Road', a: 'aurelane', b: 'stormcoast' },
+  { id: 'frog-road', name: 'The Frog Road', a: 'whisperwood', b: 'moonfen' },
+  { id: 'sinkhole-stair', name: 'The Sinkhole Stair', a: 'moonfen', b: 'sunken-caves' },
+  { id: 'briar-gate', name: 'The Briar Gate', a: 'ashen-desert', b: 'thornreach' },
+  { id: 'dwarf-road', name: 'The Dwarf Road', a: 'frostspire', b: 'khazrum' },
+  { id: 'deep-gate', name: 'The Deep Gate', a: 'khazrum', b: 'volcanic-rift' },
 ];

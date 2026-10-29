@@ -10,5 +10,6 @@ export const WORLD_CONSUMABLES: ConsumableDef[] = [
   meter('torch', 'Torch', 10, 25, 'Pushes back the dark: -60 Darkness in the Sunken Caves.', 'darkness', 60),
   meter('canteen', 'Canteen', 20, 45, 'Cool and clean: -70 Heat in the Ashen Desert.', 'heat', 70),
   meter('hot-cider', 'Hot Cider', 28, 55, 'Spiced and steaming: -70 Cold in the Frostspire.', 'cold', 70),
+  meter('safety-lamp', 'Safety Lamp', 38, 80, 'A lamp that burns blue in bad air and clears it: -70 Bad air in Khazrum.', 'badair', 70),
   meter('ward-salt', 'Ward Salt', 50, 120, 'A pinch against the Unwritten: -60 Corruption in the Dark Citadel.', 'corruption', 60),
 ];

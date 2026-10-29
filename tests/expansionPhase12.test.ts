@@ -21,7 +21,7 @@ function give(s: GameSession, id: string, qty: number): void {
 
 describe('areas', () => {
   it('gives every zone four side maps, plus six islands and four sky areas', () => {
-    for (const z of content.zones.all()) expect(content.areas.filter((a) => a.zone === z.id && !a.access).length, z.id).toBe(4);
+    for (const z of content.zones.filter((x) => !x.off)) expect(content.areas.filter((a) => a.zone === z.id && !a.access).length, z.id).toBe(4);
     expect(content.areas.filter((a) => a.access?.by === 'ship')).toHaveLength(6);
     expect(content.areas.filter((a) => a.access?.by === 'airship')).toHaveLength(4);
   });

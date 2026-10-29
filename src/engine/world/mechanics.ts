@@ -1,5 +1,5 @@
 import { content, type Content } from '../../data';
-import { MECHANICS, tideIsHigh, type MechanicDef } from '../../data/world/mechanics';
+import { MECHANICS, moonPhase, tideIsHigh, type MechanicDef } from '../../data/world/mechanics';
 import type { Rng } from '../core/rng';
 import type { Character } from '../character/types';
 import { characterStats } from '../character/stats';
@@ -36,6 +36,14 @@ export interface MechanicResult {
   lost?: boolean;
 }
 
+/** The Darkness of a dark dungeon: it rises with every step, and torches push it back. */
+export function dungeonStep(char: Character, gimmick: string | undefined): MechanicResult {
+  if (gimmick !== 'dark') return {};
+  if (char.world.meter?.id !== 'darkness') char.world.meter = { id: 'darkness', value: 0 };
+  char.world.meter.value = Math.min(100, char.world.meter.value + 1.1);
+  return char.world.meter.value >= 100 && Math.floor(char.world.meter.value * 10) % 7 === 0 ? { message: 'The dark presses close.' } : {};
+}
+
 /** One step in the zone. `onPath` is true on roads (they slow the Bearings meter). */
 export function mechanicStep(char: Character, zone: ZoneDef, night: boolean, onPath: boolean, rng: Rng, c: Content = content): MechanicResult {
   void c;
@@ -43,10 +51,11 @@ export function mechanicStep(char: Character, zone: ZoneDef, night: boolean, onP
   if (!def) return {};
   const stats = characterStats(char);
   if (def.vent) {
+    if (def.offPath && onPath) return {};
     if (!rng.chance(def.vent.chance)) return {};
     const resist = Math.min(1, ((stats[def.relief as 'fireResist'] ?? 0) as number) / 60);
     if (resist >= 1) return { message: 'A vent erupts beside you. Your fireproofing holds.' };
-    return { harm: def.vent.damage * (1 - resist), message: 'A vent erupts under your feet!' };
+    return { harm: def.vent.damage * (1 - resist), message: def.id === 'thorns' ? 'The thorns snag and tear.' : 'A vent erupts under your feet!' };
   }
   const meter = currentMeter(char, zone);
   if (!meter || !def.rise) return {};
@@ -69,19 +78,23 @@ export function mechanicStep(char: Character, zone: ZoneDef, night: boolean, onP
 }
 
 /** Sight radius: the dark shortens it. */
-export function sightRadius(char: Character, zone: ZoneDef, base: number): number {
+export function sightRadius(char: Character, zone: ZoneDef, base: number, inDarkDungeon = false, day = 1): number {
+  if (!inDarkDungeon && zone.mechanic === 'moon' && moonPhase(day) === 0) return 3;
+  if (inDarkDungeon) return (char.world.meter?.id === 'darkness' ? char.world.meter.value : 0) >= 100 ? 2 : base;
   const def = mechanicOf(zone);
   if (def?.full === 'dark' && (char.world.meter?.id === def.id ? char.world.meter.value : 0) >= 100) return 2;
   return base;
 }
 
 /** The encounter multiplier from the region (a full darkness meter, a high tide). */
-export function mechanicEncounterMult(char: Character, zone: ZoneDef, highTide: boolean): number {
+export function mechanicEncounterMult(char: Character, zone: ZoneDef, highTide: boolean, night = false, day = 1): number {
   const def = mechanicOf(zone);
   if (!def) return 1;
+  if (def.id === 'curfew') return night ? 2 : 0.4;
+  if (def.id === 'moon') return moonPhase(day) === 4 ? 1.3 : 1;
   if (def.full === 'dark' && char.world.meter?.id === def.id && char.world.meter.value >= 100) return 1.5;
   if (def.id === 'tides' && highTide) return 1.25;
   return 1;
 }
 
-export { tideIsHigh };
+export { moonPhase, tideIsHigh };

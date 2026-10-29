@@ -44,6 +44,10 @@ export interface ZoneDef {
   lore: string[];
   /** The regional mechanic (see data/world/mechanics.ts). */
   mechanic?: string;
+  /** Off the main road: reached by passes (and the sea or sky), never by the road's west and east exits. */
+  off?: boolean;
+  /** Difficulty rank for gates and shrines when `order` is not meaningful (off-road regions). */
+  tier?: number;
 }
 
 export interface TownDef {
@@ -59,6 +63,8 @@ export interface TownDef {
   housing?: boolean;
   /** Inn price per character level. */
   innCostPerLevel: number;
+  /** The town's minigame (wired up in a later phase): fishing, dice, digging, forging... */
+  minigame?: string;
   /** Shops beyond the usual ones (the Gambler, the Black Market). */
   extraShops?: string[];
 }
@@ -76,6 +82,12 @@ export interface DungeonDef {
   boss: string;
   /** A rune-stone puzzle bars the boss room. */
   puzzle: boolean;
+  /** The dungeon's trick: darkness that closes in, floodwater that rises and falls, or gates that open and shut. */
+  gimmick?: 'dark' | 'flood' | 'cycle';
+  /** A nudge for the stuck, shown to those with a sharp eye (Detect Traps 2). */
+  hint?: string;
+  /** An optional hard side path with a champion pack and a better hoard. */
+  hard?: boolean;
 }
 
 export interface WeatherDef {
@@ -131,9 +143,10 @@ export interface LoreDef {
 /**
  * Tiles: '.' ground, '=' path, 'T' scenery (blocks movement, not sight),
  * 'H' dense thicket (blocks both), '~' water, '#' wall, 'X' cracked wall
- * (hidden passage), '_' floor, 'D' sealed door.
+ * (hidden passage), '_' floor, 'D' sealed door, 'w' flood floor (underwater while the water is high)
+ * and 'd' a timed gate (open for twenty steps, shut for twenty).
  */
-export type Tile = '.' | '=' | 'T' | 'H' | '~' | '#' | 'X' | '_' | 'D';
+export type Tile = '.' | '=' | 'T' | 'H' | '~' | '#' | 'X' | '_' | 'D' | 'w' | 'd';
 
 export type EntityKind =
   | 'town'
@@ -169,6 +182,8 @@ export interface MapEntity {
   saint?: string;
   /** Only active at this tide (stormcoast tidepool caches). */
   tide?: 'low' | 'high';
+  /** Only active at the full moon (Moonfen's moonlit caches). */
+  moon?: 'full';
   /** A cache that opens only to an exploration skill of this rank (Swimming, Climbing, Lockpicking...). */
   gate?: { skill: 'swimming' | 'climbing' | 'ancientScript' | 'animalSpeech' | 'lockpicking' | 'detectTraps'; rank: number };
   /** Only shown once this lore page has been found (secret lairs). */
@@ -230,6 +245,12 @@ export interface WorldState {
   position: WorldPosition;
   /** The tide, set from the clock as you move. */
   tideHigh?: boolean;
+  /** True on the night of the full moon (Moonfen's moonlit caches). */
+  moonFull?: boolean;
+  /** Steps taken inside the current dungeon, for floodwater and timed gates. */
+  dsteps?: number;
+  /** The last checkpoint reached inside a dungeon: a defeat sends you back there. */
+  checkpoint?: { map: string; x: number; y: number };
   /** Town you return to after a defeat (and the last one visited). */
   lastTown: string;
   /** Explored tiles per map, '1' for seen. */

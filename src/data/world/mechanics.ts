@@ -23,6 +23,8 @@ export interface MechanicDef {
   harm?: number;
   /** Chance per step of a vent erupting (vents), and its damage share. */
   vent?: { chance: number; damage: number };
+  /** Vents that only strike off the road (thorns). */
+  offPath?: boolean;
   /** Consumables that bring the meter down, and by how much. */
   reliefItems?: Record<string, number>;
 }
@@ -36,7 +38,16 @@ export const MECHANICS: MechanicDef[] = [
   { id: 'tides', zone: 'stormcoast', name: 'Tides', description: 'The tide turns every six hours. At high tide the sea creatures are bolder; at low tide, tidepool caches are uncovered along the shore.' },
   { id: 'vents', zone: 'volcanic-rift', name: 'Vents', description: 'The ground vents without warning. Fire resistance blunts the burn; at 60% you are untouched.', vent: { chance: 0.02, damage: 0.05 }, relief: 'fireResist' },
   { id: 'corruption', zone: 'dark-citadel', name: 'Corruption', description: 'The Unwritten seeps into you. At full corruption you lose health with every step. Void and shadow resistance, Ward Salt and a waypoint help.', meter: 'Corruption', rise: { day: 0.9, night: 0.9 }, relief: 'voidResist', full: 'harm', harm: 0.025, reliefItems: { 'ward-salt': 60 } },
+  // Phase 13
+  { id: 'curfew', zone: 'aurelane', name: 'Curfew', description: 'By day the capital is nearly safe; after dark the Watch patrols, and so do those who avoid it.' },
+  { id: 'moon', zone: 'moonfen', name: 'Moon Phases', description: 'The moon waxes and wanes over eight days. At the new moon you see little; at the full moon things hunt bolder and moonlit caches open in the reeds.' },
+  { id: 'thorns', zone: 'thornreach', name: 'Wild Thorns', description: 'Off the road the thorns snag and cut. Nature resistance blunts it; at 60% you are untouched.', vent: { chance: 0.06, damage: 0.03 }, offPath: true, relief: 'natureResist' },
+  { id: 'badair', zone: 'khazrum', name: 'Bad Air', description: 'The deep tunnels breathe foul. At full you lose health with every step. Nature resistance and a Safety Lamp help.', meter: 'Bad air', rise: { day: 0.8, night: 0.8 }, relief: 'natureResist', full: 'harm', harm: 0.03, reliefItems: { 'safety-lamp': 70 } },
 ];
+
+/** The moon runs eight days: phase 0 is new, 4 is full. */
+export const MOON_PHASES = ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'];
+export const moonPhase = (day: number): number => ((day % 8) + 8) % 8;
 
 /** The tide is high for six hours, low for six. */
 export const tideIsHigh = (minuteOfDay: number): boolean => Math.floor(minuteOfDay / 360) % 2 === 1;

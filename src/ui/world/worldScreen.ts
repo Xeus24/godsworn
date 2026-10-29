@@ -5,7 +5,7 @@ import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import type { StepResult } from '../../engine/state/worldActions';
 import type { MapEntity, TileMap } from '../../engine/world/types';
-import { entityActive, explored, isDungeon, lineOfSight, runesDone, SIGHT, tileAt, usedKey } from '../../engine/world/world';
+import { entityActive, explored, floodHigh, gateOpen, isDungeon, lineOfSight, runesDone, SIGHT, tileAt, usedKey } from '../../engine/world/world';
 import { portraitCanvas } from '../art/portraits';
 import { audio } from '../audio/audio';
 import { syncAreaAudio } from '../audio/areaAudio';
@@ -20,7 +20,9 @@ import { monsterTile } from '../art/tileSprites';
 import { heroDoll } from '../art/heroDoll';
 import { equippedGearLook, equippedWeaponTypes } from '../../engine/items/equipment';
 import { drawWeather } from '../art/weatherFx';
-import { currentMeter, mechanicOf } from '../../engine/world/mechanics';
+import { utilityRank } from '../../engine/skills/general';
+import { MOON_PHASES } from '../../data/world/mechanics';
+import { currentMeter, mechanicOf, moonPhase } from '../../engine/world/mechanics';
 import { WorldMapOverlay } from './worldMap';
 import type { Conversation } from '../../engine/state/conversation';
 import { objectiveLine } from '../../engine/state/conversation';
@@ -270,6 +272,14 @@ export class WorldScreen implements Screen {
     }
   }
 
+  /** A dungeon's hint, for those who look closely (Detect Traps 2). */
+  private hintPanel(): HTMLElement[] {
+    const d = content.dungeons.find(this.session.state.world.position.map);
+    if (!d?.hint) return [];
+    const sharp = utilityRank(this.session.player, 'detectTraps') >= 2;
+    return [el('div', { class: 'dim small' }, sharp ? `Hint: ${d.hint}` : 'A sharper eye (Detect Traps 2) might see more here.')];
+  }
+
   /** The region's rule: its meter, or the tide, and what it does. */
   private regionPanel(): HTMLElement[] {
     const s = this.session;
@@ -282,6 +292,7 @@ export class WorldScreen implements Screen {
       const v = Math.round(meter.value);
       rows.push(el('div', { class: `small ${v >= 100 ? 'warn' : ''}` }, `${def.meter}: ${v}%`));
     }
+    if (def.id === 'moon') rows.push(el('div', { class: 'small' }, `${MOON_PHASES[moonPhase(s.state.clock.day)]}.`));
     if (def.id === 'tides') rows.push(el('div', { class: 'small' }, `The tide is ${s.state.world.tideHigh ? 'high' : 'low'}.`));
     rows.push(el('div', { class: 'dim small' }, def.description));
     return rows;
@@ -455,6 +466,8 @@ export class WorldScreen implements Screen {
         if (!explored(w, map, x, y)) continue;
         let t = tileAt(map, x, y);
         if (t === 'D' && runesDone(w, map)) t = '_';
+        if (t === 'w') t = floodHigh(w) ? '~' : '_';
+        if (t === 'd') t = gateOpen(w) ? '_' : 'D';
         if (t === 'X' && w.used[usedKey(map.id, `crack-${x}-${y}`)] !== undefined) t = map.biome === 'dungeon' ? '_' : '.';
         // Soft ground patches from low-frequency noise; shores and road edges from the neighbours.
         const n = Math.sin(x * 0.37 + 1.3) + Math.sin(y * 0.46) + Math.sin((x + y) * 0.21);
@@ -715,6 +728,7 @@ export class WorldScreen implements Screen {
       el('div', { class: 'small' }, `${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
       ...(weather && !dungeon && weather.id !== 'clear' ? [el('div', { class: 'dim small' }, weather.description)] : []),
       ...this.regionPanel(),
+      ...this.hintPanel(),
       this.minimap,
       ...this.trackedPanel(),
       el('div', { class: 'world-actions' }, ...actions),

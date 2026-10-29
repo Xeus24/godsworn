@@ -576,7 +576,9 @@ export class QuestActions {
 
   /** NPCs you can find in a town (people and temple; mentors are in the arena). */
   townNpcs(town: string): NpcDef[] {
-    return content.npcs.filter((n) => n.town === town && (n.place === 'people' || n.place === 'temple') && !(n.companion && this.s.state.party.companions[n.companion] && !this.s.state.party.companions[n.companion]?.left));
+    const hour = this.s.state.clock.minute / 60;
+    const about = (n: NpcDef): boolean => !n.schedule || (n.schedule[0] <= n.schedule[1] ? hour >= n.schedule[0] && hour < n.schedule[1] : hour >= n.schedule[0] || hour < n.schedule[1]);
+    return content.npcs.filter((n) => about(n) && n.town === town && (n.place === 'people' || n.place === 'temple') && !(n.companion && this.s.state.party.companions[n.companion] && !this.s.state.party.companions[n.companion]?.left));
   }
 
   talkTo(npcId: string): Conversation | undefined {

@@ -703,7 +703,7 @@ Generated from the data files by `npm run content:md`.
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (133)
+### Consumables (134)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -837,6 +837,7 @@ Generated from the data files by `npm run content:md`.
 - Torch: Pushes back the dark: -60 Darkness in the Sunken Caves.
 - Canteen: Cool and clean: -70 Heat in the Ashen Desert.
 - Hot Cider: Spiced and steaming: -70 Cold in the Frostspire.
+- Safety Lamp: A lamp that burns blue in bad air and clears it: -70 Bad air in Khazrum.
 - Ward Salt: A pinch against the Unwritten: -60 Corruption in the Dark Citadel.
 
 **Materials (65):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment, Coal, Silver Ore, Steel Ingot, Mithril Ingot, Adamant Ingot, Starmetal Ingot, Yew Plank, Ironwood Plank, Wolf Pelt, Boar Hide, Bear Hide, Serpent Skin, Wyvern Leather, Wool Bolt, Spider Silk, Thread of Dawn, Wild Garlic, Thornberry, Moonpetal, Nightshade, Ghostcap, Salt Cod, Pike, Glass Eel, Venison, Boar Meat, Honeycomb, Sea Salt, Black Pepper, Saffron
@@ -938,7 +939,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (190)
+### Enemies (271)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1132,6 +1133,87 @@ Generated from the data files by `npm run content:md`.
 | **Cairn-Guard of Ordrun** | 1 | elite | spirit, divine, follower | front | defensive | Wrath of Ordrun | earth +40% |
 | **Gust-Sprite of Seraphel** | 1 | elite | spirit, divine, follower | front | aggressive | Wrath of Seraphel | lightning +40%, earth -25% |
 | **Hour-Clerk of Mirrin** | 1 | elite | spirit, divine, follower | back | caster | Wrath of Mirrin | arcane +40%, earth -25% |
+| **Bog Lurker** | 15 | normal | beast | front | aggressive | Constrict, Venom Fang |  |
+| **Peat Wraith** | 17 | normal | undead, spirit | back | caster | Banshee Wail, Grave Chill | earth -25% |
+| **Reed Hag** | 18 | normal | humanoid, fae | back | caster | Goblin Hex, Dark Pact |  |
+| **Mire Leech** | 14 | normal | beast, slime | front | aggressive | Plague Bite |  |
+| **Moonlit Toad** | 15 | normal | beast | front | aggressive | Savage Bite |  |
+| **Fen Wolf** | 19 | normal | beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **Glimmerfly Swarm** | 16 | normal | spirit, beast | back | caster | Dazzle | earth -25% |
+| **Drowned Pilgrim** | 20 | normal | undead, humanoid | front | defensive | Grave Chill, Banshee Wail |  |
+| **Heron Stalker** | 18 | normal | beast | front | aggressive | Dive Bomb |  |
+| **Sump Golem** | 21 | normal | construct, golem | front | defensive | Crushing Swing | earth +40% |
+| **Lantern Eel** | 17 | normal | beast | back | caster | Drown |  |
+| **Moth-Priest** | 22 | normal | humanoid, fae | back | caster | Crude Mending, Curse of Ages |  |
+| **Briar Raider** | 27 | normal | humanoid | front | aggressive | Cleave, War Cry |  |
+| **Thorn Hound** | 26 | normal | beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **Bramble Golem** | 30 | normal | construct, plant | front | defensive | Crushing Swing, Root Lash | earth +40% |
+| **Dust Hag** | 29 | normal | humanoid | back | caster | Sandstorm, Curse of Ages |  |
+| **Scrap Scavenger** | 27 | normal | humanoid, goblin | front | aggressive | Dirty Stab |  |
+| **Vulture Priest** | 31 | normal | beast, humanoid | back | caster | Crude Mending, Dreadful Caw |  |
+| **Spike Lizard** | 28 | normal | beast | front | aggressive | Gore Charge |  |
+| **Bone-Cutter** | 32 | normal | humanoid | front | aggressive | Cleave, Dirty Stab |  |
+| **Wire Wraith** | 30 | normal | undead, spirit | back | caster | Banshee Wail, Grave Chill | earth -25% |
+| **Gallows Crow** | 28 | normal | beast | front | aggressive | Dive Bomb, Dreadful Caw |  |
+| **Brigand Captain** | 33 | normal | humanoid | front | defensive | War Cry, Shield Bash |  |
+| **Thorn Widow** | 29 | normal | beast | back | caster | Web Spit, Venom Fang |  |
+| **Deep-Dwarf Rebel** | 37 | normal | humanoid | front | aggressive | Cleave, Shield Bash |  |
+| **Cave Troll** | 40 | normal | beast, giant | front | aggressive | Crushing Swing, Boulder Throw |  |
+| **Rune Guardian** | 42 | normal | construct, golem | front | defensive | Harden, Crushing Blow | earth +40% |
+| **Ember Moth** | 38 | normal | beast, elemental | back | caster | Dazzle, Magma Burst | earth +40% |
+| **Lava Newt** | 39 | normal | beast, elemental | front | aggressive | Flame Breath | earth +40% |
+| **Crystal Spider** | 41 | normal | beast | back | caster | Web Spit, Crystal Shard |  |
+| **Ghost Miner** | 38 | normal | undead, spirit, humanoid | front | aggressive | Banshee Wail, Dirty Stab | earth -25% |
+| **Gear Spider** | 40 | normal | construct | front | aggressive | Venom Fang | earth +40% |
+| **Drill Crawler** | 39 | normal | construct, beast | front | aggressive | Gore Charge | earth +40% |
+| **Cinder Brute** | 43 | normal | elemental | front | aggressive | Flame Breath, Crushing Swing | earth +40% |
+| **Tunnel Sapper** | 37 | normal | humanoid | front | aggressive | Dirty Stab |  |
+| **Ore Wyrmling** | 44 | normal | dragon, beast | back | caster | Boulder Throw, Frost Breath |  |
+| **Sewer Gator** | 21 | normal | beast | front | aggressive | Constrict |  |
+| **Guild Enforcer** | 23 | normal | humanoid | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Gutter Mage** | 22 | normal | humanoid | back | caster | Goblin Hex |  |
+| **Cult Informant** | 24 | normal | humanoid | front | aggressive | Dirty Stab, Dark Pact |  |
+| **Rogue Watchman** | 26 | normal | humanoid | front | defensive | Shield Bash, War Cry |  |
+| **Gargoyle** | 27 | normal | construct, golem | front | defensive | Harden, Dive Bomb | earth +40% |
+| **Ratling Pack** | 21 | normal | beast | front | aggressive | Plague Bite, Pack Howl |  |
+| **Bone-Collector** | 25 | normal | undead | front | aggressive | Grave Chill |  |
+| **Stained-Glass Golem** | 28 | normal | construct, golem | back | caster | Crystal Shard, Dazzle | earth +40% |
+| **Corrupted Guard** | 29 | normal | humanoid | front | aggressive | Cleave, Void Rend |  |
+| **Black-Market Brute** | 24 | normal | humanoid | front | defensive | Shield Bash, War Cry |  |
+| **Plague Priest** | 26 | normal | humanoid | back | caster | Plague Bite, Crude Mending |  |
+| **Old Sourtooth** | 21 | elite | beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **The Widow of Reeds** | 21 | elite | humanoid, fae | back | caster | Goblin Hex, Dark Pact |  |
+| **Lantern Jack** | 22 | elite | spirit | back | caster | Dazzle | earth -25% |
+| **Bellows the Toad** | 22 | elite | beast | front | aggressive | Savage Bite |  |
+| **Red Ruth** | 31 | elite | humanoid | front | aggressive | Cleave, War Cry |  |
+| **The Hollow Hound** | 30 | elite | beast, undead | front | aggressive | Savage Bite, Banshee Wail |  |
+| **The Gallows Queen** | 32 | elite | beast | front | aggressive | Dreadful Caw, Dive Bomb |  |
+| **Iron Nell** | 34 | elite | humanoid | front | defensive | Shield Bash, War Cry |  |
+| **Grudge the Miner** | 41 | elite | undead, spirit | front | aggressive | Banshee Wail, Dirty Stab | earth -25% |
+| **Emberwing** | 42 | elite | beast, elemental | back | caster | Magma Burst, Dazzle | earth +40% |
+| **Old Two-Tails** | 43 | elite | beast, elemental | front | aggressive | Flame Breath | earth +40% |
+| **Crank** | 44 | elite | construct | front | aggressive | Venom Fang | earth +40% |
+| **The Sewer Dame** | 25 | elite | beast | front | aggressive | Constrict, Venom Fang |  |
+| **Silver-Fingers** | 27 | elite | humanoid | front | aggressive | Dirty Stab |  |
+| **Father Grin** | 28 | elite | humanoid | back | caster | Dark Pact, Curse of Ages |  |
+| **The Stained Saint** | 30 | elite | construct, golem | back | caster | Crystal Shard, Dazzle | earth +40% |
+| **The Orchard King** | 19 | boss | plant | front | defensive | Root Lash, Barkskin, Enrage |  |
+| **The Witchlight Matron** | 21 | boss | humanoid, fae | back | caster | Dazzle, Goblin Hex, Enrage |  |
+| **The Bellringer of the Deep** | 22 | boss | undead | front | aggressive | Banshee Wail, Crushing Swing, Enrage |  |
+| **Warlord Skarn** | 30 | boss | humanoid | front | aggressive | Cleave, War Cry, Enrage |  |
+| **The Bone Gardener** | 32 | boss | undead | back | caster | Grave Chill, Root Lash, Enrage |  |
+| **Ironmaw** | 33 | boss | construct, golem | front | defensive | Crushing Blow, Harden, Enrage | earth +40% |
+| **Foreman Grud** | 40 | boss | humanoid | front | aggressive | Cleave, War Cry, Enrage |  |
+| **The Queen of the Hollow Hall** | 42 | boss | beast | back | caster | Web Spit, Crystal Shard, Enrage |  |
+| **Vaultkeeper Orm** | 44 | boss | construct, golem | front | defensive | Crushing Blow, Harden, Enrage | earth +40% |
+| **The Ancestor King** | 45 | boss | undead, humanoid | front | aggressive | Grave Chill, War Cry, Enrage |  |
+| **The Rat King of the Undercity** | 24 | boss | beast | front | aggressive | Plague Bite, Pack Howl, Enrage |  |
+| **The Vault Warden** | 28 | boss | construct, golem | front | defensive | Shield Bash, Harden, Enrage | earth +40% |
+| **The Gravedigger Prince** | 30 | boss | undead, humanoid | back | caster | Grave Chill, Dark Pact, Enrage |  |
+| **The Drowned Moon** | 24 | worldBoss | spirit, void | back | caster | Drown, Banshee Wail, Enrage | earth -25% |
+| **The Thornmother** | 35 | worldBoss | plant, beast | front | defensive | Root Lash, Barkskin, Spore Cloud |  |
+| **The Stone Warden of Khazrum** | 46 | worldBoss | construct, golem | front | defensive | Earthshatter, Crushing Blow, Harden | earth +40% |
+| **The Hollow Magistrate** | 32 | worldBoss | humanoid, spirit | back | caster | Doom Mark, Curse of Ages, Enrage | earth -25% |
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
@@ -2405,6 +2487,10 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald, Seraphel | Thunderstorm, Rain, Clear | 45% |
 | **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael, Ordrun | Ashfall, Heatwave, Clear | 5% |
 | **The Dark Citadel** | 55-60 | - | The Black Throne (Commander of the Black Throne, lv 60) | The Unwritten Herald | Morrath, Vex, Mirrin | Blood Moon, Fog, Clear | 0% |
+| **Aurelane, the Capital** | 20-30 | Aurelane | The Sewer Network (The Rat King of the Undercity, lv 22); The Gilded Vault (The Vault Warden, lv 27); The Catacombs of Aurelane (The Gravedigger Prince, lv 29) | The Hollow Magistrate | Solenne, Aurelis, Grimvald, Hesha | Clear, Rain, Fog | 0% |
+| **The Moonfen Marshes** | 14-22 | Mirewick | The Drowned Orchard (The Orchard King, lv 18); Witchlight Hollow (The Witchlight Matron, lv 20); The Bell Ruin (The Bellringer of the Deep, lv 21) | The Drowned Moon | Lyssara, Ysolde, Morrath | Fog, Rain, Clear, Blood Moon | 0% |
+| **The Thornreach Badlands** | 26-34 | Briarhold | The Raiders’ Warren (Warlord Skarn, lv 29); The Bonethorn Maze (The Bone Gardener, lv 31); The Red Quarry (Ironmaw, lv 33) | The Thornmother | Kael, Vex, Ordrun | Clear, Sandstorm, Heatwave | 0% |
+| **Khazrum, the Mountain City** | 36-44 | Khazrum | The Deepforge (Foreman Grud, lv 40); The Hollow Hall (The Queen of the Hollow Hall, lv 42); The Mithril Vault (Vaultkeeper Orm, lv 44); The Ancestor Crypts (The Ancestor King, lv 45) | The Stone Warden of Khazrum | Thalor, Ordrun, Kael | Clear, Ashfall | 0% |
 
 ### Zone enemies
 
@@ -2416,6 +2502,10 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 - **The Stormcoast:** Corsair, Sea Serpent, Harpy, Siren, Storm Elemental
 - **The Volcanic Rift:** Lava Hound, Magma Elemental, Fire Imp, Obsidian Golem, Cultist of Ash
 - **The Dark Citadel:** Void Knight, Fallen Paladin, Shadow Fiend, Bone Dragon, Void Wraith
+- **Aurelane, the Capital:** Sewer Gator, Ratling Pack, Guild Enforcer, Gutter Mage, Rogue Watchman, Black-Market Brute, Cult Informant, Plague Priest, Gargoyle, Bone-Collector, Corrupted Guard, Stained-Glass Golem
+- **The Moonfen Marshes:** Bog Lurker, Mire Leech, Moonlit Toad, Fen Wolf, Reed Hag, Peat Wraith, Glimmerfly Swarm, Drowned Pilgrim, Moth-Priest, Heron Stalker, Lantern Eel, Sump Golem
+- **The Thornreach Badlands:** Briar Raider, Scrap Scavenger, Thorn Hound, Spike Lizard, Dust Hag, Vulture Priest, Bramble Golem, Thorn Widow, Bone-Cutter, Gallows Crow, Wire Wraith, Brigand Captain
+- **Khazrum, the Mountain City:** Deep-Dwarf Rebel, Tunnel Sapper, Cave Troll, Lava Newt, Ember Moth, Rune Guardian, Crystal Spider, Ghost Miner, Gear Spider, Drill Crawler, Cinder Brute, Ore Wyrmling
 
 ### Towns
 
@@ -2426,6 +2516,10 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **Sandhaven** | The Ashen Desert | Kael, Thalor, Seraphel | The Iron Legion | - |
 | **Frosthold** | Frostspire | Aurelis, Morrath, Ordrun | The Mages’ Guild | - |
 | **Saltmere** | The Stormcoast | Nymira, Grimvald | The Thieves’ Den | yes |
+| **Aurelane** | Aurelane, the Capital | Solenne, Aurelis, Grimvald, Hesha | - | yes |
+| **Mirewick** | The Moonfen Marshes | Lyssara, Ysolde | - | - |
+| **Briarhold** | The Thornreach Badlands | Kael, Vex | - | - |
+| **Khazrum** | Khazrum, the Mountain City | Thalor, Ordrun, Kael | - | yes |
 
 ### Weather
 
@@ -2462,9 +2556,9 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **Trophy Room** | 3000 | Displays world boss trophies: +2% damage per different world boss slain. |
 | **Vault** | 2500 / 7000 | An extra stash tab, and +5% gold find per level. |
 
-### Lore pages (81)
+### Lore pages (107)
 
-**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **The Ferryman’s Ledger** (The Meadowlands), **The Root-Reader’s Notes** (The Whisperwood), **A Candle-Stub, Wrapped in a Prayer** (The Sunken Caves), **Footprints in Glass** (The Ashen Desert), **The Sleepwalker’s Diary** (Frostspire), **A Sailor’s Last Letter** (The Stormcoast), **An Anvil with a Handprint** (The Volcanic Rift), **A Page with a Missing Heading** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel), **Millbrook Fields** (The Meadowlands), **Hollow Barrow Hill** (The Meadowlands), **Wishing Well Glade** (The Meadowlands), **The Old Toll Bridge** (The Meadowlands), **Heartwood Clearing** (The Whisperwood), **Witches’ Hollow** (The Whisperwood), **The Fallen Giant** (The Whisperwood), **Mossgrave Pond** (The Whisperwood), **Glowshroom Gallery** (The Sunken Caves), **The Drowned Chapel** (The Sunken Caves), **The Echo Cistern** (The Sunken Caves), **Crystal Seam** (The Sunken Caves), **The Hidden Oasis** (The Ashen Desert), **The Buried Caravan** (The Ashen Desert), **Scorpion Warrens** (The Ashen Desert), **The Glass Plateau** (The Ashen Desert), **The Frozen Orchard** (Frostspire), **Avalanche Pass** (Frostspire), **The Ice-Fisher’s Camp** (Frostspire), **Starfall Crater** (Frostspire), **Wreckers’ Cove** (The Stormcoast), **Lightning-Rod Spire** (The Stormcoast), **Tidepool Terraces** (The Stormcoast), **Smuggler’s Lookout** (The Stormcoast), **The Cinder Orchard** (The Volcanic Rift), **Obsidian Quarry** (The Volcanic Rift), **The Slag Pits** (The Volcanic Rift), **The Ember Shrine** (The Volcanic Rift), **The Weeping Gardens** (The Dark Citadel), **The Ossuary Stair** (The Dark Citadel), **The Mirror Hall** (The Dark Citadel), **The Throne Gate** (The Dark Citadel), **Gull Rock** (The Stormcoast), **Kelp Hollow** (The Stormcoast), **Pirate’s Rest** (The Stormcoast), **Siren’s Reef** (The Stormcoast), **The Isle of Echoes** (The Sunken Caves), **The Drowned Lighthouse** (The Stormcoast), **The Cloud Orchard** (Frostspire), **The Cracked Observatory** (The Ashen Desert), **The Gale Temple** (The Stormcoast), **The Sunken-Sky Vault** (The Dark Citadel)
+**The First Oath** (The Meadowlands), **Brightwater Ledger** (The Meadowlands), **What the Trees Say** (The Whisperwood), **Orders, Never Sent** (The Whisperwood), **Ship’s Log, Undated** (The Sunken Caves), **On Singing Crystal** (The Sunken Caves), **Decree of the Sun-King** (The Ashen Desert), **Caravan Rules** (The Ashen Desert), **The Giants’ Spire** (Frostspire), **A Scholar’s Last Note** (Frostspire), **Saltmere Harbor Notice** (The Stormcoast), **The Leviathan’s Manifest** (The Stormcoast), **When the World Split** (The Volcanic Rift), **The Fallen Smiths** (The Volcanic Rift), **Who Built the Citadel?** (The Dark Citadel), **The Unwritten** (The Dark Citadel), **The Ferryman’s Ledger** (The Meadowlands), **The Root-Reader’s Notes** (The Whisperwood), **A Candle-Stub, Wrapped in a Prayer** (The Sunken Caves), **Footprints in Glass** (The Ashen Desert), **The Sleepwalker’s Diary** (Frostspire), **A Sailor’s Last Letter** (The Stormcoast), **An Anvil with a Handprint** (The Volcanic Rift), **A Page with a Missing Heading** (The Dark Citadel), **Crimson Page I: The Shape of a Pulse** (The Meadowlands), **Crimson Page II: What the Roots Drink** (The Whisperwood), **Crimson Page III: A Tide That Chose** (The Sunken Caves), **Crimson Page IV: The Sun-King’s Physician** (The Ashen Desert), **Crimson Page V: Frost Does Not Spoil** (Frostspire), **Crimson Page VI: Salt in the Wound** (The Stormcoast), **Crimson Page VII: The Forge That Wanted More** (The Volcanic Rift), **A Thief’s Primer** (The Sunken Caves), **The Sleeper’s Almanac** (The Whisperwood), **Wyrm-Lore: Ember** (The Ashen Desert), **Wyrm-Lore: Rime** (Frostspire), **Wyrm-Lore: Tempest** (The Stormcoast), **Wyrm-Lore: Grave** (The Dark Citadel), **A Playbill, Undated** (The Ashen Desert), **On the Riddle Crown** (The Dark Citadel), **Millbrook Fields** (The Meadowlands), **Hollow Barrow Hill** (The Meadowlands), **Wishing Well Glade** (The Meadowlands), **The Old Toll Bridge** (The Meadowlands), **Heartwood Clearing** (The Whisperwood), **Witches’ Hollow** (The Whisperwood), **The Fallen Giant** (The Whisperwood), **Mossgrave Pond** (The Whisperwood), **Glowshroom Gallery** (The Sunken Caves), **The Drowned Chapel** (The Sunken Caves), **The Echo Cistern** (The Sunken Caves), **Crystal Seam** (The Sunken Caves), **The Hidden Oasis** (The Ashen Desert), **The Buried Caravan** (The Ashen Desert), **Scorpion Warrens** (The Ashen Desert), **The Glass Plateau** (The Ashen Desert), **The Frozen Orchard** (Frostspire), **Avalanche Pass** (Frostspire), **The Ice-Fisher’s Camp** (Frostspire), **Starfall Crater** (Frostspire), **Wreckers’ Cove** (The Stormcoast), **Lightning-Rod Spire** (The Stormcoast), **Tidepool Terraces** (The Stormcoast), **Smuggler’s Lookout** (The Stormcoast), **The Cinder Orchard** (The Volcanic Rift), **Obsidian Quarry** (The Volcanic Rift), **The Slag Pits** (The Volcanic Rift), **The Ember Shrine** (The Volcanic Rift), **The Weeping Gardens** (The Dark Citadel), **The Ossuary Stair** (The Dark Citadel), **The Mirror Hall** (The Dark Citadel), **The Throne Gate** (The Dark Citadel), **Market Terrace** (Aurelane, the Capital), **Cathedral Close** (Aurelane, the Capital), **Scholars’ Row** (Aurelane, the Capital), **The Guild Quarter** (Aurelane, the Capital), **The Gilded Heights** (Aurelane, the Capital), **The Underbelly** (Aurelane, the Capital), **Lantern Pier** (The Moonfen Marshes), **The Orchard Edge** (The Moonfen Marshes), **The Witches’ Causeway** (The Moonfen Marshes), **Moon-Well Isle** (The Moonfen Marshes), **Gallows Hill** (The Thornreach Badlands), **Brigand Pass** (The Thornreach Badlands), **The Thornfield Ruins** (The Thornreach Badlands), **The Dry Well** (The Thornreach Badlands), **The Gem Cavern** (Khazrum, the Mountain City), **The Old Rail** (Khazrum, the Mountain City), **Smelter’s Row** (Khazrum, the Mountain City), **The Ancestors’ Hall** (Khazrum, the Mountain City), **Gull Rock** (The Stormcoast), **Kelp Hollow** (The Stormcoast), **Pirate’s Rest** (The Stormcoast), **Siren’s Reef** (The Stormcoast), **The Isle of Echoes** (The Sunken Caves), **The Drowned Lighthouse** (The Stormcoast), **The Cloud Orchard** (Frostspire), **The Cracked Observatory** (The Ashen Desert), **The Gale Temple** (The Stormcoast), **The Sunken-Sky Vault** (The Dark Citadel), **The Throne That Draws a Draft** (Aurelane, the Capital), **The River Beneath** (Aurelane, the Capital), **The Night the Moon Slipped** (The Moonfen Marshes), **On Lanterns** (The Moonfen Marshes), **The Toll Road** (The Thornreach Badlands), **A Hedge Is a Wall** (The Thornreach Badlands), **The Founding of Khazrum** (Khazrum, the Mountain City), **The Great Feud** (Khazrum, the Mountain City)
 <!-- world:end -->
 
 ## The Economy
@@ -2482,13 +2576,13 @@ Every town has the core shops; stock rolls daily at your level. Shops pay 25% of
 | **Library** | x1.2 | Skillbooks for sale (or study one you own). | Every town |
 | **Temple Merchant** | x1.5 | Divine goods for the faithful: each god’s Divine items (at the devotion they ask) and holy wares. Discounts grow with your favor. | Every town |
 | **Faction Quartermaster** | x1.2 | Members only: better gear, cheaper the higher your rank. | Towns with a faction hall (members only) |
-| **Gambler** | x1 | Buy unidentified gear sight unseen. Usually a dud. Sometimes a legend. | Sandhaven, Saltmere |
-| **Black Market** (night) | x2.5 | Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly. Heretics of the Nameless One are shown the back room. | Thornwick, Saltmere |
-| **Odd Bartholomew** | x1.3 | Curios, oddities and the occasional skillbook, out of a cart that is larger inside. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
-| **Madame Vesper** | x1.2 | Elixirs, foods and tinctures nobody else stocks. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
-| **Karl One-Tooth** | x1.4 | Arms and armor off the back of a mule. Don’t ask which battle. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
-| **The Silent Cartographer** | x1.3 | Says nothing. Sells recipes, charts and the raw things that go into them. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
-| **The Collector** | x1.5 | Pays three times the going price for curiosities, and will not say why. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
+| **Gambler** | x1 | Buy unidentified gear sight unseen. Usually a dud. Sometimes a legend. | Sandhaven, Saltmere, Aurelane, Briarhold |
+| **Black Market** (night) | x2.5 | Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly. Heretics of the Nameless One are shown the back room. | Thornwick, Saltmere, Aurelane |
+| **Odd Bartholomew** | x1.3 | Curios, oddities and the occasional skillbook, out of a cart that is larger inside. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere, Aurelane, Mirewick, Briarhold, Khazrum |
+| **Madame Vesper** | x1.2 | Elixirs, foods and tinctures nobody else stocks. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere, Aurelane, Mirewick, Briarhold, Khazrum |
+| **Karl One-Tooth** | x1.4 | Arms and armor off the back of a mule. Don’t ask which battle. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere, Aurelane, Mirewick, Briarhold, Khazrum |
+| **The Silent Cartographer** | x1.3 | Says nothing. Sells recipes, charts and the raw things that go into them. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere, Aurelane, Mirewick, Briarhold, Khazrum |
+| **The Collector** | x1.5 | Pays three times the going price for curiosities, and will not say why. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere, Aurelane, Mirewick, Briarhold, Khazrum |
 
 ### Professions
 
@@ -2739,7 +2833,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-555 quests, 143 NPCs, 207 dialogues, 6 companions, 6 endings.
+567 quests, 176 NPCs, 207 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -2764,7 +2858,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
-### Side quests (106)
+### Side quests (110)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -2809,6 +2903,10 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **What the Key Opens** | 22 | starts by itself | Defeat dungeon foes (kill) |
 | **The Last Act, Rescheduled** | 16 | starts by itself | Defeat undead (kill) |
 | **The Weight of Nothing** | 26 | starts by itself | Bring the Glass Feather to a temple (deliver) |
+| **Aurelane: Under the Throne** | 26 | Chancellor Ilreth | Clear the Gilded Vault (clear); Defeat the Hollow Magistrate (kill) |
+| **Moonfen: The Moon in the Water** | 20 | Warden Lissel | Clear the Bell Ruin (clear); Defeat the Drowned Moon (kill) |
+| **Thornreach: The Toll Road** | 31 | Warchief Ulrik | Clear the Raiders’ Warren (clear); Defeat the Thornmother (kill) |
+| **Khazrum: The Seventh Hall** | 41 | Thane Borgrim Ironvein | Clear the Deepforge (clear); Defeat the Stone Warden (kill) |
 | **A Pinch of Salt** | 4 | Mabry Ladle | Craft three items (deed) |
 | **Stock and Stew** | 10 | Mabry Ladle | Craft six items (deed) |
 | **The Honey Question** | 18 | Mabry Ladle | Bring 2 × Honeycomb (deliver) |
@@ -2939,7 +3037,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Kael** | 20 | Warpriest Tavus | Defeat bosses and their lieutenants (kill) |
 | **Against Hesha** | 30 | Warpriest Tavus | Defeat the herald of Hesha (fight) |
 | **The Covenant of Kael** | 40 | Warpriest Tavus | Offer the shards (deliver) |
-| **Pilgrim of Ysolde** | 8 | Mother Thessa | Pray at the Antler Grove in The Whisperwood (visit) |
+| **Pilgrim of Ysolde** | 8 | Mother Thessa | Pray at the Antler Grove in The Whisperwood (visit); Pray at the Antler Grove in The Moonfen Marshes (visit) |
 | **The Will of Ysolde** | 16 | Mother Thessa | Hunt beasts (kill); Bring an offering to the temple (deliver) |
 | **Ysolde’s Herald** | 26 | Mother Thessa | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Ysolde** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -2947,7 +3045,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Ysolde** | 20 | Mother Thessa | Cull the beasts of the Whisperwood (kill) |
 | **Against Thalor** | 30 | Mother Thessa | Defeat the herald of Thalor (fight) |
 | **The Covenant of Ysolde** | 40 | Mother Thessa | Offer the shards (deliver) |
-| **Pilgrim of Vex** | 8 | Grinning Jack | Pray at the Crooked Coin in The Dark Citadel (visit) |
+| **Pilgrim of Vex** | 8 | Grinning Jack | Pray at the Crooked Coin in The Dark Citadel (visit); Pray at the Crooked Coin in The Thornreach Badlands (visit) |
 | **The Will of Vex** | 16 | Grinning Jack | Land lucky strikes (critical hits) (deed); Bring an offering to the temple (deliver) |
 | **Vex’s Herald** | 26 | Grinning Jack | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Vex** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -2971,7 +3069,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Nymira** | 20 | Tidecaller Maren | Clear the Stormcoast of what the tide brought (kill) |
 | **Against Aurelis** | 30 | Tidecaller Maren | Defeat the herald of Aurelis (fight) |
 | **The Covenant of Nymira** | 40 | Tidecaller Maren | Offer the shards (deliver) |
-| **Pilgrim of Aurelis** | 8 | Loremaster Ivo | Pray at the Lectern Shrine in Frostspire (visit) |
+| **Pilgrim of Aurelis** | 8 | Loremaster Ivo | Pray at the Lectern Shrine in Frostspire (visit); Pray at the Lectern Shrine in Aurelane, the Capital (visit) |
 | **The Will of Aurelis** | 16 | Loremaster Ivo | Uncover the unknown (identify items) (deed); Bring an offering to the temple (deliver) |
 | **Aurelis’s Herald** | 26 | Loremaster Ivo | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Aurelis** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -2979,7 +3077,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Aurelis** | 20 | Loremaster Ivo | Read skillbooks and Grimoires (deed) |
 | **Against Nymira** | 30 | Loremaster Ivo | Defeat the herald of Nymira (fight) |
 | **The Covenant of Aurelis** | 40 | Loremaster Ivo | Offer the shards (deliver) |
-| **Pilgrim of Hesha** | 8 | Sister Wenna | Pray at the Hearthstone in The Meadowlands (visit) |
+| **Pilgrim of Hesha** | 8 | Sister Wenna | Pray at the Hearthstone in The Meadowlands (visit); Pray at the Hearthstone in Aurelane, the Capital (visit) |
 | **The Will of Hesha** | 16 | Sister Wenna | Rest and care for yourself (camp, inn or home) (deed); Bring an offering to the temple (deliver) |
 | **Hesha’s Herald** | 26 | Sister Wenna | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Hesha** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -2987,7 +3085,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Hesha** | 20 | Sister Wenna | Rest and recover six times (deed) |
 | **Against Kael** | 30 | Sister Wenna | Defeat the herald of Kael (fight) |
 | **The Covenant of Hesha** | 40 | Sister Wenna | Offer the shards (deliver) |
-| **Pilgrim of Grimvald** | 8 | Factor Goldmere | Pray at the Counting Stone in The Stormcoast (visit) |
+| **Pilgrim of Grimvald** | 8 | Factor Goldmere | Pray at the Counting Stone in The Stormcoast (visit); Pray at the Counting Stone in Aurelane, the Capital (visit) |
 | **The Will of Grimvald** | 16 | Factor Goldmere | Show your prosperity: have 1,500 gold to your name (state); Bring an offering to the temple (deliver) |
 | **Grimvald’s Herald** | 26 | Factor Goldmere | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Grimvald** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -3233,7 +3331,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Way of the Fortune’s Fool** | 36 | Lyra Silvertongue | Speak with the priest (talk); Win the Trial of the Fortune’s Fool (state) |
 | **The Way of the Tempest Prophet** | 36 | Voice-of-Stone Tamsin | Speak with the priest (talk); Win the Trial of the Tempest Prophet (state) |
 
-### Bounties (repeatable daily) (10)
+### Bounties (repeatable daily) (18)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -3247,6 +3345,14 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Bounty: Yeti** | 36 | Frosthold board | Slay Yeti (kill) |
 | **Bounty: Corsair** | 44 | Saltmere board | Slay Corsair (kill) |
 | **Bounty: Sea Serpent** | 44 | Saltmere board | Slay Sea Serpent (kill) |
+| **Bounty: sewer-gator** | 25 | Aurelane board | Slay sewer-gator (kill) |
+| **Bounty: ratling-pack** | 25 | Aurelane board | Slay ratling-pack (kill) |
+| **Bounty: bog-lurker** | 18 | Mirewick board | Slay bog-lurker (kill) |
+| **Bounty: mire-leech** | 18 | Mirewick board | Slay mire-leech (kill) |
+| **Bounty: briar-raider** | 30 | Briarhold board | Slay briar-raider (kill) |
+| **Bounty: scrap-scavenger** | 30 | Briarhold board | Slay scrap-scavenger (kill) |
+| **Bounty: deep-dwarf-rebel** | 40 | Khazrum board | Slay deep-dwarf-rebel (kill) |
+| **Bounty: tunnel-sapper** | 40 | Khazrum board | Slay tunnel-sapper (kill) |
 
 ### Endings
 
@@ -3310,6 +3416,10 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Hadrik Cinderhand (Master Smith), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
 - **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ysenne Vael (Runewright), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
 - **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Pao Lantern (Master Gemcutter), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
+- **Aurelane:** Chancellor Ilreth (Chancellor of the Realm), Captain Valeria Dunn (Captain of the Watch), Archivist Hobbes (Keeper of the Royal Archive), Madame Corvina (Guildmistress of Merchants), Sister Benedicta (Almoner of the Cathedral), Pip (Street Informant), Lord Maximilian Veyne (Noble of the Gilded Heights), Tam the Drover (Cattle-Driver), Mother Agatha (Mistress of the Orphanage)
+- **Mirewick:** Warden Lissel (Warden of the Stilts), Odo the Lamplighter (Keeper of the Lanterns), Granny Mirelle (Herb-Wife), Nym (Eel-Seller), Garrow the Boatwright (Maker of Punts), Sister Ilse (Moth-Priestess), Tib (Frog-Catcher), Bess (Innkeeper of the Dripping Eaves)
+- **Briarhold:** Warchief Ulrik (Lord of Briarhold), Reeve Alma (Keeper of the Tolls), Kip (Scavenger Dealer), Oswin (Hedge-Priest of Kael), Brisa (Bone-Setter), Gorn (Pit Champion), Eda (Thorn-Gardener), Vask (Wandering Tinker)
+- **Khazrum:** Thane Borgrim Ironvein (High Thane of Khazrum), Forge-Matron Hilda (Mistress of the Deepforge), Dagna Stoneward (Runesmith), Gundrun (Deep-Miner), Olaf Barleyhand (Master Brewer), Thrain Oathkeeper (Loremaster of the Clans), Edda (Stonemason), Brokk (Warden of the Deep Roads)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld
 <!-- story:end -->
 
@@ -3504,7 +3614,7 @@ Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every
 
 ### The Boss Rush
 
-At any town (level 30+): all 10 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
+At any town (level 30+): all 23 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
 
 ### Challenge modes
 

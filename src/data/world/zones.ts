@@ -1,3 +1,4 @@
+import { BATCH1_ZONES } from '../regions/batch1';
 import { GREATER_GATHER } from '../items/greaterEconomy';
 import { MECHANICS } from './mechanics';
 import type { EnemyTier } from '../../engine/combat/types';
@@ -20,7 +21,7 @@ const elite = (id: string): string => `elite:${id}`;
 const champions = (id: string, n = 2): string[] => Array.from({ length: n }, () => `champion:${id}`);
 
 /** The eight zones along the road from the Meadowlands to the Dark Citadel. */
-export const ZONES: ZoneDef[] = [
+const BASE_ZONES: ZoneDef[] = [
   {
     id: 'meadowlands', gather: { mining: ['iron-ore'], herbalism: ['healroot', 'manabloom'], fishing: ['river-trout'] }, name: 'The Meadowlands', order: 1, levels: [1, 8], biome: 'meadow', town: 'brightwater',
     description: 'Rolling farmland where the road begins. Goblins raid the outlying farms.',
@@ -120,6 +121,8 @@ export const ZONES: ZoneDef[] = [
     lore: ['lore-citadel', 'lore-unwritten'],
   },
 ];
+
+export const ZONES: ZoneDef[] = [...BASE_ZONES, ...BATCH1_ZONES];
 
 // Phase 10: the newer raw materials join each zone's gathering tables.
 for (const z of ZONES) {

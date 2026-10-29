@@ -74,6 +74,7 @@ export function entityActive(world: WorldState, map: TileMap, e: MapEntity, day:
   if (e.requires && !world.lore.includes(e.requires)) return false;
   if (e.tide && e.tide === 'low' && world.tideHigh) return false;
   if (e.tide && e.tide === 'high' && !world.tideHigh) return false;
+  if (e.moon === 'full' && !world.moonFull) return false;
   const usedDay = world.used[usedKey(map.id, e.id)];
   if (usedDay === undefined) return true;
   if (e.kind === 'worldBoss') return day - usedDay >= WORLD_BOSS_RESPAWN_DAYS;
@@ -83,9 +84,14 @@ export function entityActive(world: WorldState, map: TileMap, e: MapEntity, day:
 }
 
 /** Ground you can walk on (cracked walls give way; sealed doors open when the runes are lit). */
+export const floodHigh = (world: WorldState): boolean => Math.floor((world.dsteps ?? 0) / 30) % 2 === 1;
+export const gateOpen = (world: WorldState): boolean => Math.floor((world.dsteps ?? 0) / 20) % 2 === 0;
+
 export function passable(world: WorldState, map: TileMap, x: number, y: number): boolean {
   const t = tileAt(map, x, y);
   if (t === '.' || t === '=' || t === '_' || t === 'X') return true;
+  if (t === 'w') return !floodHigh(world);
+  if (t === 'd') return gateOpen(world);
   if (t === 'D') return runesDone(world, map);
   return false;
 }

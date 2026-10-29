@@ -18,7 +18,8 @@ import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
 import { SIGHT } from '../world/world';
 import { sightRadius } from '../world/mechanics';
-import { mechanicEncounterMult, mechanicStep, resetMeter, tideIsHigh } from '../world/mechanics';
+import { dungeonStep } from '../world/mechanics';
+import { mechanicEncounterMult, mechanicStep, moonPhase, resetMeter, tideIsHigh } from '../world/mechanics';
 import { trainGeneral, utilityChance, utilityRank } from '../skills/general';
 import { applyRep, FACTION_FAVOR_SHARE, judgeFactions, rankOf, repOf, type RepChange } from '../world/factions';
 import { collectInvestments, investmentCost, investmentLevel, raiseInvestment } from '../world/investments';
@@ -164,7 +165,7 @@ export class WorldActions {
   /** Reveals the area around you (call after arriving anywhere). */
   look(): void {
     const p = this.world.position;
-    reveal(this.world, this.map, p.x, p.y, sightRadius(this.s.player, this.zone, SIGHT));
+    reveal(this.world, this.map, p.x, p.y, sightRadius(this.s.player, this.zone, SIGHT, content.dungeons.find(this.world.position.map)?.gimmick === 'dark', this.day));
   }
 
   private placeAt(map: string, x: number, y: number): void {
@@ -201,9 +202,12 @@ export class WorldActions {
     this.s.advanceTime(this.stepMinutes(map.id));
     if (this.world.grace > 0) this.world.grace--;
     this.world.tideHigh = tideIsHigh(this.s.state.clock.minute);
+    this.world.moonFull = moonPhase(this.day) === 4;
+    if (isDungeon(map.id)) this.world.dsteps = (this.world.dsteps ?? 0) + 1;
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
     // The region's own rule: meters, vents and getting lost.
-    const mech = mechanicStep(this.s.player, this.zone, this.s.timeOfDay === 'night', tileAt(map, nx, ny) === '=', this.s.rng);
+    const dungeon = content.dungeons.find(map.id);
+    const mech = dungeon ? dungeonStep(this.s.player, dungeon.gimmick) : mechanicStep(this.s.player, this.zone, this.s.timeOfDay === 'night', tileAt(map, nx, ny) === '=', this.s.rng);
     if (mech.harm) {
       const stats = characterStats(this.s.player);
       this.s.player.hp = Math.max(1, this.s.player.hp - Math.max(1, Math.round(stats.maxHp * mech.harm)));
@@ -215,7 +219,7 @@ export class WorldActions {
     if (!isDungeon(map.id) && this.world.grace === 0) {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
-      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh))) {
+      if (this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
         const encounter = randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng);
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
@@ -334,6 +338,8 @@ export class WorldActions {
       case 'dungeon': {
         const d = e.ref as string;
         enterDungeon(this.world, d, this.day);
+        this.world.dsteps = 0;
+        delete this.world.checkpoint;
         const dm = mapFor(d);
         this.placeAt(d, dm.spawns.entrance[0] + 1, dm.spawns.entrance[1]);
         this.world.grace = ENCOUNTER_GRACE;
@@ -357,6 +363,13 @@ export class WorldActions {
         return { kind: 'moved', message: `${content.pantheon.get(e.ref as string).shrine}: you may pray to ${content.gods.get(e.ref as string).name} here (Pantheon, P). ${godLine(this.s.player, e.ref as string, this.s.rng)}`.trim() };
       case 'waypoint': {
         resetMeter(this.s.player);
+        if (isDungeon(map.id)) {
+          if (this.world.checkpoint?.x !== e.x || this.world.checkpoint.map !== map.id) {
+            this.world.checkpoint = { map: map.id, x: e.x, y: e.y };
+            this.toast('info', 'Checkpoint: if you fall here, you will wake at this spot.');
+          }
+          return { kind: 'moved' };
+        }
         if (!this.world.waypoints.includes(map.id)) {
           this.world.waypoints.push(map.id);
           this.toast('info', `Waypoint attuned: ${map.name}. Fast travel from the world map (M).`);
@@ -559,6 +572,13 @@ export class WorldActions {
     this.world.grace = ENCOUNTER_GRACE;
     if (pending?.kind === 'sea' && pending.dest && outcome !== 'defeat') {
       this.arriveAt(pending.dest);
+      return;
+    }
+    if (outcome === 'defeat' && this.world.checkpoint && isDungeon(this.world.position.map) && this.world.checkpoint.map === this.world.position.map) {
+      const cp = this.world.checkpoint;
+      this.placeAt(cp.map, cp.x, cp.y);
+      this.toast('warning', 'You wake at the dungeon checkpoint.');
+      this.changed('respawn');
       return;
     }
     if (outcome === 'defeat') {

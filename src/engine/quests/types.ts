@@ -301,6 +301,8 @@ export interface NpcDef {
   topics?: { id: string; text: string; dialogue: string; cond?: Cond; once?: boolean }[];
   /** A companion's own NPC (talk to them from the Party screen once recruited). */
   companion?: string;
+  /** Hours of the day (0-24) this person is about; elsewhere at other times. Wraps past midnight if from > to. */
+  schedule?: [from: number, to: number];
 }
 
 export interface EndingDef {

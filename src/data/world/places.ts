@@ -1,7 +1,8 @@
+import { BATCH1_DUNGEONS, BATCH1_TOWNS } from '../regions/batch1';
 import type { DungeonDef, EncounterGroup, TownDef } from '../../engine/world/types';
 
 /** The five towns along the road. Each honors two gods; some host a faction hall or houses for sale. */
-export const TOWNS: TownDef[] = [
+const BASE_TOWNS: TownDef[] = [
   { id: 'brightwater', name: 'Brightwater', zone: 'meadowlands', description: 'A market town by a clear river, where most adventurers begin.', temple: ['solenne', 'hesha', 'mirrin'], faction: 'order-of-dawn', extraShops: ['merchant-bartholomew', 'merchant-vesper', 'merchant-karl', 'merchant-cartographer', 'collector'], housing: true, innCostPerLevel: 4 },
   { id: 'thornwick', name: 'Thornwick', zone: 'whisperwood', description: 'A village of hunters and herbalists in the Whisperwood’s edge.', temple: ['ysolde', 'vex', 'lyssara'], faction: 'wardens', innCostPerLevel: 5, extraShops: ['black-market', 'merchant-bartholomew', 'merchant-vesper', 'merchant-karl', 'merchant-cartographer', 'collector'] },
   { id: 'sandhaven', name: 'Sandhaven', zone: 'ashen-desert', description: 'A walled oasis of mercenaries and caravans.', temple: ['kael', 'thalor', 'seraphel'], faction: 'iron-legion', innCostPerLevel: 6, extraShops: ['gambler', 'merchant-bartholomew', 'merchant-vesper', 'merchant-karl', 'merchant-cartographer', 'collector'] },
@@ -9,10 +10,12 @@ export const TOWNS: TownDef[] = [
   { id: 'saltmere', name: 'Saltmere', zone: 'stormcoast', description: 'A port of smugglers, sailors and very good fish.', temple: ['nymira', 'grimvald'], faction: 'thieves-den', housing: true, innCostPerLevel: 8, extraShops: ['gambler', 'black-market', 'merchant-bartholomew', 'merchant-vesper', 'merchant-karl', 'merchant-cartographer', 'collector'] },
 ];
 
+export const TOWNS: TownDef[] = [...BASE_TOWNS, ...BATCH1_TOWNS];
+
 const g = (weight: number, ...ids: string[]): EncounterGroup => ({ weight, enemies: ids.map((raw) => (raw.startsWith('^') ? { enemyId: raw.slice(1), row: 'back' as const } : raw.startsWith('elite:') ? { enemyId: raw.slice(6), tier: 'elite' as const } : { enemyId: raw })) });
 
 /** Ten dungeons: a few rooms of enemies and treasure, often a rune puzzle, and a boss. */
-export const DUNGEONS: DungeonDef[] = [
+const BASE_DUNGEONS: DungeonDef[] = [
   { id: 'goblin-warren', name: 'The Goblin Warren', zone: 'meadowlands', level: 8, biome: 'dungeon', rooms: 5, puzzle: false, boss: 'goblin-king', description: 'Tunnels dug by goblins who think they are kings.', encounters: [g(3, 'goblin-cutthroat', 'goblin-cutthroat', '^goblin-shaman'), g(2, 'elite:goblin-warchief', '^goblin-shaman'), g(2, 'giant-rat', 'giant-rat', 'giant-rat')] },
   { id: 'spider-hollow', name: 'Spider Hollow', zone: 'whisperwood', level: 14, biome: 'dungeon', rooms: 6, puzzle: true, boss: 'broodmother', description: 'A hollow under the roots, thick with webs.', encounters: [g(3, '^forest-spider', '^forest-spider', '^forest-spider'), g(2, 'dire-wolf', '^forest-spider'), g(1, 'elite:forest-spider', '^forest-spider')] },
   { id: 'old-crypt', name: 'The Old Crypt', zone: 'whisperwood', level: 16, biome: 'dungeon', rooms: 6, puzzle: true, boss: 'bone-lord', description: 'Where the old battlefield buried its generals.', encounters: [g(3, 'skeleton-soldier', 'skeleton-soldier', '^restless-ghost'), g(2, 'skeleton-soldier', '^dark-cultist', '^dark-cultist'), g(1, 'elite:skeleton-soldier', '^restless-ghost')] },
@@ -24,3 +27,5 @@ export const DUNGEONS: DungeonDef[] = [
   { id: 'fallen-forge', name: 'Forge of the Fallen', zone: 'volcanic-rift', level: 54, biome: 'dungeon', rooms: 7, puzzle: true, boss: 'magma-titan', description: 'The forge where gods once made gods’ weapons.', encounters: [g(3, 'magma-elemental', '^fire-imp', '^fire-imp'), g(2, 'obsidian-golem', '^ash-cultist'), g(1, 'elite:obsidian-golem', 'lava-hound')] },
   { id: 'black-throne', name: 'The Black Throne', zone: 'dark-citadel', level: 60, biome: 'dungeon', rooms: 8, puzzle: true, boss: 'void-commander', description: 'The heart of the Citadel, where the Throne waits for its master.', encounters: [g(3, 'void-knight', 'void-knight', '^void-wraith'), g(2, 'fallen-paladin', '^shadow-fiend'), g(1, 'elite:void-knight', '^void-wraith')] },
 ];
+
+export const DUNGEONS: DungeonDef[] = [...BASE_DUNGEONS, ...BATCH1_DUNGEONS];

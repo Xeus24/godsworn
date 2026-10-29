@@ -61,9 +61,9 @@ function winPending(s: GameSession, encounter: Parameters<typeof createEncounter
 }
 
 describe('maps', () => {
-  it('are generated the same way every time, with 8 zones and 10 dungeons', () => {
-    expect(content.zones.size).toBe(8);
-    expect(content.dungeons.size).toBe(10);
+  it('are generated the same way every time, with the road’s 8 zones and 10 dungeons (and the newer regions off it)', () => {
+    expect(content.zones.filter((z) => !z.off).length).toBe(8);
+    expect(content.dungeons.filter((d) => !content.zones.get(d.zone).off).length).toBe(10);
     const zone = content.zones.get('whisperwood');
     expect(generateZone(zone).tiles).toBe(generateZone(zone).tiles);
   });
