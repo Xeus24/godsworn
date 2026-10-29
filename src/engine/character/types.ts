@@ -105,6 +105,10 @@ export interface Character {
   unlockedClasses: string[];
   /** The base game's third class slot, opened by High Lector Amara's errand (NG+2 opens it too). */
   thirdSlot?: boolean;
+  /** Bad-luck protection: bosses killed in a row without a special drop, per boss id. */
+  badLuck?: Record<string, number>;
+  /** The Legendary Codex: hand-made items (legendary and above) this character has held. */
+  codexUniques?: string[];
   /** Enemy types the hero has stolen from (the Hollow Hand's secret). */
   stolen: string[];
   /** Skills evolved into a stronger form: base skill id -> evolved skill id (data/evolutions.ts). */

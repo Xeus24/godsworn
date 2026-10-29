@@ -1,4 +1,5 @@
-import { grantMount, mountOf } from '../character/stable';
+import { grantMount, grantPet, mountOf } from '../character/stable';
+import type { UtilityKind } from '../skills/generalTypes';
 import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
 import { content } from '../../data';
@@ -17,7 +18,8 @@ import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
 import { trainGeneral, utilityChance, utilityRank } from '../skills/general';
 import { applyRep, FACTION_FAVOR_SHARE, judgeFactions, rankOf, repOf, type RepChange } from '../world/factions';
-import { canBuyHouse, buyHouse, roomCost, roomLevel, upgradeRoom } from '../world/housing';
+import { collectInvestments, investmentCost, investmentLevel, raiseInvestment } from '../world/investments';
+import { addFurniture, canBuyFurniture, canBuyHouse, buyHouse, roomCost, roomLevel, upgradeRoom } from '../world/housing';
 import { mapFor } from '../world/mapgen';
 import { grantMap, MAP_CHEST_CHANCE, treasureItemId } from '../world/treasure';
 import type { MapEntity, TileMap, WorldState, ZoneDef } from '../world/types';
@@ -76,6 +78,13 @@ const LOCKPICK_RETRY = 60;
 const TRAP_DAMAGE = 0.15;
 
 /** The overworld on a running game: walking, exploring, towns, factions and your house. */
+/** A slotted exploration skill, or the mount you ride when it climbs or swims for you. */
+function exploreRank(p: Parameters<typeof utilityRank>[0], kind: UtilityKind): number {
+  const mount = mountOf(p);
+  const lent = mount?.grants?.skill === kind ? mount.grants.rank : 0;
+  return Math.max(utilityRank(p, kind), lent);
+}
+
 const EXPLORATION_NAMES = { swimming: 'Swimming', climbing: 'Climbing', ancientScript: 'Read Ancient Script', animalSpeech: 'Animal Speech', lockpicking: 'Lockpicking', detectTraps: 'Detect Traps' } as const;
 const GENERAL_FOR = { swimming: 'swimming', climbing: 'climbing', ancientScript: 'read-ancient-script', animalSpeech: 'animal-speech', lockpicking: 'lockpicking', detectTraps: 'detect-traps' } as const;
 
@@ -387,7 +396,7 @@ export class WorldActions {
   /** A puzzle-locked shrine: the right exploration skill at the right rank breaks its seal for good. */
   private openShrine(e: MapEntity): string {
     const gate = e.gate!;
-    const have = utilityRank(this.s.player, gate.skill);
+    const have = exploreRank(this.s.player, gate.skill);
     if (have < gate.rank) return `${e.label ?? 'A sealed shrine'}: a seal holds it shut. It needs ${EXPLORATION_NAMES[gate.skill]} at rank ${gate.rank}${have > 0 ? ` (you have ${have})` : ' (slot it in the General skills)'}.`;
     this.world.used[usedKey(this.map.id, e.id)] = this.day;
     trainGeneral(this.s.player, GENERAL_FOR[gate.skill], 15);
@@ -437,7 +446,7 @@ export class WorldActions {
   private openCache(e: MapEntity): string {
     const gate = e.gate!;
     const p = this.s.player;
-    const have = utilityRank(p, gate.skill);
+    const have = exploreRank(p, gate.skill);
     const name = e.label ?? 'Cache';
     if (have < gate.rank) return `${name}: this needs ${EXPLORATION_NAMES[gate.skill]} at rank ${gate.rank}${have > 0 ? ` (you have ${have})` : ' (slot it in the General skills)'}.`;
     const map = this.map;
@@ -591,6 +600,60 @@ export class WorldActions {
     buyHouse(this.s.player, town, this.day);
     this.toast('quest', `You bought a house in ${content.towns.get(town).name}!`);
     this.changed('house');
+    return { ok: true };
+  }
+
+  /** Puts money into a town business (or raises it). */
+  invest(id: string): WorldResult {
+    const def = content.investments.find(id);
+    if (!def) return fail('Unknown business.');
+    if (this.inTown() !== def.town) return fail(`That business is in ${content.towns.get(def.town).name}.`);
+    if (hasRule(this.s.player, 'noShopping')) return fail('Ironman: no merchant will deal with you.');
+    const cost = investmentCost(this.s.player, id);
+    if (cost === undefined) return fail('Already at its best.');
+    if (!this.s.spendGold(cost, 'invest')) return fail(`Costs ${cost} gold.`);
+    raiseInvestment(this.s.player, id, this.s.state.clock.day);
+    this.toast('quest', `${def.name} ${investmentLevel(this.s.player, id) > 1 ? `grows to level ${investmentLevel(this.s.player, id)}` : 'is yours'}.`);
+    this.changed('invest');
+    return { ok: true };
+  }
+
+  /** Collects the earnings of every business in this town. */
+  collectInvestments(): WorldResult {
+    const town = this.inTown();
+    if (!town) return fail('Go to the town whose businesses you own.');
+    const gold = collectInvestments(this.s.player, town, this.s.state.clock.day);
+    if (gold <= 0) return fail('Nothing has been earned yet.');
+    this.s.addGold(gold, 'invest');
+    this.toast('loot', `Your businesses paid ${gold} gold.`);
+    this.changed('invest');
+    return { ok: true };
+  }
+
+  /** Buys a piece of furniture for a built room. */
+  buyFurniture(id: string): WorldResult {
+    const def = content.furniture.find(id);
+    if (!def) return fail('Unknown furniture.');
+    const check = canBuyFurniture(this.s.player, id);
+    if (!check.ok) return check;
+    if (!this.s.spendGold(def.price, 'house')) return fail(`${def.name} costs ${def.price} gold.`);
+    addFurniture(this.s.player, id);
+    this.toast('loot', `${def.name} is yours.`);
+    this.changed('house');
+    return { ok: true };
+  }
+
+  /** Buys a pet at a town's stables. */
+  buyPet(id: string): WorldResult {
+    const def = content.pets.find(id);
+    if (!def?.price) return fail('That pet is not for sale.');
+    if (hasRule(this.s.player, 'noShopping')) return fail('Ironman: no merchant will sell to you.');
+    if (!this.inTown()) return fail('Stables are in towns.');
+    if (this.s.player.stable.pets.includes(id)) return fail('You already have one.');
+    if (!this.s.spendGold(def.price, 'pet')) return fail(`${def.name} costs ${def.price} gold.`);
+    grantPet(this.s.player, id);
+    this.toast('loot', `${def.name} follows you home.`);
+    this.changed('pet');
     return { ok: true };
   }
 

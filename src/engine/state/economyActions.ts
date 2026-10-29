@@ -52,7 +52,7 @@ export class EconomyActions {
 
   shops() {
     const town = this.town();
-    return town ? shopsIn(town).map((shop) => ({ shop, open: shopOpen(shop, town, this.p, this.night()) })) : [];
+    return town ? shopsIn(town).map((shop) => ({ shop, open: shopOpen(shop, town, this.p, this.night(), content, this.s.state.clock.day) })) : [];
   }
 
   buy(shopId: string, line: number): EconomyResult {
@@ -60,7 +60,7 @@ export class EconomyActions {
     const town = this.town();
     if (!town) return fail('Shops are in towns.');
     const shop = content.shops.get(shopId);
-    const open = shopOpen(shop, town, this.p, this.night());
+    const open = shopOpen(shop, town, this.p, this.night(), content, this.s.state.clock.day);
     if (!open.ok) return open;
     const entry = this.stock(shopId).find((l) => l.line === line);
     if (!entry) return fail('Sold out.');
@@ -83,7 +83,11 @@ export class EconomyActions {
     if (!item) return fail('Nothing to sell.');
     if (content.items.get(item.baseId).category === 'quest') return fail('You need that for a quest.');
     if (item.locked) return fail('Unlock it first.');
-    const price = sellPrice(item, this.p);
+    let price = sellPrice(item, this.p);
+    // The Collector pays well for curiosities on the days they are in town.
+    const town = this.town();
+    const collector = town ? shopsIn(town).find((sh) => sh.curiosityMult && shopOpen(sh, town, this.p, this.night(), content, this.s.state.clock.day).ok) : undefined;
+    if (collector?.curiosityMult && content.items.get(item.baseId).category === 'curiosity') price = Math.round(price * collector.curiosityMult);
     this.s.state.inventory.slots[index] = null;
     this.s.addGold(price, 'sell');
     this.s.state.economy.buyback = [{ item, price }, ...this.s.state.economy.buyback].slice(0, BUYBACK_SIZE);

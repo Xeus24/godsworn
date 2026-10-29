@@ -39,8 +39,18 @@ export function shopsIn(town: string, c: Content = content): ShopDef[] {
 }
 
 /** Whether a shop will trade with you now (night-only shops, members-only quartermasters). */
-export function shopOpen(shop: ShopDef, town: string, char: Character, night: boolean, c: Content = content): ShopCheck {
+/** The town a roaming merchant stands in on a day. */
+export function merchantTown(shop: ShopDef, day: number): string | undefined {
+  const r = shop.roams;
+  return r ? r.route[Math.floor((day + r.offset) / r.stay) % r.route.length] : undefined;
+}
+
+export function shopOpen(shop: ShopDef, town: string, char: Character, night: boolean, c: Content = content, day?: number): ShopCheck {
   if (shop.night && !night) return { ok: false, reason: 'Only open after dark.' };
+  if (shop.roams && day !== undefined && merchantTown(shop, day) !== town) {
+    const where = merchantTown(shop, day);
+    return { ok: false, reason: `Not here today${where ? `: ${shop.name} is in ${c.towns.get(where).name}` : ''}.` };
+  }
   if (shop.kind === 'faction') {
     const f = c.factions.get(c.towns.get(town).faction as string);
     const rank = f.ranks.indexOf(rankOf(f, repOf(char, f.id)) ?? (f.ranks[0] as never));

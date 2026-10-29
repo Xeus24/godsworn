@@ -10,7 +10,7 @@ const TIER_LEVELS = [1, 10, 20, 30, 42, 54, 66];
  * `growth`; flat stats grow fast, percentages slowly. Values are rounded to
  * one decimal.
  */
-function tiers(ranges: [number, number][], growth: number): AffixTierDef[] {
+export function tiers(ranges: [number, number][], growth: number): AffixTierDef[] {
   const round = (v: number): number => Math.round(v * 10) / 10;
   return TIER_LEVELS.map((minLevel, t) => ({
     minLevel,

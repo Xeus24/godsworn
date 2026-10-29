@@ -1,5 +1,6 @@
 import { content, type Content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
+import { furnitureCap } from '../../data/world/furniture';
 import type { Character } from '../character/types';
 import type { Modifier } from '../stats/modifiers';
 
@@ -41,6 +42,30 @@ export function upgradeRoom(char: Character, room: string, c: Content = content)
   return { ok: true };
 }
 
+/** Furniture owned for a room. */
+export function furnitureIn(char: Character, room: string, c: Content = content): string[] {
+  return (char.world.house?.furniture ?? []).filter((id) => c.furniture.find(id)?.room === room);
+}
+
+/** Whether a piece can be bought: the room is built, not full, and the piece not owned. */
+export function canBuyFurniture(char: Character, id: string, c: Content = content): HouseResult {
+  const def = c.furniture.find(id);
+  if (!def) return fail('Unknown furniture.');
+  if (!char.world.house) return fail('Buy a house first.');
+  if (roomLevel(char, def.room) === 0) return fail(`Build the ${c.houseRooms.get(def.room).name} first.`);
+  if (char.world.house.furniture?.includes(id)) return fail('You already own that.');
+  if (furnitureIn(char, def.room, c).length >= furnitureCap(roomLevel(char, def.room))) return fail('That room is full. Upgrade it for space.');
+  return { ok: true };
+}
+
+/** Records the purchase (the caller charges the price). */
+export function addFurniture(char: Character, id: string, c: Content = content): HouseResult {
+  const check = canBuyFurniture(char, id, c);
+  if (!check.ok) return check;
+  (char.world.house!.furniture ??= []).push(id);
+  return { ok: true };
+}
+
 /** Room bonuses, and the Trophy Room's +2% damage per distinct world boss slain. */
 export function houseModifiers(char: Character, c: Content = content): Modifier[] {
   if (!char.world.house) return [];
@@ -49,6 +74,7 @@ export function houseModifiers(char: Character, c: Content = content): Modifier[
     const lvl = roomLevel(char, room.id);
     for (const m of (lvl > 0 ? room.modifiers?.[lvl - 1] : undefined) ?? []) mods.push({ ...m, source: `house:${room.id}` });
   }
+  for (const id of char.world.house.furniture ?? []) for (const m of c.furniture.find(id)?.modifiers ?? []) mods.push({ ...m, source: `furniture:${id}` });
   if (roomLevel(char, 'trophy-room') > 0) {
     const trophies = Object.keys(char.world.trophies).length;
     if (trophies > 0) mods.push({ stat: 'damageBonus', type: 'flat', value: trophies * TROPHY_DAMAGE, source: 'house:trophy-room' });

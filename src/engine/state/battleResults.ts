@@ -8,7 +8,13 @@ import type { Battle } from '../combat/battle';
 import type { BattleOutcome } from '../combat/types';
 import { equippedItems } from '../items/equipment';
 import { countOf } from '../items/inventory';
-import { createItem } from '../items/generate';
+import { gainGatheringXp, gatherYield, gatheringLevel } from '../economy/crafting';
+import { SKINNING_LOOT } from '../../data/items/greaterEconomy';
+import { createItem, generateGear } from '../items/generate';
+
+/** Rarities that count as a special drop for bad-luck protection, and how many empty kills trigger the pity drop. */
+const BAD_LUCK_RARITIES = ['legendary', 'set', 'mythic', 'relic', 'primordial', 'divine', 'ascended'];
+export const BAD_LUCK_KILLS = 5;
 import { rollLoot } from '../items/loot';
 import { itemName } from '../items/naming';
 import { recordDeed } from '../items/relics';
@@ -131,6 +137,27 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
       });
       rewards.gold += loot.gold;
       rewards.items.push(...loot.items);
+      if (kill.tier === 'boss' || kill.tier === 'worldBoss') {
+        // Bad-luck protection: a boss that keeps giving nothing special eventually gives a Legendary.
+        const special = loot.items.some((it) => BAD_LUCK_RARITIES.includes(it.rarity));
+        const dry = ((p.badLuck ??= {})[kill.enemyId] ?? 0) + 1;
+        if (special) delete p.badLuck[kill.enemyId];
+        else if (dry >= BAD_LUCK_KILLS) {
+          delete p.badLuck[kill.enemyId];
+          rewards.items.push(generateGear({ rng: s.rng, itemLevel: kill.level, newUid: () => s.newUid(), magicFind: heroStats.magicFind, ngPlus: s.state.ngPlus, sourceTier: kill.tier }, { rarity: 'legendary' }));
+          s.bus.emit('toast', { kind: 'loot', text: 'The boss yields a Legendary at last.' });
+        } else p.badLuck[kill.enemyId] = dry;
+      }
+    }
+    // Skinning: beasts leave hides and meat; practice improves the take.
+    for (const kill of b.tally.kills) {
+      if (!kill.types.includes('beast')) continue;
+      const skill = gatheringLevel(p, 'skinning');
+      if (!s.rng.chance(Math.min(0.9, 0.35 + 0.03 * skill))) continue;
+      const pool = (SKINNING_LOOT.find((t) => kill.level <= t.maxLevel) ?? SKINNING_LOOT[SKINNING_LOOT.length - 1]!).items;
+      rewards.items.push(createItem(s.rng.pick(pool), gatherYield(skill, s.rng), () => s.newUid()));
+      const up = gainGatheringXp(p, 'skinning');
+      if (up) s.bus.emit('toast', { kind: 'level', text: `Skinning reaches level ${up}.` });
     }
     for (const kill of b.tally.kills) {
       const book = content.enemies.get(kill.enemyId).teaches;
@@ -149,6 +176,17 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     const received = s.items.receiveLoot(rewards.items, rewards.gold);
     rewards.salvaged = received.salvaged;
     rewards.items = received.kept;
+
+    // Living items grow: a victory is worth 1 experience, a boss 3 more.
+    const bossKills = b.tally.kills.filter((k) => k.tier === 'boss' || k.tier === 'worldBoss').length;
+    for (const [, item] of equippedItems(p)) {
+      if (item.livingXp === undefined) continue;
+      const before = item.livingXp;
+      item.livingXp += 1 + 3 * bossKills;
+      const def = content.uniques.find(item.uniqueId ?? '');
+      const woke = def?.living?.stages.find((st) => before < st.xp && item.livingXp! >= st.xp);
+      if (woke) s.bus.emit('toast', { kind: 'loot', text: `${def!.name} awakens: ${woke.text}` });
+    }
 
     // Relic deeds.
     const deed = (event: Parameters<typeof recordDeed>[1]): void => {

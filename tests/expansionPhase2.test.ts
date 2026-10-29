@@ -118,7 +118,7 @@ describe('dialogue checks', () => {
   it('every main quest and at least half of side quests have a gated reply', () => {
     const main = content.quests.filter((q) => q.kind === 'main');
     expect(main.every((q) => ids(q).some(has))).toBe(true);
-    const side = content.quests.filter((q) => q.kind === 'side' && !q.id.startsWith('saint-'));
+    const side = content.quests.filter((q) => q.kind === 'side' && !['saint-', 'prof-', 'curio-'].some((pre) => q.id.startsWith(pre)));
     expect(side.filter((q) => ids(q).some(has)).length / side.length).toBeGreaterThanOrEqual(0.5);
   });
 

@@ -150,7 +150,7 @@ Generated from the data files by `npm run content:md`.
 <!-- items:start -->
 **Rarities (12):** Junk (0-0 affixes) · Common (0-0 affixes) · Uncommon (1-2 affixes) · Rare (3-4 affixes) · Epic (4-5 affixes) · Legendary (2-3 affixes) · Set (1-2 affixes) · Mythic (2-3 affixes, elites/bosses only) · Divine (2-3 affixes) · Relic (0-0 affixes) · Ascended (3-4 affixes, NG+1+) · Primordial (2-3 affixes, NG+5+)
 
-**Quality:** Damaged x0.9 · Normal x1 · Superior x1.1 · Masterwork x1.2
+**Quality:** Damaged x0.9 · Normal x1 · Superior x1.1 · Masterwork x1.2 · Flawless x1.35
 
 ### Weapon types (tier 1 shown; 7 tiers each)
 
@@ -175,12 +175,18 @@ Generated from the data files by `npm run content:md`.
 | Tome | off-hand |  | 3-5 | +8% increased Max MP, +2% Cooldown Reduction |
 | Orb | off-hand |  | 4-6 | +10% Crit Damage |
 | Instrument | 2 | 2-4 | 8-12 | +10% Resource Gain, +4% Status Chance |
+| Katana | 1 | 7-11 |  | +3% Crit Chance, +0.6 Physical Attack, +4% Accuracy |
+| Whip | 1 | 5-7 |  | +1 Physical Attack, +6% Status Chance, +2 Speed |
+| Longbow | 2 | 10-16 |  | +1.2 Physical Attack, +15% Crit Damage, +6% Accuracy |
+| Pistol | 1 | 6-10 |  | +0.8 Physical Attack, +3% Crit Chance, +5% Shield Piercing |
+| Rifle | 2 | 13-19 |  | +1 Physical Attack, +25% Crit Damage, -2 Speed |
+| Chakram | 1 | 6-8 |  | +0.8 Physical Attack, +1 Speed, +4% Status Chance |
 | Shield | off-hand | armor 8-12 |  | -4% Damage Taken |
 
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (60)
+### Legendaries (160)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -244,8 +250,108 @@ Generated from the data files by `npm run content:md`.
 | **Earring of Whispers** | Gold Earring | 30 | +30% Crit Damage; +10% Status Chance; +30% crit damage, +10% status chance |
 | **Sunburst Sigil** | Gold Holy Symbol | 30 | +40% Blessing Power; +15% Holy Damage; +40% blessing power |
 | **Hourglass of Borrowed Time** | Greater Lucky Coin | 25 | +5% Cooldown Reduction; On use: reduce cooldowns by 3 and heal 20%; Use: Rewind: Reduce all cooldowns by 3 turns and heal 20% of max HP. |
+| **Kasumi** | Mithril Katana | 20 | +6% Crit Chance; +12% increased Physical Attack; 25% chance on hit to Bleed |
+| **The Ninth Moon** | Adamant Katana | 30 | +30% Crit Damage; +5% Dodge; 20% chance on hit to Slow |
+| **Tsubame-Gaeshi** | Starmetal Katana | 42 | +4 Speed; +18% increased Physical Attack; Start every battle with Haste for 1 turn |
+| **Viper’s Lash** | Drakehide Whip | 20 | +10% Status Chance; +15% Nature Damage; 30% chance on hit to Poison |
+| **The Ringmaster’s Crack** | Shadowhide Whip | 30 | +3 Speed; +6 Charisma; 20% chance on hit to Charm |
+| **Thornwhip** | Wyvernscale Whip | 42 | +15% increased Physical Attack; +25% Nature Damage; 25% chance on hit to Bleed |
+| **Skysplitter** | Ironwood Longbow | 20 | +12% Accuracy; +25% Crit Damage; 15% chance on hit for a bolt of lightning |
+| **Elm’s Farewell** | Elderwood Longbow | 30 | +14% increased Physical Attack; +5% Crit Chance; Kills heal you for 5% of max HP |
+| **A Hundred Paces** | Moonwood Longbow | 42 | +14% Damage Bonus; +18% Accuracy; Start every battle with a 10% shield |
+| **Widow’s Whisper** | Mithril Pistol | 20 | +5% Crit Chance; +10% Shield Piercing; 20% chance on hit to Weaken |
+| **The Saint’s Answer** | Adamant Pistol | 30 | +25% Holy Damage; +12% increased Physical Attack; 15% chance on hit for holy fire |
+| **Dust and Ash** | Starmetal Pistol | 42 | +35% Crit Damage; +3 Speed; Crits heal you for 4% of max HP |
+| **The Gutter King** | Mithril Rifle | 20 | +20% Physical Damage; +10% Accuracy; 15% chance on hit to Blind |
+| **The Long Silence** | Adamant Rifle | 30 | +40% Crit Damage; +15% Shield Piercing; 15% chance on hit to Silence |
+| **Last Word** | Starmetal Rifle | 42 | +20% increased Physical Attack; +12% Damage Bonus; Kills restore 6% of max HP |
+| **Wheel of Fortune** | Mithril Chakram | 20 | +8 Luck; +4% Crit Chance; 20% chance on hit to Stun |
+| **Sunwheel** | Adamant Chakram | 30 | +25% Fire Damage; +3 Speed; 25% chance on hit to Burn |
+| **Moon’s Orbit** | Starmetal Chakram | 42 | +30% Ice Damage; +5% Dodge; 20% chance on hit to Freeze |
+| **Edge of the Morning** | Adamant Sword | 30 | +25% Holy Damage; +10% Accuracy; 15% chance on hit to Blind |
+| **Oathkeeper** | Adamant Greatsword | 30 | +18% increased Physical Attack; +8% increased Max HP; Start every battle with a 12% shield |
+| **The Hewer** | Mithril Axe | 20 | +18% Physical Damage; +20% Crit Damage; 20% chance on hit to Bleed |
+| **Wallbreaker** | Starmetal Warhammer | 42 | +20% increased Physical Attack; +15% Shield Piercing; 15% chance on hit to Stun |
+| **Misery’s Comfort** | Mithril Mace | 20 | +18% Holy Damage; +10% Healing Power; Crits heal you for 4% of max HP |
+| **Stiletto of Whispers** | Adamant Dagger | 30 | +7% Crit Chance; +3 Speed; 20% chance on hit to Weaken |
+| **Heron’s Reach** | Adamant Spear | 30 | +14% increased Physical Attack; +12% Accuracy; 20% chance on hit to Slow |
+| **Harvest Moon** | Adamant Scythe | 30 | +3% Lifesteal; +22% Shadow Damage; Kills heal you for 6% of max HP |
+| **Rowan Staff of the Hedge** | Ironwood Staff | 20 | +14% increased Magic Attack; +18% Nature Damage; 20% chance on hit to Poison |
+| **Spark of the Apprentice** | Ironwood Wand | 20 | +12% increased Magic Attack; +4% Crit Chance; 15% chance on hit for a lightning bolt |
+| **The Wayfarer’s Bow** | Elderwood Bow | 30 | +3 Speed; +14% increased Physical Attack; Start every battle with Haste for 1 turn |
+| **Bolt of Mercy** | Elderwood Crossbow | 30 | +35% Crit Damage; +10% Accuracy; Crits heal you for 4% of max HP |
+| **Tiger’s Grip** | Adamant Claws | 30 | +14% increased Physical Attack; +5% Dodge; 25% chance on hit to Bleed |
+| **The Bard’s Lament** | Elderwood Lute | 30 | +14% increased Magic Attack; +15% Resource Gain; 20% chance on hit to Charm |
+| **Helm of the Long Watch** | Adamant Helm | 30 | +12% increased Defense; +12% Status Resist; Start every battle with a 10% shield |
+| **Crown of Quills** | Spellweave Hood | 30 | +10% increased Magic Attack; +8% XP Gain |
+| **Hunter’s Cowl of the Patient Hour** | Shadowhide Cap | 30 | +5% Crit Chance; +12% Accuracy; 15% chance on hit to Slow |
+| **Mantle of the Wandering Saint** | Spellweave Mantle | 30 | +12% Healing Power; +3 HP Regen; Regenerate 2% of max HP every turn |
+| **Pauldrons of Quiet Ruin** | Starmetal Shoulderguards | 42 | +14% increased Physical Attack; -4% Damage Taken; The first time you fall low, shield yourself for 20% |
+| **Gale Spaulders** | Shadowhide Spaulders | 30 | +3 Speed; +5% Dodge; Start every battle with Haste for 1 turn |
+| **Hearthguard Breastplate** | Adamant Breastplate | 30 | +12% increased Max HP; +3 HP Regen; Regenerate 2% of max HP every turn |
+| **The Weaver’s Vest** | Spellweave Robe | 30 | +12% increased Max MP; +4% Cooldown Reduction; The first time you fall low, shield yourself for 15% |
+| **Jerkin of the Last Fox** | Shadowhide Jerkin | 30 | +7% Dodge; +4% Crit Chance; 15% chance when hit to Blind the attacker |
+| **Mail of a Hundred Rings** | Adamant Hauberk | 30 | +14% increased Defense; +10% Status Resist; 10% chance when hit to Slow the attacker |
+| **Gauntlets of the Last Judge** | Adamant Gauntlets | 30 | +12% increased Physical Attack; +15% Crit Damage; 15% chance on hit to Weaken |
+| **Gloves of Light Fingers** | Shadowhide Gloves | 30 | +15% Gold Find; +3% Crit Chance; Crits heal you for 3% of max HP |
+| **Mitts of the Mender** | Spellweave Wraps | 30 | +14% Healing Power; +2 MP Regen; Kills restore 5% of max HP |
+| **Greaves of the Long March** | Adamant Legplates | 30 | +12% increased Defense; +3 HP Regen; Start every battle with a 8% shield |
+| **Leggings of the Stalker** | Shadowhide Breeches | 30 | +6% Dodge; +2 Speed; Start every battle with Haste for 1 turn |
+| **Trousers of the Trickster** | Spellweave Trousers | 30 | +8 Luck; +4% Dodge; 15% chance when hit to Charm the attacker |
+| **Boots of Seven Roads** | Shadowhide Boots | 30 | +4 Speed; +8% Magic Find; Start every battle with Haste for 1 turn |
+| **Sabatons of the Standing Stone** | Adamant Sabatons | 30 | +10% increased Defense; +14% Status Resist; The first time you fall low, shield yourself for 20% |
+| **Slippers of the Lucid Dream** | Spellweave Slippers | 30 | +6% Dodge; +2 MP Regen; Regenerate 1% of max HP every turn |
+| **Cloak of a Thousand Moths** | Spellweave Shawl | 30 | +7% Dodge; +8% increased Magic Resist; 10% chance when hit to Blind the attacker |
+| **Mantle of Embers** | Shadowhide Cloak | 30 | +18% Fire Resist; +20% Fire Damage; 15% chance when hit to Burn the attacker |
+| **Shroud of the Quiet Death** | Moonsilk Shawl | 42 | +25% Shadow Damage; -5% Damage Taken; Kills shield you for 6% of max HP |
+| **Cloak of the Open Road** | Wyvernscale Cloak | 42 | +4 Speed; +20% Lightning Resist; Start every battle with Haste for 1 turn |
+| **Belt of the Hill-Giants** | Shadowhide Belt | 30 | +14% increased Max HP; +8 Strength; -3% Damage Taken; Take 3% less damage |
+| **The Scholar’s Sash** | Spellweave Sash | 30 | +3 MP Regen; +8% XP Gain; Regenerate 1% of max HP every turn |
+| **Girdle of the Forge** | Adamant Warbelt | 30 | +10% increased Defense; +15% Fire Resist; 10% chance when hit to Burn the attacker |
+| **Hauberk of the Seven Saints** | Starmetal Hauberk | 42 | +14% increased Max HP; +14% Status Resist; Start every battle with a 12% shield |
+| **Coif of the Drowned** | Adamant Coif | 30 | +18% Ice Resist; +10% increased Max MP; 10% chance when hit to Slow the attacker |
+| **Gauntlets of the Iron Oath** | Adamant Gauntlets | 30 | +12% increased Physical Attack; +8% increased Defense; 15% chance on hit to Stun |
+| **Greaves of Rolling Thunder** | Adamant Chausses | 30 | +20% Lightning Damage; +2 Speed; 15% chance on hit for a lightning bolt |
+| **Boots of the Ferryman** | Adamant Greaves | 30 | +18% Shadow Resist; +4% Dodge; Kills heal you for 4% of max HP |
+| **Pauldrons of the Standing Gale** | Adamant Pauldrons | 30 | +15% Lightning Resist; +3 Speed; Start every battle with Haste for 1 turn |
+| **Ring of the Lantern-Bearer** | Gold Ring | 20 | +14% Holy Damage; +8% Accuracy; 15% chance on hit to Blind |
+| **Ring of Open Ledgers** | Gold Ring | 20 | +15% Gold Find; +3% Barter; Kills shield you for 4% of max HP |
+| **Ring of Warm Ash** | Platinum Ring | 30 | +20% Fire Damage; +15% Fire Resist; 15% chance on hit to Burn |
+| **The Rook’s Ring** | Platinum Ring | 30 | +8% increased Defense; +4% Crit Chance; The first time you fall low, shield yourself for 18% |
+| **Ring of Quiet Whispers** | Platinum Ring | 30 | +12% Status Chance; +15% Shadow Damage; 15% chance on hit to Silence |
+| **Amulet of the Slow Tide** | Platinum Amulet | 30 | +10% increased Max HP; +3 HP Regen; Regenerate 2% of max HP every turn |
+| **Hearthstone Amulet** | Gold Amulet | 20 | +12% Healing Power; +10% Status Resist; Kills restore 4% of max HP |
+| **Amulet of Borrowed Hours** | Starsilver Amulet | 42 | +6% Cooldown Reduction; +3 Speed; Start every battle with Haste for 1 turn |
+| **Amulet of the Raven Queen** | Platinum Amulet | 30 | +22% Shadow Damage; +2% Lifesteal; Kills heal you for 5% of max HP |
+| **Earring of the Last Chip** | Gold Earring | 20 | +8 Luck; +10% Magic Find; Crits heal you for 3% of max HP |
+| **Earring of the Listener** | Platinum Earring | 30 | +14% Accuracy; +8 Wisdom; 15% chance on hit to Weaken |
+| **Earring of the False Sunrise** | Platinum Earring | 30 | +18% Holy Damage; +2 HP Regen; Start every battle with a 10% shield |
+| **Earring of Distant Storms** | Starsilver Earring | 42 | +25% Lightning Damage; +4% Cooldown Reduction; 15% chance on hit for a lightning bolt |
+| **Pilgrim’s Earring** | Gold Earring | 20 | +15% Favor Gain; +6% increased Max HP; Regenerate 1% of max HP every turn |
+| **Shield of the Stag King** | Adamant Shield | 30 | +14% increased Defense; -4% Damage Taken; 10% chance when hit to Stun the attacker |
+| **Aegis of the Last Rampart** | Starmetal Shield | 42 | +12% increased Max HP; +18% Status Resist; The first time you fall low, shield yourself for 25% |
+| **Candlewright’s Bulwark** | Mithril Shield | 20 | +20% Holy Resist; +12% Fire Resist; Start every battle with a 10% shield |
+| **Tome of Quiet Hours** | Sage's Tome | 30 | +5% Cooldown Reduction; +12% increased Magic Attack; 15% chance on hit to Slow |
+| **Grimoire of Embers** | Sage's Tome | 30 | +25% Fire Damage; +10% increased Max MP; 15% chance on hit to Burn |
+| **Codex of the Lesser Saints** | Archmage's Tome | 42 | +18% Blessing Power; +14% Healing Power; Regenerate 2% of max HP every turn |
+| **Orb of Still Water** | Amethyst Orb | 20 | +18% Ice Damage; +8% Status Chance; 15% chance on hit to Freeze |
+| **Orb of the Hollow Star** | Sapphire Orb | 30 | +22% Void Damage; +20% Crit Damage; 15% chance on hit to Weaken |
+| **Orb of Green Fire** | Sapphire Orb | 30 | +22% Nature Damage; +2 MP Regen; 20% chance on hit to Poison |
+| **Orb of Counted Days** | Starglass Orb | 42 | +28% Arcane Damage; +5% Cooldown Reduction; Start every battle with Haste for 1 turn |
+| **Lute of Lost Songs** | Ironwood Lute | 20 | +15% Resource Gain; +10% increased Magic Attack; 15% chance on hit to Charm |
+| **Wand of Small Mercies** | Elderwood Wand | 30 | +16% Healing Power; +10% increased Magic Attack; Kills heal you for 4% of max HP |
+| **Staff of the Slow Eclipse** | Moonwood Staff | 42 | +25% Shadow Damage; +15% Holy Damage; 15% chance on hit to Blind |
+| **Bow of the First Frost** | Moonwood Bow | 42 | +28% Ice Damage; +5% Crit Chance; 20% chance on hit to Freeze |
+| **Seedling Blade** | Mithril Sword | 20 | +10% Nature Damage; Living: at 15 experience, it puts out leaves; Living: at 50 experience, it flowers; Living: at 120 experience, it bears fruit |
+| **Staff of the Ember Egg** | Ironwood Staff | 20 | +12% Fire Damage; Living: at 15 experience, the egg cracks; Living: at 50 experience, the hatchling stirs; Living: at 120 experience, the drake wakes |
+| **Tidebound Mail** | Mithril Hauberk | 20 | +6% increased Max HP; Living: at 15 experience, it learns the tide; Living: at 50 experience, it rides the surf; Living: at 120 experience, it becomes the sea |
+| **The Storybook** | Arcanist's Tome | 20 | +5% XP Gain; Living: at 15 experience, the first chapter; Living: at 50 experience, the plot thickens; Living: at 120 experience, the final page |
+| **Wolf-Pack Cloak** | Drakehide Cloak | 20 | +4% Dodge; Living: at 15 experience, a second pelt grows in; Living: at 50 experience, a third howl; Living: at 120 experience, the whole pack answers |
+| **Hearth Ring** | Gold Ring | 20 | +2 HP Regen; Living: at 15 experience, the glow steadies; Living: at 50 experience, the glow spreads; Living: at 120 experience, home is wherever it is |
+| **The Silent Bow** | Ironwood Longbow | 20 | +8% Accuracy; Living: at 15 experience, it stops creaking; Living: at 50 experience, it stops twanging; Living: at 120 experience, it stops being noticed |
+| **Oathshard** | Gold Amulet | 20 | +6% Status Resist; Living: at 15 experience, the promise firms; Living: at 50 experience, the vow is witnessed; Living: at 120 experience, the oath is kept |
 
-### Mythics (15)
+### Mythics (35)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -264,8 +370,28 @@ Generated from the data files by `npm run content:md`.
 | **Titan-Heart Plate** | Godforged Breastplate | 54 | +30% increased Max HP; Once per battle, survive a killing blow with 1 HP; Immune to Stun |
 | **Ring of the Everlasting Flame** | Starsilver Ring | 60 | +40% Fire Damage; 20% chance on cast to Burn every enemy; Burning enemies spread Burn when they die |
 | **Reaper King's Scythe** | Godforged Scythe | 54 | +35% Shadow Damage; Attacks against enemies below 20% HP always crit; Kills heal 10% of max HP and reduce cooldowns by 1 |
+| **Dawn’s Last Stand** | Starmetal Greatsword | 42 | +35% Holy Damage; +22% increased Physical Attack; Deal 25% more damage to bosses; 15% chance on hit for holy fire |
+| **Night’s Open Hand** | Starmetal Dagger | 42 | +35% Shadow Damage; +8% Crit Chance; Begin every battle in stealth; Attacks against enemies below 20% HP always crit |
+| **The Tempest’s Heart** | Moonwood Staff | 42 | +40% Lightning Damage; +25% increased Magic Attack; 20% chance for spells to cast a second time; 15% chance on hit to Stun |
+| **The Everburning Crown** | Starmetal Helm | 42 | +35% Fire Damage; +30% Fire Resist; Burning enemies spread Burn on death; 20% chance on hit to Burn |
+| **Shard of Winter’s Throne** | Starglass Orb | 42 | +40% Ice Damage; +22% increased Magic Attack; Ice damage against Burning enemies always Shatters; 20% chance on hit to Freeze |
+| **Gravewalker’s Tome** | Archmage's Tome | 42 | +30% Shadow Damage; +20% increased Max MP; Summoning skills raise one extra minion; Kills heal you for 6% of max HP |
+| **The Unbroken Bastion** | Starmetal Shield | 42 | +25% increased Defense; +15% increased Max HP; Once per battle, survive a killing blow; Start every battle with a 15% shield |
+| **The Long Patience** | Moonwood Longbow | 42 | +50% Crit Damage; +25% Accuracy; Damage over time can critically strike; Crits heal you for 5% of max HP |
+| **Voidglass Lens** | Godseye Orb | 54 | +40% Void Damage; +8% Cooldown Reduction; 20% chance for spells to cast a second time; 15% chance on hit to Silence |
+| **The Harbinger’s Bell** | Starmetal Mace | 42 | +30% Holy Damage; +20% Healing Power; Half of all overhealing becomes a shield; Kills restore 6% of max HP |
+| **Hollow King’s Edge** | Godforged Sword | 54 | +35% Void Damage; +25% increased Physical Attack; Deal 25% more damage to bosses; Critical hits ignore half of the target’s defense |
+| **Sunlit Hauberk** | Starmetal Hauberk | 42 | +20% increased Max HP; +30% Holy Resist; Deal 20% more damage during the day; Regenerate 2% of max HP every turn |
+| **Moonlit Mantle** | Moonsilk Shawl | 42 | +12% Dodge; +30% Ice Resist; Deal 20% more damage at night; Start every battle with Haste for 1 turn |
+| **Windrunner’s Boots** | Wyvernscale Boots | 42 | +7 Speed; +10% Dodge; Always act first in the opening round; Start every battle with Haste for 1 turn |
+| **Drakescale Gauntlets** | Starmetal Gauntlets | 42 | +30% Fire Damage; +20% increased Physical Attack; Melee attacks can strike the back row; 20% chance on hit to Burn |
+| **Reliquary Pauldrons** | Starmetal Shoulderguards | 42 | +15% increased Max HP; +20% Blessing Power; Once per battle, survive a killing blow; The first time you fall low, shield yourself for 25% |
+| **Trickster’s Bandolier** | Wyvernscale Jerkin | 42 | +15 Luck; +8% Crit Chance; Begin every battle in stealth; Crits heal you for 4% of max HP |
+| **The Archivist’s Eye** | Starsilver Amulet | 42 | +15% XP Gain; +18% increased Magic Attack; 20% chance for spells to cast a second time; Regenerate 2% of max HP every turn |
+| **The Warden’s Oath** | Starsilver Ring | 42 | +15% increased Defense; +25% Status Resist; Start every battle with a 15% shield; Kills shield you for 5% of max HP |
+| **Bardmaster’s Baton** | Moonwood Wand | 42 | +25% Resource Gain; +10 Charisma; Two songs can play at once; 15% chance on hit to Charm |
 
-### Relics (11)
+### Relics (30)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -280,6 +406,25 @@ Generated from the data files by `npm run content:md`.
 | **Ysolde's Antler** | Ancient Relic | 15 | +15% Nature Damage; +5 Dexterity; Shed by the white stag that only the worthy ever see; Use: Call the Hunt: Summon a spirit stag to fight beside you.; Awakens (Hunt 75 beasts while wearing it.): +25% nature damage, +4 speed |
 | **Grimvald's Ledger** | Ancient Relic | 10 | +30% Gold Find; Every debt ever owed, in very small handwriting; Use: Collect the Debt: Weaken the target, make it Vulnerable, and pocket 25 gold.; Awakens (Pray at shrines 30 times while carrying it.): +40% gold find, +15% magic find |
 | **The Thousandth Page** | Ancient Relic | 20 | +10% increased Magic Attack; +5% Cooldown Reduction; Torn from Aurelis’s own book. The words rearrange when you are not looking; Use: Turn the Page: Reduce all cooldowns by 2 turns and restore 50 MP.; Awakens (Win 40 battles while wearing it.): +8% cooldown reduction, +10% XP |
+| **Bell of Brightwater** | Ancient Relic | 8 | +10% Healing Power; It has rung at every sunrise since the founding, even the ones nobody attended.; Use: Morning Toll: Heal the party for 20% of max HP.; Awakens (Win 60 battles while wearing it.): +20 healingPower, +4 hpRegen |
+| **Thornwick’s Acorn** | Ancient Relic | 12 | +12% Nature Damage; It has never sprouted. It is waiting for permission.; Use: Sprout: Shield the party for 12% of max HP.; Awakens (Defeat 80 enemies while wearing it.): +22 natureDamage, +8 maxHp |
+| **The Saltmere Compass** | Ancient Relic | 18 | +10% Magic Find; +1 Speed; It points to whatever you’re looking for, and is never ashamed of it.; Use: True North: The party gains +10% speed for 3 turns.; Awakens (Win 80 battles while wearing it.): +20 magicFind, +2 speed |
+| **Sandhaven Signet** | Ancient Relic | 22 | +12% Gold Find; +6% increased Physical Attack; Every contract it has signed has been honored. One was by accident.; Use: Mercenary’s Rate: The party deals +15% damage for 3 turns.; Awakens (Defeat 120 enemies while wearing it.): +25 goldFind, +6 damageBonus |
+| **Frosthold Lens** | Ancient Relic | 28 | +15% Ice Damage; +8% Accuracy; The glass remembers a winter it was never in.; Use: Rime Sight: Freeze-chill every enemy (Slow for 2 turns).; Awakens (Slay 4 bosses while wearing it.): +25 iceDamage, +3 critChance |
+| **Hourglass of Many Sands** | Ancient Relic | 30 | +6% Cooldown Reduction; Every grain was somewhere else a moment ago.; Use: Turn It Over: Heal the party for 15% and Haste yourself for 2 turns.; Awakens (Win 100 battles while wearing it.): +12 cooldownReduction, +2 speed |
+| **Kael’s Whetstone** | Ancient Relic | 20 | +8% increased Physical Attack; It improves nothing it touches, except resolve.; Use: Edge of Glory: The party gains +20% crit chance for 3 turns.; Awakens (Land 100 critical hits while wearing it.): +25 critDamage, +8% physicalAttack |
+| **Vex’s Lucky Die** | Ancient Relic | 15 | +6 Luck; +2% Crit Chance; It always comes up the number you needed, which is deeply suspicious.; Use: Roll Again: Haste yourself for 2 turns and gain Stealth.; Awakens (Land 80 critical hits while wearing it.): +12 luk, +4 critChance |
+| **Morrath’s Funeral Candle** | Ancient Relic | 25 | +15% Shadow Damage; It burns only for those who are already leaving.; Use: Last Light: Curse every enemy for 2 turns.; Awakens (Slay 5 bosses while wearing it.): +25 shadowDamage, +2 lifesteal |
+| **Aurelis’s Quill** | Ancient Relic | 25 | +8% XP Gain; +8% increased Magic Attack; It has never written a lie. It has edited some.; Use: Corrected Draft: Every enemy is Weakened for 2 turns.; Awakens (Win 120 battles while wearing it.): +15 xpGain, +6 cooldownReduction |
+| **Grimvald’s Scale** | Ancient Relic | 30 | +15% Gold Find; +3% Barter; It weighs people honestly, which is unkind of it.; Use: Fair Weight: The party gains +10% defense for 3 turns and you gain a 10% shield.; Awakens (Defeat 150 enemies while wearing it.): +30 goldFind, +5 barter |
+| **Lyssara’s Moonstone** | Ancient Relic | 24 | +12% Ice Damage; +3% Dodge; It glows only when no one is looking directly at it.; Use: Lull: Enemies may fall asleep (50%) for 2 turns.; Awakens (Win 90 battles while wearing it.): +20 iceDamage, +4 hpRegen |
+| **Ordrun’s Keystone** | Ancient Relic | 28 | +10% increased Defense; +6% increased Max HP; It holds the arch up. The arch is no longer there. It holds anyway.; Use: Hold: The party takes 15% less damage for 3 turns.; Awakens (Slay 4 bosses while wearing it.): +15% defense, +10% maxHp |
+| **Seraphel’s Feather** | Ancient Relic | 28 | +3 Speed; +6% Dodge; It has never once fallen.; Use: Updraft: Haste the party for 2 turns.; Awakens (Win 100 battles while wearing it.): +5 speed, +8 dodge |
+| **Mirrin’s Folded Page** | Ancient Relic | 32 | +8% Cooldown Reduction; +8% Accuracy; On it is a sentence you haven’t read yet.; Use: Recall: Heal the party for 18% of max HP and take an extra turn.; Awakens (Pray 40 times while wearing it.): +15 cooldownReduction, +10 xpGain |
+| **Tooth of the Wolf King** | Ancient Relic | 20 | +8% increased Physical Attack; +2 Speed; Still sharp enough to cut moonlight.; Use: Howl: The party deals +15% damage for 3 turns.; Awakens (Defeat 100 enemies while wearing it.): +14% physicalAttack, +3 critChance |
+| **Stormglass Orb** | Ancient Relic | 35 | +18% Lightning Damage; +4% Cooldown Reduction; Inside, a very small storm is losing an argument.; Use: Eye of the Gale: Strike every enemy with lightning for 90% MAG.; Awakens (Slay 6 bosses while wearing it.): +30 lightningDamage, +3 speed |
+| **Crown of the Mountain King** | Ancient Relic | 40 | +10% increased Max HP; +8% increased Physical Attack; It was handed down, and it never once asked for a head.; Use: Stone Decree: The party takes 12% less damage and deals +12% damage for 3 turns.; Awakens (Slay 6 bosses while wearing it.): +15% maxHp, +12% physicalAttack |
+| **Ashen Rosary** | Ancient Relic | 38 | +18% Holy Damage; +10% Status Resist; Each bead is a name. None of them is yours, yet.; Use: Litany: Heal the party for 20% and cleanse Curse and Fear.; Awakens (Pray 30 times while wearing it.): +28 holyDamage, +15 healingPower |
 
 ### Divine items (favor-gated drops, plus each god-bound weapon stage) (84)
 
@@ -370,7 +515,7 @@ Generated from the data files by `npm run content:md`.
 | **Hourglass Staff, Turned** | Moonwood Staff | 45 | +35% Arcane Damage; +14 Intelligence; +20% increased Divine Power; God-bound: only Mirrin's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Mirrin's power |
 | **Hourglass Staff, the Keeper** | Worldtree Staff | 60 | +50% Arcane Damage; +20 Intelligence; +30% increased Divine Power; God-bound: only Mirrin's Apostle may wield it, whatever their class; Evolves at levels 30, 45, 60; 20% chance on hit to strike with Mirrin's power |
 
-### Item sets (10)
+### Item sets (26)
 
 **Warlord's Vigil** (Warrior): Warlord's Helm, Warlord's Pauldrons, Warlord's Breastplate, Warlord's Gauntlets, Warlord's Legplates, Warlord's Sabatons
 - (2) +10% max HP
@@ -421,7 +566,87 @@ Generated from the data files by `npm run content:md`.
 - (4) +25% magic find
 - (6) +30 LUK, +5% crit; crits may shower you with gold
 
-### Runewords (16)
+**Oathsworn Bulwark** (Knight): Oathsworn Greathelm, Oathsworn Spaulders, Oathsworn Cuirass, Oathsworn Gauntlets, Oathsworn Tassets, Oathsworn Greaves
+- (2) Take 4% less damage
+- (4) +12% defense; shield yourself for 10% max HP at the start of battle
+- (6) Take 10% less damage; the first time you fall below 30% HP, shield yourself for 30%
+
+**Verdant Regalia** (Druid): Verdant Hood, Verdant Mantle, Verdant Jerkin, Verdant Grips, Verdant Leggings, Verdant Treads
+- (2) +10% nature damage
+- (4) +10% healing power; regenerate for 2 turns after a victory
+- (6) +15% nature damage and +10% max HP
+
+**Pactbinder Vestments** (Warlock): Pactbinder Cowl, Pactbinder Shoulderwrap, Pactbinder Robe, Pactbinder Mitts, Pactbinder Skirt, Pactbinder Slippers
+- (2) +10% shadow damage
+- (4) +10 status chance; hits may Curse
+- (6) +15% damage; kills restore 8% max HP
+
+**Regalia of the Caller** (Summoner): Caller’s Circlet, Caller’s Mantle, Caller’s Vestment, Caller’s Gloves, Caller’s Hem, Caller’s Sandals
+- (2) +6% cooldown reduction
+- (4) Casting a skill shields you for 10% of max HP (once a battle)
+- (6) +15% magic attack; summoning skills raise one extra minion
+
+**Apothecary’s Finery** (Alchemist): Goggles of the Apothecary, Bandolier of Vials, Stained Apron, Acid-Proof Gloves, Reagent Trousers, Boots of Careful Steps
+- (2) +10% healing power
+- (4) +10 status chance; hits may Poison
+- (6) +15% damage; potions heal 25% more
+
+**Totemic Vigil** (Shaman): Totemic Mask, Totemic Pauldrons, Totemic Hauberk, Totemic Bracers, Totemic Kilt, Totemic Boots
+- (2) +10% lightning damage
+- (4) +8% max HP; start battle with a shield of 8%
+- (6) +15% damage; spirits answer faster (+10% cooldown reduction)
+
+**The Hourwatch Regalia** (Chronomancer): Hourwatch Hood, Hourwatch Shawl, Hourwatch Coat, Hourwatch Gloves, Hourwatch Hose, Hourwatch Shoes
+- (2) +6% cooldown reduction
+- (4) +4 speed; Haste for 1 turn at the start of battle
+- (6) +15% damage; +12% cooldown reduction
+
+**Tinkerer’s Harness** (Artificer): Tinkerer’s Visor, Tinkerer’s Gearbox, Tinkerer’s Vest, Tinkerer’s Gauntlets, Tinkerer’s Tool-Belt, Tinkerer’s Springboots
+- (2) +3% crit chance
+- (4) +10% physical attack; hits may Stun
+- (6) +15% damage; +10% crit damage
+
+**Curtain Call Costume** (Dancer): Plumed Mask, Sequined Mantle, Silk Bodice, Ribboned Gloves, Slit Skirt, Dancing Slippers
+- (2) +4 dodge
+- (4) +6 speed; dodge a hit and Haste for 1 turn (15%)
+- (6) +15% damage; +5% crit chance
+
+**Inkbound Scholar’s Set** (Inkweaver): Scholar’s Cap, Ink-Stained Mantle, Calligrapher’s Robe, Writing Mitts, Scroll-Pocket Skirt, Quiet Slippers
+- (2) +10% arcane damage
+- (4) +10% max MP; regain 4 MP each turn
+- (6) +15% magic attack; +10% cooldown reduction
+
+**The Silver Vigilant** (Witch Hunter): Vigilant’s Helm, Vigilant’s Pauldrons, Vigilant’s Hauberk, Silvered Gauntlets, Vigilant’s Chausses, Vigilant’s Boots
+- (2) +10% holy damage
+- (4) +10% damage against casters and the unholy; +10 status resist
+- (6) +15% damage; hits may Weaken
+
+**Faultline Plate** (Geomancer): Faultline Helm, Faultline Pauldrons, Faultline Breastplate, Faultline Gauntlets, Faultline Greaves, Faultline Sabatons
+- (2) +10% physical damage
+- (4) +10% max HP; hits may Stun
+- (6) +15% damage; take 6% less damage
+
+**Wayfarer’s Bundle**: Wayfarer’s Hat, Wayfarer’s Coat, Wayfarer’s Cloak, Wayfarer’s Boots, Compass Ring, Lucky Charm
+- (2) +10% XP
+- (4) +10% gold find
+- (6) +8% magic find and +3 speed
+
+**Guildmaster’s Ledger**: Guildmaster’s Cap, Guildmaster’s Frock, Cloak of Contracts, Counting-House Shoes, Signet of Seals, Pendant of Ledgers
+- (2) +3% barter
+- (4) +15% gold find
+- (6) +6% barter and +2 CHA
+
+**The Sentinel’s Watch**: Sentinel’s Helm, Sentinel’s Hauberk, Sentinel’s Cloak, Sentinel’s Greaves, Watchman’s Ring, Lantern Amulet
+- (2) +6% defense
+- (4) +10 status resist
+- (6) Take 6% less damage and regenerate 3 HP a turn
+
+**Stargazer’s Array**: Stargazer’s Hat, Stargazer’s Robe, Cloak of Constellations, Moonlit Slippers, Orrery Ring, Star Chart Amulet
+- (2) +10% max MP
+- (4) +3 MP regeneration and +10% XP
+- (6) +12% magic attack and +8% cooldown reduction
+
+### Runewords (40)
 
 | Runeword | Runes | Fits | Effect |
 |---|---|---|---|
@@ -441,20 +666,44 @@ Generated from the data files by `npm run content:md`.
 | **Wyrmfire** | Wyrm + Ember + Fury + Ember + Wyrm | weapon | +50% Fire Damage; +15% Damage Bonus; Burning enemies spread Burn when they die |
 | **Starfall** | Star + Rift + Ward + Star | weapon | +25% increased Magic Attack; +30% Arcane Damage; 12% chance on cast to call down falling stars on all enemies |
 | **Abyssal Crown** | Void + Crown + Void | armor | +40% Void Resist; +30% Magic Find; +10% Damage Bonus; +30% magic find, +10% damage |
+| **Hearthfire** | Ember + Vigor | armor | +15% Fire Resist; +3 HP Regen; Warm and steady: +15% fire resist, +3 HP a turn |
+| **Winter’s Grasp** | Frost + Frost + Ward | weapon | +18% Ice Damage; +8% Status Chance; 15% chance on hit to Freeze |
+| **Thundercaller** | Gale + Gale + Tide | weapon | +18% Lightning Damage; +2 Speed; 12% chance on hit to Stun |
+| **Greenwarden** | Thorn + Thorn + Vigor | armor | +15% Nature Resist; +8% increased Max HP; +8% max HP, +15% nature resist |
+| **Quarryman’s Patience** | Stone + Stone + Edge | weapon | +15% Accuracy; +20% Crit Damage; A patient blow: +15 accuracy, +20% crit damage |
+| **Tidewalker** | Tide + Gale | armor | +2 Speed; +4% Dodge; Light on the wet: +2 speed, +4 dodge |
+| **Daybreak** | Dawn + Ember | weapon | +15% Holy Damage; +8% Fire Damage; +15% holy damage and +8% fire damage |
+| **The Long Night** | Dusk + Frost | weapon | +15% Shadow Damage; +8% Ice Damage; +15% shadow damage and +8% ice damage |
+| **Bastion** | Ward + Stone + Ward | armor | +12% increased Defense; -4% Damage Taken; Take 4% less damage, +12% defense |
+| **Keen Eye** | Edge + Dawn | jewelry | +4% Crit Chance; +10% Accuracy; +4% crit chance, +10 accuracy |
+| **Verdict** | Oath + Edge + Oath | weapon | +20% Holy Damage; +3% Crit Chance; Crits call down holy light |
+| **Peacekeeper** | Oath + Vigor | armor | +10% increased Max HP; +10% Status Resist; +10% max HP, +10 status resist |
+| **Wayfinder** | Stone + Gale + Star | jewelry | +12% Magic Find; +2 Speed; +12% magic find and +2 speed |
+| **Grave Lantern** | Dusk + Soul | jewelry | +12% Shadow Damage; +2% Lifesteal; Heal 2% of damage dealt |
+| **Ember Crown** | Ember + Crown + Ember | armor | +15% Fire Damage; +10% increased Max MP; +15% fire damage, +10% max MP |
+| **Rift-Walker** | Rift + Edge | weapon | +18% Arcane Damage; +4% Cooldown Reduction; +18% arcane damage, +4% cooldown reduction |
+| **Laughing Fate** | Fury + Star + Fury | jewelry | +8 Luck; +3% Crit Chance; +8 LUK, +3% crit chance |
+| **Oathbreaker** | Oath + Rift + Fury | weapon | +20% Physical Damage; +10% Shield Piercing; Ignores 10% of enemy shields |
+| **Shepherd’s Rest** | Vigor + Dawn + Vigor | armor | +12% Healing Power; +4 HP Regen; +12% healing power, +4 HP a turn |
+| **Broken Sky** | Gale + Rift + Star + Gale | weapon | +25% Lightning Damage; +3 Speed; A bolt from nowhere on 10% of hits |
+| **Lodestar** | Star + Soul + Star | jewelry | +10% XP Gain; +10% Blessing Power; +10% XP, +10% blessing power |
+| **Deep Roots** | Thorn + Stone + Thorn + Ward | armor | +12% increased Max HP; +10% increased Defense; +12% max HP, +10% defense |
+| **Dragonbane** | Wyrm + Edge + Wyrm | weapon | +15% Damage Bonus; +25% Crit Damage; +15% damage, +25% crit damage |
+| **Hollow Throne** | Void + Crown + Soul + Void | armor | +20% Void Damage; -8% Damage Taken; Take 8% less damage; +20% void damage |
 
 **Runes (20):** Ash, Ember, Frost, Gale, Thorn, Stone, Tide, Vigor, Dawn, Dusk, Ward, Edge, Rift, Oath, Fury, Crown, Star, Soul, Wyrm, Void
 
 **Gems (7 types × 5 grades):** ruby, sapphire, topaz, emerald, diamond, amethyst, onyx. Grades: Chipped, Flawed, Clear, Flawless, Perfect.
 
-### Affixes (52, 7 tiers each)
+### Affixes (110, 7 tiers each)
 
-**Prefixes (25):** Cruel (Physical Attack), Sharpened (Weapon Damage), Runed (Weapon Magic), Mystic (Magic Attack), Hallowed (Divine Power), Blazing (Fire Damage), Frozen (Ice Damage), Shocking (Lightning Damage), Venomous (Nature Damage), Radiant (Holy Damage), Umbral (Shadow Damage), Eldritch (Arcane Damage), Vampiric (Lifesteal), Precise (Crit Chance), Deadly (Crit Damage), Sturdy (Armor), Warded (Armor Resist), Fortified (Defense), Vital (Max HP), Glowing (Max MP), Swift (Speed), Pious (Blessing Power), Devout (Favor Gain), Gilded (Gold Find), Slaying (Damage Bonus)
+**Prefixes (55):** Cruel (Physical Attack), Sharpened (Weapon Damage), Runed (Weapon Magic), Mystic (Magic Attack), Hallowed (Divine Power), Blazing (Fire Damage), Frozen (Ice Damage), Shocking (Lightning Damage), Venomous (Nature Damage), Radiant (Holy Damage), Umbral (Shadow Damage), Eldritch (Arcane Damage), Vampiric (Lifesteal), Precise (Crit Chance), Deadly (Crit Damage), Sturdy (Armor), Warded (Armor Resist), Fortified (Defense), Vital (Max HP), Glowing (Max MP), Swift (Speed), Pious (Blessing Power), Devout (Favor Gain), Gilded (Gold Find), Slaying (Damage Bonus), Brutal (Physical Damage), Keen (Accuracy), Ruthless (Crit Damage/Crit Chance), Quickened (Cooldown Reduction), Hardy (Max HP), Lucid (Max MP), Brilliant (Magic Attack), Stalwart (Damage Taken), Bloodthirsty (Lifesteal/Damage Bonus), Gleaming (Magic Find), Guarded (Defense/Armor Resist), Spellwoven (Magic Resist), Lively (HP Regen), Trickster’s (Dodge/Luck), Stormforged (Lightning Damage/Speed), Emberbound (Fire Damage/Status Chance), Frostbitten (Ice Damage/Status Chance), Sanctified (Holy Damage/Healing Power), Grave-Touched (Shadow Damage/Lifesteal), Thorned (Nature Damage/Defense), Blessed (Blessing Power/Favor Gain), Studious (XP Gain), Piercing (Shield Piercing), Commanding (Charisma), Haggler’s (Barter), Ironbound (Armor), Spirited (Resource Gain/MP Regen), Avenging (Damage Bonus), Wary (Status Resist/Dodge), Ancestral (Max HP/Max MP)
 
-**Suffixes (27):** of the Bear (Strength), of the Fox (Dexterity), of the Owl (Intelligence), of the Ox (Vitality), of the Sage (Wisdom), of the Magpie (Luck), of the Faithful (Faith), of the Titan (Strength/Vitality), of the Salamander (Fire Resist), of the Yeti (Ice Resist), of Grounding (Lightning Resist), of the Antidote (Nature Resist), of the Dawn (Holy Resist), of the Eclipse (Shadow Resist), of Nullification (Arcane Resist), of Prisms (all resists), of Haste (Cooldown Reduction), of Regeneration (HP Regen), of Meditation (MP Regen), of Evasion (Dodge), of Fortune (Magic Find), of Learning (XP Gain), of Mending (Healing Power), of Fury (Resource Gain), of Tenacity (Status Resist), of Affliction (Status Chance), of Accuracy (Accuracy)
+**Suffixes (55):** of the Bear (Strength), of the Fox (Dexterity), of the Owl (Intelligence), of the Ox (Vitality), of the Sage (Wisdom), of the Magpie (Luck), of the Faithful (Faith), of the Titan (Strength/Vitality), of the Salamander (Fire Resist), of the Yeti (Ice Resist), of Grounding (Lightning Resist), of the Antidote (Nature Resist), of the Dawn (Holy Resist), of the Eclipse (Shadow Resist), of Nullification (Arcane Resist), of Prisms (all resists), of Haste (Cooldown Reduction), of Regeneration (HP Regen), of Meditation (MP Regen), of Evasion (Dodge), of Fortune (Magic Find), of Learning (XP Gain), of Mending (Healing Power), of Fury (Resource Gain), of Tenacity (Status Resist), of Affliction (Status Chance), of Accuracy (Accuracy), of the Wolf (Dexterity/Strength), of the Raven (Intelligence/Wisdom), of the Stag (Vitality/Dexterity), of the Dove (Faith/Wisdom), of the Hawk (Accuracy/Crit Chance), of the Badger (Defense/Status Resist), of the Serpent (Status Chance/Nature Damage), of the Phoenix (HP Regen/Fire Resist), of the Leviathan (Max HP/Ice Resist), of the Thunderbird (Speed/Lightning Resist), of the Sentinel (Damage Taken/Defense), of the Archmage (Magic Attack/Cooldown Reduction), of the Warlord (Physical Attack/Crit Damage), of the Saint (Healing Power/Blessing Power), of the Merchant (Gold Find/Barter), of the Scholar (XP Gain/MP Regen), of the Wanderer (Speed/Dodge), of the Dragon (Damage Bonus/Fire Damage), of the Deep (Max MP/MP Regen), of Dusk (Shadow Resist/Dodge), of Dawn (Holy Resist/HP Regen), of Reflection (Magic Resist/Arcane Resist), of the Void (Void Damage), of Patience (Cooldown Reduction/Status Resist), of Finality (Crit Damage), of Plenty (Magic Find/Gold Find), of Grace (Favor Gain/Luck), of Ascension (Ultimate Charge)
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (40)
+### Consumables (128)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -496,10 +745,98 @@ Generated from the data files by `npm run content:md`.
 - Tear of a Dead God: Unmakes the air: heavy void damage to every enemy, Corrupting them.
 - Rift Map: A map of a place that is not there. Open it at any town’s Rift Gate.
 - Traveler's Pack: Permanently adds 8 inventory slots (up to 96).
+- Hot Porridge: +5% max HP, +2 HP regen for 4 battles.
+- Rabbit Skewers: +5% physical attack for 4 battles.
+- Garlic Bread: +8% status resist, +2 HP regen for 4 battles.
+- Roast Boar: +8% max HP, +5% physical attack for 5 battles.
+- Venison Pie: +10% max HP, +5% defense for 5 battles.
+- Honey Cakes: +3 MP regen, +6% max MP for 5 battles.
+- Pike Chowder: +4 HP regen, +8% status resist for 5 battles.
+- Thornberry Jam: +8% magic find, +2 luk for 5 battles.
+- Salt-Cod Fritters: +2 speed, +2 dodge for 5 battles.
+- Pepper Steak: +10% physical attack, +2% crit chance for 6 battles.
+- Bear Stew: +14% max HP, +4 HP regen for 6 battles.
+- Moonpetal Tea: +10% max MP, +3 MP regen for 6 battles.
+- Smoked Pike: +14% crit damage, +5 accuracy for 6 battles.
+- Nightshade Wine: +12% shadow damage, +6% status chance for 6 battles.
+- Saffron Rice: +10% XP, +8% max HP for 7 battles.
+- Glass-Eel Rolls: +8 accuracy, +3% crit chance for 6 battles.
+- Serpent Skewers: +15% nature damage, +8% status chance for 6 battles.
+- Honey-Glazed Ham: +12% max HP, +8% healing power for 7 battles.
+- Ghostcap Soup: +15% shadow resist, +3 dodge for 7 battles.
+- Saffron Lamb: +12% physical attack, +12% magic attack for 7 battles.
+- Pepper-and-Ember Stew: +18% fire damage, +15% fire resist for 7 battles.
+- Frostleaf Salad: +15% ice resist, +8% max MP for 6 battles.
+- Sunpetal Tart: +15% holy damage, +10% healing power for 7 battles.
+- Dreamleaf Pudding: +6% cooldown reduction, +3 MP regen for 7 battles.
+- Wyvern Wings: +20% lightning damage, +3 speed for 7 battles.
+- Ember-Eel Curry: +22% fire damage, +6% damage for 8 battles.
+- Harvest Feast: +15% max HP, +10% XP, +10% gold find for 8 battles.
+- Hunter's Platter: +4% crit chance, +10 accuracy, +3 dodge for 8 battles.
+- Mariner's Bowl: +18% lightning resist, +18% ice resist for 8 battles.
+- Moonlit Roast: +5 dodge, +15% shadow damage for 8 battles.
+- Saint's Bread: +10% blessing power, +8% favor gain for 6 battles.
+- Scholar's Supper: +12% XP, +4 int for 6 battles.
+- Mercenary's Meal: +4 str, +10% max HP for 6 battles.
+- Traveler's Hardtack: +1 speed, +1 HP regen for 8 battles.
+- Festival Pudding: +5 luk, +10% magic find, +10% gold find for 7 battles.
+- Dragon-Scale Jerky: -4 damage taken, +20% fire resist for 8 battles.
+- Banquet of the Pantheon: +15% max HP, +8% damage, +10% XP, +12% blessing power for 10 battles.
+- Nameless Broth: +20% void damage, +8% damage for 8 battles.
+- Hearth-Mother's Pie: +6 HP regen, +12% healing power for 8 battles.
+- Golden Trout: +15% gold find, +2 luk for 6 battles.
+- Elixir of the Hawk: +12 accuracy, +3% crit chance for 12 battles.
+- Elixir of the Bear: +15% max HP, +3 str for 12 battles.
+- Elixir of the Fox: +5 dodge, +2 speed for 12 battles.
+- Elixir of Quickness: +3 speed, +4% cooldown reduction for 12 battles.
+- Elixir of the Wall: +20% defense, +10% status resist for 12 battles.
+- Elixir of Flame: +20% fire damage, +12% fire resist for 12 battles.
+- Elixir of Frost: +20% ice damage, +12% ice resist for 12 battles.
+- Elixir of the Storm: +20% lightning damage, +2 speed for 12 battles.
+- Elixir of the Grove: +20% nature damage, +3 HP regen for 12 battles.
+- Elixir of the Dawn: +20% holy damage, +10% healing power for 12 battles.
+- Elixir of the Dusk: +20% shadow damage, +1 lifesteal for 12 battles.
+- Elixir of the Sage: +18% magic attack, +3 MP regen for 12 battles.
+- Elixir of the Champion: +20% physical attack, +15% crit damage for 12 battles.
+- Elixir of the Giant: +20% max HP, -4 damage taken for 12 battles.
+- Elixir of the Ghost: +8 dodge, +20% shadow resist for 12 battles.
+- Elixir of the Scholar: +25% XP, +3 wis for 15 battles.
+- Elixir of the Miser: +30% gold find, +3 barter for 15 battles.
+- Elixir of the Treasure-Hunter: +30% magic find, +4 luk for 15 battles.
+- Elixir of the Pilgrim: +25% favor gain, +12% blessing power for 15 battles.
+- Elixir of Clear Mind: +20% status resist, +2 MP regen for 12 battles.
+- Elixir of the Wyrm: +12% damage, +5% crit chance for 12 battles.
+- Elixir of Thin Space: +25% void damage, +6% cooldown reduction for 12 battles.
+- Elixir of the Ironhide: +25% defense, +10% max HP for 12 battles.
+- Elixir of the Sunlit Path: +4 speed, +15% XP, +20% holy resist for 15 battles.
+- Oil of Sharpness: +4% weapon damage for 8 battles.
+- Oil of Venom: +12% nature damage, +8% status chance for 8 battles.
+- Oil of Embers: +14% fire damage for 8 battles.
+- Oil of Rime: +14% ice damage for 8 battles.
+- Oil of Sparks: +14% lightning damage for 8 battles.
+- Oil of Light: +14% holy damage, +5 accuracy for 8 battles.
+- Oil of Shadow: +14% shadow damage, +2% crit chance for 8 battles.
+- Oil of Cruelty: +18% crit damage, +2% crit chance for 8 battles.
+- Oil of the Hunt: +10 accuracy, +5% damage for 8 battles.
+- Oil of Ruin: +12 shield pierce, +8% physical attack for 8 battles.
+- Oil of the Stormlord: +25% lightning damage, +2 speed for 8 battles.
+- Oil of the World-Eater: +10% damage, +20% void damage for 8 battles.
+- Smoke Bomb: Blinds every enemy (70%) for 2 turns.
+- Caltrops: Scatters spikes: every enemy takes physical damage and is Slowed.
+- Flash Powder: A burst of light: Stuns one enemy (50%) and Blinds it.
+- Thunder Charge: Lightning damage to every enemy; Stuns (25%).
+- Spring Trap: Snaps one enemy: heavy damage and Slow.
+- Clockwork Wasp: Stings every enemy and may Poison them.
+- Weighted Net: Entangles an enemy: Slowed and Weakened for 3 turns.
+- Spider-Silk Snare: Binds every enemy: Slowed for 2 turns.
+- Lullaby Cloth: Puts every enemy to sleep (50%) for 2 turns.
+- Mirror Cloak: Shield yourself for 25% and gain +30 dodge for 2 turns.
+- Surgeon’s Bandage Roll: Heals an ally for 30% of max HP and stops Bleeding.
+- Featherfall Charm: Haste for 2 turns and +15 dodge.
 
-**Materials (35):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment
+**Materials (65):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment, Coal, Silver Ore, Steel Ingot, Mithril Ingot, Adamant Ingot, Starmetal Ingot, Yew Plank, Ironwood Plank, Wolf Pelt, Boar Hide, Bear Hide, Serpent Skin, Wyvern Leather, Wool Bolt, Spider Silk, Thread of Dawn, Wild Garlic, Thornberry, Moonpetal, Nightshade, Ghostcap, Salt Cod, Pike, Glass Eel, Venison, Boar Meat, Honeycomb, Sea Salt, Black Pepper, Saffron
 
-**Curiosities (69):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap, Miller's Lucky Penny, Straw Crown, Amber Honeycomb, Shepherd Whistle, Twin-Name Willow Ring, Royal Tax Ledger, Brass Windvane, Poacher Tally-Stick, Seed of the Last Grove, Bottled Whisper, Silver Fox Collar, Unlit Lantern Core, Antler Circlet, Moth-Eaten Folio, Tide-Stained Chart, Foreman Lunchbox, Humming Geode, Clapper of the Drowned Bell, Eyeless Fish Idol, Calcified Key, Fungal Ledger, Caravan Master Seal, Priest's Glass Tear, Scorpion Crown Spur, Mirage Bucket, Bone Chess Queen, Fulgurite Blossom, Sandworm Eggshell, Frost-Stilled Lute String, Climber Prayer Flag, Yeti Hair Charm, Comb of Frozen Hours, Snowbound Vow-Scroll, Pilgrim Ember-Box, Captain's Frozen Log, Black Mara's Compass, Keeper Lamp Wick, Pearl Comb, Bottled Squall, Salt Merchant Seal, Whalebone Veil, Kraken Sucker-Ring, Wagered Hammerhead, Cradle of Cinders, Obsidian Hand-Mirror, Salamander Scale Charm, Anvil Tuning Fork, Magma Pearl, Ash Prophet Bowl, Gaoler Keyring, Splinter of the Black Throne, Queen's Unsent Letter, Executioner Whetstone, Silent Jester Bell, Shard of a Broken Oath, Hollow Knight Gauntlet
+**Curiosities (81):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap, Moon-Stuffed Pillow, Chip of a Cornerstone, Little Wind-Bell, Dated Ledger Page, Dead Man’s Pocketwatch, Saint’s Fingerbone Charm, Pressed Thornberry, Lopsided Tin Soldier, Torn Treasure Chart, Crowned Key, Moth-Eaten Playbill, Glass Feather, Miller's Lucky Penny, Straw Crown, Amber Honeycomb, Shepherd Whistle, Twin-Name Willow Ring, Royal Tax Ledger, Brass Windvane, Poacher Tally-Stick, Seed of the Last Grove, Bottled Whisper, Silver Fox Collar, Unlit Lantern Core, Antler Circlet, Moth-Eaten Folio, Tide-Stained Chart, Foreman Lunchbox, Humming Geode, Clapper of the Drowned Bell, Eyeless Fish Idol, Calcified Key, Fungal Ledger, Caravan Master Seal, Priest's Glass Tear, Scorpion Crown Spur, Mirage Bucket, Bone Chess Queen, Fulgurite Blossom, Sandworm Eggshell, Frost-Stilled Lute String, Climber Prayer Flag, Yeti Hair Charm, Comb of Frozen Hours, Snowbound Vow-Scroll, Pilgrim Ember-Box, Captain's Frozen Log, Black Mara's Compass, Keeper Lamp Wick, Pearl Comb, Bottled Squall, Salt Merchant Seal, Whalebone Veil, Kraken Sucker-Ring, Wagered Hammerhead, Cradle of Cinders, Obsidian Hand-Mirror, Salamander Scale Charm, Anvil Tuning Fork, Magma Pearl, Ash Prophet Bowl, Gaoler Keyring, Splinter of the Black Throne, Queen's Unsent Letter, Executioner Whetstone, Silent Jester Bell, Shard of a Broken Oath, Hollow Knight Gauntlet
 
 **Mechanic flags (18):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
 <!-- items:end -->
@@ -2133,6 +2470,11 @@ Every town has the core shops; stock rolls daily at your level. Shops pay 25% of
 | **Faction Quartermaster** | x1.2 | Members only: better gear, cheaper the higher your rank. | Towns with a faction hall (members only) |
 | **Gambler** | x1 | Buy unidentified gear sight unseen. Usually a dud. Sometimes a legend. | Sandhaven, Saltmere |
 | **Black Market** (night) | x2.5 | Rare goods of no fixed origin, after dark, at a price. Stock rotates nightly. Heretics of the Nameless One are shown the back room. | Thornwick, Saltmere |
+| **Odd Bartholomew** | x1.3 | Curios, oddities and the occasional skillbook, out of a cart that is larger inside. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
+| **Madame Vesper** | x1.2 | Elixirs, foods and tinctures nobody else stocks. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
+| **Karl One-Tooth** | x1.4 | Arms and armor off the back of a mule. Don’t ask which battle. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
+| **The Silent Cartographer** | x1.3 | Says nothing. Sells recipes, charts and the raw things that go into them. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
+| **The Collector** | x1.5 | Pays three times the going price for curiosities, and will not say why. | Brightwater, Thornwick, Sandhaven, Frosthold, Saltmere |
 
 ### Professions
 
@@ -2143,14 +2485,157 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **Cooking** (crafting): Cook hearty food from fish, herbs and hunted game.
 - **Enchanting** (crafting): Better odds and prices on upgrades and affix rerolls; refine essences.
 - **Jewelcrafting** (crafting): Cut gems into finer grades, make rings, amulets and earrings, and add sockets cheaply.
+- **Tailoring** (crafting): Cure hides and weave cloth into armor, satchels, snares and cloaks that bite back.
 - **Mining** (gathering): Work ore veins in the wild. Higher levels yield more.
 - **Herbalism** (gathering): Pick herbs from patches in the wild. Higher levels yield more.
 - **Fishing** (gathering): Fish at fishing spots by the water. Higher levels yield more.
+- **Skinning** (gathering): Skin the beasts you defeat for hides and meat. Higher levels yield more.
 
-### Recipes (79)
+### Recipes (220)
 
 | Recipe | Profession (level) | Inputs | Makes | Starter |
 |---|---|---|---|---|
+| Ingot-Forged Weapon (tier 2) | Blacksmithing (8) | 3 Steel Ingot, 1 Ashwood Plank, 1 Yew Plank, 60g | tier 2 weapon (uncommon-epic) | scroll |
+| Ingot-Forged Armor (tier 2) | Blacksmithing (8) | 3 Steel Ingot, 3 Boar Hide, 2 Wool Bolt, 60g | tier 2 armor (uncommon-epic) | scroll |
+| Ingot-Forged Weapon (tier 3) | Blacksmithing (16) | 3 Mithril Ingot, 1 Ashwood Plank, 1 Yew Plank, 90g | tier 3 weapon (uncommon-epic) | scroll |
+| Ingot-Forged Armor (tier 3) | Blacksmithing (16) | 3 Mithril Ingot, 4 Boar Hide, 2 Wool Bolt, 90g | tier 3 armor (uncommon-epic) | scroll |
+| Ingot-Forged Weapon (tier 4) | Blacksmithing (26) | 3 Adamant Ingot, 1 Ashwood Plank, 1 Yew Plank, 120g | tier 4 weapon (uncommon-epic) | scroll |
+| Ingot-Forged Armor (tier 4) | Blacksmithing (26) | 3 Adamant Ingot, 5 Boar Hide, 2 Wool Bolt, 120g | tier 4 armor (uncommon-epic) | scroll |
+| Ingot-Forged Weapon (tier 5) | Blacksmithing (36) | 3 Starmetal Ingot, 1 Ashwood Plank, 1 Yew Plank, 150g | tier 5 weapon (uncommon-epic) | scroll |
+| Ingot-Forged Armor (tier 5) | Blacksmithing (36) | 3 Starmetal Ingot, 6 Boar Hide, 2 Wool Bolt, 150g | tier 5 armor (uncommon-epic) | scroll |
+| Ingot-Forged Weapon (tier 6) | Blacksmithing (46) | 5 Starmetal Ingot, 1 Ashwood Plank, 1 Yew Plank, 180g | tier 6 weapon (uncommon-epic) | scroll |
+| Ingot-Forged Armor (tier 6) | Blacksmithing (46) | 5 Starmetal Ingot, 7 Boar Hide, 2 Wool Bolt, 180g | tier 6 armor (uncommon-epic) | scroll |
+| Ingot-Forged Weapon (tier 1) | Blacksmithing (1) | 2 Steel Ingot, 1 Ashwood Plank, 30g | tier 1 weapon (uncommon-epic) | scroll |
+| Ingot-Forged Armor (tier 1) | Blacksmithing (1) | 2 Steel Ingot, 2 Boar Hide, 2 Wool Bolt, 30g | tier 1 armor (uncommon-epic) | scroll |
+| Tan Rough Hide | Tailoring (1) | 2 Wolf Pelt | 1x Rough Hide | yes |
+| Tan Thick Hide | Tailoring (12) | 2 Boar Hide, 1 Bear Hide | 1x Thick Hide | scroll |
+| Spin a Silk Bolt | Tailoring (14) | 3 Spider Silk | 1x Silk Bolt | scroll |
+| Weave Moonsilk | Tailoring (30) | 2 Silk Bolt, 2 Moonpetal, 1 Thread of Dawn | 1x Moonsilk | scroll |
+| Hot Porridge | Cooking (1) | 1 Honeycomb | 2x Hot Porridge | yes |
+| Rabbit Skewers | Cooking (1) | 1 Venison, 1 Sea Salt | 2x Rabbit Skewers | yes |
+| Garlic Bread | Cooking (2) | 2 Wild Garlic, 1 Sea Salt | 2x Garlic Bread | yes |
+| Roast Boar | Cooking (4) | 2 Boar Meat, 1 Sea Salt | 2x Roast Boar | yes |
+| Venison Pie | Cooking (5) | 2 Venison, 1 Wild Garlic | 2x Venison Pie | scroll |
+| Honey Cakes | Cooking (5) | 1 Honeycomb, 1 Manabloom | 2x Honey Cakes | scroll |
+| Pike Chowder | Cooking (7) | 2 Pike, 1 Wild Garlic | 2x Pike Chowder | scroll |
+| Thornberry Jam | Cooking (7) | 3 Thornberry, 1 Honeycomb | 2x Thornberry Jam | scroll |
+| Salt-Cod Fritters | Cooking (9) | 2 Salt Cod, 1 Sea Salt | 2x Salt-Cod Fritters | scroll |
+| Pepper Steak | Cooking (13) | 2 Venison, 1 Black Pepper | 2x Pepper Steak | scroll |
+| Bear Stew | Cooking (14) | 2 Boar Meat, 2 Wild Garlic | 2x Bear Stew | scroll |
+| Moonpetal Tea | Cooking (14) | 2 Moonpetal, 1 Honeycomb | 2x Moonpetal Tea | scroll |
+| Smoked Pike | Cooking (16) | 2 Pike, 1 Coal | 2x Smoked Pike | scroll |
+| Nightshade Wine | Cooking (18) | 2 Nightshade, 2 Thornberry | 2x Nightshade Wine | scroll |
+| Saffron Rice | Cooking (20) | 1 Saffron, 1 Sea Salt | 2x Saffron Rice | scroll |
+| Glass-Eel Rolls | Cooking (22) | 2 Glass Eel, 1 Sea Salt | 2x Glass-Eel Rolls | scroll |
+| Serpent Skewers | Cooking (23) | 2 Venison, 1 Black Pepper | 2x Serpent Skewers | scroll |
+| Honey-Glazed Ham | Cooking (23) | 3 Boar Meat, 2 Honeycomb | 2x Honey-Glazed Ham | scroll |
+| Ghostcap Soup | Cooking (25) | 2 Ghostcap, 1 Pike | 2x Ghostcap Soup | scroll |
+| Saffron Lamb | Cooking (27) | 2 Venison, 1 Saffron | 2x Saffron Lamb | scroll |
+| Pepper-and-Ember Stew | Cooking (27) | 1 Ember Eel, 2 Black Pepper, 1 Coal | 2x Pepper-and-Ember Stew | scroll |
+| Frostleaf Salad | Cooking (11) | 2 Frostleaf, 1 Sea Salt | 2x Frostleaf Salad | scroll |
+| Sunpetal Tart | Cooking (25) | 2 Sunpetal, 1 Honeycomb | 2x Sunpetal Tart | scroll |
+| Dreamleaf Pudding | Cooking (31) | 1 Dreamleaf, 2 Honeycomb | 2x Dreamleaf Pudding | scroll |
+| Wyvern Wings | Cooking (32) | 3 Venison, 2 Black Pepper | 2x Wyvern Wings | scroll |
+| Ember-Eel Curry | Cooking (34) | 2 Ember Eel, 1 Saffron, 1 Black Pepper | 2x Ember-Eel Curry | scroll |
+| Harvest Feast | Cooking (36) | 3 Boar Meat, 2 Honeycomb, 3 Thornberry | 2x Harvest Feast | scroll |
+| Hunter's Platter | Cooking (36) | 3 Venison, 2 Wild Garlic, 1 Black Pepper | 2x Hunter's Platter | scroll |
+| Mariner's Bowl | Cooking (38) | 2 Glass Eel, 2 Salt Cod, 2 Sea Salt | 2x Mariner's Bowl | scroll |
+| Moonlit Roast | Cooking (40) | 2 Moonpetal, 3 Venison | 2x Moonlit Roast | scroll |
+| Saint's Bread | Cooking (18) | 1 Honeycomb, 1 Sunpetal | 2x Saint's Bread | scroll |
+| Scholar's Supper | Cooking (22) | 2 Pike, 2 Thornberry, 1 Sea Salt | 2x Scholar's Supper | scroll |
+| Mercenary's Meal | Cooking (22) | 3 Boar Meat, 1 Black Pepper | 2x Mercenary's Meal | scroll |
+| Traveler's Hardtack | Cooking (1) | 1 Sea Salt, 1 Wild Garlic | 2x Traveler's Hardtack | scroll |
+| Festival Pudding | Cooking (29) | 2 Honeycomb, 2 Thornberry, 1 Saffron | 2x Festival Pudding | scroll |
+| Dragon-Scale Jerky | Cooking (41) | 3 Venison, 1 Coal | 2x Dragon-Scale Jerky | scroll |
+| Banquet of the Pantheon | Cooking (45) | 2 Saffron, 2 Glass Eel, 2 Honeycomb, 2 Venison | 2x Banquet of the Pantheon | scroll |
+| Nameless Broth | Cooking (49) | 2 Ghostcap, 2 Nightshade, 2 Moonpetal | 2x Nameless Broth | scroll |
+| Hearth-Mother's Pie | Cooking (34) | 2 Honeycomb, 3 Thornberry, 1 Boar Meat | 2x Hearth-Mother's Pie | scroll |
+| Golden Trout | Cooking (13) | 2 River Trout, 1 Honeycomb | 2x Golden Trout | scroll |
+| Elixir of the Hawk | Alchemy (5) | 1 Fireweed, 1 Harpy Feather | 1x Elixir of the Hawk | yes |
+| Elixir of the Bear | Alchemy (7) | 2 Healroot, 1 Boar Hide | 1x Elixir of the Bear | yes |
+| Elixir of the Fox | Alchemy (7) | 1 Manabloom, 1 Wolf Pelt | 1x Elixir of the Fox | scroll |
+| Elixir of Quickness | Alchemy (11) | 1 Frostleaf, 1 Spider Silk | 1x Elixir of Quickness | scroll |
+| Elixir of the Wall | Alchemy (13) | 2 Iron Ore, 1 Frostleaf | 1x Elixir of the Wall | scroll |
+| Elixir of Flame | Alchemy (13) | 2 Fireweed, 1 Coal | 1x Elixir of Flame | scroll |
+| Elixir of Frost | Alchemy (13) | 2 Frostleaf, 1 Silver Ore | 1x Elixir of Frost | scroll |
+| Elixir of the Storm | Alchemy (16) | 2 Harpy Feather, 1 Silver Ore | 1x Elixir of the Storm | scroll |
+| Elixir of the Grove | Alchemy (16) | 2 Thornberry, 2 Healroot | 1x Elixir of the Grove | scroll |
+| Elixir of the Dawn | Alchemy (20) | 1 Sunpetal, 1 Holy Water | 1x Elixir of the Dawn | scroll |
+| Elixir of the Dusk | Alchemy (20) | 1 Nightshade, 2 Bone Dust | 1x Elixir of the Dusk | scroll |
+| Elixir of the Sage | Alchemy (22) | 1 Moonpetal, 1 Lesser Essence | 1x Elixir of the Sage | scroll |
+| Elixir of the Champion | Alchemy (25) | 1 Sunpetal, 1 Greater Essence | 1x Elixir of the Champion | scroll |
+| Elixir of the Giant | Alchemy (27) | 1 Bear Hide, 1 Greater Essence | 1x Elixir of the Giant | scroll |
+| Elixir of the Ghost | Alchemy (29) | 1 Ghostcap, 1 Dreamleaf | 1x Elixir of the Ghost | scroll |
+| Elixir of the Scholar | Alchemy (18) | 1 Dreamleaf, 2 Thornberry | 1x Elixir of the Scholar | scroll |
+| Elixir of the Miser | Alchemy (18) | 2 Silver Ore, 1 Honeycomb | 1x Elixir of the Miser | scroll |
+| Elixir of the Treasure-Hunter | Alchemy (23) | 1 Sunpetal, 2 Silver Ore | 1x Elixir of the Treasure-Hunter | scroll |
+| Elixir of the Pilgrim | Alchemy (22) | 1 Moonpetal, 1 Holy Water | 1x Elixir of the Pilgrim | scroll |
+| Elixir of Clear Mind | Alchemy (14) | 1 Frostleaf, 1 Thornberry | 1x Elixir of Clear Mind | scroll |
+| Elixir of the Wyrm | Alchemy (34) | 1 Wyvern Leather, 1 Radiant Essence | 1x Elixir of the Wyrm | scroll |
+| Elixir of Thin Space | Alchemy (40) | 1 Void Fragment, 1 Ghostcap | 1x Elixir of Thin Space | scroll |
+| Elixir of the Ironhide | Alchemy (32) | 1 Adamant Ingot, 1 Serpent Skin | 1x Elixir of the Ironhide | scroll |
+| Elixir of the Sunlit Path | Alchemy (36) | 1 Saffron, 2 Sunpetal | 1x Elixir of the Sunlit Path | scroll |
+| Oil of Sharpness | Enchanting (4) | 1 Coal, 1 Wild Garlic | 1x Oil of Sharpness | scroll |
+| Oil of Venom | Enchanting (7) | 1 Nightshade, 1 Sea Salt | 1x Oil of Venom | scroll |
+| Oil of Embers | Enchanting (9) | 2 Fireweed, 1 Coal | 1x Oil of Embers | scroll |
+| Oil of Rime | Enchanting (9) | 2 Frostleaf, 1 Sea Salt | 1x Oil of Rime | scroll |
+| Oil of Sparks | Enchanting (11) | 1 Harpy Feather, 1 Silver Ore | 1x Oil of Sparks | scroll |
+| Oil of Light | Enchanting (14) | 1 Sunpetal, 1 Holy Water | 1x Oil of Light | scroll |
+| Oil of Shadow | Enchanting (14) | 1 Nightshade, 1 Bone Dust | 1x Oil of Shadow | scroll |
+| Oil of Cruelty | Enchanting (18) | 1 Serpent Skin, 1 Coal | 1x Oil of Cruelty | scroll |
+| Oil of the Hunt | Enchanting (22) | 1 Moonpetal, 1 Wolf Pelt | 1x Oil of the Hunt | scroll |
+| Oil of Ruin | Enchanting (27) | 1 Ghostcap, 1 Adamant Ingot | 1x Oil of Ruin | scroll |
+| Oil of the Stormlord | Enchanting (32) | 1 Wyvern Leather, 2 Silver Ore | 1x Oil of the Stormlord | scroll |
+| Oil of the World-Eater | Enchanting (41) | 1 Void Fragment, 1 Starmetal Ingot | 1x Oil of the World-Eater | scroll |
+| Smoke Bomb | Blacksmithing (4) | 1 Steel Ingot, 1 Coal | 2x Smoke Bomb | yes |
+| Caltrops | Blacksmithing (5) | 1 Steel Ingot, 1 Coal | 2x Caltrops | scroll |
+| Flash Powder | Blacksmithing (7) | 1 Steel Ingot, 1 Coal | 2x Flash Powder | scroll |
+| Thunder Charge | Blacksmithing (18) | 2 Steel Ingot, 1 Coal | 2x Thunder Charge | scroll |
+| Spring Trap | Blacksmithing (13) | 2 Steel Ingot, 1 Coal | 2x Spring Trap | scroll |
+| Clockwork Wasp | Blacksmithing (27) | 3 Steel Ingot, 1 Coal | 2x Clockwork Wasp | scroll |
+| Weighted Net | Tailoring (5) | 1 Spider Silk, 1 Wool Bolt | 2x Weighted Net | yes |
+| Spider-Silk Snare | Tailoring (13) | 2 Spider Silk, 1 Wool Bolt | 2x Spider-Silk Snare | scroll |
+| Lullaby Cloth | Tailoring (20) | 2 Spider Silk, 1 Wool Bolt | 2x Lullaby Cloth | scroll |
+| Mirror Cloak | Tailoring (23) | 2 Spider Silk, 1 Wool Bolt | 2x Mirror Cloak | scroll |
+| Surgeon’s Bandage Roll | Tailoring (4) | 1 Spider Silk, 1 Wool Bolt | 2x Surgeon’s Bandage Roll | scroll |
+| Featherfall Charm | Tailoring (16) | 2 Spider Silk, 1 Wool Bolt | 2x Featherfall Charm | scroll |
+| Smelt Steel | Blacksmithing (1) | 2 Iron Ore, 1 Coal | 1x Steel Ingot | yes |
+| Smelt Mithril | Blacksmithing (14) | 2 Mithril Ore, 2 Coal | 1x Mithril Ingot | scroll |
+| Smelt Adamant | Blacksmithing (24) | 2 Adamant Ore, 3 Coal | 1x Adamant Ingot | scroll |
+| Smelt Starmetal | Blacksmithing (34) | 2 Starmetal Ore, 4 Coal | 1x Starmetal Ingot | scroll |
+| Tailor Cloth Armor (tier 1) | Tailoring (1) | 4 Wool Bolt, 2 Linen Scrap, 40g | tier 1 armor (uncommon-epic) | yes |
+| Cure Leather Armor (tier 1) | Tailoring (1) | 4 Wool Bolt, 3 Wolf Pelt, 2 Boar Hide, 40g | tier 1 armor (uncommon-epic) | scroll |
+| Stitch a Satchel (tier 1) | Tailoring (1) | 3 Wool Bolt, 1 Boar Hide, 120g | 1x Traveler's Pack | scroll |
+| Tailor Cloth Armor (tier 2) | Tailoring (8) | 4 Wool Bolt, 2 Spider Silk, 80g | tier 2 armor (uncommon-epic) | scroll |
+| Cure Leather Armor (tier 2) | Tailoring (8) | 4 Wool Bolt, 4 Wolf Pelt, 3 Boar Hide, 80g | tier 2 armor (uncommon-epic) | scroll |
+| Stitch a Satchel (tier 2) | Tailoring (8) | 4 Wool Bolt, 1 Boar Hide, 240g | 1x Traveler's Pack | scroll |
+| Tailor Cloth Armor (tier 3) | Tailoring (16) | 4 Spider Silk, 2 Silk Bolt, 2 Boar Hide, 120g | tier 3 armor (uncommon-epic) | scroll |
+| Cure Leather Armor (tier 3) | Tailoring (16) | 4 Spider Silk, 5 Wolf Pelt, 4 Boar Hide, 120g | tier 3 armor (uncommon-epic) | scroll |
+| Stitch a Satchel (tier 3) | Tailoring (16) | 5 Wool Bolt, 1 Boar Hide, 360g | 1x Traveler's Pack | scroll |
+| Tailor Cloth Armor (tier 4) | Tailoring (26) | 4 Silk Bolt, 2 Bear Hide, 1 Thread of Dawn, 160g | tier 4 armor (uncommon-epic) | scroll |
+| Cure Leather Armor (tier 4) | Tailoring (26) | 4 Silk Bolt, 6 Wolf Pelt, 5 Boar Hide, 160g | tier 4 armor (uncommon-epic) | scroll |
+| Stitch a Satchel (tier 4) | Tailoring (26) | 6 Wool Bolt, 1 Boar Hide, 480g | 1x Traveler's Pack | scroll |
+| Tailor Cloth Armor (tier 5) | Tailoring (36) | 3 Moonsilk, 2 Serpent Skin, 2 Thread of Dawn, 200g | tier 5 armor (uncommon-epic) | scroll |
+| Cure Leather Armor (tier 5) | Tailoring (36) | 3 Moonsilk, 7 Wolf Pelt, 6 Boar Hide, 200g | tier 5 armor (uncommon-epic) | scroll |
+| Stitch a Satchel (tier 5) | Tailoring (36) | 7 Wool Bolt, 1 Boar Hide, 600g | 1x Traveler's Pack | scroll |
+| Tailor Cloth Armor (tier 6) | Tailoring (46) | 4 Moonsilk, 2 Wyvern Leather, 3 Thread of Dawn, 240g | tier 6 armor (uncommon-epic) | scroll |
+| Cure Leather Armor (tier 6) | Tailoring (46) | 4 Moonsilk, 8 Wolf Pelt, 7 Boar Hide, 240g | tier 6 armor (uncommon-epic) | scroll |
+| Stitch a Satchel (tier 6) | Tailoring (46) | 8 Wool Bolt, 1 Boar Hide, 720g | 1x Traveler's Pack | scroll |
+| Banquet of the Pantheon | Cooking (50) | 2 Saffron, 2 Glass Eel, 2 Honeycomb, 2 Venison | 1x Banquet of the Pantheon | scroll |
+| Elixir of the Sunlit Path | Alchemy (50) | 1 Saffron, 2 Sunpetal | 1x Elixir of the Sunlit Path | scroll |
+| Oil of the World-Eater | Enchanting (50) | 1 Void Fragment, 1 Starmetal Ingot | 1x Oil of the World-Eater | scroll |
+| Forge a Grandmaster’s Weapon | Blacksmithing (50) | 3 Starmetal Ingot, 2 Ironwood Plank, 2 Radiant Essence, 3000g | tier 6 weapon (uncommon-epic) | scroll |
+| Cut a Grandmaster’s Jewel | Jewelcrafting (50) | 2 Starmetal Ingot, 2 Radiant Essence, 1 Flawless Diamond, 3000g | tier 6 accessory (uncommon-epic) | scroll |
+| Weave a Grandmaster’s Vestment | Tailoring (50) | 4 Moonsilk, 4 Thread of Dawn, 3 Wyvern Leather, 3000g | tier 6 armor (uncommon-epic) | scroll |
+| Silver-Set Ring (tier 1) | Jewelcrafting (1) | 3 Silver Ore, 1 Faint Essence, 50g | tier 1 accessory (uncommon-epic) | scroll |
+| Silver-Set Ring (tier 2) | Jewelcrafting (8) | 4 Silver Ore, 2 Faint Essence, 100g | tier 2 accessory (uncommon-epic) | scroll |
+| Silver-Set Ring (tier 3) | Jewelcrafting (16) | 5 Silver Ore, 2 Faint Essence, 150g | tier 3 accessory (uncommon-epic) | scroll |
+| Silver-Set Ring (tier 4) | Jewelcrafting (26) | 6 Silver Ore, 3 Faint Essence, 200g | tier 4 accessory (uncommon-epic) | scroll |
+| Silver-Set Ring (tier 5) | Jewelcrafting (36) | 7 Silver Ore, 3 Faint Essence, 250g | tier 5 accessory (uncommon-epic) | scroll |
+| Silver-Set Ring (tier 6) | Jewelcrafting (46) | 8 Silver Ore, 4 Faint Essence, 300g | tier 6 accessory (uncommon-epic) | scroll |
+| Distil Faint Essence | Enchanting (1) | 2 Thornberry | 2x Faint Essence | yes |
+| Distil Lesser Essence | Enchanting (12) | 1 Moonpetal, 1 Silver Ore | 1x Lesser Essence | scroll |
+| Distil Greater Essence | Enchanting (26) | 1 Ghostcap, 1 Mithril Ingot | 1x Greater Essence | scroll |
 | Minor Health Potion ×2 | Alchemy (1) | 2 Healroot | 2x Minor Health Potion | yes |
 | Minor Mana Potion ×2 | Alchemy (1) | 2 Manabloom | 2x Minor Mana Potion | yes |
 | Lesser Health Potion ×2 | Alchemy (8) | 2 Healroot, 1 Fireweed | 2x Lesser Health Potion | scroll |
@@ -2240,7 +2725,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-521 quests, 137 NPCs, 207 dialogues, 6 companions, 6 endings.
+555 quests, 143 NPCs, 207 dialogues, 6 companions, 6 endings.
 
 ### Main story (8)
 
@@ -2265,7 +2750,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Nameless Offer** | 76 | starts by itself | Defeat the guardians of the margin (fight); Hear the Nameless One (talk) |
 | **Twilight of the Gods** | 80 | starts by itself | Reach the Black Throne (visit); Defeat the Nameless One (fight); Defeat the Last Light (fight); Stand before the throne (talk) |
 
-### Side quests (72)
+### Side quests (106)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -2306,6 +2791,40 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Index and the Hour** | 36 | starts by itself | Speak with the priest (talk) |
 | **The Tide and the Toll** | 44 | starts by itself | Speak with the priest (talk) |
 | **The Trick and the Stone** | 50 | starts by itself | Speak with the priest (talk) |
+| **The Other Half** | 12 | starts by itself | Defeat bandits and smugglers (kill) |
+| **What the Key Opens** | 22 | starts by itself | Defeat dungeon foes (kill) |
+| **The Last Act, Rescheduled** | 16 | starts by itself | Defeat undead (kill) |
+| **The Weight of Nothing** | 26 | starts by itself | Bring the Glass Feather to a temple (deliver) |
+| **A Pinch of Salt** | 4 | Mabry Ladle | Craft three items (deed) |
+| **Stock and Stew** | 10 | Mabry Ladle | Craft six items (deed) |
+| **The Honey Question** | 18 | Mabry Ladle | Bring 2 × Honeycomb (deliver) |
+| **Game for the Pot** | 28 | Mabry Ladle | Hunt game for the pot (beasts) (kill) |
+| **The Grandmaster’s Table** | 40 | Mabry Ladle | Bring 1 × Harvest Feast (deliver) |
+| **Mortar and Pestle** | 4 | Quillon Marsh | Craft three items (deed) |
+| **The Mild Poison** | 10 | Quillon Marsh | Craft six items (deed) |
+| **Nightshade for Medicine** | 18 | Quillon Marsh | Bring 2 × Nightshade (deliver) |
+| **What the Dead Leave** | 28 | Quillon Marsh | Collect from the undead (bone and ichor) (kill) |
+| **The Grandmaster’s Draught** | 40 | Quillon Marsh | Bring 1 × Elixir of the Sunlit Path (deliver) |
+| **Hammer and Tongs** | 4 | Hadrik Cinderhand | Craft three items (deed) |
+| **Steel and Sweat** | 10 | Hadrik Cinderhand | Craft six items (deed) |
+| **Three Fine Ingots** | 18 | Hadrik Cinderhand | Bring 3 × Steel Ingot (deliver) |
+| **Scrap with a Past** | 28 | Hadrik Cinderhand | Break a few constructs for scrap (kill) |
+| **The Grandmaster’s Anvil** | 40 | Hadrik Cinderhand | Bring 2 × Adamant Ingot (deliver) |
+| **First Sigils** | 4 | Ysenne Vael | Craft three items (deed) |
+| **The Quiet Rune** | 10 | Ysenne Vael | Craft six items (deed) |
+| **Three Pure Essences** | 18 | Ysenne Vael | Bring 3 × Lesser Essence (deliver) |
+| **The Salvager’s Art** | 28 | Ysenne Vael | Break down gear for essence (salvage) (deed) |
+| **The Grandmaster’s Sigil** | 40 | Ysenne Vael | Bring 1 × Oil of the World-Eater (deliver) |
+| **A Bright Chip** | 4 | Pao Lantern | Craft three items (deed) |
+| **Silver and Setting** | 10 | Pao Lantern | Craft six items (deed) |
+| **The Silver Question** | 18 | Pao Lantern | Bring 3 × Silver Ore (deliver) |
+| **Gems Set Well** | 28 | Pao Lantern | Socket gems into gear (deed) |
+| **The Grandmaster’s Jewel** | 40 | Pao Lantern | Bring 1 × Flawless Diamond (deliver) |
+| **Needle and Thread** | 4 | Delphine Aster | Craft three items (deed) |
+| **Wool and Silk** | 10 | Delphine Aster | Craft six items (deed) |
+| **Three Skeins of Silk** | 18 | Delphine Aster | Bring 3 × Spider Silk (deliver) |
+| **Pelts and Patience** | 28 | Delphine Aster | Skin the beasts of the wild (kill) |
+| **The Grandmaster’s Vestment** | 40 | Delphine Aster | Bring 2 × Thread of Dawn (deliver) |
 | **Rats in the Cellar** | 2 | Marta | Kill giant rats (kill) |
 | **Where’s Biscuit?** | 3 | Tobin Furrow | Find Biscuit (talk) |
 | **Roots for the Hearth** | 3 | Sister Wenna | Gather healroot (collect) |
@@ -2772,11 +3291,11 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 ### People
 
-- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Archivist Tamsin (Priest of Mirrin), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
-- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Sleepless Orsa (Priest of Lyssara), Fenn Ashwhistle (Lone Hunter), Sylwen (Last Singer of the Old Grove), Mawri Longtail (Packmother of Thornwick), Quillith of the Hours (Warden of Between), Fennel Greenwhistle (Canopy-Warden), Morwen Twice-Buried (Keeper of the Returned), Lady Ressa Vael (Your Mother’s Cousin), Master Orrin Quill (Archivist Emeritus), Old Tarn Whitebrow (Master Tracker)
-- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
-- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
-- **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
+- **Brightwater:** Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Archivist Tamsin (Priest of Mirrin), Mabry Ladle (Master Cook), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
+- **Thornwick:** Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Sleepless Orsa (Priest of Lyssara), Quillon Marsh (Master Apothecary), Delphine Aster (Master Tailor), Fenn Ashwhistle (Lone Hunter), Sylwen (Last Singer of the Old Grove), Mawri Longtail (Packmother of Thornwick), Quillith of the Hours (Warden of Between), Fennel Greenwhistle (Canopy-Warden), Morwen Twice-Buried (Keeper of the Returned), Lady Ressa Vael (Your Mother’s Cousin), Master Orrin Quill (Archivist Emeritus), Old Tarn Whitebrow (Master Tracker)
+- **Sandhaven:** Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Hadrik Cinderhand (Master Smith), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
+- **Frosthold:** Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ysenne Vael (Runewright), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
+- **Saltmere:** Harbormaster Quill (Port of Saltmere), Mags (The Thieves’ Den), Keeper Ansel (Lighthouse Keeper), Old Wick (Fisherman), Tidecaller Maren (Priest of Nymira), Factor Goldmere (Priest of Grimvald), Pao Lantern (Master Gemcutter), Sable (Thief), Marisol Tidesong (Singer to the Drowned), Nahru Who Was First (Echo of the Unmade), Marisk Deepgill (Reef-Elder of Saltmere), Bosun Keel (Dockmaster’s Mate), Ringmistress Lo (Retired Ringmistress)
 - **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld
 <!-- story:end -->
 
@@ -2981,7 +3500,7 @@ At any town (level 30+): all 10 dungeon bosses in road order at your level, HP c
 - **Glass Cannon:** Half your max HP, but you deal 30% more damage.
 - **Nightmare:** Every enemy has 50% more HP and deals 40% more damage; you find far more (+100% Magic Find and Gold Find).
 
-### Primordial items (10)
+### Primordial items (20)
 
 NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosses, item level 70+.
 
@@ -2995,6 +3514,16 @@ NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosse
 - **The Shadow Before Light** (Godforged Dagger): Begin every battle in Stealth; Attacks against enemies below 20% HP always crit; +10 dodge.
 - **Heartstring** (Worldtree Lute): Two songs can play at once; The party deals 15% more damage on each of your turns; +30% resource gain.
 - **Seal of the Unwritten** (Divine Amulet): Deal 25% more damage to bosses; Kills grant a shield of 10% of max HP; +25% ultimate gain.
+- **The First Fire** (Voidforged Sword): Deal 25% more damage to bosses; Burning enemies spread Burn on death; 25% chance on hit to Burn.
+- **The Last Frost** (Voidroot Staff): Ice damage against Burning enemies always Shatters; 20% chance for spells to cast a second time; 20% chance on hit to Freeze.
+- **The Unsung Requiem** (Voidroot Lute): Two songs can play at once; Kills heal you for 8% of max HP; Damage over time can critically strike.
+- **The Sundered Aegis** (Voidforged Shield): Once per battle, survive a killing blow; Start every battle with a 20% shield; Take 10% less damage.
+- **Wyrmfang** (Voidforged Dagger): Critical hits ignore half of the target’s defense; Attacks against enemies below 20% HP always crit; Crits heal you for 5% of max HP.
+- **Heart’s Bloom** (Voidweave Robe): Half of all overhealing becomes a shield; Regenerate 3% of max HP every turn; Kills restore 6% of max HP.
+- **The Stormlord’s Crown** (Voidforged Helm): Always act first in the opening round; Start every battle with Haste for 2 turns; 15% chance on hit for a lightning bolt.
+- **The Nameless Hours** (Divine Amulet): 20% chance for spells to cast a second time; Start every battle with Haste for 2 turns; +18% cooldown reduction.
+- **The Unwritten Ledger** (Void-Bound Tome): Summoning skills raise one extra minion; 20% chance for spells to cast a second time; Regenerate 2% of max HP every turn.
+- **Shroud of All Endings** (Voidhide Cloak): Begin every battle in stealth; Deal 20% more damage at night; Kills shield you for 8% of max HP.
 
 ### Pets
 
@@ -3007,6 +3536,37 @@ NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosse
 - **Rift Wisp:** +3% damage and +5% void resistance. (A Rift Guardian, rarely)
 - **Void Kitten:** +3% crit chance. It is not entirely there. (A Rift Guardian, rarely)
 - **Primordial Hatchling:** +4% damage, +4% max HP. It hatched from something older than the world. (Achievement: Rift Lord)
+- **Barn Owl:** +4% crit chance. (Town stables)
+- **River Otter:** +5% ice damage and +3 dodge. (Town stables)
+- **Hedgehog:** +3% defense. (Town stables)
+- **Fox Kit:** +4 dodge. (Town stables)
+- **Cave Bat:** +3% shadow damage and +2 accuracy. (Town stables)
+- **Badger Cub:** +5% max HP. (Town stables)
+- **Songbird:** +5 healing power. (Town stables)
+- **Hunting Hound:** +5 accuracy. (Town stables)
+- **Messenger Pigeon:** +5% gold find. (Town stables)
+- **Glowworm:** +3 MP regeneration. (Town stables)
+- **Mud Crab:** +4 armor. (Town stables)
+- **Salamander:** +5 fire resist. (Town stables)
+- **Frost Hare:** +5 ice resist. (Town stables)
+- **Sparrow Hawk:** +5% crit damage. (Town stables)
+- **Bog Frog:** +5 nature resist and +3 status resist. (Town stables)
+- **Coin Magpie:** +6% magic find. (Town stables)
+- **Library Mouse:** +4% XP. (Town stables)
+- **Temple Dove:** +5% favor gain. (Town stables)
+- **Sea Turtle:** +5 lightning resist and +2% max HP. (Town stables)
+- **Wisp Lantern:** +4 shadow resist. (Town stables)
+- **Clockwork Beetle:** +3% cooldown reduction. (Town stables)
+- **Dream Moth:** +6 status resist. (Town stables)
+- **Storm Finch:** +5% lightning damage. (Town stables)
+- **Green Gecko:** +5% nature damage. (Town stables)
+- **Sun Lizard:** +5% holy damage. (Town stables)
+- **Pocket Dragon:** +4% damage. (Town stables)
+- **Golden Carp:** +8% gold find. (Town stables)
+- **Lantern Fish:** +3% crit chance and +3 accuracy. (Town stables)
+- **Pearl Snail:** +6 HP regeneration. (Town stables)
+- **Wandering Kitten:** +2 speed. (Town stables)
+- **Sphinx Cub:** +5 INT. (Town stables)
 
 ### Mounts
 
@@ -3015,6 +3575,17 @@ NG+5 and later (or Rift Guardians at tier 10+), from elites, champions and bosse
 - **Sand Strider:** 1 min per step, 40% fewer ambushes. A long-legged desert bird that never gets lost. (15000 gold at the stables)
 - **Spectral Stag:** 0.75 min per step, 50% fewer ambushes. Ysolde’s gift: it walks between the trees, and the beasts do not see it. (Achievement: Cartographer)
 - **Rift-Strider:** 0.5 min per step, 60% fewer ambushes. It steps through the margins of the world. Nothing follows. (Achievement: Riftwalker)
+- **River Pony:** 1.4 min per step, 12% fewer ambushes. Wades happily. Rank 3 Swimming for caches. (1800 gold at the stables)
+- **Marsh Strider:** 1.2 min per step, 20% fewer ambushes. A long-legged bird that treats lakes as lawns. Rank 6 Swimming. (4200 gold at the stables)
+- **Leviathan Pup:** 1 min per step, 30% fewer ambushes. Swims the open sea, carries you, and snaps at gulls. Rank 9 Swimming. (9000 gold at the stables)
+- **Mountain Goat:** 1.4 min per step, 12% fewer ambushes. Sure-footed and smug. Rank 3 Climbing. (1800 gold at the stables)
+- **Cliff Ram:** 1.2 min per step, 20% fewer ambushes. Horns first up any wall. Rank 6 Climbing. (4200 gold at the stables)
+- **Wall-Crawler:** 1 min per step, 30% fewer ambushes. Eight legs and no sense of up. Rank 9 Climbing. (9000 gold at the stables)
+- **Dun Courser:** 1.1 min per step, 15% fewer ambushes. A fast, plain horse that does exactly what it should. (2400 gold at the stables)
+- **Dune Camel:** 1.2 min per step, 22% fewer ambushes. Disdainful and tireless. (3000 gold at the stables)
+- **Frost Elk:** 1.1 min per step, 25% fewer ambushes. Antlers rimed with ice. Climbs a little (Rank 4 Climbing). (5200 gold at the stables)
+- **Storm Hippogriff:** 0.8 min per step, 45% fewer ambushes. It flies. The overworld shrinks. Rank 8 Climbing and Swimming (it just flies over). (12000 gold at the stables)
+- **Cinder Wyvern:** 0.7 min per step, 50% fewer ambushes. A hatchling no bigger than a horse, which is quite big. It flies. Rank 9 Climbing. (16000 gold at the stables)
 <!-- endgame:end -->
 
 ## Difficulty

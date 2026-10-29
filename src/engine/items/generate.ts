@@ -339,6 +339,7 @@ function buildUnique(u: UniqueItemDef, ascended: boolean, ctx: GenerateContext, 
     junk: false,
     ...(ascended ? { ascended: true } : {}),
     ...(u.awakening ? { awakening: { progress: 0, awakened: false } } : {}),
+    ...(u.living ? { livingXp: 0 } : {}),
     ...(corrupt && target ? { corruption: rollCorruption(target, rng, c) } : {}),
   };
 }

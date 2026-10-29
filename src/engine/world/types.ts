@@ -202,6 +202,8 @@ export interface HouseState {
   rooms: Record<string, number>;
   /** In-game day of the last collection of room produce. */
   lastCollected: number;
+  /** Furniture bought for the rooms (ids from data/world/furniture.ts). */
+  furniture?: string[];
 }
 
 /** Reputation, house and trophies travel with the character (they carry into NG+). */
@@ -210,6 +212,8 @@ export interface WorldProgress {
   house?: HouseState;
   /** World bosses slain (enemy id -> count). */
   trophies: Record<string, number>;
+  /** Town businesses you have put money into (see data/world/investments.ts). */
+  investments?: Record<string, { level: number; collected: number }>;
 }
 
 /** Everything about the world the player has changed or seen. */

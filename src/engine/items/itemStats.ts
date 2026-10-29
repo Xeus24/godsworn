@@ -64,6 +64,7 @@ export function itemModifiers(item: ItemInstance, slot?: EquipSlot, c: Content =
   if (unique) {
     add(unique.modifiers, item.ascended ? ASCENDED_MULT : 1);
     if (unique.awakening && item.awakening?.awakened) add(unique.awakening.modifiers);
+    for (const stage of unique.living?.stages ?? []) if ((item.livingXp ?? 0) >= stage.xp) add(stage.modifiers);
   }
 
   const target = affixTargetOf(base);

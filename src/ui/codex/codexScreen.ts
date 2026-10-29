@@ -6,16 +6,20 @@ import { killsByType, knowledgeLevel, knowledgeName, knowledgeThresholds, slayer
 import { scaleCombatStats } from '../../engine/combat/combatants';
 import type { EnemyDef } from '../../engine/combat/types';
 import type { GameSession, LifetimeStat } from '../../engine/state/gameState';
+import { generateGear } from '../../engine/items/generate';
+import { Rng } from '../../engine/core/rng';
+import { itemIconUrl } from '../art/itemIcons';
 import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from '../combat/creatureSprites';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-type Tab = 'bestiary' | 'achievements' | 'lore' | 'maps' | 'statistics';
+type Tab = 'bestiary' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics';
 const TABS: [Tab, string][] = [
   ['bestiary', 'Bestiary'],
   ['achievements', 'Achievements'],
   ['lore', 'Lore'],
+  ['items', 'Legendary Codex'],
   ['maps', 'Maps'],
   ['statistics', 'Statistics'],
 ];
@@ -103,7 +107,7 @@ export class CodexScreen implements Screen {
       });
       return b;
     }));
-    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'maps' ? this.maps() : this.statistics();
+    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.statistics();
     this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), tabs, body));
   };
 
@@ -255,6 +259,31 @@ export class CodexScreen implements Screen {
   }
 
   // ---------------------------------------------------------------- lore
+
+  /** Every hand-made item: found ones in full, the rest as dark silhouettes. */
+  private legendaryCodex(): HTMLElement {
+    const found = new Set(this.session.player.codexUniques ?? []);
+    const uniques = content.uniques.all();
+    const rarityOrder = ['legendary', 'set', 'mythic', 'divine', 'relic', 'primordial'];
+    const groups = rarityOrder.map((r) => ({ r, list: uniques.filter((u) => u.rarity === r) })).filter((g) => g.list.length > 0);
+    const icon = (u: (typeof uniques)[number], dark: boolean): HTMLElement => {
+      const item = generateGear({ rng: new Rng(1), itemLevel: u.level, newUid: () => 'codex' }, { uniqueId: u.id });
+      return el('img', { class: 'codex-icon', src: itemIconUrl(item), alt: '', style: dark ? 'width:40px;height:40px;filter:brightness(0) opacity(.55)' : 'width:40px;height:40px' });
+    };
+    return el(
+      'div',
+      { class: 'codex-scroll' },
+      el('section', { class: 'panel' }, el('h2', {}, 'Legendary Codex'), el('div', {}, `${found.size} of ${uniques.length} hand-made items found. The shapes are all you get until you hold one.`)),
+      ...groups.map((g) =>
+        el(
+          'section',
+          { class: 'panel' },
+          el('h3', {}, `${content.rarities.get(g.r as never).name} (${g.list.filter((u) => found.has(u.id)).length}/${g.list.length})`),
+          el('div', { class: 'codex-grid' }, ...g.list.map((u) => (found.has(u.id) ? el('div', { class: 'codex-lore' }, icon(u, false), el('b', {}, u.name), el('p', { class: 'small' }, u.lore ?? '')) : el('div', { class: 'codex-lore dim' }, icon(u, true), el('b', {}, '???'), el('p', { class: 'small' }, `Level ${u.level}+`))))),
+        ),
+      ),
+    );
+  }
 
   private lore(): HTMLElement {
     const found = this.session.state.world.lore;

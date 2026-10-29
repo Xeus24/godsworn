@@ -6,7 +6,7 @@ import { DERIVED_STATS, ELEMENTS, GEAR_STATS, isPrimaryStat, isStatId, type Elem
 import { DERIVED_FORMULAS, STAT_CAPS } from './balance';
 import { BIRTH_SIGNS } from './birthSigns';
 import { CLASSES } from './classes';
-import { ARMOR_WEIGHTS, WEAPON_TYPES } from './equipmentTypes';
+import { ARMOR_WEIGHTS, WEAPON_ADDITIONS, WEAPON_TYPES } from './equipmentTypes';
 import { GODS } from './gods';
 import {
   AFFIXES,
@@ -59,10 +59,12 @@ import { ACHIEVEMENTS, ACHIEVEMENT_MILESTONES } from './achievements';
 import { FOLLOWERS } from './followers';
 import { RIFT_AFFIXES } from './rifts';
 import { CHALLENGES } from './challenges';
-import { MOUNTS, PETS } from './pets';
+import { GREATER_MOUNTS, GREATER_PETS, MOUNTS, PETS } from './pets';
 import { HERESY } from './heresy';
 import { FACTIONS } from './world/factions';
 import { HOUSE_ROOMS } from './world/housing';
+import { FURNITURE } from './world/furniture';
+import { INVESTMENTS } from './world/investments';
 import { LORE } from './world/lore';
 import { DUNGEONS, TOWNS } from './world/places';
 import { WEATHER } from './world/weather';
@@ -106,7 +108,7 @@ export const content = {
   birthSigns: new ContentTable('birth sign', BIRTH_SIGNS),
   backgrounds: new ContentTable('background', BACKGROUNDS),
   evolutions: new ContentTable('evolution', EVOLUTIONS),
-  classes: new ContentTable('class', CLASSES),
+  classes: new ContentTable('class', CLASSES.map((cl) => (WEAPON_ADDITIONS[cl.id] ? { ...cl, weapons: [...cl.weapons, ...WEAPON_ADDITIONS[cl.id]!.filter((w) => !cl.weapons.includes(w))] } : cl))),
   paragon: new ContentTable('paragon node', PARAGON_NODES),
   mechanics: new ContentTable('mechanic', MECHANICS),
   rarities: new ContentTable('rarity', RARITY_DEFS),
@@ -129,8 +131,8 @@ export const content = {
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),
   riftAffixes: new ContentTable('rift affix', RIFT_AFFIXES),
   challenges: new ContentTable('challenge', CHALLENGES),
-  pets: new ContentTable('pet', PETS),
-  mounts: new ContentTable('mount', MOUNTS),
+  pets: new ContentTable('pet', [...PETS, ...GREATER_PETS]),
+  mounts: new ContentTable('mount', [...MOUNTS, ...GREATER_MOUNTS]),
   encounters: new ContentTable('encounter', [...ENCOUNTERS, ...TRIAL_ENCOUNTERS, ...APOSTLE_TRIALS, ...QUEST_ENCOUNTERS]),
   trees: new ContentTable('skill tree', finalizeTrees(ALL_SKILLS)),
   specializations: new ContentTable('specialization', SPECIALIZATIONS),
@@ -146,6 +148,8 @@ export const content = {
   dungeons: new ContentTable('dungeon', DUNGEONS),
   weather: new ContentTable('weather', WEATHER),
   factions: new ContentTable('faction', FACTIONS),
+  furniture: new ContentTable('furniture', FURNITURE),
+  investments: new ContentTable('investment', INVESTMENTS),
   houseRooms: new ContentTable('house room', HOUSE_ROOMS),
   lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE]),
   professions: new ContentTable('profession', PROFESSIONS),

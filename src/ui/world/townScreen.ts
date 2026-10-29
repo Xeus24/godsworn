@@ -7,7 +7,9 @@ import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import { studyTerms, bookSkill } from '../../engine/skills/general';
 import { nextRank, rankOf, repOf } from '../../engine/world/factions';
-import { roomCost, roomLevel } from '../../engine/world/housing';
+import { investmentCost, investmentLevel, investmentWaiting } from '../../engine/world/investments';
+import { canBuyFurniture, furnitureIn, roomCost, roomLevel } from '../../engine/world/housing';
+import { furnitureCap } from '../../data/world/furniture';
 import type { FactionDef } from '../../engine/world/types';
 import type { NpcDef } from '../../engine/quests/types';
 import type { Conversation } from '../../engine/state/conversation';
@@ -226,9 +228,13 @@ export class TownScreen implements Screen {
     );
     const late = endgameUnlocked(s.state);
     const forSale = content.mounts.filter((m) => m.price !== undefined);
-    if (late || s.player.stable.mounts.length > 0) cards.push(this.card('Stables', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you.'), ...forSale.map((m) => {
+    const petsForSale = content.pets.filter((pt) => pt.price !== undefined);
+    if (late || s.player.level >= 12 || s.player.stable.mounts.length > 0) cards.push(this.card('Stables', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you. Some swim or climb for you. Pets follow you about and help a little.'), ...forSale.map((m) => {
       const owned = s.player.stable.mounts.includes(m.id);
       return el('div', { class: 'board-row' }, el('b', {}, m.name), el('div', { class: 'dim small' }, `${m.description} ${m.stepMinutes} min per step, ${Math.round((1 - m.encounterMult) * 100)}% fewer ambushes.`), this.btn(owned ? 'Owned' : `Buy (${m.price}g)`, () => this.say(s.world.buyMount(m.id)), owned || s.state.gold < (m.price ?? 0)));
+    }), ...petsForSale.map((pt) => {
+      const owned = s.player.stable.pets.includes(pt.id);
+      return el('div', { class: 'board-row' }, el('b', {}, pt.name), el('div', { class: 'dim small' }, pt.description), this.btn(owned ? 'Owned' : `Buy (${pt.price}g)`, () => this.say(s.world.buyPet(pt.id)), owned || s.state.gold < (pt.price ?? 0)));
     })));
     if (late) cards.push(this.card('Rift Gate & Boss Rush', el('p', { class: 'small' }, s.endgame.active ? 'Your run is waiting for you.' : 'Open a Rift with a Rift Map, or take on every dungeon boss in a row in the arena’s Boss Rush.'), this.btn(s.endgame.active ? 'Return to your run' : 'Go to the Rift Gate', () => this.town.endgame(), false, 'primary')));
     cards.push(this.card('Arena & Class Trainers', el('p', { class: 'small' }, 'Spar against the beasts of the land in the arena, or train in a new class.'), this.btn('Go to the arena', () => this.town.arena(), false, 'primary')));
@@ -250,6 +256,19 @@ export class TownScreen implements Screen {
     cards.push(this.card('Stash', el('p', { class: 'small' }, 'Your shared stash is open in every town.'), this.btn('Open the stash (I)', () => this.nav.inventory())));
     if (t.faction) cards.push(this.factionCard(content.factions.get(t.faction)));
 
+    const ventures = content.investments.filter((i) => i.town === t.id);
+    if (ventures.length > 0) {
+      const day = s.state.clock.day;
+      const waiting = ventures.reduce((n, i) => n + investmentWaiting(p, i.id, day), 0);
+      cards.push(this.card('Investments', el('p', { class: 'small' }, 'Put money into local business. It earns gold for every day you are away (up to 30 days), collected here.'),
+        ...ventures.map((i) => {
+          const lvl = investmentLevel(p, i.id);
+          const cost = investmentCost(p, i.id);
+          return el('div', { class: 'room-row' }, el('b', {}, `${i.name}${lvl ? ` ${lvl}/3` : ''}`), el('div', { class: 'dim small' }, `${i.description}${lvl ? ` Pays ${i.income[lvl - 1]} gold a day.` : ''}`),
+            cost !== undefined ? this.btn(`${lvl ? 'Expand' : 'Invest'} (${cost}g)`, () => this.say(s.world.invest(i.id)), s.state.gold < cost, 'tab') : el('span', { class: 'enc-tag ok' }, 'Complete'));
+        }),
+        this.btn(`Collect earnings (${waiting}g)`, () => this.say(s.world.collectInvestments()), waiting <= 0, 'primary')));
+    }
     if (t.housing || p.world.house?.town === t.id) {
       const house = p.world.house;
       if (!house) {
@@ -266,7 +285,12 @@ export class TownScreen implements Screen {
             cost !== undefined ? this.btn(`${lvl ? 'Upgrade' : 'Build'} (${cost}g)`, () => this.say(s.world.upgradeRoom(r.id)), s.state.gold < cost, 'tab') : el('span', { class: 'enc-tag ok' }, 'Complete'),
           );
         });
-        cards.push(this.card('Your House', ...(roomLevel(p, 'bedroom') ? [this.btn('Sleep at home (free)', () => this.say(s.world.restAtHome()), false, 'primary')] : []), ...rooms));
+        const furnish = content.houseRooms.all().filter((r) => roomLevel(p, r.id) > 0).map((r) => {
+          const owned = furnitureIn(p, r.id);
+          const open = content.furniture.filter((f) => f.room === r.id && !owned.includes(f.id)).slice(0, 4);
+          return el('div', { class: 'room-row' }, el('b', {}, `${r.name} furniture: ${owned.length}/${furnitureCap(roomLevel(p, r.id))}`), el('div', { class: 'dim small' }, owned.map((id) => content.furniture.get(id).name).join(', ') || 'Bare walls.'), ...open.map((f) => this.btn(`${f.name} (${f.price}g): ${f.description}`, () => this.say(s.world.buyFurniture(f.id)), s.state.gold < f.price || !canBuyFurniture(p, f.id).ok, 'tab')));
+        });
+        cards.push(this.card('Your House', ...(roomLevel(p, 'bedroom') ? [this.btn('Sleep at home (free)', () => this.say(s.world.restAtHome()), false, 'primary')] : []), ...rooms, ...furnish));
       } else {
         cards.push(this.card('Housing', el('p', { class: 'dim small' }, `You already own a house in ${content.towns.get(house.town).name}.`)));
       }

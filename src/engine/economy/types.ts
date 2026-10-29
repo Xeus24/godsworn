@@ -1,7 +1,7 @@
 import type { ItemCategory, ItemInstance, RarityId } from '../items/types';
 
-export type CraftingProfession = 'blacksmithing' | 'alchemy' | 'cooking' | 'enchanting' | 'jewelcrafting';
-export type GatheringSkill = 'mining' | 'herbalism' | 'fishing';
+export type CraftingProfession = 'blacksmithing' | 'alchemy' | 'cooking' | 'enchanting' | 'jewelcrafting' | 'tailoring';
+export type GatheringSkill = 'mining' | 'herbalism' | 'fishing' | 'skinning';
 
 export interface ProfessionDef {
   id: CraftingProfession | GatheringSkill;
@@ -28,7 +28,7 @@ export interface RecipeDef {
   starter?: boolean;
 }
 
-export type ShopKind = 'blacksmith' | 'armorer' | 'alchemist' | 'general' | 'magic' | 'library' | 'temple' | 'faction' | 'blackMarket' | 'gambler';
+export type ShopKind = 'blacksmith' | 'armorer' | 'alchemist' | 'general' | 'magic' | 'library' | 'temple' | 'faction' | 'blackMarket' | 'gambler' | 'merchant';
 
 /**
  * What a shop stocks each day. `items` are fixed lines; `pool` draws from a
@@ -57,6 +57,10 @@ export interface ShopDef {
   night?: boolean;
   /** Item categories this shop buys (undefined: everything). */
   buys?: ItemCategory[];
+  /** A roaming merchant: it stands in each town of its route in turn, `stay` days at a time (offset shifts the start). */
+  roams?: { route: string[]; stay: number; offset: number };
+  /** The Collector: pays this many times the usual price for curiosities. */
+  curiosityMult?: number;
 }
 
 /** One line of a shop's stock today. */

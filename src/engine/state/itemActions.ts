@@ -78,6 +78,7 @@ export class ItemActions {
    */
   give(item: ItemInstance, announce = true): boolean {
     item.found ??= this.foundStamp();
+    if (item.uniqueId && !(this.s.player.codexUniques ??= []).includes(item.uniqueId)) this.s.player.codexUniques.push(item.uniqueId);
     const total = item.quantity;
     const probe: ItemInstance = { ...item, sockets: [...item.sockets] };
     const left = addItem(this.inv, item);

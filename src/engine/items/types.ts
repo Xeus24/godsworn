@@ -18,7 +18,7 @@ export const RARITIES = [
 ] as const;
 export type RarityId = (typeof RARITIES)[number];
 
-export const QUALITIES = ['damaged', 'normal', 'superior', 'masterwork'] as const;
+export const QUALITIES = ['damaged', 'normal', 'superior', 'masterwork', 'flawless'] as const;
 export type QualityId = (typeof QUALITIES)[number];
 
 export const EQUIP_SLOTS = [
@@ -270,6 +270,8 @@ export interface UniqueItemDef {
   requirements?: ItemRequirements;
   activeAbility?: OnUseAbility;
   awakening?: AwakeningDef;
+  /** A living item grows with use: each stage unlocks once the item has earned this much experience. */
+  living?: { stages: { xp: number; modifiers: ModifierSpec[]; text: string }[] };
   /** Excluded from random drops (quest rewards, crafted only...). */
   noDrop?: boolean;
 }
@@ -361,4 +363,6 @@ export interface ItemInstance {
   corruption?: { boon: string; drawback: string };
   ascended?: boolean;
   awakening?: { progress: number; awakened: boolean };
+  /** Living items: experience earned so far. */
+  livingXp?: number;
 }

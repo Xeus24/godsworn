@@ -61,8 +61,11 @@ function hash(text: string): number {
   return h >>> 0;
 }
 
+/** The newer weapon types borrow an older type's picture. */
+const ICON_TYPE: Record<string, string> = { katana: 'sword', whip: 'rapier', longbow: 'bow', pistol: 'crossbow', rifle: 'crossbow', chakram: 'throwing' };
+
 function weaponFamily(type: string): string {
-  if (['bow', 'crossbow', 'staff', 'wand', 'instrument'].includes(type)) return 'wood';
+  if (['bow', 'crossbow', 'longbow', 'whip', 'staff', 'wand', 'instrument'].includes(type)) return 'wood';
   if (type === 'tome') return 'leather';
   return 'metal';
 }
@@ -82,7 +85,7 @@ function baseSpec(item: ItemInstance): IconSpec {
   const tierColor = (family: string, tier: number): string => (FAMILY_COLORS[family] ?? [])[tier - 1] ?? '#9aa3ad';
   switch (base.category) {
     case 'weapon':
-      return { pattern: base.weaponType, main: tierColor(weaponFamily(base.weaponType), base.tier), energy };
+      return { pattern: ICON_TYPE[base.weaponType] ?? base.weaponType, main: tierColor(weaponFamily(base.weaponType), base.tier), energy };
     case 'armor':
       return { pattern: base.slot, main: tierColor(base.weight === 'mail' || base.weight === 'plate' ? 'metal' : base.weight, base.tier), energy };
     case 'accessory':
@@ -267,7 +270,7 @@ function tileIconUrl(item: ItemInstance): string | undefined {
   };
   switch (base.category) {
     case 'weapon':
-      return pick(`weapon:${base.weaponType}`, base.tier);
+      return pick(`weapon:${ICON_TYPE[base.weaponType] ?? base.weaponType}`, base.tier);
     case 'armor':
       return pick(`armor:${base.slot}:${base.weight}`, base.tier) ?? pick(`armor:${base.slot}`, base.tier);
     case 'accessory':

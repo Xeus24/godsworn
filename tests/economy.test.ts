@@ -206,7 +206,7 @@ describe('professions', () => {
     const [dx, dy] = ([[0, 1], [0, -1], [1, 0], [-1, 0]] as const).find(([x, y]) => passable(s.state.world, map, node.x + x, node.y + y)) ?? [0, 1];
     s.state.world.position = { map: map.id, x: node.x + dx, y: node.y + dy };
     const r = s.world.step(-dx, -dy);
-    expect(r.kind === 'moved' && r.message).toMatch(/Healroot|Manabloom/);
+    expect(r.kind === 'moved' && r.message).toMatch(/Healroot|Manabloom|Wild Garlic|Sea Salt/);
     expect(s.player.crafting.gathering.herbalism?.xp).toBe(1);
   });
 });

@@ -1,4 +1,5 @@
 import type { ProfessionDef, RecipeDef } from '../../engine/economy/types';
+import { GREATER_RECIPES } from '../items/greaterEconomy';
 
 export const PROFESSIONS: ProfessionDef[] = [
   { id: 'blacksmithing', name: 'Blacksmithing', kind: 'crafting', description: 'Forge weapons and armor from ore, hide and cloth. Raises item quality more cheaply.' },
@@ -6,9 +7,11 @@ export const PROFESSIONS: ProfessionDef[] = [
   { id: 'cooking', name: 'Cooking', kind: 'crafting', description: 'Cook hearty food from fish, herbs and hunted game.' },
   { id: 'enchanting', name: 'Enchanting', kind: 'crafting', description: 'Better odds and prices on upgrades and affix rerolls; refine essences.' },
   { id: 'jewelcrafting', name: 'Jewelcrafting', kind: 'crafting', description: 'Cut gems into finer grades, make rings, amulets and earrings, and add sockets cheaply.' },
+  { id: 'tailoring', name: 'Tailoring', kind: 'crafting', description: 'Cure hides and weave cloth into armor, satchels, snares and cloaks that bite back.' },
   { id: 'mining', name: 'Mining', kind: 'gathering', description: 'Work ore veins in the wild. Higher levels yield more.' },
   { id: 'herbalism', name: 'Herbalism', kind: 'gathering', description: 'Pick herbs from patches in the wild. Higher levels yield more.' },
   { id: 'fishing', name: 'Fishing', kind: 'gathering', description: 'Fish at fishing spots by the water. Higher levels yield more.' },
+  { id: 'skinning', name: 'Skinning', kind: 'gathering', description: 'Skin the beasts you defeat for hides and meat. Higher levels yield more.' },
 ];
 
 const r = (x: RecipeDef): RecipeDef => x;
@@ -109,4 +112,4 @@ const enchantingExtras: RecipeDef[] = [
   r({ id: 'scribe-escape', name: 'Scroll of Escape', profession: 'enchanting', level: 10, inputs: [{ itemId: 'lesser-essence', qty: 1 }, { itemId: 'linen-scrap', qty: 2 }], output: { kind: 'item', itemId: 'scroll-of-escape', qty: 1 }, xp: 10 }),
 ];
 
-export const RECIPES: RecipeDef[] = [...potions, ...alchemyExtras, ...cooking, ...gemCutting, ...forging, ...refining, ...enchantingExtras];
+export const RECIPES: RecipeDef[] = [...GREATER_RECIPES, ...potions, ...alchemyExtras, ...cooking, ...gemCutting, ...forging, ...refining, ...enchantingExtras];

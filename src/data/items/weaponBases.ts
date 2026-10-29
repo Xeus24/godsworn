@@ -46,6 +46,12 @@ const PROFILES: WeaponProfile[] = [
   { type: 'tome', noun: 'Tome', material: 'tome', hands: 1, offhandOnly: true, magic: 4, implicit: [{ stat: 'maxMp', type: 'percent', value: 8 }, { stat: 'cooldownReduction', type: 'flat', value: 2 }], sockets: 1, value: 20 },
   { type: 'orb', noun: 'Orb', material: 'orb', hands: 1, offhandOnly: true, magic: 5, implicit: [{ stat: 'critDamage', type: 'flat', value: 10 }], sockets: 1, value: 20 },
   { type: 'instrument', noun: 'Lute', material: 'wood', hands: 2, damage: 3, magic: 10, implicit: [{ stat: 'resourceGain', type: 'flat', value: 10 }, { stat: 'statusChance', type: 'flat', value: 4 }], sockets: 3, value: 30 },
+  { type: 'katana', noun: 'Katana', material: 'metal', hands: 1, damage: 9, implicit: [{ stat: 'critChance', type: 'flat', value: 3 }, { stat: 'physicalAttack', type: 'flat', value: 0.6, per: { stat: 'dex' } }, { stat: 'accuracy', type: 'flat', value: 4 }], sockets: 2, value: 24 },
+  { type: 'whip', noun: 'Whip', material: 'leather', hands: 1, damage: 6, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'statusChance', type: 'flat', value: 6 }, { stat: 'speed', type: 'flat', value: 2 }], sockets: 2, value: 20 },
+  { type: 'longbow', noun: 'Longbow', material: 'wood', hands: 2, damage: 13, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1.2, per: { stat: 'dex' } }, { stat: 'critDamage', type: 'flat', value: 15 }, { stat: 'accuracy', type: 'flat', value: 6 }], sockets: 3, value: 34 },
+  { type: 'pistol', noun: 'Pistol', material: 'metal', hands: 1, damage: 8, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 0.8, per: { stat: 'dex' } }, { stat: 'critChance', type: 'flat', value: 3 }, { stat: 'shieldPierce', type: 'flat', value: 5 }], sockets: 2, value: 26 },
+  { type: 'rifle', noun: 'Rifle', material: 'metal', hands: 2, damage: 16, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 1, per: { stat: 'dex' } }, { stat: 'critDamage', type: 'flat', value: 25 }, { stat: 'speed', type: 'flat', value: -2 }], sockets: 3, value: 38 },
+  { type: 'chakram', noun: 'Chakram', material: 'metal', hands: 1, damage: 7, implicit: [{ stat: 'physicalAttack', type: 'flat', value: 0.8, per: { stat: 'dex' } }, { stat: 'speed', type: 'flat', value: 1 }, { stat: 'statusChance', type: 'flat', value: 4 }], sockets: 2, value: 22 },
   { type: 'shield', noun: 'Shield', material: 'metal', hands: 1, offhandOnly: true, armor: 10, resist: 4, implicit: [{ stat: 'damageTaken', type: 'flat', value: -4 }], sockets: 2, value: 22 },
 ];
 

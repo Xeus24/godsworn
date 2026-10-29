@@ -63,4 +63,6 @@ export const QUALITY_DEFS: QualityDef[] = [
   { id: 'normal', name: 'Normal', statMult: 1, weight: 62, label: '' },
   { id: 'superior', name: 'Superior', statMult: 1.1, weight: 17, label: 'Superior' },
   { id: 'masterwork', name: 'Masterwork', statMult: 1.2, weight: 6, label: 'Masterwork' },
+  // Phase 10: a rare find that cannot be crafted; only loot and Grandmaster work produce it.
+  { id: 'flawless', name: 'Flawless', statMult: 1.35, weight: 1, label: 'Flawless' },
 ];

@@ -32,7 +32,20 @@ export const WEAPON_TYPES: WeaponTypeDef[] = [
   { id: 'orb', name: 'Orb', hands: 1, category: 'offhand' },
   { id: 'instrument', name: 'Instrument', hands: 2, category: 'magic' },
   { id: 'shield', name: 'Shield', hands: 1, category: 'offhand' },
+  { id: 'katana', name: 'Katana', hands: 1, category: 'melee' },
+  { id: 'whip', name: 'Whip', hands: 1, category: 'melee' },
+  { id: 'longbow', name: 'Longbow', hands: 2, category: 'ranged' },
+  { id: 'pistol', name: 'Pistol', hands: 1, category: 'ranged' },
+  { id: 'rifle', name: 'Rifle', hands: 2, category: 'ranged' },
+  { id: 'chakram', name: 'Chakram', hands: 1, category: 'ranged' },
 ];
+
+/** Classes that may use the six newer weapon types (added on top of each class's own list). */
+export const WEAPON_ADDITIONS: Record<string, string[]> = {
+  warrior: ['katana'], rogue: ['katana', 'whip', 'pistol', 'chakram'], monk: ['katana', 'chakram'], knight: ['katana'],
+  dancer: ['katana', 'whip', 'chakram'], bard: ['whip'], ranger: ['longbow', 'rifle'], witchhunter: ['longbow', 'whip', 'pistol'],
+  artificer: ['pistol', 'rifle', 'chakram'], druid: ['longbow'],
+};
 
 export interface ArmorWeightDef {
   id: string;
