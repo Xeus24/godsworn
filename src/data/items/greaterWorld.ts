@@ -14,5 +14,7 @@ export const WORLD_CONSUMABLES: ConsumableDef[] = [
   meter('glow-lantern', 'Glow Lantern', 24, 55, 'A lamp that does not gutter: -60 Gloom in the Gloamwood.', 'gloom', 60),
   meter('glass-lens', 'Glass Lens', 36, 70, 'Looks through lies: -70 Mirage on the Saltglass Flats.', 'mirage', 70),
   meter('air-pearl', 'Air Pearl', 46, 95, 'A pearl that holds a breath: -70 Pressure in Merrowdeep.', 'pressure', 70),
+  meter('grave-candle', 'Grave Candle', 30, 60, 'A candle that burns for the dead: -70 Fading in the Hollow Barrows.', 'fading', 70),
+  meter('breath-tonic', 'Breath Tonic', 52, 110, 'Fills the lungs with warmth: -70 Thin air in Skyreach.', 'thinair', 70),
   meter('ward-salt', 'Ward Salt', 50, 120, 'A pinch against the Unwritten: -60 Corruption in the Dark Citadel.', 'corruption', 60),
 ];

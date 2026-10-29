@@ -869,6 +869,12 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase14.test.ts` (4); 756 unit tests, 8 e2e and the build pass. The playtest's alchemist run lost `q-engine` in main-7 (a main-story fight these regions do not touch; not investigated). New maps not walked in the browser.
 - **Not done / cut:** same as phase 13 (reused biome art and sprite families); the minigames named by the towns are wired in a later phase.
 
+### Expansion phase 15: the last four new regions
+- **Ashfold (the prologue village), the Hollow Barrows (the underworld), the Shattered Isles and Skyreach** (`src/data/regions/batch3.ts`): four more off-road zones, which makes **12 new regions, 20 in all (8 on the road)**, **15 towns** (Ashfold, Wreck's End are new) and **45 dungeons** (10 new). Seven new passes (Mill Path, Barrow Road, Ferry Steps, Broken Ferry, Wreck Causeway, Rime Stair, Black Ladder). Each has 4 side maps, 8 new enemies, 4 named rares, dungeon bosses with a trick, a world boss (Granary Terror, Hollow King Below, Storm Leviathan, Sovereign of Skyreach) with boss lines, and a questline.
+- **Regional rules (data only):** Hearth and Home (a gentle start), Fading (underworld harm meter; Grave Candle), Squalls (lightning vents; lightning resistance) and Thin Air (harm meter; Breath Tonic).
+- Tests: `tests/expansionPhase15.test.ts` (5); 761 unit tests, 8 e2e and the build pass. The playtest's alchemist run still loses `q-engine` in main-7 (as in phase 14).
+- **Not done / cut:** the Hollow Barrows' "party plays as ghosts" and Skyreach's airship-only entry are not built (both are ordinary regions reached by passes; the airship areas from phase 12 remain the sky-only secrets). Barrows and Skyreach have no town. Art is reused.
+
 ## Known bugs
 - None known.
 

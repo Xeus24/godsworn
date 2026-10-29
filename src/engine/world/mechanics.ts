@@ -54,8 +54,8 @@ export function mechanicStep(char: Character, zone: ZoneDef, night: boolean, onP
     if (def.offPath && onPath) return {};
     if (!rng.chance(def.vent.chance)) return {};
     const resist = Math.min(1, ((stats[def.relief as 'fireResist'] ?? 0) as number) / 60);
-    if (resist >= 1) return { message: def.id === 'steam' ? 'A valve bursts beside you. Your fireproofing holds.' : 'A vent erupts beside you. Your fireproofing holds.' };
-    return { harm: def.vent.damage * (1 - resist), message: def.id === 'thorns' ? 'The thorns snag and tear.' : def.id === 'steam' ? 'A valve bursts beside you in a scream of steam!' : 'A vent erupts under your feet!' };
+    if (resist >= 1) return { message: def.id === 'steam' ? 'A valve bursts beside you. Your fireproofing holds.' : def.id === 'squall' ? 'A squall breaks over you. The lightning slides off.' : 'A vent erupts beside you. Your fireproofing holds.' };
+    return { harm: def.vent.damage * (1 - resist), message: def.id === 'thorns' ? 'The thorns snag and tear.' : def.id === 'steam' ? 'A valve bursts beside you in a scream of steam!' : def.id === 'squall' ? 'A squall breaks over you, lightning and all!' : 'A vent erupts under your feet!' };
   }
   const meter = currentMeter(char, zone);
   if (!meter || !def.rise) return {};

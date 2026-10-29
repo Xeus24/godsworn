@@ -67,6 +67,7 @@ import { FURNITURE } from './world/furniture';
 import { AREA_LORE, AREAS } from './world/areas';
 import { BATCH1_ENEMIES, BATCH1_LORE } from './regions/batch1';
 import { BATCH2_ENEMIES, BATCH2_LORE } from './regions/batch2';
+import { BATCH3_ENEMIES, BATCH3_LORE } from './regions/batch3';
 import { INVESTMENTS } from './world/investments';
 import { LORE } from './world/lore';
 import { DUNGEONS, TOWNS } from './world/places';
@@ -138,7 +139,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES].map(withEarth)),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES].map(withEarth)),
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', BOSS_SCRIPTS),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),
@@ -165,7 +166,7 @@ export const content = {
   areas: new ContentTable('area', AREAS),
   investments: new ContentTable('investment', INVESTMENTS),
   houseRooms: new ContentTable('house room', HOUSE_ROOMS),
-  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE, ...AREA_LORE, ...BATCH1_LORE, ...BATCH2_LORE]),
+  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE, ...AREA_LORE, ...BATCH1_LORE, ...BATCH2_LORE, ...BATCH3_LORE]),
   professions: new ContentTable('profession', PROFESSIONS),
   recipes: new ContentTable('recipe', RECIPES),
   shops: new ContentTable('shop', SHOPS),

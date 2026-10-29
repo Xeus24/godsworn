@@ -49,6 +49,11 @@ export const MECHANICS: MechanicDef[] = [
   { id: 'mirage', zone: 'saltglass', name: 'Mirage', description: 'The Flats lie. Off the road the mirage thickens by day; at full you are turned around. A Glass Lens or a waypoint clears it.', meter: 'Mirage', rise: { day: 0.9, night: 0.2 }, full: 'lost', reliefItems: { 'glass-lens': 70 } },
   { id: 'pressure', zone: 'merrowdeep', name: 'Pressure', description: 'The deep presses in. At full you lose health with every step. Earth resistance and an Air Pearl help.', meter: 'Pressure', rise: { day: 0.8, night: 0.8 }, relief: 'earthResist', full: 'harm', harm: 0.03, reliefItems: { 'air-pearl': 70 } },
   { id: 'steam', zone: 'clockwork-foundry', name: 'Steam Jets', description: 'Valves burst without warning. Fire resistance blunts the scald; at 60% you are untouched.', vent: { chance: 0.05, damage: 0.04 }, relief: 'fireResist' },
+  // Phase 15
+  { id: 'hearth', zone: 'ashfold', name: 'Hearth and Home', description: 'A gentle start: nothing wears you down, and the village hearth heals you for free.' },
+  { id: 'fading', zone: 'hollow-barrows', name: 'Fading', description: 'The underworld leaches the living. At full you lose health with every step. Shadow resistance and a Grave Candle help.', meter: 'Fading', rise: { day: 0.8, night: 0.8 }, relief: 'shadowResist', full: 'harm', harm: 0.03, reliefItems: { 'grave-candle': 70 } },
+  { id: 'squall', zone: 'shattered-isles', name: 'Squalls', description: 'Storms break without warning. Lightning resistance blunts the strike; at 60% you are untouched.', vent: { chance: 0.05, damage: 0.04 }, relief: 'lightningResist' },
+  { id: 'thinair', zone: 'skyreach', name: 'Thin Air', description: 'The air is cold and thin. At full you lose health with every step. Ice resistance and a Breath Tonic help.', meter: 'Thin air', rise: { day: 0.9, night: 1.1 }, relief: 'iceResist', full: 'harm', harm: 0.03, reliefItems: { 'breath-tonic': 70 } },
 ];
 
 /** The moon runs eight days: phase 0 is new, 4 is full. */
