@@ -1,5 +1,6 @@
 import type { Biome } from '../../engine/world/types';
 import { BATCH1_AREAS } from '../regions/batch1';
+import { BATCH2_AREAS, BATCH2_PASSES } from '../regions/batch2';
 
 /** What kind of place an area is: it shapes the terrain and what is lying about. */
 export type AreaTheme = 'grove' | 'ruin' | 'cave' | 'shore' | 'camp' | 'peak' | 'oasis' | 'district';
@@ -90,6 +91,7 @@ const make = (rows: Row[], access?: (i: number) => AreaDef['access']): AreaDef[]
 export const AREAS: AreaDef[] = [
   ...make(LAND),
   ...BATCH1_AREAS,
+  ...BATCH2_AREAS,
   ...make(SEA, (i) => ({ by: 'ship', level: [1, 1, 2, 2, 3, 4][i] ?? 1 })),
   ...make(SKY, () => ({ by: 'airship', level: 1 })),
 ];
@@ -119,4 +121,6 @@ export const PASSES: PassDef[] = [
   { id: 'briar-gate', name: 'The Briar Gate', a: 'ashen-desert', b: 'thornreach' },
   { id: 'dwarf-road', name: 'The Dwarf Road', a: 'frostspire', b: 'khazrum' },
   { id: 'deep-gate', name: 'The Deep Gate', a: 'khazrum', b: 'volcanic-rift' },
+  // The second four new regions (phase 14).
+  ...BATCH2_PASSES,
 ];

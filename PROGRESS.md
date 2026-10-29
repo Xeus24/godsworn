@@ -862,6 +862,13 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase13.test.ts` (12); 752 unit tests, 8 e2e, build and playtest pass. The new maps were not walked in the browser (no teleport; the old world screen still renders).
 - **Not done / cut:** the new regions reuse existing biome art (a marsh, badlands, dwarf city and capital palette are later), existing sprite families (the 20-family goal needs new sprites), no unique art for the six districts; **the mirror-beam, sokoban and gravity-flip dungeon gimmicks** are not built (three gimmicks exist); the minigames, the capital's court politics and the Aurelane main-quest arc belong to later phases; 8+ people per town have daily schedules but no routine of movement between places.
 
+### Expansion phase 14: the second four new regions
+- **The Gloamwood, the Saltglass Flats, Merrowdeep (the drowned city) and the Clockwork Foundry** (`src/data/regions/batch2.ts`): four more off-road zones (16 regions now, 8 on the road), joined by eight new passes (Dusk Path, Lantern Lane, Glass Road, Salt Track, Drowned Stair, Undertow Gate, Gear Tunnel, Slag Road). Each has a town (Lampfall, Lensfall, Pearlgate, Ratchet) with 8 scheduled people and a minigame, 4 side maps, 3 dungeons (12 new; 35 in all), 10 new enemies, 4 named rare spawns, 3 dungeon bosses, a world boss (Eventide Stag, Glasswright, Tide-Mother, First Engine) with pre/mid/post lines, and a regional questline (`region-<id>`).
+- **Regional rules (data only):** Gloaming (a Gloom meter that darkens sight; Glow Lantern), Mirage (turns you around; Glass Lens), Pressure (harms at full; Earth resistance, Air Pearl) and Steam Jets (valves burst on any ground; fire resistance).
+- Totals: 13 towns, 35 dungeons, 72 more enemies (about 280 in all; family count still short of 20, no new sprites yet).
+- Tests: `tests/expansionPhase14.test.ts` (4); 756 unit tests, 8 e2e and the build pass. The playtest's alchemist run lost `q-engine` in main-7 (a main-story fight these regions do not touch; not investigated). New maps not walked in the browser.
+- **Not done / cut:** same as phase 13 (reused biome art and sprite families); the minigames named by the towns are wired in a later phase.
+
 ## Known bugs
 - None known.
 

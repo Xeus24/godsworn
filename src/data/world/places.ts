@@ -1,4 +1,5 @@
 import { BATCH1_DUNGEONS, BATCH1_TOWNS } from '../regions/batch1';
+import { BATCH2_DUNGEONS, BATCH2_TOWNS } from '../regions/batch2';
 import type { DungeonDef, EncounterGroup, TownDef } from '../../engine/world/types';
 
 /** The five towns along the road. Each honors two gods; some host a faction hall or houses for sale. */
@@ -10,7 +11,7 @@ const BASE_TOWNS: TownDef[] = [
   { id: 'saltmere', name: 'Saltmere', zone: 'stormcoast', description: 'A port of smugglers, sailors and very good fish.', temple: ['nymira', 'grimvald'], faction: 'thieves-den', housing: true, innCostPerLevel: 8, extraShops: ['gambler', 'black-market', 'merchant-bartholomew', 'merchant-vesper', 'merchant-karl', 'merchant-cartographer', 'collector'] },
 ];
 
-export const TOWNS: TownDef[] = [...BASE_TOWNS, ...BATCH1_TOWNS];
+export const TOWNS: TownDef[] = [...BASE_TOWNS, ...BATCH1_TOWNS, ...BATCH2_TOWNS];
 
 const g = (weight: number, ...ids: string[]): EncounterGroup => ({ weight, enemies: ids.map((raw) => (raw.startsWith('^') ? { enemyId: raw.slice(1), row: 'back' as const } : raw.startsWith('elite:') ? { enemyId: raw.slice(6), tier: 'elite' as const } : { enemyId: raw })) });
 
@@ -28,4 +29,4 @@ const BASE_DUNGEONS: DungeonDef[] = [
   { id: 'black-throne', name: 'The Black Throne', zone: 'dark-citadel', level: 60, biome: 'dungeon', rooms: 8, puzzle: true, boss: 'void-commander', description: 'The heart of the Citadel, where the Throne waits for its master.', encounters: [g(3, 'void-knight', 'void-knight', '^void-wraith'), g(2, 'fallen-paladin', '^shadow-fiend'), g(1, 'elite:void-knight', '^void-wraith')] },
 ];
 
-export const DUNGEONS: DungeonDef[] = [...BASE_DUNGEONS, ...BATCH1_DUNGEONS];
+export const DUNGEONS: DungeonDef[] = [...BASE_DUNGEONS, ...BATCH1_DUNGEONS, ...BATCH2_DUNGEONS];

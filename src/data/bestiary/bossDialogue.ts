@@ -1,5 +1,6 @@
 import { GODS } from '../gods';
 import { BATCH1_BOSS_LINES } from '../regions/batch1';
+import { BATCH2_BOSS_LINES } from '../regions/batch2';
 
 /**
  * What a boss says before the fight, when it is hurt (half health) and after it falls.
@@ -69,5 +70,6 @@ const FALLBACK: BossLines = ['“So you have come.”', '“Not yet.”', '“It
 export const BOSS_LINES: Record<string, BossLines> = {
   ...HAND,
   ...BATCH1_BOSS_LINES,
+  ...BATCH2_BOSS_LINES,
   ...Object.fromEntries(GODS.filter((g) => !g.hidden).map((g) => [`aspect-${g.id}`, VOICE[g.id] ?? FALLBACK])),
 };

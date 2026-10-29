@@ -51,8 +51,8 @@ describe('four new regions', () => {
   });
 
   it('adds towns, dungeons and enemies on the way to 15, 45 and 260', () => {
-    expect(content.towns.size).toBe(9);
-    expect(content.dungeons.size).toBe(23);
+    expect(content.towns.size).toBeGreaterThanOrEqual(9);
+    expect(content.dungeons.size).toBeGreaterThanOrEqual(23);
     for (const t of NEW_ZONES.map((z) => content.zones.get(z).town as string)) {
       const people = content.npcs.filter((n) => n.town === t && n.place === 'people');
       expect(people.length, t).toBeGreaterThanOrEqual(8);

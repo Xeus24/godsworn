@@ -43,6 +43,12 @@ export const MECHANICS: MechanicDef[] = [
   { id: 'moon', zone: 'moonfen', name: 'Moon Phases', description: 'The moon waxes and wanes over eight days. At the new moon you see little; at the full moon things hunt bolder and moonlit caches open in the reeds.' },
   { id: 'thorns', zone: 'thornreach', name: 'Wild Thorns', description: 'Off the road the thorns snag and cut. Nature resistance blunts it; at 60% you are untouched.', vent: { chance: 0.06, damage: 0.03 }, offPath: true, relief: 'natureResist' },
   { id: 'badair', zone: 'khazrum', name: 'Bad Air', description: 'The deep tunnels breathe foul. At full you lose health with every step. Nature resistance and a Safety Lamp help.', meter: 'Bad air', rise: { day: 0.8, night: 0.8 }, relief: 'natureResist', full: 'harm', harm: 0.03, reliefItems: { 'safety-lamp': 70 } },
+
+  // Phase 14
+  { id: 'gloom', zone: 'gloamwood', name: 'Gloaming', description: 'The wood sits at dusk. Gloom gathers as you walk, faster at night; at full you see only a few steps. Lanterns push it back.', meter: 'Gloom', rise: { day: 0.5, night: 1.0 }, full: 'dark', reliefItems: { 'glow-lantern': 60 } },
+  { id: 'mirage', zone: 'saltglass', name: 'Mirage', description: 'The Flats lie. Off the road the mirage thickens by day; at full you are turned around. A Glass Lens or a waypoint clears it.', meter: 'Mirage', rise: { day: 0.9, night: 0.2 }, full: 'lost', reliefItems: { 'glass-lens': 70 } },
+  { id: 'pressure', zone: 'merrowdeep', name: 'Pressure', description: 'The deep presses in. At full you lose health with every step. Earth resistance and an Air Pearl help.', meter: 'Pressure', rise: { day: 0.8, night: 0.8 }, relief: 'earthResist', full: 'harm', harm: 0.03, reliefItems: { 'air-pearl': 70 } },
+  { id: 'steam', zone: 'clockwork-foundry', name: 'Steam Jets', description: 'Valves burst without warning. Fire resistance blunts the scald; at 60% you are untouched.', vent: { chance: 0.05, damage: 0.04 }, relief: 'fireResist' },
 ];
 
 /** The moon runs eight days: phase 0 is new, 4 is full. */

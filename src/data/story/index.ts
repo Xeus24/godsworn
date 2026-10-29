@@ -22,8 +22,9 @@ export { QUEST_ITEMS } from './items';
 import { GUARDED_TECHNIQUES } from '../general/greater';
 import { STORY_ENEMIES as BASE_STORY_ENEMIES } from './enemies';
 import { POLITICS_DIALOGUES, POLITICS_QUESTS, POLITICS_TOPICS } from './politics';
-import { BATCH1_QUESTS } from '../regions/batch1Quests';
+import { BATCH1_QUESTS, BATCH2_QUESTS } from '../regions/batch1Quests';
 import { BATCH1_NPCS } from '../regions/batch1';
+import { BATCH2_NPCS } from '../regions/batch2';
 import { PROFESSION_NPCS, PROFESSION_QUESTS } from './professions';
 import { CURIOSITY_QUESTS } from '../items/greaterCuriosities';
 import { SAINT_QUESTS } from '../saints';
@@ -34,11 +35,11 @@ export const STORY_ENEMIES = [...BASE_STORY_ENEMIES, ...TWILIGHT_ENEMIES, ...HID
 
 const LINES = buildLines([...RACE_LINES, ...BACKGROUND_LINES]);
 
-export const QUESTS: QuestDef[] = [...LINES.quests, ...HIDDEN_QUESTS, ...MASTER_QUESTS, ...SAINT_QUESTS, ...POLITICS_QUESTS, ...CURIOSITY_QUESTS, ...BATCH1_QUESTS, ...PROFESSION_QUESTS, ...CLASS_LINE_QUESTS, ...MAIN_QUESTS, ...TWILIGHT_QUESTS, ...SIDE_QUESTS, ...THIRD_SLOT_QUESTS, ...GOD_QUESTS, ...CLASS_QUESTS, ...HYBRID_QUESTS, ...FACTION_QUESTS, ...COMPANION_QUESTS, ...BOUNTIES];
+export const QUESTS: QuestDef[] = [...LINES.quests, ...HIDDEN_QUESTS, ...MASTER_QUESTS, ...SAINT_QUESTS, ...POLITICS_QUESTS, ...CURIOSITY_QUESTS, ...BATCH1_QUESTS, ...BATCH2_QUESTS, ...PROFESSION_QUESTS, ...CLASS_LINE_QUESTS, ...MAIN_QUESTS, ...TWILIGHT_QUESTS, ...SIDE_QUESTS, ...THIRD_SLOT_QUESTS, ...GOD_QUESTS, ...CLASS_QUESTS, ...HYBRID_QUESTS, ...FACTION_QUESTS, ...COMPANION_QUESTS, ...BOUNTIES];
 
 export const DIALOGUES: DialogueDef[] = [...LINES.dialogues, ...HIDDEN_DIALOGUES, ...MASTER_DIALOGUES, ...POLITICS_DIALOGUES, ...CLASS_LINE_DIALOGUES, ...patchMainDialogues(MAIN_DIALOGUES), ...CHECK_DIALOGUES, ...TWILIGHT_DIALOGUES, ...SIDE_DIALOGUES, ...THIRD_SLOT_DIALOGUES, ...FACTION_DIALOGUES, ...COMPANION_DIALOGUES, ...TRIAL_DIALOGUES];
 
-export const NPCS: NpcDef[] = [...TOWN_NPCS, ...TEMPLE_NPCS, ...PROFESSION_NPCS, ...MENTOR_NPCS, ...FIELD_NPCS, ...TWILIGHT_NPCS, ...COMPANION_NPCS, ...LINES.npcs, ...HIDDEN_NPCS, ...MASTER_NPCS, ...BATCH1_NPCS].map((n) => (NPC_TOPICS[n.id] || CHECK_TOPICS[n.id] || HIDDEN_RUMORS.some((r) => r.npc === n.id) || POLITICS_TOPICS[n.id] ? { ...n, topics: [...(n.topics ?? []), ...(NPC_TOPICS[n.id] ?? []), ...(CHECK_TOPICS[n.id] ?? []), ...rumorTopics(n.id), ...(POLITICS_TOPICS[n.id] ?? [])] } : n));
+export const NPCS: NpcDef[] = [...TOWN_NPCS, ...TEMPLE_NPCS, ...PROFESSION_NPCS, ...MENTOR_NPCS, ...FIELD_NPCS, ...TWILIGHT_NPCS, ...COMPANION_NPCS, ...LINES.npcs, ...HIDDEN_NPCS, ...MASTER_NPCS, ...BATCH1_NPCS, ...BATCH2_NPCS].map((n) => (NPC_TOPICS[n.id] || CHECK_TOPICS[n.id] || HIDDEN_RUMORS.some((r) => r.npc === n.id) || POLITICS_TOPICS[n.id] ? { ...n, topics: [...(n.topics ?? []), ...(NPC_TOPICS[n.id] ?? []), ...(CHECK_TOPICS[n.id] ?? []), ...rumorTopics(n.id), ...(POLITICS_TOPICS[n.id] ?? [])] } : n));
 
 export const QUEST_ENCOUNTERS: EncounterDef[] = [...LINE_ENCOUNTERS, ...HIDDEN_ENCOUNTERS, ...MASTER_ENCOUNTERS, ...CLASS_LINE_ENCOUNTERS, ...MAIN_ENCOUNTERS, ...TWILIGHT_ENCOUNTERS, ...SIDE_ENCOUNTERS, ...GOD_ENCOUNTERS, ...FACTION_ENCOUNTERS, ...COMPANION_ENCOUNTERS];
 
