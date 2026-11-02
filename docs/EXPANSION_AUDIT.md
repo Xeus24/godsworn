@@ -175,3 +175,39 @@ This is roughly 10x the current content: an estimated 250k+ lines of data and en
 5. Treasure maps (50+) with dig spots.
 6. Class boss tuning and late world bosses to 45%+ solo.
 7. Twilight tier variety groundwork and Defender second apostle tree.
+
+## Final check
+
+Measured with `npx tsx scripts/auditCounts.ts` and the checks in `tests/expansionPhase20.test.ts` (phase 20). Playtest: all 29 classes finish the base story.
+
+| Target | Goal | Measured | Result |
+|---|---|---|---|
+| Classes (incl. hidden and NG+) | 23 | 29 | met |
+| Hybrids | 45 | 45 | met |
+| General skills | 160+ | 182 | met |
+| Regions | 26 | 26 | met |
+| Towns | 15 | 15 | met |
+| Dungeons | 57 | 57 | met |
+| Enemies | 260+ | 492 | met |
+| Creature families | 20 | 21 | met |
+| Bosses (boss + world boss tier) | many | 114 (30 world bosses) | met |
+| Boss scripts | 70+ | 49 | **not met** (other bosses fight without scripted lines) |
+| Side quests | 110+ | 160 | met |
+| Main quests | 45+ | 54 | met |
+| Endings | 10+ | 15 | met |
+| Companions | 14 | 14 | met |
+| Gods | 14 | 14 + the Nameless | met |
+| Shrines | 80+ | 77 zone shrines + 8 saint shrines = 85 | met only when saint shrines count; zone shrines alone: not met |
+| Blessings | 180 | 180 | met |
+| Legendaries (hand-made unique items) | 150 | 487 uniques | met |
+| Item sets | 26 | 26 | met |
+| Runewords | 40 | 40 | met |
+| Affixes | 110 | 112 | met |
+| Recipes | 220 | 220 | met |
+| Fish | 60+ | 69 | met |
+| Cards | 120+ | 124 | met |
+| Secrets | 120+ | 199 | met |
+| Achievements | 220 | 232 | met |
+| Titles | 90 | 100 | met |
+| Late world bosses beatable by a lone hero | 45%+ | 58-100% (a few low spots listed under Cut / deferred) | met, with exceptions |
+| Every class finishes the story | all | 29 of 29 | met |

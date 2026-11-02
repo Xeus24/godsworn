@@ -12,12 +12,19 @@ import { itemIconUrl } from '../art/itemIcons';
 import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from '../combat/creatureSprites';
 import { completion, overallCompletion } from '../../engine/achievements/completion';
+import { AIRSHIP, SHIP_LEVELS } from '../../data/world/ship';
+import { destinations, hasAirship, shipLevel } from '../../engine/world/ship';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-type Tab = 'bestiary' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
+type Tab = 'bestiary' | 'families' | 'backgrounds' | 'companions' | 'cards' | 'ship' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
 const TABS: [Tab, string][] = [
   ['bestiary', 'Bestiary'],
+  ['families', 'By family'],
+  ['backgrounds', 'Backgrounds'],
+  ['companions', 'Companions'],
+  ['cards', 'Cards'],
+  ['ship', 'Ship'],
   ['achievements', 'Achievements'],
   ['lore', 'Lore'],
   ['items', 'Legendary Codex'],
@@ -109,9 +116,80 @@ export class CodexScreen implements Screen {
       });
       return b;
     }));
-    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
+    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
     this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), tabs, body));
   };
+
+  // ---------------------------------------------------------------- overview tabs
+
+  /** The bestiary grouped by creature family, with how many of each you have met. */
+  private families(): HTMLElement {
+    const p = this.session.player;
+    const groups = new Map<string, EnemyDef[]>();
+    for (const e of listedEnemies()) groups.set(e.family, [...(groups.get(e.family) ?? []), e]);
+    const rows = [...groups.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([family, list]) => {
+        const met = list.filter((e) => p.bestiary[e.id] !== undefined);
+        const names = met.slice(0, 8).map((e) => e.name).join(', ');
+        return el('div', { class: 'board-row' }, el('b', {}, `${family[0]?.toUpperCase()}${family.slice(1)}`), el('span', { class: 'dim small' }, ` ${met.length} of ${list.length} met (levels ${Math.min(...list.map((e) => e.level))}-${Math.max(...list.map((e) => e.level))})`), ...(names ? [el('div', { class: 'dim small' }, `${names}${met.length > 8 ? ', ...' : ''}`)] : []));
+      });
+    return el('section', { class: 'panel' }, el('h2', {}, `Bestiary by family (${groups.size} families)`), ...rows);
+  }
+
+  /** All twelve pasts: yours, and what each one gives. */
+  private backgrounds(): HTMLElement {
+    const mine = this.session.player.backgroundId;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h2', {}, 'Backgrounds'),
+      ...content.backgrounds.all().map((b) => el('div', { class: 'board-row' }, el('b', {}, b.name), ...(b.id === mine ? [el('span', { class: 'enc-tag ok' }, 'Yours')] : []), el('div', { class: 'small' }, b.description), el('div', { class: 'dim small' }, b.voice[0]))),
+    );
+  }
+
+  /** Every companion: met or not, approval, and where they wait. */
+  private companions(): HTMLElement {
+    const s = this.session;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h2', {}, `Companions (${s.party.members().length}/3 in your party; the Camp is on the Party screen)`),
+      ...content.companions.all().map((c) => {
+        const st = s.state.party.companions[c.id];
+        const status = !st ? `Not met: waits in ${content.towns.get(c.town).name}` : st.left ? 'Has left' : `${st.inParty ? 'In your party' : 'At camp'}, approval ${st.approval}`;
+        return el('div', { class: 'board-row' }, el('b', {}, st ? c.name : '???'), el('span', { class: 'dim small' }, ` ${st ? c.title : ''}`), el('div', { class: 'small' }, status));
+      }),
+    );
+  }
+
+  /** The Pantheon Cards collection. */
+  private cards(): HTMLElement {
+    const m = this.session.state.minigames;
+    const have = Object.values(m.cards).filter((n) => n > 0).length;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h2', {}, `Pantheon Cards: ${have} of ${content.cards.size}`),
+      el('div', { class: 'dim small' }, `${m.cardWins} duels won. Play in any town's Pastimes.`),
+      el('div', { class: 'small' }, content.cards.all().map((c) => `${(m.cards[c.id] ?? 0) > 0 ? c.name : '???'}${(m.cards[c.id] ?? 0) > 1 ? ` x${m.cards[c.id]}` : ''}`).join(' · ')),
+    );
+  }
+
+  /** A summary of the ship; building and sailing happen at the Saltmere harbor. */
+  private ship(): HTMLElement {
+    const p = this.session.player;
+    const lvl = shipLevel(p);
+    const ship = lvl > 0 ? SHIP_LEVELS[lvl - 1] : undefined;
+    return el(
+      'section',
+      { class: 'panel' },
+      el('h2', {}, 'Ship'),
+      el('p', {}, ship ? `${ship.name}: ${ship.description}` : 'You own no ship yet. Build one at the harbor of Saltmere.'),
+      el('p', {}, hasAirship(p) ? `Your airship ${AIRSHIP.name} is built.` : 'No airship yet.'),
+      el('p', { class: 'dim small' }, `Ports you can reach: ${destinations(p).map((d) => d.name).join(', ') || 'none'}.`),
+    );
+  }
 
   // ---------------------------------------------------------------- bestiary
 

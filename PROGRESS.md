@@ -966,6 +966,13 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Tests: `tests/expansionPhase20.test.ts` (13) and `tests/globalPad.test.ts` (6), and an encounter-rate test in `tests/world.test.ts`; 858 unit tests, 8 e2e, build and the playtest pass. Checked in the browser: the Settings accessibility options, the colour-blind palette, the dyslexia font and the Completion tab (audio muted). The gamepad was tested with fake pads only (no real controller).
 - **Not done / cut:** the five NG+1 boss stalls above; renown has no gated quests (discounts and the statue only) and no renown from shop spending; the main path was not timed at "a realistic pace" (the playtest has no clock; the 54 main quests and 28 boss fights are the measure); the gamepad has no on-screen button prompts or rebinding; colour-blind palettes change colours, not icons or patterns; the dyslexia option uses installed fonts only.
 
+### Expansion phase 20b: browser smoke test, Codex overview tabs and the final check
+- **E2E smoke test** (`e2e/smoke.e2e.ts`): new hero, Brightwater, Pastimes, the Party screen, every new Codex tab, then Max level from the debug panel and the Rift Gate. It passed first time in Chrome with no page errors; the Pastimes, Party and Endgame screens needed no fixes.
+- **Codex tabs:** By family (the bestiary grouped by the 21 families), Backgrounds (all 12), Companions (met, approval, where they wait), Cards (collection) and Ship (summary; building stays at the Saltmere harbor). The Camp stays on the Party screen and the full Pastimes card game on the town screen.
+- **Final check** written to `docs/EXPANSION_AUDIT.md`: every target measured. Not met: boss scripts (49 of 70+) and zone shrines alone (77 of 80+, 85 with the saint shrines).
+- Tests: 858 unit tests, 9 e2e, build; the playtest finishes all 29 classes (Alchemist included; Rogue loses one fight and retries).
+- **Cut / deferred:** the 21 bosses without scripts, three more zone shrines, the NG+1 boss stalls listed under Cut / deferred.
+
 ## Known bugs
 - None known.
 
