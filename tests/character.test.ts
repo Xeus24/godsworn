@@ -33,7 +33,7 @@ describe('character creation', () => {
   it('gets the primary class trait, if the class has one', () => {
     const sources = (classId: string) => characterModifiers(makeHero({ classId })).map((m) => m.source);
     expect(sources('warrior')).toContain('trait:warrior');
-    expect(sources('rogue').some((src) => src.startsWith('trait:'))).toBe(false);
+    expect(sources('ranger').some((src) => src.startsWith('trait:'))).toBe(false);
     for (const cl of content.classes.all()) if (cl.trait) expect(cl.trait.modifiers.length).toBeGreaterThan(0);
   });
 

@@ -82,7 +82,7 @@ for (const [i, cls] of classes.entries()) {
       },
       ...(only ? { log: (line: string) => console.log(`  ${line}`) } : {}),
     });
-  const base = GameSession.newGame(300 + i, benchmarkHero(cls, 1));
+  const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), benchmarkHero(cls, 1));
   const r = run(base, 0);
   console.log(`${cls.padEnd(13)} ${(r.ending ?? '-').padEnd(12)} ${String(r.fights).padStart(6)}  ${String(r.losses).padStart(6)}  ${r.stuck ?? 'finished'}`);
   if (ng && r.ending) {

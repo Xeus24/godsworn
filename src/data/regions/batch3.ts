@@ -119,7 +119,7 @@ export const BATCH3_ZONES: ZoneDef[] = [
     description: 'A farming village at the edge of the Meadowlands, half-burned and half-abandoned: where a hero’s story starts.',
     gather: { mining: ['iron-ore'], herbalism: ['healroot', 'wild-garlic'], fishing: ['river-trout'] },
     weather: [{ id: 'clear', weight: 4 }, { id: 'rain', weight: 2 }, { id: 'fog', weight: 1 }], encounterRate: 0.06,
-    dungeons: ['ashfold-cellar', 'millstone-hollow'], worldBoss: 'giant-rat-king', shrines: ['solenne', 'hesha'],
+    dungeons: ['ashfold-cellar', 'millstone-hollow'], worldBoss: 'giant-rat-king', shrines: ['solenne', 'hesha', 'ordrun', 'ysolde'],
     encounters: [grp(4, ['cellar-rat', 'cellar-rat']), grp(3, ['ash-sparrow', 'ash-sparrow', 'thatch-crawler']), grp(3, ['village-hound', 'cellar-rat']), grp(2, ['scarecrow-stalker', '^ember-sprite']), grp(2, ['well-wight', '^ember-sprite'], { time: 'night' }), grp(2, ['barn-brute', 'thatch-crawler'])],
     roaming: [...roaming('old-nibbler', 'tattered-tom', 'wellwater-annie', 'cinder-pup'), grp(1, champions('village-hound', 2))],
     lore: ['lore-ashfold-fire', 'lore-ashfold-hearth'],
