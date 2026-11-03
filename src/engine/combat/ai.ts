@@ -103,6 +103,8 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
         const taken = marks.reduce((s, f) => s + resistMultiplier(b.stats(f)[`${skill.element}Resist`]), 0) / Math.max(1, marks.length);
         score *= Math.max(0.1, taken);
       }
+      // Weapon Arts are fillers: a class skill that is ready comes first.
+      if (skill.weaponArt) score *= 0.7;
       options.push({ action: act(target?.id), score: score * w * jitter });
       continue;
     }
@@ -121,7 +123,7 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
     const supportBias = profile === 'support' ? 1.8 : 1;
     const target = skill.targeting === 'enemy' ? pickFoe(b, x, skill, profile) : skill.targeting === 'ally' ? friends[0] : undefined;
     if (needsTarget(skill) && !target) continue;
-    options.push({ action: act(target?.id), score: 1.4 * supportBias * w * jitter });
+    options.push({ action: act(target?.id), score: 1.4 * supportBias * (skill.weaponArt ? 0.4 : 1) * w * jitter });
   }
 
   // A boss is winding up a big attack: brace for it when hurt.

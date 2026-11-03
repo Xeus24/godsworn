@@ -27,7 +27,7 @@ Then open http://localhost:5173.
 | `npm run sim` | Simulate fights per class and level; print win rates, turns and damage per turn |
 | `npm run sim:party` | Simulate every hero class beside every companion class across each zone's fights; print win rates and the spread between companion classes |
 | `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
-| `npm run playtest` | Play the main story to an ending with every class, using real auto-battles (`npm run playtest -- mage` logs every fight of one class; `npm run playtest -- ng` plays it again through New Game+1) |
+| `npm run playtest` | Play the main story to an ending with every class, using real auto-battles (`npm run playtest -- mage` logs every fight of one class; `npm run playtest -- ng` plays it again through New Game+1, `npm run playtest -- ng monk` for one class) |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 
 ## Play

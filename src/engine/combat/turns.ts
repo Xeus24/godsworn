@@ -95,7 +95,8 @@ export function advance(b: Battle): BattleEvent[] {
     const x = nextActor(b);
     if (!x) break;
     b.time = x.nextAt;
-    b.turnCount++;
+    // Summons and totems do not use up the fight's turn limit, or a summoner's own turns would run out sooner.
+    if (x.kind !== 'summon') b.turnCount++;
     b.emit({ type: 'turn', actorId: x.id });
     beginTurn(b, x);
     if (b.checkOutcome() !== 'ongoing') break;

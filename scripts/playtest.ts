@@ -9,7 +9,9 @@
  *   npm run playtest            every class
  *   npm run playtest -- mage    one class, with a log of every fight
  *   PLAYTEST_DEBUG=1 npm run playtest   also prints every unit's HP when a fight is lost
+ *   PLAYTEST_TRACE=1 npm run playtest   also tallies who did what in a lost fight
  *   npm run playtest -- ng      every class again through New Game+1 (the story restarts at the raised levels)
+ *   npm run playtest -- ng monk one class through the base story and New Game+1, with a log of every fight
  */
 import { content } from '../src/data';
 import { totalXpForLevel } from '../src/engine/character/progression';
@@ -51,7 +53,12 @@ function realFight(s: GameSession, id: string): boolean {
   prepare(s);
   const enc = content.encounters.find(id) ?? groupEncounter({ weight: 1, enemies: [{ enemyId: id }] }, `boss:${id}`, content.enemies.get(id).name, s.player.level, { isBoss: true });
   const b = createEncounterBattle(s.player, enc, { rng: s.rng, level: s.quests.fightLevel(enc), companions: s.party.battleMembers(), guests: s.quests.guests() });
-  runAutoBattle(b);
+  const events = runAutoBattle(b);
+  if (b.outcome !== 'victory' && process.env.PLAYTEST_TRACE) {
+    const tally = new Map<string, number>();
+    for (const e of events) if (e.type === 'action') { const who = b.combatants.find((u) => u.id === e.actorId); const k = `${who?.name ?? e.actorId}: ${e.label}`; tally.set(k, (tally.get(k) ?? 0) + 1); }
+    console.log(`  TRACE ${id} (${b.turnCount} turns): ${[...tally].sort((x, y) => y[1] - x[1]).slice(0, 14).map(([k, n]) => `${k} x${n}`).join(' | ')}`);
+  }
   if (b.outcome !== 'victory' && process.env.PLAYTEST_DEBUG) console.log(`  LOSS ${id}: ${b.combatants.map((u) => `${u.name}${u.side === 'party' ? '*' : ''} ${Math.round(u.hp)}/${Math.round(u.maxHp)}`).join(' | ')}`);
   settleBattle(s, b);
   return b.outcome === 'victory';
@@ -59,7 +66,7 @@ function realFight(s: GameSession, id: string): boolean {
 
 const arg = process.argv[2];
 const ng = arg === 'ng';
-const only = ng ? undefined : arg;
+const only = ng ? process.argv[3] : arg;
 const classes = only ? [only] : content.classes.ids();
 console.log(`Playtest: the main story with real battles (benchmark build at each chapter level, 3 tries a fight)${ng ? ', then New Game+1' : ''}`);
 console.log(`${'class'.padEnd(13)} ${'ending'.padEnd(12)} fights  losses  result`);
