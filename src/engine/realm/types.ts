@@ -37,10 +37,31 @@ export interface GrudgeState {
   slain: number;
 }
 
+/** The Three Days of Marrow (Innovation Pack, item 2). Facts survive each loop; everything else resets. */
+export interface MarrowState {
+  /** How many times the weir has given way. */
+  loops: number;
+  /** Facts learned, kept for ever. */
+  facts: string[];
+  /** The slot now, 0 to 11 (see `data/realm/marrow.ts`). */
+  slot: number;
+  /** Deeds done in this run. */
+  deeds: string[];
+  /** What happened, newest last (cleared each loop). */
+  log: string[];
+  /** How it ended, once it has. */
+  saved?: 'mended' | 'emptied';
+}
+
 export interface RealmState {
   grudge: GrudgeState;
+  marrow: MarrowState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState() };
+}
+
+export function createMarrowState(): MarrowState {
+  return { loops: 0, facts: [], slot: 0, deeds: [], log: [] };
 }

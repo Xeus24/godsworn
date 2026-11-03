@@ -5,6 +5,8 @@ import type { EncounterDef } from '../combat/types';
 import { decorate, forge, fullName, grudgeBounty, hierarchy, mark, rankTitle, scheme, slay } from '../realm/grudge';
 import type { GrudgeEntry, RealmState } from '../realm/types';
 import { festivalOn } from '../realm/wheel';
+import { doDeed, marrowRewards, talk as marrowTalk, wait as marrowWait, type MarrowResult } from '../realm/marrow';
+import type { MarrowPlace } from '../../data/realm/marrow';
 import type { GameSession } from './gameState';
 
 /** How many days of scheming one long rest or voyage can run (a year away does not run a year of them). */
@@ -81,4 +83,39 @@ export class RealmActions {
   forge(zone: string, enemyId: string, cause: GrudgeEntry['cause'] = 'beat'): GrudgeEntry | null {
     return forge(this.state.grudge, zone, enemyId, cause, this.s.state.clock.day, this.s.rng);
   }
+
+  // ------------------------------------------------------------ the Three Days of Marrow
+
+  private marrowEnd(result: MarrowResult): MarrowResult {
+    if (result.ok && (result.ended === 'mended' || result.ended === 'emptied')) {
+      const r = marrowRewards(result.ended);
+      this.s.addGold(r.gold, 'marrow');
+      this.s.grantXp(r.xp);
+      this.s.devotion.apply(r.favor as Record<string, number>, 'quest');
+      if (result.ended === 'mended') this.s.bus.emit('toast', { kind: 'level', text: 'Marrow is mended. The loop is broken for good.' });
+      else this.s.bus.emit('toast', { kind: 'level', text: 'Marrow is emptied, but alive. The loop is broken.' });
+      this.s.setFlag(`marrow-${result.ended}`, true);
+      this.s.bus.emit('stateChanged', { reason: 'marrow' });
+    }
+    return result;
+  }
+
+  marrowTalk(villager: string, place: MarrowPlace): MarrowResult {
+    const r = this.marrowEnd(marrowTalk(this.state.marrow, villager, place));
+    this.s.bus.emit('stateChanged', { reason: 'marrow' });
+    return r;
+  }
+
+  marrowDeed(deed: string, place: MarrowPlace): MarrowResult {
+    const r = this.marrowEnd(doDeed(this.state.marrow, deed, place));
+    this.s.bus.emit('stateChanged', { reason: 'marrow' });
+    return r;
+  }
+
+  marrowWait(): MarrowResult {
+    const r = marrowWait(this.state.marrow);
+    this.s.bus.emit('stateChanged', { reason: 'marrow' });
+    return r;
+  }
+
 }

@@ -180,3 +180,81 @@ describe('the Turning Wheel', () => {
     expect(price(dayOf('tally-market'))).toBeLessThan(price(dayOf('tally-market') + 7) * 1.001);
   });
 });
+
+import { MARROW, MARROW_DEEDS, MARROW_FACTS, MARROW_VILLAGERS } from '../src/data/realm/marrow';
+import { deedsAt, presentAt } from '../src/engine/realm/marrow';
+
+describe('the Three Days of Marrow', () => {
+  it('has twelve people with twelve-slot schedules, and every fact and deed is reachable', () => {
+    expect(MARROW_VILLAGERS).toHaveLength(12);
+    for (const v of MARROW_VILLAGERS) {
+      expect(v.where, v.id).toHaveLength(12);
+      for (const t of v.topics) {
+        expect(MARROW_FACTS[t.fact], t.fact).toBeDefined();
+        if (t.needs) expect(MARROW_FACTS[t.needs], t.needs).toBeDefined();
+      }
+    }
+    const sources = new Set(MARROW_VILLAGERS.flatMap((v) => v.topics.map((t) => t.fact)));
+    for (const d of MARROW_DEEDS) {
+      for (const f of d.needsFacts) expect(sources.has(f), `${d.id} needs ${f}`).toBe(true);
+      expect(d.slots.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('a first loop teaches, the weir gives way, and a second run breaks the loop and pays', () => {
+    const s = session();
+    const m = s.state.realm.marrow;
+    const at = (slot: number, place: Parameters<typeof presentAt>[1], who?: string) => {
+      expect(m.slot).toBe(slot);
+      if (who) expect(presentAt(slot, place).some((v) => v.id === who), `${who} at ${place} in slot ${slot}`).toBe(true);
+    };
+    // Loop one: learn.
+    const plan: [number, Parameters<typeof presentAt>[1], string][] = [[0, 'square', 'wren'], [1, 'bakery', 'bess'], [2, 'graves', 'osk'], [4, 'forge', 'torvik'], [5, 'graves', 'anselm'], [6, 'square', 'hobb'], [8, 'tower', 'edda'], [9, 'tower', 'edda']];
+    for (let slot = 0; slot < 12; slot++) {
+      const step = plan.find((p) => p[0] === slot);
+      if (step) {
+        at(slot, step[1], step[2]);
+        expect(s.realm.marrowTalk(step[2], step[1]).ok).toBe(true);
+      } else expect(s.realm.marrowWait().ok).toBe(true);
+    }
+    expect(m.loops).toBe(1);
+    expect(m.slot).toBe(0);
+    for (const f of ['loop', 'torvik-key', 'weir-cracked', 'sluice', 'flood-marks', 'mayor-afraid', 'edda-grief', 'edda-door']) expect(m.facts, f).toContain(f);
+    // Deeds need their hour, their place and each other.
+    expect(s.realm.marrowDeed('sluice', 'weir').ok).toBe(false);
+    const gold = s.state.gold;
+    const run: [number, string, Parameters<typeof presentAt>[1]][] = [[0, 'key', 'forge'], [4, 'sluice', 'weir'], [8, 'proof', 'chapel'], [10, 'evacuate', 'square'], [11, 'release', 'tower']];
+    for (let slot = 0; slot < 12; slot++) {
+      const d = run.find((r) => r[0] === slot);
+      if (d) {
+        expect(deedsAt(m, d[2]).some((x) => x.deed.id === d[1] && x.ready), d[1]).toBe(true);
+        const r = s.realm.marrowDeed(d[1], d[2]);
+        expect(r.ok).toBe(true);
+      } else expect(s.realm.marrowWait().ok).toBe(true);
+    }
+    expect(m.saved).toBe('mended');
+    expect(s.state.gold).toBeGreaterThanOrEqual(gold + MARROW.mended.gold);
+    expect(s.state.flags['marrow-mended']).toBe(true);
+    expect(s.realm.marrowWait().ok).toBe(false);
+  });
+
+  it('skipping the sluice still ends the loop, but only empties the town', () => {
+    const s = session();
+    const m = s.state.realm.marrow;
+    m.facts.push(...Object.keys(MARROW_FACTS));
+    m.slot = 8;
+    expect(s.realm.marrowDeed('proof', 'chapel').ok).toBe(true);
+    m.slot = 10;
+    expect(s.realm.marrowDeed('evacuate', 'square').ok).toBe(true);
+    m.slot = 11;
+    expect(s.realm.marrowDeed('release', 'tower').ok).toBe(true);
+    expect(m.saved).toBe('emptied');
+  });
+
+  it('a save keeps what you learned', () => {
+    const s = session();
+    s.state.realm.marrow.facts.push('loop');
+    const back = deserialize(serialize(s));
+    expect(back.ok && back.state.realm.marrow.facts).toEqual(['loop']);
+  });
+});

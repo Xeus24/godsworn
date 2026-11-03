@@ -34,6 +34,8 @@ export interface TownNav {
   games: () => void;
   /** Rift Gate and Boss Rush. */
   endgame: () => void;
+  /** The fog ferry to Marrow (Mirewick). */
+  marrow: () => void;
   leave: () => void;
   /** Opens a conversation with someone in town. */
   talk: (conv: Conversation) => void;
@@ -247,6 +249,7 @@ export class TownScreen implements Screen {
       this.card('Workshop', el('p', { class: 'small' }, 'Learn professions, craft, upgrade gear, reroll affixes, add sockets and raise quality.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
     );
     cards.push(this.card('Pastimes', el('p', { class: 'small' }, `${t.minigame ? `${t.name} is known for ${({ fishing: 'its fishing', dice: 'its dice tables', digging: 'treasure digging', forging: 'its forge contests', cards: 'Pantheon Cards', racing: 'mount racing' } as Record<string, string>)[t.minigame] ?? t.minigame}. ` : ''}Fishing, Pantheon Cards, tavern dice, mount racing, the forge, digging and the arena ladder.`), this.btn('Play', () => this.town.games(), false, 'primary')));
+    if (t.id === 'mirewick' && s.state.flags['marrow-open']) cards.push(this.card('The Fog Ferry', el('p', { class: 'small' }, s.state.realm.marrow.saved ? 'Marrow is quiet now. The ferry still runs, and the passengers get off, and stay off.' : 'A ferry across the fog, to a town that drowns every third night. Learn it, and break the loop.'), this.btn('Cross to Marrow', () => this.town.marrow(), false, 'primary')));
     if (t.id === 'saltmere') cards.push(this.card('Harbor', el('p', { class: 'small' }, 'Build a ship, set sail for the islands, and one day take to the air.'), this.btn('Go to the harbor', () => this.town.harbor(), false, 'primary')));
     const late = endgameUnlocked(s.state);
     const forSale = content.mounts.filter((m) => m.price !== undefined);
