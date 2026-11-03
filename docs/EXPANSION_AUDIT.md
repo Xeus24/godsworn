@@ -211,3 +211,50 @@ Measured with `npx tsx scripts/auditCounts.ts` and the checks in `tests/expansio
 | Titles | 90 | 100 | met |
 | Late world bosses beatable by a lone hero | 45%+ | 58-100% (a few low spots listed under Cut / deferred) | met, with exceptions |
 | Every class finishes the story | all | 29 of 29, base story and New Game+1 | met |
+
+---
+
+# Addendum: Master Prompt Parts 3-8 (Innovation Pack, Section H, Section I, Section J, Section K)
+
+Part 2 (the Expansion, sections 1-13) is built and committed (phases 1-21; see `PROGRESS.md`). This addendum audits the rest of the Master Prompt against the codebase (searched `src/` and `data/` for each name; hits that are only substrings of unrelated words are ignored). **Nothing from Parts 3, 4, 6, 7 or 8 exists yet**, with the exceptions listed below. Sizes are S, M, L or XL.
+
+## Already present (so the delta is smaller than the prompt says)
+| Item | What exists | Delta |
+|---|---|---|
+| Talk / mercy (B10, R6) | Talk action with persuade, bribe, recruit and spare (phase 11) | Hesha's Mercy layer: favor, dialogue and ending hooks, 40+ spareable enemies (M) |
+| Endings (R11) | 15 endings today (10 base, 5 Twilight) | Reach 17 Fates: Vex's prank ending and the Unsworn Ending; re-count against R11 (S, after item 160) |
+| Hybrids | 45 | 60 with Section I's 15 (L) |
+| Classes | 29 (20 base, 6 hidden, 3 NG+) | 30 base with Section I's 10, 7 hidden with the Oathbreaker (item 66), stretch 8 optional (XL) |
+| Birth signs | 16 (the 16th is the Unmarked sign) | R2: Caerith's hidden sign replaces or joins it; decide in the Oath phase (S) |
+| Fishing, cards, dice, racing | built (phase 18) | Nymira's Waters, Spire of Cards, Pantheon Chess extend them (M each) |
+| Calendar, rumors, formations, weather | days, weather and rows exist | Calendar of Vael years, Rumor Mill, 8 formation presets (M each) |
+| Skill evolutions | 24 (3 per original class, plus the new classes) | Section J: 2 more per class, 29-58 new evolutions (L) |
+| Promotions | none (only the word appears in unrelated text) | Section K: two tiers for every class (XL) |
+
+## Not built (delta by section)
+| Part | Items | Size | Depends on |
+|---|---|---|---|
+| A. Living World | 1-6: Grudgebound, Marrow, Chronicle of Ages, Fortunes, Echoes, Turning Wheel (R1 festivals) | XL | Calendar |
+| B. Art of Battle | 7-14: Blessed/Cursed ground, Foresight, Covenant Chains, Soulbinding (80 creatures), Trophy Forging, 40 Sigils, Borrowed Arts | XL | Terrain, Talk |
+| C. Godsworn's Heart | 15-19: 60 Convictions, 20 Kindred Bonds, Campfire Tales, Wayfarer's Arts, Sworn Bloodline | L | Camp, companions |
+| D. Wonders | 20-28: Living Elements, Relic Tools, Observatory, Celestial Atlas, Emberfall, Nymira's Waters, Spire of Cards, Sundered Hours, Painter's Eye | XL | Relic Tools before the regions they reopen |
+| E. Endless Pilgrimage | 29-34: Divine Seasons, daily/weekly trials, 50 Omens (R3: one modifier engine), Chronicler's Tools, Humbled Path, Fates | L | Modifier engine |
+| F-G. Polish and More Wonders | 35-60 | XL | most of A-E |
+| H1-H16 (61-167) | Oaths and Caerith, gods and faith, party, world, 6 pocket regions, 7 dungeons, 8 bosses, 6 enemy families, story, NPCs, items, festivals, minigames, Twilight, endgame | XL | Section A (Grudgebound, Wheel) and B (Soulbinding) |
+| I (168-229) | Tabletop Rules engine, 10 classes (5 classic, 5 homebrew) plus 8 stretch, 8 races, 6 backgrounds, trinkets, 13 systems, Gloaming Court, Guild, Tales & Tankards, 15 hybrids | XL | Class framework (exists) |
+| J. Extra evolutions | 2 more per class | L | Evolution framework (exists) |
+| K. Promotions | 2 tiers per class | XL | Class trees (exist) |
+
+## Reconciliation checks to enforce first (cheap, change what already exists)
+- **R2 / R17 / R30:** reserve Caerith's sign and the Oathbreaker slot, and raise the class and race totals in the validator so later phases cannot silently drop them.
+- **R3:** the NG+ world affixes (44) become the "World Affix" pool of a shared modifier engine; Omens (50) are a second pool in the same engine. Build the engine before Omens.
+- **R8:** the Inkweaver already says "glyph" in code and UI; keep it and reserve "Sigil" for B13.
+- **R9:** Summoner's 25 spirits and Soulbound creatures must use different ids and tables.
+- **R18:** add a content test that generated history cannot contradict fixed canon, before the Chronicle ships.
+- **R26 / R21-R30:** the Tabletop Rules toggle is per save, off by default, and every playtest runs in both modes; the Warrior's rage (if any) moves to the Wrathsworn when that class lands.
+
+## Proposed order (each stage is many phases, each leaving the game playable with tests green)
+1. **Stage 2, Innovation Pack:** A, B (7-10), then B (11-14), C, D (20-24), D (25-28), E, F, G.
+2. **Stage 3, Section H:** H-1 Oaths and Caerith first (it adds the Forsworn path the later items reuse), then H-2 to H-7.
+3. **Stage 4, Section I:** the Tabletop engine and class additions.
+4. **Sections J and K** should be folded into the class phases they touch rather than done last: build J's evolutions and K's promotions when each class's tree is next opened.
