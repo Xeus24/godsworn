@@ -922,7 +922,7 @@ Generated from the data files by `npm run content:md`.
 |---|---|---|---|
 | Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. | **Battle-Hardened**: 45% more max HP, 20% less damage taken, 40% more physical attack, +10% damage and 5% lifesteal. |
 | Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. | **Arcane Mastery**: 60% more magic attack, +30% damage, 90% more max HP and 36% less damage taken. |
-| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. |  |
+| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. | **Cutpurse’s Luck**: +30% damage and 50% more max HP. |
 | Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +100% damage, 140% more max HP, 45% less damage taken and hits that ignore enemy shields. |
 | Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
 | Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, +50% damage, 90% more max HP, 28% less damage taken and 11% lifesteal. |
@@ -2805,8 +2805,8 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 |---|---|---|---|---|---|---|---|
 | **The Meadowlands** | 1-8 | Brightwater | The Goblin Warren (Grukk the Goblin King, lv 8) | Bramblehorn | Solenne, Hesha, Mirrin | Clear, Rain, Fog | 0% |
 | **The Whisperwood** | 8-16 | Thornwick | Spider Hollow (The Broodmother, lv 14); The Old Crypt (The Bone Lord, lv 16) | Gnarlroot the Elder | Ysolde, Morrath, Lyssara | Clear, Rain, Fog | 0% |
-| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira, Ordrun | Clear, Fog | 110% |
-| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne, Seraphel | Clear, Heatwave, Sandstorm | 70% |
+| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira, Ordrun, Lyssara, Mirrin | Clear, Fog | 110% |
+| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne, Seraphel, Hesha | Clear, Heatwave, Sandstorm | 70% |
 | **Frostspire** | 32-40 | Frosthold | The Ice Palace (The Frost Queen, lv 39) | Skaldr the Frost Wyrm | Aurelis, Thalor, Lyssara | Snow, Clear, Fog | 60% |
 | **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald, Seraphel | Thunderstorm, Rain, Clear | 45% |
 | **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael, Ordrun | Ashfall, Heatwave, Clear | 5% |
@@ -2819,7 +2819,7 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 | **The Saltglass Flats** | 34-42 | Lensfall | The Prism Mines (The Prism Baron, lv 38); The Glass Cathedral (The Glass Cardinal, lv 40); The Bleached Fleet (Admiral of the Bleached Fleet, lv 41) | The Glasswright | Seraphel, Solenne, Kael | Clear, Heatwave, Sandstorm | 0% |
 | **Merrowdeep, the Drowned City** | 44-52 | Pearlgate | The Coral Palace (The Coral Queen, lv 46); The Drowned Forum (The Drowned Orator, lv 48); The Tidal Vaults (The Vault Leviathan, lv 50) | The Tide-Mother | Nymira, Mirrin, Morrath | Thunderstorm, Rain, Fog | 0% |
 | **The Clockwork Foundry** | 46-54 | Ratchet | The Gear Cathedral (The Archwinder, lv 51); The Assembly Halls (Assembler Prime, lv 52); The Slag Furnace (The Slag Baron, lv 54) | The First Engine | Ordrun, Thalor, Hesha | Ashfall, Heatwave, Clear | 0% |
-| **Ashfold, the Prologue Village** | 1-3 | Ashfold | The Ashfold Cellar (The Thing in the Cellar, lv 2); Millstone Hollow (Miller Grim, lv 4) | The Granary Terror | Solenne, Hesha | Clear, Rain, Fog | 0% |
+| **Ashfold, the Prologue Village** | 1-3 | Ashfold | The Ashfold Cellar (The Thing in the Cellar, lv 2); Millstone Hollow (Miller Grim, lv 4) | The Granary Terror | Solenne, Hesha, Ordrun, Ysolde | Clear, Rain, Fog | 0% |
 | **The Hollow Barrows** | 28-36 | - | The King’s Barrow (The Barrow Warden, lv 31); The Pyre Hall (The Pyre Matron, lv 33); The Black Ferry (The Ferry-Queen, lv 36) | The Hollow King Below | Morrath, Mirrin, Hesha | Fog, Clear, Blood Moon | 0% |
 | **The Shattered Isles** | 36-44 | Wreck’s End | The Wrecked Armada (The Wrecker-Lord, lv 40); The Reef Sanctum (The Kraken’s Daughter, lv 42) | The Storm Leviathan | Nymira, Seraphel, Vex | Thunderstorm, Rain, Clear, Fog | 0% |
 | **Skyreach** | 50-58 | - | The Storm Bastion (The Gale-Warden, lv 54); The Pillar Temple (The Pillar Colossus, lv 56); The High Vault (The Ruined Seraph, lv 58) | The Sovereign of Skyreach | Seraphel, Solenne, Aurelis | Clear, Thunderstorm, Snow | 0% |
@@ -3622,7 +3622,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Aurelis** | 20 | Loremaster Ivo | Read skillbooks and Grimoires (deed) |
 | **Against Nymira** | 30 | Loremaster Ivo | Defeat the herald of Nymira (fight) |
 | **The Covenant of Aurelis** | 40 | Loremaster Ivo | Offer the shards (deliver) |
-| **Pilgrim of Hesha** | 8 | Sister Wenna | Pray at the Hearthstone in The Meadowlands (visit); Pray at the Hearthstone in Aurelane, the Capital (visit) |
+| **Pilgrim of Hesha** | 8 | Sister Wenna | Pray at the Hearthstone in The Meadowlands (visit); Pray at the Hearthstone in The Ashen Desert (visit) |
 | **The Will of Hesha** | 16 | Sister Wenna | Rest and care for yourself (camp, inn or home) (deed); Bring an offering to the temple (deliver) |
 | **Hesha’s Herald** | 26 | Sister Wenna | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Hesha** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -3638,7 +3638,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Grimvald** | 20 | Factor Goldmere | Grow your fortune to 5,000 gold (state) |
 | **Against Vex** | 30 | Factor Goldmere | Defeat the herald of Vex (fight) |
 | **The Covenant of Grimvald** | 40 | Factor Goldmere | Offer the shards (deliver) |
-| **Pilgrim of Lyssara** | 8 | Sleepless Orsa | Pray at the Moonwell in The Whisperwood (visit); Pray at the Moonwell in Frostspire (visit) |
+| **Pilgrim of Lyssara** | 8 | Sleepless Orsa | Pray at the Moonwell in The Whisperwood (visit); Pray at the Moonwell in The Sunken Caves (visit) |
 | **The Will of Lyssara** | 16 | Sleepless Orsa | Rest and sleep well (camp, inn or home) (deed); Bring an offering to the temple (deliver) |
 | **Lyssara’s Herald** | 26 | Sleepless Orsa | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Lyssara** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -3662,7 +3662,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Vigil of Seraphel** | 20 | Wanderer Pip | Land twenty critical hits (deed) |
 | **Against Grimvald** | 30 | Wanderer Pip | Defeat the herald of Grimvald (fight) |
 | **The Covenant of Seraphel** | 40 | Wanderer Pip | Offer the shards (deliver) |
-| **Pilgrim of Mirrin** | 8 | Archivist Tamsin | Pray at the Hourglass Shrine in The Meadowlands (visit); Pray at the Hourglass Shrine in The Dark Citadel (visit) |
+| **Pilgrim of Mirrin** | 8 | Archivist Tamsin | Pray at the Hourglass Shrine in The Meadowlands (visit); Pray at the Hourglass Shrine in The Sunken Caves (visit) |
 | **The Will of Mirrin** | 16 | Archivist Tamsin | Uncover the past (identify items) (deed); Bring an offering to the temple (deliver) |
 | **Mirrin’s Herald** | 26 | Archivist Tamsin | Pass the herald’s test (fight) |
 | **Trial of Apostleship: Mirrin** | 35 | starts by itself | Win the Ordeal, the Gauntlet and the Aspect (state) |
@@ -4039,7 +4039,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss), 50 of its own turns (boss), 60 of its own turns (worldBoss), and grows angrier every 4 turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.
 
-49 scripted bosses:
+125 scripted bosses:
 
 | Boss | Phases | Telegraphs |
 |---|---|---|
@@ -4076,6 +4076,82 @@ Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss)
 | Warchief Gorza | 50%: **Warband** (adds Desert Raider) (+15% Damage Bonus) | Earthshatter every 4 turns |
 | The Unwritten Page | 50%: **Blank Verse** (+25% Damage Bonus) | Shard Storm every 4 turns |
 | The Drowned Choir | 50%: **Second Verse** (adds Drowned Sailor) | Tidal Wave every 4 turns |
+| Rime, Elder Drake of the Glacier | 50%: **Whiteout** (+15% Damage Bonus, 10% more Speed) | Glacial Tomb every 6 turns |
+| Tempest, Elder Drake of the Eye | 50%: **Eye Opens** (20% more Speed, +10% Damage Bonus) | Thunderstorm every 6 turns |
+| Cinder, Elder Drake of the Rift | 50%: **Rift-Fire** (+20% Damage Bonus) | Inferno every 6 turns |
+| The Grave-King Drake | 66%: **Barrow Call** (adds Skeleton Soldier, Skeleton Soldier); 33%: **Crown of Bone** (+20% Damage Bonus) (heals or shields) | Grave Toll every 6 turns |
+| The Sanguine Archivist | 50%: **Overdue** (+15% Damage Bonus) (heals or shields) | Doom Mark every 5 turns |
+| The Tally-Keeper | 50%: **Settling Accounts** (+20% Damage Bonus) | Crushing Blow every 5 turns |
+| The Insomniac | 50%: **No Sleep** (25% more Speed) | Shard Storm every 5 turns |
+| The Last Puppet | 50%: **Cut Strings** (+25% Damage Bonus, -15% increased Defense) | Piercing Volley every 4 turns |
+| Warden of the Riddle Crown | 50%: **Third Riddle** (heals or shields) | Unmaking every 5 turns |
+| The Orchard King | 50%: **Windfall** (adds Whisperwood Spider) (+10% Damage Bonus) | Blight Bloom every 5 turns |
+| The Witchlight Matron | 50%: **Witchlight** (+20% Damage Bonus) (heals or shields) | Grave Toll every 5 turns |
+| The Bellringer of the Deep | 50%: **Deep Toll** (15% more Speed, +15% Damage Bonus) | Tidal Wave every 5 turns |
+| Warlord Skarn | 50%: **Warband Horn** (adds Desert Raider) (+15% Damage Bonus) | Earthshatter every 4 turns |
+| The Bone Gardener | 60%: **Planting** (adds Skeleton Soldier); 30%: **Harvest** (+15% Damage Bonus) (heals or shields) | Blight Bloom every 5 turns |
+| Ironmaw | 50%: **Forged Hunger** (+20% Damage Bonus, +20% increased Defense) | Crushing Blow every 4 turns |
+| Foreman Grud | 50%: **Shift Change** (adds Goblin Cutthroat, Goblin Cutthroat) | Earthshatter every 4 turns |
+| The Queen of the Hollow Hall | 50%: **Court Rises** (adds Skeleton Soldier) (heals or shields) | Grave Toll every 5 turns |
+| Vaultkeeper Orm | 50%: **Locked In** (+20% Damage Bonus, +15% increased Defense) | Crushing Blow every 5 turns |
+| The Ancestor King | 66%: **The Line Stands** (adds Skeleton Soldier); 33%: **Blood Oath** (+20% Damage Bonus) (heals or shields) | Final Judgment every 5 turns |
+| The Rat King of the Undercity | 50%: **Swarm** (adds Dire Wolf) (10% more Speed) | Blight Bloom every 4 turns |
+| The Vault Warden | 50%: **Sealed** (+25% increased Defense, +10% Damage Bonus) | Crushing Blow every 4 turns |
+| The Gravedigger Prince | 50%: **Six Feet** (adds Skeleton Soldier) (+15% Damage Bonus) | Doom Mark every 5 turns |
+| The Drowned Moon | 50%: **Spring Tide** (+20% Damage Bonus, 10% more Speed) | Tidal Wave every 6 turns |
+| The Thornmother | 50%: **Briar Court** (adds Treant Sapling) (+10% Damage Bonus) | Blight Bloom every 6 turns |
+| The Stone Warden of Khazrum | 50%: **Mountain’s Weight** (+30% increased Defense, +15% Damage Bonus) | Earthshatter every 6 turns |
+| The Hollow Magistrate | 50%: **Sentence Passed** (+25% Damage Bonus) | Doom Mark every 6 turns |
+| The Lampless Warden | 50%: **Lampless** (20% more Speed, +10% Damage Bonus) | Grave Toll every 5 turns |
+| Lord Hartwell of the Stag Court | 50%: **The Hunt** (adds Dire Wolf) | Piercing Volley every 5 turns |
+| The Rootmoth Queen | 50%: **Brood** (adds Whisperwood Spider, Whisperwood Spider) | Blight Bloom every 5 turns |
+| The Prism Baron | 50%: **Refraction** (+20% Damage Bonus, 10% more Speed) | Shard Storm every 5 turns |
+| The Glass Cardinal | 50%: **Cracked Faith** (+20% Damage Bonus, -15% increased Defense) | Final Judgment every 5 turns |
+| Admiral of the Bleached Fleet | 50%: **Full Sail** (adds Corsair, Corsair) | Broadside every 4 turns |
+| The Coral Queen | 50%: **Reef Court** (adds Drowned Sailor) (heals or shields) | Tidal Wave every 5 turns |
+| The Drowned Orator | 60%: **Rousing Speech** (adds Drowned Sailor) (+10% Damage Bonus); 30%: **Final Plea** (+20% Damage Bonus) (heals or shields) | Unmaking every 5 turns |
+| The Vault Leviathan | 50%: **Coiled** (+20% increased Defense, +15% Damage Bonus) | Tidal Wave every 5 turns |
+| Assembler Prime | 50%: **Reassembly** (+15% Damage Bonus) (heals or shields) | Shard Storm every 5 turns |
+| The Archwinder | 50%: **Overwound** (30% more Speed) | Unmaking every 5 turns |
+| The Slag Baron | 50%: **Cast Anew** (+25% increased Defense, +15% Damage Bonus) | Inferno every 5 turns |
+| The Eventide Stag | 50%: **Dusk Falls** (+20% Damage Bonus, 10% more Speed) | Thunderstorm every 6 turns |
+| The Glasswright | 50%: **Masterwork** (+20% Damage Bonus) (heals or shields) | Shard Storm every 6 turns |
+| The Tide-Mother | 66%: **Brood Tide** (adds Drowned Sailor); 33%: **Undertow** (+25% Damage Bonus) | Tidal Wave every 6 turns |
+| The First Engine | 50%: **Redline** (25% more Speed, +15% Damage Bonus) | Earthshatter every 6 turns |
+| The Thing in the Cellar | 50%: **Hungry Dark** (+20% Damage Bonus) | Blight Bloom every 4 turns |
+| Miller Grim | 50%: **Grinding** (+20% Damage Bonus, +10% increased Defense) | Crushing Blow every 4 turns |
+| The Barrow Warden | 50%: **Barrow Opens** (adds Skeleton Soldier) (+10% Damage Bonus) | Grave Toll every 5 turns |
+| The Pyre Matron | 50%: **Stoked** (+25% Damage Bonus) (heals or shields) | Inferno every 5 turns |
+| The Ferry-Queen | 50%: **Toll Due** (adds Drowned Sailor) (+10% Damage Bonus) | Tidal Wave every 5 turns |
+| The Kraken’s Daughter | 50%: **Ink** (+20% Damage Bonus, 10% more Speed) | Tidal Wave every 5 turns |
+| The Wrecker-Lord | 50%: **False Light** (adds Corsair) (+10% Damage Bonus) | Broadside every 4 turns |
+| The Gale-Warden | 50%: **Cyclone** (25% more Speed) | Thunderstorm every 5 turns |
+| The Pillar Colossus | 50%: **Pillar Fall** (+25% increased Defense, +15% Damage Bonus) | Earthshatter every 5 turns |
+| The Ruined Seraph | 50%: **Fallen Light** (+25% Damage Bonus) | Final Judgment every 5 turns |
+| The Granary Terror | 50%: **Plague Feast** (adds Dire Wolf) (+10% Damage Bonus) | Blight Bloom every 6 turns |
+| The Hollow King Below | 66%: **Hollow Court** (adds Skeleton Soldier, Skeleton Soldier); 33%: **Empty Throne** (+25% Damage Bonus) | Doom Mark every 6 turns |
+| The Storm Leviathan | 50%: **Squall** (20% more Speed, +15% Damage Bonus) | Thunderstorm every 6 turns |
+| The Sovereign of Skyreach | 50%: **Ascendant** (+25% Damage Bonus, 10% more Speed) | Thunderstorm every 6 turns |
+| The Throne Warden | 50%: **Guard the Seat** (+25% increased Defense, +10% Damage Bonus) | Crushing Blow every 5 turns |
+| The Voice of the Choir | 50%: **Descant** (+20% Damage Bonus, 10% more Speed) | Final Judgment every 5 turns |
+| The Deep Sovereign | 60%: **Pressure** (+15% Damage Bonus); 30%: **Abyss Crown** (+25% Damage Bonus) (heals or shields) | Tidal Wave every 5 turns |
+| The Drowned Hour | 50%: **Late** (25% more Speed) | Grave Toll every 5 turns |
+| The Chronarch | 66%: **Echo** (adds Void Wraith); 33%: **Overtime** (30% more Speed, +15% Damage Bonus) | Unmaking every 5 turns |
+| The Unmade Moment | 50%: **Unmade** (+25% Damage Bonus, -20% increased Defense) | Unmaking every 5 turns |
+| The Court Chamberlain | 50%: **By Royal Decree** (adds Skeleton Soldier) (heals or shields) | Doom Mark every 5 turns |
+| The Drowned Queen | 66%: **Court of Brine** (adds Drowned Sailor, Drowned Sailor); 33%: **Rising Water** (+25% Damage Bonus) | Tidal Wave every 5 turns |
+| The Master Assembler | 50%: **Module Swap** (+25% Damage Bonus, +15% increased Defense) | Shard Storm every 5 turns |
+| The Prime Regent | 50%: **Regency** (adds Crystal Golem) (+10% Damage Bonus) | Crushing Blow every 5 turns |
+| Forgewright Ember | 50%: **White Heat** (+25% Damage Bonus, -15% increased Defense) | Inferno every 5 turns |
+| The Unfinished God | 66%: **Borrowed Shape** (+20% Damage Bonus); 33%: **Almost Whole** (+25% Damage Bonus) (heals or shields) | Final Judgment every 5 turns |
+| Arch-Seraph Aurial | 66%: **Choir of Wings** (adds Void Knight); 33%: **Burning Halo** (+25% Damage Bonus, 10% more Speed) | Final Judgment every 6 turns |
+| The Abyssal Mother | 66%: **Brood** (adds Drowned Sailor, Drowned Sailor); 33%: **Maw** (+25% Damage Bonus) (heals or shields) | Tidal Wave every 6 turns |
+| The Last Tick | 50%: **Running Out** (30% more Speed, +15% Damage Bonus) | Unmaking every 6 turns |
+| The Drowned Throne | 50%: **Rising Dominion** (+25% Damage Bonus) (heals or shields) | Tidal Wave every 6 turns |
+| The Great Gear | 50%: **Grinding Halt** (+30% increased Defense, +20% Damage Bonus) | Earthshatter every 6 turns |
+| Heart of the Godforge | 66%: **Forged Guard** (adds Magma Elemental); 33%: **Overforge** (+25% Damage Bonus, 15% more Speed) | Inferno every 6 turns |
+| The Mimic Emperor | 50%: **Spill** (+20% Damage Bonus, 10% more Speed) | Crushing Blow every 4 turns |
+| Your Reflection | 50%: **Mirror Match** (+15% Damage Bonus, 10% more Speed) | Crushing Blow every 5 turns |
 | Aspect of Solenne (enrages at 80) | - | - |
 | Aspect of Morrath (enrages at 80) | - | - |
 | Aspect of Kael (enrages at 80) | - | - |

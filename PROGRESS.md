@@ -976,18 +976,18 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 ### Expansion phase 20c: boss scripts, shrines and the New Game+1 boss stalls
 - **Boss scripts 49 to 125** (`data/bestiary/bossScripts.ts`, one compact table row per boss): every dungeon boss, region boss and world boss of the phase 13-19 regions now has a scripted phase or two (adds, damage, speed, armor, heals, shields) and a telegraphed attack. Only the 14 Aspects, Trial punishers and the like keep their own scripts.
 - **Zone shrines 77 to 81**: Sunken Caves, the Ashfold granary region and the Sunscorch dunes gained shrines (`zone.shrines`).
-- **NG+1 boss stalls fixed.** The Shaman and Hollow King stalls were not damage: a fight ends at 400 turns (`COMBAT.maxTurns`) and every totem, knight and herald took turns from that budget, so summon armies burned it before the boss fell. Summons no longer count toward the cap (`engine/combat/turns.ts`). The Alchemist (+100% to +300% damage; it dealt too little to a boss with a healer companion's extra HP) and the Celestial (divine power +45% to +75%, max HP +40% to +70%, damage taken -30%, damage +80%) needed trait changes. Monk finished already once the cap was fixed.
+- **NG+1 boss stalls**: fixed in the second 20c section below (summons off the turn limit, Weapon Art AI, Alchemist and Celestial damage); a parallel run landed the same fix and the two were merged.
 - The **Rogue** (no trait, like Ranger and Monk) lost the Wight of Saint Orren after the new scripts shifted dice; it gets a modest trait, Cutpurse's Luck (+30% damage, +50% max HP).
 - `scripts/ngBossSweep.ts` (new): solo or with-Aldric (`PARTY=1`) win rates against the late story bosses at NG+1; `PLAYTEST_SEED=n` varies the playtest, and `npm run playtest -- ng <class>` plays one class's New Game+1.
 - Playtest: all 29 classes finish the base story and New Game+1.
-
-## Known bugs
-- None known.
 
 ### Expansion phase 20c: the New Game+1 boss stalls
 - The stalls were fights that hit the 400-turn limit with the party alive (`COMBAT.maxTurns`), not defeats. Three causes: **summons and totems used up the limit** (a Shaman with fourteen totems spent it in a quarter of the time), so `advance` no longer counts a summon's turn; **the party AI spammed Weapon Arts** (a dagger-wielding Alchemist cast Shadow Step, a zero-damage stealth, 53 times), so Weapon Arts now score 0.7x as damage and 0.4x as utility in `chooseAction`; and **two kits were short on sustained damage**: the Alchemist's trait goes from +100% to +150% damage and a basic attack now gives 2 Reagents (was 1), so it alternates attack and Flask of Fire; the Celestial's trait goes from +35% to +85% damage.
 - `npm run playtest -- ng` finishes all 29 classes through New Game+1 (Hollow King with 2 lost fights retried; every other class 0). `npm run playtest -- ng <class>` runs one class, and `PLAYTEST_TRACE=1` tallies who did what in a lost fight.
 - Monk was already passing by the time of this pass (the earlier stall was from before other tuning).
+
+## Known bugs
+- None known.
 
 ## Cut / deferred
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
