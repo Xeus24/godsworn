@@ -128,7 +128,13 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const base = c.enemies.get(e.enemyId);
     // Encounter entries may promote an enemy (roaming elites, champion packs).
     const def = e.tier ? { ...base, tier: e.tier } : base;
-    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng) + difficulty.enemy.levelBonus, e.row ?? def.row, c);
+    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng) + difficulty.enemy.levelBonus + (e.grudge?.levelBonus ?? 0), e.row ?? def.row, c);
+    if (e.grudge) {
+      enemy.name = e.grudge.name;
+      enemy.grudgeId = e.grudge.id;
+      applyThreat(enemy, e.grudge.threat, e.grudge.threat, 'grudge');
+      if (e.grudge.traits.length) applyAffixes(enemy, e.grudge.traits, c);
+    }
     if (encounter.threat) applyThreat(enemy, encounter.threat);
     if (ngThreat(ng) > 0) applyThreat(enemy, ngThreat(ng), ngThreat(ng), 'ngPlus');
     if (worldMods.enemy.length) addModifiers(enemy, worldMods.enemy, 'ngPlus');
@@ -184,6 +190,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     c,
   });
   battle.pacifist = hasRule(hero, 'pacifist', c);
+  for (const e of encounter.enemies) if (e.grudge) battle.log(`${e.grudge.name}: ${e.grudge.line}`);
   return battle;
 }
 

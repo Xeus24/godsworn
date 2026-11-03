@@ -38,12 +38,14 @@ import { EndgameActions } from './endgameActions';
 import { createEndgameState, type EndgameState } from '../endgame/types';
 import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
+import { createRealmState, type RealmState } from '../realm/types';
+import { RealmActions } from './realmActions';
 import type { WorldState } from '../world/types';
 import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 22;
+export const SAVE_VERSION = 23;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -151,6 +153,8 @@ export interface GameState {
   minigames: MinigameState;
   /** Rifts and the Boss Rush: the run in progress and your records. */
   endgame: EndgameState;
+  /** The living world (section A): the Grudgebound and the rest. */
+  realm: RealmState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
@@ -183,6 +187,7 @@ export function createGameState(seed: number, player: Character, now = Date.now(
     minigames: createMinigameState(),
     ngAffixes: [],
     endgame: createEndgameState(),
+    realm: createRealmState(),
   };
 }
 
@@ -207,6 +212,7 @@ export class GameSession {
   readonly minigames: MinigameActions;
   readonly achievements: AchievementActions;
   readonly endgame: EndgameActions;
+  readonly realm: RealmActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
 
@@ -226,6 +232,7 @@ export class GameSession {
     this.quests = new QuestActions(this);
     this.achievements = new AchievementActions(this);
     this.endgame = new EndgameActions(this);
+    this.realm = new RealmActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {
       if (amount > 0) this.state.stats.goldEarned += amount;
@@ -287,6 +294,7 @@ export class GameSession {
     const daysPassed = clock.day - this.state.clock.day;
     this.state.clock = clock;
     if (daysPassed > 0) this.items.reliquaryDays(Math.min(daysPassed, 30));
+    if (daysPassed > 0) this.realm.onDays(daysPassed);
     if (hourChanged) this.bus.emit('timeChanged', { day: clock.day, hour: hourOf(clock) });
   }
 

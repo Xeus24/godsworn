@@ -127,6 +127,10 @@ export function migrate(raw: Json): Json {
   }
   // Version 18 (The Greater Pantheon): systems start empty. Later phases add their defaults here.
   p.appearance = { ...createAppearanceState(), ...obj(p.appearance) };
+  // Version 23 (the living world): the Grudgebound and the rest start empty.
+  const realm = obj(state.realm);
+  realm.grudge ??= { entries: {}, log: [], next: 1, slain: 0 };
+  state.realm = realm;
   // Version 22 (endgame modes): the Spire, Divine Trials, league and weekly run start fresh.
   const eg = obj(state.endgame);
   eg.spire ??= { best: 0, runs: 0 };

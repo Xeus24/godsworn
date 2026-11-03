@@ -11,15 +11,17 @@ import { Rng } from '../../engine/core/rng';
 import { itemIconUrl } from '../art/itemIcons';
 import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from '../combat/creatureSprites';
+import { realmPanel, type Section as RealmSection } from './realmPanel';
 import { completion, overallCompletion } from '../../engine/achievements/completion';
 import { AIRSHIP, SHIP_LEVELS } from '../../data/world/ship';
 import { destinations, hasAirship, shipLevel } from '../../engine/world/ship';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-type Tab = 'bestiary' | 'families' | 'backgrounds' | 'companions' | 'cards' | 'ship' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
+type Tab = 'realm' | 'bestiary' | 'families' | 'backgrounds' | 'companions' | 'cards' | 'ship' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
 const TABS: [Tab, string][] = [
   ['bestiary', 'Bestiary'],
+  ['realm', 'Realm'],
   ['families', 'By family'],
   ['backgrounds', 'Backgrounds'],
   ['companions', 'Companions'],
@@ -87,6 +89,7 @@ export class CodexScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
   private tab: Tab = 'bestiary';
+  private realmOpen: { section: RealmSection } = { section: 'grudge' };
   private selected: string | undefined;
   private filter = '';
 
@@ -116,7 +119,7 @@ export class CodexScreen implements Screen {
       });
       return b;
     }));
-    const body = this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
+    const body = this.tab === 'realm' ? realmPanel(this.session, () => this.render(), this.realmOpen) : this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
     this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), tabs, body));
   };
 

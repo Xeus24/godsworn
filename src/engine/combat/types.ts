@@ -129,12 +129,23 @@ export interface SummonDef {
   palette: { main: string; accent: string };
 }
 
+/** A Grudgebound foe leading a fight (Innovation Pack, item 1): its name, how much tougher it is and what it says. */
+export interface GrudgeLead {
+  id: string;
+  name: string;
+  threat: number;
+  levelBonus: number;
+  traits: string[];
+  line: string;
+  rank: number;
+}
+
 export interface EncounterDef {
   id: string;
   name: string;
   description: string;
   level: number;
-  enemies: { enemyId: string; row?: Row; level?: number; tier?: EnemyTier }[];
+  enemies: { enemyId: string; row?: Row; level?: number; tier?: EnemyTier; grudge?: GrudgeLead }[];
   canFlee: boolean;
   isBoss?: boolean;
   /** Extra HP and damage (percent) for every enemy (zone threat). */
@@ -229,6 +240,8 @@ export interface Combatant {
   classId?: string;
   basicAttack: { element: Element; ranged: boolean; magic: boolean; name: string };
   enemyId?: string;
+  /** The Grudgebound this foe is (see `engine/realm`). */
+  grudgeId?: string;
   summonId?: string;
   ownerId?: string;
   /** Remaining turns for timed summons. */

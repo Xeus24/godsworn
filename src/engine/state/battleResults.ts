@@ -248,6 +248,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   s.party.afterBattle(b);
   s.quests.afterBattle(b);
   s.endgame.afterBattle(b);
+  s.realm.afterBattle(b);
 
   s.bus.emit('combatEnded', { encounterId: b.encounterId, result: b.outcome === 'ongoing' ? 'fled' : b.outcome });
   s.bus.emit('stateChanged', { reason: 'battle' });
