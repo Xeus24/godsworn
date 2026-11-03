@@ -986,6 +986,12 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - `npm run playtest -- ng` finishes all 29 classes through New Game+1 (Hollow King with 2 lost fights retried; every other class 0). `npm run playtest -- ng <class>` runs one class, and `PLAYTEST_TRACE=1` tallies who did what in a lost fight.
 - Monk was already passing by the time of this pass (the earlier stall was from before other tuning).
 
+### Expansion phase 20d: the new screens played in a real browser
+- **E2E suite 9 to 13 tests** (`npm run test:e2e`, about 40 s): `e2e/pastimes.e2e.ts` casts a line and stops the timing bar, plays a full five-round Pantheon Cards duel, rolls the tavern dice, runs a race, strikes the forge five times, probes a dig pit to the end and fights arena rung 1; `e2e/camp.e2e.ts` recruits Sable, sits by the fire (and is refused the second time the same day), spends the first evening and answers it, starts and ends the Endless Spire, a Divine Trial, an Arena Champions league season and the weekly run, walks onto Meadowlands' night-only secret (the found counter goes 0/N to 1/N) and opens the Codex's Completion tab. Each test fails on any page error or console error.
+- **Test hook:** the dev server (never a built game) exposes the running session as `window.__game`, so tests can set up state (gold, cards, a companion, favor, the clock) instead of grinding for it. Tests import engine modules through a variable path so the type checker, which covers `e2e/`, leaves them alone.
+- **Findings:** no page errors, console errors, horizontal overflow (1280 and 820 px wide) or unreachable buttons turned up on Pastimes, Party, Codex or Endgame. Two content fixes came from reading the camp scenes again for the no-romance rule: Sable's first evening no longer opens with "Darling", and "Darling" is gone from the banter lines (it is "Friend" now).
+- Not covered: the actual rift/spire fights are not fought in the browser (the unit tests and the playtest cover the engine); the Party screen's lower Camp section sits below the fold at 900 px and needs a scroll.
+
 ## Known bugs
 - None known.
 

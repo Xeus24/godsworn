@@ -180,6 +180,8 @@ function loadSlot(slot: string): string | undefined {
 /** Makes a session the running game: toasts, debug log, autosave and play time. */
 function attach(s: GameSession): void {
   session = s;
+  // A test hook for the browser suite (e2e/): only in the dev server, never in a built game.
+  if (import.meta.env.DEV) (window as unknown as { __game?: GameSession }).__game = s;
   s.encounterScale = settings().encounterRate;
   lastAutosave = Date.now();
   recordNgPlus(s.state.ngPlus);
