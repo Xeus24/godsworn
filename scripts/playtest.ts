@@ -62,6 +62,7 @@ let clock: Clock = { reading: 0, walking: 0, packs: 0, bosses: 0, levelling: 0, 
 
 /** How long an ordinary fight in the zone takes on auto-battle. */
 function packSeconds(s: GameSession, zoneId: string | undefined): number {
+  if (process.env.PLAYTEST_NOCLOCK) return 30;
   const z = zoneId ? content.zones.find(zoneId) : undefined;
   if (!z) return SECONDS.pack + 6 * SECONDS.autoHero;
   const rng = new Rng(z.order * 13 + s.player.level);
@@ -150,7 +151,7 @@ for (const [i, cls] of classes.entries()) {
       ...(only ? { log: (line: string) => console.log(`  ${line}`) } : {}),
     });
   };
-  const base = GameSession.newGame(300 + i, benchmarkHero(cls, 1));
+  const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), benchmarkHero(cls, 1));
   const r = run(base, 0);
   console.log(`${cls.padEnd(13)} ${(r.ending ?? '-').padEnd(12)} ${String(r.fights).padStart(6)}  ${String(r.losses).padStart(6)}  ${r.stuck ?? 'finished'}  ~${clockLine()}`);
   if (ng && r.ending) {

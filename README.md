@@ -22,6 +22,7 @@ Then open http://localhost:5173.
 |---|---|
 | `npm run dev` | Dev server with hot reload |
 | `npm test` | Unit tests (Vitest) |
+| `npm run test:e2e` | Real-browser tests (Playwright, installed Chrome): smoke, inventory, Pastimes, Camp, Endgame modes, a world secret and the Completion tab. The dev server exposes `window.__game` for them |
 | `npm run build` | Type-check and production build to `dist/` |
 | `npm run preview` | Serve the production build |
 | `npm run sim` | Simulate fights per class and level; print win rates, turns and damage per turn |

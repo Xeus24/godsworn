@@ -9,6 +9,7 @@ import type { GameState } from '../state/gameState';
 import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
 import { renownOf } from '../world/renown';
+import { RENOWN_TIERS } from '../../data/world/renown';
 import { progressOf } from '../achievements/progress';
 import type { Cond } from './types';
 
@@ -49,6 +50,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return (p.devotion.trialStage[cond.god] ?? 0) >= cond.min;
     case 'rep':
       return repOf(p, cond.faction) >= cond.min;
+    case 'renown':
+      return renownOf(p, cond.town) >= (RENOWN_TIERS.find((t) => t.id === cond.tier)?.points ?? Infinity);
     case 'item':
       return countHeld(state, cond.itemId) >= (cond.count ?? 1);
     case 'gold':
@@ -129,8 +132,6 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length >= cond.min;
     case 'house':
       return p.world.house !== undefined;
-    case 'renown':
-      return renownOf(p, cond.town) >= cond.min;
     case 'rarity':
       return (state.rarityFound[cond.rarity] ?? 0) >= (cond.min ?? 1);
     case 'profession':
@@ -198,7 +199,7 @@ export function describe(cond: Cond, c: Content = content): string {
     case 'rep':
       return `${c.factions.get(cond.faction).name} ${cond.min}`;
     case 'renown':
-      return `${c.towns.get(cond.town).name} renown ${cond.min}`;
+      return `${RENOWN_TIERS.find((t) => t.id === cond.tier)?.name ?? cond.tier} in ${c.towns.get(cond.town).name}`;
     case 'item':
       return `${cond.count && cond.count > 1 ? `${cond.count}× ` : ''}${c.items.get(cond.itemId).name}`;
     case 'gold':

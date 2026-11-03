@@ -191,13 +191,13 @@ Measured with `npx tsx scripts/auditCounts.ts` and the checks in `tests/expansio
 | Enemies | 260+ | 492 | met |
 | Creature families | 20 | 21 | met |
 | Bosses (boss + world boss tier) | many | 114 (30 world bosses) | met |
-| Boss scripts | 70+ | 49 | **not met** (other bosses fight without scripted lines) |
+| Boss scripts | 70+ | 125 | met (phase 20c) |
 | Side quests | 110+ | 160 | met |
 | Main quests | 45+ | 54 | met |
 | Endings | 10+ | 15 | met |
 | Companions | 14 | 14 | met |
 | Gods | 14 | 14 + the Nameless | met |
-| Shrines | 80+ | 77 zone shrines + 8 saint shrines = 85 | met only when saint shrines count; zone shrines alone: not met |
+| Shrines | 80+ | 81 zone shrines + 8 saint shrines = 89 | met (phase 20c) |
 | Blessings | 180 | 180 | met |
 | Legendaries (hand-made unique items) | 150 | 487 uniques | met |
 | Item sets | 26 | 26 | met |
@@ -210,4 +210,4 @@ Measured with `npx tsx scripts/auditCounts.ts` and the checks in `tests/expansio
 | Achievements | 220 | 232 | met |
 | Titles | 90 | 100 | met |
 | Late world bosses beatable by a lone hero | 45%+ | 58-100% (a few low spots listed under Cut / deferred) | met, with exceptions |
-| Every class finishes the story | all | 29 of 29 | met |
+| Every class finishes the story | all | 29 of 29, base story and New Game+1 | met |

@@ -366,7 +366,7 @@ export const CELESTIAL: GreaterClass = {
     playstyle: 'Heal, ward and strike with light. Casting and healing build Halo; spend it on Benediction and Gentle Hand to mend, Comet and Sunburst to burn, or Ascend to rise.',
     role: 'Healer / holy caster', difficulty: 2, color: '#f0e08a',
     mechanic: { name: 'Halo', description: 'Builds from holy spells, healing and crits. Spent on blessings, ascension and calling light down.' },
-    trait: { name: 'Heavenly Body', description: '45% more divine power, 40% more max HP, 20% less damage taken, +85% damage and +25 healing power.', modifiers: [{ stat: 'divinePower', type: 'more', value: 45 }, { stat: 'maxHp', type: 'more', value: 40 }, { stat: 'damageTaken', type: 'more', value: -20 }, { stat: 'damageBonus', type: 'flat', value: 85 }, { stat: 'healingPower', type: 'flat', value: 25 }] },
+    trait: { name: 'Heavenly Body', description: '45% more divine power, 40% more max HP, 20% less damage taken, +120% damage and +25 healing power.', modifiers: [{ stat: 'divinePower', type: 'more', value: 45 }, { stat: 'maxHp', type: 'more', value: 40 }, { stat: 'damageTaken', type: 'more', value: -20 }, { stat: 'damageBonus', type: 'flat', value: 120 }, { stat: 'healingPower', type: 'flat', value: 25 }] },
     resource: 'halo',
     baseStats: { str: 2, dex: 4, int: 4, vit: 5, wis: 7, luk: 3, fai: 9, cha: 6 },
     growth: { str: 0.1, dex: 0.4, int: 0.7, vit: 1.0, wis: 1.1, luk: 0.2, fai: 1.5, cha: 0.8 },

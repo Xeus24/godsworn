@@ -97,6 +97,7 @@ const BASE_CLASSES: ClassDef[] = [
     color: '#5a5a5a',
     mechanic: { name: 'Combo Points & Stealth', description: 'Builders add Combo Points; finishers spend them. Stealth guarantees a crit.' },
     resource: 'combo',
+    trait: { name: 'Cutpurse’s Luck', description: '+30% damage and 50% more max HP.', modifiers: [{ stat: 'damageBonus', type: 'flat', value: 30 }, { stat: 'maxHp', type: 'more', value: 50 }] },
     baseStats: { str: 5, dex: 10, int: 3, vit: 5, wis: 3, luk: 7, fai: 1, cha: 5 },
     growth: { str: 0.7, dex: 2, int: 0.2, vit: 0.8, wis: 0.2, luk: 1, fai: 0.1, cha: 0.6 },
     weapons: ['dagger', 'rapier', 'sword', 'throwing', 'crossbow', 'fist'],

@@ -4,11 +4,9 @@ import { build, K, type Row } from './sideGreater';
 
 /**
  * Expansion phase 21: one quest in each of the fifteen towns that only opens once the town thinks of you as Honored
- * (130 renown). They are the things a town asks of someone it trusts: a secret kept, a grudge carried, a door opened.
+ * (the Honored tier, 130 renown). They are the things a town asks of someone it trusts: a secret kept, a grudge carried, a door opened.
  * Each ends in a choice with a consequence, and a CHA reply.
  */
-export const HONORED = 130;
-
 // prettier-ignore
 const ROWS: Row[] = [
   { id: 'renown-brightwater', name: 'The Founders’ Cellar', zone: 'meadowlands', lvl: 10, giver: 'captain-reyna', task: { t: 'search', label: 'the Founders’ cellar' }, offer: '“Brightwater has a cellar no one has opened since the founders. The council says leave it. The council has not seen what you have done for this town, and I have.”', ask: '“The founders left a chest and a letter: the market square was bought with a debt we never paid. Do we read it aloud, or bury it?”', a: ['Read it aloud at the market.', '“Then we pay, and Brightwater is poorer and cleaner for it. I thank you.”', 'f:brightwater-debt-paid'], b: ['Bury it. Some debts are older than the people owed.', '“Then it stays buried. I will remember that you chose the town over the ledger.”', 'f:brightwater-debt-buried', 'g:60'] },
@@ -30,7 +28,7 @@ const ROWS: Row[] = [
 
 const built: { quest: QuestDef; dialogue: DialogueDef }[] = ROWS.map((r) => {
   const town = r.id.slice('renown-'.length);
-  return build(r, all({ kind: 'renown', town, min: HONORED }, level(Math.max(1, r.lvl - 4))), 'side', { xp: 0.5, gear: { rarity: 'epic' } });
+  return build(r, all({ kind: 'renown', town, tier: 'honored' }, level(Math.max(1, r.lvl - 4))), 'side', { xp: 0.5, gear: { rarity: 'epic' } });
 });
 
 export const RENOWN_QUESTS: QuestDef[] = built.map((b) => b.quest);

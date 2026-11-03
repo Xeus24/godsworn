@@ -54,7 +54,7 @@ const BASE_ZONES: ZoneDef[] = [
   {
     id: 'sunken-caves', gather: { mining: ['mithril-ore', 'iron-ore'], herbalism: ['fireweed', 'manabloom'], fishing: ['river-trout', 'silverfin'] }, threat: 110, name: 'The Sunken Caves', order: 3, levels: [16, 24], biome: 'cave',
     description: 'Flooded caverns under the hills, glittering with crystal and full of things that like the dark.',
-    encounterRate: 0.08, dungeons: ['drowned-grotto'], worldBoss: 'abyssal-crab', shrines: ['nymira', 'ordrun'],
+    encounterRate: 0.08, dungeons: ['drowned-grotto'], worldBoss: 'abyssal-crab', shrines: ['nymira', 'ordrun', 'lyssara', 'mirrin'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'fog', weight: 1 }],
     encounters: [
       grp(4, ['^cave-bat', '^cave-bat', '^cave-bat']), grp(3, ['crystal-golem', '^cave-bat']), grp(3, ['drowned-sailor', 'drowned-sailor']),
@@ -66,7 +66,7 @@ const BASE_ZONES: ZoneDef[] = [
   {
     id: 'ashen-desert', gather: { mining: ['mithril-ore'], herbalism: ['fireweed', 'frostleaf'], fishing: ['silverfin'] }, threat: 70, name: 'The Ashen Desert', order: 4, levels: [24, 32], biome: 'desert', town: 'sandhaven',
     description: 'Grey dunes over a buried empire. The sun is merciless, and so are the raiders.',
-    encounterRate: 0.07, dungeons: ['sun-king-tomb'], worldBoss: 'sandworm', shrines: ['kael', 'solenne', 'seraphel'],
+    encounterRate: 0.07, dungeons: ['sun-king-tomb'], worldBoss: 'sandworm', shrines: ['kael', 'solenne', 'seraphel', 'hesha'],
     weather: [{ id: 'clear', weight: 3 }, { id: 'heatwave', weight: 3 }, { id: 'sandstorm', weight: 2 }],
     encounters: [
       grp(4, ['sand-scorpion', 'sand-scorpion']), grp(3, ['desert-raider', 'desert-raider', '^desert-raider']), grp(3, ['mummy', 'mummy'], { time: 'night' }),

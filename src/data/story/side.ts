@@ -122,7 +122,7 @@ export const SIDE_QUESTS: QuestDef[] = [
     rewards: { xp: 0.5, gold: 10, gear: { rarity: 'rare' } },
   },
   {
-    id: 'side-ardath', name: 'Orders, Never Sent', kind: 'side', level: 15, zone: 'whisperwood', board: 'thornwick',
+    id: 'side-ardath', name: 'Orders, Never Sent', kind: 'side', level: 15, zone: 'whisperwood', board: 'thornwick', requires: { kind: 'renown', town: 'thornwick', tier: 'familiar' },
     summary: 'A note pinned to the board: “A ghost in old armor walks by the crypt at night, shouting orders. It is keeping everyone up. Reward for anyone who can make it stop.”',
     stages: [stage('ghost', 'Find the ghost by the Old Crypt.', [talk('t', 'Speak with the ghost', 'ghost-ardath', 'd-ardath', near('whisperwood', 'dungeon', 'old-crypt', 'A ghost in old armor', { distance: 3 }))])],
     rewards: { xp: 0.5, gold: 10, rep: { 'order-of-dawn': 80 } },
@@ -150,7 +150,7 @@ export const SIDE_QUESTS: QuestDef[] = [
     rewards: { xp: 0.5, gold: 10, gear: { rarity: 'rare' } },
   },
   {
-    id: 'side-drowned', name: 'Drowned Debts', kind: 'side', level: 21, zone: 'sunken-caves', board: 'sandhaven',
+    id: 'side-drowned', name: 'Drowned Debts', kind: 'side', level: 21, zone: 'sunken-caves', board: 'sandhaven', requires: { kind: 'renown', town: 'sandhaven', tier: 'familiar' },
     summary: 'A merchant’s notice: “My ship went into the caves to escape a storm. The crew came back out. They should not have. Put them to rest.”',
     stages: [stage('rest', 'Lay the drowned sailors of the Sunken Caves to rest.', [kill('k', 'Lay drowned sailors to rest', 6, { enemyId: 'drowned-sailor' })])],
     rewards: { xp: 0.5, gold: 12, favor: { morrath: 15 } },
@@ -209,7 +209,7 @@ export const SIDE_QUESTS: QuestDef[] = [
     rewards: { xp: 0.5, gold: 14, items: [{ itemId: 'thick-hide', qty: 4 }] },
   },
   {
-    id: 'side-statue', name: 'A Question of Ice', kind: 'side', level: 37, zone: 'frostspire', board: 'frosthold',
+    id: 'side-statue', name: 'A Question of Ice', kind: 'side', level: 37, zone: 'frostspire', board: 'frosthold', requires: { kind: 'renown', town: 'frosthold', tier: 'respected' },
     summary: 'A Guild notice: “A statue of ice below the Palace asks travellers a question. Those who answer well are rewarded. Those who do not are not. Do not send students.”',
     stages: [stage('answer', 'Find the frozen statue below the Ice Palace and answer it.', [talk('t', 'Answer the frozen statue', 'frozen-statue', 'd-statue', near('frostspire', 'dungeon', 'ice-palace', 'A statue of ice', { distance: 8 }))])],
     rewards: { xp: 0.55, gold: 14, gear: { rarity: 'rare' } },
@@ -277,7 +277,7 @@ export const SIDE_QUESTS: QuestDef[] = [
     rewards: { xp: 0.6, gold: 14, favor: { thalor: 40 } },
   },
   {
-    id: 'side-imps', name: 'Imp Infestation', kind: 'side', level: 50, zone: 'volcanic-rift', board: 'saltmere',
+    id: 'side-imps', name: 'Imp Infestation', kind: 'side', level: 50, zone: 'volcanic-rift', board: 'saltmere', requires: { kind: 'renown', town: 'saltmere', tier: 'familiar' },
     summary: 'A shipping notice: “Fire imps from the Rift keep stowing away on cargo ships and setting them on fire. Reward for thinning them out at the source.”',
     stages: [stage('imps', 'Thin out the fire imps of the Volcanic Rift.', [kill('k', 'Kill fire imps', 8, { enemyId: 'fire-imp' })])],
     rewards: { xp: 0.5, gold: 14 },

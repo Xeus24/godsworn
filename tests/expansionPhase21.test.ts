@@ -25,7 +25,9 @@ describe('renown-gated quests', () => {
     const q = content.quests.get('renown-brightwater');
     s.player.level = 90;
     expect(evaluate(s.state, q.requires as never)).toBe(false);
-    addRenown(s.player, 'brightwater', 130);
+    addRenown(s.player, 'brightwater', 129);
+    expect(evaluate(s.state, q.requires as never)).toBe(false);
+    addRenown(s.player, 'brightwater', 1);
     expect(evaluate(s.state, q.requires as never)).toBe(true);
   });
 });

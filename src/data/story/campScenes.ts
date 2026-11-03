@@ -35,7 +35,7 @@ const SCENES: Scene[] = [
   },
   {
     id: 'sable',
-    open: '“Darling.” Sable twirls a coin that is, you suspect, yours. “I am going to ask a very direct question and you are going to be honest. What is this?”',
+    open: '“Captain.” Sable twirls a coin that is, you suspect, yours. “I am going to ask a very direct question and you are going to be honest. What is this?”',
     a: ['We are partners.', '“Partners.” She grins. “I accept. I will not steal your boots. I will borrow them.”'],
     b: ['We are friends.', 'The coin stops. “Well. That is annoying.” Her voice cracks. “I have not had one of those in a while.”'],
     two: ['She has stolen something, and is nervous about it.', '“A compass. It always points to wherever you are. I stole it from a duchess. It is yours. Be kind to it.”'],
