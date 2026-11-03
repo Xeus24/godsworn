@@ -992,6 +992,11 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - **Findings:** no page errors, console errors, horizontal overflow (1280 and 820 px wide) or unreachable buttons turned up on Pastimes, Party, Codex or Endgame. Two content fixes came from reading the camp scenes again for the no-romance rule: Sable's first evening no longer opens with "Darling", and "Darling" is gone from the banter lines (it is "Friend" now).
 - Not covered: the actual rift/spire fights are not fought in the browser (the unit tests and the playtest cover the engine); the Party screen's lower Camp section sits below the fold at 900 px and needs a scroll.
 
+### Expansion phase 20e: renown-gated quests and controller prompts
+- **Renown-gated quests:** a new quest condition `{ kind: 'renown', town, tier }` (`engine/quests/conditions.ts`, shown as "Familiar Face in Thornwick" in the quest log's requirement line). Four board quests now need it: Orders, Never Sent (Thornwick, Familiar Face), Drowned Debts (Sandhaven, Familiar Face), A Question of Ice (Frosthold, Respected) and Imp Infestation (Saltmere, Familiar Face). Renown comes from finishing quests for a town's people and clearing dungeons in its region, so these open after a few errands there. No save change (the condition reads `world.renown`). Tests: `tests/expansionPhase20e.test.ts`.
+- **On-screen controller prompts** (`ui/gamepad/globalPad.ts`, `.pad-prompts` in `style.css`): while a gamepad is connected a small bar at the bottom lists the buttons (D-pad/Stick Move, A Select, B/Start Back, LB/RB Switch screen, X Space, Y Inventory); it goes when the last pad leaves. Tested with a fake pad in the browser (`e2e/camp.e2e.ts`) and in `tests/globalPad.test.ts`. There is still no rebinding, and the prompts use Xbox-style names whatever the controller.
+- **Cut:** the graph editor for companion skill trees (the branch list with + / - stays; a node-and-edge editor with drag and zoom is more than this pass). Listed under Cut / deferred.
+
 ## Known bugs
 - None known.
 
@@ -1013,4 +1018,4 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - **Music** is procedural and short-looped by default. The optional composed music has no per-room tracks beyond three depth tiers, and a mood change fades rather than finishing the current track. The forest and bird ambience have no synthesized stand-in (the synthesized sound has only noise-based ambience); weather ambience plays only in the open. Footsteps are recorded-only (no synthesized step). The composed and recorded paths were verified in a browser for the meadow, but dungeon, lair, victory and defeat sounds are verified only by the fake-context engine test. The dynamic battle music is not true layered stems (none exist under CC0): it is a filter and, for the synthesized music, extra notes.
 
 ## Next steps
-- All 16 phases and all 20 expansion phases are done. What is open is on the Cut / deferred list: renown-gated quests, on-screen gamepad prompts, party-size scaling for full parties, hybrid trial tuning and a companions' skill tree editor.
+- All 16 phases and all 20 expansion phases are done. What is open is on the Cut / deferred list: gamepad rebinding, party-size scaling for full parties, hybrid trial tuning and a companions' skill tree editor.

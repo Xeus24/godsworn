@@ -204,9 +204,43 @@ const domHost: PadHost = {
   owned: () => ownedBy > 0,
 };
 
+/** What each controller button does on every screen (the on-screen prompt bar prints this). */
+export const PAD_PROMPTS: [button: string, does: string][] = [
+  ['D-pad / Stick', 'Move'],
+  ['A', 'Select'],
+  ['B / Start', 'Back'],
+  ['LB / RB', 'Switch screen'],
+  ['X', 'Space'],
+  ['Y', 'Inventory'],
+];
+
+/** The text of the prompt bar: `A Select · B / Start Back · ...`. */
+export const padPromptText = (): string => PAD_PROMPTS.map(([button, does]) => `${button} ${does}`).join('  ·  ');
+
+let promptBar: HTMLElement | undefined;
+/** Shows the prompt bar while a controller is connected and hides it when the last one leaves. */
+function syncPrompts(): void {
+  const connected = [...(navigator.getGamepads?.() ?? [])].some((g) => g?.connected);
+  if (connected && !promptBar) {
+    promptBar = document.createElement('div');
+    promptBar.className = 'pad-prompts';
+    promptBar.setAttribute('aria-hidden', 'true');
+    promptBar.textContent = padPromptText();
+    document.body.append(promptBar);
+  } else if (!connected && promptBar) {
+    promptBar.remove();
+    promptBar = undefined;
+  }
+}
+
 let pad: GlobalPad | undefined;
 /** Starts the page-wide controller once (it idles when no pad is connected). */
 export function startGlobalPad(): void {
+  if (!pad) {
+    window.addEventListener('gamepadconnected', syncPrompts);
+    window.addEventListener('gamepaddisconnected', () => window.setTimeout(syncPrompts, 0));
+  }
   pad ??= new GlobalPad(domHost);
   pad.start();
+  syncPrompts();
 }

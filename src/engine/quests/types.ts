@@ -32,6 +32,8 @@ export type Cond =
   | { kind: 'apostle'; god?: string }
   | { kind: 'trialStage'; god: string; min: number }
   | { kind: 'rep'; faction: string; min: number }
+  /** Town Renown of at least this tier (a `RENOWN_TIERS` id) in this town. */
+  | { kind: 'renown'; town: string; tier: string }
   | { kind: 'item'; itemId: string; count?: number }
   | { kind: 'gold'; min: number }
   /** A flag is set (truthy), or equals `value`. */

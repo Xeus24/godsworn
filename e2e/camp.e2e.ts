@@ -127,3 +127,24 @@ test.describe('World secrets and the Completion tracker', () => {
     expect(errors).toEqual([]);
   });
 });
+
+test.describe('Controller prompts', () => {
+  test('the prompt bar appears when a gamepad connects and goes when it leaves', async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as unknown as { __pads: unknown[] }).__pads = [];
+      navigator.getGamepads = () => (window as unknown as { __pads: Gamepad[] }).__pads as unknown as Gamepad[];
+    });
+    await page.goto('/');
+    await expect(page.locator('.pad-prompts')).toHaveCount(0);
+    await page.evaluate(() => {
+      (window as unknown as { __pads: unknown[] }).__pads = [{ connected: true, index: 0, id: 'Test pad', buttons: [], axes: [], mapping: 'standard', timestamp: 0 }];
+      window.dispatchEvent(new Event('gamepadconnected'));
+    });
+    await expect(page.locator('.pad-prompts')).toContainText('A Select');
+    await page.evaluate(() => {
+      (window as unknown as { __pads: unknown[] }).__pads = [];
+      window.dispatchEvent(new Event('gamepaddisconnected'));
+    });
+    await expect(page.locator('.pad-prompts')).toHaveCount(0);
+  });
+});

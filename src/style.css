@@ -899,3 +899,6 @@ body.high-contrast button, body.high-contrast .panel { border-width: 2px; }
 
 /* A controller moved focus: show where it is. */
 body.pad-active :focus { outline: 3px solid var(--gold-hi); outline-offset: 2px; }
+
+/* Controller prompts: shown only while a gamepad is connected. */
+.pad-prompts { position: fixed; left: 50%; bottom: 6px; transform: translateX(-50%); z-index: 50; max-width: calc(100vw - 16px); padding: 4px 12px; font-size: 12px; text-align: center; color: var(--text-dim, #a8a4c0); background: rgba(10, 8, 22, 0.88); border: 1px solid var(--border, #3a3560); border-radius: 4px; pointer-events: none; }

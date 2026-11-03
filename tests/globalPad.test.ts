@@ -77,3 +77,12 @@ describe('GlobalPad', () => {
     expect(() => owned.poll()).not.toThrow();
   });
 });
+
+describe('controller prompts', () => {
+  it('lists what every button does', async () => {
+    const { padPromptText, PAD_PROMPTS } = await import('../src/ui/gamepad/globalPad');
+    expect(PAD_PROMPTS.length).toBeGreaterThanOrEqual(6);
+    expect(padPromptText()).toContain('A Select');
+    expect(padPromptText()).toContain('Y Inventory');
+  });
+});
