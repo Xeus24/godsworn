@@ -1,6 +1,8 @@
 import type { SkillDef } from '../skills/types';
 import { bossForcedAction, isTelegraphOnly } from './bosses';
 import type { Battle } from './battle';
+import { continuesChain } from './covenant';
+import { takeIntent } from './foresight';
 import { canUseSkill, foesOf, friendsOf, needsTarget, skillOptions, validTargets } from './skills';
 import { resistMultiplier } from './damage';
 import type { Action, AiProfile, Combatant } from './types';
@@ -55,12 +57,20 @@ function alreadyApplied(b: Battle, skill: SkillDef, targets: Combatant[]): boole
  * hurt, assassins dive the back row. Party members on auto-battle use the
  * same logic.
  */
-export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai): Action {
+export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai, planning = false): Action {
   const forced = bossForcedAction(x, (skillId) => {
     const skill = b.c.skills.get(skillId);
     return needsTarget(skill) ? pickFoe(b, x, skill, profile)?.id : undefined;
   });
-  if (forced) return forced;
+  if (forced) {
+    if (!planning) delete x.intent;
+    return forced;
+  }
+  // An enemy carries out the plan the party has seen, unless it has been spoiled.
+  if (!planning && x.side === 'enemy' && b.foresight) {
+    const planned = takeIntent(b, x);
+    if (planned) return planned;
+  }
   const options: Option[] = [];
   const foes = foesOf(b, x);
   const friends = friendsOf(b, x);
@@ -134,6 +144,15 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai)
     options.push({ action: { kind: 'defend', actorId: x.id }, score: 2.2 });
   }
 
+  // Covenant: while a chain runs, pass it on with a matching skill; when it is ready, open it with a real skill.
+  if (x.side === 'party' && (b.covenant.chain || b.covenant.ready)) {
+    for (const o of options) {
+      if (o.action.kind !== 'skill') continue;
+      const sk = b.c.skills.find(o.action.skillId);
+      if (!sk) continue;
+      o.score *= b.covenant.chain ? (continuesChain(b.covenant.chain, x, sk) ? 2.2 : 0.5) : 1.5;
+    }
+  }
   const best = options.sort((p, q) => q.score - p.score)[0];
   if (best) return best.action;
   // Nothing useful: attack anyone reachable, or defend.

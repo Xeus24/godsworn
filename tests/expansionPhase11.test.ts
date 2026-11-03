@@ -126,7 +126,13 @@ describe('Talk', () => {
     const healthy = fight('goblin-king', { hp: 0.9 });
     expect(talkOptions(healthy.b, healthy.hero, healthy.foe)).toHaveLength(0);
     const nameless = fight('the-nameless-one', { hp: 0.1, level: 60 });
-    expect(talkOptions(nameless.b, nameless.hero, nameless.foe)).toHaveLength(0);
+    // Hesha's Mercy: the finale can be spared too, but only by someone she knows.
+    const opt = talkOptions(nameless.b, nameless.hero, nameless.foe);
+    expect(opt).toHaveLength(1);
+    expect(opt[0]?.locked).toBeDefined();
+    expect(talk(nameless.b, nameless.hero, nameless.foe, 'spare').ok).toBe(false);
+    nameless.b.mercy = { deeds: 8, hesha: true };
+    expect(talkOptions(nameless.b, nameless.hero, nameless.foe)[0]?.locked).toBeUndefined();
   });
 });
 

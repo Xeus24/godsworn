@@ -6,6 +6,7 @@ import { MAX_COMMISSIONS, eventsIn, generateChronicle, isDone, offered, take as 
 import { createRealmState } from '../realm/types';
 import { FORTUNES } from '../../data/realm/fortunes';
 import { fortuneOf, innMult, isFallen, lift, priceMult, tick as fortunesTick, tierOf } from '../realm/fortunes';
+import { FINALE_MERCY, MERCY_TIERS } from '../../data/mercy';
 import { ECHOES } from '../../data/realm/echoes';
 import { decorate, forge, fullName, grudgeBounty, hierarchy, mark, rankTitle, scheme, slay } from '../realm/grudge';
 import type { GrudgeEntry, RealmState } from '../realm/types';
@@ -307,4 +308,21 @@ export class RealmActions {
   }
 
   readonly maxCommissions = MAX_COMMISSIONS;
+
+  // ------------------------------------------------------------ Hesha's Mercy
+
+  /** Foes spared through Talk are remembered: a count that the story reads, and Hesha's favor. */
+  mercy(b: Battle): void {
+    const flags = this.s.state.flags;
+    for (const m of b.tally.mercy) {
+      flags['mercy'] = Number(flags['mercy'] ?? 0) + (m.boss ? 2 : 1);
+      if (m.boss) flags['mercy-bosses'] = Number(flags['mercy-bosses'] ?? 0) + 1;
+      flags[`spared-${m.enemyId}`] = true;
+      if (FINALE_MERCY[m.enemyId]) flags['mercy-finale'] = true;
+      this.s.devotion.apply({ hesha: m.boss ? 8 : 3 }, 'quest');
+    }
+    const n = Number(flags['mercy'] ?? 0);
+    const before = n - b.tally.mercy.reduce((a, m) => a + (m.boss ? 2 : 1), 0);
+    for (const t of MERCY_TIERS) if (before < t.min && n >= t.min) this.s.bus.emit('toast', { kind: 'favor', text: `${t.name}: ${t.text}` });
+  }
 }

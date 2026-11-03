@@ -3,6 +3,7 @@ import { masteryLevel, masteryMultiplier, MASTERED_LEVEL } from '../skills/maste
 import { applyPatch } from '../skills/patch';
 import { powerAtRank, type SkillDef } from '../skills/types';
 import type { Battle } from './battle';
+import { covenantAfter, covenantBegin } from './covenant';
 import { applyEffects, fireTrigger } from './effects';
 import { dealDamage, gainResource, healTarget } from './hits';
 import { isSilenced, isStealthed, removeStatus } from './statuses';
@@ -275,7 +276,8 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
   }
   const masteryMult = known?.mastery !== undefined ? masteryMultiplier(known.mastery) : 1;
 
-  const chainMult = chainMultiplier(b, x, skill, skill.targeting === 'enemy' ? targets[0] : undefined);
+  const cov = opts.free || opts.echo ? 1 : covenantBegin(b, x, skill, skill.id === BASIC_ATTACK_ID);
+  const chainMult = chainMultiplier(b, x, skill, skill.targeting === 'enemy' ? targets[0] : undefined) * cov;
   const stealthCrit = skill.damage !== undefined && isStealthed(b, x);
   if (stealthCrit) for (const s of [...x.statuses]) if (b.c.statuses.get(s.id).stealth) removeStatus(b, x, s.id);
 
@@ -315,7 +317,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
 
   if (skill.heal) {
     const stats = b.stats(x, { skillTags: skill.tags });
-    const amount = stats[skill.heal.stat] * powerAtRank(skill.heal, rank) * masteryMult * (1 + stats.healingPower / 100);
+    const amount = stats[skill.heal.stat] * powerAtRank(skill.heal, rank) * masteryMult * (1 + stats.healingPower / 100) * cov;
     for (const t of targets) healTarget(b, x, t, amount, { spell: true });
   }
 
@@ -329,6 +331,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
   }
   if (skill.generates) gainResource(b, x, skill.generates.resource, skill.generates.amount);
 
+  if (!opts.free && !opts.echo) covenantAfter(b, x);
   if (skill.id !== BASIC_ATTACK_ID) fireTrigger(b, x, 'onSkillCast', targets[0], { skillTags: skill.tags, element: skill.element });
 
   if (!opts.echo && skill.tags.includes('Spell') && b.hasFlag(x, 'spellEcho') && b.rng.chance(COMBAT.spellEchoChance)) {

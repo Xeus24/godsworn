@@ -1,3 +1,4 @@
+import { BOSS_MERCY_DEFAULT, BOSS_MERCY_LINES, FINALE_MERCY, FINALE_REQUIRES, MERCY_FOES, mercyVerb } from '../../data/mercy';
 import type { Battle } from './battle';
 import { applyStatus } from './statuses';
 import type { Combatant } from './types';
@@ -10,6 +11,10 @@ export interface TalkOption {
   chance: number;
   /** Gold a bribe costs. */
   cost?: number;
+  /** Spare: what the button says, and why it is shut if it is. */
+  label?: string;
+  hint?: string;
+  locked?: string;
 }
 
 /** Story bosses and finales that never stand down. */
@@ -30,10 +35,18 @@ export function talkOptions(b: Battle, speaker: Combatant, target: Combatant): T
   const out: TalkOption[] = [];
   const skill = 20 + (stats.cha ?? 0) * 1.2 + (stats.wis ?? 0) * 0.4 - target.level * 1.0 + (target.hp < target.maxHp * 0.5 ? 20 : 0);
   const persuade = Math.max(0.05, Math.min(0.85, skill / 100));
+  // Hesha's Mercy: a beaten foe can be spared. Every boss can be (but the duels that must be won); the story's finales only by someone Hesha knows.
+  const [label, hint] = mercyVerb(target.types);
   if (isBoss(target)) {
-    if (target.hp <= target.maxHp * 0.25 && talkable(target) && !NO_SPARE.has(target.enemyId ?? '') && !mustFight(target) && !target.id.startsWith('aspect')) out.push({ approach: 'spare', chance: 1 });
+    if (target.hp <= target.maxHp * 0.25 && !mustFight(target) && !target.id.startsWith('aspect')) {
+      const finale = NO_SPARE.has(target.enemyId ?? '');
+      const locked = finale && !(b.mercy.deeds >= FINALE_REQUIRES.mercy && b.mercy.hesha) ? `It will not yield to a stranger to mercy: needs ${FINALE_REQUIRES.mercy} acts of mercy and Hesha’s favor.` : undefined;
+      out.push({ approach: 'spare', chance: 1, label, hint, ...(locked ? { locked } : {}) });
+    }
     return out;
   }
+  const named = MERCY_FOES[target.enemyId ?? ''] !== undefined;
+  if (!mustFight(target) && (named || talkable(target)) && target.hp <= target.maxHp * (named ? 0.4 : 0.25)) out.push({ approach: 'spare', chance: 1, label, hint });
   if (!talkable(target)) return out;
   out.push({ approach: 'persuade', chance: persuade });
   if (target.types.includes('humanoid')) out.push({ approach: 'bribe', chance: target.tier === 'champion' ? 0.7 : 0.95, cost: Math.round(target.level * 12 * (target.tier === 'normal' ? 1 : 2)) });
@@ -47,6 +60,7 @@ export type TalkResult = { ok: true } | { ok: false; reason: string };
 export function talk(b: Battle, speaker: Combatant, target: Combatant, approach: Approach): TalkResult {
   const option = talkOptions(b, speaker, target).find((o) => o.approach === approach);
   if (!option) return { ok: false, reason: `${target.name} will not listen to that.` };
+  if (option.locked) return { ok: false, reason: option.locked };
   if (option.cost !== undefined && b.purse < option.cost) return { ok: false, reason: `A bribe costs ${option.cost} gold.` };
   if (option.cost !== undefined) {
     b.purse -= option.cost;
@@ -71,9 +85,21 @@ export function talk(b: Battle, speaker: Combatant, target: Combatant, approach:
     target.departed = true;
     target.corpse = false;
     b.tally.talked.push(target.enemyId ?? target.id);
-    if (approach === 'spare') b.tally.spared.push(target.enemyId ?? target.id);
-    b.log(approach === 'spare' ? `${target.name} yields. You let it go.` : approach === 'bribe' ? `${target.name} pockets the coin and leaves.` : `${target.name} lowers its weapon and walks away.`);
+    if (approach === 'spare') {
+      b.tally.spared.push(target.enemyId ?? target.id);
+      b.tally.mercy.push({ enemyId: target.enemyId ?? target.id, boss: isBoss(target) });
+    }
+    b.log(approach === 'spare' ? mercyLine(target) : approach === 'bribe' ? `${target.name} pockets the coin and leaves.` : `${target.name} lowers its weapon and walks away.`);
   }
   b.checkOutcome();
   return { ok: true };
+}
+
+/** What a spared foe says. */
+export function mercyLine(target: Combatant): string {
+  const id = target.enemyId ?? '';
+  const own = FINALE_MERCY[id] ?? MERCY_FOES[id];
+  if (own) return own.startsWith(target.name) || FINALE_MERCY[id] ? own : `${target.name}: ${own}`;
+  if (isBoss(target)) return (BOSS_MERCY_LINES.find(([t]) => target.types.includes(t))?.[1] ?? BOSS_MERCY_DEFAULT).replace('{name}', target.name);
+  return `${target.name} yields. You let it go.`;
 }

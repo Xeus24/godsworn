@@ -102,6 +102,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   if (b.tally.spent > 0) s.state.gold = Math.max(0, s.state.gold - b.tally.spent);
   for (let i = 0; i < b.tally.spared.length + Math.ceil(b.tally.talked.length / 2); i++) s.devotion.deed('mercy');
   rewards.generalUps = s.general.trainAfterBattle(b);
+  s.realm.mercy(b);
 
   for (const kill of b.tally.kills) {
     stats.kills++;

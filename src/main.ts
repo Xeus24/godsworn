@@ -36,6 +36,7 @@ import { MarketScreen } from './ui/world/marketScreen';
 import { TownScreen } from './ui/world/townScreen';
 import { WorkshopScreen } from './ui/world/workshopScreen';
 import { ShipScreen } from './ui/world/shipScreen';
+import { atLeast } from './engine/gods/devotion';
 import { MarrowScreen } from './ui/world/marrowScreen';
 import { MinigameScreen } from './ui/world/minigameScreen';
 import { WorldScreen } from './ui/world/worldScreen';
@@ -401,6 +402,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     weather: s.world.weatherNow(),
     punisher,
     purse: s.state.gold,
+    mercy: { deeds: Number(s.state.flags['mercy'] ?? 0), hesha: atLeast(s.player, 'hesha', 'favored') },
     ...(volley ? { volley } : {}),
     // The room itself: barrels, chandeliers, holy ground and lava, and who struck first on the road.
     ...(world || !encounter.isBoss ? { features: rollFeatures(s.rng, s.world.map.biome, s.world.zone.id) } : {}),

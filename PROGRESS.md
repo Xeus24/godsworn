@@ -1025,6 +1025,15 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests: `tests/realm.test.ts` (25); 891 unit tests, 15 e2e, build; base and New Game+1 playtests for Warrior and Necromancer finish (Warrior loses two fights in NG+1 and wins on retry: the daily ticks use the session's RNG, so fight dice shifted).
 - **Not done / cut:** see "Cut or deferred from section A" in `docs/DESIGN.md`; the full 29-class playtest was not re-run for this section.
 
+### Innovation Pack, section B: the art of battle (items 7-10)
+- **7, Blessed and Cursed Ground** (`engine/combat/ground.ts`, `data/ground.ts`): skills leave fire, water, oil, ice, poison, blood and holy ground on a side of the field. Each does something each turn (burn, wet, slow, sicken, heal the living and burn the undead, drink blood), and the next element can react: lightning electrifies water, fire explodes oil, melts ice and ignites poison fumes, ice freezes water, holy light cleanses the cursed grounds, shadow desecrates holy ground.
+- **8, Divine Foresight** (`engine/combat/foresight.ts`): enemies plan their next action and the party sees it ("Foresight" in the field strip, and in Shove / Pull's tooltips). New party actions **Shove** (its blow veers onto its own side, it is driven back) and **Pull** (its blow is aimed at you, it is hauled forward), one per two turns, bosses resist.
+- **9, Covenant Chains** (`engine/combat/covenant.ts`): a shared gauge fills as the party fights; at 100 the next skill opens a chain, and each following skill from a different member that matches in element or kind adds a link (x1.35, x1.70, x2.05, x2.40). Three or more links end in a Covenant Burst. The party AI plays to it.
+- **10, Hesha's Mercy** (`engine/combat/talk.ts`, `data/mercy.ts`, `data/story/mercyTalk.ts`): Spare is now offered for every boss that is not a duel (including undead, constructs and spirits, with a verb for each), for 54 named foes with their own last words (40% HP), and for any talkable foe (25% HP). The 11 story finales need Hesha's favor and eight acts of mercy and have authored lines. Mercy is counted, pleases Hesha, opens replies from five townspeople and adds six epilogue slides.
+- Combat screen: a field strip (ground, Covenant, Foresight), a Shove / Pull menu, and Talk shows the mercy verb or why it is locked.
+- Tests: `tests/sectionB.test.ts` (16), an e2e test of the new combat UI; one old test changed (the finale now shows a locked Spare) and one made robust to dice (Brand).
+- Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
+
 ## Cut / deferred
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are player-allocated on the Party screen, as a list or an editable graph (phase 21). Companion gear is managed on the Party screen, not by dragging onto a paper doll.

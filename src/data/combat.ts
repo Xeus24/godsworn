@@ -2,6 +2,8 @@ import type { ModifierSpec } from '../engine/stats/modifiers';
 
 /** Combat tuning numbers. The rules that use them live in src/engine/combat/. */
 export const COMBAT = {
+  /** A shove builds this share of the foe's stagger bar. */
+  shoveStagger: 0.25,
   /** Damage is randomized by +/- this share (0.1 = 0.9x..1.1x). */
   damageVariance: 0.1,
   /** Minimum and maximum hit chance after accuracy minus dodge, in %. */

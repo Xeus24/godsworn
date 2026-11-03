@@ -120,7 +120,8 @@ describe('Inkweaver: sigils', () => {
 describe('Witch Hunter: the Mark', () => {
   it('Brand marks an enemy, who then takes more damage; casters are typed as casters', () => {
     const { b, hero, foe } = duel('witchhunter');
-    useSkill(b, hero, 'brand-the-witch', 1, foe.id);
+    // The brand can miss; cast it until it lands.
+    for (let i = 0; i < 6 && !foe.statuses.some((s) => s.id === 'witch-mark'); i++) useSkill(b, hero, 'brand-the-witch', 1, foe.id, { free: true });
     expect(foe.statuses.some((s) => s.id === 'witch-mark')).toBe(true);
     const mage = createEnemy(content.enemies.get('mentor-mage'), 'm', 15);
     expect(mage.types).toContain('caster');

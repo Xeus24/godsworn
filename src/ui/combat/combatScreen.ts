@@ -6,6 +6,9 @@ import { chooseAction } from '../../engine/combat/ai';
 import type { Battle } from '../../engine/combat/battle';
 import { needsTarget, skillOptions, validTargets, weaponArtsFor, type SkillOption } from '../../engine/combat/skills';
 import { FEATURE_INFO } from '../../engine/combat/features';
+import { GROUND } from '../../data/ground';
+import { linkMult } from '../../engine/combat/covenant';
+import { maneuverChance } from '../../engine/combat/foresight';
 import { talkOptions } from '../../engine/combat/talk';
 import { advance, perform, startBattle, timeline } from '../../engine/combat/turns';
 import type { Action, BattleEvent, Combatant } from '../../engine/combat/types';
@@ -39,7 +42,7 @@ const EVENT_DELAY: Partial<Record<BattleEvent['type'], number>> = {
   turn: 60,
 };
 
-type Menu = 'main' | 'skills' | 'items' | 'abilities' | 'arts' | 'talk' | 'env';
+type Menu = 'main' | 'skills' | 'items' | 'abilities' | 'arts' | 'talk' | 'env' | 'maneuver';
 
 interface Pending {
   label: string;
@@ -432,11 +435,22 @@ export class CombatScreen implements Screen {
     if (this.menu === 'talk') {
       const rows = this.battle.alive('enemy').flatMap((t) =>
         talkOptions(this.battle, x, t).map((o) => {
-          const label = o.approach === 'spare' ? `Spare ${t.name}` : o.approach === 'bribe' ? `Bribe ${t.name} (${o.cost}g)` : `${o.approach[0]!.toUpperCase()}${o.approach.slice(1)} ${t.name} (${Math.round(o.chance * 100)}%)`;
-          return btn(label, () => this.act({ kind: 'talk', actorId: x.id, targetId: t.id, approach: o.approach }), o.cost !== undefined && this.battle.purse < o.cost, () => o.approach === 'persuade' ? 'Talk it down. It leaves, and you get no spoils.' : o.approach === 'bribe' ? 'Pay it to go away.' : o.approach === 'recruit' ? 'Win a beast over; it fights for you this battle.' : 'It is beaten and ready to yield.');
+          const label = o.approach === 'spare' ? `${o.label ?? 'Spare'} ${t.name}${o.locked ? ' (locked)' : ''}` : o.approach === 'bribe' ? `Bribe ${t.name} (${o.cost}g)` : `${o.approach[0]!.toUpperCase()}${o.approach.slice(1)} ${t.name} (${Math.round(o.chance * 100)}%)`;
+          return btn(label, () => this.act({ kind: 'talk', actorId: x.id, targetId: t.id, approach: o.approach }), (o.cost !== undefined && this.battle.purse < o.cost) || o.locked !== undefined, () => o.locked ?? (o.approach === 'persuade' ? 'Talk it down. It leaves, and you get no spoils.' : o.approach === 'bribe' ? 'Pay it to go away.' : o.approach === 'recruit' ? 'Win a beast over; it fights for you this battle.' : `${o.hint ?? 'It is beaten and ready to yield.'} Hesha is pleased by mercy.`));
         }),
       );
       node.replaceChildren(title, el('div', { class: 'cmd-grid' }, ...(rows.length ? rows : [el('p', { class: 'dim small' }, 'Nothing here will listen. (Bosses can be spared when nearly beaten.)')]), back()));
+      return;
+    }
+    if (this.menu === 'maneuver') {
+      const cd = x.cooldowns.maneuver ?? 0;
+      const rows = this.battle.alive('enemy').flatMap((t) =>
+        (['shove', 'pull'] as const).map((k) => {
+          const pct = Math.round(maneuverChance(this.battle, x, t, k) * 100);
+          return btn(`${k === 'shove' ? 'Shove' : 'Pull'} ${t.name} (${pct}%)`, () => this.act({ kind: k, actorId: x.id, targetId: t.id }), cd > 0, () => (k === 'shove' ? 'Throw it off balance: its next single-target blow veers onto one of its own, and it is driven to the back row.' : 'Drag it forward: its next single-target blow is aimed at you, and it is hauled to the front row.') + (t.intent ? ` It means to: ${t.intent.text}.` : ''));
+        }),
+      );
+      node.replaceChildren(title, el('div', { class: 'cmd-grid' }, ...(cd > 0 ? [el('p', { class: 'dim small' }, `Ready in ${cd} turns.`)] : []), ...rows, back()));
       return;
     }
     if (this.menu === 'env') {
@@ -464,6 +478,7 @@ export class CombatScreen implements Screen {
     const ultimates = options.filter((o) => o.skill.ultimate && o.check.ok);
     node.replaceChildren(
       title,
+      this.fieldStrip(),
       el('div', { class: 'cmd-hotbar' }, ...hotbarButtons, ...(ultReady ? ultimates.map((u) => btn(`\u2605 ${u.skill.name}`, () => this.useSkillOption(x, u))) : [])),
       el(
         'div',
@@ -474,6 +489,7 @@ export class CombatScreen implements Screen {
         ...(x.abilities.length ? [btn('Abilities', () => ((this.menu = 'abilities'), this.renderCommands()))] : []),
         ...(weaponArtsFor(this.battle, x).length ? [btn('Weapon Art', () => ((this.menu = 'arts'), this.renderCommands()))] : []),
         btn('Talk', () => ((this.menu = 'talk'), this.renderCommands()), x.kind === 'summon'),
+        btn('Shove / Pull', () => ((this.menu = 'maneuver'), this.renderCommands()), x.kind === 'summon'),
         ...(this.battle.features.length ? [btn('Environment', () => ((this.menu = 'env'), this.renderCommands()))] : []),
         ...(x.prayer ? [this.prayButton(x, btn)] : []),
         btn('Defend (D)', () => this.act({ kind: 'defend', actorId: x.id }), false, () => 'Take half damage until your next turn and recover 5% MP.'),
@@ -481,6 +497,34 @@ export class CombatScreen implements Screen {
         btn('Flee (F)', () => this.act({ kind: 'flee', actorId: x.id }), !this.battle.canFlee || this.battle.isBoss),
       ),
     );
+  }
+
+  /** The field at a glance: ground on each side, the Covenant gauge and what the enemies mean to do (Divine Foresight). */
+  private fieldStrip(): HTMLElement {
+    const b = this.battle;
+    const bits: (Node | string)[] = [];
+    const ground = b.ground.map((g) => {
+      const info = GROUND[g.kind];
+      const chip = el('span', { class: 'ground-chip', style: `border-color:${info.color};color:${info.color}` }, `${info.name} (${g.side === 'party' ? 'yours' : 'theirs'}, ${g.turns})`);
+      attachTooltip(chip, () => `${info.name}: ${info.text}`);
+      return chip;
+    });
+    if (ground.length) bits.push(el('div', { class: 'small' }, 'Ground: ', ...ground));
+    const cv = b.covenant;
+    bits.push(
+      el(
+        'div',
+        { class: 'small' },
+        cv.chain
+          ? `Covenant chain: ${cv.chain.links} link${cv.chain.links === 1 ? '' : 's'} (x${linkMult(cv.chain.links).toFixed(2)} next). Pass it to someone else with a ${cv.chain.element} skill or another ${cv.chain.role}.`
+          : cv.ready
+            ? 'The Covenant is full: open a chain with any skill.'
+            : `Covenant ${Math.round(cv.gauge)}/100`,
+      ),
+    );
+    const plans = b.alive('enemy').filter((e) => e.intent).map((e) => `${e.name} ${e.intent?.broken ? '(thrown off) ' : ''}${e.intent?.text}`);
+    if (plans.length) bits.push(el('div', { class: 'small dim' }, `Foresight: ${plans.join(' · ')}`));
+    return el('div', { class: 'field-strip' }, ...bits);
   }
 
   private chooseItem(x: Combatant, itemId: string): void {

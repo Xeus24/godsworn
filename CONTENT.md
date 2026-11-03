@@ -3207,7 +3207,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-811 quests, 258 NPCs, 536 dialogues, 14 companions, 15 endings.
+811 quests, 258 NPCs, 541 dialogues, 14 companions, 15 endings.
 
 ### Main story (54)
 

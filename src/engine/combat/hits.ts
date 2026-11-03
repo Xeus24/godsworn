@@ -5,6 +5,8 @@ import type { Element } from '../stats/types';
 import type { Battle } from './battle';
 import { computeDamage, hitChance } from './damage';
 import { applyEffects, fireTrigger } from './effects';
+import { covenantHit } from './covenant';
+import { groundAfterHit, groundDrink } from './ground';
 import { foesOf } from './skills';
 import { applyStatus, removeStatus } from './statuses';
 import type { Combatant } from './types';
@@ -130,6 +132,8 @@ export function dealDamage(b: Battle, attacker: Combatant, target: Combatant, op
     if (aStats.lifesteal > 0 && attacker.alive) healTarget(b, attacker, attacker, (amount * aStats.lifesteal) / 100, { label: 'lifesteal' });
     if (!opts.fromEffect) {
       elementalCombos(b, attacker, target, opts.element, amount);
+      if (opts.skillTags && opts.skillTags.length > 0) groundAfterHit(b, attacker, target, opts.element, opts.skillTags, amount);
+      groundDrink(b, attacker, target, amount);
       fireTrigger(b, attacker, 'onHit', target, { skillTags: opts.skillTags, element: opts.element });
       if (crit) fireTrigger(b, attacker, 'onCrit', target, { skillTags: opts.skillTags, element: opts.element });
     }
@@ -162,6 +166,7 @@ export function applyDamage(
   target.hp = Math.max(0, target.hp - dealt);
   if (dealt > 0) for (const s of [...target.statuses]) if (b.c.statuses.find(s.id)?.breakOnDamage) removeStatus(b, target, s.id);
   b.emit({ type: 'damage', sourceId: source.id, targetId: target.id, amount, element: info.element, crit: info.crit, absorbed, dot: info.dot });
+  if (!info.dot) covenantHit(b, source, target, dealt);
 
   const hpShare = dealt / Math.max(1, target.maxHp);
   if (target.resourceId) {

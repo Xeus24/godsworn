@@ -173,6 +173,14 @@ export interface BuffInstance {
   sourceId: string;
 }
 
+/** An enemy's plan for its next turn, as Divine Foresight shows it. */
+export interface Intent {
+  action: Action;
+  text: string;
+  /** A shove or pull has changed the plan. */
+  broken: boolean;
+}
+
 export interface Combatant {
   id: string;
   name: string;
@@ -242,6 +250,8 @@ export interface Combatant {
   enemyId?: string;
   /** The Grudgebound this foe is (see `engine/realm`). */
   grudgeId?: string;
+  /** What it means to do next (Divine Foresight). */
+  intent?: Intent;
   summonId?: string;
   ownerId?: string;
   /** Remaining turns for timed summons. */
@@ -284,7 +294,8 @@ export type Action =
   | { kind: 'flee'; actorId: string }
   | { kind: 'pray'; actorId: string; targetId?: string }
   | { kind: 'talk'; actorId: string; targetId: string; approach: 'persuade' | 'bribe' | 'recruit' | 'spare' }
-  | { kind: 'interact'; actorId: string; featureId: string };
+  | { kind: 'interact'; actorId: string; featureId: string }
+  | { kind: 'shove' | 'pull'; actorId: string; targetId: string };
 
 /** Something in the room a fighter can use (Phase 11): barrels burst, chandeliers fall, holy ground heals, lava burns. */
 export type FeatureKind = 'barrel' | 'chandelier' | 'holy' | 'lava';
@@ -307,7 +318,7 @@ export type BattleEvent =
   | { type: 'revive'; targetId: string }
   | { type: 'summon'; combatantId: string }
   | { type: 'break'; targetId: string }
-  | { type: 'combo'; targetId: string; name: 'Shatter' | 'Conduct' }
+  | { type: 'combo'; targetId: string; name: 'Shatter' | 'Conduct' | 'Electrify' | 'Explosion' | 'Covenant' }
   | { type: 'chain'; count: number }
   | { type: 'skip'; actorId: string; reason: string }
   | { type: 'resource'; targetId: string }
@@ -321,6 +332,8 @@ export type BattleOutcome = 'ongoing' | 'victory' | 'defeat' | 'fled';
 
 /** What the battle tracked, for rewards, relic deeds and stats. */
 export interface BattleTally {
+  /** Foes spared through Talk (Hesha's Mercy), and whether each was a boss. */
+  mercy: { enemyId: string; boss: boolean }[];
   kills: { enemyId: string; level: number; tier: EnemyTier; types: string[]; xp: number; lootTable?: string; element?: Element; enraged?: boolean }[];
   /** Boss wind-ups the party broke. */
   interrupts: number;

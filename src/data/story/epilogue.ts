@@ -45,5 +45,11 @@ export const EPILOGUE_SLIDES: EpilogueSlide[] = [
   S('seryth-unsworn', 'The Severance', 'The Severance sits in your palm like a seed. You do not plant it. You do not put it down.', path('unsworn')),
   S('seryth-fell', 'The Citadel', 'The Dark Citadel is razed by the weather, stone by stone. The Black Throne is the last to go. It makes a sound like a held breath.', any(path('godsworn'), path('oathbreaker'))),
   ...GODS.filter((g) => !g.hidden).map((g) => S(`apostle-${g.id}`, `${g.name}`, `As ${g.name}’s Apostle, you are remembered in the temple of every town you passed. The priests argue about your birth sign. Some of them are right.`, { kind: 'apostle', god: g.id })),
+  S('mercy-few', 'The Road’s Reputation', 'It becomes known on the road that you will stop if asked. Bandits learn to ask. This is, on the whole, an improvement.', { kind: 'counter', flag: 'mercy', min: 3 }),
+  S('mercy-many', 'Hesha’s Hand', 'Priests of Hesha bring lanterns to the road where you put down your sword. They leave them lit. Nobody has ever seen them go out.', { kind: 'counter', flag: 'mercy', min: 12 }),
+  S('mercy-boss', 'The Ones Who Were Spared', 'The ones you spared send word. It is rarely thanks. Mostly it is a small, awkward gift: a feather, a coin, a bent nail. You keep them in a box.', { kind: 'counter', flag: 'mercy-bosses', min: 1 }),
+  S('mercy-bosses', 'A Long List', 'The list of those you spared is long enough to be a book. Brother Aldric reads it aloud at the inn, and nobody interrupts.', { kind: 'counter', flag: 'mercy-bosses', min: 6 }),
+  S('mercy-finale', 'The Last Mercy', 'You spared what everyone said had to be ended. The history books argue about whether it was wise. The people who were there do not argue. They remember how quiet it was.', flag('mercy-finale')),
+  S('mercy-none', 'The Quiet Shrine', 'Hesha’s shrines are quiet when you pass. It is not an accusation. It is a door that has not been knocked on.', not({ kind: 'counter', flag: 'mercy', min: 1 })),
   S('legacy', 'The Road Goes On', 'The road you walked is a road now, with inns on it. Somewhere past the last milestone, there is a village whose name you will remember, and a story that is not yet finished.'),
 ];

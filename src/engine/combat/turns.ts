@@ -5,6 +5,9 @@ import { applyEffects, fireTrigger, summon } from './effects';
 import { gainResource, healTarget, kill } from './hits';
 import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
 import { featureTick, useFeature } from './features';
+import { groundExpire, groundTick } from './ground';
+import { covenantBreak } from './covenant';
+import { maneuver, planIntent } from './foresight';
 import { talk } from './talk';
 import { BASIC_ATTACK_ID, foesOf, teamSkillsFor, useSkill, weaponArtsFor } from './skills';
 import { applyStatus, tickStatusesAtTurnEnd, tickStatusesAtTurnStart, turnBlocker } from './statuses';
@@ -35,6 +38,7 @@ export function startBattle(b: Battle): BattleEvent[] {
     if (b.hasFlag(x, 'stealthOnCombatStart')) applyStatus(b, x, x, 'stealth', { duration: 3, unresistable: true });
   }
   for (const x of [...b.combatants]) fireTrigger(b, x, 'onCombatStart');
+  for (const x of b.alive('enemy')) planIntent(b, x);
   // Ambush: they get the first round. Preemptive strike: you do, and they lose their opening turn.
   if (b.opening) {
     const losers = b.opening === 'ambush' ? b.alive('party') : b.alive('enemy');
@@ -143,6 +147,7 @@ function beginTurn(b: Battle, x: Combatant): void {
   x.defending = false;
   x.hpHistory = [...(x.hpHistory ?? []), x.hp].slice(-3);
   if (b.terrain && x.side === 'party' && x.kind === 'hero' && --b.terrain.turns <= 0) b.terrain = undefined;
+  if (x.side === 'party' && x.kind === 'hero') groundExpire(b);
   if (x.side === 'enemy') b.chain = { count: 0, lastSide: 'enemy' };
   tickStatusesAtTurnStart(b, x);
   if (!x.alive) return;
@@ -163,6 +168,7 @@ function beginTurn(b: Battle, x: Combatant): void {
   fireTrigger(b, x, 'onTurnStart');
   fireSigils(b, x);
   featureTick(b, x);
+  groundTick(b, x);
 }
 
 /** Closes a turn: durations, cooldowns, resource decay, timed summons, next initiative. */
@@ -187,6 +193,7 @@ export function endTurn(b: Battle, x: Combatant): void {
     x.nextAt += turnDelay(b, x);
   }
   x.turnsTaken++;
+  if (x.side === 'enemy' && x.alive) planIntent(b, x);
   if (b.current === x) b.current = undefined;
   b.checkOutcome();
 }
@@ -207,6 +214,8 @@ export function fleeChance(b: Battle): number {
 export function perform(b: Battle, action: Action): { ok: true; events: BattleEvent[] } | { ok: false; reason: string } {
   const x = b.current;
   if (!x || x.id !== action.actorId) return { ok: false, reason: 'Not your turn.' };
+  // Anything but a skill or a plain attack breaks a running Covenant chain.
+  if (x.side === 'party' && action.kind !== 'attack' && action.kind !== 'skill') covenantBreak(b, x);
   const done = (): { ok: true; events: BattleEvent[] } => {
     bossActed(b, x);
     endTurn(b, x);
@@ -249,6 +258,14 @@ export function perform(b: Battle, action: Action): { ok: true; events: BattleEv
       const target = b.combatants.find((c) => c.id === action.targetId);
       if (!target) return { ok: false, reason: 'No one there.' };
       const r = talk(b, x, target, action.approach);
+      if (!r.ok) return r;
+      return done();
+    }
+    case 'shove':
+    case 'pull': {
+      const target = b.get(action.targetId);
+      if (!target) return { ok: false, reason: 'No one there.' };
+      const r = maneuver(b, x, target, action.kind);
       if (!r.ok) return r;
       return done();
     }

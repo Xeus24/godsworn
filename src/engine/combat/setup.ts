@@ -72,6 +72,8 @@ export interface EncounterOptions {
   opening?: 'ambush' | 'preemptive';
   /** A naval battle's opening broadside: share of each enemy's max HP. */
   volley?: number;
+  /** Acts of mercy so far, and Hesha's favor (Hesha's Mercy). */
+  mercy?: { deeds: number; hesha: boolean };
   /** Companions fighting beside the hero, with their bond perks. */
   companions?: { char: Character; extras: CompanionExtras }[];
   /** Extra modifiers on every enemy and on every party member (Rift affixes, challenge modes). */
@@ -190,6 +192,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     c,
   });
   battle.pacifist = hasRule(hero, 'pacifist', c);
+  if (opts.mercy) battle.mercy = opts.mercy;
   for (const e of encounter.enemies) if (e.grudge) battle.log(`${e.grudge.name}: ${e.grudge.line}`);
   return battle;
 }

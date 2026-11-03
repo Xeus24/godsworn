@@ -66,6 +66,14 @@ export class Battle {
   sigils: { ownerId: string; name: string; charges: number; effects: import('../effects/types').EffectSpec[] }[] = [];
   /** Room features that can be used (barrels, chandeliers, holy ground, lava). */
   features: import('./types').BattleFeature[] = [];
+  /** The shared Covenant gauge and chain (item 9). */
+  covenant: import('./covenant').CovenantState = { gauge: 0, ready: false };
+  /** Divine Foresight (item 8): enemies plan their next action ahead of time, and the party can see it. */
+  foresight = true;
+  /** Ground left by spells (Innovation Pack, item 7): fire, water, oil, ice, poison, blood and holy. */
+  ground: import('./ground').GroundPatch[] = [];
+  /** What the party has shown of mercy so far: acts of mercy and whether Hesha favors the hero (the story's finales yield only to that). */
+  mercy = { deeds: 0, hesha: false };
   /** Gold on hand for bribes. */
   purse = 0;
   /** How the fight began: an ambush (they act first) or a preemptive strike (you do). */
@@ -74,7 +82,7 @@ export class Battle {
   volley = 0;
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
-  readonly tally: BattleTally = { kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
+  readonly tally: BattleTally = { mercy: [], kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];
   private uid = 0;
