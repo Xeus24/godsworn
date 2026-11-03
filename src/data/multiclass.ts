@@ -134,6 +134,19 @@ export const HYBRID_TRIAL_LEVEL = 36;
 /** Extra HP and damage (percent) for the class trials' foes: heroes carry class traits since Phase 16, and a trial should still be a test. */
 const CLASS_TRIAL_THREAT = 60;
 
+
+/**
+ * Extra HP and damage (percent) for each hybrid trial's foes, tuned with `npm run tune:hybrids` so the benchmark pair wins
+ * roughly half the time (target 40-70%). Negative values soften a trial whose pair of mentors is harder than the rest.
+ */
+export const HYBRID_TRIAL_THREAT: Record<string, number> = {
+  spellblade: 70, warpriest: 40, deathknight: 100, beastlord: 360, 'templar-ascetic': 55, stormfist: 75, 'shadow-reaper': 80, spellthief: 40,
+  'blade-dancer': 80, wildsinger: 200, 'arcane-archer': 170, 'plague-doctor': -30, 'dread-knight': 120, 'herbal-witch': 120, timeblade: -15,
+  muse: 170, glyphmaster: 170, 'grand-inquisitor': 0, mountainbreaker: 170, 'golem-master': 200, crusader: -45, 'rune-knight': 80,
+  thornstalker: 170, greenseer: 100, 'dark-magus': 140, hexblade: 15, soulbinder: 170, 'spirit-lord': 100, venomancer: 230, transmuter: 270,
+  ghostfist: 40, metronome: 15, gadgeteer: 170, ironclad: 400, 'windstep-master': 170, silkblade: 170, lorekeeper: 170, 'bounty-hunter': 230,
+};
+
 /** Class trials (level 15: mentor plus a helper) and hybrid trials (both mentors and their helpers at level 36). */
 export const TRIAL_ENCOUNTERS: EncounterDef[] = [
   ...CLASS_TRIALS.map((t): EncounterDef => {
@@ -146,6 +159,7 @@ export const TRIAL_ENCOUNTERS: EncounterDef[] = [
     description: `${h.classes.length > 1 ? 'Both of your mentors at once' : 'Your mentor and the heralds of the sun'}. Prove you can be ${h.name === 'Arcane Archer' ? 'an' : 'a'} ${h.name}.`,
     level: HYBRID_TRIAL_LEVEL,
     canFlee: true,
+    ...(HYBRID_TRIAL_THREAT[h.id] ? { threat: HYBRID_TRIAL_THREAT[h.id] } : {}),
     // The mentors, each with their class trial's helper; an apostle hybrid also faces its god's heralds.
     enemies: [
       ...h.classes.flatMap((c) => [{ enemyId: mentorOf(c) }, ...(trialSupport[c] ?? [])]),

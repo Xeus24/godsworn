@@ -72,6 +72,8 @@ export type Cond =
   /** Zones set foot in. */
   | { kind: 'zones'; min: number }
   | { kind: 'house' }
+  /** Renown with one town (Honored is 130). */
+  | { kind: 'renown'; town: string; min: number }
   /** Items of a rarity found. */
   | { kind: 'rarity'; rarity: RarityId; min?: number }
   /** Any crafting profession at a level. */

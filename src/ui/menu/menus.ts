@@ -84,7 +84,7 @@ export class SettingsOverlay extends Overlay {
       input.addEventListener('input', () => updateSettings({ [key]: Number(input.value) / 100 } as Partial<Settings>));
       return el('label', { class: 'setting-row' }, el('span', {}, label), input);
     };
-    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion' | 'dyslexiaFont' | 'reduceFlashing' | 'highContrast'): HTMLElement => {
+    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion' | 'dyslexiaFont' | 'reduceFlashing' | 'highContrast' | 'patterns' | 'padPrompts'): HTMLElement => {
       const input = el('input', { type: 'checkbox' }) as HTMLInputElement;
       input.checked = s[key];
       input.addEventListener('change', () => updateSettings({ [key]: input.checked } as Partial<Settings>));
@@ -143,6 +143,8 @@ export class SettingsOverlay extends Overlay {
       check('Reduce motion (no animations)', 'reduceMotion'),
       el('h3', {}, 'Accessibility'),
       select<Settings['colorblind']>('Colour-blind palette', [['off', 'Off'], ['deuteranopia', 'Deuteranopia (red-green)'], ['protanopia', 'Protanopia (red-green)'], ['tritanopia', 'Tritanopia (blue-yellow)'], ['mono', 'Monochrome']], s.colorblind, (v) => updateSettings({ colorblind: v })),
+      check('Patterns and symbols (stripes, dots and ▲ ▼ marks instead of colour alone; always on with a palette)', 'patterns'),
+      check('Controller button prompts along the bottom while a pad is connected', 'padPrompts'),
       check('Dyslexia-friendly font (plain, wider spacing)', 'dyslexiaFont'),
       check('Reduce flashing (no hit flashes, shake or lightning)', 'reduceFlashing'),
       check('High contrast (bolder borders and focus rings)', 'highContrast'),

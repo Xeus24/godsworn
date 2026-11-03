@@ -30,6 +30,8 @@ export interface PlayOptions {
   /** Fights lost before giving up on one. */
   retries?: number;
   log?: (line: string) => void;
+  /** Called for every line of dialogue read: its word count and how many choices it offered. */
+  read?: (words: number, choices: number) => void;
 }
 
 export interface PlayResult {
@@ -54,6 +56,7 @@ function talkThrough(conv: Conversation, opts: PlayOptions, attempt: number, top
   if (topic) pickIn(conv, topic);
   for (let n = 0; n < 60 && !conv.done; n++) {
     const v = conv.view();
+    opts.read?.(v.text.split(/\s+/).filter(Boolean).length, v.choices.length);
     const labels = v.choices.filter((c) => c.enabled).map((c) => c.label);
     if (v.text === 'Anything else?') {
       pickIn(conv, 'Farewell');

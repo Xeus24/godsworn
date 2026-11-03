@@ -20,7 +20,7 @@ type Task =
 
 /** An option's consequences, written 'f:flag', 'rep:faction:n', 'fv:god:n', 'g:gold' or 'a:companion:n'. */
 type Fx = string;
-interface Row {
+export interface Row {
   id: string;
   name: string;
   zone: string;
@@ -57,7 +57,7 @@ function objective(r: Row): { o: ObjectiveDef[]; hours?: number; text: string } 
   }
 }
 
-function build(r: Row, requires: ReturnType<typeof level>, kind: 'side' | 'faction' = 'side', rewards: Partial<QuestDef['rewards']> = {}): { quest: QuestDef; dialogue: DialogueDef } {
+export function build(r: Row, requires: ReturnType<typeof level>, kind: 'side' | 'faction' = 'side', rewards: Partial<QuestDef['rewards']> = {}): { quest: QuestDef; dialogue: DialogueDef } {
   const d = `d-${r.id}`;
   const { o, hours, text } = objective(r);
   return {
@@ -78,7 +78,7 @@ function build(r: Row, requires: ReturnType<typeof level>, kind: 'side' | 'facti
   };
 }
 
-const K = (n: number, type: string): Task => ({ t: 'kill', n, type });
+export const K = (n: number, type: string): Task => ({ t: 'kill', n, type });
 
 // prettier-ignore
 const CHAINS: { first: string; rows: Row[] }[] = [

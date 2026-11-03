@@ -3193,7 +3193,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-782 quests, 243 NPCs, 506 dialogues, 14 companions, 15 endings.
+797 quests, 243 NPCs, 521 dialogues, 14 companions, 15 endings.
 
 ### Main story (54)
 
@@ -3279,10 +3279,25 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Echo of the Ninth Return** | 87 | starts by itself | Listen (talk) |
 | **Echo of the Tenth Return** | 90 | starts by itself | Listen (talk) |
 
-### Side quests (160)
+### Side quests (175)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **The Founders’ Cellar** | 10 | Captain Reyna Holt | Search the Founders’ cellar (visit); Follow the second clue (visit); Report (talk) |
+| **The Hunters’ Oath** | 15 | Warden-Captain Ysra | Put down 6 beasts (kill); Report (talk) |
+| **The Marshal’s Salt** | 27 | Marshal Dara Vosk | Escort the salt caravan (escort); Report (talk) |
+| **The Archive in the Ice** | 37 | Archivist Senne | Clear the dungeon (clear); Report (talk) |
+| **What the Tide Keeps** | 41 | Harbormaster Quill | Clear the dungeon (clear); Report (talk) |
+| **The Duke’s Seventh Key** | 25 | Chancellor Ilreth | Clear the dungeon (clear); Report (talk) |
+| **The Lamp That Remembers** | 21 | Warden Lissel | Clear the dungeon (clear); Report (talk) |
+| **The Warchief’s Bones** | 30 | Warchief Ulrik | Clear the dungeon (clear); Report (talk) |
+| **The Fifth Clan’s Hammer** | 40 | Forge-Matron Hilda | Clear the dungeon (clear); Report (talk) |
+| **The Last Unlit Road** | 26 | Ilen of the Dusk Watch | Clear the dungeon (clear); Report (talk) |
+| **The Lensmaster’s Second Sight** | 38 | Lensmaster Quill | Clear the dungeon (clear); Report (talk) |
+| **The Drowned Queen’s Pearl** | 48 | Maris Deepwater | Clear the dungeon (clear); Report (talk) |
+| **The Foreman’s Retirement** | 52 | Foreman Hask | Clear the dungeon (clear); Report (talk) |
+| **The Ashfold Charter** | 5 | Reeve Halwin | Clear the dungeon (clear); Report (talk) |
+| **The Wreck Queen’s Toast** | 42 | Jaya Brineheart | Clear the dungeon (clear); Report (talk) |
 | **A Master: Pell the Wheelwright** | 6 | starts by itself | Speak with Pell the Wheelwright (talk); Best Pell the Wheelwright (fight) |
 | **A Master: Gaffer Orn** | 7 | starts by itself | Speak with Gaffer Orn (talk); Best Gaffer Orn (fight) |
 | **A Master: Hedge-Witch Ilsa** | 12 | starts by itself | Speak with Hedge-Witch Ilsa (talk); Best Hedge-Witch Ilsa (fight) |

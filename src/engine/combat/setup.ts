@@ -106,6 +106,12 @@ function applyThreat(x: Combatant, threat: number, damage = threat, source = 'th
   if (source === 'party') x.healScale = (x.healScale ?? 1) * (1 + threat / 100);
 }
 
+/** How many companions the enemies should be scaled for: followers count part, and each past the first counts more than the one before. */
+function partyWeight(opts: EncounterOptions): number {
+  const raw = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
+  return raw * (1 + PARTY_SCALING.growth * Math.max(0, raw - 1));
+}
+
 /** Builds a battle between the hero (with companions and escorted NPCs) and an encounter's enemies; enemies scale with the party's size. */
 export function createEncounterBattle(hero: Character, encounter: EncounterDef, opts: EncounterOptions): Battle {
   const c = opts.c ?? content;
@@ -127,7 +133,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     if (ngThreat(ng) > 0) applyThreat(enemy, ngThreat(ng), ngThreat(ng), 'ngPlus');
     if (worldMods.enemy.length) addModifiers(enemy, worldMods.enemy, 'ngPlus');
     if (ng >= 2 && (def.tier === 'boss' || def.tier === 'worldBoss')) applyAffixes(enemy, remixFor(def.id, ng), c);
-    const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
+    const mates = partyWeight(opts);
     const n = affixCount(def.tier);
     if (n > 0) {
       const ids = def.tier === 'champion' ? (packAffixes ??= rollAffixes(opts.rng, def.types, n, c)) : rollAffixes(opts.rng, def.types, n, c);
@@ -145,7 +151,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const def = c.enemies.get(`punisher-${opts.punisher}`);
     const punisher = createEnemy(def, 'punisher', worldLevel(opts.level ?? encounter.level, ng) + 2 + difficulty.enemy.levelBonus, def.row, c);
     if (ngThreat(ng) > 0) applyThreat(punisher, ngThreat(ng), ngThreat(ng), 'ngPlus');
-    const mates = (opts.companions?.length ?? 0) + (opts.guests ?? []).filter((g) => g.ally).length * PARTY_SCALING.followerShare;
+    const mates = partyWeight(opts);
     if (mates > 0) applyThreat(punisher, PARTY_SCALING.enemyHpPerCompanion * mates, PARTY_SCALING.enemyDamagePerCompanion * mates, 'party');
     applyEnemyDifficulty(punisher, hero.difficulty);
     enemies.push(punisher);

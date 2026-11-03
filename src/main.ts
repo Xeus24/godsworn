@@ -46,6 +46,7 @@ import { QuestLogScreen } from './ui/quests/questLog';
 import { PartyScreen } from './ui/party/partyScreen';
 import { AUTOSAVE_SLOT, SaveSlots, serialize, type SaveStore } from './engine/state/save';
 import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay, UnlockOverlay } from './ui/menu/menus';
+import { startPadPrompts } from './ui/gamepad/padPrompts';
 import { startGlobalPad } from './ui/gamepad/globalPad';
 import { applySettings, onSettingsChange, settings, updateSettings } from './ui/settings';
 import './ui/menu/menu.css';
@@ -483,6 +484,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', () => autosave(0));
 
 startGlobalPad();
+startPadPrompts();
 applySettings();
 onSettingsChange((s) => {
   if (session) session.encounterScale = s.encounterRate;

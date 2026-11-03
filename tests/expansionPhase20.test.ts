@@ -87,7 +87,7 @@ describe('the completion tracker', () => {
 
 describe('accessibility settings', () => {
   it('default to off, with a normal encounter rate', () => {
-    expect(DEFAULT_SETTINGS).toMatchObject({ colorblind: 'off', dyslexiaFont: false, reduceFlashing: false, highContrast: false, encounterRate: 1 });
+    expect(DEFAULT_SETTINGS).toMatchObject({ colorblind: 'off', dyslexiaFont: false, patterns: false, padPrompts: true, reduceFlashing: false, highContrast: false, encounterRate: 1 });
   });
 });
 

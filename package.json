@@ -15,6 +15,8 @@
     "content:md": "tsx scripts/contentCatalog.ts",
     "sim": "tsx scripts/simulate.ts",
     "sim:party": "tsx scripts/simulateParty.ts",
+    "sim:size": "tsx scripts/simulatePartySize.ts",
+    "tune:hybrids": "tsx scripts/tuneHybridTrials.ts",
     "playtest": "tsx scripts/playtest.ts",
     "test:e2e": "playwright test",
     "secrets:md": "tsx scripts/secretsDoc.ts"

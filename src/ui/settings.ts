@@ -27,6 +27,10 @@ export interface Settings {
   colorblind: 'off' | 'deuteranopia' | 'protanopia' | 'tritanopia' | 'mono';
   /** A plainer, wider-spaced font with a taller line. */
   dyslexiaFont: boolean;
+  /** Stripes, dots and ▲/▼ marks that tell good from bad and HP from MP without colour. Always on with a colour-blind palette. */
+  patterns: boolean;
+  /** Names the controller buttons along the bottom of the page while a pad is connected. */
+  padPrompts: boolean;
   /** No hit flashes, screen shake, lightning or pulsing glows. */
   reduceFlashing: boolean;
   /** Multiplies random encounters on the map: 0 turns them off, 1 is normal, 2 doubles them. */
@@ -53,6 +57,8 @@ export const DEFAULT_SETTINGS: Settings = {
   textScale: 1,
   colorblind: 'off',
   dyslexiaFont: false,
+  patterns: false,
+  padPrompts: true,
   reduceFlashing: false,
   encounterRate: 1,
   highContrast: false,
@@ -100,6 +106,7 @@ export function applySettings(): void {
   document.body.classList.toggle('reduce-motion', current.reduceMotion);
   document.body.classList.toggle('reduce-flashing', current.reduceFlashing || current.reduceMotion);
   document.body.classList.toggle('dyslexia-font', current.dyslexiaFont);
+  document.body.classList.toggle('cb-patterns', current.patterns || current.colorblind !== 'off');
   document.body.classList.toggle('high-contrast', current.highContrast);
   for (const mode of ['deuteranopia', 'protanopia', 'tritanopia', 'mono']) document.body.classList.toggle(`cb-${mode}`, current.colorblind === mode);
 }

@@ -115,6 +115,8 @@ export const PARTY_SCALING = {
   enemyDamagePerCompanion: 12,
   /** An apostle's follower counts as this share of a companion for the two numbers above. */
   followerShare: 0.4,
+  /** Each companion past the first adds this much more to the whole sum, so a full party meets tougher enemies than three single companions would (`npm run sim:size`). */
+  growth: 0.4,
   /**
    * Companions' attack, magic and divine power by class, percent "more"
    * (negative = less). Classes differ a lot as companions (a healer or a

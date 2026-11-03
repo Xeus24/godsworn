@@ -17,6 +17,7 @@ import { formatStat } from '../format';
 import { slotLabel } from '../items/itemText';
 import { itemTooltip } from '../items/itemTooltip';
 import { el, type Screen } from '../screen';
+import { companionTreeGraph, type GraphView } from './companionTreeGraph';
 
 const STATS = ['maxHp', 'maxMp', 'physicalAttack', 'magicAttack', 'defense', 'magicResist', 'critChance', 'speed'] as const;
 
@@ -31,6 +32,10 @@ export class PartyScreen implements Screen {
   private selected: string | undefined;
   private message = '';
   private banterLine = '';
+  /** The skill tree shows as a list or as an editable graph. */
+  private treeMode: 'list' | 'graph' = 'graph';
+  private graphView: GraphView = { x: 0, y: 0, scale: 0.5, fitted: false };
+  private graphFor: string | undefined;
 
   constructor(
     private readonly session: GameSession,
@@ -210,6 +215,24 @@ export class PartyScreen implements Screen {
     box.addEventListener('change', () => this.say(s.party.setAutoTree(comp.id, box.checked)));
     auto.append(box, ' Auto-allocate: spend their points for them as they level');
     const reset = this.btn('Reset tree', () => this.say(s.party.resetTree(comp.id)));
+    const modeBtn = this.btn(this.treeMode === 'graph' ? 'Show as list' : 'Show as graph', () => {
+      this.treeMode = this.treeMode === 'graph' ? 'list' : 'graph';
+      this.render();
+    });
+    if (this.treeMode === 'graph') {
+      if (this.graphFor !== comp.id) {
+        this.graphView = { x: 0, y: 0, scale: 0.5, fitted: false };
+        this.graphFor = comp.id;
+      }
+      return [
+        el('h3', {}, 'Skill tree'),
+        el('div', { class: 'small' }, `${free} of ${earnedPoints(ch, def.classId)} points unspent. ${comp.autoTree ? 'Auto-allocate is on, so the graph is read-only.' : 'Click a node to spend a point; right-click or shift-click takes one back. Drag to pan, scroll to zoom.'}`),
+        auto,
+        reset,
+        modeBtn,
+        companionTreeGraph({ char: ch, classId: def.classId, auto: comp.autoTree, view: this.graphView, allocate: (id) => this.say(s.party.allocateTree(comp.id, id)), refund: (id) => this.say(s.party.refundTree(comp.id, id)) }),
+      ];
+    }
     const branches = tree.branches.map((b) => {
       const nodes = tree.nodes.filter((n) => n.branch === b.id && n.kind !== 'keystone');
       const rows = nodes.map((n) => {
@@ -232,6 +255,7 @@ export class PartyScreen implements Screen {
       el('div', { class: 'small' }, `${free} of ${earnedPoints(ch, def.classId)} points unspent.${comp.autoTree ? '' : free > 0 ? ' Spend them below.' : ''}`),
       auto,
       reset,
+      modeBtn,
       ...branches,
     ];
   }
