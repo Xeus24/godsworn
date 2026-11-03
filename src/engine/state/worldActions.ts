@@ -409,6 +409,10 @@ export class WorldActions {
       }
       case 'lore': {
         this.world.used[usedKey(map.id, e.id)] = this.day;
+        if (typeof e.ref === 'string' && e.ref.startsWith('chronicle:')) {
+          this.changed('chronicle');
+          return { kind: 'moved', message: this.s.realm.visitRuin(this.zone.id, Number(e.ref.slice('chronicle:'.length))) };
+        }
         const lore = content.lore.get(e.ref as string);
         if (!this.world.lore.includes(lore.id)) this.world.lore.push(lore.id);
         this.s.realm.onLore(lore.id);

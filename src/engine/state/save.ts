@@ -134,6 +134,7 @@ export function migrate(raw: Json): Json {
   realm.fortunes ??= { towns: {}, log: [] };
   realm.echoes ??= { found: {}, replays: {}, deaths: [], heard: [] };
   obj(state.legacy).echoes ??= [];
+  realm.chronicle ??= { seed: 0, events: [], known: {}, commissions: [], completed: [] };
   state.realm = realm;
   // Version 22 (endgame modes): the Spire, Divine Trials, league and weekly run start fresh.
   const eg = obj(state.endgame);

@@ -2,6 +2,7 @@ import { content } from '../../data';
 import { GRUDGE } from '../../data/realm/grudge';
 import type { Battle } from '../combat/battle';
 import type { EncounterDef } from '../combat/types';
+import { MAX_COMMISSIONS, eventsIn, generateChronicle, isDone, offered, take as takeCommission } from '../realm/chronicle';
 import { createRealmState } from '../realm/types';
 import { FORTUNES } from '../../data/realm/fortunes';
 import { fortuneOf, innMult, isFallen, lift, priceMult, tick as fortunesTick, tierOf } from '../realm/fortunes';
@@ -23,7 +24,10 @@ const UNMARKED_TIERS = new Set(['boss', 'worldBoss', 'miniboss', 'punisher']);
  * Days of Marrow, Fortunes of the Realm, Echoes of the Fallen and the Chronicle of Ages.
  */
 export class RealmActions {
-  constructor(private readonly s: GameSession) {}
+  constructor(private readonly s: GameSession) {
+    // Every new save gets its own three hundred years. Older saves are given theirs the first time they load.
+    if (s.state.realm.chronicle.events.length === 0) s.state.realm.chronicle = generateChronicle(s.state.seed);
+  }
 
   get state(): RealmState {
     return this.s.state.realm;
@@ -70,6 +74,7 @@ export class RealmActions {
       this.s.bus.emit('toast', { kind: 'quest', text: `${fullName(g)}, ${rankTitle(g.rank)}, is dead. The road pays ${bounty.gold} gold.` });
     }
     if (b.outcome === 'defeat') this.recordDeath(b);
+    if (b.outcome === 'victory') this.countKills(b);
     if (b.isBoss || !b.encounterId.startsWith('wild:')) return;
     const zone = b.encounterId.slice('wild:'.length);
     if (!content.zones.find(zone)) return;
@@ -197,6 +202,7 @@ export class RealmActions {
     const e = this.state.echoes;
     if (e.lastZone === zone) return;
     e.lastZone = zone;
+    this.hearTale(zone);
     if (this.s.state.ngPlus <= 0) return;
     const mine = (this.s.state.legacy.echoes ?? []).filter((d) => d.zone === zone && !e.heard.includes(`${d.zone}:${d.day}:${d.name}`));
     for (const d of mine.slice(0, 2)) {
@@ -223,6 +229,82 @@ export class RealmActions {
     const fresh = createRealmState();
     fresh.echoes.found = keep.found;
     fresh.echoes.replays = keep.replays;
+    fresh.chronicle = generateChronicle((this.s.state.seed + this.s.state.ngPlus * 7919) >>> 0);
     this.s.state.realm = fresh;
   }
+
+  // ------------------------------------------------------------ the Chronicle of Ages
+
+  get chronicle() {
+    return this.state.chronicle;
+  }
+
+  /** On arriving in a region you hear a tale of it, if there is one you do not yet know. */
+  private hearTale(zone: string): void {
+    const ch = this.state.chronicle;
+    const next = eventsIn(ch, zone).find((e) => ch.known[e.id] === undefined);
+    if (!next) return;
+    ch.known[next.id] = 1;
+    this.s.bus.emit('toast', { kind: 'info', text: `A tale told in ${content.zones.get(zone).name}: ${next.title}. Its ruin is somewhere in the region.` });
+  }
+
+  /** A ruin: the full account, and a little something for the finding. */
+  visitRuin(zone: string, index: number): string {
+    const ch = this.state.chronicle;
+    const event = eventsIn(ch, zone)[index];
+    if (!event) return 'Bare stones, and grass that has long since forgotten what they were.';
+    const first = ch.known[event.id] !== 2;
+    ch.known[event.id] = 2;
+    for (const c of ch.commissions) if (c.event === event.id) c.visited = true;
+    this.checkCommissions();
+    let reward = '';
+    if (first) {
+      const gold = this.s.player.level * 15;
+      this.s.addGold(gold, 'chronicle');
+      this.s.grantXp(this.s.player.level * 60);
+      reward = ` (${gold} gold from the rubble)`;
+    }
+    this.s.bus.emit('stateChanged', { reason: 'chronicle' });
+    return `${event.place}: ${event.text}${reward}`;
+  }
+
+  private countKills(b: Battle): void {
+    const ch = this.state.chronicle;
+    if (!ch.commissions.length) return;
+    const zone = b.encounterId.startsWith('wild:') ? b.encounterId.slice('wild:'.length) : this.s.world.zone.id;
+    const n = b.tally.kills.length;
+    for (const c of ch.commissions) {
+      const e = ch.events.find((x) => x.id === c.event);
+      if (e && e.zone === zone) c.slain = Math.min(c.need, c.slain + n);
+    }
+    this.checkCommissions();
+  }
+
+  commissionsOffered() {
+    return offered(this.state.chronicle);
+  }
+
+  takeCommission(eventId: string): { ok: boolean; reason?: string } {
+    const r = takeCommission(this.state.chronicle, eventId);
+    if (!r.ok) return r;
+    this.s.bus.emit('stateChanged', { reason: 'chronicle' });
+    return { ok: true };
+  }
+
+  private checkCommissions(): void {
+    const ch = this.state.chronicle;
+    for (const c of [...ch.commissions]) {
+      if (!isDone(c)) continue;
+      const e = ch.events.find((x) => x.id === c.event);
+      ch.commissions = ch.commissions.filter((x) => x !== c);
+      ch.completed.push(c.event);
+      const gold = this.s.player.level * 50;
+      this.s.addGold(gold, 'chronicle');
+      this.s.grantXp(this.s.player.level * 150);
+      if (e) this.s.devotion.apply({ [e.god]: 15 }, 'quest');
+      this.s.bus.emit('toast', { kind: 'quest', text: `Commission done: ${e?.title ?? 'a chronicle commission'}. ${gold} gold from the Chroniclers.` });
+    }
+  }
+
+  readonly maxCommissions = MAX_COMMISSIONS;
 }

@@ -307,6 +307,14 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
     if (p) add({ id: `lore-${echo.id}`, kind: 'lore', x: p[0], y: p[1], ref: echo.id, label: `Echo of ${echo.name}` });
   }
 
+  // The Chronicle of Ages: two ruins in every region. Which part of the generated history each holds is decided by the save (see `engine/realm/chronicle.ts`).
+  if (!zone.ngPlus) {
+    for (let i = 0; i < 2; i++) {
+      const p = spotFor();
+      if (p) add({ id: `lore-chronicle-${zone.id}-${i}`, kind: 'lore', x: p[0], y: p[1], ref: `chronicle:${i}`, label: 'A ruin' });
+    }
+  }
+
   // Nothing may stand on scenery.
   for (const e of entities) if (e.kind !== 'exit') g.set(e.x, e.y, g.get(e.x, e.y) === '=' ? '=' : '.');
 

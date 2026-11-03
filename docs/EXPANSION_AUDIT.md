@@ -258,3 +258,6 @@ Part 2 (the Expansion, sections 1-13) is built and committed (phases 1-21; see `
 2. **Stage 3, Section H:** H-1 Oaths and Caerith first (it adds the Forsworn path the later items reuse), then H-2 to H-7.
 3. **Stage 4, Section I:** the Tabletop engine and class additions.
 4. **Sections J and K** should be folded into the class phases they touch rather than done last: build J's evolutions and K's promotions when each class's tree is next opened.
+
+## Status
+- **Section A (items 1-6)** built in the Innovation Pack phase A (save v23). Items 7-60 remain.

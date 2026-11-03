@@ -387,3 +387,104 @@ describe('Echoes of the Fallen', () => {
     void startNgPlus;
   });
 });
+
+import { canonNames, canonProblems, eventsIn, generateChronicle } from '../src/engine/realm/chronicle';
+import { RESERVED_WORDS } from '../src/data/realm/chronicle';
+
+describe('the Chronicle of Ages', () => {
+  it('makes 40 events over 300 years, two in every core region, the same for the same seed and different for another', () => {
+    const a = generateChronicle(5);
+    const b = generateChronicle(5);
+    const c = generateChronicle(6);
+    expect(a.events).toHaveLength(40);
+    expect(a).toEqual(b);
+    expect(a.events.map((e) => e.title)).not.toEqual(c.events.map((e) => e.title));
+    const core = content.zones.all().filter((z) => z.ngPlus === undefined);
+    expect(core).toHaveLength(20);
+    for (const z of core) expect(eventsIn(a, z.id), z.id).toHaveLength(2);
+    expect(a.events.every((e) => e.year >= -300 && e.year < 0)).toBe(true);
+    expect(a.events.map((e) => e.year)).toEqual([...a.events.map((e) => e.year)].sort((x, y) => x - y));
+    expect(new Set(a.events.map((e) => e.place)).size).toBe(40);
+  });
+
+  it('never contradicts the fixed story (R18): 150 seeds, no canon words, no harmed gods, no canon names', () => {
+    const reserved = canonNames();
+    for (let seed = 1; seed <= 150; seed++) {
+      for (const e of generateChronicle(seed).events) {
+        const text = `${e.title} ${e.text}`;
+        expect(canonProblems(text), `${seed}/${e.id}: ${text}`).toEqual([]);
+        for (const f of e.figures) for (const w of f.split(' ')) expect(reserved.has(w.toLowerCase()), `${seed}: ${f}`).toBe(false);
+        for (const w of RESERVED_WORDS) expect(text.toLowerCase()).not.toContain(w.toLowerCase());
+      }
+    }
+  });
+
+  it('the canon check really does catch contradictions', () => {
+    expect(canonProblems('The Unsworn King died at the weir.')).not.toEqual([]);
+    expect(canonProblems('Morrath was slain at dusk.')).not.toEqual([]);
+    expect(canonProblems('The gods fell silent.')).not.toEqual([]);
+    expect(canonProblems('Solenne blessed the harvest.')).toEqual([]);
+  });
+
+  it('a new game has a history; tales are heard on arrival, ruins read in full and commissions finish', () => {
+    const s = session();
+    const ch = s.realm.chronicle;
+    expect(ch.events).toHaveLength(40);
+    s.state.player.level = 20;
+    const arrive = (zone: string) => {
+      s.state.realm.echoes.lastZone = undefined;
+      s.realm.onArrive(zone);
+    };
+    // The first event of a region is told as a rumor the first time you arrive.
+    const zone = 'whisperwood';
+    const evs = eventsIn(ch, zone);
+    const first = evs[0]!;
+    const second = evs[1]!;
+    arrive(zone);
+    expect(ch.known[first.id]).toBe(1);
+    expect(ch.known[second.id]).toBeUndefined();
+    arrive(zone);
+    expect(ch.known[second.id]).toBe(1);
+    // A ruin reads in full and pays once.
+    const gold = s.state.gold;
+    const text = s.realm.visitRuin(zone, 0);
+    expect(text).toContain(first.text);
+    expect(ch.known[first.id]).toBe(2);
+    expect(s.state.gold).toBe(gold + 20 * 15);
+    const again = s.state.gold;
+    s.realm.visitRuin(zone, 0);
+    expect(s.state.gold).toBe(again);
+    expect(s.realm.visitRuin(zone, 5)).toContain('Bare stones');
+    // A commission: take it, see the ruin, and put down the foes.
+    const offer = s.realm.commissionsOffered()[0];
+    expect(offer).toBeDefined();
+    expect(s.realm.takeCommission(offer!.event.id).ok).toBe(true);
+    expect(s.realm.takeCommission(offer!.event.id).ok).toBe(false);
+    const c = ch.commissions[0]!;
+    const before = s.state.gold;
+    for (let i = 0; i < 3 && ch.commissions.length; i++) {
+      const id = firstEnemy(offer!.event.zone);
+      const b = createEncounterBattle(s.player, wild(offer!.event.zone, id), { rng: new Rng(9 + i) });
+      for (let k = 0; k < c.need; k++) (b.tally.kills as unknown[]).push({ enemyId: id, tier: 'normal', level: 1, xp: 0, types: [] });
+      b.outcome = 'victory';
+      s.realm.visitRuin(offer!.event.zone, eventsIn(ch, offer!.event.zone).indexOf(offer!.event));
+      s.realm.afterBattle(b);
+    }
+    expect(ch.commissions).toHaveLength(0);
+    expect(ch.completed).toContain(offer!.event.id);
+    expect(s.state.gold).toBeGreaterThan(before);
+  });
+
+  it('every region has two ruin entities on its map, and an old save is given a history', () => {
+    for (const z of content.zones.all().filter((x) => x.ngPlus === undefined)) {
+      expect(mapFor(z.id).entities.filter((e) => e.ref?.startsWith('chronicle:')), z.id).toHaveLength(2);
+    }
+    const s = session();
+    const old = JSON.parse(serialize(s)) as { state: Record<string, unknown> };
+    delete (old.state.realm as Record<string, unknown>).chronicle;
+    (old.state.meta as { version: number }).version = 22;
+    const back = deserialize(JSON.stringify(old));
+    expect(back.ok).toBe(true);
+    if (back.ok) expect(new GameSession(back.state).realm.chronicle.events).toHaveLength(40);
+  });
+});

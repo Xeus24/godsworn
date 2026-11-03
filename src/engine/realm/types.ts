@@ -90,15 +90,49 @@ export interface EchoState {
   lastZone?: string;
 }
 
+/** One event of the generated history (Innovation Pack, item 3). */
+export interface ChronicleEvent {
+  id: string;
+  /** Years before the story begins (negative). */
+  year: number;
+  era: number;
+  kind: 'war' | 'hero' | 'artifact' | 'disaster' | 'founding';
+  title: string;
+  text: string;
+  zone: string;
+  /** The ruin it left behind. */
+  place: string;
+  god: string;
+  figures: string[];
+}
+
+export interface Commission {
+  id: string;
+  event: string;
+  visited: boolean;
+  slain: number;
+  need: number;
+}
+
+export interface ChronicleState {
+  seed: number;
+  events: ChronicleEvent[];
+  /** 1: heard as a rumor; 2: seen at the ruin. */
+  known: Record<string, 1 | 2>;
+  commissions: Commission[];
+  completed: string[];
+}
+
 export interface RealmState {
   grudge: GrudgeState;
   marrow: MarrowState;
   fortunes: FortunesState;
   echoes: EchoState;
+  chronicle: ChronicleState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] } };
 }
 
 export function createMarrowState(): MarrowState {

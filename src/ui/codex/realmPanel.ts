@@ -1,4 +1,6 @@
 import { content } from '../../data';
+import { ERAS } from '../../data/realm/chronicle';
+import { eraName } from '../../engine/realm/chronicle';
 import { ECHOES } from '../../data/realm/echoes';
 import { GRUDGE_SLOTS } from '../../data/realm/grudge';
 import { FESTIVALS, SEASONS, SEASON_DAYS, YEAR_DAYS } from '../../data/realm/wheel';
@@ -7,13 +9,13 @@ import { fullName, grudgeThreat, hierarchy, rankTitle } from '../../engine/realm
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
-export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes';
+export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle';
 export interface RealmView {
   section: Section;
   echo?: string;
   outcome?: string;
 }
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes']];
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
@@ -25,7 +27,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: Rea
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : echoesPanel(session, rerender, open);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : chroniclePanel(session, rerender);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 
@@ -161,5 +163,47 @@ function echoesPanel(session: GameSession, rerender: () => void, open: RealmView
     ...(list.length ? [el('div', { class: 'row' }, ...list)] : [el('p', { class: 'dim' }, 'None found yet. They look like lore pages on the map, with a name instead of a title.')]),
     ...(scene ? [scene] : []),
     ...(mine.length ? [el('h3', {}, 'Your own'), ...mine.map((d) => el('p', { class: 'small dim' }, `${d.name}, level ${d.level}, fell to ${d.by} in ${content.zones.find(d.zone)?.name ?? d.zone}.`))] : []),
+  );
+}
+
+function chroniclePanel(session: GameSession, rerender: () => void): HTMLElement {
+  const ch = session.realm.chronicle;
+  const known = ch.events.filter((e) => ch.known[e.id] !== undefined).length;
+  const takeBtn = (id: string): HTMLButtonElement => {
+    const b = el('button', { type: 'button' }, 'Take it');
+    b.addEventListener('click', () => {
+      session.realm.takeCommission(id);
+      rerender();
+    });
+    return b;
+  };
+  const active = ch.commissions.map((c) => {
+    const e = ch.events.find((x) => x.id === c.event);
+    return el('div', { class: 'small' }, el('strong', {}, e?.title ?? c.event), ` · ${c.visited ? 'ruin seen' : `find the ruin in ${content.zones.find(e?.zone ?? '')?.name ?? ''}`} · ${c.slain}/${c.need} foes put down in the region`);
+  });
+  const offers = session.realm.commissionsOffered().map((o) => el('div', { class: 'party-gear-row' }, el('span', { class: 'small' }, `${o.name} (${content.zones.find(o.event.zone)?.name ?? ''}: see the ruin, put down ${o.need})`), takeBtn(o.event.id)));
+  const eras = ERAS.map((era, i) => {
+    const events = ch.events.filter((e) => e.era === i);
+    return el(
+      'div',
+      {},
+      el('h3', {}, `${eraName(ch, i)} · ${era.blurb}`),
+      ...events.map((e) => {
+        const k = ch.known[e.id];
+        return k === 2
+          ? el('p', { class: 'small' }, el('strong', {}, `${e.title} (${Math.abs(e.year)} years before the road): `), e.text)
+          : k === 1
+            ? el('p', { class: 'small' }, el('strong', {}, `${e.title}: `), `a tale told in ${content.zones.get(e.zone).name}. Find its ruin to read the rest.`)
+            : el('p', { class: 'dim small' }, `Something happened in ${content.zones.get(e.zone).name}, ${Math.abs(e.year)} years before the road. Nobody has told you yet.`);
+      }),
+    );
+  });
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, `Three hundred years of history that the gods remember and no one wrote down, different in every game. Hear tales by travelling, read them at ruins in each region (${known} of ${ch.events.length} known). Chroniclers offer commissions for tales you have heard.`),
+    ...(active.length ? [el('h3', {}, `Commissions (${ch.commissions.length}/${session.realm.maxCommissions})`), ...active] : []),
+    ...(offers.length ? [el('h3', {}, 'On offer'), ...offers] : []),
+    ...eras,
   );
 }
