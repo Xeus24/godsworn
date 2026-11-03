@@ -6,8 +6,8 @@ import { fullName, grudgeThreat, hierarchy, rankTitle } from '../../engine/realm
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
-export type Section = 'grudge' | 'wheel';
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel']];
+export type Section = 'grudge' | 'wheel' | 'fortunes';
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: { section: Section }): HTMLElement {
@@ -19,7 +19,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: { s
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : wheelPanel(session);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : fortunesPanel(session);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 
@@ -92,5 +92,21 @@ function wheelPanel(session: GameSession): HTMLElement {
       : el('p', {}, `Next: ${next.festival.name} in ${content.towns.get(next.festival.town).name}, in ${next.inDays} day${next.inDays === 1 ? '' : 's'}.`),
     el('h3', {}, 'The fourteen festivals'),
     ...rows,
+  );
+}
+
+function fortunesPanel(session: GameSession): HTMLElement {
+  const rows = content.towns.all().map((t) => {
+    const f = session.realm.fortune(t.id);
+    const bar = el('div', { class: 'bar thin hp' }, el('div', { class: 'bar-fill', style: `width:${Math.round(f.prosperity)}%` }));
+    return el('div', { class: 'small' }, el('strong', {}, t.name), ` · ${f.tier.name} · ${Math.round(f.prosperity)}/100${f.raids ? ` · raided ${f.raids}×` : ''}`, bar);
+  });
+  const log = session.state.realm.fortunes.log.slice(0, 12).map((l) => el('li', { class: 'small' }, `Day ${l.day}: ${l.text}`));
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, 'Every town has a prosperity. Quests you finish for it, dungeons cleared nearby, investments and gold you give lift it. The Grudgebound of its region raid it. A town that falls closes its shops and inn until it is rebuilt.'),
+    ...rows,
+    ...(log.length ? [el('h3', {}, 'News'), el('ul', {}, ...log)] : []),
   );
 }

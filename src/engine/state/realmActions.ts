@@ -2,6 +2,8 @@ import { content } from '../../data';
 import { GRUDGE } from '../../data/realm/grudge';
 import type { Battle } from '../combat/battle';
 import type { EncounterDef } from '../combat/types';
+import { FORTUNES } from '../../data/realm/fortunes';
+import { fortuneOf, innMult, isFallen, lift, priceMult, tick as fortunesTick, tierOf } from '../realm/fortunes';
 import { decorate, forge, fullName, grudgeBounty, hierarchy, mark, rankTitle, scheme, slay } from '../realm/grudge';
 import type { GrudgeEntry, RealmState } from '../realm/types';
 import { festivalOn } from '../realm/wheel';
@@ -42,7 +44,10 @@ export class RealmActions {
     const today = festivalOn(this.s.state.clock.day);
     if (today) this.s.bus.emit('toast', { kind: 'quest', text: `Today is ${today.name}, the feast of ${content.gods.get(today.god).name}. Find it in ${content.towns.get(today.town).name}.` });
     for (let i = 0; i < Math.min(days, MAX_DAYS_AT_ONCE); i++) {
-      const lines = scheme(this.state.grudge, this.s.state.clock.day - days + i + 1, this.s.rng);
+      const day = this.s.state.clock.day - days + i + 1;
+      const news = fortunesTick(this.state.fortunes, this.state.grudge, this.s.player, day, this.s.rng);
+      if (news[0]) this.s.bus.emit('toast', { kind: 'warning', text: news[0] });
+      const lines = scheme(this.state.grudge, day, this.s.rng);
       const first = lines[0];
       if (first && i === Math.min(days, MAX_DAYS_AT_ONCE) - 1) this.s.bus.emit('toast', { kind: 'info', text: `Word on the road: ${first}` });
     }
@@ -118,4 +123,42 @@ export class RealmActions {
     return r;
   }
 
+
+  // ------------------------------------------------------------ Fortunes of the Realm
+
+  priceMult(town: string): number {
+    return priceMult(this.state.fortunes, town);
+  }
+
+  innMult(town: string): number {
+    return innMult(this.state.fortunes, town);
+  }
+
+  isFallen(town: string): boolean {
+    return isFallen(this.state.fortunes, town);
+  }
+
+  /** Raises (or lowers) a town's prosperity; a change of fortune is news. */
+  lift(town: string, amount: number): void {
+    const line = lift(this.state.fortunes, town, amount, this.s.state.clock.day);
+    if (line) this.s.bus.emit('toast', { kind: amount >= 0 ? 'quest' : 'warning', text: line });
+  }
+
+  fortune(town: string) {
+    const f = fortuneOf(this.state.fortunes, town);
+    return { ...f, tier: tierOf(f) };
+  }
+
+  fundCost(): number {
+    return FORTUNES.fundCostPerLevel * Math.max(5, this.s.player.level);
+  }
+
+  /** Gives gold to the town's repairs. */
+  fund(town: string): { ok: boolean; reason?: string } {
+    const cost = this.fundCost();
+    if (!this.s.spendGold(cost, 'fortune')) return { ok: false, reason: `Repairs need ${cost} gold.` };
+    this.lift(town, FORTUNES.fundGain);
+    this.s.bus.emit('stateChanged', { reason: 'fortune' });
+    return { ok: true };
+  }
 }

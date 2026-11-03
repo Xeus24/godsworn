@@ -53,13 +53,28 @@ export interface MarrowState {
   saved?: 'mended' | 'emptied';
 }
 
+/** A town's standing (Innovation Pack, item 4). */
+export interface TownFortune {
+  /** 0 to 100. */
+  prosperity: number;
+  /** The day it fell, while it is fallen. */
+  fallen?: number;
+  raids: number;
+}
+
+export interface FortunesState {
+  towns: Record<string, TownFortune>;
+  log: GrudgeLogEntry[];
+}
+
 export interface RealmState {
   grudge: GrudgeState;
   marrow: MarrowState;
+  fortunes: FortunesState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState() };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] } };
 }
 
 export function createMarrowState(): MarrowState {

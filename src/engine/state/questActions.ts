@@ -44,6 +44,7 @@ const NOT_HELPING = new Set(['god', 'class', 'hybrid']);
  * time limits, plus conversations with NPCs and the story's ending.
  */
 import { festivalOn } from '../realm/wheel';
+import { FORTUNES } from '../../data/realm/fortunes';
 
 export class QuestActions {
   private refreshing = false;
@@ -409,6 +410,7 @@ export class QuestActions {
     const home = questTown(q);
     if (home) {
       const gained = addRenown(s.player, home, questRenown(q));
+      s.realm.lift(home, FORTUNES.perQuest + questRenown(q) / 2);
       if (gained.tier) this.toast('quest', `${content.towns.get(home).name}: you are now ${gained.tier.name}.`);
     }
     this.toast('quest', `Quest complete: ${q.name}${parts.length ? ` (${parts.join(', ')})` : ''}`);

@@ -258,3 +258,69 @@ describe('the Three Days of Marrow', () => {
     expect(back.ok && back.state.realm.marrow.facts).toEqual(['loop']);
   });
 });
+
+import { FORTUNES } from '../src/data/realm/fortunes';
+import { questTown } from '../src/engine/world/renown';
+import { tierOf, fortuneOf } from '../src/engine/realm/fortunes';
+
+describe('Fortunes of the Realm', () => {
+  it('towns start at their own prosperity and a finished quest lifts the town it was for', () => {
+    const s = session();
+    expect(s.realm.fortune('aurelane').prosperity).toBe(66);
+    expect(s.realm.fortune('ashfold').prosperity).toBe(22);
+    expect(s.realm.fortune('brightwater').prosperity).toBe(FORTUNES.baseline);
+    const before = s.realm.fortune('brightwater').prosperity;
+    s.realm.lift('brightwater', 10);
+    expect(s.realm.fortune('brightwater').prosperity).toBe(before + 10);
+    expect(s.realm.fortune('brightwater').tier.id).toBe('stable');
+    s.realm.lift('brightwater', 20);
+    expect(s.realm.fortune('brightwater').tier.id).toBe('thriving');
+  });
+
+  it('prices follow the tier, and a fallen town shuts its shops and inn until it is rebuilt', () => {
+    const s = session();
+    const town = 'brightwater';
+    s.realm.lift(town, -30);
+    expect(s.realm.fortune(town).tier.id).toBe('struggling');
+    expect(s.realm.priceMult(town)).toBeGreaterThan(1);
+    s.realm.lift(town, -25);
+    expect(s.realm.isFallen(town)).toBe(true);
+    expect(s.realm.innMult(town)).toBe(1);
+    // Gold repairs it.
+    s.state.gold = 100000;
+    for (let i = 0; i < 4; i++) expect(s.realm.fund(town).ok).toBe(true);
+    expect(s.realm.isFallen(town)).toBe(false);
+    expect(s.realm.fortune(town).prosperity).toBeGreaterThanOrEqual(FORTUNES.rise);
+  });
+
+  it('a scarred Grudgebound at the top raids the town in its region, and investments and time restore it', () => {
+    const s = session();
+    const zone = 'meadowlands';
+    const g = s.realm.forge(zone, firstEnemy(zone))!;
+    g.scars = 8;
+    const start = s.realm.fortune('brightwater').prosperity;
+    let raided = false;
+    for (let day = 1; day <= 400 && !raided; day++) {
+      s.advanceTime(1440);
+      raided = s.realm.fortune('brightwater').raids > 0;
+    }
+    expect(raided).toBe(true);
+    expect(s.state.realm.fortunes.log.some((l) => l.zone === 'brightwater')).toBe(true);
+    // Time pulls it back toward where it began once the raider is put down.
+    g.slain = s.state.clock.day;
+    s.state.realm.fortunes.towns['brightwater']!.prosperity = 20;
+    for (let i = 0; i < 100; i++) s.advanceTime(1440);
+    expect(fortuneOf(s.state.realm.fortunes, 'brightwater').prosperity).toBeGreaterThan(30);
+    expect(start).toBeGreaterThan(0);
+    expect(tierOf(fortuneOf(s.state.realm.fortunes, 'brightwater')).id).not.toBe('fallen');
+  });
+
+  it('finishing a quest for a town raises its prosperity', () => {
+    const s = session();
+    const q = content.quests.all().find((x) => questTown(x) === 'brightwater' && x.kind === 'side');
+    expect(q).toBeDefined();
+    const before = s.realm.fortune('brightwater').prosperity;
+    (s.quests as unknown as { finish(q: unknown): void }).finish(q);
+    expect(s.realm.fortune('brightwater').prosperity).toBeGreaterThan(before);
+  });
+});

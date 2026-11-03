@@ -47,12 +47,13 @@ export class EconomyActions {
     const day = this.s.state.clock.day;
     const bought = this.s.state.economy.bought[key];
     const taken = bought && bought.day === day ? bought.lines : [];
-    return shopStock(shop, town, day, this.p, this.s.state.ngPlus).map((l, line) => ({ ...l, line })).filter((l) => !taken.includes(l.line));
+    const mult = this.s.realm.priceMult(town);
+    return shopStock(shop, town, day, this.p, this.s.state.ngPlus).map((l, line) => ({ ...l, price: Math.max(1, Math.round(l.price * mult)), line })).filter((l) => !taken.includes(l.line));
   }
 
   shops() {
     const town = this.town();
-    return town ? shopsIn(town).map((shop) => ({ shop, open: shopOpen(shop, town, this.p, this.night(), content, this.s.state.clock.day) })) : [];
+    return town ? shopsIn(town).map((shop) => ({ shop, open: this.s.realm.isFallen(town) ? { ok: false as const, reason: `${content.towns.get(town).name} has fallen. Its shops are shut until it is rebuilt.` } : shopOpen(shop, town, this.p, this.night(), content, this.s.state.clock.day) })) : [];
   }
 
   buy(shopId: string, line: number): EconomyResult {
@@ -60,7 +61,7 @@ export class EconomyActions {
     const town = this.town();
     if (!town) return fail('Shops are in towns.');
     const shop = content.shops.get(shopId);
-    const open = shopOpen(shop, town, this.p, this.night(), content, this.s.state.clock.day);
+    const open = this.s.realm.isFallen(town) ? { ok: false as const, reason: `${content.towns.get(town).name} has fallen. Its shops are shut until it is rebuilt.` } : shopOpen(shop, town, this.p, this.night(), content, this.s.state.clock.day);
     if (!open.ok) return open;
     const entry = this.stock(shopId).find((l) => l.line === line);
     if (!entry) return fail('Sold out.');

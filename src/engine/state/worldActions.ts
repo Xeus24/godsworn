@@ -59,6 +59,7 @@ import {
 import { addRenown, renownDiscount } from '../world/renown';
 import type { GameSession } from './gameState';
 import { effectOn } from '../realm/wheel';
+import { FORTUNES } from '../../data/realm/fortunes';
 import type { QuestMarker } from '../quests/quests';
 
 export type WorldResult = { ok: true } | { ok: false; reason: string };
@@ -311,6 +312,7 @@ export class WorldActions {
   /** Town renown: a toast when a new tier is reached. */
   private gainRenown(town: string, amount: number): void {
     const { tier } = addRenown(this.s.player, town, amount);
+    this.s.realm.lift(town, FORTUNES.perDungeon);
     if (tier) this.toast('quest', `${content.towns.get(town).name}: you are now ${tier.name}.`);
   }
 
@@ -729,13 +731,14 @@ export class WorldActions {
 
   innCost(): number {
     const town = this.inTown();
-    return town ? Math.round(content.towns.get(town).innCostPerLevel * this.s.player.level * (1 - renownDiscount(this.s.player, town))) : 0;
+    return town ? Math.round(content.towns.get(town).innCostPerLevel * this.s.player.level * (1 - renownDiscount(this.s.player, town)) * this.s.realm.innMult(town)) : 0;
   }
 
   /** A night at the inn: full HP/MP, 8 hours, and Well Rested (+5% damage, 3 battles). */
   stayAtInn(): WorldResult {
     const town = this.inTown();
     if (!town) return fail('Find a town first.');
+    if (this.s.realm.isFallen(town)) return fail(`${content.towns.get(town).name} has fallen. The inn is boarded up.`);
     if (!this.s.spendGold(this.innCost(), 'inn')) return fail(`A room costs ${this.innCost()} gold.`);
     this.sleep();
     this.s.setFlag(`inn:${town}`, true);
