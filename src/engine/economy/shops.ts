@@ -1,6 +1,8 @@
 import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
 import { renownDiscount } from '../world/renown';
+import { FESTIVALS } from '../../data/realm/wheel';
+import { chaosMult, effectOn, festivalOn } from '../realm/wheel';
 import { characterStats } from '../character/stats';
 import type { Character } from '../character/types';
 import { Rng } from '../core/rng';
@@ -36,7 +38,8 @@ export type ShopCheck = { ok: true } | { ok: false; reason: string };
 export function shopsIn(town: string, c: Content = content): ShopDef[] {
   const t = c.towns.get(town);
   const ids = [...CORE_SHOPS, ...(t.faction ? ['faction'] : []), ...(t.extraShops ?? [])];
-  return ids.map((id) => c.shops.get(id));
+  const stalls = c.shops.all().filter((s) => s.festival && FESTIVALS.find((f) => f.id === s.festival)?.town === town);
+  return [...ids.map((id) => c.shops.get(id)), ...stalls];
 }
 
 /** Whether a shop will trade with you now (night-only shops, members-only quartermasters). */
@@ -47,6 +50,7 @@ export function merchantTown(shop: ShopDef, day: number): string | undefined {
 }
 
 export function shopOpen(shop: ShopDef, town: string, char: Character, night: boolean, c: Content = content, day?: number): ShopCheck {
+  if (shop.festival && (day === undefined || festivalOn(day)?.id !== shop.festival)) return { ok: false, reason: `Only open on ${FESTIVALS.find((f) => f.id === shop.festival)?.name ?? 'the festival'}.` };
   if (shop.night && !night) return { ok: false, reason: 'Only open after dark.' };
   if (shop.roams && day !== undefined && merchantTown(shop, day) !== town) {
     const where = merchantTown(shop, day);
@@ -145,7 +149,9 @@ export function shopStock(shop: ShopDef, town: string, day: number, char: Charac
       }
     }
   }
-  return items.map((item) => ({ item, price: buyPrice(item, shop, town, char, c) }));
+  // The day's festival: a discount in every shop, or Upside Day's swings.
+  const festival = (1 - (effectOn(day).discount ?? 0) / 100) * chaosMult(day, shop.id);
+  return items.map((item) => ({ item, price: Math.max(1, Math.round(buyPrice(item, shop, town, char, c) * festival)) }));
 }
 
 /** A gambled item: unidentified gear of the category, rolled with extra Magic Find. */

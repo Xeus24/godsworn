@@ -74,6 +74,8 @@ export type Cond =
   /** Zones set foot in. */
   | { kind: 'zones'; min: number }
   | { kind: 'house' }
+  /** The festival with this id is being kept today. */
+  | { kind: 'festival'; id: string }
   /** Items of a rarity found. */
   | { kind: 'rarity'; rarity: RarityId; min?: number }
   /** Any crafting profession at a level. */
@@ -220,7 +222,7 @@ export interface StageDef {
   onComplete?: ActionDef[];
 }
 
-export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background';
+export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background' | 'festival';
 
 export interface RewardDef {
   /** Share of the quest level's XP-to-next-level (0.3 = 30% of a level). */
@@ -318,6 +320,8 @@ export interface NpcDef {
   companion?: string;
   /** Hours of the day (0-24) this person is about; elsewhere at other times. Wraps past midnight if from > to. */
   schedule?: [from: number, to: number];
+  /** Only in town on this festival's day (see `data/realm/wheel.ts`). */
+  festival?: string;
   /** Gone once this flag is set (they met their fate at the midpoint). */
   until?: string;
   /** Only here once this flag is set (they took someone’s place). */

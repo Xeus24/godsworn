@@ -59,6 +59,8 @@ export interface ShopDef {
   buys?: ItemCategory[];
   /** A roaming merchant: it stands in each town of its route in turn, `stay` days at a time (offset shifts the start). */
   roams?: { route: string[]; stay: number; offset: number };
+  /** A festival stall: open only on that festival's day, in its host town. */
+  festival?: string;
   /** The Collector: pays this many times the usual price for curiosities. */
   curiosityMult?: number;
 }

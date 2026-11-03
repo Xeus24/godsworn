@@ -3,6 +3,7 @@ import { STATUE_POINTS } from '../../data/world/renown';
 import { uiGlyph } from '../art/uiGlyphs';
 import { endgameUnlocked } from '../../engine/endgame/unlocked';
 import { questLevel } from '../../engine/quests/quests';
+import { calendarLine } from '../../engine/realm/wheel';
 import { content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
@@ -349,7 +350,7 @@ export class TownScreen implements Screen {
             this.banner(t.id),
             el('h2', {}, t.name),
             el('p', {}, t.description),
-            el('div', { class: 'dim small' }, `${content.zones.get(t.zone).name} · ${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}`),
+            el('div', { class: 'dim small' }, `${content.zones.get(t.zone).name} · ${formatClock(s.state.clock)} · ${calendarLine(s.state.clock.day)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}`),
             ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
             el('div', { class: 'row wrap' }, leave, mapBtn, arrange, ...(this.arranging ? [reset] : [])),
             ...(this.arranging ? [el('div', { class: 'dim small' }, 'Drag a card to where you want it, or use the arrows. Your layout is saved.')] : []),

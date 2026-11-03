@@ -43,6 +43,8 @@ const NOT_HELPING = new Set(['god', 'class', 'hybrid']);
  * fights, markers and carried items, stage turn-ins, rewards, failures and
  * time limits, plus conversations with NPCs and the story's ending.
  */
+import { festivalOn } from '../realm/wheel';
+
 export class QuestActions {
   private refreshing = false;
 
@@ -589,7 +591,8 @@ export class QuestActions {
     const hour = this.s.state.clock.minute / 60;
     const about = (n: NpcDef): boolean => !n.schedule || (n.schedule[0] <= n.schedule[1] ? hour >= n.schedule[0] && hour < n.schedule[1] : hour >= n.schedule[0] || hour < n.schedule[1]);
     const flags = this.s.state.flags;
-    const alive = (n: NpcDef): boolean => (!n.until || !flags[n.until]) && (!n.after || Boolean(flags[n.after]));
+    const festival = festivalOn(this.s.state.clock.day)?.id;
+    const alive = (n: NpcDef): boolean => (!n.until || !flags[n.until]) && (!n.after || Boolean(flags[n.after])) && (!n.festival || n.festival === festival);
     return content.npcs.filter((n) => about(n) && alive(n) && n.town === town && (n.place === 'people' || n.place === 'temple') && !(n.companion && this.s.state.party.companions[n.companion] && !this.s.state.party.companions[n.companion]?.left));
   }
 

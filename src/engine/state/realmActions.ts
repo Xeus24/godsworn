@@ -4,6 +4,7 @@ import type { Battle } from '../combat/battle';
 import type { EncounterDef } from '../combat/types';
 import { decorate, forge, fullName, grudgeBounty, hierarchy, mark, rankTitle, scheme, slay } from '../realm/grudge';
 import type { GrudgeEntry, RealmState } from '../realm/types';
+import { festivalOn } from '../realm/wheel';
 import type { GameSession } from './gameState';
 
 /** How many days of scheming one long rest or voyage can run (a year away does not run a year of them). */
@@ -36,6 +37,8 @@ export class RealmActions {
 
   /** Days pass: every region's pecking order schemes. */
   onDays(days: number): void {
+    const today = festivalOn(this.s.state.clock.day);
+    if (today) this.s.bus.emit('toast', { kind: 'quest', text: `Today is ${today.name}, the feast of ${content.gods.get(today.god).name}. Find it in ${content.towns.get(today.town).name}.` });
     for (let i = 0; i < Math.min(days, MAX_DAYS_AT_ONCE); i++) {
       const lines = scheme(this.state.grudge, this.s.state.clock.day - days + i + 1, this.s.rng);
       const first = lines[0];

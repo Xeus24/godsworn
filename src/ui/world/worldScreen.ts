@@ -1,5 +1,6 @@
 import { worldLevel } from '../../engine/ngplus/ngplus';
 import { secretCount } from '../../engine/world/secrets';
+import { calendarLine } from '../../engine/realm/wheel';
 import { content } from '../../data';
 import type { EncounterDef } from '../../engine/combat/types';
 import { formatClock, timeOfDay } from '../../engine/state/clock';
@@ -733,7 +734,7 @@ export class WorldScreen implements Screen {
     this.side.replaceChildren(
       el('h2', {}, map.name),
       el('div', { class: 'dim small' }, `${levels}${dungeon && s.state.world.dungeonsCleared.includes(dungeon.id) ? ' · cleared' : ''}`),
-      el('div', { class: 'small' }, `${formatClock(s.state.clock)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
+      el('div', { class: 'small' }, `${formatClock(s.state.clock)} · ${calendarLine(s.state.clock.day)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
       ...(weather && !dungeon && weather.id !== 'clear' ? [el('div', { class: 'dim small' }, weather.description)] : []),
       ...this.regionPanel(),
       ...this.hintPanel(),

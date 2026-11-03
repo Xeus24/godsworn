@@ -40,6 +40,7 @@ import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
 import { createRealmState, type RealmState } from '../realm/types';
 import { RealmActions } from './realmActions';
+import { effectOn } from '../realm/wheel';
 import type { WorldState } from '../world/types';
 import { createWorldState } from '../world/world';
 
@@ -309,7 +310,7 @@ export class GameSession {
   /** Grants XP, applying the XP Gain stat unless `raw` is set. */
   grantXp(amount: number, raw = false): XpResult {
     const p = this.player;
-    const bonus = raw ? 0 : characterStats(p).xpGain;
+    const bonus = raw ? 0 : characterStats(p).xpGain + (effectOn(this.state.clock.day).xp ?? 0);
     const total = Math.floor(amount * (1 + bonus / 100));
     const result = grantXp(p, total, this.state.levelCap);
     this.bus.emit('xpGained', { characterId: p.id, amount: total });
@@ -344,7 +345,10 @@ export class GameSession {
   }
 
   addGold(amount: number, reason: string): void {
-    const delta = Math.floor(amount);
+    let delta = Math.floor(amount);
+    // A festival's game pays more today.
+    const game = effectOn(this.state.clock.day).game;
+    if (delta > 0 && game && reason === game.id) delta = Math.floor(delta * game.mult);
     if (delta === 0) return;
     this.state.gold = Math.max(0, this.state.gold + delta);
     this.bus.emit('goldChanged', { amount: delta, total: this.state.gold, reason });

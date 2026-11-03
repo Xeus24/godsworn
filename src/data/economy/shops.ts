@@ -1,3 +1,4 @@
+import { FESTIVAL_SHOPS } from '../story/festivalQuests';
 import type { ShopDef } from '../../engine/economy/types';
 
 /**
@@ -6,6 +7,7 @@ import type { ShopDef } from '../../engine/economy/types';
  * Stock is rolled fresh each in-game day at your level.
  */
 export const SHOPS: ShopDef[] = [
+  ...FESTIVAL_SHOPS,
   { id: 'blacksmith', name: 'Blacksmith', kind: 'blacksmith', description: 'Weapons, repairs and ore.', markup: 1, buys: ['weapon', 'material'], stock: [{ kind: 'gear', categories: ['weapon'], rarities: ['common', 'uncommon', 'rare'], count: 8 }, { kind: 'items', ids: ['iron-ore', 'ashwood-plank', 'mithril-ore'] }] },
   { id: 'armorer', name: 'Armorer', kind: 'armorer', description: 'Armor and jewelry.', markup: 1, buys: ['armor', 'accessory', 'material'], stock: [{ kind: 'gear', categories: ['armor'], rarities: ['common', 'uncommon', 'rare'], count: 8 }, { kind: 'gear', categories: ['accessory'], rarities: ['uncommon', 'rare'], count: 3 }, { kind: 'items', ids: ['rough-hide', 'linen-scrap'] }] },
   { id: 'alchemist', name: 'Alchemist', kind: 'alchemist', description: 'Potions, elixirs, bombs, herbs and alchemy recipes.', markup: 1, buys: ['consumable', 'material'], stock: [{ kind: 'pool', pool: 'potion', count: 6 }, { kind: 'items', ids: ['healroot', 'manabloom', 'fireweed', 'fire-bomb', 'holy-water'] }, { kind: 'recipes', professions: ['alchemy'], count: 3 }] },

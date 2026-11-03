@@ -57,7 +57,7 @@ function objective(r: Row): { o: ObjectiveDef[]; hours?: number; text: string } 
   }
 }
 
-export function build(r: Row, requires: ReturnType<typeof level>, kind: 'side' | 'faction' = 'side', rewards: Partial<QuestDef['rewards']> = {}): { quest: QuestDef; dialogue: DialogueDef } {
+export function build(r: Row, requires: ReturnType<typeof level>, kind: 'side' | 'faction' | 'festival' = 'side', rewards: Partial<QuestDef['rewards']> = {}): { quest: QuestDef; dialogue: DialogueDef } {
   const d = `d-${r.id}`;
   const { o, hours, text } = objective(r);
   return {

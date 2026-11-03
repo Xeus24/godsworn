@@ -58,6 +58,7 @@ import {
 } from '../world/world';
 import { addRenown, renownDiscount } from '../world/renown';
 import type { GameSession } from './gameState';
+import { effectOn } from '../realm/wheel';
 import type { QuestMarker } from '../quests/quests';
 
 export type WorldResult = { ok: true } | { ok: false; reason: string };
@@ -225,7 +226,7 @@ export class WorldActions {
     if (!isDungeon(map.id) && this.world.grace === 0) {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
-      if (this.s.encounterScale > 0 && this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * this.s.encounterScale * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
+      if (this.s.encounterScale > 0 && this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * this.s.encounterScale * (effectOn(this.s.state.clock.day).encounters ?? 1) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
         const encounter = this.s.realm.decorate(randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened'])), this.zone.id);
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };

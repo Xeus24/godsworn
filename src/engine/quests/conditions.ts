@@ -9,6 +9,7 @@ import type { GameState } from '../state/gameState';
 import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
 import { renownOf } from '../world/renown';
+import { festivalOn } from '../realm/wheel';
 import { RENOWN_TIERS } from '../../data/world/renown';
 import { progressOf } from '../achievements/progress';
 import type { Cond } from './types';
@@ -132,6 +133,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length >= cond.min;
     case 'house':
       return p.world.house !== undefined;
+    case 'festival':
+      return festivalOn(state.clock.day)?.id === cond.id;
     case 'rarity':
       return (state.rarityFound[cond.rarity] ?? 0) >= (cond.min ?? 1);
     case 'profession':
@@ -198,6 +201,8 @@ export function describe(cond: Cond, c: Content = content): string {
       return cond.god ? `Apostle of ${c.gods.get(cond.god).name}` : 'Apostle';
     case 'rep':
       return `${c.factions.get(cond.faction).name} ${cond.min}`;
+    case 'festival':
+      return 'on the festival day';
     case 'renown':
       return `${RENOWN_TIERS.find((t) => t.id === cond.tier)?.name ?? cond.tier} in ${c.towns.get(cond.town).name}`;
     case 'item':
