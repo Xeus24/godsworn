@@ -324,3 +324,66 @@ describe('Fortunes of the Realm', () => {
     expect(s.realm.fortune('brightwater').prosperity).toBeGreaterThan(before);
   });
 });
+
+import { ECHOES } from '../src/data/realm/echoes';
+import { mapFor } from '../src/engine/world/mapgen';
+import { startNgPlus } from '../src/engine/ngplus/ngplus';
+
+describe('Echoes of the Fallen', () => {
+  it('has 20+ echoes in the real regions, four of them in the Hollow Barrows that can be spoken to, each on its map', () => {
+    expect(ECHOES.length).toBeGreaterThanOrEqual(20);
+    expect(new Set(ECHOES.map((e) => e.zone)).size).toBeGreaterThanOrEqual(18);
+    const barrows = ECHOES.filter((e) => e.zone === 'hollow-barrows');
+    expect(barrows).toHaveLength(4);
+    expect(barrows.every((e) => e.talk)).toBe(true);
+    for (const e of ECHOES) {
+      expect(content.zones.find(e.zone), e.id).toBeDefined();
+      expect(content.lore.find(e.id), e.id).toBeDefined();
+      expect(mapFor(e.zone).entities.some((x) => x.kind === 'lore' && x.ref === e.id), `${e.id} on the ${e.zone} map`).toBe(true);
+      expect(e.beats).toHaveLength(3);
+    }
+  });
+
+  it('finding one records it and replaying it pays once', () => {
+    const s = session();
+    const echo = ECHOES[0]!;
+    expect(s.realm.replay(echo.id, 'a').ok).toBe(false);
+    s.realm.onLore(echo.id);
+    expect(s.state.realm.echoes.found[echo.id]).toBeDefined();
+    const xp = s.player.xp;
+    const first = s.realm.replay(echo.id, 'a');
+    expect(first.ok && first.xp).toBeGreaterThan(0);
+    expect(s.player.xp).toBeGreaterThanOrEqual(xp);
+    expect(s.realm.replay(echo.id, 'b').xp).toBeUndefined();
+    expect(s.realm.replay(echo.id, 'talk').ok).toBe(false);
+    const barrows = ECHOES.find((e) => e.talk)!;
+    s.realm.onLore(barrows.id);
+    expect(s.realm.replay(barrows.id, 'talk').ok).toBe(true);
+  });
+
+  it('your own defeats are kept across New Game+ and heard in the region where they happened', () => {
+    const s = session();
+    const id = firstEnemy('meadowlands');
+    const b = createEncounterBattle(s.player, wild('meadowlands', id), { rng: new Rng(4) });
+    b.outcome = 'defeat';
+    s.realm.afterBattle(b);
+    expect(s.state.realm.echoes.deaths).toHaveLength(1);
+    s.realm.onLore(ECHOES[0]!.id);
+    s.realm.newCycle();
+    expect(s.state.legacy.echoes).toHaveLength(1);
+    expect(s.state.realm.echoes.deaths).toHaveLength(0);
+    expect(s.state.realm.echoes.found[ECHOES[0]!.id]).toBeDefined();
+    expect(Object.keys(s.state.realm.grudge.entries)).toHaveLength(0);
+    s.state.ngPlus = 1;
+    const toasts: string[] = [];
+    s.bus.on('toast', ({ text }) => toasts.push(text));
+    s.state.realm.echoes.lastZone = undefined;
+    s.realm.onArrive('meadowlands');
+    expect(toasts.some((t) => t.includes('your own voice'))).toBe(true);
+    toasts.length = 0;
+    s.state.realm.echoes.lastZone = undefined;
+    s.realm.onArrive('meadowlands');
+    expect(toasts.some((t) => t.includes('your own voice'))).toBe(false);
+    void startNgPlus;
+  });
+});

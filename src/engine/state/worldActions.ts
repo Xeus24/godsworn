@@ -176,6 +176,7 @@ export class WorldActions {
   private placeAt(map: string, x: number, y: number): void {
     this.world.position = { map, x, y };
     this.look();
+    this.s.realm?.onArrive(this.zone.id);
   }
 
   /**
@@ -410,6 +411,7 @@ export class WorldActions {
         this.world.used[usedKey(map.id, e.id)] = this.day;
         const lore = content.lore.get(e.ref as string);
         if (!this.world.lore.includes(lore.id)) this.world.lore.push(lore.id);
+        this.s.realm.onLore(lore.id);
         this.toast('quest', `Lore found: ${lore.title}`);
         this.changed('lore');
         return { kind: 'moved', message: `${lore.title}: “${lore.text}”` };

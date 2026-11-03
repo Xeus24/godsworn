@@ -67,14 +67,38 @@ export interface FortunesState {
   log: GrudgeLogEntry[];
 }
 
+/** A death, kept to be heard again in a later run. */
+export interface DeathEcho {
+  name: string;
+  classId: string;
+  level: number;
+  zone: string;
+  /** What killed them. */
+  by: string;
+  day: number;
+}
+
+export interface EchoState {
+  /** Echo ids found, with the day. */
+  found: Record<string, number>;
+  /** How each was replayed: `a`, `b` or `talk`. */
+  replays: Record<string, string>;
+  /** Your own defeats in this run. */
+  deaths: DeathEcho[];
+  /** Past-run echoes (zone ids) already heard in this run. */
+  heard: string[];
+  lastZone?: string;
+}
+
 export interface RealmState {
   grudge: GrudgeState;
   marrow: MarrowState;
   fortunes: FortunesState;
+  echoes: EchoState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] } };
 }
 
 export function createMarrowState(): MarrowState {

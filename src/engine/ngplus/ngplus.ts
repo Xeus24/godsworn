@@ -66,6 +66,7 @@ export function startNgPlus(s: GameSession): NgPlusResult {
     st.quests.completed[def.recruitQuest] = 1;
   }
   st.clock = createClock();
+  s.realm.newCycle();
   st.flags = Object.fromEntries(Object.entries(st.flags).filter(([k]) => k.startsWith(NG_PLUS.legacyFlagPrefix)));
   st.flags['ng-tier'] = check.tier;
   st.economy = { bought: {}, buyback: [] };

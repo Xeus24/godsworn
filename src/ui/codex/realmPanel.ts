@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { ECHOES } from '../../data/realm/echoes';
 import { GRUDGE_SLOTS } from '../../data/realm/grudge';
 import { FESTIVALS, SEASONS, SEASON_DAYS, YEAR_DAYS } from '../../data/realm/wheel';
 import { dateOf, festivalOn, formatDate, nextFestival, seasonGods } from '../../engine/realm/wheel';
@@ -6,11 +7,16 @@ import { fullName, grudgeThreat, hierarchy, rankTitle } from '../../engine/realm
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
-export type Section = 'grudge' | 'wheel' | 'fortunes';
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes']];
+export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes';
+export interface RealmView {
+  section: Section;
+  echo?: string;
+  outcome?: string;
+}
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
-export function realmPanel(session: GameSession, rerender: () => void, open: { section: Section }): HTMLElement {
+export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
   const tabs = el('div', { class: 'row' }, ...SECTIONS.map(([id, label]) => {
     const b = el('button', { class: open.section === id ? 'active' : '', type: 'button' }, label);
     b.addEventListener('click', () => {
@@ -19,7 +25,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: { s
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : fortunesPanel(session);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : echoesPanel(session, rerender, open);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 
@@ -108,5 +114,52 @@ function fortunesPanel(session: GameSession): HTMLElement {
     el('p', { class: 'dim small' }, 'Every town has a prosperity. Quests you finish for it, dungeons cleared nearby, investments and gold you give lift it. The Grudgebound of its region raid it. A town that falls closes its shops and inn until it is rebuilt.'),
     ...rows,
     ...(log.length ? [el('h3', {}, 'News'), el('ul', {}, ...log)] : []),
+  );
+}
+
+function echoesPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
+  const st = session.state.realm.echoes;
+  const found = ECHOES.filter((e) => st.found[e.id] !== undefined);
+  const chosen = ECHOES.find((e) => e.id === open.echo && st.found[e.id] !== undefined);
+  const list = found.map((e) => {
+    const b = el('button', { type: 'button', class: chosen?.id === e.id ? 'active' : '' }, `${e.name} (${content.zones.get(e.zone).name})`);
+    b.addEventListener('click', () => {
+      open.echo = e.id;
+      delete open.outcome;
+      rerender();
+    });
+    return b;
+  });
+  let scene: HTMLElement | undefined;
+  if (chosen) {
+    const act = (c: 'a' | 'b' | 'talk'): void => {
+      const r = session.realm.replay(chosen.id, c);
+      open.outcome = r.text + (r.xp ? ` (+${r.xp} XP for hearing them out)` : '');
+      rerender();
+    };
+    const btn = (label: string, c: 'a' | 'b' | 'talk'): HTMLButtonElement => {
+      const b = el('button', { type: 'button' }, label);
+      b.addEventListener('click', () => act(c));
+      return b;
+    };
+    scene = el(
+      'div',
+      {},
+      el('h3', {}, `${chosen.name}, ${chosen.role}`),
+      ...chosen.beats.map((t) => el('p', { class: 'small' }, t)),
+      el('p', { class: 'small' }, el('strong', {}, chosen.kind === 'warning' ? 'A warning: ' : chosen.kind === 'secret' ? 'A secret: ' : 'A hint: '), chosen.hint),
+      el('p', {}, chosen.replay.ask),
+      el('div', { class: 'row' }, btn(chosen.replay.a[0], 'a'), btn(chosen.replay.b[0], 'b'), ...(chosen.talk ? [btn(chosen.talk[0], 'talk')] : [])),
+      ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []),
+    );
+  }
+  const mine = [...(session.state.legacy.echoes ?? []), ...st.deaths];
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, `Godsworn who did not finish the road leave their last moments where they fell. Find them in the world (${found.length} of ${ECHOES.length}). In the Hollow Barrows the dead can be spoken to. Your own defeats become echoes in New Game+.`),
+    ...(list.length ? [el('div', { class: 'row' }, ...list)] : [el('p', { class: 'dim' }, 'None found yet. They look like lore pages on the map, with a name instead of a title.')]),
+    ...(scene ? [scene] : []),
+    ...(mine.length ? [el('h3', {}, 'Your own'), ...mine.map((d) => el('p', { class: 'small dim' }, `${d.name}, level ${d.level}, fell to ${d.by} in ${content.zones.find(d.zone)?.name ?? d.zone}.`))] : []),
   );
 }

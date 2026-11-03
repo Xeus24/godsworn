@@ -48,6 +48,7 @@ import { GREATER_BLESSINGS, GREATER_DIVINE_COMBAT, GREATER_DIVINE_SKILLS } from 
 import { SAINT_BLESSINGS } from './saints';
 import { TREASURES, TREASURE_ITEMS } from './world/treasures';
 import { HIDDEN_LORE } from './world/hidden';
+import { ECHO_LORE } from './realm/echoes';
 import { DYES, FRAMES } from './appearance';
 import { BACKGROUNDS } from './backgrounds';
 import { PANTHEON } from './pantheon';
@@ -172,7 +173,7 @@ export const content = {
   areas: new ContentTable('area', AREAS),
   investments: new ContentTable('investment', INVESTMENTS),
   houseRooms: new ContentTable('house room', HOUSE_ROOMS),
-  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE, ...AREA_LORE, ...BATCH1_LORE, ...BATCH2_LORE, ...BATCH3_LORE, ...BATCH4_LORE]),
+  lore: new ContentTable('lore page', [...LORE, ...HIDDEN_LORE, ...ECHO_LORE, ...AREA_LORE, ...BATCH1_LORE, ...BATCH2_LORE, ...BATCH3_LORE, ...BATCH4_LORE]),
   professions: new ContentTable('profession', PROFESSIONS),
   recipes: new ContentTable('recipe', RECIPES),
   shops: new ContentTable('shop', SHOPS),

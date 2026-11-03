@@ -1,6 +1,7 @@
 import { SAINTS } from '../../data/saints';
 import { addSecrets } from './secrets';
 import { PASSES, type AreaDef } from '../../data/world/areas';
+import { ECHOES } from '../../data/realm/echoes';
 import { HIDDEN_LORE, SECRET_BOSSES } from '../../data/world/hidden';
 import { content, type Content } from '../../data';
 import { Rng } from '../core/rng';
@@ -298,6 +299,12 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
     const p = spotFor();
     const to = pass.a === zone.id ? pass.b : pass.a;
     if (p) add({ id: `pass-${pass.id}`, kind: 'exit', x: p[0], y: p[1], ref: to, arrive: 'pass', label: `${pass.name}: to ${c.zones.get(to).name}` });
+  }
+
+  // Echoes of the Fallen: last moments of Godsworn who did not finish the road (placed last, so older layouts do not move).
+  for (const echo of ECHOES.filter((x) => x.zone === zone.id)) {
+    const p = spotFor();
+    if (p) add({ id: `lore-${echo.id}`, kind: 'lore', x: p[0], y: p[1], ref: echo.id, label: `Echo of ${echo.name}` });
   }
 
   // Nothing may stand on scenery.

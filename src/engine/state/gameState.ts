@@ -38,7 +38,7 @@ import { EndgameActions } from './endgameActions';
 import { createEndgameState, type EndgameState } from '../endgame/types';
 import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
-import { createRealmState, type RealmState } from '../realm/types';
+import { createRealmState, type DeathEcho, type RealmState } from '../realm/types';
 import { RealmActions } from './realmActions';
 import { effectOn } from '../realm/wheel';
 import type { WorldState } from '../world/types';
@@ -147,7 +147,7 @@ export interface GameState {
   /** Items found per rarity. */
   rarityFound: Record<string, number>;
   /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
-  legacy: { endings: string[] };
+  legacy: { endings: string[]; /** Your own defeats in earlier runs, heard again as echoes. */ echoes?: DeathEcho[] };
   /** The world affixes of this New Game+ playthrough (two added per tier). */
   ngAffixes: string[];
   /** Fish, cards, dice, races, forging, digging and the arena ladder. */

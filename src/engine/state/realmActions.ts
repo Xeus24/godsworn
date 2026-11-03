@@ -2,8 +2,10 @@ import { content } from '../../data';
 import { GRUDGE } from '../../data/realm/grudge';
 import type { Battle } from '../combat/battle';
 import type { EncounterDef } from '../combat/types';
+import { createRealmState } from '../realm/types';
 import { FORTUNES } from '../../data/realm/fortunes';
 import { fortuneOf, innMult, isFallen, lift, priceMult, tick as fortunesTick, tierOf } from '../realm/fortunes';
+import { ECHOES } from '../../data/realm/echoes';
 import { decorate, forge, fullName, grudgeBounty, hierarchy, mark, rankTitle, scheme, slay } from '../realm/grudge';
 import type { GrudgeEntry, RealmState } from '../realm/types';
 import { festivalOn } from '../realm/wheel';
@@ -67,6 +69,7 @@ export class RealmActions {
       this.s.grantXp(bounty.xp);
       this.s.bus.emit('toast', { kind: 'quest', text: `${fullName(g)}, ${rankTitle(g.rank)}, is dead. The road pays ${bounty.gold} gold.` });
     }
+    if (b.outcome === 'defeat') this.recordDeath(b);
     if (b.isBoss || !b.encounterId.startsWith('wild:')) return;
     const zone = b.encounterId.slice('wild:'.length);
     if (!content.zones.find(zone)) return;
@@ -160,5 +163,66 @@ export class RealmActions {
     this.lift(town, FORTUNES.fundGain);
     this.s.bus.emit('stateChanged', { reason: 'fortune' });
     return { ok: true };
+  }
+
+  // ------------------------------------------------------------ Echoes of the Fallen
+
+  /** A lore page was found: if it is an echo, remember it. */
+  onLore(id: string): void {
+    const echo = ECHOES.find((e) => e.id === id);
+    if (!echo || this.state.echoes.found[id] !== undefined) return;
+    this.state.echoes.found[id] = this.s.state.clock.day;
+    this.s.bus.emit('toast', { kind: 'info', text: `An echo of ${echo.name} stirs. It can be heard again in the Codex.` });
+  }
+
+  /** The echo's replay: choose `a`, `b` or (in the Barrows) `talk`. The first time pays a little XP. */
+  replay(id: string, choice: 'a' | 'b' | 'talk'): { ok: boolean; text: string; xp?: number } {
+    const echo = ECHOES.find((e) => e.id === id);
+    if (!echo || this.state.echoes.found[id] === undefined) return { ok: false, text: 'You have not found that echo.' };
+    if (choice === 'talk' && !echo.talk) return { ok: false, text: 'It does not answer.' };
+    const first = this.state.echoes.replays[id] === undefined;
+    this.state.echoes.replays[id] = choice;
+    let xp: number | undefined;
+    if (first) {
+      xp = Math.round(this.s.player.level * 40);
+      this.s.grantXp(xp);
+    }
+    const text = choice === 'talk' ? (echo.talk as [string, string])[1] : echo.replay[choice][1];
+    this.s.bus.emit('stateChanged', { reason: 'echo' });
+    return { ok: true, text, ...(xp ? { xp } : {}) };
+  }
+
+  /** On arriving in a region: in a later run, your own earlier defeats there are heard again. */
+  onArrive(zone: string): void {
+    const e = this.state.echoes;
+    if (e.lastZone === zone) return;
+    e.lastZone = zone;
+    if (this.s.state.ngPlus <= 0) return;
+    const mine = (this.s.state.legacy.echoes ?? []).filter((d) => d.zone === zone && !e.heard.includes(`${d.zone}:${d.day}:${d.name}`));
+    for (const d of mine.slice(0, 2)) {
+      e.heard.push(`${d.zone}:${d.day}:${d.name}`);
+      const cls = content.classes.find(d.classId)?.name ?? d.classId;
+      this.s.bus.emit('toast', { kind: 'warning', text: `You hear your own voice here, from another life: ${d.name}, a level ${d.level} ${cls}, fell to ${d.by}. “Not like this. Not here.”` });
+    }
+  }
+
+  private recordDeath(b: Battle): void {
+    const killer = b.combatants.filter((x) => x.side === 'enemy' && x.alive).sort((p, q) => q.level - p.level)[0];
+    const zone = b.encounterId.startsWith('wild:') ? b.encounterId.slice('wild:'.length) : this.s.world.zone.id;
+    const e = this.state.echoes;
+    e.deaths.push({ name: this.s.player.name, classId: this.s.player.classes[0]?.classId ?? 'warrior', level: this.s.player.level, zone, by: killer?.name ?? 'something unseen', day: this.s.state.clock.day });
+    if (e.deaths.length > 12) e.deaths.shift();
+  }
+
+  /** New Game+ begins: your defeats are kept as echoes, and the realm starts over. */
+  newCycle(): void {
+    const keep = this.state.echoes;
+    const legacy = (this.s.state.legacy.echoes ??= []);
+    legacy.push(...keep.deaths);
+    if (legacy.length > 40) legacy.splice(0, legacy.length - 40);
+    const fresh = createRealmState();
+    fresh.echoes.found = keep.found;
+    fresh.echoes.replays = keep.replays;
+    this.s.state.realm = fresh;
   }
 }

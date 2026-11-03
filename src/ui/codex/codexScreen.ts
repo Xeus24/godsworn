@@ -11,7 +11,7 @@ import { Rng } from '../../engine/core/rng';
 import { itemIconUrl } from '../art/itemIcons';
 import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from '../combat/creatureSprites';
-import { realmPanel, type Section as RealmSection } from './realmPanel';
+import { realmPanel, type RealmView } from './realmPanel';
 import { completion, overallCompletion } from '../../engine/achievements/completion';
 import { AIRSHIP, SHIP_LEVELS } from '../../data/world/ship';
 import { destinations, hasAirship, shipLevel } from '../../engine/world/ship';
@@ -89,7 +89,7 @@ export class CodexScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
   private tab: Tab = 'bestiary';
-  private realmOpen: { section: RealmSection } = { section: 'grudge' };
+  private realmOpen: RealmView = { section: 'grudge' };
   private selected: string | undefined;
   private filter = '';
 
