@@ -1,5 +1,6 @@
 import { content } from '../../data';
 import { createMinigameState } from '../minigames/state';
+import { createWondersState } from '../realm/wonders';
 import { createEndgameState } from '../endgame/types';
 import { BUILD_SLOTS } from '../skills/treeTypes';
 import { emptyBuild } from '../skills/tree';
@@ -138,6 +139,7 @@ export function migrate(raw: Json): Json {
   realm.chronicle ??= { seed: 0, events: [], known: {}, commissions: [], completed: [] };
   realm.tales ??= {};
   realm.observatory ??= { clues: [] };
+  realm.wonders ??= createWondersState() as unknown as Json;
   realm.village ??= { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] };
   realm.ranch ??= { creatures: [], capacity: 12, next: 1 };
   realm.bloodline ??= { generation: 1, ancestors: [] };

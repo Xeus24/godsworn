@@ -14,15 +14,17 @@ import { dateOf, festivalOn, formatDate, nextFestival, seasonGods } from '../../
 import { fullName, grudgeThreat, hierarchy, rankTitle } from '../../engine/realm/grudge';
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
+import { cardSpirePanel, painterPanel, sunderedPanel, watersPanel } from './wondersPanel';
 
-export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies' | 'observatory' | 'emberfall';
+export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies' | 'observatory' | 'emberfall' | 'waters' | 'cardspire' | 'sundered' | 'painter';
 export interface RealmView {
   section: Section;
   echo?: string;
   outcome?: string;
   dials?: Record<string, string>;
+  hand?: string[];
 }
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall']];
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall'], ['waters', 'Waters'], ['cardspire', 'Spire of Cards'], ['sundered', 'Sundered Hours'], ['painter', 'Painter’s Eye']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
@@ -34,7 +36,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: Rea
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : open.section === 'observatory' ? observatoryPanel(session, rerender, open) : open.section === 'emberfall' ? emberfallPanel(session, rerender, open) : chroniclePanel(session, rerender);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : open.section === 'observatory' ? observatoryPanel(session, rerender, open) : open.section === 'emberfall' ? emberfallPanel(session, rerender, open) : open.section === 'waters' ? watersPanel(session, rerender, open) : open.section === 'cardspire' ? cardSpirePanel(session, rerender, open) : open.section === 'sundered' ? sunderedPanel(session, rerender, open) : open.section === 'painter' ? painterPanel(session, rerender, open) : chroniclePanel(session, rerender);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 

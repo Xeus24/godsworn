@@ -1,3 +1,4 @@
+import { createWondersState, type WondersState } from './wonders';
 /** One Grudgebound foe (Innovation Pack, item 1). */
 export interface GrudgeEntry {
   id: string;
@@ -224,10 +225,11 @@ export interface RealmState {
   ranch: RanchState;
   observatory: ObservatoryState;
   village: VillageState;
+  wonders: WondersState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] }, ranch: { creatures: [], capacity: 12, next: 1 }, observatory: { clues: [] }, village: { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] }, ranch: { creatures: [], capacity: 12, next: 1 }, observatory: { clues: [] }, village: { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] }, wonders: createWondersState() };
 }
 
 export function createMarrowState(): MarrowState {

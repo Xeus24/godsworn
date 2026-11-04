@@ -110,3 +110,8 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 | Observatory (22) | `data/realm/observatory.ts`; `realm.observatory` | `RealmActions.findClues/observe`; epilogue slide |
 | Emberfall (24) | `data/emberfall.ts`, `realm/village.ts`; `realm.village` | `RealmActions.runVillage` from `onDays`; `heartModifiers` adds village perks |
 | Celestial Atlas (23) | `data/atlas.ts`; `endgame.atlas` | `EndgameActions.startAtlas/allocateBoard`; `end()` lights maps and awards stars; `riftRewards` multiplies by `rewardMult` |
+
+| Nymira's Waters (25) | `data/wonders.ts` (LEGENDS, WATERS); `realm.wonders.waters` | `WondersActions.cast` runs before the ordinary bite in `MinigameActions.fish`; `escaped` marks Grudgebound fish |
+| Spire of Cards (26) | `engine/realm/wonders.ts` (spireOpponent, spireDuel); `realm.wonders.spire` | reuses `aiPick` and `playRound`; relics add power per card |
+| Sundered Hours (27) | `data/wonders.ts` (ERAS, TURNING_POINTS); `realm.wonders.sundered` | choices feed `heart.wonderMods` via `WondersActions.refresh` |
+| Painter's Eye (28) | `data/wonders.ts` (COMMISSIONS, PAINTER); `realm.wonders.painter` | `photo` matches `scene()` to commissions; family sketches add a damage modifier |

@@ -1061,7 +1061,16 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests: `tests/sectionD1.test.ts` (9); 941 unit tests, 16 e2e, build.
 - Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
 
+### Innovation Pack, section D, items 25-28: Nymira's Waters, the Spire of Cards, the Sundered Hours and Painter's Eye
+- **25, Nymira's Waters** (`data/wonders.ts`, `engine/state/wondersActions.ts`): an aquarium (6 places, up to 30) whose fish give gold find; 12 legendary fish (one per water, each needing many kinds caught, each with an aquarium perk, all 12 give the Nymira's Chosen title); a fishing Grudgebound: a rarity 4-5 fish that slips the line returns with scars until landed (hooks into `MinigameActions.fish`).
+- **26, The Spire of Cards**: a 20-floor card roguelite (pool of your best 8 cards, draft 1 of 3 a floor, a relic every 3 floors, 3 hearts); gold and one kept card per 5 floors come home; top floor gives the Spire Gambler title.
+- **27, The Sundered Hours**: Mirrin's rifts to 3 eras with 12 turning points and 24 choices. Choices give stat modifiers and rewrite the "present" ledger; changing one costs a paradox fee; all 12 set gives Hourkeeper.
+- **28, Painter's Eye**: photographs (album of 60) and 12 commissions that pay when the scene fits (zone, hour, weather, town, pet); sketches of met creatures (marked in the bestiary), +2% damage per family finished, 100 sketches for The Naturalist.
+- All four live in Codex > Realm (tabs Waters, Spire of Cards, Sundered Hours, Painter's Eye); state in `realm.wonders` (save migrates), stat effects in `heart.wonderMods`.
+- Tests: `tests/sectionD2.test.ts` (6); 947 unit tests.
+
 ## Cut / deferred
+- **Sundered Hours** reshape the present through modifiers and a ledger of consequences, not by redrawing town maps or replacing NPC models. **Painter's Eye** photos are records (scene, caption, commission), not saved images.
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are player-allocated on the Party screen, as a list or an editable graph (phase 21). Companion gear is managed on the Party screen, not by dragging onto a paper doll.
 - **Party balance:** companion classes are even (2.3 points apart, Phase 16). Party-size scaling now grows faster than linearly (phase 21), though benchmark heroes still win nearly every ordinary fight at any party size; and a cleric hero beside a cleric companion still loses to world bosses (two healers can't outdamage the enrage). The NPC dialogue for the Apostle's god in chapter 7 is narration, not a separate NPC per god.

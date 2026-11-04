@@ -222,7 +222,7 @@ export class CodexScreen implements Screen {
         'button',
         { class: `quest-row${this.selected === e.id ? ' active' : ''}${known ? '' : ' dim'}` },
         el('span', { class: 'codex-name' }, portrait(e, 'codex-icon', known), el('span', {}, known ? e.name : '???')),
-        el('span', { class: 'dim small' }, known ? `${knowledgeName(level)}${level >= 4 ? ' ★' : ''}` : `Lv ${e.level}`),
+        el('span', { class: 'dim small' }, known ? `${knowledgeName(level)}${level >= 4 ? ' ★' : ''}${this.session.state.realm.wonders.painter.sketched.includes(e.id) ? ' ✎' : ''}` : `Lv ${e.level}`),
       );
       b.addEventListener('click', () => {
         this.selected = e.id;

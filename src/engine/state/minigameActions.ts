@@ -33,10 +33,15 @@ export class MinigameActions {
   /** A cast: something bites (or not). `accuracy` is how true the strike was, from the timing bar. */
   fish(water: Water, night: boolean, accuracy: number): { fish?: FishDef; caught: boolean; weight?: number; record?: boolean; message: string } {
     const rng = this.s.rng;
+    const special = this.s.wonders.cast(water, night, accuracy);
+    if (special) return { fish: 'price' in special.fish && 'rarity' in special.fish ? (special.fish as FishDef) : undefined, caught: special.caught, ...(special.weight !== undefined ? { weight: special.weight } : {}), message: special.message };
     const fish = bite(rng, water, night);
     if (!fish) return { caught: false, message: 'Nothing bites.' };
     const skill = Math.floor(Object.values(this.m.fish).reduce((a, f) => a + f.count, 0) / 12);
-    if (!reel(rng, fish, accuracy, skill)) return { fish, caught: false, message: `A ${fish.name} on the line, and then not.` };
+    if (!reel(rng, fish, accuracy, skill)) {
+      this.s.wonders.escaped(fish);
+      return { fish, caught: false, message: `A ${fish.name} on the line, and then not.` };
+    }
     const weight = weighCatch(rng, fish);
     const record = logCatch(this.m, fish, weight);
     this.s.advanceTime(25);

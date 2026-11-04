@@ -31,6 +31,8 @@ export interface HeartProgress {
   sigils: { id: string; over: boolean }[];
   /** What Emberfall's buildings give the hero (item 24). */
   villagePerks: ModifierSpec[];
+  /** What the waters, the Sundered Hours and the sketchbook give (items 25, 27, 28). */
+  wonderMods: ModifierSpec[];
   /** Relic Tools found (Innovation Pack, item 21). */
   tools: string[];
   /** Borrowed arts in the Learned Arts slots (skill ids). */
@@ -39,7 +41,7 @@ export interface HeartProgress {
   haggleDay?: number;
 }
 
-export const createHeart = (): HeartProgress => ({ lean: {}, adopted: {}, held: [], bonds: {}, bondDay: {}, claimed: [], quirks: [], inherited: [], sigilsFound: [], sigils: [], tools: [], borrowed: [], villagePerks: [] });
+export const createHeart = (): HeartProgress => ({ lean: {}, adopted: {}, held: [], bonds: {}, bondDay: {}, claimed: [], quirks: [], inherited: [], sigilsFound: [], sigils: [], tools: [], borrowed: [], villagePerks: [], wonderMods: [] });
 
 export function heartOf(char: Character): HeartProgress {
   const w = char.world as { heart?: HeartProgress };
@@ -57,6 +59,7 @@ export function heartOf(char: Character): HeartProgress {
   h.borrowed ??= [];
   h.tools ??= [];
   h.villagePerks ??= [];
+  h.wonderMods ??= [];
   return h;
 }
 
@@ -128,6 +131,7 @@ export function heartModifiers(char: Character, c: Content = content): Modifier[
   for (const conv of heldConvictions(h)) for (const m of conv.mods) mods.push({ ...m, source: `conviction:${conv.id}` } as Modifier);
   for (const b of BONDS) for (const m of bondMods(b, bondRank(h.bonds[b.id] ?? 0))) mods.push({ ...m, source: `bond:${b.id}` } as Modifier);
   for (const m of h.villagePerks) mods.push({ ...m, source: 'emberfall' } as Modifier);
+  for (const m of h.wonderMods) mods.push({ ...m, source: 'wonders' } as Modifier);
   for (const sg of h.sigils) {
     const def = SIGILS.find((x) => x.id === sg.id);
     for (const m of (sg.over ? def?.over : def?.mods) ?? []) mods.push({ ...m, source: `sigil:${sg.id}` } as Modifier);

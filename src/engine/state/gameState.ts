@@ -1,5 +1,6 @@
 import { content } from '../../data';
 import { MinigameActions } from './minigameActions';
+import { WondersActions } from './wondersActions';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
@@ -215,6 +216,7 @@ export class GameSession {
   readonly achievements: AchievementActions;
   readonly endgame: EndgameActions;
   readonly realm: RealmActions;
+  readonly wonders: WondersActions;
   readonly heart: HeartActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
@@ -236,6 +238,7 @@ export class GameSession {
     this.achievements = new AchievementActions(this);
     this.endgame = new EndgameActions(this);
     this.realm = new RealmActions(this);
+    this.wonders = new WondersActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {
