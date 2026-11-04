@@ -135,3 +135,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## More wonders: relics, land and the road (section G, items 37, 38, 40, 44-47, 49, 50, 53, 58)
 `RelicsActions` (`s.relics`, state `realm.marvels.relics`) and `RoadActions` (`s.road`, `realm.marvels.road`) both feed `WondersActions.refresh` through `mods()`. Heirloom deeds read the faith tally (`s.faith.f.tally`). `EndgameActions.startSpecial({module, ref, label, level, waves, boss})` starts a `special` gauntlet; the owner registers `s.specials[module]` to settle it. Wanted and Masquerade share `road.outfit` and `road.suspicion`.
+
+## More wonders: trials (section G, items 43, 54-57)
+`TrialsActions` (`s.trials`, `realm.marvels.trials`) registers `s.specials` for `tournament`, `dream` and `hunt`, each started with `EndgameActions.startSpecial` and settled when the run ends. `foes()` picks enemies by creature type and tier near the hero's level, widening the band until there are enough. Diving keeps its run in `trials.dives.active`.

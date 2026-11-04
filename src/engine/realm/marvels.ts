@@ -60,8 +60,24 @@ export interface RoadState {
 
 export const createRoad = (): RoadState => ({ heat: 0, lastCrime: 0, suspicion: 0, suspicionDay: 0, balls: {}, caravans: 0, castDay: 0, inns: {}, songs: [] });
 
+export interface TrialsState {
+  /** Duel Tournaments (43): the last calendar year entered, titles won (years), rounds won in all. */
+  tournament: { entered: number; champion: number[]; rounds: number; bracket?: { year: number; rivals: string[] } };
+  /** Dreamscape Dungeons (55): clears per companion. */
+  dreams: Record<string, number>;
+  /** Moon-Blood Hunts (56): kills per quarry. */
+  hunts: Record<string, number>;
+  /** Shipwreck Diving (57): best haul per wreck, the dive in progress. */
+  dives: { best: Record<string, number>; active?: { wreck: string; air: number; haul: number; seed: number; turn: number; log: string[] } };
+  /** Sky Islands (54): attempts and solved. */
+  islands: Record<string, { attempts: number; solved: boolean }>;
+}
+
+export const createTrials = (): TrialsState => ({ tournament: { entered: 0, champion: [], rounds: 0 }, dreams: {}, hunts: {}, dives: { best: {} }, islands: {} });
+
 export interface MarvelsState {
   faith?: FaithState;
   relics?: RelicsState;
   road?: RoadState;
+  trials?: TrialsState;
 }

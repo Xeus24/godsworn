@@ -15,7 +15,7 @@ const BIG = new Set(['elite', 'champion', 'boss', 'miniboss', 'worldBoss', 'puni
 export class RelicsActions {
   constructor(private readonly s: GameSession) {
     s.bus.on('enemyKilled', (e) => {
-      if (BIG.has(e.tier) && this.s.rng.chance(RESTORATION.dropChance)) this.shard();
+      if (BIG.has(e.tier) && this.s.rng.chance(RESTORATION.dropChance)) this.grantShard();
     });
     s.bus.on('zoneEntered', () => this.s.wonders.refresh());
     s.bus.on('timeChanged', () => this.checkHeirlooms());
@@ -107,7 +107,7 @@ export class RelicsActions {
 
   // ------------------------------------------------------------------ 53: Relic Restoration
 
-  private shard(): void {
+  grantShard(): void {
     const id = this.s.rng.pick(BROKEN_RELICS.filter((x) => !this.r.restored.includes(x.id))).id;
     if (!id) return;
     this.r.shards[id] = Math.min(RESTORATION.shards, (this.r.shards[id] ?? 0) + 1);
@@ -154,7 +154,7 @@ export class RelicsActions {
     }
     this.r.temples.push(id);
     this.s.devotion.apply({ [site.god]: EXCAVATION.favor }, 'excavation', true);
-    if (this.s.rng.chance(EXCAVATION.shardChance)) this.shard();
+    if (this.s.rng.chance(EXCAVATION.shardChance)) this.grantShard();
     if (this.r.temples.length >= 10 && !this.s.player.devotion.titles.includes(EXCAVATION.title)) this.s.player.devotion.titles.push(EXCAVATION.title);
     this.changed('temple');
     return { ok: true, text: `${site.name} stands again. Its god is pleased.` };
