@@ -1,6 +1,6 @@
 import { content } from '../../data';
 import { raceUnlocked, raceUnlockText } from '../../engine/character/races';
-import { endgameSeen, highestNgPlus, storyCleared } from '../profile';
+import { endgameSeen, highestNgPlus, storyCleared , cipherSeen } from '../profile';
 import { DEFAULT_DIFFICULTY, DIFFICULTIES, type DifficultyId } from '../../data/difficulty';
 import { createCharacter, NAME_MAX_LENGTH, validateName } from '../../engine/character/create';
 import type { Character } from '../../engine/character/types';
@@ -120,7 +120,7 @@ export class CreationScreen implements Screen {
       portrait: Math.floor(Math.random() * PORTRAIT_VARIANTS),
       raceId: pickRandom(content.races.all().filter((r) => raceUnlocked(r, highestNgPlus(), storyCleared())).map((r) => r.id)),
       classId: pickRandom(content.classes.all().filter((k) => !k.hidden && (k.ngPlus ?? 0) <= highestNgPlus()).map((k) => k.id)),
-      birthSignId: pickRandom(content.birthSigns.ids()),
+      birthSignId: pickRandom(content.birthSigns.all().filter((b) => !b.hidden || cipherSeen()).map((b) => b.id)),
       background: pickRandom(content.backgrounds.ids()),
       hardcore: this.choice.hardcore,
       challenges: this.choice.challenges,
@@ -182,7 +182,7 @@ export class CreationScreen implements Screen {
       ),
       this.group(
         'Birth Sign',
-        content.birthSigns.all(),
+        content.birthSigns.all().filter((b) => !b.hidden || cipherSeen()),
         this.choice.birthSignId,
         (s) => [s.name, content.gods.get(s.god).name],
         (id) => (this.choice.birthSignId = id),

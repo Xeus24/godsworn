@@ -674,6 +674,7 @@ export class WorldActions {
       kept += got.kept.length;
     }
     this.s.setFlag('puzzles', Number(this.s.state.flags['puzzles'] ?? 0) + 1);
+    if (info.kind === 'tool') this.s.oaths.foundPage(this.zone.id);
     this.changed('chest');
     return `${info.label}: ${info.done} ${gold} gold and ${kept} item${kept === 1 ? '' : 's'}.`;
   }

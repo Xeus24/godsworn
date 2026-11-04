@@ -1,3 +1,4 @@
+import { observeOath } from './oaths';
 import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
 import { content, type Content } from '../../data';
 import type { Rng } from '../core/rng';
@@ -84,7 +85,7 @@ export class Battle {
   volley = 0;
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
-  readonly tally: BattleTally = { parts: [], bound: [], mercy: [], kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
+  readonly tally: BattleTally = { parts: [], bound: [], mercy: [], kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0, oathsBroken: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];
   private uid = 0;
@@ -121,6 +122,7 @@ export class Battle {
 
   emit(event: BattleEvent): void {
     this.buffer.push(event);
+    observeOath(this, event);
   }
 
   log(text: string): void {

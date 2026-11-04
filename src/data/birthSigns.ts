@@ -8,6 +8,8 @@ export interface BirthSignDef {
   modifiers: ModifierSpec[];
   /** Bonus favor gained with the sign's god, in percent. */
   favorBonus: number;
+  /** Hidden at creation until the Unsworn Cipher has been completed on any hero (Innovation Pack, item 63). */
+  hidden?: 'cipher';
 }
 
 export const BIRTH_SIGNS: BirthSignDef[] = [
@@ -138,5 +140,14 @@ export const BIRTH_SIGNS: BirthSignDef[] = [
     description: 'No star claimed you, no god marked you. No favor bonus, but +3% XP gain, +2 to every attribute and the sky owes you nothing.',
     modifiers: [{ stat: 'xpGain', type: 'flat', value: 3 }, { stat: 'str', type: 'flat', value: 2 }, { stat: 'dex', type: 'flat', value: 2 }, { stat: 'int', type: 'flat', value: 2 }, { stat: 'vit', type: 'flat', value: 2 }, { stat: 'wis', type: 'flat', value: 2 }, { stat: 'luk', type: 'flat', value: 2 }, { stat: 'fai', type: 'flat', value: 2 }, { stat: 'cha', type: 'flat', value: 2 }],
     favorBonus: 0,
+  },
+  {
+    id: 'the-unremembered',
+    name: 'Born under the Unremembered',
+    god: 'nameless',
+    description: 'Under the star of a god who was taken out of the sky. You keep your word, and feel the gap where someone else’s word used to be. +6% status resistance, +4% favor gain.',
+    modifiers: [{ stat: 'statusResist', type: 'flat', value: 6 }],
+    favorBonus: 4,
+    hidden: 'cipher',
   },
 ];

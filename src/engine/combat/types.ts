@@ -248,6 +248,8 @@ export interface Combatant {
   classId?: string;
   basicAttack: { element: Element; ranged: boolean; magic: boolean; name: string };
   enemyId?: string;
+  /** A boss's sworn oath, and whether it has been broken (Battle Oaths, item 67). */
+  oath?: { kind: string; broken: boolean };
   /** The Grudgebound this foe is (see `engine/realm`). */
   grudgeId?: string;
   /** The bound creature this is (see `RanchState`). */
@@ -366,6 +368,8 @@ export interface BattleTally {
   tagUses: Record<string, number>;
   /** Minions raised by the party. */
   summons: number;
+  /** Sworn oaths broken this fight (item 67). */
+  oathsBroken: number;
   /** God that intervened to save the hero this battle. */
   intervention?: string;
 }

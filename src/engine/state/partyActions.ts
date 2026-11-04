@@ -144,6 +144,7 @@ export class PartyActions {
       if (!this.s.quests.holds(def.leaves.cond)) continue;
       comp.left = true;
       comp.inParty = false;
+      this.s.oaths.breakExternal(`${def.name} walks out on you.`);
       this.s.bus.emit('toast', { kind: 'warning', text: def.leaves.text });
       this.changed('left');
     }
@@ -224,6 +225,7 @@ export class PartyActions {
     if (comp.approval <= APPROVAL.leave) {
       comp.left = true;
       comp.inParty = false;
+      this.s.oaths.breakExternal(`${def.name} has had enough of you.`);
       this.s.bus.emit('toast', { kind: 'warning', text: `${def.name} has had enough of you and leaves for ${content.towns.get(def.town).name}.` });
     }
     this.changed('approval');

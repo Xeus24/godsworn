@@ -6,6 +6,8 @@ interface Profile {
   endgame: boolean;
   /** Any hero of yours has reached an ending. */
   cleared: boolean;
+  /** The Unsworn Cipher has been completed on some hero: Caerith's birth sign is open. */
+  cipher?: boolean;
 }
 
 function read(): Profile {
@@ -13,7 +15,7 @@ function read(): Profile {
     const raw = localStorage.getItem(KEY);
     const p = raw ? (JSON.parse(raw) as Partial<Profile>) : {};
     const n = Number(p.highestNgPlus);
-    return { highestNgPlus: Number.isFinite(n) ? n : 0, endgame: p.endgame === true || n > 0, cleared: p.cleared === true || p.endgame === true || n > 0 };
+    return { highestNgPlus: Number.isFinite(n) ? n : 0, endgame: p.endgame === true || n > 0, cleared: p.cleared === true || p.endgame === true || n > 0, cipher: p.cipher === true };
   } catch {
     return { highestNgPlus: 0, endgame: false, cleared: false };
   }
@@ -47,7 +49,7 @@ export function recordEndgame(): void {
 /** Remembers a tier (only ever raises the record). */
 export function recordNgPlus(tier: number): void {
   if (tier <= profile.highestNgPlus) return;
-  profile = { highestNgPlus: tier, endgame: true, cleared: true };
+  profile = { ...profile, highestNgPlus: tier, endgame: true, cleared: true };
   store();
 }
 
@@ -59,5 +61,16 @@ export function storyCleared(): boolean {
 export function recordClear(): void {
   if (profile.cleared) return;
   profile = { ...profile, cleared: true };
+  store();
+}
+
+/** True once any hero has completed the Unsworn Cipher (the hidden birth sign shows at creation). */
+export function cipherSeen(): boolean {
+  return profile.cipher === true;
+}
+
+export function recordCipher(): void {
+  if (profile.cipher) return;
+  profile = { ...profile, cipher: true };
   store();
 }

@@ -8,6 +8,7 @@ import { RelicsActions } from './relicsActions';
 import { RoadActions } from './roadActions';
 import { TrialsActions } from './trialsActions';
 import { GamesActions } from './gamesActions';
+import { OathsActions } from './oathsActions';
 import type { GauntletState } from '../endgame/types';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
@@ -231,6 +232,7 @@ export class GameSession {
   readonly road: RoadActions;
   readonly trials: TrialsActions;
   readonly games: GamesActions;
+  readonly oaths: OathsActions;
   /** Owners of special endgame runs register how a finished run is settled, by module name. */
   readonly specials: Record<string, (a: GauntletState, won: boolean) => void> = {};
   readonly heart: HeartActions;
@@ -261,6 +263,7 @@ export class GameSession {
     this.road = new RoadActions(this);
     this.trials = new TrialsActions(this);
     this.games = new GamesActions(this);
+    this.oaths = new OathsActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {

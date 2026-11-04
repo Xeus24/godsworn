@@ -100,7 +100,42 @@ export interface ChessGame {
 
 export const createTrials = (): TrialsState => ({ tournament: { entered: 0, champion: [], rounds: 0 }, dreams: {}, hunts: {}, dives: { best: {} }, islands: {} });
 
+export interface Vow {
+  id: string;
+  cond: string;
+  reward: string;
+  /** The stretch of the story (every few main quests) it was sworn in. */
+  stretch: number;
+  /** Lifetime counters when it was sworn. */
+  base: Record<string, number>;
+  zone?: string;
+  level: number;
+  status: 'standing' | 'kept' | 'broken';
+}
+
+export interface OathsState {
+  /** Unsworn Lineage pages found (zone ids). */
+  pages: string[];
+  vows: Vow[];
+  /** Vows kept to the end of a stretch, and vows broken. */
+  kept: number;
+  broken: number;
+  /** Scars carried (ids, in the order taken). */
+  scars: string[];
+  /** The Scar Rite readied for the next fight. */
+  ready?: string;
+  /** Main quests completed. */
+  mainDone: number;
+  /** Oath titles earned (condition ids). */
+  titled: string[];
+  /** Cipher-reader title and the resting place revealed. */
+  cipher: boolean;
+}
+
+export const createOaths = (): OathsState => ({ pages: [], vows: [], kept: 0, broken: 0, scars: [], mainDone: 0, titled: [], cipher: false });
+
 export interface MarvelsState {
+  oaths?: OathsState;
   faith?: FaithState;
   relics?: RelicsState;
   road?: RoadState;

@@ -141,3 +141,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## More wonders: games and the Testament (section G, items 41, 51, 59, 60)
 `GamesActions` (`s.games`) keeps Shrine Defense and the Gods' Gambit in `realm.marvels.trials.defense/.chess`. `world/living.ts` `rearrange(map, visit)` restores each movable entity (`pack-*`, `chest-*`) to its original tile and then deals new ones from the free floor; `WorldActions.map` calls it whenever a dungeon's visit counter (`trials.visits`) differs from the last shuffle, so a reloaded save sees the same rooms. `writeTestament(state)` is a pure function.
+
+## Oaths and the erased god (section H-1, items 61-65, 67)
+`OathsActions` (`s.oaths`) audits standing vows on combat end, gold, zone, time and favor events; a break calls `scar`, which also serves quest and companion promises (`breakExternal`, wired to apostasy and to companions leaving). `mods()` (vow rewards, Scar debuffs) flows through `WondersActions.refresh`; `riteMods()` is added to the party's modifiers in `main.ts` for the next ordinary fight only. `DevotionActions.apply` drops favor gains from `FORSWORN.refuse` gods once the `forsworn` flag is set. `combat/oaths.ts` `observeOath` runs inside `Battle.emit`.

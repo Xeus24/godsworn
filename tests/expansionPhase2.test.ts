@@ -86,7 +86,9 @@ describe('races and signs', () => {
   });
 
   it('has 16 birth signs (one per god, the Nameless One and the Unmarked), each tied to a real god', () => {
-    expect(content.birthSigns.size).toBe(16);
+    // 16 shown at creation, plus Caerith's, which stays hidden until the Unsworn Cipher is whole (item 63).
+    expect(content.birthSigns.all().filter((b) => !b.hidden)).toHaveLength(16);
+    expect(content.birthSigns.all().filter((b) => b.hidden)).toHaveLength(1);
     for (const sign of content.birthSigns.all()) expect(content.gods.has(sign.god)).toBe(true);
   });
 });
