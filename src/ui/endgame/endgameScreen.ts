@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import { ATLAS, ATLAS_NODES, CONSTELLATIONS } from '../../data/atlas';
 import { RIFTS } from '../../data/rifts';
+import { TRIALS } from '../../data/pilgrimage';
 import { countHeld } from '../../engine/items/inventory';
 import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
 import { BOSS_RUSH, EndgameActions } from '../../engine/state/endgameActions';
@@ -61,7 +62,7 @@ export class EndgameScreen implements Screen {
     return el(
       'section',
       { class: 'panel' },
-      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas' }[a.kind]),
+      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas', daily: `Trial of the Day ${a.seed ?? ''}` }[a.kind]),
       el('div', { class: 'small' }, `Fight ${a.wave + 1} of ${a.fights.length} · ${a.turns} turns so far${a.gold ? ` · ${a.gold} gold won` : ''}`),
       ...(a.affixes.length ? [el('h3', {}, 'Rift affixes'), ...a.affixes.map((id) => { const d = content.riftAffixes.get(id); return el('div', { class: 'small' }, el('b', {}, d.name), ` ${d.description}`); })] : []),
       el('p', { class: 'dim small' }, a.kind === 'rift' ? `No rest between fights: only ${RIFTS.respitePct}% of HP and MP comes back between waves. Fall or flee and the Rift closes.` : 'No rest between bosses: HP and MP carry over. Fall and the Rush ends; your best is kept.'),
@@ -154,6 +155,18 @@ export class EndgameScreen implements Screen {
       this.btn('Start the weekly run', () => this.say(s.endgame.startWeekly(seed)), !check.ok, 'primary'), ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]));
   }
 
+  private daily(): HTMLElement {
+    const s = this.session;
+    const seed = EndgameActions.dailySeed(new Date());
+    const d = s.state.endgame.daily;
+    const check = s.endgame.canStartDaily();
+    const mine = d.seed === seed ? d : undefined;
+    return el('section', { class: 'panel' }, el('h2', {}, 'Trial of the Day'),
+      el('p', { class: 'small' }, `${TRIALS.dailyFights} fights and ${TRIALS.dailyAffixes} twists, the same for everyone today. A first clear each day pays gold (more for a streak) and a Rift Map. Streak: ${d.streak}.`),
+      el('div', { class: 'small' }, mine ? `Today: ${mine.best} of ${TRIALS.dailyFights} fights${mine.claimed ? ' · prize claimed' : ''}` : 'Not yet attempted today.'),
+      this.btn('Start the daily trial', () => this.say(s.endgame.startDaily(seed)), !check.ok, 'primary'), ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]));
+  }
+
   private atlas(): HTMLElement {
     const s = this.session;
     const g = s.endgame;
@@ -189,7 +202,7 @@ export class EndgameScreen implements Screen {
           'div',
           { class: 'codex-scroll' },
           ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.weekly(), this.atlas(), this.divine()),
+          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.daily(), this.weekly(), this.atlas(), this.divine()),
           this.btn('Back to town', () => this.back()),
         ),
       ),

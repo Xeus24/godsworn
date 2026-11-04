@@ -407,3 +407,6 @@
 .npc-row .ui-glyph {
   margin: 0 6px 0 2px;
 }
+
+/* Omen: Giant Heads. Portraits and bestiary figures get a very large head (the whole figure grows from the feet). */
+.omen-bigheads .codex-portrait canvas, .omen-bigheads canvas.portrait, .omen-bigheads .portrait canvas { transform: scale(1.25); transform-origin: 50% 100%; }

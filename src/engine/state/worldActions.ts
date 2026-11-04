@@ -218,7 +218,7 @@ export class WorldActions {
     this.world.tideHigh = tideIsHigh(this.s.state.clock.minute);
     this.world.moonFull = moonPhase(this.day) === 4;
     this.world.night = this.s.timeOfDay === 'night';
-    this.world.bloodMoon = this.world.night && this.weatherNow() === 'blood-moon';
+    this.world.bloodMoon = this.world.night && (this.weatherNow() === 'blood-moon' || this.s.pilgrimage.rule('bloodMoon'));
     this.s.party.ambientBanter();
     if (isDungeon(map.id)) this.world.dsteps = (this.world.dsteps ?? 0) + 1;
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
@@ -236,7 +236,7 @@ export class WorldActions {
     if (!isDungeon(map.id) && this.world.grace === 0) {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
-      if (this.s.encounterScale > 0 && this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * this.s.encounterScale * (effectOn(this.s.state.clock.day).encounters ?? 1) * (mountOf(this.s.player)?.encounterMult ?? 1) * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
+      if (this.s.encounterScale > 0 && this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * this.s.encounterScale * (effectOn(this.s.state.clock.day).encounters ?? 1) * (mountOf(this.s.player)?.encounterMult ?? 1) * this.s.pilgrimage.encounterMult() * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
         const encounter = this.s.realm.decorate(randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened'])), this.zone.id);
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
@@ -431,7 +431,7 @@ export class WorldActions {
       }
       case 'chest': {
         if (e.puzzle) return { kind: 'moved', message: this.solvePuzzle(e) };
-        if (!e.gate && isMimic(map.id, e.id)) return this.mimicFight(e);
+        if (!e.gate && (isMimic(map.id, e.id) || this.s.pilgrimage.rule('mimicChests'))) return this.mimicFight(e);
         return { kind: 'moved', message: e.gate ? this.openCache(e) : this.openChest(e) };
       }
       case 'dig':

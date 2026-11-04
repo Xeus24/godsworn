@@ -37,7 +37,7 @@ export class AchievementActions {
 
   /** Earns every achievement whose condition now holds. Returns the ones earned. */
   check(): AchievementDef[] {
-    if (this.checking) return [];
+    if (this.checking || this.s.pilgrimage.achievementsOff()) return [];
     this.checking = true;
     const earned: AchievementDef[] = [];
     try {

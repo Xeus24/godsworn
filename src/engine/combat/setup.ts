@@ -1,3 +1,4 @@
+import { PROGRESSION } from '../../data/progression';
 import { SOULBOUND } from '../../data/soulbound';
 import { content, type Content } from '../../data';
 import { hasRule } from '../character/challenges';
@@ -154,7 +155,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     const base = c.enemies.get(e.enemyId);
     // Encounter entries may promote an enemy (roaming elites, champion packs).
     const def = e.tier ? { ...base, tier: e.tier } : base;
-    const enemy = createEnemy(def, `enemy-${i + 1}`, worldLevel(opts.level ?? e.level ?? encounter.level, ng) + difficulty.enemy.levelBonus + (e.grudge?.levelBonus ?? 0), e.row ?? def.row, c);
+    const enemy = createEnemy(def, `enemy-${i + 1}`, Math.max(hasRule(hero, 'humbled') ? PROGRESSION.levelCap : 0, worldLevel(opts.level ?? e.level ?? encounter.level, ng)) + difficulty.enemy.levelBonus + (e.grudge?.levelBonus ?? 0), e.row ?? def.row, c);
     if (e.grudge) {
       enemy.name = e.grudge.name;
       enemy.grudgeId = e.grudge.id;

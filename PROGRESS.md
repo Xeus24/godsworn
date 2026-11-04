@@ -1069,7 +1069,18 @@ Six systems that make the world change while you are away, built as sub-phases A
 - All four live in Codex > Realm (tabs Waters, Spire of Cards, Sundered Hours, Painter's Eye); state in `realm.wonders` (save migrates), stat effects in `heart.wonderMods`.
 - Tests: `tests/sectionD2.test.ts` (6); 947 unit tests.
 
+### Innovation Pack, section E: the Endless Pilgrimage (items 29-34)
+- **29, Divine Seasons** (`data/pilgrimage.ts`, `PilgrimageActions`): a god is ascendant for 8 days (14 gods = the 112-day year); each season has party and enemy modifiers applied to ordinary fights, and a 4-task pilgrimage checklist (battles, champions, favor with the god, regions) paying gold and favor; 14 done gives Pilgrim of the Wheel.
+- **30, Trials of the Day and Week**: the Trial of the Day (4 seeded fights, 2 affixes, streak bonus, Rift Map) joins the existing weekly seeded run on the Endgame screen.
+- **31, Omens**: 50 player-toggled rules in their own pool (`omen-*` ids, none shared with the NG+ world affixes; a test checks). 21 are "fair"; any other switches achievements off. Rules: Endless Blood Moon, Every Chest a Mimic, Giant Heads, Busy Roads, Quiet Roads.
+- **32, Chronicler's Tools**: speedrun timer with 7 splits, 100% tracker, and 12 Vex Codes (after the first clear; each once; they switch achievements off for the save).
+- **33, The Humbled Path**: a challenge mode: you stay level 1, enemies fight at the level cap with 70% less HP and 60% less damage.
+- **34, Fates**: the board lists every ending; Vex's Prank ending is reachable at the start (a hooded peddler in Brightwater sells a chest for 1 gold). 16 endings now.
+- UI: Codex > Realm tabs Divine Seasons, Omens, Chronicler's Tools, Fates. State in `realm.pilgrimage` and `endgame.daily` (saves migrate).
+- Tests: `tests/sectionE.test.ts` (7); 954 unit tests.
+
 ## Cut / deferred
+- **Section E:** the Trial of the Week is the existing weekly run (no second weekly mode). Fates counts 16 endings; the 17th (the Unsworn Ending, R11) arrives with Section H. Giant Heads enlarges portraits and bestiary figures, not the combat canvas. The Humbled Path numbers are untuned (no sim run for it).
 - **Sundered Hours** reshape the present through modifiers and a ledger of consequences, not by redrawing town maps or replacing NPC models. **Painter's Eye** photos are records (scene, caption, commission), not saved images.
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are player-allocated on the Party screen, as a list or an editable graph (phase 21). Companion gear is managed on the Party screen, not by dragging onto a paper doll.

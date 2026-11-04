@@ -3210,7 +3210,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-811 quests, 258 NPCs, 550 dialogues, 14 companions, 15 endings.
+811 quests, 259 NPCs, 551 dialogues, 14 companions, 16 endings.
 
 ### Main story (54)
 
@@ -3978,6 +3978,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **The Two Oaths** (title “Twice-Sworn”): You kneel to two gods and rise with both of their hands on your shoulders. They do not agree about much. They agree about you. The Nameless One, with nothing left to turn against you, turns instead toward the sea, and is carried out on the tide like a name no one meant to forget.
 - **The Last Bargain** (title “the Nameless Heir”): You rise with the Nameless One’s hand in yours, and it does not let go. It has no name. You give it yours, a little at a time, and it takes only what you can spare. In the villages they say a new god walks the road in the dusk. Nobody can say what it is the god of. Everybody agrees it is kind.
 - **The Dawn After** (title “Namebearer”): You have stood at the end of every road: you have broken the six, you have been a god, you have carried two oaths. You speak the whole name, and the name is not a word. It is a long, quiet list of everyone who was ever forgotten, and the Nameless One is the last entry. It listens to itself being read. Then there is light on the Black Throne, ordinary and low, like the first morning of a long journey. The sky has its color back. Every god, including the new ones, stands in it.
+- **The Prank** (title “Punchline”), with a paragraph for each god’s Apostle: You pay a gold coin for the chest, the ancient, glowing, unmistakably cursed chest, and the stranger beaming at you takes her hood down. It is Vex. She is laughing too hard to speak. The chest is full of confetti, and a note: “THE END (for now).” The gods hear about it by evening. Kael declares it the finest opening he has ever seen. Morrath says it was the quickest death he has ever had to not-collect. The world, in the end, has nothing to say about it, and carries on. So, you suspect, will you.
 
 ### Companions
 
@@ -4046,7 +4047,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 ### People
 
-- **Brightwater:** Sister Ansa (Keeper of the Quiet Hall), Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Archivist Tamsin (Priest of Mirrin), Mabry Ladle (Master Cook), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
+- **Brightwater:** A Hooded Peddler (Seller of Chests), Sister Ansa (Keeper of the Quiet Hall), Captain Reyna Holt (Captain of the Watch), Marta (Innkeeper of the Gilded Goose), Tobin Furrow (Farmer), Hobb (Postmaster), Commander Elric Vance (Order of the Dawn), High Lector Amara (Priest of Solenne), Sister Wenna (Priest of Hesha), Archivist Tamsin (Priest of Mirrin), Mabry Ladle (Master Cook), Brother Aldric (Priest of Solenne), Granny Hale (Keeper of the Long Ledger), Ilaria Wingless (Exile of the Open Eye), Vesk Lowlamp (Keeper of Unlit Alleys), Pippa Bramblebread (Matron of the Warm Kitchens), Sergeant Brask (Veteran of the Third Line), Sister Almia (Keeper of the Quiet Cell), Pim the Whisper (Fence and Former Fixer), Orla Spade (Last Gravedigger of Brightwater)
 - **Thornwick:** Huntmother Brannoch (Keeper of the First Horn), Warden-Captain Ysra (Wardens of the Wild), Nim (Herbalist), Old Pell (Retired Miner), Bran the Carver (Stonecarver), Mother Thessa (Priest of Ysolde), Grinning Jack (Priest of Vex), Sleepless Orsa (Priest of Lyssara), Quillon Marsh (Master Apothecary), Delphine Aster (Master Tailor), Fenn Ashwhistle (Lone Hunter), Sylwen (Last Singer of the Old Grove), Mawri Longtail (Packmother of Thornwick), Quillith of the Hours (Warden of Between), Fennel Greenwhistle (Canopy-Warden), Morwen Twice-Buried (Keeper of the Returned), Lady Ressa Vael (Your Mother’s Cousin), Master Orrin Quill (Archivist Emeritus), Old Tarn Whitebrow (Master Tracker)
 - **Sandhaven:** Marshal Tavi Orrin (Master of the Hundred), Marshal Dara Vosk (The Iron Legion), Oduya (Caravan Master), Curator Hesk (Keeper of the Oasis Museum), Lio Two-Dice (Unlucky Gambler), Imani (Healer of the Ever-Lit Hall), Warpriest Tavus (Priest of Kael), Forgemaster Brunhild (Priest of Thalor), Wanderer Pip (Priest of Seraphel), Hadrik Cinderhand (Master Smith), Korga Ironhide (Sellsword), Razha Bloodtide (Chieftain of the Red Sands), Vaskarra Emberwing (Scale-Mother of the Sun Tomb), Cindra Ashfall (Voice of the Cinder Villages), Tsessa Sunbask (Warm-Elder of the Ruins), Sanu the Dealer (Caravan Broker)
 - **Frosthold:** Reader Sunna Hale (Chair of the Open Lectures), Archmage Oriel (The Mages’ Guild), Archivist Senne (Guild Archivist), Ulla (Trapper), Brannoc (Sled-Driver), Loremaster Ivo (Priest of Aurelis), The Pale Warden (Priest of Morrath), Keeper Dag (Priest of Ordrun), Ysenne Vael (Runewright), Ilyra Vael (Guild Mage), Grundi Anvilbrow (Warden of the Cold Forge), Tizzle Springcog (Inventor-in-Chief of Frosthold), Oskald Greymantle (Speaker of the High Table), Unit Orrin (First of the Reawakened), Master Hild Ironbraid (Smith of the Cold Forge), Ketil No-Home (Fellow Exile)
@@ -4346,6 +4347,7 @@ At any town (level 30+): all 57 dungeon bosses in road order at your level, HP c
 - **Godless:** The gods never warm to you: you gain no favor (you can still lose it), so no blessings, prayers or interventions.
 - **Glass Cannon:** Half your max HP, but you deal 30% more damage.
 - **Nightmare:** Every enemy has 50% more HP and deals 40% more damage; you find far more (+100% Magic Find and Gold Find).
+- **The Humbled Path:** You stay at level 1 for the whole story. Every enemy fights at the level cap, but they are made of paper: 70% less HP and 60% less damage. Gear, skills and cleverness only.
 - **Pacifist:** No one dies by your hand: a foe that would fall yields instead and walks away (it counts as spared, so no kills, no corpses and no loot from it). Bosses yield too.
 
 ### Primordial items (20)

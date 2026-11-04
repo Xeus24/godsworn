@@ -115,3 +115,14 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 | Spire of Cards (26) | `engine/realm/wonders.ts` (spireOpponent, spireDuel); `realm.wonders.spire` | reuses `aiPick` and `playRound`; relics add power per card |
 | Sundered Hours (27) | `data/wonders.ts` (ERAS, TURNING_POINTS); `realm.wonders.sundered` | choices feed `heart.wonderMods` via `WondersActions.refresh` |
 | Painter's Eye (28) | `data/wonders.ts` (COMMISSIONS, PAINTER); `realm.wonders.painter` | `photo` matches `scene()` to commissions; family sketches add a damage modifier |
+
+## The Endless Pilgrimage (Innovation Pack, section E, items 29-34)
+
+| System | Where | Hooks |
+|---|---|---|
+| Divine Seasons (29) | `data/pilgrimage.ts` (DIVINE_SEASONS, SEASONS); `engine/realm/pilgrimage.ts` seasonOf | `PilgrimageActions` listens to combatEnded, enemyKilled, favorChanged, zoneEntered; `partyMods/enemyMods` are added in `main.ts` for ordinary fights |
+| Trial of the Day (30) | `EndgameActions.startDaily`; `endgame.daily` | kind `daily` in `GauntletState`; `end()` pays and tracks the streak |
+| Omens (31) | `OMENS`; hero `world.omens` mirrors `realm.pilgrimage.omens` | enemy/party mods in `main.ts`; rules read in `WorldActions` (mimics, blood moon, encounter rate); `achievementsOff()` gates `AchievementActions.check` |
+| Chronicler's Tools (32) | `SPLITS`, `VEX_CODES` | `tick` on timeChanged; `enterCode` sets `cheated` |
+| Humbled Path (33) | `CHALLENGES` rule `humbled` | `GameSession.grantXp` caps level 1; `createEncounterBattle` lifts enemy level to the cap |
+| Fates (34) | `data/story/fates.ts` (peddler-vex, d-vex-chest, vex-prank) | `PilgrimageActions.fates` reads `legacy.endings` |

@@ -1,6 +1,8 @@
+import { hasRule } from '../character/challenges';
 import { content } from '../../data';
 import { MinigameActions } from './minigameActions';
 import { WondersActions } from './wondersActions';
+import { PilgrimageActions } from './pilgrimageActions';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
@@ -217,6 +219,7 @@ export class GameSession {
   readonly endgame: EndgameActions;
   readonly realm: RealmActions;
   readonly wonders: WondersActions;
+  readonly pilgrimage: PilgrimageActions;
   readonly heart: HeartActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
@@ -239,6 +242,7 @@ export class GameSession {
     this.endgame = new EndgameActions(this);
     this.realm = new RealmActions(this);
     this.wonders = new WondersActions(this);
+    this.pilgrimage = new PilgrimageActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {
@@ -319,7 +323,7 @@ export class GameSession {
     const p = this.player;
     const bonus = raw ? 0 : characterStats(p).xpGain + (effectOn(this.state.clock.day).xp ?? 0);
     const total = Math.floor(amount * (1 + bonus / 100));
-    const result = grantXp(p, total, this.state.levelCap);
+    const result = grantXp(p, total, hasRule(p, 'humbled') ? 1 : this.state.levelCap);
     this.bus.emit('xpGained', { characterId: p.id, amount: total });
     this.party.shareXp(total);
     for (const level of result.levels) this.bus.emit('levelUp', { characterId: p.id, level });

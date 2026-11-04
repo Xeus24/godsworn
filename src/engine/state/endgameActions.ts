@@ -3,6 +3,7 @@ import { content } from '../../data';
 import { RIFT_AFFIXES, RIFTS } from '../../data/rifts';
 import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
 import { ATLAS, ATLAS_NODES, CONSTELLATIONS } from '../../data/atlas';
+import { TRIALS } from '../../data/pilgrimage';
 import { Rng } from '../core/rng';
 import { atLeast } from '../gods/devotion';
 import { createItem } from '../items/generate';
@@ -278,6 +279,40 @@ export class EndgameActions {
     return { ok: true };
   }
 
+  // ------------------------------------------------------------ the Trial of the Day
+
+  /** The seed of the day: whole days since the epoch (UTC), the same for everyone. */
+  static dailySeed(date: Date): number {
+    return Math.floor(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 86400000);
+  }
+
+  canStartDaily(): EndgameResult {
+    return this.canStartMode(TRIALS.dailyMinLevel, 'The Trial of the Day');
+  }
+
+  /** A short seeded dungeon with twists, the same for everyone today. */
+  startDaily(seed: number): EndgameResult {
+    const check = this.canStartDaily();
+    if (!check.ok) return check;
+    const d = this.e.daily;
+    if (d.seed !== seed) this.e.daily = { ...d, seed, best: 0, claimed: false };
+    const rng = new Rng(seed * 40503 + 17);
+    const zones = content.zones.all().filter((z) => !z.ngPlus || this.s.state.ngPlus >= z.ngPlus);
+    const level = this.s.player.level + 1;
+    const fights: GauntletState['fights'] = [];
+    for (let i = 0; i < TRIALS.dailyFights - 1; i++) {
+      const zone = rng.pick(zones);
+      fights.push({ encounter: groupEncounter(rng.weighted(zone.encounters, (g) => g.weight), `gauntlet:daily:${i}`, `Today, fight ${i + 1}`, level, { canFlee: false, threat: i * 6 }), level });
+    }
+    const boss = rng.pick(content.dungeons.all().map((x) => x.boss));
+    fights.push({ encounter: groupEncounter({ weight: 1, enemies: [{ enemyId: boss }] }, `gauntlet:daily:${TRIALS.dailyFights - 1}`, `Today, guardian: ${content.enemies.get(boss).name}`, level, { canFlee: false, isBoss: true, threat: 25 }), level });
+    const affixes = rng.sample(RIFT_AFFIXES.map((a) => a.id), TRIALS.dailyAffixes);
+    this.e.active = { kind: 'daily', tier: 6, fights, wave: 0, affixes, turns: 0, gold: 0, seed };
+    this.toast('quest', `Trial of the Day ${seed}: the same dungeon for everyone today.`);
+    this.s.bus.emit('stateChanged', { reason: 'daily' });
+    return { ok: true };
+  }
+
   // ------------------------------------------------------------ the Celestial Atlas
 
   atlasNode(id: string): (typeof ATLAS_NODES)[number] | undefined {
@@ -401,7 +436,7 @@ export class EndgameActions {
     if (a.kind === 'spire') this.nextFloor(a);
     if (last) this.end(a, true);
     else {
-      if (a.kind !== 'bossRush') this.respite(a.kind === 'league' ? LEAGUE.respitePct : a.kind === 'weekly' ? WEEKLY.respitePct : a.kind === 'atlas' ? 10 : RIFTS.respitePct);
+      if (a.kind !== 'bossRush') this.respite(a.kind === 'league' ? LEAGUE.respitePct : a.kind === 'weekly' ? WEEKLY.respitePct : a.kind === 'atlas' ? 10 : a.kind === 'daily' ? TRIALS.respitePct : RIFTS.respitePct);
       this.s.bus.emit('stateChanged', { reason: 'gauntlet' });
     }
   }
@@ -484,6 +519,17 @@ export class EndgameActions {
         this.toast('level', `Season won! You are now ${LEAGUE.ranks[e.league.rank]}. +${gold} gold.`);
         if (e.league.rank === LEAGUE.ranks.length - 1 && !this.s.player.devotion.titles.includes('Arena Champion of Champions')) this.s.player.devotion.titles.push('Arena Champion of Champions');
       } else this.toast('warning', `The season ends: ${a.wave} of ${a.fights.length} champions beaten. Your rank holds.`);
+    } else if (a.kind === 'daily') {
+      const d = e.daily;
+      d.best = Math.max(d.best, a.wave);
+      if (won && !d.claimed) {
+        d.claimed = true;
+        d.streak = d.lastDay === (a.seed ?? 0) - 1 ? d.streak + 1 : 1;
+        d.lastDay = a.seed ?? 0;
+        const gold = Math.round(TRIALS.dailyGoldPerLevel * this.s.player.level * (1 + Math.min(d.streak, TRIALS.dailyStreakCap) * TRIALS.dailyStreakBonus));
+        this.s.items.receiveLoot([createItem('rift-map', TRIALS.dailyRiftMaps, () => this.s.newUid())], gold);
+        this.toast('level', `Trial of the Day done (streak ${d.streak}): +${gold} gold and a Rift Map.`);
+      } else this.toast(won ? 'info' : 'warning', won ? 'Cleared again. Today’s prize was already claimed.' : `Today's trial ends after ${a.wave} of ${a.fights.length} fights.`);
     } else if (a.kind === 'atlas') {
       const n = this.atlasNode(a.atlas as string);
       if (won && n) {

@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import { createMinigameState } from '../minigames/state';
 import { createWondersState } from '../realm/wonders';
+import { createPilgrimageState } from '../realm/pilgrimage';
 import { createEndgameState } from '../endgame/types';
 import { BUILD_SLOTS } from '../skills/treeTypes';
 import { emptyBuild } from '../skills/tree';
@@ -139,6 +140,7 @@ export function migrate(raw: Json): Json {
   realm.chronicle ??= { seed: 0, events: [], known: {}, commissions: [], completed: [] };
   realm.tales ??= {};
   realm.observatory ??= { clues: [] };
+  realm.pilgrimage ??= createPilgrimageState() as unknown as Json;
   realm.wonders ??= createWondersState() as unknown as Json;
   realm.village ??= { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] };
   realm.ranch ??= { creatures: [], capacity: 12, next: 1 };
@@ -150,6 +152,7 @@ export function migrate(raw: Json): Json {
   eg.divine ??= {};
   eg.league ??= { rank: 0, seasons: 0, fights: 0 };
   eg.atlas ??= { cleared: {}, stars: 0, board: {} };
+  eg.daily ??= { seed: 0, best: 0, claimed: false, streak: 0, lastDay: 0 };
   eg.weekly ??= { seed: 0, best: 0, bestTurns: 0, claimed: false };
   state.endgame = eg;
   // Version 21 (New Game+): world affixes start empty.
