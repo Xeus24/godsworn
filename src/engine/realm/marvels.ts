@@ -71,6 +71,31 @@ export interface TrialsState {
   dives: { best: Record<string, number>; active?: { wreck: string; air: number; haul: number; seed: number; turn: number; log: string[] } };
   /** Sky Islands (54): attempts and solved. */
   islands: Record<string, { attempts: number; solved: boolean }>;
+  /** Living Dungeons (51): visits per dungeon; each visit rearranges it. */
+  visits?: Record<string, number>;
+  /** Shrine Defense (41). */
+  defense?: { best: number; runs: number; wins: number; run?: DefenseRun };
+  /** Pantheon Chess (59). */
+  chess?: { wins: Record<string, number>; losses: number; draws: number; game?: ChessGame };
+}
+
+export interface DefenseRun {
+  seed: number;
+  wave: number;
+  shrine: number;
+  faith: number;
+  /** Tower id per slot ('' = empty). */
+  towers: string[];
+  log: string[];
+}
+
+export interface ChessGame {
+  god: string;
+  /** 36 cells, row 0 at the top (the god's side). Pieces are letters: uppercase yours, lowercase the god's; '.' empty. */
+  board: string;
+  turn: 'you' | 'god';
+  moves: number;
+  last?: string;
 }
 
 export const createTrials = (): TrialsState => ({ tournament: { entered: 0, champion: [], rounds: 0 }, dreams: {}, hunts: {}, dives: { best: {} }, islands: {} });

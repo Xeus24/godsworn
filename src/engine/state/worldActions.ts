@@ -3,6 +3,7 @@ import { allSecrets, secretById, secretCount, secretFlag, type SecretDef } from 
 import type { UtilityKind } from '../skills/generalTypes';
 import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
+import { rearrange } from '../world/living';
 import { content } from '../../data';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { characterStats, restoreFull } from '../character/stats';
@@ -118,7 +119,19 @@ export class WorldActions {
   }
 
   get map(): TileMap {
-    return mapFor(this.world.position.map);
+    const m = mapFor(this.world.position.map);
+    if (isDungeon(m.id)) this.living(m);
+    return m;
+  }
+
+  private shuffled = new Map<string, number>();
+
+  /** Living Dungeons: put the monsters and chests where this visit has them. */
+  private living(m: TileMap): void {
+    const v = this.s.trials.t.visits?.[m.id] ?? 0;
+    if (this.shuffled.get(m.id) === v) return;
+    rearrange(m, v);
+    this.shuffled.set(m.id, v);
   }
 
   get zone(): ZoneDef {
@@ -380,9 +393,12 @@ export class WorldActions {
       case 'dungeon': {
         const d = e.ref as string;
         enterDungeon(this.world, d, this.day);
+        const tv = (this.s.trials.t.visits ??= {});
+        tv[d] = (tv[d] ?? 0) + 1;
         this.world.dsteps = 0;
         delete this.world.checkpoint;
         const dm = mapFor(d);
+        this.living(dm);
         this.placeAt(d, dm.spawns.entrance[0] + 1, dm.spawns.entrance[1]);
         this.world.grace = ENCOUNTER_GRACE;
         return { kind: 'map', message: `You enter ${dm.name}.` };

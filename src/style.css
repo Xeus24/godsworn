@@ -931,3 +931,11 @@ body.reduce-motion .codex-portrait canvas { animation: none !important; }
 
 /* NPC emote bubbles */
 .emote { margin-left: 0.5em; padding: 0 0.4em; border: 1px solid currentColor; border-radius: 0.8em; font-size: 0.8em; opacity: 0.75; }
+
+/* The Gods' Gambit board */
+.gambit-cell { height: 2.4em; font-size: 1.2em; padding: 0; background: var(--panel-alt, #2a2438); border: 1px solid #554a70; }
+.gambit-cell:nth-child(even) { filter: brightness(1.15); }
+.gambit-cell.mine { color: #ffd84a; }
+.gambit-cell.theirs { color: #c88; }
+.gambit-cell.sel { outline: 2px solid #ffd84a; }
+.gambit-cell.target { outline: 2px dashed #6fdc8a; }

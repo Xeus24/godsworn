@@ -138,3 +138,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## More wonders: trials (section G, items 43, 54-57)
 `TrialsActions` (`s.trials`, `realm.marvels.trials`) registers `s.specials` for `tournament`, `dream` and `hunt`, each started with `EndgameActions.startSpecial` and settled when the run ends. `foes()` picks enemies by creature type and tier near the hero's level, widening the band until there are enough. Diving keeps its run in `trials.dives.active`.
+
+## More wonders: games and the Testament (section G, items 41, 51, 59, 60)
+`GamesActions` (`s.games`) keeps Shrine Defense and the Gods' Gambit in `realm.marvels.trials.defense/.chess`. `world/living.ts` `rearrange(map, visit)` restores each movable entity (`pack-*`, `chest-*`) to its original tile and then deals new ones from the free floor; `WorldActions.map` calls it whenever a dungeon's visit counter (`trials.visits`) differs from the last shuffle, so a reloaded save sees the same rooms. `writeTestament(state)` is a pure function.
