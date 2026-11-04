@@ -17,6 +17,8 @@ function strongest(item: ItemInstance, kind: 'prefix' | 'suffix', c: Content): R
  */
 export function itemName(item: ItemInstance, c: Content = content): string {
   const base = baseOf(item, c);
+  if (item.trophy) return `${c.enemies.find(item.trophy.boss)?.name ?? 'Boss'} ${item.trophy.part}`;
+  if (item.label) return item.label;
   if (!item.identified) return `Unidentified ${base.name}`;
   const unique = uniqueOf(item, c);
   if (unique) return `${item.ascended ? 'Ascended ' : ''}${unique.name}`;

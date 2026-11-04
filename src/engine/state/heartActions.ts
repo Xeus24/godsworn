@@ -12,6 +12,9 @@ import { favorOf } from '../gods/devotion';
 import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
 import { characterStats } from '../character/stats';
+import { SIGILS } from '../../data/heart/sigils';
+import { evaluate } from '../quests/conditions';
+import { learnedSlots, sigilSlots } from '../heart/heart';
 import { bondFor, growBond, heartOf, note, settle, type HeartProgress } from '../heart/heart';
 import type { Ancestor, Heir } from '../realm/types';
 import type { GameSession } from './gameState';
@@ -62,6 +65,7 @@ export class HeartActions {
 
   /** A new day: beliefs that have settled are held, and the gods who care say so. */
   onDay(): void {
+    this.findSigils();
     for (const c of settle(this.h, this.day)) this.holdAnnounce(c);
   }
 
@@ -73,6 +77,91 @@ export class HeartActions {
 
   holds(id: string): boolean {
     return this.h.held.includes(id) || this.h.inherited.includes(id);
+  }
+
+  // ------------------------------------------------------------ Borrowed Arts
+
+  /** Classes you have trained in other than your own: any you have taken, and any whose trial you have won. */
+  trainedClasses(): string[] {
+    const p = this.s.player;
+    const own = p.classes[0]?.classId;
+    const ids = new Set<string>(p.classes.map((c) => c.classId));
+    for (const t of content.classTrials.all()) if (p.trialsWon.includes(t.encounter)) ids.add(t.classId);
+    if (own) ids.delete(own);
+    return [...ids];
+  }
+
+  /** The active skills of a class's tree that can be borrowed. */
+  borrowable(classId: string): { skill: string; name: string }[] {
+    const tree = content.trees.find(classId);
+    if (!tree) return [];
+    const seen = new Set<string>();
+    return tree.nodes.flatMap((n) => {
+      if (n.kind !== 'active' || !n.skill || n.feat || seen.has(n.skill)) return [];
+      seen.add(n.skill);
+      const def = content.skills.find(n.skill);
+      return def && !def.ultimate && !def.team && !def.weaponArt ? [{ skill: n.skill, name: def.name }] : [];
+    });
+  }
+
+  studyCost(): number {
+    return 120 * Math.max(5, this.s.player.level);
+  }
+
+  /** Spends a day and gold to learn a skill of a class you have trained in. */
+  borrow(skillId: string): { ok: boolean; reason?: string } {
+    const h = this.h;
+    if (h.borrowed.includes(skillId)) return { ok: false, reason: 'You already know it.' };
+    if (h.borrowed.length >= learnedSlots(this.s.player)) return { ok: false, reason: 'All your Learned Arts slots are full. Forget one first.' };
+    const ok = this.trainedClasses().some((cid) => this.borrowable(cid).some((b) => b.skill === skillId));
+    if (!ok) return { ok: false, reason: 'You have not trained in that class.' };
+    if (this.s.player.classes.some((c) => content.trees.find(c.classId)?.nodes.some((n) => n.skill === skillId))) return { ok: false, reason: 'That is already one of your own.' };
+    if (!this.s.spendGold(this.studyCost(), 'study')) return { ok: false, reason: `Study costs ${this.studyCost()} gold.` };
+    this.s.advanceTime(480);
+    h.borrowed.push(skillId);
+    this.s.bus.emit('toast', { kind: 'level', text: `You have learned ${content.skills.get(skillId).name}. It sits in your Learned Arts.` });
+    this.s.bus.emit('stateChanged', { reason: 'borrow' });
+    return { ok: true };
+  }
+
+  forgetArt(skillId: string): void {
+    this.h.borrowed = this.h.borrowed.filter((x) => x !== skillId);
+    this.s.bus.emit('stateChanged', { reason: 'borrow' });
+  }
+
+  // ------------------------------------------------------------ Sigils of the Old Faith
+
+  /** Finds any sigil whose deed has been done. */
+  findSigils(): void {
+    const h = this.h;
+    for (const sg of SIGILS) {
+      if (h.sigilsFound.includes(sg.id) || !evaluate(this.s.state, sg.found)) continue;
+      h.sigilsFound.push(sg.id);
+      this.s.bus.emit('toast', { kind: 'quest', text: `A sigil of the Old Faith comes to you: ${sg.name}.` });
+    }
+  }
+
+  /** Puts a found sigil in a slot (or takes it out). */
+  slotSigil(id: string, over = false): { ok: boolean; reason?: string } {
+    const h = this.h;
+    if (!h.sigilsFound.includes(id)) return { ok: false, reason: 'You have not found that sigil.' };
+    const at = h.sigils.findIndex((x) => x.id === id);
+    if (at >= 0) {
+      h.sigils.splice(at, 1);
+      this.s.bus.emit('stateChanged', { reason: 'sigil' });
+      return { ok: true };
+    }
+    if (h.sigils.length >= sigilSlots(this.s.player)) return { ok: false, reason: 'All your Sigil Slots are full.' };
+    h.sigils.push({ id, over });
+    this.s.bus.emit('stateChanged', { reason: 'sigil' });
+    return { ok: true };
+  }
+
+  /** Overcharges or calms a slotted sigil. */
+  overcharge(id: string): void {
+    const sg = this.h.sigils.find((x) => x.id === id);
+    if (sg) sg.over = !sg.over;
+    this.s.bus.emit('stateChanged', { reason: 'sigil' });
   }
 
   // ------------------------------------------------------------ bonds

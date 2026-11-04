@@ -706,7 +706,7 @@ Generated from the data files by `npm run content:md`.
 
 **Corruptions:** boons: Void Edge (+25% damage), Hungering (+8% lifesteal), Whispering (+8% crit chance, +30% crit damage), Unyielding (12% less damage taken), Abyssal Vigor (+15% max HP), Starved Mind (+25% magic attack), Greed (+40% magic find), Void-Touched (+30% void damage and resist). Drawbacks: Brittle (-15% defense), Sluggish (-3 speed), Ever-Bleeding (-6 HP per turn), Forsaken (-30% favor gain), Frail (-10% max HP), Hexed (-20% status resist), Drained (-15% max MP), Unlucky (-5% crit chance).
 
-### Consumables (143)
+### Consumables (146)
 
 - Minor Health Potion: Restores 25% of max HP.
 - Minor Mana Potion: Restores 40 MP.
@@ -851,8 +851,11 @@ Generated from the data files by `npm run content:md`.
 - Undertow Charm: Anchors you to the road: -70 Undertow in the Drowned Kingdom.
 - Quench Oil: Cools the air around you: -70 Godfire in the Godforge.
 - Ward Salt: A pinch against the Unwritten: -60 Corruption in the Dark Citadel.
+- Soul Seal: Throw at a weakened creature to bind its soul (35% strength; the weaker the creature, the likelier). A bound creature joins your ranch and fights beside you.
+- Silver Soul Seal: Throw at a weakened creature to bind its soul (60% strength; the weaker the creature, the likelier). A bound creature joins your ranch and fights beside you.
+- Gilded Soul Seal: Throw at a weakened creature to bind its soul (85% strength; the weaker the creature, the likelier). A bound creature joins your ranch and fights beside you.
 
-**Materials (65):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment, Coal, Silver Ore, Steel Ingot, Mithril Ingot, Adamant Ingot, Starmetal Ingot, Yew Plank, Ironwood Plank, Wolf Pelt, Boar Hide, Bear Hide, Serpent Skin, Wyvern Leather, Wool Bolt, Spider Silk, Thread of Dawn, Wild Garlic, Thornberry, Moonpetal, Nightshade, Ghostcap, Salt Cod, Pike, Glass Eel, Venison, Boar Meat, Honeycomb, Sea Salt, Black Pepper, Saffron
+**Materials (66):** Iron Ore, Mithril Ore, Adamant Ore, Starmetal Ore, Ashwood Plank, Elderwood Plank, Rough Hide, Thick Hide, Drake Scale, Linen Scrap, Silk Bolt, Moonsilk, Healroot, Manabloom, Fireweed, Frostleaf, Sunpetal, Dreamleaf, River Trout, Silverfin, Ember Eel, Faint Essence, Lesser Essence, Greater Essence, Radiant Essence, Mythic Essence, Primal Essence, Beast Fang, Bone Dust, Slime Gel, Harpy Feather, Wyvern Scale, Demon Horn, Divine Shard, Void Fragment, Coal, Silver Ore, Steel Ingot, Mithril Ingot, Adamant Ingot, Starmetal Ingot, Yew Plank, Ironwood Plank, Wolf Pelt, Boar Hide, Bear Hide, Serpent Skin, Wyvern Leather, Wool Bolt, Spider Silk, Thread of Dawn, Wild Garlic, Thornberry, Moonpetal, Nightshade, Ghostcap, Salt Cod, Pike, Glass Eel, Venison, Boar Meat, Honeycomb, Sea Salt, Black Pepper, Saffron, Boss Trophy
 
 **Curiosities (81):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap, Moon-Stuffed Pillow, Chip of a Cornerstone, Little Wind-Bell, Dated Ledger Page, Dead Man’s Pocketwatch, Saint’s Fingerbone Charm, Pressed Thornberry, Lopsided Tin Soldier, Torn Treasure Chart, Crowned Key, Moth-Eaten Playbill, Glass Feather, Miller's Lucky Penny, Straw Crown, Amber Honeycomb, Shepherd Whistle, Twin-Name Willow Ring, Royal Tax Ledger, Brass Windvane, Poacher Tally-Stick, Seed of the Last Grove, Bottled Whisper, Silver Fox Collar, Unlit Lantern Core, Antler Circlet, Moth-Eaten Folio, Tide-Stained Chart, Foreman Lunchbox, Humming Geode, Clapper of the Drowned Bell, Eyeless Fish Idol, Calcified Key, Fungal Ledger, Caravan Master Seal, Priest's Glass Tear, Scorpion Crown Spur, Mirage Bucket, Bone Chess Queen, Fulgurite Blossom, Sandworm Eggshell, Frost-Stilled Lute String, Climber Prayer Flag, Yeti Hair Charm, Comb of Frozen Hours, Snowbound Vow-Scroll, Pilgrim Ember-Box, Captain's Frozen Log, Black Mara's Compass, Keeper Lamp Wick, Pearl Comb, Bottled Squall, Salt Merchant Seal, Whalebone Veil, Kraken Sucker-Ring, Wagered Hammerhead, Cradle of Cinders, Obsidian Hand-Mirror, Salamander Scale Charm, Anvil Tuning Fork, Magma Pearl, Ash Prophet Bowl, Gaoler Keyring, Splinter of the Black Throne, Queen's Unsent Letter, Executioner Whetstone, Silent Jester Bell, Shard of a Broken Oath, Hollow Knight Gauntlet
 
@@ -2945,7 +2948,7 @@ Every town has the core shops; stock rolls daily at your level. Shops pay 25% of
 | **Blacksmith** | x1 | Weapons, repairs and ore. | Every town |
 | **Armorer** | x1 | Armor and jewelry. | Every town |
 | **Alchemist** | x1 | Potions, elixirs, bombs, herbs and alchemy recipes. | Every town |
-| **General Store** | x1 | Food, scrolls, keys, bags and cooking recipes. | Every town |
+| **General Store** | x1 | Food, scrolls, keys, bags, Soul Seals and cooking recipes. | Every town |
 | **Magic Shop** | x1.1 | Gems, runes, staves and wands, and enchanting and jewelcrafting recipes. | Every town |
 | **Library** | x1.2 | Skillbooks for sale (or study one you own). | Every town |
 | **Temple Merchant** | x1.5 | Divine goods for the faithful: each god’s Divine items (at the devotion they ask) and holy wares. Discounts grow with your favor. | Every town |

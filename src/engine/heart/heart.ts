@@ -1,6 +1,7 @@
 import { content, type Content } from '../../data';
 import { BOND_RANK_POINTS, BONDS, bondMods, type BondDef } from '../../data/heart/bonds';
 import { CONVICTIONS, SETTLE_DAYS, type ConvictionDef, type LeanEvent } from '../../data/heart/convictions';
+import { SIGILS, SIGIL_SLOTS } from '../../data/heart/sigils';
 import { QUIRKS } from '../../data/heart/bloodline';
 import type { Character } from '../character/types';
 import type { Modifier } from '../stats/modifiers';
@@ -24,11 +25,16 @@ export interface HeartProgress {
   quirks: string[];
   /** Convictions inherited at birth: held from the first day, and not settling. */
   inherited: string[];
+  /** Sigils found, and the ones in the Sigil Slots (overcharged or not). */
+  sigilsFound: string[];
+  sigils: { id: string; over: boolean }[];
+  /** Borrowed arts in the Learned Arts slots (skill ids). */
+  borrowed: string[];
   /** The day the Wayfarer's haggle ends (the shops are 10% cheaper on it). */
   haggleDay?: number;
 }
 
-export const createHeart = (): HeartProgress => ({ lean: {}, adopted: {}, held: [], bonds: {}, bondDay: {}, claimed: [], quirks: [], inherited: [] });
+export const createHeart = (): HeartProgress => ({ lean: {}, adopted: {}, held: [], bonds: {}, bondDay: {}, claimed: [], quirks: [], inherited: [], sigilsFound: [], sigils: [], borrowed: [] });
 
 export function heartOf(char: Character): HeartProgress {
   const w = char.world as { heart?: HeartProgress };
@@ -41,6 +47,9 @@ export function heartOf(char: Character): HeartProgress {
   h.claimed ??= [];
   h.quirks ??= [];
   h.inherited ??= [];
+  h.sigilsFound ??= [];
+  h.sigils ??= [];
+  h.borrowed ??= [];
   return h;
 }
 
@@ -111,6 +120,16 @@ export function heartModifiers(char: Character, c: Content = content): Modifier[
   const mods: Modifier[] = [];
   for (const conv of heldConvictions(h)) for (const m of conv.mods) mods.push({ ...m, source: `conviction:${conv.id}` } as Modifier);
   for (const b of BONDS) for (const m of bondMods(b, bondRank(h.bonds[b.id] ?? 0))) mods.push({ ...m, source: `bond:${b.id}` } as Modifier);
+  for (const sg of h.sigils) {
+    const def = SIGILS.find((x) => x.id === sg.id);
+    for (const m of (sg.over ? def?.over : def?.mods) ?? []) mods.push({ ...m, source: `sigil:${sg.id}` } as Modifier);
+  }
   for (const q of h.quirks) for (const m of QUIRKS.find((x) => x.id === q)?.mods ?? []) mods.push({ ...m, source: `quirk:${q}` } as Modifier);
   return mods;
 }
+
+/** Learned Arts slots: two, and one more at levels 40 and 70. */
+export const learnedSlots = (char: Character): number => 2 + [40, 70].filter((l) => char.level >= l).length;
+
+/** How many Sigil Slots the hero has: three, and one more at levels 30 and 60. */
+export const sigilSlots = (char: Character): number => SIGIL_SLOTS.base + SIGIL_SLOTS.extraAt.filter((l) => char.level >= l).length;

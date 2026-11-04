@@ -159,6 +159,30 @@ export interface BloodlineState {
   heir?: Heir;
 }
 
+/** A creature bound with a Soul Seal (Innovation Pack, item 11). */
+export interface Soulbound {
+  id: string;
+  /** The kind of creature (an enemy id from the roster). */
+  enemyId: string;
+  /** What you call it: its kind's name, or the evolved form's. */
+  name: string;
+  level: number;
+  xp: number;
+  /** 0, 1 or 2: how many times it has evolved. */
+  stage: number;
+  /** Where and when it was bound. */
+  zone: string;
+  day: number;
+}
+
+export interface RanchState {
+  creatures: Soulbound[];
+  /** The one that fights beside you. */
+  active?: string;
+  capacity: number;
+  next: number;
+}
+
 export interface RealmState {
   grudge: GrudgeState;
   marrow: MarrowState;
@@ -168,10 +192,11 @@ export interface RealmState {
   /** Campfire Tales heard: pair id -> scenes heard (item 17). */
   tales: Record<string, number>;
   bloodline: BloodlineState;
+  ranch: RanchState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] }, ranch: { creatures: [], capacity: 12, next: 1 } };
 }
 
 export function createMarrowState(): MarrowState {

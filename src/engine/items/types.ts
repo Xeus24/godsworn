@@ -367,4 +367,8 @@ export interface ItemInstance {
   awakening?: { progress: number; awakened: boolean };
   /** Living items: experience earned so far. */
   livingXp?: number;
+  /** A boss trophy: whose, and which part (Trophy Forging). */
+  trophy?: { boss: string; part: string };
+  /** A forged piece carries its own name (Trophy Forging). */
+  label?: string;
 }

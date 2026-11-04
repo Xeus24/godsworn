@@ -84,7 +84,7 @@ export class Battle {
   volley = 0;
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
-  readonly tally: BattleTally = { mercy: [], kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
+  readonly tally: BattleTally = { parts: [], bound: [], mercy: [], kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0 };
   /** Events produced since the last drain. */
   private buffer: BattleEvent[] = [];
   private uid = 0;

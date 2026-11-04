@@ -91,6 +91,7 @@ describe('dispatchProcs', () => {
       heal: (_s, c) => log.push(`${c.who} heal`),
       restoreMp: (s) => log.push(`mp ${s.amount}`),
       gainResource: (s) => log.push(`${s.resource} +${s.amount}`),
+      bind: () => log.push('bind'),
       applyStatus: (s) => log.push(`status ${s.status}`),
       removeStatus: (s) => log.push(`cleanse ${s.status}`),
       shield: () => log.push('shield'),

@@ -423,6 +423,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     autoTactics: { mercy: settings().autoMercy, maneuvers: settings().autoManeuvers },
     mercy: { deeds: Number(s.state.flags['mercy'] ?? 0), hesha: atLeast(s.player, 'hesha', 'favored') },
     ...(volley ? { volley } : {}),
+    ...(s.realm.activeCreature() ? { soulbound: s.realm.activeCreature() } : {}),
     // The room itself: barrels, chandeliers, holy ground and lava, and who struck first on the road.
     ...(world || !encounter.isBoss ? { features: rollFeatures(s.rng, s.world.map.biome, s.world.zone.id) } : {}),
     ...(world && !encounter.isBoss ? openingFor(s) : {}),

@@ -8,6 +8,7 @@ import type { Battle } from './battle';
 import { createSummon } from './combatants';
 import { addShield, dealDamage, gainResource, healTarget } from './hits';
 import { useSkill } from './skills';
+import { tryBind } from './soulbind';
 import { applyStatus, removeStatus } from './statuses';
 import type { Combatant } from './types';
 
@@ -90,6 +91,9 @@ export function applyEffect(b: Battle, owner: Combatant, e: EffectSpec, defaults
       return;
     case 'gainResource':
       gainResource(b, owner, e.resource, e.amount);
+      return;
+    case 'bind':
+      for (const t of resolveEffectTargets(b, owner, e.target, defaults)) tryBind(b, owner, t, e.power);
       return;
     case 'applyStatus':
       for (const t of resolveEffectTargets(b, owner, e.target, defaults)) {

@@ -250,6 +250,10 @@ export interface Combatant {
   enemyId?: string;
   /** The Grudgebound this foe is (see `engine/realm`). */
   grudgeId?: string;
+  /** The bound creature this is (see `RanchState`). */
+  soulboundId?: string;
+  /** Parts of a boss already broken. */
+  brokenParts?: string[];
   /** What it means to do next (Divine Foresight). */
   intent?: Intent;
   summonId?: string;
@@ -318,7 +322,7 @@ export type BattleEvent =
   | { type: 'revive'; targetId: string }
   | { type: 'summon'; combatantId: string }
   | { type: 'break'; targetId: string }
-  | { type: 'combo'; targetId: string; name: 'Shatter' | 'Conduct' | 'Electrify' | 'Explosion' | 'Covenant' }
+  | { type: 'combo'; targetId: string; name: 'Shatter' | 'Conduct' | 'Electrify' | 'Explosion' | 'Covenant' | 'Part Broken' }
   | { type: 'chain'; count: number }
   | { type: 'skip'; actorId: string; reason: string }
   | { type: 'resource'; targetId: string }
@@ -332,6 +336,10 @@ export type BattleOutcome = 'ongoing' | 'victory' | 'defeat' | 'fled';
 
 /** What the battle tracked, for rewards, relic deeds and stats. */
 export interface BattleTally {
+  /** Creatures bound with Soul Seals this fight (Soulbinding). */
+  bound: { enemyId: string; level: number; name: string }[];
+  /** Boss parts broken this fight (Trophy Forging). */
+  parts: { enemyId: string; part: string }[];
   /** Foes spared through Talk (Hesha's Mercy), and whether each was a boss. */
   mercy: { enemyId: string; boss: boolean }[];
   kills: { enemyId: string; level: number; tier: EnemyTier; types: string[]; xp: number; lootTable?: string; element?: Element; enraged?: boolean }[];

@@ -1,6 +1,9 @@
 import { content } from '../../data';
 import { ERAS } from '../../data/realm/chronicle';
 import { eraName } from '../../engine/realm/chronicle';
+import { SOULBOUND } from '../../data/soulbound';
+import { movesKnown } from '../../engine/realm/ranch';
+import { partsFor } from '../../data/trophies';
 import { ECHOES } from '../../data/realm/echoes';
 import { GRUDGE_SLOTS } from '../../data/realm/grudge';
 import { FESTIVALS, SEASONS, SEASON_DAYS, YEAR_DAYS } from '../../data/realm/wheel';
@@ -9,13 +12,13 @@ import { fullName, grudgeThreat, hierarchy, rankTitle } from '../../engine/realm
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
-export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle';
+export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies';
 export interface RealmView {
   section: Section;
   echo?: string;
   outcome?: string;
 }
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle']];
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
@@ -27,7 +30,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: Rea
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : chroniclePanel(session, rerender);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : chroniclePanel(session, rerender);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 
@@ -205,5 +208,65 @@ function chroniclePanel(session: GameSession, rerender: () => void): HTMLElement
     ...(active.length ? [el('h3', {}, `Commissions (${ch.commissions.length}/${session.realm.maxCommissions})`), ...active] : []),
     ...(offers.length ? [el('h3', {}, 'On offer'), ...offers] : []),
     ...eras,
+  );
+}
+
+function ranchPanel(session: GameSession, rerender: () => void): HTMLElement {
+  const r = session.realm.ranch;
+  const act = (label: string, run: () => { ok: boolean; reason?: string } | void, disabled = false): HTMLButtonElement => {
+    const b = el('button', { type: 'button' }, label);
+    b.disabled = disabled;
+    b.addEventListener('click', () => {
+      run();
+      rerender();
+    });
+    return b;
+  };
+  const rows = r.creatures.map((c) => {
+    const def = content.enemies.get(c.enemyId);
+    const need = SOULBOUND_XP(c.level);
+    return el(
+      'div',
+      { class: 'party-gear-row' },
+      el('span', { class: 'small' }, `${c.id === r.active ? '★ ' : ''}${c.name} · level ${c.level} · stage ${c.stage + 1}/3 · ${c.xp}/${need} XP · knows ${movesKnownText(c.enemyId, c.level)} of ${def.skills.length} moves`),
+      act(c.id === r.active ? 'Stand down' : 'Bring along', () => session.realm.setActive(c.id === r.active ? undefined : c.id)),
+      act(`Treat (${session.realm.feedCost()}g)`, () => session.realm.feed(c.id), session.state.gold < session.realm.feedCost() || c.level >= session.player.level),
+      act('Release', () => session.realm.release(c.id)),
+    );
+  });
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, 'Weaken a creature in battle and throw a Soul Seal at it (Items). Bound creatures live here, level as they fight, evolve at levels 16 and 36 and learn a move every 8 levels. One fights beside you in a fourth place in the party. Seals are sold in general stores (Gilded ones in magic shops).'),
+    el('p', { class: 'small' }, `Pens: ${r.creatures.length}/${r.capacity}.`),
+    act(`Build more pens (${session.realm.expandCost()}g, +4)`, () => session.realm.expand(), session.state.gold < session.realm.expandCost()),
+    ...(rows.length ? rows : [el('p', { class: 'dim' }, 'No creatures bound yet.')]),
+  );
+}
+
+const SOULBOUND_XP = (level: number): number => SOULBOUND.xpToNext * level;
+const movesKnownText = (enemyId: string, level: number): number => movesKnown({ id: '', enemyId, name: '', level, xp: 0, stage: 0, zone: '', day: 0 });
+
+function trophyPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
+  const sets = session.realm.trophies();
+  const rows = sets.map((t) => {
+    const boss = content.enemies.get(t.boss);
+    const all = partsFor(boss.types);
+    const complete = all.every((p) => t.parts.includes(p));
+    const b = el('button', { type: 'button' }, complete ? `Forge (${session.realm.forgeCost(t.boss)}g)` : 'Needs all three');
+    b.disabled = !complete;
+    b.addEventListener('click', () => {
+      const r = session.realm.forgeTrophies(t.boss);
+      open.outcome = r.ok ? `Forged ${r.weapon} and ${r.armor}.` : r.reason;
+      rerender();
+    });
+    return el('div', { class: 'party-gear-row' }, el('span', { class: 'small' }, `${boss.name}: ${all.map((p) => (t.parts.includes(p) ? p : `(${p})`)).join(', ')}`), b);
+  });
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, 'Break a boss (stagger it) and a part breaks off: horn, scale, core, banner. Each weakens it. If the boss falls, the part is yours. Three parts of one boss, at a town forge, make a Legendary weapon and an Epic armor piece that carry its name.'),
+    ...(rows.length ? rows : [el('p', { class: 'dim' }, 'No trophies yet.')]),
+    ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []),
   );
 }

@@ -78,3 +78,25 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 - Gifts to NPCs for bond points; bonds grow by talking, errands and prayer only.
 - Conviction effects on dialogue are ten topics (eight beliefs, two bonds), not branches through every conversation.
 - Weapon skins, the Defender path's second divine weapon and edicts, and drag-and-drop offerings remain deferred.
+
+## The rest of the art of battle (Innovation Pack, section B, items 11-14)
+
+| System | Where | Hooks |
+|---|---|---|
+| Soulbinding (11) | `data/soulbound.ts`, `combat/soulbind.ts`, `realm/ranch.ts`; state `realm.ranch` | Soul Seals are consumables with a `bind` effect aimed at a foe; `RealmActions.bindAfter` welcomes the creature after the fight; battle setup adds the active creature as a fourth party member |
+| Trophy Forging (12) | `data/trophies.ts`, `combat/trophies.ts` | `addStagger` breaks a part; `RealmActions.trophyAfter` hands over the parts of a boss that fell; `forgeTrophies` works in town |
+| Sigils of the Old Faith (13) | `data/heart/sigils.ts`; `heart.sigils` | `findSigils` daily and on opening the tab; `heartModifiers` adds slotted sigils |
+| Borrowed Arts (14) | `heart.borrowed` | `createHero` adds the skills and puts them on the hotbar |
+
+### Decisions
+- **Eighty-four creatures, chosen by sampling the bestiary evenly by level** (beasts, plants, elementals, spirits, constructs, slimes, dragons), so every region has something to bind. They are enemies, not the Summoner's spirits (R9): the Summoner contracts spirits by deed, anyone binds a creature with a seal.
+- **A creature's evolution is its name and its stage bonus, not new art.** Stage 2 and 3 add a prefix by kind (Alpha, Ancient, Radiant...), 30% and 70% more health and 15% and 35% more damage; it learns a move every eight levels from the enemy's own skill list.
+- **A bound creature is a summon on the party's side.** It is the fourth place in the party and is never a Combatant of kind `hero`, so Covenant chains and Talk ignore it; it earns experience only from victories it fights in, capped at the hero's level.
+- **Parts break on stagger breaks.** The game already had a stagger bar that boss fights are built around, so breaking a boss is how you take its parts: no new input.
+- **A Sigil is a deed, not a drop.** Each is found by a condition the quest system already evaluates (favor, dungeons cleared, kills, companions...), so nothing new has to be placed in the world. Overcharging gives 2.5 times the boon and one drawback.
+- **Learned Arts need a class you have trained in** (taken, or won the trial of) and cost a day and gold; they sit beside the hotbar in battle.
+
+### Cut or deferred
+- The ranch is a Codex screen, not a place; Emberfall Reborn (item 24) will give it a home.
+- Bound creatures have no art of their own in battle beyond the creature they were; there is no per-stage sprite.
+- Soulbinding has no breeding or trading.

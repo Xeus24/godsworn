@@ -1044,6 +1044,14 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Codex > Heart shows all five. Tests: `tests/sectionC.test.ts` (11) and additions to the realm, section B and pad tests; 923 unit tests, 16 e2e, build.
 - Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
 
+### Innovation Pack, section B, items 11-14: Soulbinding, Trophy Forging, Sigils and Borrowed Arts
+- **11, Soulbinding** (`data/soulbound.ts`): 84 creatures can be bound with Soul Seals (three strengths, sold in general and magic shops). The weaker the creature the likelier the bond. Bound creatures live at the ranch (Codex > Realm > Ranch, 12 pens, 40 at most), earn experience from fights they join, evolve at levels 16 and 36 and fight in a fourth place in the party. Treats, new pens and release.
+- **12, Trophy Forging** (`data/trophies.ts`): bosses have three parts (14 kinds of creature, 42 part names). A stagger break breaks one and weakens the boss. The parts of a boss that falls are yours; three of one boss at a town forge make a Legendary weapon and an Epic armor piece that carry its name (Codex > Realm > Trophies).
+- **13, Sigils of the Old Faith** (`data/heart/sigils.ts`): 40 sigils (14 for the gods, 26 for roads, deeps, deeds and companions) found by doing what they commemorate. Three Sigil Slots, one more at 30 and 60; overcharging gives 2.5 times the boon and one drawback (Codex > Heart > Sigils).
+- **14, Borrowed Arts**: learn single skills from any class you have trained in (taken or trial won) for gold and a day; 2 Learned Arts slots (3 at 40, 4 at 70), usable beside the hotbar (Codex > Heart > Learned Arts).
+- Tests: `tests/sectionB2.test.ts` (9); 932 unit tests, 16 e2e, build.
+- Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
+
 ## Cut / deferred
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are player-allocated on the Party screen, as a list or an editable graph (phase 21). Companion gear is managed on the Party screen, not by dragging onto a paper doll.

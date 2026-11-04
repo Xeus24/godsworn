@@ -47,6 +47,8 @@ import { BLESSINGS } from './blessings';
 import { GREATER_BLESSINGS, GREATER_DIVINE_COMBAT, GREATER_DIVINE_SKILLS } from './godsGreater';
 import { SAINT_BLESSINGS } from './saints';
 import { TREASURES, TREASURE_ITEMS } from './world/treasures';
+import { SOUL_SEAL_ITEMS } from './soulbound';
+import { TROPHY_ITEM } from './trophies';
 import { HIDDEN_LORE } from './world/hidden';
 import { ECHO_LORE } from './realm/echoes';
 import { DYES, FRAMES } from './appearance';
@@ -138,7 +140,7 @@ export const content = {
   mechanics: new ContentTable('mechanic', MECHANICS),
   rarities: new ContentTable('rarity', RARITY_DEFS),
   qualities: new ContentTable('quality', QUALITY_DEFS),
-  items: new ContentTable('item', [...ITEM_BASES, ...TREASURE_ITEMS, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES), ...QUEST_ITEMS]),
+  items: new ContentTable('item', [...ITEM_BASES, ...SOUL_SEAL_ITEMS, TROPHY_ITEM, ...TREASURE_ITEMS, ...buildBooks(ALL_GENERAL), ...buildRecipeScrolls(RECIPES), ...QUEST_ITEMS]),
   uniques: new ContentTable('unique item', [...UNIQUE_ITEMS, ...DIVINE_WEAPONS]),
   itemSets: new ContentTable('item set', ITEM_SETS),
   runewords: new ContentTable('runeword', RUNEWORDS),

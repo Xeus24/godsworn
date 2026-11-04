@@ -214,6 +214,12 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
     x.skills.push({ id: g.skillId, rank: g.rank, general: g.generalId, ...(g.patch ? { patch: g.patch } : {}) });
   }
   x.hotbar = hotbar(char).filter((h): h is string => h !== null);
+  // Learned Arts: skills borrowed from another class (Innovation Pack, item 14), usable beside the hotbar.
+  for (const id of (char.world as { heart?: { borrowed?: string[] } }).heart?.borrowed ?? []) {
+    if (x.skills.some((s) => s.id === id) || !c.skills.find(id)) continue;
+    x.skills.push({ id, rank: Math.min(5, 1 + Math.floor(char.level / 20)) });
+    x.hotbar.push(id);
+  }
   x.ultimateSkill = cls ? classUltimate(char, cls.id, c) : undefined;
   x.basicAttack = heroBasicAttack(char, c);
   applyDivineCombat(x, char, input.base.fai, c);

@@ -6,6 +6,11 @@ import { MAX_COMMISSIONS, eventsIn, generateChronicle, isDone, offered, take as 
 import { createRealmState } from '../realm/types';
 import { FORTUNES } from '../../data/realm/fortunes';
 import { fortuneOf, innMult, isFallen, lift, priceMult, tick as fortunesTick, tierOf } from '../realm/fortunes';
+import { TROPHY } from '../../data/trophies';
+import { createItem, generateGear } from '../items/generate';
+import { itemName } from '../items/naming';
+import { SOULBOUND } from '../../data/soulbound';
+import { addCreature, gainXp, movesKnown } from '../realm/ranch';
 import { FINALE_MERCY, MERCY_TIERS } from '../../data/mercy';
 import { ECHOES } from '../../data/realm/echoes';
 import { decorate, forge, fullName, grudgeBounty, hierarchy, mark, rankTitle, scheme, slay } from '../realm/grudge';
@@ -75,6 +80,8 @@ export class RealmActions {
       this.s.grantXp(bounty.xp);
       this.s.bus.emit('toast', { kind: 'quest', text: `${fullName(g)}, ${rankTitle(g.rank)}, is dead. The road pays ${bounty.gold} gold.` });
     }
+    this.bindAfter(b);
+    this.trophyAfter(b);
     if (b.outcome === 'defeat') this.recordDeath(b);
     if (b.outcome === 'victory') this.countKills(b);
     if (b.isBoss || !b.encounterId.startsWith('wild:')) return;
@@ -327,5 +334,136 @@ export class RealmActions {
     const n = Number(flags['mercy'] ?? 0);
     const before = n - b.tally.mercy.reduce((a, m) => a + (m.boss ? 2 : 1), 0);
     for (const t of MERCY_TIERS) if (before < t.min && n >= t.min) this.s.bus.emit('toast', { kind: 'favor', text: `${t.name}: ${t.text}` });
+  }
+
+  // ------------------------------------------------------------ Soulbinding
+
+  get ranch() {
+    return this.state.ranch;
+  }
+
+  /** The creature that fights beside you, as battle setup wants it. */
+  activeCreature(): { id: string; enemyId: string; name: string; level: number; stage: number; moves: number } | undefined {
+    const c = this.ranch.creatures.find((x) => x.id === this.ranch.active);
+    return c ? { id: c.id, enemyId: c.enemyId, name: c.name, level: c.level, stage: c.stage, moves: movesKnown(c) } : undefined;
+  }
+
+  /** After a fight: creatures bound are welcomed to the ranch, and the one that fought earns its keep. */
+  private bindAfter(b: Battle): void {
+    const zone = b.encounterId.startsWith('wild:') ? b.encounterId.slice('wild:'.length) : this.s.world.zone.id;
+    for (const t of b.tally.bound) {
+      const c = addCreature(this.ranch, t.enemyId, t.level, zone, this.s.state.clock.day);
+      this.s.bus.emit('toast', { kind: 'quest', text: c ? `${c.name} joins your ranch (level ${c.level}).` : `Your ranch is full. ${t.name} slips the seal and runs.` });
+    }
+    const fought = b.combatants.find((x) => x.soulboundId);
+    const creature = fought ? this.ranch.creatures.find((x) => x.id === fought.soulboundId) : undefined;
+    if (creature && b.outcome === 'victory') {
+      const bosses = b.tally.kills.filter((k) => k.tier === 'boss' || k.tier === 'worldBoss').length;
+      const r = gainXp(creature, SOULBOUND.xpPerBattle + SOULBOUND.xpPerLevel * creature.level + bosses * 3 * SOULBOUND.xpPerBattle, this.s.player.level);
+      if (r.evolved) this.s.bus.emit('toast', { kind: 'level', text: `${creature.name} evolves!` });
+      else if (r.levels) this.s.bus.emit('toast', { kind: 'level', text: `${creature.name} reaches level ${creature.level}.` });
+    }
+  }
+
+  setActive(id: string | undefined): void {
+    if (id === undefined || this.ranch.creatures.some((c) => c.id === id)) this.ranch.active = id;
+    this.s.bus.emit('stateChanged', { reason: 'ranch' });
+  }
+
+  release(id: string): void {
+    this.ranch.creatures = this.ranch.creatures.filter((c) => c.id !== id);
+    if (this.ranch.active === id) this.ranch.active = this.ranch.creatures[0]?.id;
+    this.s.bus.emit('stateChanged', { reason: 'ranch' });
+  }
+
+  feedCost(): number {
+    return SOULBOUND.feedGoldPerLevel * Math.max(5, this.s.player.level);
+  }
+
+  /** A treat: a little experience, for gold. */
+  feed(id: string): { ok: boolean; reason?: string } {
+    const c = this.ranch.creatures.find((x) => x.id === id);
+    if (!c) return { ok: false, reason: 'No such creature.' };
+    if (c.level >= this.s.player.level) return { ok: false, reason: 'It has grown as far as you have.' };
+    if (!this.s.spendGold(this.feedCost(), 'ranch')) return { ok: false, reason: `A treat costs ${this.feedCost()} gold.` };
+    const r = gainXp(c, SOULBOUND.feedXp, this.s.player.level);
+    if (r.evolved) this.s.bus.emit('toast', { kind: 'level', text: `${c.name} evolves!` });
+    this.s.bus.emit('stateChanged', { reason: 'ranch' });
+    return { ok: true };
+  }
+
+  expandCost(): number {
+    return SOULBOUND.ranch.expandCost;
+  }
+
+  expand(): { ok: boolean; reason?: string } {
+    if (this.ranch.capacity >= SOULBOUND.ranch.maxCapacity) return { ok: false, reason: 'The ranch cannot grow any larger.' };
+    if (!this.s.spendGold(this.expandCost(), 'ranch')) return { ok: false, reason: `New pens cost ${this.expandCost()} gold.` };
+    this.ranch.capacity += SOULBOUND.ranch.expandBy;
+    this.s.bus.emit('stateChanged', { reason: 'ranch' });
+    return { ok: true };
+  }
+
+  // ------------------------------------------------------------ Trophy Forging
+
+  /** The parts broken off a boss that fell are yours. */
+  private trophyAfter(b: Battle): void {
+    if (b.outcome !== 'victory') return;
+    for (const p of b.tally.parts) {
+      const boss = b.combatants.find((x) => x.enemyId === p.enemyId && x.side === 'enemy');
+      if (!boss || boss.alive) continue;
+      const item = createItem('boss-trophy', 1, () => this.s.newUid());
+      item.trophy = { boss: p.enemyId, part: p.part };
+      item.itemLevel = boss.level;
+      this.s.items.give(item);
+      this.s.bus.emit('toast', { kind: 'loot', text: `Trophy: ${itemName(item)}.` });
+    }
+  }
+
+  /** Trophies in the bags and stash, by boss and part. */
+  trophies(): { boss: string; parts: string[] }[] {
+    const held = new Map<string, Set<string>>();
+    const all = [...this.s.state.inventory.slots, ...this.s.state.stash.tabs.flatMap((t) => t.slots)];
+    for (const it of all) if (it?.trophy) (held.get(it.trophy.boss) ?? held.set(it.trophy.boss, new Set()).get(it.trophy.boss)!).add(it.trophy.part);
+    return [...held.entries()].map(([boss, parts]) => ({ boss, parts: [...parts] }));
+  }
+
+  forgeCost(bossId: string): number {
+    return TROPHY.forgeGoldPerLevel * content.enemies.get(bossId).level;
+  }
+
+  /** Turns a boss's three parts into a weapon and armor that carry its name. */
+  forgeTrophies(bossId: string): { ok: boolean; reason?: string; weapon?: string; armor?: string } {
+    if (!this.s.world.inTown()) return { ok: false, reason: 'Thalor’s smiths work in town.' };
+    const boss = content.enemies.find(bossId);
+    if (!boss) return { ok: false, reason: 'Unknown boss.' };
+    const set = this.trophies().find((t) => t.boss === bossId);
+    if (!set || set.parts.length < TROPHY.parts) return { ok: false, reason: `Needs all three of ${boss.name}’s parts.` };
+    const cost = this.forgeCost(bossId);
+    if (this.s.state.gold < cost) return { ok: false, reason: `The forge asks ${cost} gold.` };
+    const inv = this.s.state.inventory;
+    const taken = new Set<string>();
+    const places = [...inv.slots.map((_, i) => ({ list: inv.slots, i })), ...this.s.state.stash.tabs.flatMap((t) => t.slots.map((_, i) => ({ list: t.slots, i })))];
+    for (const { list, i } of places) {
+      const it = list[i];
+      if (it?.trophy?.boss === bossId && !taken.has(it.trophy.part)) {
+        taken.add(it.trophy.part);
+        list[i] = null;
+      }
+    }
+    this.s.spendGold(cost, 'forge');
+    const p = this.s.player;
+    const mk = (rarity: typeof TROPHY.weaponRarity | typeof TROPHY.armorRarity, category: 'weapon' | 'armor') => {
+      const item = generateGear({ rng: this.s.rng, itemLevel: Math.max(boss.level, 1), newUid: () => this.s.newUid(), ngPlus: this.s.state.ngPlus, favorClassId: p.classes[0]?.classId }, { rarity, categories: [category] });
+      item.label = `${boss.name}’s ${content.items.get(item.baseId).name}`;
+      item.identified = true;
+      this.s.items.give(item);
+      return itemName(item);
+    };
+    const weapon = mk(TROPHY.weaponRarity, 'weapon');
+    const armor = mk(TROPHY.armorRarity, 'armor');
+    this.s.bus.emit('toast', { kind: 'loot', text: `Forged: ${weapon} and ${armor}.` });
+    this.s.bus.emit('stateChanged', { reason: 'forge' });
+    return { ok: true, weapon, armor };
   }
 }

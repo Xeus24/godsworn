@@ -6,6 +6,7 @@ import type { Battle } from './battle';
 import { computeDamage, hitChance } from './damage';
 import { applyEffects, fireTrigger } from './effects';
 import { covenantHit } from './covenant';
+import { breakPart } from './trophies';
 import { groundAfterHit, groundDrink } from './ground';
 import { foesOf } from './skills';
 import { applyStatus, removeStatus } from './statuses';
@@ -236,6 +237,7 @@ function addStagger(b: Battle, source: Combatant, target: Combatant, dealt: numb
   st.brokenTurns = COMBAT.brokenTurns;
   b.emit({ type: 'break', targetId: target.id });
   b.log(`${target.name} is BROKEN!`);
+  breakPart(b, target);
   interruptCharge(b, target);
   applyStatus(b, source, target, 'stun', { duration: 1, unresistable: true });
 }

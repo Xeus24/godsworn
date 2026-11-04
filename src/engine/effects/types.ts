@@ -38,6 +38,8 @@ export type EffectSpec =
   | { kind: 'heal'; base?: number; scaling?: StatScaling; percentMaxHp?: number; target?: EffectTarget }
   | { kind: 'restoreMp'; amount: number; target?: EffectTarget }
   | { kind: 'gainResource'; resource: string; amount: number }
+  /** Soulbinding: throw a Soul Seal at a creature (see `combat/soulbind.ts`). */
+  | { kind: 'bind'; power: number; target?: EffectTarget }
   | {
       kind: 'applyStatus';
       status: string;

@@ -1,3 +1,4 @@
+import { SOULBOUND } from '../../data/soulbound';
 import { content, type Content } from '../../data';
 import { hasRule } from '../character/challenges';
 import { remixFor, worldAffixModifiers } from '../ngplus/remix';
@@ -57,7 +58,27 @@ function createGuest(id: string, enemyId: string, level: number, c: Content): Co
   return x;
 }
 
+/** A bound creature fighting in the fourth place of the party (Soulbinding): the kind of creature at its level, grown by how far it has evolved. */
+function createSoulbound(s: { id: string; enemyId: string; name: string; level: number; stage: number; moves: number }, c: Content): Combatant {
+  const def = c.enemies.get(s.enemyId);
+  const x = createEnemy({ ...def, skills: def.skills.slice(0, Math.max(1, s.moves)) }, 'soulbound', s.level, def.row, c);
+  x.side = 'party';
+  x.kind = 'summon';
+  x.xp = 0;
+  x.name = s.name;
+  x.soulboundId = s.id;
+  delete x.lootTable;
+  const b = SOULBOUND.stageBonus[s.stage] ?? SOULBOUND.stageBonus[0]!;
+  x.statInput = { ...x.statInput, modifiers: [...x.statInput.modifiers, ...withSource([{ stat: 'maxHp', type: 'more', value: 40 + b.hp }, { stat: 'damageBonus', type: 'flat', value: b.dmg }], 'soulbound')] };
+  const stats = calculateStats(x.statInput);
+  x.maxHp = stats.maxHp;
+  x.hp = stats.maxHp;
+  return x;
+}
+
 export interface EncounterOptions {
+  /** The bound creature that fights beside the party. */
+  soulbound?: { id: string; enemyId: string; name: string; level: number; stage: number; moves: number };
   rng: Rng;
   hooks?: BattleHooks;
   timeOfDay?: 'day' | 'night';
@@ -123,6 +144,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   for (const member of party) applyHeroDifficulty(member, hero.difficulty);
   const difficulty = getDifficulty(hero.difficulty);
   for (const g of opts.guests ?? []) party.push(createGuest(g.id, g.enemyId, hero.level, c));
+  if (opts.soulbound) party.push(createSoulbound(opts.soulbound, c));
   const ng = opts.ngPlus ?? 0;
   const hardMode = challengeEnemyModifiers(hero, c);
   const worldMods = worldAffixModifiers(opts.ngAffixes ?? []);
