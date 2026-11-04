@@ -12,6 +12,7 @@ import { favorOf } from '../gods/devotion';
 import { equippedItems } from '../items/equipment';
 import { repairItem } from '../items/upkeep';
 import { characterStats } from '../character/stats';
+import { RELIC_TOOLS } from '../../data/world/puzzles';
 import { SIGILS } from '../../data/heart/sigils';
 import { evaluate } from '../quests/conditions';
 import { learnedSlots, sigilSlots } from '../heart/heart';
@@ -66,6 +67,7 @@ export class HeartActions {
   /** A new day: beliefs that have settled are held, and the gods who care say so. */
   onDay(): void {
     this.findSigils();
+    this.findTools();
     for (const c of settle(this.h, this.day)) this.holdAnnounce(c);
   }
 
@@ -130,6 +132,16 @@ export class HeartActions {
   }
 
   // ------------------------------------------------------------ Sigils of the Old Faith
+
+  /** Relic Tools come to you when you have done what they ask. */
+  findTools(): void {
+    const h = this.h;
+    for (const t of RELIC_TOOLS) {
+      if (h.tools.includes(t.id) || !evaluate(this.s.state, t.found)) continue;
+      h.tools.push(t.id);
+      this.s.bus.emit('toast', { kind: 'level', text: `A Relic Tool is yours: ${t.name}. ${t.text}` });
+    }
+  }
 
   /** Finds any sigil whose deed has been done. */
   findSigils(): void {

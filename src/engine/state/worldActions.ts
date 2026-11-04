@@ -58,6 +58,8 @@ import {
 } from '../world/world';
 import { addRenown, renownDiscount } from '../world/renown';
 import type { GameSession } from './gameState';
+import { canMeet } from '../world/puzzles';
+import { NEEDS } from '../../data/world/puzzles';
 import { effectOn } from '../realm/wheel';
 import { FORTUNES } from '../../data/realm/fortunes';
 import type { QuestMarker } from '../quests/quests';
@@ -428,6 +430,7 @@ export class WorldActions {
         return { kind: 'moved', message: `${lore.title}: “${lore.text}”` };
       }
       case 'chest': {
+        if (e.puzzle) return { kind: 'moved', message: this.solvePuzzle(e) };
         if (!e.gate && isMimic(map.id, e.id)) return this.mimicFight(e);
         return { kind: 'moved', message: e.gate ? this.openCache(e) : this.openChest(e) };
       }
@@ -625,6 +628,33 @@ export class WorldActions {
     trainGeneral(p, GENERAL_FOR[gate.skill], 20);
     this.changed('chest');
     return `${name}: your ${EXPLORATION_NAMES[gate.skill]} pays off. ${gold} gold and ${kept} item${kept === 1 ? '' : 's'}.`;
+  }
+
+  /** A Living Elements or Relic Tool puzzle: the element or tool it asks for, and after it any puzzle it follows. */
+  private solvePuzzle(e: MapEntity): string {
+    const need = e.puzzle!.need;
+    const info = NEEDS[need];
+    const map = this.map;
+    this.s.heart.findTools();
+    if (e.puzzle!.after && !this.world.used[usedKey(map.id, e.puzzle!.after)]) return `${info.label}: something else in this region has to be dealt with first.`;
+    const can = canMeet(this.s.player, need);
+    if (!can.ok) return `${info.label}: ${info.verb.toLowerCase()}? ${can.reason}`;
+    this.world.used[usedKey(map.id, e.id)] = this.day;
+    const level = worldLevel(map.level[1], this.s.state.ngPlus);
+    const p = this.s.player;
+    const stats = characterStats(p);
+    let gold = 0;
+    let kept = 0;
+    const rolls = info.kind === 'tool' ? 3 : 2;
+    for (let i = 0; i < rolls; i++) {
+      const loot = rollLoot('chest', { rng: this.s.rng, itemLevel: level + 2, newUid: () => this.s.newUid(), magicFind: stats.magicFind + 40, goldFind: stats.goldFind, ngPlus: this.s.state.ngPlus, sourceTier: 'chest', favorTiers: favorTiers(p) });
+      const got = this.s.items.receiveLoot(loot.items, loot.gold);
+      gold += loot.gold;
+      kept += got.kept.length;
+    }
+    this.s.setFlag('puzzles', Number(this.s.state.flags['puzzles'] ?? 0) + 1);
+    this.changed('chest');
+    return `${info.label}: ${info.done} ${gold} gold and ${kept} item${kept === 1 ? '' : 's'}.`;
   }
 
   /** Opens a chest: locked chests need a Skeleton Key or Lockpicking; traps hurt unless detected. */

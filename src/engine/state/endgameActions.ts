@@ -2,6 +2,7 @@ import { grantPet } from '../character/stable';
 import { content } from '../../data';
 import { RIFT_AFFIXES, RIFTS } from '../../data/rifts';
 import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
+import { ATLAS, ATLAS_NODES, CONSTELLATIONS } from '../../data/atlas';
 import { Rng } from '../core/rng';
 import { atLeast } from '../gods/devotion';
 import { createItem } from '../items/generate';
@@ -277,6 +278,94 @@ export class EndgameActions {
     return { ok: true };
   }
 
+  // ------------------------------------------------------------ the Celestial Atlas
+
+  atlasNode(id: string): (typeof ATLAS_NODES)[number] | undefined {
+    return ATLAS_NODES.find((n) => n.id === id);
+  }
+
+  /** Maps lit in a constellation. */
+  litIn(c: number): number {
+    return ATLAS_NODES.filter((n) => n.c === c && this.e.atlas.cleared[n.id] !== undefined).length;
+  }
+
+  /** A constellation opens when enough of the one before it is lit; the first is always open. */
+  constellationOpen(c: number): boolean {
+    return c === 0 || this.litIn(c - 1) >= ATLAS.opensAt;
+  }
+
+  /** A map opens when the one before it in its constellation is lit. */
+  nodeOpen(id: string): boolean {
+    const n = this.atlasNode(id);
+    if (!n || !this.constellationOpen(n.c)) return false;
+    return n.n === 0 || this.e.atlas.cleared[ATLAS_NODES.find((x) => x.c === n.c && x.n === n.n - 1)!.id] !== undefined;
+  }
+
+  /** Board points in a constellation. */
+  boardPoints(c: number): number {
+    return this.e.atlas.board[CONSTELLATIONS[c]!.id] ?? 0;
+  }
+
+  /** Reward and danger (percent) the Constellation Board gives a constellation: its own points and a little from each neighbour's. */
+  boardEffect(c: number): { reward: number; threat: number } {
+    const own = this.boardPoints(c);
+    const near = (CONSTELLATIONS[c - 1] ? this.boardPoints(c - 1) : 0) + (CONSTELLATIONS[c + 1] ? this.boardPoints(c + 1) : 0);
+    return { reward: own * ATLAS.perPointReward + near * ATLAS.neighbourReward, threat: own * ATLAS.perPointThreat };
+  }
+
+  stars(): { won: number; spent: number; free: number } {
+    const spent = Object.values(this.e.atlas.board).reduce((a, b) => a + b, 0);
+    return { won: this.e.atlas.stars, spent, free: this.e.atlas.stars - spent };
+  }
+
+  allocateBoard(c: number, delta: 1 | -1): EndgameResult {
+    const con = CONSTELLATIONS[c];
+    if (!con) return fail('No such constellation.');
+    const cur = this.boardPoints(c);
+    if (delta > 0) {
+      if (cur >= ATLAS.boardMax) return fail('That constellation is at its limit.');
+      if (this.stars().free < 1) return fail('You have no free stars.');
+    } else if (cur < 1) return fail('Nothing is set there.');
+    this.e.atlas.board[con.id] = cur + delta;
+    this.s.bus.emit('stateChanged', { reason: 'atlas' });
+    return { ok: true };
+  }
+
+  canStartAtlas(id: string): EndgameResult {
+    const n = this.atlasNode(id);
+    if (!n) return fail('No such map.');
+    const base = this.canStartMode(ATLAS.minLevel, 'The Celestial Atlas');
+    if (!base.ok) return base;
+    if (!this.nodeOpen(id)) return fail(n.n === 0 ? `Light ${ATLAS.opensAt} maps of the constellation before it first.` : 'Light the map before it first.');
+    return { ok: true };
+  }
+
+  startAtlas(id: string): EndgameResult {
+    const check = this.canStartAtlas(id);
+    if (!check.ok) return check;
+    const n = this.atlasNode(id)!;
+    const con = CONSTELLATIONS[n.c]!;
+    const rng = new Rng(`atlas:${id}`.split('').reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7));
+    const board = this.boardEffect(n.c);
+    const level = Math.max(1, this.s.player.level + Math.floor(n.n / ATLAS.levelEvery) + Math.floor(n.c / 2));
+    const threat = n.n * ATLAS.threatPerStep + n.c * ATLAS.threatPerConstellation + board.threat;
+    const zones = content.zones.all().filter((z) => !z.ngPlus || this.s.state.ngPlus >= z.ngPlus);
+    const fights: GauntletState['fights'] = [];
+    for (let i = 0; i < ATLAS.waves; i++) {
+      const zone = rng.pick(zones);
+      fights.push({ encounter: groupEncounter(rng.weighted(zone.encounters, (g) => g.weight), `gauntlet:atlas:${i}`, `${n.name}, wave ${i + 1}`, level, { canFlee: false, threat }), level });
+    }
+    const pool = [...content.dungeons.all().map((d) => d.boss), ...zones.map((z) => z.worldBoss)];
+    const boss = rng.pick(pool);
+    fights.push({ encounter: groupEncounter({ weight: 1, enemies: [{ enemyId: boss }] }, `gauntlet:atlas:${ATLAS.waves}`, `${n.name}, guardian: ${content.enemies.get(boss).name}`, level, { canFlee: false, isBoss: true, threat: threat + 20 }), level });
+    const count = ATLAS.affixSteps.filter((t) => n.n + 1 >= t).length;
+    const affixes = rng.sample(RIFT_AFFIXES.map((a) => a.id), count);
+    this.e.active = { kind: 'atlas', tier: Math.min(RIFTS.maxTier, n.n + 1 + n.c), fights, wave: 0, affixes, turns: 0, gold: 0, atlas: id, rewardMult: 1 + (con.bounty + board.reward) / 100 };
+    this.toast('quest', `${n.name}: ${con.text}`);
+    this.s.bus.emit('stateChanged', { reason: 'atlas' });
+    return { ok: true };
+  }
+
   /** The next fight of the run in progress. */
   nextFight(): GauntletFight | undefined {
     const a = this.e.active;
@@ -284,7 +373,8 @@ export class EndgameActions {
     if (!a || !f) return undefined;
     const defs = a.affixes.map((id) => content.riftAffixes.get(id));
     const trial = a.kind === 'divine' ? DIVINE_TRIALS.find((x) => x.god === a.god) : undefined;
-    return { ...f, enemyModifiers: [...defs.flatMap((d) => d.enemy ?? []), ...(trial?.enemy ?? [])], partyModifiers: [...defs.flatMap((d) => d.party ?? []), ...(trial?.party ?? [])] };
+    const con = a.kind === 'atlas' ? CONSTELLATIONS[this.atlasNode(a.atlas as string)?.c ?? 0] : undefined;
+    return { ...f, enemyModifiers: [...defs.flatMap((d) => d.enemy ?? []), ...(trial?.enemy ?? []), ...(con?.enemy ?? [])], partyModifiers: [...defs.flatMap((d) => d.party ?? []), ...(trial?.party ?? []), ...(con?.party ?? [])] };
   }
 
   abandon(): EndgameResult {
@@ -311,7 +401,7 @@ export class EndgameActions {
     if (a.kind === 'spire') this.nextFloor(a);
     if (last) this.end(a, true);
     else {
-      if (a.kind !== 'bossRush') this.respite(a.kind === 'league' ? LEAGUE.respitePct : a.kind === 'weekly' ? WEEKLY.respitePct : RIFTS.respitePct);
+      if (a.kind !== 'bossRush') this.respite(a.kind === 'league' ? LEAGUE.respitePct : a.kind === 'weekly' ? WEEKLY.respitePct : a.kind === 'atlas' ? 10 : RIFTS.respitePct);
       this.s.bus.emit('stateChanged', { reason: 'gauntlet' });
     }
   }
@@ -334,13 +424,13 @@ export class EndgameActions {
     const bounty = a.affixes.reduce((sum, id) => sum + (content.riftAffixes.get(id).bounty ?? 0), 0);
     const stats = characterStats(p);
     const items: ItemInstance[] = [];
-    let gold = Math.round(RIFTS.goldPerLevelPerTier * level * a.tier * (1 + bounty / 100) * (guardian ? 3 : 1));
+    let gold = Math.round(RIFTS.goldPerLevelPerTier * level * a.tier * (1 + bounty / 100) * (a.rewardMult ?? 1) * (guardian ? 3 : 1));
     for (let i = 0; i < (guardian ? RIFTS.guardianLootRolls : RIFTS.waveLootRolls); i++) {
       const loot = rollLoot(guardian ? 'boss' : 'elite-enemy', {
         rng: s.rng,
         itemLevel: level,
         newUid: () => s.newUid(),
-        magicFind: stats.magicFind + a.tier * RIFTS.magicFindPerTier + bounty,
+        magicFind: stats.magicFind + a.tier * RIFTS.magicFindPerTier + bounty + Math.round(((a.rewardMult ?? 1) - 1) * 100),
         goldFind: stats.goldFind,
         ngPlus: guardian && a.tier >= RIFTS.primordialTier ? Math.max(5, s.state.ngPlus) : s.state.ngPlus,
         sourceTier: guardian ? 'boss' : 'elite',
@@ -394,6 +484,21 @@ export class EndgameActions {
         this.toast('level', `Season won! You are now ${LEAGUE.ranks[e.league.rank]}. +${gold} gold.`);
         if (e.league.rank === LEAGUE.ranks.length - 1 && !this.s.player.devotion.titles.includes('Arena Champion of Champions')) this.s.player.devotion.titles.push('Arena Champion of Champions');
       } else this.toast('warning', `The season ends: ${a.wave} of ${a.fights.length} champions beaten. Your rank holds.`);
+    } else if (a.kind === 'atlas') {
+      const n = this.atlasNode(a.atlas as string);
+      if (won && n) {
+        const first = e.atlas.cleared[n.id] === undefined;
+        e.atlas.cleared[n.id] = Math.min(e.atlas.cleared[n.id] ?? Infinity, a.turns);
+        const stars = n.n === ATLAS.perConstellation - 1 ? ATLAS.finalStars : ATLAS.stars;
+        if (first) {
+          e.atlas.stars += stars;
+          this.toast('level', `${n.name} is lit: +${stars} star${stars > 1 ? 's' : ''}.`);
+          if (ATLAS_NODES.every((x) => e.atlas.cleared[x.id] !== undefined) && !this.s.player.devotion.titles.includes('Starwalker')) {
+            this.s.player.devotion.titles.push('Starwalker');
+            this.toast('level', 'The whole chart is lit. Title earned: Starwalker.');
+          }
+        } else this.toast('info', `${n.name} cleared again.`);
+      } else this.toast('warning', `${n?.name ?? 'The map'} goes dark after ${a.wave} of ${a.fights.length} fights.`);
     } else if (a.kind === 'weekly') {
       const w = e.weekly;
       if (a.wave > w.best || (a.wave === w.best && a.turns < w.bestTurns)) {

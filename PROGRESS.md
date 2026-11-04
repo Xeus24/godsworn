@@ -1052,6 +1052,15 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests: `tests/sectionB2.test.ts` (9); 932 unit tests, 16 e2e, build.
 - Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
 
+### Innovation Pack, section D, items 20-24: puzzles, Relic Tools, the Observatory, Emberfall and the Celestial Atlas
+- **20, Puzzle chests** (`data/world/puzzles.ts`, `engine/world/puzzles.ts`): every region has two puzzle chests, one needing an element (a hero or party member who can cast it) and a second, locked behind the first, needing a Relic Tool. Solving gives 2-3 chest loots.
+- **21, Relic Tools** (`heart.tools`): grapple, glide, dowse, lantern and phase, found by deeds (dungeons, zones, secrets, lore, bosses); Codex > Heart > Relic Tools.
+- **22, The Observatory** (`data/realm/observatory.ts`): 24 clues gathered across the world and seven dials answered from the Wheel, the Marrow and the Grudgebound; a wrong answer locks the dials for a spell. The reward is an epilogue slide and a title.
+- **24, Emberfall** (`data/emberfall.ts`, `engine/realm/village.ts`): settle the burnt village of Ashfold, build 12 buildings, welcome 48 villagers, collect produce and perks, and defend raids (strength rises with the scars of your foes).
+- **23, The Celestial Atlas** (`data/atlas.ts`): 100 maps in 10 constellations on the Endgame screen. Each map is three waves and a guardian with constellation twists and 0-2 Rift affixes; lighting a map opens the next, five open the next constellation, and stars (1 a map, 3 for the tenth) are spent on the Constellation Board for reward and danger. Lighting all 100 gives the Starwalker title. Reuses the gauntlet engine (`kind: 'atlas'`); save migrates `endgame.atlas`.
+- Tests: `tests/sectionD1.test.ts` (9); 941 unit tests, 16 e2e, build.
+- Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
+
 ## Cut / deferred
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are player-allocated on the Party screen, as a list or an editable graph (phase 21). Companion gear is managed on the Party screen, not by dragging onto a paper doll.

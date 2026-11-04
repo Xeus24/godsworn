@@ -183,6 +183,35 @@ export interface RanchState {
   next: number;
 }
 
+/** The Starfallen Observatory (Innovation Pack, item 22). */
+export interface ObservatoryState {
+  /** Clue ids found. */
+  clues: string[];
+  /** The Orrery is dark until this day. */
+  lockedUntil?: number;
+  /** The day it was solved. */
+  solved?: number;
+}
+
+/** Emberfall, the rebuilt village (Innovation Pack, item 24). */
+export interface VillageState {
+  /** Building id -> level (0 to 3). */
+  buildings: Record<string, number>;
+  /** Villagers who have settled. */
+  settled: string[];
+  /** Stores. */
+  timber: number;
+  stone: number;
+  grain: number;
+  /** Gold the village has made, waiting for you in Emberfall. */
+  coffers: number;
+  /** The last day it was run to. */
+  day: number;
+  raidsRepelled: number;
+  raidsLost: number;
+  log: { day: number; text: string }[];
+}
+
 export interface RealmState {
   grudge: GrudgeState;
   marrow: MarrowState;
@@ -193,10 +222,12 @@ export interface RealmState {
   tales: Record<string, number>;
   bloodline: BloodlineState;
   ranch: RanchState;
+  observatory: ObservatoryState;
+  village: VillageState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] }, ranch: { creatures: [], capacity: 12, next: 1 } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] }, ranch: { creatures: [], capacity: 12, next: 1 }, observatory: { clues: [] }, village: { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] } };
 }
 
 export function createMarrowState(): MarrowState {

@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { ATLAS, ATLAS_NODES, CONSTELLATIONS } from '../../data/atlas';
 import { RIFTS } from '../../data/rifts';
 import { countHeld } from '../../engine/items/inventory';
 import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
@@ -16,6 +17,7 @@ export class EndgameScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
   private tier: number;
+  private con = 0;
   private message = '';
 
   constructor(
@@ -59,7 +61,7 @@ export class EndgameScreen implements Screen {
     return el(
       'section',
       { class: 'panel' },
-      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}` }[a.kind]),
+      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas' }[a.kind]),
       el('div', { class: 'small' }, `Fight ${a.wave + 1} of ${a.fights.length} · ${a.turns} turns so far${a.gold ? ` · ${a.gold} gold won` : ''}`),
       ...(a.affixes.length ? [el('h3', {}, 'Rift affixes'), ...a.affixes.map((id) => { const d = content.riftAffixes.get(id); return el('div', { class: 'small' }, el('b', {}, d.name), ` ${d.description}`); })] : []),
       el('p', { class: 'dim small' }, a.kind === 'rift' ? `No rest between fights: only ${RIFTS.respitePct}% of HP and MP comes back between waves. Fall or flee and the Rift closes.` : 'No rest between bosses: HP and MP carry over. Fall and the Rush ends; your best is kept.'),
@@ -152,6 +154,29 @@ export class EndgameScreen implements Screen {
       this.btn('Start the weekly run', () => this.say(s.endgame.startWeekly(seed)), !check.ok, 'primary'), ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]));
   }
 
+  private atlas(): HTMLElement {
+    const s = this.session;
+    const g = s.endgame;
+    const st = g.stars();
+    const con = CONSTELLATIONS[this.con]!;
+    const pick = el('select', { 'aria-label': 'Constellation' }) as HTMLSelectElement;
+    CONSTELLATIONS.forEach((c, i) => pick.append(el('option', { value: String(i) }, `${c.name}${g.constellationOpen(i) ? ` (${g.litIn(i)}/${ATLAS.perConstellation})` : ' (sealed)'}`)));
+    pick.value = String(this.con);
+    pick.addEventListener('change', () => { this.con = Number(pick.value); this.render(); });
+    const eff = g.boardEffect(this.con);
+    const rows = ATLAS_NODES.filter((n) => n.c === this.con).map((n) => {
+      const best = s.state.endgame.atlas.cleared[n.id];
+      const check = g.canStartAtlas(n.id);
+      return el('div', { class: 'row wrap' }, el('b', {}, n.name.split(': ')[1] ?? n.name), el('span', { class: 'dim small' }, best !== undefined ? `lit · best ${best} turns` : g.nodeOpen(n.id) ? 'open' : 'dark'), this.btn('Enter', () => this.say(g.startAtlas(n.id)), !check.ok));
+    });
+    return el('section', { class: 'panel' }, el('h2', {}, 'The Celestial Atlas'),
+      el('p', { class: 'small' }, `A hundred maps in ten constellations. Light a map to open the next; light ${ATLAS.opensAt} to open the next constellation. Stars: ${st.free} free of ${st.won}.`),
+      pick, el('p', { class: 'small' }, con.text),
+      el('div', { class: 'small' }, `Board: ${g.boardPoints(this.con)}/${ATLAS.boardMax} points · +${eff.reward}% rewards, +${eff.threat}% danger`),
+      el('div', { class: 'row wrap' }, this.btn('Add a point', () => this.say(g.allocateBoard(this.con, 1))), this.btn('Take one back', () => this.say(g.allocateBoard(this.con, -1)))),
+      ...rows);
+  }
+
   private render = (): void => {
     if (!this.root) return;
     const s = this.session;
@@ -164,7 +189,7 @@ export class EndgameScreen implements Screen {
           'div',
           { class: 'codex-scroll' },
           ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.weekly(), this.divine()),
+          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.weekly(), this.atlas(), this.divine()),
           this.btn('Back to town', () => this.back()),
         ),
       ),

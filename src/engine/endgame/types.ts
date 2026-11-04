@@ -2,7 +2,7 @@ import type { EncounterDef } from '../combat/types';
 
 /** A run of fights in a row with no rest between them: a Rift or the Boss Rush. */
 export interface GauntletState {
-  kind: 'rift' | 'bossRush' | 'spire' | 'divine' | 'league' | 'weekly';
+  kind: 'rift' | 'bossRush' | 'spire' | 'divine' | 'league' | 'weekly' | 'atlas';
   /** Rift tier (1 for the Boss Rush). */
   tier: number;
   /** Fights in order; the last is the Guardian (Rifts). */
@@ -20,6 +20,9 @@ export interface GauntletState {
   god?: string;
   /** The weekly run: its seed. */
   seed?: number;
+  /** A Celestial Atlas map: its id, and the reward multiplier the Constellation Board gives. */
+  atlas?: string;
+  rewardMult?: number;
 }
 
 /** Endgame records kept with the save. */
@@ -38,8 +41,10 @@ export interface EndgameState {
   league: { rank: number; seasons: number; fights: number };
   /** The weekly run: this week's seed, your best (fights won, then fewest turns) and whether the prize is claimed. */
   weekly: { seed: number; best: number; bestTurns: number; claimed: boolean };
+  /** The Celestial Atlas: maps lit (best turns), stars won and spent points on the Constellation Board. */
+  atlas: { cleared: Record<string, number>; stars: number; board: Record<string, number> };
 }
 
 export function createEndgameState(): EndgameState {
-  return { riftTier: 0, riftsCleared: 0, bossRush: { best: 0, clears: 0 }, spire: { best: 0, runs: 0 }, divine: {}, league: { rank: 0, seasons: 0, fights: 0 }, weekly: { seed: 0, best: 0, bestTurns: 0, claimed: false } };
+  return { riftTier: 0, riftsCleared: 0, bossRush: { best: 0, clears: 0 }, spire: { best: 0, runs: 0 }, divine: {}, league: { rank: 0, seasons: 0, fights: 0 }, weekly: { seed: 0, best: 0, bestTurns: 0, claimed: false }, atlas: { cleared: {}, stars: 0, board: {} } };
 }

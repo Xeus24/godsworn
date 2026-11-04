@@ -1,6 +1,7 @@
 import { SAINTS } from '../../data/saints';
 import { addSecrets } from './secrets';
 import { PASSES, type AreaDef } from '../../data/world/areas';
+import { ELEMENT_ROTATION, NEEDS, TOOL_ROTATION, type PuzzleNeed } from '../../data/world/puzzles';
 import { ECHOES } from '../../data/realm/echoes';
 import { HIDDEN_LORE, SECRET_BOSSES } from '../../data/world/hidden';
 import { content, type Content } from '../../data';
@@ -313,6 +314,17 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
       const p = spotFor();
       if (p) add({ id: `lore-chronicle-${zone.id}-${i}`, kind: 'lore', x: p[0], y: p[1], ref: `chronicle:${i}`, label: 'A ruin' });
     }
+  }
+
+  // The Living Elements and Relic Tools: an element puzzle and, once it is solved, a tool puzzle, in every core region.
+  if (!zone.ngPlus) {
+    const k = tierOf(zone);
+    const a = ELEMENT_ROTATION[k % ELEMENT_ROTATION.length] as PuzzleNeed;
+    const t = TOOL_ROTATION[(k + 2) % TOOL_ROTATION.length] as PuzzleNeed;
+    const pa = spotFor();
+    if (pa) add({ id: `puzzle-${zone.id}-a`, kind: 'chest', x: pa[0], y: pa[1], locked: false, trapped: false, puzzle: { need: a }, label: NEEDS[a].label });
+    const pb = spotFor();
+    if (pb) add({ id: `puzzle-${zone.id}-b`, kind: 'chest', x: pb[0], y: pb[1], locked: false, trapped: false, puzzle: { need: t, after: `puzzle-${zone.id}-a` }, label: NEEDS[t].label });
   }
 
   // Nothing may stand on scenery.

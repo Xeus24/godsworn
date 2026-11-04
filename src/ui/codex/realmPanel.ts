@@ -3,6 +3,9 @@ import { ERAS } from '../../data/realm/chronicle';
 import { eraName } from '../../engine/realm/chronicle';
 import { SOULBOUND } from '../../data/soulbound';
 import { movesKnown } from '../../engine/realm/ranch';
+import { BUILDINGS, EMBERFALL, VILLAGERS } from '../../data/emberfall';
+import { arriving, defense, housing, levelOf, nextCost, population, ranchPens } from '../../engine/realm/village';
+import { CLUES, DIALS, OBSERVATORY } from '../../data/realm/observatory';
 import { partsFor } from '../../data/trophies';
 import { ECHOES } from '../../data/realm/echoes';
 import { GRUDGE_SLOTS } from '../../data/realm/grudge';
@@ -12,13 +15,14 @@ import { fullName, grudgeThreat, hierarchy, rankTitle } from '../../engine/realm
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
-export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies';
+export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies' | 'observatory' | 'emberfall';
 export interface RealmView {
   section: Section;
   echo?: string;
   outcome?: string;
+  dials?: Record<string, string>;
 }
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies']];
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
@@ -30,7 +34,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: Rea
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : chroniclePanel(session, rerender);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : open.section === 'observatory' ? observatoryPanel(session, rerender, open) : open.section === 'emberfall' ? emberfallPanel(session, rerender, open) : chroniclePanel(session, rerender);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 
@@ -268,5 +272,79 @@ function trophyPanel(session: GameSession, rerender: () => void, open: RealmView
     el('p', { class: 'dim small' }, 'Break a boss (stagger it) and a part breaks off: horn, scale, core, banner. Each weakens it. If the boss falls, the part is yours. Three parts of one boss, at a town forge, make a Legendary weapon and an Epic armor piece that carry its name.'),
     ...(rows.length ? rows : [el('p', { class: 'dim' }, 'No trophies yet.')]),
     ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []),
+  );
+}
+
+function observatoryPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
+  session.realm.findClues();
+  const o = session.state.realm.observatory;
+  const found = CLUES.filter((c) => o.clues.includes(c.id));
+  const dials = (open.dials ??= {});
+  const ready = session.realm.observatoryOpen();
+  const here = session.world.inTown() === OBSERVATORY.town;
+  const sel = (d: (typeof DIALS)[number]): HTMLElement => {
+    const s = el('select', { 'aria-label': d.question }) as HTMLSelectElement;
+    s.append(el('option', { value: '' }, '…'));
+    for (const op of d.options) s.append(el('option', { value: op.id }, op.label));
+    s.value = dials[d.id] ?? '';
+    s.addEventListener('change', () => (dials[d.id] = s.value));
+    return el('label', { class: 'setting-row' }, el('span', {}, d.question), s);
+  };
+  const go = el('button', { type: 'button' }, 'Set the Orrery');
+  go.disabled = !ready || !here || o.solved !== undefined;
+  go.addEventListener('click', () => {
+    open.outcome = session.realm.observe(dials).text;
+    rerender();
+  });
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, `A dome on the Frosthold cliffs that fell out of the sky. It cannot be fought into; it opens to what you know. Live in the world and clues come to you (${found.length} of ${CLUES.length}; ${OBSERVATORY.clues} wake the dome). Then set the Orrery in Frosthold: seven questions, and the answers are all somewhere in the game.`),
+    ...(o.solved !== undefined ? [el('p', { class: 'small' }, 'The stars have settled. You are the Starfallen.')] : []),
+    el('h3', {}, 'Journal'),
+    ...(found.length ? found.map((c) => el('p', { class: 'small' }, c.text)) : [el('p', { class: 'dim small' }, 'No clues yet.')]),
+    ...(ready ? [el('h3', {}, 'The Orrery'), ...DIALS.map(sel), go, ...(here ? [] : [el('p', { class: 'dim small' }, 'Go to Frosthold to set it.')]), ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : [])] : []),
+  );
+}
+
+function emberfallPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
+  const v = session.realm.village;
+  const here = session.realm.inEmberfall();
+  const act = (label: string, run: () => { ok: boolean; reason?: string } | number | void, disabled = false): HTMLButtonElement => {
+    const b = el('button', { type: 'button' }, label);
+    b.disabled = disabled;
+    b.addEventListener('click', () => {
+      const r = run();
+      open.outcome = typeof r === 'object' && r && !r.ok ? r.reason : typeof r === 'number' ? `${r} gold from the village.` : '';
+      rerender();
+    });
+    return b;
+  };
+  const cost = (c: { gold: number; timber?: number; stone?: number }): string => `${c.gold}g${c.timber ? `, ${c.timber} timber` : ''}${c.stone ? `, ${c.stone} stone` : ''}`;
+  const buildings = BUILDINGS.map((b) => {
+    const lvl = levelOf(v, b.id);
+    const next = nextCost(v, b.id);
+    return el(
+      'div',
+      { class: 'party-gear-row' },
+      el('span', { class: 'small' }, el('strong', {}, `${b.name} (level ${lvl}/3)`), el('div', { class: 'dim' }, b.text), ...(b.perk && lvl ? [el('div', { class: 'dim' }, b.perk.text)] : [])),
+      act(next ? `${lvl ? 'Raise' : 'Build'} (${cost(next)})` : 'Done', () => session.realm.build(b.id), !next || !here),
+    );
+  });
+  const coming = arriving(v).map((p) => el('div', { class: 'party-gear-row' }, el('span', { class: 'small' }, `${p.name}, ${p.role}: ${p.line}`), act(`Welcome (${EMBERFALL.settleCost}g)`, () => session.realm.settle(p.id), !here)));
+  const home = v.settled.map((id) => VILLAGERS.find((p) => p.id === id)).filter((p): p is NonNullable<typeof p> => !!p);
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, 'Ashfold burned in the first chapter. Rebuild it as Emberfall: raise buildings, welcome the people who come to live in them (48 in all), and the village makes timber, stone, grain and coin, pens for your bound creatures, and small gifts for you. A village doing well is raided. You build in Ashfold.'),
+    el('p', { class: 'small' }, `Timber ${Math.floor(v.timber)} · Stone ${Math.floor(v.stone)} · Grain ${Math.floor(v.grain)} · Coffers ${Math.floor(v.coffers)}g · People ${population(v)}/${housing(v)} · Defense ${defense(v, session.player.level)} · Raids repelled ${v.raidsRepelled}, lost ${v.raidsLost}${ranchPens(v) ? ` · +${ranchPens(v)} ranch pens` : ''}`),
+    el('div', { class: 'row wrap' }, act('Collect the coffers', () => session.realm.collect(), !here || v.coffers < 1), act('Buy 10 timber (140g)', () => session.realm.buyStores('timber'), !here), act('Buy 10 stone (180g)', () => session.realm.buyStores('stone'), !here), act('Buy 10 grain (80g)', () => session.realm.buyStores('grain'), !here)),
+    ...(here ? [] : [el('p', { class: 'dim small' }, 'Go to Ashfold to build, welcome people and collect.')]),
+    ...(open.outcome ? [el('p', { class: 'field-error' }, open.outcome)] : []),
+    el('h3', {}, 'Buildings'),
+    ...buildings,
+    ...(coming.length ? [el('h3', {}, 'Waiting to come'), ...coming] : []),
+    ...(home.length ? [el('h3', {}, `Living here (${home.length})`), ...home.map((p) => el('p', { class: 'small' }, `${p.name}, ${p.role}: ${p.line}`))] : []),
+    ...(v.log.length ? [el('h3', {}, 'The village book'), ...v.log.slice(0, 10).map((l) => el('p', { class: 'small dim' }, `Day ${l.day}: ${l.text}`))] : []),
   );
 }

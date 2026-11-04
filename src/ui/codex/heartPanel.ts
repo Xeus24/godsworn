@@ -3,6 +3,7 @@ import { ARTS } from '../../data/heart/arts';
 import { BONDS, BOND_RANK_NAMES, BOND_RANK_POINTS } from '../../data/heart/bonds';
 import { CONVICTIONS, SETTLE_DAYS } from '../../data/heart/convictions';
 import { TALES, TALE_APPROVAL } from '../../data/heart/tales';
+import { NEEDS, RELIC_TOOLS } from '../../data/world/puzzles';
 import { SIGILS, OVERCHARGE } from '../../data/heart/sigils';
 import { learnedSlots, sigilSlots } from '../../engine/heart/heart';
 import { describe as describeCond } from '../../engine/quests/conditions';
@@ -11,7 +12,7 @@ import { bondRank, holds, nextBondPoints } from '../../engine/heart/heart';
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 
-export type HeartSection = 'convictions' | 'bonds' | 'tales' | 'art' | 'sigils' | 'learned' | 'bloodline';
+export type HeartSection = 'convictions' | 'bonds' | 'tales' | 'art' | 'sigils' | 'learned' | 'tools' | 'bloodline';
 export interface HeartView {
   section: HeartSection;
   tale?: string;
@@ -19,7 +20,7 @@ export interface HeartView {
   artText?: string;
   note?: string;
 }
-const SECTIONS: [HeartSection, string][] = [['convictions', 'Convictions'], ['bonds', 'Kindred Bonds'], ['tales', 'Campfire Tales'], ['art', 'Wayfarer’s Art'], ['sigils', 'Sigils'], ['learned', 'Learned Arts'], ['bloodline', 'Bloodline']];
+const SECTIONS: [HeartSection, string][] = [['convictions', 'Convictions'], ['bonds', 'Kindred Bonds'], ['tales', 'Campfire Tales'], ['art', 'Wayfarer’s Art'], ['sigils', 'Sigils'], ['learned', 'Learned Arts'], ['tools', 'Relic Tools'], ['bloodline', 'Bloodline']];
 
 /** Codex > Heart: what the hero believes, who they are close to, and what their companions say to each other. */
 export function heartPanel(session: GameSession, rerender: () => void, view: HeartView): HTMLElement {
@@ -31,7 +32,7 @@ export function heartPanel(session: GameSession, rerender: () => void, view: Hea
     });
     return b;
   });
-  const body = view.section === 'convictions' ? convictions(session) : view.section === 'bonds' ? bonds(session) : view.section === 'tales' ? tales(session, rerender, view) : view.section === 'art' ? art(session, rerender, view) : view.section === 'sigils' ? sigils(session, rerender, view) : view.section === 'learned' ? learned(session, rerender, view) : bloodline(session);
+  const body = view.section === 'convictions' ? convictions(session) : view.section === 'bonds' ? bonds(session) : view.section === 'tales' ? tales(session, rerender, view) : view.section === 'art' ? art(session, rerender, view) : view.section === 'sigils' ? sigils(session, rerender, view) : view.section === 'learned' ? learned(session, rerender, view) : view.section === 'tools' ? tools(session) : bloodline(session);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Heart'), el('div', { class: 'row wrap' }, ...tabs), body);
 }
 
@@ -209,5 +210,18 @@ function learned(session: GameSession, rerender: () => void, view: HeartView): H
           view.note = r.ok ? '' : r.reason;
         }, h.borrowed.includes(b.skill))))])
       : [el('p', { class: 'dim' }, 'You have not trained in any other class yet. Take a second class, or win a class trial at the Proving Grounds.')]),
+  );
+}
+
+function tools(session: GameSession): HTMLElement {
+  session.heart.findTools();
+  const h = session.heart.h;
+  return el(
+    'div',
+    {},
+    el('p', { class: 'dim small' }, `Every core region has a two-step puzzle: an element one (burn, freeze, conduct, cut, push: your skills and your arm) and, once it is solved, a tool one (the tools below). You have solved ${Number(session.state.flags['puzzles'] ?? 0)}.`),
+    ...RELIC_TOOLS.map((t) => (h.tools.includes(t.id) ? el('div', { class: 'small' }, el('strong', {}, t.name), el('div', { class: 'dim' }, t.text)) : el('div', { class: 'small dim' }, `??? ${t.hint}`))),
+    el('h3', {}, 'The five elements'),
+    ...(['burn', 'freeze', 'conduct', 'cut', 'push'] as const).map((n) => el('div', { class: 'small dim' }, `${NEEDS[n].label}: ${NEEDS[n].verb}.`)),
   );
 }

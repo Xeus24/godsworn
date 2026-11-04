@@ -137,6 +137,8 @@ export function migrate(raw: Json): Json {
   obj(state.legacy).clears ??= [];
   realm.chronicle ??= { seed: 0, events: [], known: {}, commissions: [], completed: [] };
   realm.tales ??= {};
+  realm.observatory ??= { clues: [] };
+  realm.village ??= { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] };
   realm.ranch ??= { creatures: [], capacity: 12, next: 1 };
   realm.bloodline ??= { generation: 1, ancestors: [] };
   state.realm = realm;
@@ -145,6 +147,7 @@ export function migrate(raw: Json): Json {
   eg.spire ??= { best: 0, runs: 0 };
   eg.divine ??= {};
   eg.league ??= { rank: 0, seasons: 0, fights: 0 };
+  eg.atlas ??= { cleared: {}, stars: 0, board: {} };
   eg.weekly ??= { seed: 0, best: 0, bestTurns: 0, claimed: false };
   state.endgame = eg;
   // Version 21 (New Game+): world affixes start empty.

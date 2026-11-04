@@ -4,6 +4,7 @@ import { CONVICTIONS, SETTLE_DAYS, type ConvictionDef, type LeanEvent } from '..
 import { SIGILS, SIGIL_SLOTS } from '../../data/heart/sigils';
 import { QUIRKS } from '../../data/heart/bloodline';
 import type { Character } from '../character/types';
+import type { ModifierSpec } from '../stats/modifiers';
 import type { Modifier } from '../stats/modifiers';
 
 /** What a hero has come to believe and whom they have grown close to (Innovation Pack, items 15 and 16). Lives on `character.world.heart`. */
@@ -28,13 +29,17 @@ export interface HeartProgress {
   /** Sigils found, and the ones in the Sigil Slots (overcharged or not). */
   sigilsFound: string[];
   sigils: { id: string; over: boolean }[];
+  /** What Emberfall's buildings give the hero (item 24). */
+  villagePerks: ModifierSpec[];
+  /** Relic Tools found (Innovation Pack, item 21). */
+  tools: string[];
   /** Borrowed arts in the Learned Arts slots (skill ids). */
   borrowed: string[];
   /** The day the Wayfarer's haggle ends (the shops are 10% cheaper on it). */
   haggleDay?: number;
 }
 
-export const createHeart = (): HeartProgress => ({ lean: {}, adopted: {}, held: [], bonds: {}, bondDay: {}, claimed: [], quirks: [], inherited: [], sigilsFound: [], sigils: [], borrowed: [] });
+export const createHeart = (): HeartProgress => ({ lean: {}, adopted: {}, held: [], bonds: {}, bondDay: {}, claimed: [], quirks: [], inherited: [], sigilsFound: [], sigils: [], tools: [], borrowed: [], villagePerks: [] });
 
 export function heartOf(char: Character): HeartProgress {
   const w = char.world as { heart?: HeartProgress };
@@ -50,6 +55,8 @@ export function heartOf(char: Character): HeartProgress {
   h.sigilsFound ??= [];
   h.sigils ??= [];
   h.borrowed ??= [];
+  h.tools ??= [];
+  h.villagePerks ??= [];
   return h;
 }
 
@@ -120,6 +127,7 @@ export function heartModifiers(char: Character, c: Content = content): Modifier[
   const mods: Modifier[] = [];
   for (const conv of heldConvictions(h)) for (const m of conv.mods) mods.push({ ...m, source: `conviction:${conv.id}` } as Modifier);
   for (const b of BONDS) for (const m of bondMods(b, bondRank(h.bonds[b.id] ?? 0))) mods.push({ ...m, source: `bond:${b.id}` } as Modifier);
+  for (const m of h.villagePerks) mods.push({ ...m, source: 'emberfall' } as Modifier);
   for (const sg of h.sigils) {
     const def = SIGILS.find((x) => x.id === sg.id);
     for (const m of (sg.over ? def?.over : def?.mods) ?? []) mods.push({ ...m, source: `sigil:${sg.id}` } as Modifier);

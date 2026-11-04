@@ -197,6 +197,8 @@ export interface MapEntity {
   gate?: { skill: 'swimming' | 'climbing' | 'ancientScript' | 'animalSpeech' | 'lockpicking' | 'detectTraps'; rank: number };
   /** Only shown once this lore page has been found (secret lairs). */
   requires?: string;
+  /** A Living Elements or Relic Tool puzzle (items 20 and 21): what it asks, and the entity that must be solved first. */
+  puzzle?: { need: import('../../data/world/puzzles').PuzzleNeed; after?: string };
   /** Enemy groups. */
   group?: EncounterGroup;
   /** Gathering nodes: the skill used. */

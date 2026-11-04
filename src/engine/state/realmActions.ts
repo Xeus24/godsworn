@@ -6,6 +6,10 @@ import { MAX_COMMISSIONS, eventsIn, generateChronicle, isDone, offered, take as 
 import { createRealmState } from '../realm/types';
 import { FORTUNES } from '../../data/realm/fortunes';
 import { fortuneOf, innMult, isFallen, lift, priceMult, tick as fortunesTick, tierOf } from '../realm/fortunes';
+import { EMBERFALL, VILLAGERS } from '../../data/emberfall';
+import { arriving, buildingOf, canAfford, defense, housing, levelOf, nextCost, perks, population, produce, raidChance, raidStrength, ranchPens } from '../realm/village';
+import { CLUES, DIALS, OBSERVATORY, WRONG_LOCKOUT } from '../../data/realm/observatory';
+import { evaluate } from '../quests/conditions';
 import { TROPHY } from '../../data/trophies';
 import { createItem, generateGear } from '../items/generate';
 import { itemName } from '../items/naming';
@@ -53,6 +57,8 @@ export class RealmActions {
 
   /** Days pass: every region's pecking order schemes. */
   onDays(days: number): void {
+    this.findClues();
+    this.runVillage(days);
     this.s.heart.onDay();
     const today = festivalOn(this.s.state.clock.day);
     if (today) this.s.bus.emit('toast', { kind: 'quest', text: `Today is ${today.name}, the feast of ${content.gods.get(today.god).name}. Find it in ${content.towns.get(today.town).name}.` });
@@ -75,6 +81,7 @@ export class RealmActions {
       const g = st.entries[x.grudgeId];
       if (!g || g.slain !== undefined) continue;
       slay(st, g.id, day);
+      this.s.setFlag('grudge-slain', st.slain);
       const bounty = grudgeBounty(g, x.level);
       this.s.addGold(bounty.gold, 'grudge');
       this.s.grantXp(bounty.xp);
@@ -122,20 +129,27 @@ export class RealmActions {
     return result;
   }
 
+  private noteMarrow(): void {
+    this.s.setFlag('marrow-loops', this.state.marrow.loops);
+  }
+
   marrowTalk(villager: string, place: MarrowPlace): MarrowResult {
     const r = this.marrowEnd(marrowTalk(this.state.marrow, villager, place));
+    this.noteMarrow();
     this.s.bus.emit('stateChanged', { reason: 'marrow' });
     return r;
   }
 
   marrowDeed(deed: string, place: MarrowPlace): MarrowResult {
     const r = this.marrowEnd(doDeed(this.state.marrow, deed, place));
+    this.noteMarrow();
     this.s.bus.emit('stateChanged', { reason: 'marrow' });
     return r;
   }
 
   marrowWait(): MarrowResult {
     const r = marrowWait(this.state.marrow);
+    this.noteMarrow();
     this.s.bus.emit('stateChanged', { reason: 'marrow' });
     return r;
   }
@@ -186,6 +200,7 @@ export class RealmActions {
     const echo = ECHOES.find((e) => e.id === id);
     if (!echo || this.state.echoes.found[id] !== undefined) return;
     this.state.echoes.found[id] = this.s.state.clock.day;
+    this.s.setFlag('echoes', Object.keys(this.state.echoes.found).length);
     this.s.heart.tale();
     this.s.bus.emit('toast', { kind: 'info', text: `An echo of ${echo.name} stirs. It can be heard again in the Codex.` });
   }
@@ -266,6 +281,7 @@ export class RealmActions {
     const first = ch.known[event.id] !== 2;
     if (first) this.s.heart.tale();
     ch.known[event.id] = 2;
+    this.s.setFlag('ruins', Object.values(ch.known).filter((k) => k === 2).length);
     for (const c of ch.commissions) if (c.event === event.id) c.visited = true;
     this.checkCommissions();
     let reward = '';
@@ -351,6 +367,7 @@ export class RealmActions {
   /** After a fight: creatures bound are welcomed to the ranch, and the one that fought earns its keep. */
   private bindAfter(b: Battle): void {
     const zone = b.encounterId.startsWith('wild:') ? b.encounterId.slice('wild:'.length) : this.s.world.zone.id;
+    if (b.tally.bound.length) this.s.setFlag('bound', Number(this.s.state.flags['bound'] ?? 0) + b.tally.bound.length);
     for (const t of b.tally.bound) {
       const c = addCreature(this.ranch, t.enemyId, t.level, zone, this.s.state.clock.day);
       this.s.bus.emit('toast', { kind: 'quest', text: c ? `${c.name} joins your ranch (level ${c.level}).` : `Your ranch is full. ${t.name} slips the seal and runs.` });
@@ -465,5 +482,144 @@ export class RealmActions {
     this.s.bus.emit('toast', { kind: 'loot', text: `Forged: ${weapon} and ${armor}.` });
     this.s.bus.emit('stateChanged', { reason: 'forge' });
     return { ok: true, weapon, armor };
+  }
+
+  // ------------------------------------------------------------ the Starfallen Observatory
+
+  /** Clues come to you as you live in the world. */
+  findClues(): void {
+    const o = this.state.observatory;
+    for (const c of CLUES) {
+      if (o.clues.includes(c.id) || !evaluate(this.s.state, c.found)) continue;
+      o.clues.push(c.id);
+      this.s.bus.emit('toast', { kind: 'info', text: `A clue for the Observatory: “${c.text}”` });
+    }
+  }
+
+  observatoryOpen(): boolean {
+    return this.state.observatory.clues.length >= OBSERVATORY.clues;
+  }
+
+  /** Sets the Orrery. All seven right and the stars settle; any wrong and it goes dark until tomorrow. */
+  observe(answers: Record<string, string>): { ok: boolean; text: string; right: number } {
+    const o = this.state.observatory;
+    if (o.solved !== undefined) return { ok: false, text: 'The stars have settled. There is nothing left to ask.', right: DIALS.length };
+    if (this.s.world.inTown() !== OBSERVATORY.town) return { ok: false, text: 'The Observatory stands over Frosthold.', right: 0 };
+    if (!this.observatoryOpen()) return { ok: false, text: 'The dome does not answer yet. Learn more of the world first.', right: 0 };
+    const day = this.s.state.clock.day;
+    if (o.lockedUntil !== undefined && day < o.lockedUntil) return { ok: false, text: 'The Orrery is dark. Try again tomorrow.', right: 0 };
+    const right = DIALS.filter((d) => answers[d.id] === d.answer).length;
+    if (right < DIALS.length) {
+      o.lockedUntil = day + 1;
+      return { ok: false, text: `${WRONG_LOCKOUT} (${right} of ${DIALS.length} were right.)`, right };
+    }
+    o.solved = day;
+    const r = OBSERVATORY.reward;
+    this.s.addGold(r.gold, 'observatory');
+    this.s.grantXp(r.xp);
+    if (!this.s.player.devotion.titles.includes(r.title)) this.s.player.devotion.titles.push(r.title);
+    this.s.setFlag(OBSERVATORY.flag, true);
+    this.s.bus.emit('toast', { kind: 'level', text: 'The Orrery turns, and every star that fell settles in its place.' });
+    this.s.bus.emit('stateChanged', { reason: 'observatory' });
+    return { ok: true, text: 'The Orrery turns, and every star that fell settles in its place. You are the Starfallen.', right };
+  }
+
+  // ------------------------------------------------------------ Emberfall Reborn
+
+  get village() {
+    return this.state.village;
+  }
+
+  private logVillage(text: string): void {
+    this.village.log.unshift({ day: this.s.state.clock.day, text });
+    if (this.village.log.length > 30) this.village.log.length = 30;
+  }
+
+  /** The village runs for the days that have passed: it makes and eats, and is raided now and then. */
+  private runVillage(days: number): void {
+    const v = this.village;
+    if (!Object.values(v.buildings).some((l) => l > 0)) return;
+    for (let i = 0; i < Math.min(days, 30); i++) {
+      produce(v);
+      if (!this.s.rng.chance(raidChance(v))) continue;
+      const top = this.grudgebound(EMBERFALL.zone)[0];
+      const strength = raidStrength(top?.scars ?? 0);
+      const mine = defense(v, this.s.player.level);
+      const who = top ? `${top.name} ${top.epithet}` : 'Raiders from the hills';
+      if (mine >= strength) {
+        v.raidsRepelled++;
+        this.logVillage(`${who} came for Emberfall and found the watch awake. The raid was repelled.`);
+        this.s.bus.emit('toast', { kind: 'quest', text: `Emberfall repels a raid by ${who}.` });
+      } else {
+        v.raidsLost++;
+        for (const k of ['timber', 'stone', 'grain'] as const) v[k] = Math.floor(v[k] * (1 - EMBERFALL.raidLoss));
+        v.coffers = Math.floor(v.coffers * (1 - EMBERFALL.raidLoss));
+        this.lift(EMBERFALL.town, -4);
+        this.logVillage(`${who} raided Emberfall (strength ${strength} against a defense of ${mine}) and took a third of the stores.`);
+        this.s.bus.emit('toast', { kind: 'warning', text: `${who} raided Emberfall and took a third of the stores.` });
+      }
+    }
+  }
+
+  inEmberfall(): boolean {
+    return this.s.world.inTown() === EMBERFALL.town;
+  }
+
+  /** Build or raise a building, with gold from your purse and stores from the village. */
+  build(id: string): { ok: boolean; reason?: string } {
+    const v = this.village;
+    const b = buildingOf(id);
+    if (!b) return { ok: false, reason: 'No such building.' };
+    if (!this.inEmberfall()) return { ok: false, reason: 'You build in Ashfold, which is becoming Emberfall.' };
+    const cost = nextCost(v, id);
+    if (!cost) return { ok: false, reason: 'It is as grand as it will be.' };
+    const why = canAfford(v, cost, this.s.state.gold);
+    if (why) return { ok: false, reason: why };
+    this.s.spendGold(cost.gold, 'emberfall');
+    v.timber -= cost.timber ?? 0;
+    v.stone -= cost.stone ?? 0;
+    const before = ranchPens(v);
+    v.buildings[id] = levelOf(v, id) + 1;
+    this.state.ranch.capacity += ranchPens(v) - before;
+    this.s.heart.h.villagePerks = perks(v);
+    this.logVillage(`${b.name}${v.buildings[id] === 1 ? ' is built' : ` is raised to level ${v.buildings[id]}`}.`);
+    this.s.bus.emit('toast', { kind: 'level', text: `Emberfall: ${b.name}${v.buildings[id] === 1 ? ' is built' : ` reaches level ${v.buildings[id]}`}.` });
+    this.s.bus.emit('stateChanged', { reason: 'village' });
+    return { ok: true };
+  }
+
+  /** Someone whose building is ready comes to live here. */
+  settle(villagerId: string): { ok: boolean; reason?: string } {
+    const v = this.village;
+    const p = VILLAGERS.find((x) => x.id === villagerId);
+    if (!p || !arriving(v).some((x) => x.id === villagerId)) return { ok: false, reason: 'They are not ready to come.' };
+    if (!this.inEmberfall()) return { ok: false, reason: 'Welcome them in Emberfall.' };
+    if (population(v) >= housing(v)) return { ok: false, reason: 'There is no room: build or raise the Longhouse.' };
+    if (!this.s.spendGold(EMBERFALL.settleCost, 'emberfall')) return { ok: false, reason: `Settling them costs ${EMBERFALL.settleCost} gold.` };
+    v.settled.push(villagerId);
+    this.logVillage(`${p.name}, ${p.role}, has come to live in Emberfall.`);
+    this.s.bus.emit('toast', { kind: 'quest', text: `${p.name} settles in Emberfall.` });
+    this.s.bus.emit('stateChanged', { reason: 'village' });
+    return { ok: true };
+  }
+
+  /** Gold the village has made. */
+  collect(): number {
+    const v = this.village;
+    if (!this.inEmberfall() || v.coffers < 1) return 0;
+    const gold = Math.floor(v.coffers);
+    v.coffers -= gold;
+    this.s.addGold(gold, 'emberfall');
+    this.s.bus.emit('stateChanged', { reason: 'village' });
+    return gold;
+  }
+
+  /** Timber, stone and grain can be bought in bulk, for gold (so a village can be started from nothing). */
+  buyStores(res: 'timber' | 'stone' | 'grain', amount = 10): { ok: boolean; reason?: string } {
+    const price = { timber: 14, stone: 18, grain: 8 }[res] * amount;
+    if (!this.s.spendGold(price, 'emberfall')) return { ok: false, reason: `That costs ${price} gold.` };
+    this.village[res] += amount;
+    this.s.bus.emit('stateChanged', { reason: 'village' });
+    return { ok: true };
   }
 }

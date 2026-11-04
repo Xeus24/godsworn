@@ -100,3 +100,13 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 - The ranch is a Codex screen, not a place; Emberfall Reborn (item 24) will give it a home.
 - Bound creatures have no art of their own in battle beyond the creature they were; there is no per-stage sprite.
 - Soulbinding has no breeding or trading.
+
+## Puzzles, tools, the Observatory, Emberfall and the Atlas (Innovation Pack, section D, items 20-24)
+
+| System | Where | Hooks |
+|---|---|---|
+| Puzzle chests (20) | `data/world/puzzles.ts`, `world/puzzles.ts`; `MapEntity.puzzle` | `mapgen` places `puzzle-<zone>-a/-b`; `WorldActions.solvePuzzle` |
+| Relic Tools (21) | `heart.tools`, `RELIC_TOOLS` | `HeartActions.findTools` daily and on puzzle interaction |
+| Observatory (22) | `data/realm/observatory.ts`; `realm.observatory` | `RealmActions.findClues/observe`; epilogue slide |
+| Emberfall (24) | `data/emberfall.ts`, `realm/village.ts`; `realm.village` | `RealmActions.runVillage` from `onDays`; `heartModifiers` adds village perks |
+| Celestial Atlas (23) | `data/atlas.ts`; `endgame.atlas` | `EndgameActions.startAtlas/allocateBoard`; `end()` lights maps and awards stars; `riftRewards` multiplies by `rewardMult` |
