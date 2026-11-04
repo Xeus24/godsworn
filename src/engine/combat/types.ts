@@ -311,7 +311,7 @@ export interface BattleFeature {
 
 export type BattleEvent =
   | { type: 'turn'; actorId: string }
-  | { type: 'action'; actorId: string; label: string; targets: string[] }
+  | { type: 'action'; actorId: string; label: string; targets: string[]; ultimate?: boolean }
   | { type: 'damage'; sourceId?: string; targetId: string; amount: number; element: Element; crit: boolean; absorbed: number; dot?: boolean }
   | { type: 'heal'; targetId: string; amount: number }
   | { type: 'miss'; sourceId: string; targetId: string }

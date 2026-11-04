@@ -43,6 +43,8 @@ export class WondersActions {
       if (pick) mods.push(...(tp.choices.find((c) => c.id === pick)?.mods ?? []));
     }
     mods.push(...this.familyMods());
+    const luck = Math.min(4, Math.floor((w.pet?.pats ?? 0) / 25));
+    if (luck) mods.push({ stat: 'luk', type: 'flat', value: luck } as ModifierSpec);
     this.s.heart.h.wonderMods = mods;
   }
 
@@ -294,6 +296,24 @@ export class WondersActions {
       const c = t.choices.find((x) => x.id === this.w.sundered.chosen[t.id]);
       return c ? [c.present] : [];
     });
+  }
+
+  // ------------------------------------------------------------------ item 35: pet the pet
+
+  /** Pat the pet that walks with you: once a day it counts, and every 25 pats it brings you a little luck (up to 4). */
+  petThePet(): WResult {
+    const id = this.s.player.stable.pet;
+    if (!id) return fail('You have no pet along.');
+    const pet = content.pets.get(id);
+    const p = (this.w.pet ??= { pats: 0, lastDay: 0 });
+    const day = this.s.state.clock.day;
+    const lines = [`${pet.name} leans into your hand.`, `${pet.name} makes a small, pleased noise.`, `${pet.name} rolls over and shows you its good side.`, `${pet.name} pretends not to enjoy it, and fails.`, `${pet.name} follows your hand when you stop.`, `${pet.name} will not stop looking at you, happily.`];
+    const line = lines[p.pats % lines.length] as string;
+    if (p.lastDay === day) return { ok: true, text: `${line} (It has had its pats for today.)` };
+    p.lastDay = day;
+    p.pats++;
+    this.changed('pet');
+    return { ok: true, text: `${line}${p.pats % 25 === 0 && p.pats <= 100 ? ' You feel luckier.' : ''}` };
   }
 
   // ------------------------------------------------------------------ 28: Painter's Eye

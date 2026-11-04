@@ -921,3 +921,13 @@ body.cb-patterns .toast-level::before { content: '★ '; }
 /* Companion skill tree graph. */
 .party-tree-stage { height: 420px; min-height: 420px; flex: none; margin: 6px 0; }
 .party-tree-fit { position: absolute; right: 8px; top: 8px; }
+
+/* Animated bestiary: known creatures idle with a slow breath; reduced motion keeps them still. */
+@keyframes bestiary-breath { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(-2px) scaleY(1.03); } }
+.codex-portrait:not(.unknown) canvas { animation: bestiary-breath 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+.codex-portrait:not(.unknown):hover canvas { animation-duration: 0.9s; }
+@media (prefers-reduced-motion: reduce) { .codex-portrait canvas { animation: none !important; } }
+body.reduce-motion .codex-portrait canvas { animation: none !important; }
+
+/* NPC emote bubbles */
+.emote { margin-left: 0.5em; padding: 0 0.4em; border: 1px solid currentColor; border-radius: 0.8em; font-size: 0.8em; opacity: 0.75; }

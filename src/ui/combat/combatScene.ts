@@ -93,6 +93,10 @@ export class CombatScene {
   /** Whole-scene shake, set by critical hits and deaths. */
   private sceneShake = 0;
   private frame = 0;
+  /** Seconds of freeze frame left (a critical hit stops the scene for a breath). */
+  private freeze = 0;
+  /** An ultimate's cut-in banner: who, what, how long it has been up. */
+  private cutin: { who: string; what: string; age: number } | undefined;
   private last = 0;
   private background: HTMLCanvasElement;
   /** Combatants that can currently be clicked as targets. */
@@ -199,6 +203,10 @@ export class CombatScene {
     };
     switch (e.type) {
       case 'action': {
+        if (e.ultimate && !settings().reduceMotion) {
+          this.cutin = { who: this.battle.get(e.actorId)?.name ?? '', what: e.label, age: 0 };
+          this.freeze = Math.max(this.freeze, 0.1);
+        }
         // The actor steps toward its first target and back.
         if (settings().reduceMotion) return;
         const from = positions.get(e.actorId);
@@ -229,7 +237,10 @@ export class CombatScene {
         if (!e.dot && !settings().reduceMotion) {
           const p = positions.get(e.targetId);
           if (p) this.burst(p.x, p.y - this.unitSize(x) / 2, e.crit ? '#ffd84a' : color, e.crit ? 16 : 8 + Math.min(8, Math.round(share * 40)));
-          if (e.crit && !settings().reduceFlashing) this.sceneShake = Math.max(this.sceneShake, 1);
+          if (e.crit && !settings().reduceFlashing) {
+            this.sceneShake = Math.max(this.sceneShake, 1);
+            this.freeze = Math.max(this.freeze, 0.08);
+          }
         }
         float(e.targetId, `${e.crit ? 'CRIT ' : ''}${e.amount}`, e.crit ? '#ffd84a' : color, e.crit, e.dot ? 0.8 : 1 + Math.min(0.6, share * 3));
         return;
@@ -312,7 +323,9 @@ export class CombatScene {
   start(): void {
     this.last = performance.now();
     const tick = (now: number): void => {
-      const dt = Math.min(0.05, (now - this.last) / 1000) * battleFx.timeScale;
+      const real = Math.min(0.05, (now - this.last) / 1000);
+      this.freeze = Math.max(0, this.freeze - real);
+      const dt = this.freeze > 0 ? 0 : real * battleFx.timeScale;
       this.last = now;
       this.draw(dt, now / 1000);
       this.frame = requestAnimationFrame(tick);
@@ -424,6 +437,39 @@ export class CombatScene {
 
     // Weather falls in front of the fighters, behind the floating numbers.
     if (this.battle.weather && !settings().reduceMotion) drawWeather(g, this.battle.weather, SCENE_W, SCENE_H, t * 1000);
+    // Ultimate cut-in: a dark diagonal band across the scene with the name of the move.
+    if (this.cutin) {
+      const c = this.cutin;
+      c.age += dt;
+      const life = 1.1;
+      if (c.age >= life) this.cutin = undefined;
+      else {
+        const slide = Math.min(1, c.age / 0.18);
+        const fade = c.age > life - 0.25 ? (life - c.age) / 0.25 : 1;
+        g.save();
+        g.globalAlpha = 0.85 * fade;
+        g.fillStyle = '#120a20';
+        g.beginPath();
+        const y0 = SCENE_H * 0.36;
+        const h = 58;
+        const off = (1 - slide) * SCENE_W;
+        g.moveTo(-20 - off, y0 + 10);
+        g.lineTo(SCENE_W + 20 - off, y0 - 10);
+        g.lineTo(SCENE_W + 20 - off, y0 - 10 + h);
+        g.lineTo(-20 - off, y0 + 10 + h);
+        g.closePath();
+        g.fill();
+        g.globalAlpha = fade;
+        g.textAlign = 'center';
+        g.fillStyle = '#ffd84a';
+        g.font = 'bold 24px ui-monospace, Menlo, monospace';
+        g.fillText(c.what, SCENE_W / 2 - off, y0 + 36);
+        g.fillStyle = '#c8c0d8';
+        g.font = '12px ui-monospace, Menlo, monospace';
+        g.fillText(c.who, SCENE_W / 2 - off, y0 + 52);
+        g.restore();
+      }
+    }
     // Floating text.
     g.textAlign = 'center';
     this.floats = this.floats.filter((f) => f.age < 1.1);

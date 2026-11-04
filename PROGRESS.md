@@ -1079,7 +1079,13 @@ Six systems that make the world change while you are away, built as sub-phases A
 - UI: Codex > Realm tabs Divine Seasons, Omens, Chronicler's Tools, Fates. State in `realm.pilgrimage` and `endgame.daily` (saves migrate).
 - Tests: `tests/sectionE.test.ts` (7); 954 unit tests.
 
+### Innovation Pack, section F: polish and feel (item 35)
+- Already in: dynamic battle music (intensity filter), critical-hit screen shake, weather tints and weather effects on the map and in battle.
+- New: a freeze frame (0.08 s) on critical hits, an ultimate cut-in banner (`action` events carry `ultimate`), NPC emote bubbles in town (deterministic by NPC, day and night; `ui/components/emote.ts`), a pettable pet (Character > Pet; one pat a day, +1 Luck per 25 pats up to 4), and an animated (breathing) bestiary. Reduced motion/flashing switch the new motion effects off.
+- Tests: `tests/sectionF.test.ts` (2).
+
 ## Cut / deferred
+- **Section F:** the music "swell" is the existing intensity filter, not new stems; NPC emotes appear in town lists, not over sprites (the town is a list, not a map); combat freeze frames and cut-ins are verified by build and smoke only.
 - **Section E:** the Trial of the Week is the existing weekly run (no second weekly mode). Fates counts 16 endings; the 17th (the Unsworn Ending, R11) arrives with Section H. Giant Heads enlarges portraits and bestiary figures, not the combat canvas. The Humbled Path numbers are untuned (no sim run for it).
 - **Sundered Hours** reshape the present through modifiers and a ledger of consequences, not by redrawing town maps or replacing NPC models. **Painter's Eye** photos are records (scene, caption, commission), not saved images.
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.

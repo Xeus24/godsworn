@@ -37,6 +37,8 @@ export interface WondersState {
   sundered: { chosen: Record<string, string>; trips: number };
   /** Painter's Eye (28). */
   painter: { photos: Photo[]; sketched: string[]; done: string[] };
+  /** Pats given to your pet (once a day counts) and the day of the last. */
+  pet?: { pats: number; lastDay: number };
 }
 
 export const createWondersState = (): WondersState => ({

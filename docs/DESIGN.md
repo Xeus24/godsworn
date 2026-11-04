@@ -126,3 +126,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 | Chronicler's Tools (32) | `SPLITS`, `VEX_CODES` | `tick` on timeChanged; `enterCode` sets `cheated` |
 | Humbled Path (33) | `CHALLENGES` rule `humbled` | `GameSession.grantXp` caps level 1; `createEncounterBattle` lifts enemy level to the cap |
 | Fates (34) | `data/story/fates.ts` (peddler-vex, d-vex-chest, vex-prank) | `PilgrimageActions.fates` reads `legacy.endings` |
+
+## Polish (Innovation Pack, section F, item 35)
+`CombatScene` holds `freeze` (crit hit-stop; also set by ultimates) and `cutin` (drawn between the units and the floating text); `skills.ts` marks ultimate `action` events. `WondersActions.petThePet` keeps pats in `realm.wonders.pet`.

@@ -299,6 +299,7 @@ export class CharacterScreen implements Screen {
       el('h3', {}, 'Pet & Mount'),
       pick('Pet', st.pets, st.pet, (id) => content.pets.get(id).name, (id) => s.world.setPet(id)),
       el('div', { class: 'dim small' }, pet ? pet.description : 'Pets come from achievements and, rarely, from Rift Guardians.'),
+      ...(pet ? [(() => { const b = el('button', { type: 'button' }, `Pet ${pet.name}`); b.addEventListener('click', () => { const r = s.wonders.petThePet(); b.textContent = r.ok ? (r.text ?? '') : r.reason; }); return b; })()] : []),
       pick('Mount', st.mounts, st.mount, (id) => content.mounts.get(id).name, (id) => s.world.setMount(id)),
       el('div', { class: 'dim small' }, mount ? `${mount.description} ${mount.stepMinutes} min per step, ${Math.round((1 - mount.encounterMult) * 100)}% fewer ambushes.` : 'Buy a mount at a town’s stables, or earn one.'),
     );

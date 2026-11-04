@@ -15,6 +15,7 @@ import { canBuyFurniture, furnitureIn, roomCost, roomLevel } from '../../engine/
 import { furnitureCap } from '../../data/world/furniture';
 import type { FactionDef } from '../../engine/world/types';
 import type { NpcDef } from '../../engine/quests/types';
+import { emoteFor } from '../components/emote';
 import type { Conversation } from '../../engine/state/conversation';
 import { rewardText } from '../quests/questLog';
 import { navBar, type Nav } from '../components/navBar';
@@ -118,7 +119,8 @@ export class TownScreen implements Screen {
   /** A person to talk to, marked ! (a new quest) or ? (something to hand in). */
   private npcRow(npc: NpcDef): HTMLElement {
     const mark = this.session.quests.npcMark(npc.id);
-    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), uiGlyph(npc.place === 'temple' ? 'temple' : 'figure', mark === '!' ? '#b8892a' : mark === '?' ? '#2a7a8a' : undefined), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}`)));
+    const bubble = emoteFor(npc.id, this.session.state.clock.day, this.session.timeOfDay === 'night');
+    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), uiGlyph(npc.place === 'temple' ? 'temple' : 'figure', mark === '!' ? '#b8892a' : mark === '?' ? '#2a7a8a' : undefined), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}`)), ...(bubble ? [el('span', { class: 'emote', title: bubble.label, 'aria-label': bubble.label }, bubble.glyph)] : []));
     b.addEventListener('click', () => {
       const conv = this.session.quests.talkTo(npc.id);
       if (conv) this.town.talk(conv);
