@@ -16,6 +16,7 @@ import { furnitureCap } from '../../data/world/furniture';
 import type { FactionDef } from '../../engine/world/types';
 import type { NpcDef } from '../../engine/quests/types';
 import { emoteFor } from '../components/emote';
+import { attitudeName, prejudiceMult } from '../../engine/world/prejudice';
 import type { Conversation } from '../../engine/state/conversation';
 import { rewardText } from '../quests/questLog';
 import { navBar, type Nav } from '../components/navBar';
@@ -232,7 +233,8 @@ export class TownScreen implements Screen {
     );
     const people = s.quests.townNpcs(this.townId);
     const heard = s.road.reaction(this.townId);
-    cards.push(this.card('People', ...(heard ? [el('p', { class: 'dim small' }, heard)] : []), ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n))), this.boardCard());
+    const att = attitudeName(s.player, this.townId);
+    cards.push(this.card('People', el('p', { class: 'dim small' }, `The townsfolk are ${att.toLowerCase()} toward ${content.races.get(s.player.raceId).name}s (${prejudiceMult(s.player, this.townId) === 1 ? 'prices unchanged' : `prices ${prejudiceMult(s.player, this.townId) > 1 ? '+' : ''}${Math.round((prejudiceMult(s.player, this.townId) - 1) * 100)}%`}).`), ...(heard ? [el('p', { class: 'dim small' }, heard)] : []), ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n))), this.boardCard());
     cards.push(
       this.card(
         'Temple',

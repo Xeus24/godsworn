@@ -147,3 +147,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## Gods and party (section H-2a)
 `FellowshipActions` (`s.fellowship`, `realm.marvels.fellowship`) feeds `WondersActions.refresh` with the mood-derived Blessing Power, morale bands and wounds; it refreshes on every `favorChanged` and at midnight. Letters and companion oaths are checked once a day; `journalEntry` is a pure function of (event, background, day).
+
+## Society (section H-2b)
+`SocietyActions` (`s.society`, `realm.marvels.society`) adds conjunction power, vigil gifts, fitted Forged modules, allied rival apostles and raised saints to `heart.wonderMods`. Class rival duels and apostle contests run as special gauntlets (`s.specials['rival'|'apostle']`). `prejudiceMult(char, town)` is called from `buyPrice`.

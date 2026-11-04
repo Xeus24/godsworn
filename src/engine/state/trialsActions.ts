@@ -77,6 +77,9 @@ export class TrialsActions {
     const year = dateOf(this.s.state.clock.day).year;
     const rng = new Rng(hash(`tournament:${year}:${this.s.player.name}`));
     const rivals = rng.sample(RIVALS, TOURNAMENT.rounds);
+    // Your class rival waits in the final (item 81).
+    const crival = this.s.society.rivalFor();
+    if (crival) rivals[TOURNAMENT.rounds - 1] = `${crival.name}, ${crival.title}`;
     const pool = this.foes(['humanoid'], this.s.player.level, ['normal', 'elite']);
     const picks = rivals.map(() => rng.pick(pool));
     const r = this.s.endgame.startSpecial({

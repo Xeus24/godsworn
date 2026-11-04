@@ -156,7 +156,25 @@ export interface FellowshipState {
 
 export const createFellowship = (): FellowshipState => ({ letters: [], morale: 60, moraleDay: 0, streak: 0, wounds: [], journal: [], journalLast: {}, regions: [], oaths: {}, oathDay: 0, momentDay: 0 });
 
+export interface SocietyState {
+  /** Conjunctions (80): vigils kept (`year:season`). */
+  vigils: string[];
+  /** Class Rivals (81): duel results by milestone level. */
+  rivals: Record<string, 'won' | 'lost'>;
+  /** Forged Modules (78): level owned, and the four fitted. */
+  modules: { owned: Record<string, number>; fitted: string[] };
+  /** Origin Rivals (76): what you did at each stretch (`stretch`), and which of them was the culprit. */
+  origin: { handled: Record<string, 'confront' | 'forgive' | 'ignore'>; culprit?: string };
+  /** Rival Apostles (70): standing with each (-3 to 3), the contest under way, and outcomes. */
+  apostles: { standing: Record<string, number>; contest?: { god: string; key: string }; raced: number; allies: string[]; enemies: string[]; lastKey: string };
+  /** The Ninth Saint (71): ancestors raised to sainthood (by name and generation). */
+  saints: { name: string; generation: number; classId: string; level: number }[];
+}
+
+export const createSociety = (): SocietyState => ({ vigils: [], rivals: {}, modules: { owned: {}, fitted: [] }, origin: { handled: {} }, apostles: { standing: {}, raced: 0, allies: [], enemies: [], lastKey: '' }, saints: [] });
+
 export interface MarvelsState {
+  society?: SocietyState;
   fellowship?: FellowshipState;
   oaths?: OathsState;
   faith?: FaithState;

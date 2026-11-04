@@ -67,7 +67,7 @@ export class DevotionActions {
     // Godless: favor can only fall.
     if (hasRule(this.p, 'noFavor')) deltas = Object.fromEntries(Object.entries(deltas).filter(([, v]) => v < 0));
     // Forsworn: the gods of light will not hear you.
-    if (this.s.state.flags['forsworn'] === true) deltas = Object.fromEntries(Object.entries(deltas).filter(([g, v]) => v < 0 || !FORSWORN.refuse.includes(g)));
+    if (this.s.state.flags['forsworn'] === true || this.p.raceId === 'revenant') deltas = Object.fromEntries(Object.entries(deltas).filter(([g, v]) => v < 0 || !FORSWORN.refuse.includes(g)));
     const changes = applyFavor(this.p, deltas, characterStats(this.p).favorGain, raw);
     for (const ch of changes) {
       this.s.bus.emit('favorChanged', { god: ch.god, previous: ch.before, current: ch.after, reason });
