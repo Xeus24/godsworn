@@ -3,6 +3,7 @@ import { content } from '../../data';
 import { MinigameActions } from './minigameActions';
 import { WondersActions } from './wondersActions';
 import { PilgrimageActions } from './pilgrimageActions';
+import { FaithActions } from './faithActions';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
@@ -220,6 +221,7 @@ export class GameSession {
   readonly realm: RealmActions;
   readonly wonders: WondersActions;
   readonly pilgrimage: PilgrimageActions;
+  readonly faith: FaithActions;
   readonly heart: HeartActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
@@ -243,6 +245,7 @@ export class GameSession {
     this.realm = new RealmActions(this);
     this.wonders = new WondersActions(this);
     this.pilgrimage = new PilgrimageActions(this);
+    this.faith = new FaithActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {

@@ -140,6 +140,7 @@ export function migrate(raw: Json): Json {
   realm.chronicle ??= { seed: 0, events: [], known: {}, commissions: [], completed: [] };
   realm.tales ??= {};
   realm.observatory ??= { clues: [] };
+  realm.marvels ??= {} as unknown as Json;
   realm.pilgrimage ??= createPilgrimageState() as unknown as Json;
   realm.wonders ??= createWondersState() as unknown as Json;
   realm.village ??= { buildings: {}, settled: [], timber: 20, stone: 10, grain: 30, coffers: 0, day: 1, raidsRepelled: 0, raidsLost: 0, log: [] };

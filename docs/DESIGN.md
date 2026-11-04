@@ -129,3 +129,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## Polish (Innovation Pack, section F, item 35)
 `CombatScene` holds `freeze` (crit hit-stop; also set by ultimates) and `cutin` (drawn between the units and the floating text); `skills.ts` marks ultimate `action` events. `WondersActions.petThePet` keeps pats in `realm.wonders.pet`.
+
+## More wonders: faith (Innovation Pack, section G, items 36, 39, 42, 48, 52)
+`FaithActions` (`s.faith`) listens to combatEnded (wagers, prophecies), enemyKilled/zoneEntered/goldChanged/levelUp (prophecy tally) and favorChanged (sparks). `mods()` (hybrid blessings, the disguised-god boon) is gathered by `WondersActions.refresh` into `heart.wonderMods`. State: `realm.marvels.faith` (created on first use).

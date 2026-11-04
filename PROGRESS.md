@@ -1084,6 +1084,10 @@ Six systems that make the world change while you are away, built as sub-phases A
 - New: a freeze frame (0.08 s) on critical hits, an ultimate cut-in banner (`action` events carry `ultimate`), NPC emote bubbles in town (deterministic by NPC, day and night; `ui/components/emote.ts`), a pettable pet (Character > Pet; one pat a day, +1 Luck per 25 pats up to 4), and an animated (breathing) bestiary. Reduced motion/flashing switch the new motion effects off.
 - Tests: `tests/sectionF.test.ts` (2).
 
+### Innovation Pack, section G: more wonders (items 36-60), in batches
+- **G1, faith** (`data/faith.ts`, `engine/state/faithActions.ts`, Codex > Realm > Faith): 36 Divine Wagers (stake favor on the next fight; each god pays by temper), 39 Godspark Crafting (a spark every 100 favor; fuse two gods' sparks into one of up to 4 hybrid blessings), 42 Prophecy Scrolls (20 prophecies on 5 counters; pay 3x if true in time), 48 Divine Exams (five generated questions per god; passing pays once; Lorekeeper title), 52 Gods in Disguise (a god walks a town on some days; the right gift gives a 3-day boon). State in `realm.marvels.faith`.
+- Tests: `tests/sectionG1.test.ts` (5).
+
 ## Cut / deferred
 - **Section F:** the music "swell" is the existing intensity filter, not new stems; NPC emotes appear in town lists, not over sprites (the town is a list, not a map); combat freeze frames and cut-ins are verified by build and smoke only.
 - **Section E:** the Trial of the Week is the existing weekly run (no second weekly mode). Fates counts 16 endings; the 17th (the Unsworn Ending, R11) arrives with Section H. Giant Heads enlarges portraits and bestiary figures, not the combat canvas. The Humbled Path numbers are untuned (no sim run for it).

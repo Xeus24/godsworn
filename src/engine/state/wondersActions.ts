@@ -42,7 +42,7 @@ export class WondersActions {
       const pick = w.sundered.chosen[tp.id];
       if (pick) mods.push(...(tp.choices.find((c) => c.id === pick)?.mods ?? []));
     }
-    mods.push(...this.familyMods());
+    mods.push(...this.familyMods(), ...this.s.faith.mods());
     const luck = Math.min(4, Math.floor((w.pet?.pats ?? 0) / 25));
     if (luck) mods.push({ stat: 'luk', type: 'flat', value: luck } as ModifierSpec);
     this.s.heart.h.wonderMods = mods;
