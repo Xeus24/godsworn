@@ -134,7 +134,30 @@ export interface OathsState {
 
 export const createOaths = (): OathsState => ({ pages: [], vows: [], kept: 0, broken: 0, scars: [], mainDone: 0, titled: [], cipher: false });
 
+export interface FellowshipState {
+  /** Divine Letters (69): in the camp mailbox. */
+  letters: { id: string; god: string; kind: string; day: number; read: boolean }[];
+  /** Party Morale (84). */
+  morale: number;
+  moraleDay: number;
+  streak: number;
+  /** Lingering Wounds (85): wound ids with the day each will have healed by. */
+  wounds: { id: string; until: number }[];
+  /** The Godsworn Journal (86). */
+  journal: { day: number; event: string; text: string }[];
+  journalLast: Record<string, number>;
+  regions: string[];
+  /** Companion Oaths (75): the stage of each loyalty trouble, the day of the last step, and the day they return. */
+  oaths: Record<string, { stage: number; last: number; returns?: number }>;
+  oathDay: number;
+  /** Class-reactive moments (82): the day one was last shown. */
+  momentDay: number;
+}
+
+export const createFellowship = (): FellowshipState => ({ letters: [], morale: 60, moraleDay: 0, streak: 0, wounds: [], journal: [], journalLast: {}, regions: [], oaths: {}, oathDay: 0, momentDay: 0 });
+
 export interface MarvelsState {
+  fellowship?: FellowshipState;
   oaths?: OathsState;
   faith?: FaithState;
   relics?: RelicsState;
