@@ -3,6 +3,7 @@ import { GREATER_CLASSES } from '../classesGreater';
 import type { NpcDef } from '../../engine/quests/types';
 import { questActive } from './helpers';
 import { MERCY_TOPICS } from './mercyTalk';
+import { HEART_TOPICS } from './heartTalk';
 
 type N = Omit<NpcDef, 'place'> & { place?: NpcDef['place'] };
 const npc = (n: N): NpcDef => ({ place: 'people', ...n });
@@ -99,5 +100,6 @@ export const FIELD_NPCS: NpcDef[] = [
 export const NPC_TOPICS: Record<string, NonNullable<NpcDef['topics']>> = {
   'captain-reyna': [{ id: 'unsworn', text: 'What do you know about the Unsworn?', dialogue: 'd-topic-unsworn', cond: questActive('main-1') }],
 };
+for (const [id, topics] of Object.entries(HEART_TOPICS)) NPC_TOPICS[id] = [...(NPC_TOPICS[id] ?? []), ...topics];
 for (const [id, topics] of Object.entries(MERCY_TOPICS)) NPC_TOPICS[id] = [...(NPC_TOPICS[id] ?? []), ...topics];
 

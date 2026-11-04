@@ -10,6 +10,7 @@ import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
 import { renownOf } from '../world/renown';
 import { festivalOn } from '../realm/wheel';
+import { bondRank, heartOf, holds } from '../heart/heart';
 import { RENOWN_TIERS } from '../../data/world/renown';
 import { progressOf } from '../achievements/progress';
 import type { Cond } from './types';
@@ -133,6 +134,10 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length >= cond.min;
     case 'house':
       return p.world.house !== undefined;
+    case 'conviction':
+      return holds(heartOf(p), cond.id);
+    case 'bond':
+      return bondRank(heartOf(p).bonds[cond.id] ?? 0) >= cond.rank;
     case 'cleared': {
       const key = `${cond.difficulty}${cond.hardcore ? ':hardcore' : ''}`;
       const now = state.quests.ending !== undefined && p.difficulty === cond.difficulty && (!cond.hardcore || p.hardcore);
@@ -208,6 +213,10 @@ export function describe(cond: Cond, c: Content = content): string {
       return `${c.factions.get(cond.faction).name} ${cond.min}`;
     case 'festival':
       return 'on the festival day';
+    case 'conviction':
+      return `hold the conviction ${cond.id}`;
+    case 'bond':
+      return `bond rank ${cond.rank} with ${cond.id}`;
     case 'cleared':
       return `finish the story on ${cond.difficulty}${cond.hardcore ? ' as a Hardcore hero' : ''}`;
     case 'renown':

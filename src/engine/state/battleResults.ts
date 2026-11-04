@@ -219,6 +219,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
     if (p.hardcore) {
       rewards.permadeath = true;
       s.state.gameOver = true;
+      s.heart.fall(b.combatants.filter((x) => x.side === 'enemy' && x.alive).sort((p, q) => q.level - p.level)[0]?.name ?? 'something unseen');
       p.hp = 0;
     } else {
       rewards.goldLost = Math.floor(s.state.gold * COMBAT.defeatGoldLoss);

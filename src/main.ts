@@ -37,6 +37,11 @@ import { TownScreen } from './ui/world/townScreen';
 import { WorkshopScreen } from './ui/world/workshopScreen';
 import { ShipScreen } from './ui/world/shipScreen';
 import { atLeast } from './engine/gods/devotion';
+import { HeirScreen } from './ui/heir/heirScreen';
+import { HeartActions } from './engine/state/heartActions';
+import { createCharacter } from './engine/character/create';
+import type { Ancestor, Heir } from './engine/realm/types';
+import type { DifficultyId } from './data/difficulty';
 import { MarrowScreen } from './ui/world/marrowScreen';
 import { MinigameScreen } from './ui/world/minigameScreen';
 import { WorldScreen } from './ui/world/worldScreen';
@@ -287,6 +292,17 @@ function startGame(hero: Character): void {
   showTown(s.world.inTown() ?? 'brightwater');
 }
 
+/** The heir of a fallen Hardcore hero begins, carrying what the family could give. */
+function startHeir(heir: Heir, ancestors: Ancestor[]): void {
+  const hero = createCharacter({ name: heir.name, portrait: Math.floor(Math.random() * 8), raceId: heir.raceId, classId: heir.classId, birthSignId: heir.birthSignId, hardcore: true, difficulty: heir.difficulty as DifficultyId, ...(heir.backgroundId ? { background: heir.backgroundId } : {}) });
+  const s = GameSession.newGame(Math.floor(Math.random() * 2 ** 32), hero);
+  HeartActions.inherit(s, heir, ancestors);
+  attach(s);
+  toasts.show('info', `${hero.name}, of the line of ${ancestors[ancestors.length - 1]?.name ?? 'the fallen'}, swears the oath.`);
+  autosave(0);
+  showTown(s.world.inTown() ?? 'brightwater');
+}
+
 function showCharacter(): void {
   if (session) screens.show(new CharacterScreen(session, nav));
 }
@@ -395,6 +411,8 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
   inBattle = true;
   const punisher = s.devotion.punisherForFight();
   const follower = s.devotion.follower();
+  // Companions who have told their tales fight better side by side.
+  const taleMods = s.heart.taleModifiers(Object.values(s.state.party.companions).filter((c) => c.inParty && !c.left).map((c) => c.id)) as ModifierSpec[];
   const battle = createEncounterBattle(s.player, encounter, {
     rng: s.rng,
     hooks: inventoryHooks(s),
@@ -411,7 +429,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     companions: s.party.battleMembers(),
     guests: [...s.quests.guests(), ...(follower ? [{ id: 'follower', enemyId: follower, ally: true }] : [])],
     // Rifts and the Boss Rush are already set at your level: no NG+ stretching.
-    ...(gauntlet ? { enemyModifiers: gauntlet.enemyModifiers, partyModifiers: gauntlet.partyModifiers } : { ngPlus: s.state.ngPlus, ngAffixes: s.state.ngAffixes }),
+    ...(gauntlet ? { enemyModifiers: gauntlet.enemyModifiers, partyModifiers: [...gauntlet.partyModifiers, ...taleMods] } : { ngPlus: s.state.ngPlus, ngAffixes: s.state.ngAffixes, partyModifiers: taleMods }),
     ...(level !== undefined ? { level } : {}),
   });
   currentBattle = battle;
@@ -425,10 +443,14 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
       onExit: () => {
         inBattle = false;
         if (s.state.gameOver) {
-          // Hardcore: the legend is over, and so are its saves.
+          // Hardcore: the legend is over, and so are its saves. The family may go on.
+          const bl = s.state.realm.bloodline;
+          const heir = bl.heir;
+          const fallen = bl.ancestors[bl.ancestors.length - 1];
           saves.removeCharacter(s.player.id);
           session = undefined;
-          showTitle();
+          if (heir && fallen) screens.show(new HeirScreen(fallen, heir, () => startHeir(heir, bl.ancestors), showTitle));
+          else showTitle();
         } else if (gauntlet) {
           showEndgame();
         } else {

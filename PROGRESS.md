@@ -1034,6 +1034,16 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests: `tests/sectionB.test.ts` (16), an e2e test of the new combat UI; one old test changed (the finale now shows a locked Spare) and one made robust to dice (Brand).
 - Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
 
+### The older deferred items, and Innovation Pack section C (save v24)
+- **Older items done:** controller rebinding (Settings > Controller buttons, with prompts that follow); renown from shop spending; auto-battle can spare beaten foes and use Shove and Pull (Settings, off in simulations); the Silent Cartographer sells treasure charts; 8 per-difficulty achievements (Noob to Impossible, Hardcore, Hardcore Hard); Codex > Compendium with pages for every god and class; "The Last Page" now follows the achievement count.
+- **15, Convictions** (`data/heart/convictions.ts`): 60 beliefs, 30 of them in opposed pairs, grown by what you do (kills by type and tier, mercy, fleeing, resting, gold, prayer, festivals, tales...). They settle for three days and then give a boon, change what the gods think, and unlock ten new things people say.
+- **16, Kindred Bonds** (`data/heart/bonds.ts`): 20 bonds (14 people, 6 gods), 10 ranks each. Even ranks give boons, rank 3 a recipe, 5 and 9 a skill, 7 a gift.
+- **17, Campfire Tales** (`data/heart/tales.ts`): 12 companion pairs, 4 scenes each (48 scenes), each with a choice. Every scene adds a party bonus while the pair fights together.
+- **18, Wayfarer's Arts** (`data/heart/arts.ts`): an out-of-combat art for each of the 29 classes (scout, reveal, forage, haggle, inquire, mend, repair, bless), once a day, from the world screen.
+- **19, the Sworn Bloodline** (`data/heart/bloodline.ts`): a fallen Hardcore hero leaves an heir with 40% of the gold, two beliefs, quirks (24), a few skill points and the patron's favor; an heir screen starts the new game.
+- Codex > Heart shows all five. Tests: `tests/sectionC.test.ts` (11) and additions to the realm, section B and pad tests; 923 unit tests, 16 e2e, build.
+- Full playtest (`npm run playtest -- ng`): all 29 classes finish the base story and New Game+1 (58 runs, none stalled).
+
 ## Cut / deferred
 - **Difficulty** can be changed after creation (not Hardcore or Impossible); per-difficulty achievements are not built. Bosses enrage on their own timers (Phase 13) regardless of tier.
 - **Companions' class trees** are player-allocated on the Party screen, as a list or an editable graph (phase 21). Companion gear is managed on the Party screen, not by dragging onto a paper doll.

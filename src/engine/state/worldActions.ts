@@ -173,6 +173,12 @@ export class WorldActions {
     reveal(this.world, this.map, p.x, p.y, sightRadius(this.s.player, this.zone, SIGHT, content.dungeons.find(this.world.position.map)?.gimmick === 'dark', this.day));
   }
 
+  /** Reveals a wider circle than you can see (a Wayfarer's Art). */
+  revealAround(radius: number): void {
+    const p = this.world.position;
+    reveal(this.world, this.map, p.x, p.y, radius);
+  }
+
   private placeAt(map: string, x: number, y: number): void {
     this.world.position = { map, x, y };
     this.look();
@@ -314,6 +320,7 @@ export class WorldActions {
   private gainRenown(town: string, amount: number): void {
     const { tier } = addRenown(this.s.player, town, amount);
     this.s.realm.lift(town, FORTUNES.perDungeon);
+    this.s.heart.dungeon();
     if (tier) this.toast('quest', `${content.towns.get(town).name}: you are now ${tier.name}.`);
   }
 

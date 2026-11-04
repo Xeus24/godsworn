@@ -725,6 +725,11 @@ export class WorldScreen implements Screen {
         this.draw();
       }));
     }
+    const art = s.heart.art();
+    if (art && !dungeon) actions.push(btn(`${art.name}${s.heart.artReady() ? '' : ' (used today)'}`, () => {
+      this.say(s.heart.useArt().text);
+      this.draw();
+    }));
     const ng = s.state.ngPlus;
     const levels = dungeon ? `Level ${worldLevel(dungeon.level, ng)}` : `Levels ${worldLevel(zone.levels[0], ng)}-${worldLevel(zone.levels[1], ng)}${ng ? ` · NG+${ng}` : ''}`;
     // Each biome tints the stage border and the side panel header so zones feel different at a glance.

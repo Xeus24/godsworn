@@ -74,6 +74,10 @@ export type Cond =
   /** Zones set foot in. */
   | { kind: 'zones'; min: number }
   | { kind: 'house' }
+  /** The hero holds this conviction (item 15). */
+  | { kind: 'conviction'; id: string }
+  /** A kindred bond has reached this rank (item 16). */
+  | { kind: 'bond'; id: string; rank: number }
   /** The story has been finished on this difficulty (and, if `hardcore`, as a Hardcore hero). */
   | { kind: 'cleared'; difficulty: string; hardcore?: boolean }
   /** The festival with this id is being kept today. */

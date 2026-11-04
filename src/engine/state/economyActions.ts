@@ -53,7 +53,7 @@ export class EconomyActions {
     const day = this.s.state.clock.day;
     const bought = this.s.state.economy.bought[key];
     const taken = bought && bought.day === day ? bought.lines : [];
-    const mult = this.s.realm.priceMult(town);
+    const mult = this.s.realm.priceMult(town) * (this.s.player.world.heart?.haggleDay === day ? 0.9 : 1);
     return shopStock(shop, town, day, this.p, this.s.state.ngPlus).map((l, line) => ({ ...l, price: Math.max(1, Math.round(l.price * mult)), line })).filter((l) => !taken.includes(l.line));
   }
 

@@ -96,6 +96,7 @@ export class DevotionActions {
     this.s.world.factionDeeds(occurrences);
     this.s.quests.onDeeds(occurrences);
     this.s.party.onDeeds(occurrences);
+    this.s.heart.onDeeds(occurrences);
     return changes;
   }
 
@@ -259,6 +260,7 @@ export class DevotionActions {
     this.p.devotion.lastPrayer[god] = day;
     this.s.advanceTime(30);
     this.apply({ [god]: DEVOTION.shrinePrayerFavor }, 'prayer');
+    this.s.heart.prayer(god);
     return { ok: true };
   }
 
@@ -269,6 +271,7 @@ export class DevotionActions {
     if (amount <= 0) return fail('Offer some gold.');
     if (!this.s.spendGold(amount, 'offering')) return fail('Not enough gold.');
     this.apply({ [god]: goldOfferingFavor(god, amount) }, 'offering');
+    this.s.heart.prayer(god, true);
     return { ok: true };
   }
 
@@ -284,6 +287,7 @@ export class DevotionActions {
     item.quantity--;
     if (item.quantity <= 0) this.s.state.inventory.slots[index] = null;
     this.apply({ [god]: favor }, 'offering');
+    this.s.heart.prayer(god, true);
     return { ok: true };
   }
 

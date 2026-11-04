@@ -40,13 +40,14 @@ import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
 import { createRealmState, type DeathEcho, type RealmState } from '../realm/types';
 import { RealmActions } from './realmActions';
+import { HeartActions } from './heartActions';
 import { effectOn } from '../realm/wheel';
 import type { WorldState } from '../world/types';
 import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 23;
+export const SAVE_VERSION = 24;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -214,6 +215,7 @@ export class GameSession {
   readonly achievements: AchievementActions;
   readonly endgame: EndgameActions;
   readonly realm: RealmActions;
+  readonly heart: HeartActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
 
@@ -234,8 +236,10 @@ export class GameSession {
     this.achievements = new AchievementActions(this);
     this.endgame = new EndgameActions(this);
     this.realm = new RealmActions(this);
+    this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {
+      this.heart.onGold(amount, reason);
       if (amount > 0) this.state.stats.goldEarned += amount;
       else if (reason !== 'defeat') this.state.stats.goldSpent -= amount;
     });

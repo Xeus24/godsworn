@@ -123,16 +123,55 @@ export interface ChronicleState {
   completed: string[];
 }
 
+/** A hero of the family who has gone before (the Sworn Bloodline, item 19). */
+export interface Ancestor {
+  name: string;
+  classId: string;
+  level: number;
+  /** What ended them. */
+  by: string;
+  day: number;
+  generation: number;
+  patron?: string;
+}
+
+/** What the next hero inherits. */
+export interface Heir {
+  name: string;
+  raceId: string;
+  classId: string;
+  birthSignId: string;
+  backgroundId?: string;
+  difficulty: string;
+  gold: number;
+  convictions: string[];
+  quirks: string[];
+  patron?: string;
+  favor: number;
+  skillPoints: number;
+  generation: number;
+}
+
+export interface BloodlineState {
+  generation: number;
+  ancestors: Ancestor[];
+  /** Set when a Hardcore hero falls, until the player takes up the oath (or lets the line end). */
+  heir?: Heir;
+}
+
 export interface RealmState {
   grudge: GrudgeState;
   marrow: MarrowState;
   fortunes: FortunesState;
   echoes: EchoState;
   chronicle: ChronicleState;
+  /** Campfire Tales heard: pair id -> scenes heard (item 17). */
+  tales: Record<string, number>;
+  bloodline: BloodlineState;
 }
 
 export function createRealmState(): RealmState {
-  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] } };
+  return { grudge: { entries: {}, log: [], next: 1, slain: 0 }, marrow: createMarrowState(), fortunes: { towns: {}, log: [] }, echoes: { found: {}, replays: {}, deaths: [], heard: [] }, chronicle: { seed: 0, events: [], known: {}, commissions: [], completed: [] }, tales: {}, bloodline: { generation: 1, ancestors: [] } };
 }
 
 export function createMarrowState(): MarrowState {

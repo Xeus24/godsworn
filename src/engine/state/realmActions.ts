@@ -48,6 +48,7 @@ export class RealmActions {
 
   /** Days pass: every region's pecking order schemes. */
   onDays(days: number): void {
+    this.s.heart.onDay();
     const today = festivalOn(this.s.state.clock.day);
     if (today) this.s.bus.emit('toast', { kind: 'quest', text: `Today is ${today.name}, the feast of ${content.gods.get(today.god).name}. Find it in ${content.towns.get(today.town).name}.` });
     for (let i = 0; i < Math.min(days, MAX_DAYS_AT_ONCE); i++) {
@@ -178,6 +179,7 @@ export class RealmActions {
     const echo = ECHOES.find((e) => e.id === id);
     if (!echo || this.state.echoes.found[id] !== undefined) return;
     this.state.echoes.found[id] = this.s.state.clock.day;
+    this.s.heart.tale();
     this.s.bus.emit('toast', { kind: 'info', text: `An echo of ${echo.name} stirs. It can be heard again in the Codex.` });
   }
 
@@ -255,6 +257,7 @@ export class RealmActions {
     const event = eventsIn(ch, zone)[index];
     if (!event) return 'Bare stones, and grass that has long since forgotten what they were.';
     const first = ch.known[event.id] !== 2;
+    if (first) this.s.heart.tale();
     ch.known[event.id] = 2;
     for (const c of ch.commissions) if (c.event === event.id) c.visited = true;
     this.checkCommissions();

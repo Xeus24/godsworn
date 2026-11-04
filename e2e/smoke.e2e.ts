@@ -32,7 +32,7 @@ test.describe('screens added after phase 14 in a real browser', () => {
 
     // Codex tabs: families, backgrounds, companions, cards, ship, completion.
     await page.keyboard.press('b');
-    for (const tab of ['By family', 'Backgrounds', 'Companions', 'Cards', 'Ship', 'Completion']) {
+    for (const tab of ['By family', 'Backgrounds', 'Companions', 'Cards', 'Ship', 'Realm', 'Compendium', 'Heart', 'Completion']) {
       await page.getByRole('button', { name: tab, exact: true }).click();
       await expect(page.locator('.sheet section.panel, .sheet .panel').first()).toBeVisible();
     }

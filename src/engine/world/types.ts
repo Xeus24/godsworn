@@ -249,6 +249,8 @@ export interface WorldProgress {
   ship?: { level: number; airship: boolean; voyages: number };
   /** Town businesses you have put money into (see data/world/investments.ts). */
   investments?: Record<string, { level: number; collected: number }>;
+  /** Convictions, bonds and quirks (Innovation Pack, section C): see `engine/heart/heart.ts`. */
+  heart?: import('../heart/heart').HeartProgress;
 }
 
 /** Everything about the world the player has changed or seen. */

@@ -52,3 +52,29 @@ All four live in `src/engine/combat/` and are written so that a fight with none 
 - Ground has no art on the battle scene (a labelled strip carries it); Earth interactions wait for item 149.
 - The auto-battle AI does not shove or pull, and does not spare.
 - Sparing a finale does not branch the story; it changes the epilogue and what people say.
+
+## The Godsworn's heart (Innovation Pack, section C, items 15-19) and the older items
+
+Saved on `character.world.heart` (convictions, bonds, quirks: they feed stats, so they live with the character) and in `realm.tales` and `realm.bloodline` (save v24). Pure logic is in `engine/heart/heart.ts`; `session.heart` (`HeartActions`) hooks it into the game.
+
+| System | Hooks |
+|---|---|
+| Convictions (15) | `DevotionActions.deeds` forwards every deed the gods judge (kills carry enemy type and tier); `goldChanged` counts gold in hundreds; talking, shrine prayers, festivals, dungeons and tales add their own; `RealmActions.onDays` settles beliefs |
+| Kindred Bonds (16) | `talkTo` (once a day), finished quests for a giver, prayers and offerings; ranks call `grantPerks` |
+| Campfire Tales (17) | Codex > Heart; both companions with you and fond enough; `startFight` adds the pair bonus as party modifiers |
+| Wayfarer's Arts (18) | a button on the world screen and in Codex > Heart; once per day |
+| Sworn Bloodline (19) | `settleBattle` on a Hardcore death calls `heart.fall`; `main.ts` shows the heir screen and `HeartActions.inherit` lays the inheritance on a new game |
+
+### Decisions
+- **Beliefs are leaned into, not chosen.** Each conviction names the deed that feeds it (an event, optionally a creature type or tier) and a threshold. Past the threshold it settles for three days, then it is held. Thirty convictions are in opposed pairs; a held belief gives way only to one whose lean is 1.5 times its own, so a hero changes slowly.
+- **Convictions reuse the gods' deed system.** They add no new instrumentation: whatever the gods already judge is also what shapes a person. Only gold, talking, festivals, dungeons, prayers and tales are new events.
+- **Bond gifts ignore requirements.** A skill taught by someone who has grown close to you does not need the stat or level the skill would normally ask for (it still has to be slotted to be used).
+- **The bloodline is a new save, not a mode.** The fallen hero's save is still deleted (Hardcore keeps its stakes); the heir is a new game carrying 40% of the gold, two beliefs, quirks, a few skill points and the patron's favor. Generations are remembered in the Codex.
+
+### Older deferred items done alongside
+Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a day per town), auto-battle that can spare and shove or pull (Settings; off in simulations), the Silent Cartographer selling charts, per-difficulty achievements, and Codex pages for the gods and classes (Compendium).
+
+### Cut or deferred
+- Gifts to NPCs for bond points; bonds grow by talking, errands and prayer only.
+- Conviction effects on dialogue are ten topics (eight beliefs, two bonds), not branches through every conversation.
+- Weapon skins, the Defender path's second divine weapon and edicts, and drag-and-drop offerings remain deferred.

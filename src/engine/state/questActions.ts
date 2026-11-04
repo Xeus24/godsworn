@@ -407,6 +407,7 @@ export class QuestActions {
       parts.push(`title “${r.title}”`);
     }
     s.bus.emit('questComplete', { questId: q.id });
+    s.heart.questDone(q.giver, q.kind);
     const home = questTown(q);
     if (home) {
       const gained = addRenown(s.player, home, questRenown(q));
@@ -608,6 +609,7 @@ export class QuestActions {
   talkTo(npcId: string): Conversation | undefined {
     const npc = content.npcs.get(npcId);
     if (!this.canTalk(npc)) return undefined;
+    this.s.heart.talk(npcId);
     return new Conversation(this.s, npc);
   }
 

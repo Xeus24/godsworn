@@ -15,6 +15,7 @@ import { treeFlags, treeModifiers } from '../skills/tree';
 import { factionModifiers } from '../world/factions';
 import { houseModifiers } from '../world/housing';
 import { renownModifiers } from '../world/renown';
+import { heartModifiers } from '../heart/heart';
 import { calculateStats, calculateStatsDetailed, type StatResult } from '../stats/calculate';
 import type { ConditionContext } from '../stats/conditions';
 import { withSource, type Modifier } from '../stats/modifiers';
@@ -70,7 +71,7 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   mods.push(...generalModifiers(char, c));
   mods.push(...offClassArmorModifiers(char, c));
   mods.push(...divineModifiers(char, characterBaseStats(char, c), c));
-  mods.push(...factionModifiers(char, c), ...houseModifiers(char, c), ...renownModifiers(char, c));
+  mods.push(...factionModifiers(char, c), ...houseModifiers(char, c), ...renownModifiers(char, c), ...heartModifiers(char, c));
   for (const buff of char.timedBuffs) mods.push(...withSource(buff.modifiers, `buff:${buff.id}`));
   mods.push(...slayerModifiers(char, c), ...heresyModifiers(char), ...challengeHeroModifiers(char, c), ...petModifiers(char, c));
   // The primary class's trait.
