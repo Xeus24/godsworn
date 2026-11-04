@@ -279,6 +279,24 @@ export class EndgameActions {
     return { ok: true };
   }
 
+  // ------------------------------------------------------------ special runs (Section G)
+
+  /**
+   * A short run for another system: waves of the enemies it names and an optional guardian, at a level. The system that owns it
+   * (`module`) is told how it ended (`GameSession.finishSpecial`). No Rift rewards are given; the owner pays out.
+   */
+  startSpecial(o: { module: string; ref: string; label: string; level: number; waves: string[][]; boss?: string; threat?: number; affixes?: string[]; respite?: number }): EndgameResult {
+    if (this.e.active) return fail('Finish (or abandon) the run you are on first.');
+    const threat = o.threat ?? 0;
+    const fights: GauntletState['fights'] = o.waves.map((ids, i) => ({ encounter: groupEncounter({ weight: 1, enemies: ids.map((enemyId) => ({ enemyId })) }, `gauntlet:${o.module}:${i}`, `${o.label}, fight ${i + 1}`, o.level, { canFlee: false, threat }), level: o.level }));
+    if (o.boss) fights.push({ encounter: groupEncounter({ weight: 1, enemies: [{ enemyId: o.boss }] }, `gauntlet:${o.module}:${fights.length}`, `${o.label}: ${content.enemies.get(o.boss).name}`, o.level, { canFlee: false, isBoss: true, threat: threat + 10 }), level: o.level });
+    if (!fights.length) return fail('Nothing to fight.');
+    this.e.active = { kind: 'special', tier: 5, fights, wave: 0, affixes: o.affixes ?? [], turns: 0, gold: 0, label: o.label, special: { module: o.module, ref: o.ref } };
+    this.toast('quest', `${o.label} begins.`);
+    this.s.bus.emit('stateChanged', { reason: o.module });
+    return { ok: true };
+  }
+
   // ------------------------------------------------------------ the Trial of the Day
 
   /** The seed of the day: whole days since the epoch (UTC), the same for everyone. */
@@ -429,7 +447,7 @@ export class EndgameActions {
       return;
     }
     const last = a.kind === 'spire' ? false : a.wave === a.fights.length - 1;
-    if (a.kind !== 'bossRush') this.riftRewards(a, a.kind === 'spire' ? (a.floor ?? 1) % SPIRE.guardianEvery === 0 : last);
+    if (a.kind !== 'bossRush' && a.kind !== 'special') this.riftRewards(a, a.kind === 'spire' ? (a.floor ?? 1) % SPIRE.guardianEvery === 0 : last);
     a.wave++;
     if (a.kind === 'bossRush') this.e.bossRush.best = Math.max(this.e.bossRush.best, a.wave);
     if (a.kind === 'league') this.e.league.fights++;
@@ -519,6 +537,8 @@ export class EndgameActions {
         this.toast('level', `Season won! You are now ${LEAGUE.ranks[e.league.rank]}. +${gold} gold.`);
         if (e.league.rank === LEAGUE.ranks.length - 1 && !this.s.player.devotion.titles.includes('Arena Champion of Champions')) this.s.player.devotion.titles.push('Arena Champion of Champions');
       } else this.toast('warning', `The season ends: ${a.wave} of ${a.fights.length} champions beaten. Your rank holds.`);
+    } else if (a.kind === 'special') {
+      this.s.finishSpecial(a, won);
     } else if (a.kind === 'daily') {
       const d = e.daily;
       d.best = Math.max(d.best, a.wave);

@@ -4,6 +4,9 @@ import { MinigameActions } from './minigameActions';
 import { WondersActions } from './wondersActions';
 import { PilgrimageActions } from './pilgrimageActions';
 import { FaithActions } from './faithActions';
+import { RelicsActions } from './relicsActions';
+import { RoadActions } from './roadActions';
+import type { GauntletState } from '../endgame/types';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
@@ -222,6 +225,10 @@ export class GameSession {
   readonly wonders: WondersActions;
   readonly pilgrimage: PilgrimageActions;
   readonly faith: FaithActions;
+  readonly relics: RelicsActions;
+  readonly road: RoadActions;
+  /** Owners of special endgame runs register how a finished run is settled, by module name. */
+  readonly specials: Record<string, (a: GauntletState, won: boolean) => void> = {};
   readonly heart: HeartActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
@@ -246,6 +253,8 @@ export class GameSession {
     this.wonders = new WondersActions(this);
     this.pilgrimage = new PilgrimageActions(this);
     this.faith = new FaithActions(this);
+    this.relics = new RelicsActions(this);
+    this.road = new RoadActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {
@@ -311,6 +320,10 @@ export class GameSession {
     if (daysPassed > 0) this.items.reliquaryDays(Math.min(daysPassed, 30));
     if (daysPassed > 0) this.realm.onDays(daysPassed);
     if (hourChanged) this.bus.emit('timeChanged', { day: clock.day, hour: hourOf(clock) });
+  }
+
+  finishSpecial(a: GauntletState, won: boolean): void {
+    this.specials[a.special?.module ?? '']?.(a, won);
   }
 
   get timeOfDay(): 'day' | 'night' {

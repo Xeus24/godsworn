@@ -148,6 +148,11 @@ export class WorldActions {
   }
 
   /** The town you are in (standing on its gate), if any. */
+  /** Weather Magic: the sky here becomes this for some hours. */
+  forceWeather(id: string, hours: number): void {
+    this.world.weather[this.zone.id] = { id, until: absMinute(this.s.state.clock) + hours * 60 };
+  }
+
   inTown(): string | undefined {
     const e = this.here();
     return e?.kind === 'town' ? e.ref : undefined;
@@ -675,6 +680,7 @@ export class WorldActions {
         notes.push('You pick the lock.');
       } else {
         this.world.lockpickFailed[key] = now;
+        if (!isDungeon(map.id)) this.s.road.commit('lockpick');
         return utilityChance(p, 'lockpicking') > 0 ? 'Locked. Your picks slip.' : 'Locked. You need a Skeleton Key or the Lockpicking skill.';
       }
     }

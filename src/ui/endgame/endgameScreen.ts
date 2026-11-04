@@ -62,7 +62,7 @@ export class EndgameScreen implements Screen {
     return el(
       'section',
       { class: 'panel' },
-      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas', daily: `Trial of the Day ${a.seed ?? ''}` }[a.kind]),
+      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas', daily: `Trial of the Day ${a.seed ?? ''}`, special: a.label ?? 'A special run' }[a.kind]),
       el('div', { class: 'small' }, `Fight ${a.wave + 1} of ${a.fights.length} · ${a.turns} turns so far${a.gold ? ` · ${a.gold} gold won` : ''}`),
       ...(a.affixes.length ? [el('h3', {}, 'Rift affixes'), ...a.affixes.map((id) => { const d = content.riftAffixes.get(id); return el('div', { class: 'small' }, el('b', {}, d.name), ` ${d.description}`); })] : []),
       el('p', { class: 'dim small' }, a.kind === 'rift' ? `No rest between fights: only ${RIFTS.respitePct}% of HP and MP comes back between waves. Fall or flee and the Rift closes.` : 'No rest between bosses: HP and MP carry over. Fall and the Rush ends; your best is kept.'),

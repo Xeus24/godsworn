@@ -65,6 +65,7 @@ export class FaithActions {
   private tally(k: string, by: number): void {
     this.f.tally[k] = (this.f.tally[k] ?? 0) + by;
     this.resolveProphecies();
+    this.s.relics.tallyMoved();
   }
 
   private changed(reason: string): void {

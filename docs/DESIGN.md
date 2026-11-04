@@ -132,3 +132,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## More wonders: faith (Innovation Pack, section G, items 36, 39, 42, 48, 52)
 `FaithActions` (`s.faith`) listens to combatEnded (wagers, prophecies), enemyKilled/zoneEntered/goldChanged/levelUp (prophecy tally) and favorChanged (sparks). `mods()` (hybrid blessings, the disguised-god boon) is gathered by `WondersActions.refresh` into `heart.wonderMods`. State: `realm.marvels.faith` (created on first use).
+
+## More wonders: relics, land and the road (section G, items 37, 38, 40, 44-47, 49, 50, 53, 58)
+`RelicsActions` (`s.relics`, state `realm.marvels.relics`) and `RoadActions` (`s.road`, `realm.marvels.road`) both feed `WondersActions.refresh` through `mods()`. Heirloom deeds read the faith tally (`s.faith.f.tally`). `EndgameActions.startSpecial({module, ref, label, level, waves, boss})` starts a `special` gauntlet; the owner registers `s.specials[module]` to settle it. Wanted and Masquerade share `road.outfit` and `road.suspicion`.

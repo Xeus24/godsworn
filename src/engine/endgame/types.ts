@@ -2,7 +2,7 @@ import type { EncounterDef } from '../combat/types';
 
 /** A run of fights in a row with no rest between them: a Rift or the Boss Rush. */
 export interface GauntletState {
-  kind: 'rift' | 'bossRush' | 'spire' | 'divine' | 'league' | 'weekly' | 'atlas' | 'daily';
+  kind: 'rift' | 'bossRush' | 'spire' | 'divine' | 'league' | 'weekly' | 'atlas' | 'daily' | 'special';
   /** Rift tier (1 for the Boss Rush). */
   tier: number;
   /** Fights in order; the last is the Guardian (Rifts). */
@@ -22,6 +22,9 @@ export interface GauntletState {
   seed?: number;
   /** A Celestial Atlas map: its id, and the reward multiplier the Constellation Board gives. */
   atlas?: string;
+  /** A special run (hunter, tournament, dreamscape, moon-blood hunt, defence...): which system owns it, and its subject. */
+  special?: { module: string; ref: string };
+  label?: string;
   rewardMult?: number;
 }
 

@@ -231,7 +231,8 @@ export class TownScreen implements Screen {
       ),
     );
     const people = s.quests.townNpcs(this.townId);
-    cards.push(this.card('People', ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n))), this.boardCard());
+    const heard = s.road.reaction(this.townId);
+    cards.push(this.card('People', ...(heard ? [el('p', { class: 'dim small' }, heard)] : []), ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n))), this.boardCard());
     cards.push(
       this.card(
         'Temple',
