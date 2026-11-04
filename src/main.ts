@@ -402,6 +402,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     weather: s.world.weatherNow(),
     punisher,
     purse: s.state.gold,
+    autoTactics: { mercy: settings().autoMercy, maneuvers: settings().autoManeuvers },
     mercy: { deeds: Number(s.state.flags['mercy'] ?? 0), hesha: atLeast(s.player, 'hesha', 'favored') },
     ...(volley ? { volley } : {}),
     // The room itself: barrels, chandeliers, holy ground and lava, and who struck first on the road.

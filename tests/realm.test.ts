@@ -91,6 +91,7 @@ describe('the Grudgebound', () => {
 import { FESTIVALS, SEASON_DAYS, YEAR_DAYS } from '../src/data/realm/wheel';
 import { shopOpen, shopsIn, shopStock } from '../src/engine/economy/shops';
 import { isAvailable } from '../src/engine/quests/quests';
+import { evaluate } from '../src/engine/quests/conditions';
 import { chaosMult, dateOf, festivalOn, nextFestival, seasonGods } from '../src/engine/realm/wheel';
 
 const dayOf = (id: string): number => {
@@ -486,5 +487,55 @@ describe('the Chronicle of Ages', () => {
     const back = deserialize(JSON.stringify(old));
     expect(back.ok).toBe(true);
     if (back.ok) expect(new GameSession(back.state).realm.chronicle.events).toHaveLength(40);
+  });
+});
+
+import { PATRON_DAILY_CAP, PATRON_GOLD } from '../src/engine/state/economyActions';
+import { renownOf } from '../src/engine/world/renown';
+
+describe('renown from shopping', () => {
+  it('spending in a town earns its renown, with a daily limit and a remainder carried over', () => {
+    const s = session();
+    const eco = s.economy as unknown as { patronize(town: string, spent: number): void };
+    const before = renownOf(s.player, 'brightwater');
+    eco.patronize('brightwater', PATRON_GOLD - 1);
+    expect(renownOf(s.player, 'brightwater')).toBe(before);
+    eco.patronize('brightwater', 1);
+    expect(renownOf(s.player, 'brightwater')).toBe(before + 1);
+    eco.patronize('brightwater', PATRON_GOLD * 20);
+    expect(renownOf(s.player, 'brightwater')).toBe(before + PATRON_DAILY_CAP);
+    s.state.clock = { day: s.state.clock.day + 1, minute: 600 };
+    eco.patronize('brightwater', PATRON_GOLD);
+    expect(renownOf(s.player, 'brightwater')).toBeGreaterThan(before + PATRON_DAILY_CAP);
+  });
+});
+
+describe('the map seller', () => {
+  it('sells a chart of the town’s region until you hold them all', () => {
+    const s = session();
+    s.state.gold = 1_000_000;
+    s.state.world.position = { ...s.state.world.position, map: 'brightwater' } as never;
+    const spy = s.economy as unknown as { town(): string | undefined };
+    spy.town = () => 'brightwater';
+    const zone = content.towns.get('brightwater').zone;
+    const total = content.treasures.filter((t) => t.zone === zone).length;
+    for (let i = 0; i < total; i++) expect(s.economy.buyMap().ok).toBe(true);
+    expect(s.economy.buyMap().ok).toBe(false);
+    expect(s.state.world.treasureMaps.filter((id) => content.treasures.get(id).zone === zone)).toHaveLength(total);
+  });
+});
+
+describe('per-difficulty achievements', () => {
+  it('finishing the story records the difficulty, and its achievement is earned', () => {
+    const s = session();
+    s.state.player.difficulty = 'hard';
+    expect(evaluate(s.state, { kind: 'cleared', difficulty: 'hard' })).toBe(false);
+    s.quests.reachEnding('redeemed');
+    expect(s.state.legacy.clears).toContain('hard');
+    expect(evaluate(s.state, { kind: 'cleared', difficulty: 'hard' })).toBe(true);
+    expect(evaluate(s.state, { kind: 'cleared', difficulty: 'easy' })).toBe(false);
+    expect(evaluate(s.state, { kind: 'cleared', difficulty: 'hard', hardcore: true })).toBe(false);
+    expect(content.achievements.find('clear-hard')).toBeDefined();
+    expect(content.achievements.all().filter((a) => a.id.startsWith('clear-'))).toHaveLength(8);
   });
 });

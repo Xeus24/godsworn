@@ -62,6 +62,7 @@ import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
 import { ELITE_AFFIXES } from './bestiary/affixes';
 import { ACHIEVEMENTS, ACHIEVEMENT_MILESTONES } from './achievements';
 import { ACHIEVEMENTS_GREATER } from './achievementsGreater';
+import { ACHIEVEMENTS_DIFFICULTY } from './achievementsDifficulty';
 import { FOLLOWERS } from './followers';
 import { RIFT_AFFIXES } from './rifts';
 import { CHALLENGES } from './challenges';
@@ -110,6 +111,9 @@ const ALL_GENERAL = [...GENERAL_SKILLS, ...GREATER_GENERAL_SKILLS, ...grimoireSk
  * and UI code look content up here; adding an entry to a data file is all
  * it takes to add it to the game.
  */
+/** Every achievement; "The Last Page" asks for all the others, so its target follows the list. */
+const ALL_ACHIEVEMENTS = [...ACHIEVEMENTS, ...ACHIEVEMENTS_GREATER, ...ACHIEVEMENTS_DIFFICULTY].map((a) => (a.id === 'achievements-all' ? { ...a, check: { kind: 'achievements' as const, min: ACHIEVEMENTS.length + ACHIEVEMENTS_GREATER.length + ACHIEVEMENTS_DIFFICULTY.length - 1 } } : a));
+
 export const content = {
   stats: new ContentTable('stat', STAT_INFO),
   elements: new ContentTable(
@@ -187,7 +191,7 @@ export const content = {
   cards: new ContentTable('card', CARDS),
   /** Ids of the secret lines (see data/story/secretLines.ts): flags `secret:<id>`. */
   secretLines: SECRET_LINE_IDS,
-  achievements: new ContentTable('achievement', [...ACHIEVEMENTS, ...ACHIEVEMENTS_GREATER]),
+  achievements: new ContentTable('achievement', ALL_ACHIEVEMENTS),
   treasures: new ContentTable('treasure map', TREASURES),
   dyes: new ContentTable('dye', DYES),
   frames: new ContentTable('portrait frame', FRAMES),

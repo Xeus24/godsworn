@@ -11,6 +11,8 @@ import { baseOf } from '../items/lookup';
 import { itemName } from '../items/naming';
 import type { ItemInstance } from '../items/types';
 import { repairCost, repairItem } from '../items/upkeep';
+import { addRenown } from '../world/renown';
+import { grantMap, unownedMaps } from '../world/treasure';
 import type { ItemLocation } from './itemActions';
 import type { GameSession } from './gameState';
 
@@ -18,6 +20,10 @@ export type EconomyResult = { ok: true; message?: string } | { ok: false; reason
 const fail = (reason: string): EconomyResult => ({ ok: false, reason });
 
 /** Shops, selling, repairs, gambling, crafting and gear services on a running game. */
+/** Gold spent for one point of renown, and the most a town gives for shopping in a day. */
+export const PATRON_GOLD = 150;
+export const PATRON_DAILY_CAP = 4;
+
 export class EconomyActions {
   constructor(private readonly s: GameSession) {}
 
@@ -69,12 +75,48 @@ export class EconomyActions {
     if (!canAdd(this.s.state.inventory, item)) return fail('Your bags are full.');
     if (!this.s.spendGold(entry.price, 'shop')) return fail(`Costs ${entry.price} gold.`);
     addItem(this.s.state.inventory, item);
+    this.patronize(town, entry.price);
     const key = `${town}:${shopId}`;
     const day = this.s.state.clock.day;
     const bought = this.s.state.economy.bought[key];
     this.s.state.economy.bought[key] = { day, lines: [...(bought && bought.day === day ? bought.lines : []), line] };
     this.changed('buy');
     return { ok: true, message: `Bought ${itemName(item)}.` };
+  }
+
+  /** Spending in a town's shops earns its renown: one point for every 150 gold, up to 4 a day, so a town comes to know a good customer. */
+  private patronize(town: string, spent: number): void {
+    const day = this.s.state.clock.day;
+    const book = (this.s.state.economy.patronage ??= {});
+    const e = (book[town] ??= { carry: 0, day, earned: 0 });
+    if (e.day !== day) {
+      e.day = day;
+      e.earned = 0;
+    }
+    e.carry += spent;
+    const points = Math.min(Math.floor(e.carry / PATRON_GOLD), PATRON_DAILY_CAP - e.earned);
+    if (points <= 0) return;
+    e.carry -= points * PATRON_GOLD;
+    e.earned += points;
+    const { tier } = addRenown(this.s.player, town, points);
+    if (tier) this.s.bus.emit('toast', { kind: 'quest', text: `${content.towns.get(town).name}: you are now ${tier.name}.` });
+  }
+
+  /** The Silent Cartographer sells a chart of the region you stand in, for a day's pay at your level. */
+  mapPrice(): number {
+    return 80 * Math.max(5, this.s.player.level);
+  }
+
+  /** Buys a treasure map of this region (one you do not yet hold). */
+  buyMap(): EconomyResult {
+    const town = this.town();
+    if (!town) return fail('Shops are in towns.');
+    const zone = content.towns.get(town).zone;
+    if (!unownedMaps(this.s.state.world, zone).length) return fail('You hold every chart of this region already.');
+    if (!this.s.spendGold(this.mapPrice(), 'shop')) return fail(`A chart costs ${this.mapPrice()} gold.`);
+    const map = grantMap(this.s.state.world, zone, this.s.rng);
+    this.changed('buy');
+    return { ok: true, message: `Bought a chart: ${map?.name ?? 'a treasure map'}. Its dig spot is marked on the region.` };
   }
 
   /** Sells an inventory slot (or the whole stack) to the market; it goes on the buyback list. */

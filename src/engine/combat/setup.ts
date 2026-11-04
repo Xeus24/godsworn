@@ -72,6 +72,8 @@ export interface EncounterOptions {
   opening?: 'ambush' | 'preemptive';
   /** A naval battle's opening broadside: share of each enemy's max HP. */
   volley?: number;
+  /** The player's auto-battle may spare beaten foes and use Shove and Pull. */
+  autoTactics?: { mercy: boolean; maneuvers: boolean };
   /** Acts of mercy so far, and Hesha's favor (Hesha's Mercy). */
   mercy?: { deeds: number; hesha: boolean };
   /** Companions fighting beside the hero, with their bond perks. */
@@ -193,6 +195,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   });
   battle.pacifist = hasRule(hero, 'pacifist', c);
   if (opts.mercy) battle.mercy = opts.mercy;
+  if (opts.autoTactics) battle.autoTactics = opts.autoTactics;
   for (const e of encounter.enemies) if (e.grudge) battle.log(`${e.grudge.name}: ${e.grudge.line}`);
   return battle;
 }

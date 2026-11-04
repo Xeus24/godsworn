@@ -2,6 +2,7 @@ import type { SkillDef } from '../skills/types';
 import { bossForcedAction, isTelegraphOnly } from './bosses';
 import type { Battle } from './battle';
 import { continuesChain } from './covenant';
+import { talkOptions } from './talk';
 import { takeIntent } from './foresight';
 import { canUseSkill, foesOf, friendsOf, needsTarget, skillOptions, validTargets } from './skills';
 import { resistMultiplier } from './damage';
@@ -144,6 +145,26 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai,
     options.push({ action: { kind: 'defend', actorId: x.id }, score: 2.2 });
   }
 
+  // The player's auto-battle: spare a beaten foe (if asked to), and throw a foe off the one it means to hit.
+  if (x.side === 'party' && (x.kind === 'hero' || x.kind === 'companion')) {
+    if (b.autoTactics.mercy) {
+      for (const foe of foes) {
+        const spare = talkOptions(b, x, foe).find((o) => o.approach === 'spare' && !o.locked);
+        if (spare) options.push({ action: { kind: 'talk', actorId: x.id, targetId: foe.id, approach: 'spare' }, score: 9 });
+      }
+    }
+    if (b.autoTactics.maneuvers && (x.cooldowns.maneuver ?? 0) <= 0) {
+      for (const foe of foes) {
+        const plan = foe.intent?.action;
+        const victimId = plan && 'targetId' in plan ? plan.targetId : undefined;
+        const victim = victimId ? b.get(victimId) : undefined;
+        if (!victim || foe.intent?.broken || victim.hp > victim.maxHp * 0.4 || victim.id === x.id) continue;
+        // Shove it onto its own if it has company; pull it onto a healthy fighter in the front row otherwise.
+        if (foes.length > 1) options.push({ action: { kind: 'shove', actorId: x.id, targetId: foe.id }, score: 5 });
+        else if (x.row === 'front' && hpShare(x) > 0.6) options.push({ action: { kind: 'pull', actorId: x.id, targetId: foe.id }, score: 5 });
+      }
+    }
+  }
   // Covenant: while a chain runs, pass it on with a matching skill; when it is ready, open it with a real skill.
   if (x.side === 'party' && (b.covenant.chain || b.covenant.ready)) {
     for (const o of options) {

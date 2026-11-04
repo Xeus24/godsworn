@@ -565,6 +565,8 @@ export class QuestActions {
     const god = this.s.player.devotion.apostle?.god;
     this.q.ending = { id, day: this.s.state.clock.day, seen: false, ...(god ? { god } : {}) };
     this.s.state.legacy.endings.push(god ? `${id}:${god}` : id);
+    const clears = (this.s.state.legacy.clears ??= []);
+    for (const k of [this.s.player.difficulty, ...(this.s.player.hardcore ? [`${this.s.player.difficulty}:hardcore`] : [])]) if (!clears.includes(k)) clears.push(k);
     this.s.setFlag('storyComplete', true);
     if (def.title && !this.s.player.devotion.titles.includes(def.title)) this.s.player.devotion.titles.push(def.title);
     this.toast('quest', `The story ends: ${def.name}`);

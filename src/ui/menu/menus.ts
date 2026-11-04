@@ -4,6 +4,8 @@ import { el, type Screen } from '../screen';
 import { audio } from '../audio/audio';
 import { AMBIENCE_IDS, AMBIENCE_SOURCES, MUSIC_CREDIT, MUSIC_TRACKS } from '../audio/musicFiles';
 import { SFX_CREDIT } from '../audio/sfxFiles';
+import { PAD_ACTION_NAMES, padBinding, type PadAction } from '../gamepad/globalPad';
+import { buttonName, layoutOf } from '../gamepad/padPrompts';
 import { DEFAULT_SETTINGS, settings, updateSettings, type Settings } from '../settings';
 
 const playTime = (ms: number): string => {
@@ -77,6 +79,40 @@ export class SettingsOverlay extends Overlay {
     return el('div', { class: 'setting-row' }, text, button('Skip track', () => audio().skip()));
   }
 
+  /** Controller buttons: press an action, then the button you want for it. */
+  private padRows(): HTMLElement[] {
+    const bind = settings().padBindings;
+    const first = typeof navigator !== 'undefined' && navigator.getGamepads ? [...navigator.getGamepads()].find((p) => p) : undefined;
+    const layout = layoutOf(first?.id ?? '');
+    const rows = (Object.keys(PAD_ACTION_NAMES) as PadAction[]).map((a) => {
+      const b = el('button', { type: 'button' }, `${buttonName(layout, padBinding(bind, a))}`);
+      b.addEventListener('click', () => {
+        b.textContent = 'Press a button…';
+        const down = (): Set<number> => new Set([...(navigator.getGamepads?.() ?? [])].flatMap((p) => (p ? p.buttons.flatMap((x, i) => (x.pressed ? [i] : [])) : [])));
+        const held = down();
+        const timer = window.setInterval(() => {
+          const now = [...down()].find((i) => !held.has(i));
+          if (now === undefined) {
+            for (const i of [...held]) if (!down().has(i)) held.delete(i);
+            return;
+          }
+          window.clearInterval(timer);
+          const next = { ...settings().padBindings };
+          const old = padBinding(next, a);
+          // Whatever used that button takes the one this action gave up.
+          for (const other of Object.keys(PAD_ACTION_NAMES) as PadAction[]) if (other !== a && padBinding(next, other) === now) next[other] = old;
+          next[a] = now;
+          updateSettings({ padBindings: next });
+        }, 40);
+        window.setTimeout(() => window.clearInterval(timer), 8000);
+      });
+      return el('label', { class: 'setting-row' }, el('span', {}, PAD_ACTION_NAMES[a]), b);
+    });
+    const reset = el('button', { type: 'button' }, 'Reset controller buttons');
+    reset.addEventListener('click', () => updateSettings({ padBindings: {} }));
+    return [el('h3', {}, 'Controller buttons'), ...rows, reset];
+  }
+
   protected render(): void {
     const s = settings();
     const slider = (label: string, key: 'masterVolume' | 'musicVolume' | 'sfxVolume' | 'ambienceVolume' | 'footstepVolume'): HTMLElement => {
@@ -84,7 +120,7 @@ export class SettingsOverlay extends Overlay {
       input.addEventListener('input', () => updateSettings({ [key]: Number(input.value) / 100 } as Partial<Settings>));
       return el('label', { class: 'setting-row' }, el('span', {}, label), input);
     };
-    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion' | 'dyslexiaFont' | 'reduceFlashing' | 'highContrast' | 'patterns' | 'padPrompts'): HTMLElement => {
+    const check = (label: string, key: 'muted' | 'ambience' | 'autoBattle' | 'statsWindow' | 'autosave' | 'reduceMotion' | 'dyslexiaFont' | 'reduceFlashing' | 'highContrast' | 'patterns' | 'padPrompts' | 'autoMercy' | 'autoManeuvers'): HTMLElement => {
       const input = el('input', { type: 'checkbox' }) as HTMLInputElement;
       input.checked = s[key];
       input.addEventListener('change', () => updateSettings({ [key]: input.checked } as Partial<Settings>));
@@ -139,12 +175,15 @@ export class SettingsOverlay extends Overlay {
       check('Start battles on auto-battle', 'autoBattle'),
       check('Show the movable stats window in battles (also the Stats button or T)', 'statsWindow'),
       el('h3', {}, 'Game'),
+      check('Auto-battle spares beaten foes (no loot from them; Hesha is pleased)', 'autoMercy'),
+      check('Auto-battle uses Shove and Pull to protect an ally in danger', 'autoManeuvers'),
       check('Autosave (after battles, in towns and every few minutes)', 'autosave'),
       check('Reduce motion (no animations)', 'reduceMotion'),
       el('h3', {}, 'Accessibility'),
       select<Settings['colorblind']>('Colour-blind palette', [['off', 'Off'], ['deuteranopia', 'Deuteranopia (red-green)'], ['protanopia', 'Protanopia (red-green)'], ['tritanopia', 'Tritanopia (blue-yellow)'], ['mono', 'Monochrome']], s.colorblind, (v) => updateSettings({ colorblind: v })),
       check('Patterns and symbols (stripes, dots and ▲ ▼ marks instead of colour alone; always on with a palette)', 'patterns'),
       check('Controller button prompts along the bottom while a pad is connected', 'padPrompts'),
+      ...this.padRows(),
       check('Dyslexia-friendly font (plain, wider spacing)', 'dyslexiaFont'),
       check('Reduce flashing (no hit flashes, shake or lightning)', 'reduceFlashing'),
       check('High contrast (bolder borders and focus rings)', 'highContrast'),

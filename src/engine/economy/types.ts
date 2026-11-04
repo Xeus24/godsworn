@@ -84,4 +84,6 @@ export interface EconomyState {
   bought: Record<string, { day: number; lines: number[] }>;
   /** Items you sold, most recent first (buy back at the sale price). */
   buyback: { item: ItemInstance; price: number }[];
+  /** Gold spent in each town not yet turned into renown, and the renown earned there today (shop spending counts, up to a daily limit). */
+  patronage?: Record<string, { carry: number; day: number; earned: number }>;
 }

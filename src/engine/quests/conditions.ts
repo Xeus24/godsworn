@@ -133,6 +133,11 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length >= cond.min;
     case 'house':
       return p.world.house !== undefined;
+    case 'cleared': {
+      const key = `${cond.difficulty}${cond.hardcore ? ':hardcore' : ''}`;
+      const now = state.quests.ending !== undefined && p.difficulty === cond.difficulty && (!cond.hardcore || p.hardcore);
+      return now || (state.legacy.clears ?? []).includes(key);
+    }
     case 'festival':
       return festivalOn(state.clock.day)?.id === cond.id;
     case 'rarity':
@@ -203,6 +208,8 @@ export function describe(cond: Cond, c: Content = content): string {
       return `${c.factions.get(cond.faction).name} ${cond.min}`;
     case 'festival':
       return 'on the festival day';
+    case 'cleared':
+      return `finish the story on ${cond.difficulty}${cond.hardcore ? ' as a Hardcore hero' : ''}`;
     case 'renown':
       return `${RENOWN_TIERS.find((t) => t.id === cond.tier)?.name ?? cond.tier} in ${c.towns.get(cond.town).name}`;
     case 'item':

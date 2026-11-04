@@ -1,4 +1,5 @@
 import type { PadState } from '../inventory/gamepad';
+import { settings } from '../settings';
 
 export type Dir = 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight';
 export interface Box {
@@ -58,13 +59,12 @@ export interface PadHost {
   owned(): boolean;
 }
 
-const A = 0;
-const B = 1;
-const X = 2;
-const Y = 3;
-const LB = 4;
-const RB = 5;
-const START = 9;
+/** What each button does, so players can move them (Settings > Controller buttons). Values are button indices of the standard mapping. */
+export type PadAction = 'confirm' | 'back' | 'wait' | 'inventory' | 'prev' | 'next' | 'menu';
+export type PadBindings = Partial<Record<PadAction, number>>;
+export const PAD_DEFAULTS: Record<PadAction, number> = { confirm: 0, back: 1, wait: 2, inventory: 3, prev: 4, next: 5, menu: 9 };
+export const PAD_ACTION_NAMES: Record<PadAction, string> = { confirm: 'Confirm / interact', back: 'Back', wait: 'Act / wait (Space)', inventory: 'Inventory', prev: 'Previous screen', next: 'Next screen', menu: 'Menu' };
+export const padBinding = (b: PadBindings, a: PadAction): number => b[a] ?? PAD_DEFAULTS[a];
 const DPAD: [number, Dir][] = [[12, 'ArrowUp'], [13, 'ArrowDown'], [14, 'ArrowLeft'], [15, 'ArrowRight']];
 const DEADZONE = 0.6;
 const REPEAT_DELAY_MS = 350;
@@ -86,6 +86,7 @@ export class GlobalPad {
     private readonly host: PadHost,
     private readonly read: () => readonly (PadState | null)[] = () => (typeof navigator !== 'undefined' && navigator.getGamepads ? navigator.getGamepads() : []),
     private readonly now: () => number = () => performance.now(),
+    private readonly bindings: () => PadBindings = () => ({}),
   ) {}
 
   start(): void {
@@ -134,15 +135,16 @@ export class GlobalPad {
         this.pressed.add(i);
       } else this.pressed.delete(i);
     };
-    once(A, () => {
+    const bind = this.bindings();
+    once(padBinding(bind, 'confirm'), () => {
       if (!this.host.key('Enter')) this.host.press();
     });
-    once(B, () => void this.host.key('Escape'));
-    once(START, () => void this.host.key('Escape'));
-    once(X, () => void this.host.key(' '));
-    once(Y, () => void this.host.key('i'));
-    once(LB, () => this.host.tab(-1));
-    once(RB, () => this.host.tab(1));
+    once(padBinding(bind, 'back'), () => void this.host.key('Escape'));
+    once(padBinding(bind, 'menu'), () => void this.host.key('Escape'));
+    once(padBinding(bind, 'wait'), () => void this.host.key(' '));
+    once(padBinding(bind, 'inventory'), () => void this.host.key('i'));
+    once(padBinding(bind, 'prev'), () => this.host.tab(-1));
+    once(padBinding(bind, 'next'), () => this.host.tab(1));
   }
 }
 
@@ -207,6 +209,6 @@ const domHost: PadHost = {
 let pad: GlobalPad | undefined;
 /** Starts the page-wide controller once (it idles when no pad is connected). */
 export function startGlobalPad(): void {
-  pad ??= new GlobalPad(domHost);
+  pad ??= new GlobalPad(domHost, undefined, undefined, () => settings().padBindings);
   pad.start();
 }

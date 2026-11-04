@@ -74,6 +74,8 @@ export type Cond =
   /** Zones set foot in. */
   | { kind: 'zones'; min: number }
   | { kind: 'house' }
+  /** The story has been finished on this difficulty (and, if `hardcore`, as a Hardcore hero). */
+  | { kind: 'cleared'; difficulty: string; hardcore?: boolean }
   /** The festival with this id is being kept today. */
   | { kind: 'festival'; id: string }
   /** Items of a rarity found. */

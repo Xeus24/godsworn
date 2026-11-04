@@ -72,6 +72,8 @@ export class Battle {
   foresight = true;
   /** Ground left by spells (Innovation Pack, item 7): fire, water, oil, ice, poison, blood and holy. */
   ground: import('./ground').GroundPatch[] = [];
+  /** The player's auto-battle may spare beaten foes and use Shove and Pull (set from Settings; off in simulations). */
+  autoTactics = { mercy: false, maneuvers: false };
   /** What the party has shown of mercy so far: acts of mercy and whether Hesha favors the hero (the story's finales yield only to that). */
   mercy = { deeds: 0, hesha: false };
   /** Gold on hand for bribes. */

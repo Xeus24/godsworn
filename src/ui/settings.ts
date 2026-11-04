@@ -29,6 +29,12 @@ export interface Settings {
   dyslexiaFont: boolean;
   /** Stripes, dots and ▲/▼ marks that tell good from bad and HP from MP without colour. Always on with a colour-blind palette. */
   patterns: boolean;
+  /** Auto-battle spares beaten foes (they drop no loot, and Hesha is pleased). */
+  autoMercy: boolean;
+  /** Auto-battle uses Shove and Pull to save a failing ally. */
+  autoManeuvers: boolean;
+  /** Moved controller buttons: action -> button index (standard mapping). Unset actions use their defaults. */
+  padBindings: Partial<Record<'confirm' | 'back' | 'wait' | 'inventory' | 'prev' | 'next' | 'menu', number>>;
   /** Names the controller buttons along the bottom of the page while a pad is connected. */
   padPrompts: boolean;
   /** No hit flashes, screen shake, lightning or pulsing glows. */
@@ -59,6 +65,9 @@ export const DEFAULT_SETTINGS: Settings = {
   dyslexiaFont: false,
   patterns: false,
   padPrompts: true,
+  padBindings: {},
+  autoMercy: false,
+  autoManeuvers: true,
   reduceFlashing: false,
   encounterRate: 1,
   highContrast: false,

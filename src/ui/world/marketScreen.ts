@@ -89,6 +89,9 @@ export class MarketScreen implements Screen {
       const cost = s.economy.repairAllCost();
       panel.append(this.btn(cost ? `Repair all gear (${cost}g)` : 'Your gear is in good repair', () => this.say(s.economy.repairAll()), cost === 0 || s.state.gold < cost, 'primary'));
     }
+    if (shop.id === 'merchant-cartographer') {
+      panel.append(this.btn(`Buy a treasure map of this region (${s.economy.mapPrice()}g)`, () => this.say(s.economy.buyMap()), s.state.gold < s.economy.mapPrice(), 'primary'), el('p', { class: 'dim small' }, 'A chart shows a dig spot with a one-of-a-kind reward. Which one you get is the cartographer’s secret.'));
+    }
     if (shop.kind === 'gambler') {
       const cats = Object.keys(GAMBLE_PRICE) as (keyof typeof GAMBLE_PRICE)[];
       panel.append(

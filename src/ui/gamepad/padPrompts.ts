@@ -1,4 +1,5 @@
 import { settings } from '../settings';
+import { padBinding, type PadBindings } from './globalPad';
 
 export type PadLayout = 'xbox' | 'playstation';
 export type PadContext = 'world' | 'battle' | 'dialogue' | 'menu' | 'screen';
@@ -7,10 +8,12 @@ export interface Prompt {
   label: string;
 }
 
-const GLYPHS: Record<PadLayout, Record<'A' | 'B' | 'X' | 'Y' | 'LB' | 'RB' | 'Start', string>> = {
-  xbox: { A: 'A', B: 'B', X: 'X', Y: 'Y', LB: 'LB', RB: 'RB', Start: '≡' },
-  playstation: { A: '✕', B: '○', X: '□', Y: '△', LB: 'L1', RB: 'R1', Start: 'Options' },
+/** Button names by index of the standard mapping. */
+const NAMES: Record<PadLayout, string[]> = {
+  xbox: ['A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT', 'View', '≡', 'LS', 'RS', '↑', '↓', '←', '→'],
+  playstation: ['✕', '○', '□', '△', 'L1', 'R1', 'L2', 'R2', 'Create', 'Options', 'L3', 'R3', '↑', '↓', '←', '→'],
 };
+export const buttonName = (layout: PadLayout, index: number): string => NAMES[layout][index] ?? `Button ${index}`;
 
 /** DualShock, DualSense and anything that says so in its id (Chrome lists "054c" for Sony) gets the Sony symbols. */
 export function layoutOf(id: string): PadLayout {
@@ -18,9 +21,9 @@ export function layoutOf(id: string): PadLayout {
 }
 
 /** What each button does right now, as the controller scheme in `globalPad.ts` maps it. */
-export function promptsFor(context: PadContext, layout: PadLayout = 'xbox'): Prompt[] {
-  const g = GLYPHS[layout];
-  const p = (b: keyof typeof g, label: string): Prompt => ({ button: g[b], label });
+export function promptsFor(context: PadContext, layout: PadLayout = 'xbox', bindings: PadBindings = {}): Prompt[] {
+  const g = { A: padBinding(bindings, 'confirm'), B: padBinding(bindings, 'back'), X: padBinding(bindings, 'wait'), Y: padBinding(bindings, 'inventory'), LB: padBinding(bindings, 'prev'), RB: padBinding(bindings, 'next'), Start: padBinding(bindings, 'menu') };
+  const p = (b: keyof typeof g, label: string): Prompt => ({ button: buttonName(layout, g[b]), label });
   switch (context) {
     case 'battle':
       return [p('A', 'Choose'), p('B', 'Back'), p('X', 'Wait'), p('Start', 'Menu')];
@@ -57,7 +60,7 @@ export function startPadPrompts(): void {
     const first = pads[0];
     bar.hidden = !first || !settings().padPrompts;
     if (!first || bar.hidden) return;
-    const list = promptsFor(contextNow(), layoutOf(first.id));
+    const list = promptsFor(contextNow(), layoutOf(first.id), settings().padBindings);
     const html = list.map((x) => `<span><b>${x.button}</b>${x.label}</span>`).join('');
     if (html !== last) {
       bar.innerHTML = html;

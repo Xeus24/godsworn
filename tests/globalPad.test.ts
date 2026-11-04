@@ -77,3 +77,27 @@ describe('GlobalPad', () => {
     expect(() => owned.poll()).not.toThrow();
   });
 });
+
+describe('rebinding', () => {
+  it('a moved button does the moved action and the old one does nothing', async () => {
+    const { GlobalPad } = await import('../src/ui/gamepad/globalPad');
+    const keys: string[] = [];
+    const host = { key: (k: string) => (keys.push(k), true), focusMove: () => undefined, press: () => undefined, tab: () => undefined, owned: () => false };
+    const pad = (down: number[]) => ({ buttons: Array.from({ length: 16 }, (_, i) => ({ pressed: down.includes(i) })), axes: [0, 0] });
+    let state = pad([]);
+    const p = new GlobalPad(host, () => [state as never], () => 0, () => ({ confirm: 7, back: 6 }));
+    state = pad([0]);
+    p.poll();
+    expect(keys).toEqual([]);
+    state = pad([]);
+    p.poll();
+    state = pad([7]);
+    p.poll();
+    expect(keys).toEqual(['Enter']);
+    state = pad([]);
+    p.poll();
+    state = pad([6]);
+    p.poll();
+    expect(keys).toEqual(['Enter', 'Escape']);
+  });
+});

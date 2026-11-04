@@ -275,3 +275,26 @@ describe("Hesha's Mercy (item 10)", () => {
     expect(epilogueSlides(fresh.state).some((x) => x.id === 'mercy-none')).toBe(true);
   });
 });
+
+describe('auto-battle tactics', () => {
+  it('spares a beaten foe only when asked to, and shoves a foe off a failing ally only when asked to', () => {
+    const { b, party, foes } = arena({ heroes: 2, foes: ['meadow-wolf', 'goblin-cutthroat'], seed: 41 });
+    foes[0]!.hp = 1;
+    b.current = party[0];
+    let off = chooseAction(b, party[0]!);
+    expect(off.kind === 'talk').toBe(false);
+    b.autoTactics = { mercy: true, maneuvers: false };
+    let picked = false;
+    for (let i = 0; i < 6 && !picked; i++) picked = chooseAction(b, party[0]!).kind === 'talk';
+    expect(picked).toBe(true);
+    // A failing ally is about to be hit.
+    b.autoTactics = { mercy: false, maneuvers: true };
+    foes[0]!.hp = foes[0]!.maxHp;
+    party[1]!.hp = Math.floor(party[1]!.maxHp * 0.2);
+    foes[1]!.intent = { action: { kind: 'attack', actorId: foes[1]!.id, targetId: party[1]!.id }, text: 'x', broken: false };
+    off = chooseAction(b, party[0]!);
+    expect(off.kind).toBe('shove');
+    b.autoTactics = { mercy: false, maneuvers: false };
+    expect(chooseAction(b, party[0]!).kind).not.toBe('shove');
+  });
+});

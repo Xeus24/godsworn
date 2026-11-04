@@ -147,7 +147,7 @@ export interface GameState {
   /** Items found per rarity. */
   rarityFound: Record<string, number>;
   /** What earlier playthroughs left behind: endings reached (`id` or `id:god`). */
-  legacy: { endings: string[]; /** Your own defeats in earlier runs, heard again as echoes. */ echoes?: DeathEcho[] };
+  legacy: { endings: string[]; /** Your own defeats in earlier runs, heard again as echoes. */ echoes?: DeathEcho[]; /** Difficulties the story has been finished on (`hard`, `hard:hardcore`). */ clears?: string[] };
   /** The world affixes of this New Game+ playthrough (two added per tier). */
   ngAffixes: string[];
   /** Fish, cards, dice, races, forging, digging and the arena ladder. */
