@@ -5,3 +5,4 @@
 - Engine code (`src/engine/`) never touches the DOM. Content lives in `src/data/` and must never require engine changes to add.
 - All bonuses are `Modifier`s resolved by `calculateStats()`; all on-hit/on-kill-style effects go through the trigger system.
 - No TODO stubs in shipped features. If something is deferred to a later phase, list it under "Cut / deferred" in PROGRESS.md.
+- **Continuing the Innovation Pack / Oathbound / Tabletop expansion:** read the "Handoff" section of PROGRESS.md first, then `docs/REMAINING_SPEC.md` for what is not built yet. Push `main` after each batch commit; run the full playtest in the background.

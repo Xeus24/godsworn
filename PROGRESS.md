@@ -1144,5 +1144,22 @@ Six systems that make the world change while you are away, built as sub-phases A
 - **Cloud saves:** saves stay in the browser; export and import move them by hand.
 - **Music** is procedural and short-looped by default. The optional composed music has no per-room tracks beyond three depth tiers, and a mood change fades rather than finishing the current track. The forest and bird ambience have no synthesized stand-in (the synthesized sound has only noise-based ambience); weather ambience plays only in the open. Footsteps are recorded-only (no synthesized step). The composed and recorded paths were verified in a browser for the meadow, but dungeon, lair, victory and defeat sounds are verified only by the fake-context engine test. The dynamic battle music is not true layered stems (none exist under CC0): it is a filter and, for the synthesized music, extra notes.
 
+## Handoff (read this first in a new session)
+**Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) are built, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
+
+**Next batch: H-3b** = 90 Laws and Crimes (prison, bail, 3 jailbreak runs; builds on `s.road` Wanted), 91 Disguises (20+ faction outfits; extend `OUTFITS` in `data/road.ts`, same suspicion), 92 the Crown Council (6 districts, elections, 5 laws; capital is Aurelane), 95 the Sundering (towns survive/damaged/fall by Fortunes and investments; the midpoint is after the Sundering Bell), 96 Sea and Sky Grudgebound (Harrow Thane, Vessa Gale; needs a hook where naval battles end in `WorldActions`). Then: H-4a (pocket regions 100-105 and dungeons 106-112, plus 99 the Godless Wilds; these need new maps, so build one small generator for areas), H-4b (bosses 113-120, enemy families 121-126), H-5 (story beats, side quests, NPCs 127-141, incl. the Pale Auditor and the Oathbreaker class, 66), H-6 (items, combat, festivals, minigames 142-156), H-7 (Twilight, NG+, endgame 157-167), then Section I (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
+
+**The pattern that has worked** (every batch since Section D):
+1. Data in `src/data/<name>.ts` (compact tables, generate repetitive entries from short tables).
+2. State: a field on `realm.marvels` (`src/engine/realm/marvels.ts`, created on first use, so no save migration) and an actions class `src/engine/state/<name>Actions.ts` registered on `GameSession` (`s.faith`, `s.relics`, `s.road`, `s.trials`, `s.games`, `s.oaths`, `s.fellowship`, `s.society`, `s.worldly`). Stat effects go through `mods()` into `WondersActions.refresh()` (`heart.wonderMods`); never edit stats directly.
+3. Short fights for other systems: `EndgameActions.startSpecial({module, ref, label, level, waves, boss})` and register `s.specials[module]` to settle the result.
+4. UI: one function per tab in `src/ui/codex/<name>Panel.ts`, added to `SECTIONS` in `realmPanel.ts` (Codex > Realm).
+5. A test file `tests/section<X>.test.ts` (stub `s.world.inTown`, emit bus events, never wait on real time).
+6. Docs: a block in this file, `docs/DESIGN.md`, spoilers in `docs/SECRETS.md`, `npm run content:md`.
+7. Verify: `npm test` (a few timeouts under load pass on rerun), `npm run build`, `npm run test:e2e`, then the full playtest **in the background** (`npm run playtest -- ng`, about 10 minutes; expect 58 `finished` and 0 `stalled`) and commit and push only if it passes. Do not edit files while that job runs (it commits everything with `git add -A`).
+8. Gotchas: `sed -i` on macOS needs `-i ''`; tests that stub getters like `s.world.zone` need `Object.defineProperty`; `Rng.shuffle` returns a copy; content ids (towns, companions, classes) are listed by a quick `tsx` script, not guessed.
+
+**Open deferred items** are all listed under "Cut / deferred" below, newest first. The larger ones: 66 Oathbreaker class, 72 Pantheon Unison, 73 Summit Seating, 74 Prayer Interrupts, 83 Formations, 87 Bound Remembrance, 99 Godless Wilds, Hearth Meals (146) hooking `fellowship.lift`, and the older items (weapon skins, Defender second divine weapon and edicts, drag-and-drop offerings).
+
 ## Next steps
-- All 16 phases and all 20 expansion phases are done. What is open is on the Cut / deferred list: controller rebinding, renown from shop spending and the rest of the older deferred items.
+See Handoff above.
