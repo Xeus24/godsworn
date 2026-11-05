@@ -24,8 +24,8 @@ const ATTR = new Set<string>(['str', 'dex', 'int', 'vit', 'wis', 'luk', 'fai', '
 const label = (s: string): string => LABEL[s] ?? s;
 /** One stat change as a passive: +n percent for percent stats, +n flat otherwise. */
 const line = (s: StatId, n: number): string => `${n < 0 ? '' : '+'}${n}${ATTR.has(s) || s === 'speed' || s === 'accuracy' ? '' : '%'} ${label(s)}`;
-const pasOf = (name: string, mods: [StatId, number][], extra?: string): PassiveSpec =>
-  pas(name, `${mods.map(([s, n]) => line(s, n)).join(', ')}.${extra ? ` ${extra}` : ''}`, mods.map(([s, n]) => [s, n, PCT.has(s) ? 'p' : 'f'] as [StatId, number, 'p' | 'f']));
+const pasOf = (name: string, mods: [StatId, number][], extra?: string, flags?: string[]): PassiveSpec =>
+  pas(name, `${mods.map(([s, n]) => line(s, n)).join(', ')}.${extra ? ` ${extra}` : ''}`, mods.map(([s, n]) => [s, n, PCT.has(s) ? 'p' : 'f'] as [StatId, number, 'p' | 'f']), undefined, flags);
 const minorOf = (name: string, s: StatId): MinorSpec => mn(name, s, ATTR.has(s) ? 2 : PCT.has(s) ? 3 : s === 'critChance' || s === 'dodge' || s === 'speed' || s === 'accuracy' ? 2 : 3, PCT.has(s) ? 'p' : 'f');
 
 /** Two skill-modifier nodes for a skill, picked from what the skill actually has. */
@@ -53,6 +53,8 @@ export interface BranchLite {
   stats: [StatId, StatId, StatId, StatId];
   /** Ten names: four minors, two notables, two choices, keystone, capstone. */
   names: string[];
+  /** Flags (e.g. immune:silence) on the keystone, with the text that says so. */
+  keyFlags?: { flags: string[]; text: string };
 }
 
 export interface SpecLite {
@@ -84,7 +86,7 @@ export function liteBranch(skills: SkillDef[], l: BranchLite, firstStarts = true
     minors: [minorOf(N[0] as string, s0), minorOf(N[1] as string, s1), minorOf(N[2] as string, s2), minorOf(N[3] as string, s3)],
     notables: [pasOf(N[4] as string, [[s0, 8]]), pasOf(N[5] as string, [[s1, 8]])],
     choice: [pasOf(N[6] as string, [[s2, 8]]), pasOf(N[7] as string, [[s3, 8]])],
-    keystone: pasOf(N[8] as string, [['damageBonus', 20], ['defense', -10]]),
+    keystone: l.keyFlags ? pasOf(N[8] as string, [[s0, 12], ['defense', -5]], l.keyFlags.text, l.keyFlags.flags) : pasOf(N[8] as string, [['damageBonus', 20], ['defense', -10]]),
     capstone: pasOf(N[9] as string, [[s0, 12], [s1, 8]]),
   };
 }

@@ -23,7 +23,12 @@ import { WRATHSWORN } from './trees/wrathsworn';
 import { STILLHAND } from './trees/stillhand';
 import { WAYFINDER } from './trees/wayfinder';
 import { GODBLOODED } from './trees/godblooded';
+import { ICHORBOUND } from './trees/ichorbound';
+import { FATEDEALER } from './trees/fatedealer';
+import { MINDWRIGHT } from './trees/mindwright';
+import { MARSHAL } from './trees/marshal';
+import { CORSAIR } from './trees/corsair';
 import { CELESTIAL, GODSLAYER, VOIDWALKER } from './trees/ngClasses';
 
 /** The twelve classes added by the Greater Pantheon update; the first six are built, the rest follow in later phases. */
-export const GREATER_CLASSES: GreaterClass[] = [KNIGHT, DRUID, WARLOCK, SUMMONER, ALCHEMIST, SHAMAN, CHRONOMANCER, ARTIFICER, DANCER, INKWEAVER, WITCHHUNTER, GEOMANCER, HEMOMANCER, HOLLOWHAND, DREAMWALKER, DRAGONSOUL, PUPPETEER, HOLLOWKING, OATHBREAKER, GODSLAYER, VOIDWALKER, CELESTIAL, VOWKNIGHT, WRATHSWORN, STILLHAND, WAYFINDER, GODBLOODED];
+export const GREATER_CLASSES: GreaterClass[] = [KNIGHT, DRUID, WARLOCK, SUMMONER, ALCHEMIST, SHAMAN, CHRONOMANCER, ARTIFICER, DANCER, INKWEAVER, WITCHHUNTER, GEOMANCER, HEMOMANCER, HOLLOWHAND, DREAMWALKER, DRAGONSOUL, PUPPETEER, HOLLOWKING, OATHBREAKER, GODSLAYER, VOIDWALKER, CELESTIAL, VOWKNIGHT, WRATHSWORN, STILLHAND, WAYFINDER, GODBLOODED, ICHORBOUND, FATEDEALER, MINDWRIGHT, MARSHAL, CORSAIR];

@@ -186,7 +186,7 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (177)
+### Legendaries (182)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -217,6 +217,11 @@ Generated from the data files by `npm run content:md`.
 | **Wraps of the Quiet Century** | Adamant Claws | 25 | +6% Dodge; +10% increased Physical Attack; Dodging gives 4 Breath. |
 | **Bow of the Long Road** | Elderwood Bow | 25 | +12% Accuracy; +6% Crit Chance; Kills give 6 Trail. |
 | **Staff of the Borrowed Name** | Elderwood Staff | 25 | +12% increased Magic Attack; +6% Cooldown Reduction; Each skill gives 2 Spark. |
+| **Chalice-Edge** | Adamant Sword | 25 | +10% increased Physical Attack; +5% Lifesteal; Gain 2 Ichor on each hit. |
+| **Deck of No Return** | Elderwood Wand | 25 | +12% increased Magic Attack; +6% Crit Chance; Critical hits give 4 Fortune. |
+| **Circlet of the Held Thought** | Elderwood Staff | 25 | +12% increased Magic Attack; +10% Status Resist; Each skill sheds 2 Strain. |
+| **Baton of the Last Order** | Adamant Rapier | 25 | +10% Resource Gain; +6 Speed; Each skill gives 2 Command. |
+| **Cutlass of the Black Tide** | Adamant Sword | 25 | +10% increased Physical Attack; +12% Gold Find; Kills give 6 Crew. |
 | **Hesha’s Last Kindness** | Adamant Dagger | 24 | +8% Healing Power; +3 Luck; Cannot kill: reducing a foe to 0 HP spares them instead.; Living: it grows when you spare foes. |
 | **The Mapless Compass** | Gold Amulet | 18 | +4 Luck; +6% Magic Find; Points to the nearest undiscovered secret on the map (Codex > Realm > Relics & Meals). |
 | **Coat of Yesterday** | Drakehide Cloak | 22 | +4% Dodge; +6% increased Max HP; Once per fight, undoes the first hit you take. |
@@ -941,7 +946,7 @@ Generated from the data files by `npm run content:md`.
 | **Wrath** | buff | The Rage state: +25% damage, 20% less damage taken, 15% less dodge. |
 | **Quarry** | debuff | Chosen prey: 15% more damage taken and 12 less dodge. |
 
-### Class ultimates and traits (35)
+### Class ultimates and traits (40)
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
@@ -980,12 +985,17 @@ Generated from the data files by `npm run content:md`.
 | Stillhand | **The Still Hand’s Last Breath** | One calm blow: 320% ATK to every enemy, Breath refills and you heal 15%. | **Disciplined Calm**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% dodge. |
 | Wayfinder | **The Wayfinder’s Road** | Every path ends at the quarry: 320% ATK to every enemy, all Quarry for 4 turns. | **Tracker’s Eye**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10 accuracy. |
 | Godblooded | **The Bloodline Awakened** | The god in the blood wakes: 330% MAG to every enemy, Spark fills and you gain +25% damage for 3 turns. | **Innate Magic**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 magic attack. |
+| Ichorbound | **The Ichor Ascendant** | The god’s blood sings: 320% ATK in all five Rites to every enemy; you heal 20%. | **Borrowed Blood**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +4% lifesteal. |
+| Fatedealer | **The Fatedealer’s Deck** | The whole deck falls: 320% MAG to every enemy, a Held Card boon and Fortune fills. | **Lucky Hands**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +4 LUK. |
+| Mindwright | **The Mindwright’s Calm** | A very quiet storm: 310% MAG to every enemy, heal 20% and Strain clears. | **Unquiet Mind**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 magic attack. |
+| Marshal | **The Marshal’s Command** | Every order at once: 280% ATK to every enemy, the party heals 15% and gains +20% damage; Command fills. | **Born to Lead**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% resource gain. |
+| Corsair | **The Corsair’s Reckoning** | The whole crew, all at once: 310% ATK to every enemy, the party heals 15% and gains +20% damage. | **Sea Legs**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% gold found. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
 **Stances (19):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.) · Tenet of Mercy (+15% healing received and +10% magic resist. Basic attacks mend you for 4% HP.) · Tenet of Vengeance (+15% damage. Basic attacks hit for 125% and Mark the foe.) · Tenet of Dawn (+20% holy damage and +10% defense. Basic attacks hit for 110% and Blind.)
 
-### Enemies (541)
+### Enemies (546)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1083,6 +1093,11 @@ Generated from the data files by `npm run content:md`.
 | **Master Oyen Lo** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
 | **Tessaly Greyroad** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
 | **Isolde Sparkwright** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **Warden Cael Dray** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Madame Oriel Kast** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **Archivist Pell Orrow** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **High Marshal Oswin Thrale** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Captain Odalie Brack** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
 | **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50%, earth -25% |
 | **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50%, earth -25% |
 | **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50%, earth -25% |
@@ -1533,7 +1548,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (54):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald, Wolf Totem, Bear Totem, Trail Hound, Trail Hawk
 
-### Encounters (333)
+### Encounters (353)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1579,6 +1594,11 @@ Generated from the data files by `npm run content:md`.
 | **Trial: Master Oyen Lo** | 15 | Master Oyen Lo, Bandit Thug |
 | **Trial: Tessaly Greyroad** | 15 | Tessaly Greyroad, Dire Wolf |
 | **Trial: Isolde Sparkwright** | 15 | Isolde Sparkwright, Bandit Thug |
+| **Trial: Warden Cael Dray** | 15 | Warden Cael Dray, Bandit Thug |
+| **Trial: Madame Oriel Kast** | 15 | Madame Oriel Kast, Bandit Thug |
+| **Trial: Archivist Pell Orrow** | 15 | Archivist Pell Orrow, Bandit Thug |
+| **Trial: High Marshal Oswin Thrale** | 15 | High Marshal Oswin Thrale, Bandit Thug |
+| **Trial: Captain Odalie Brack** | 15 | Captain Odalie Brack, Bandit Thug |
 | **Trial of the Spellblade** | 36 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
 | **Trial of the Warpriest** | 36 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
 | **Trial of the Deathknight** | 36 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
@@ -1784,6 +1804,21 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
 | **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
 | **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Restless Ghost |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Shaman |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Skeleton Soldier |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
+| **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
 | **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
 | **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
 | **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
@@ -1877,7 +1912,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-94 class trees, 2352 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+99 class trees, 2752 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -2207,6 +2242,56 @@ Generated from the data files by `npm run content:md`.
 | The Blood | **Bloodline Ward** (Mended Bloodline Ward, Frugal Bloodline Ward); **Ancestral Mend** (Mended Ancestral Mend, Frugal Ancestral Mend) | Ancestor’s Gift, Ward of Kin | Divine Leftovers / Faint Halo | The Bloodline Holds: +20% damage, -10% defense. | Heir of a God |
 | The Two Veins | **Storm Vein** (Heavier Storm Vein, Guarded Storm Vein); **Ember Vein** (Heavier Ember Vein, Guarded Ember Vein) | Storm Leaning, Ember Leaning | Even Temper / Balanced Blood | Both Ancestors: +20% damage, -10% defense. | Heir of Storm and Flame |
 
+### Ichorbound (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Rites of Flame and Frost | **Rite of Ember** (Heavier Rite of Ember, Guarded Rite of Ember); **Rite of Rime** (Heavier Rite of Rime, Guarded Rite of Rime) | Ember Edge, Rime Edge | Quick Draw / Hard Wrist | Fire and Ice, One Edge: +20% damage, -10% defense. | Rite-Master of Two Winters |
+| Rites of Storm and Dawn | **Rite of Storm** (Heavier Rite of Storm, Guarded Rite of Storm); **Rite of Dawn** (Heavier Rite of Dawn, Guarded Rite of Dawn) | Thunder Edge, Dawn Edge | Gleam / Held Light | Sky in the Steel: +20% damage, -10% defense. | Rite-Master of the Sky |
+| The Void and the Blood | **Rite of the Void** (Heavier Rite of the Void, Quicker Rite of the Void); **Ichor Surge** (Mended Ichor Surge, Frugal Ichor Surge) | Void Edge, Second Pulse | Crimson Tide / Heavy Pour | Nothing Answers: +20% damage, -10% defense. | Rite-Master of the Void |
+| The Hexes | **Hex of Weakness** (Mended Hex of Weakness, Frugal Hex of Weakness); **Hex of Ruin** (Mended Hex of Ruin, Frugal Hex of Ruin) | Evil Eye, Bad Omen | Whispered Ill / Tied Knot | Curse Without End: +20% damage, -10% defense. | Hexwright’s Mark |
+| The Long Vigil | **Ichor Draught** (Mended Ichor Draught, Quicker Ichor Draught); **Bloodied Guard** (Mended Bloodied Guard, Frugal Bloodied Guard) | Bloodied but Steady, Pain Is a Price | Drink Deep / Bleed Slowly | Nothing Wasted: +20% damage, -10% defense. | The Ichor Remembers |
+
+### Fatedealer (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Draw | **Draw a Card** (Heavier Draw a Card, Guarded Draw a Card); **Hold the Card** (Mended Hold the Card, Quicker Hold the Card) | Good Draw, Held Breath | Counted Cards / Long Odds | A Card for Every Occasion: +20% damage, -10% defense. | Master of the Deck |
+| The Stakes | **All In** (Heavier All In, Frugal All In); **Double Down** (Heavier Double Down, Frugal Double Down) | High Roller, Pot Odds | Ante Up / Slow Play | Nothing Left to Lose: +20% damage, -10% defense. | The Gambler’s Edge |
+| The Oracle | **Read the Table** (Mended Read the Table, Frugal Read the Table); **Delay the Turn** (Heavier Delay the Turn, Frugal Delay the Turn) | Read of the Room, Turning Card | Slow Hand / Twice-Told | The Future Was Marked: +20% damage, -10% defense. | Oracle of the Table |
+| The Trick | **Sleight of Hand** (Heavier Sleight of Hand, Quicker Sleight of Hand); **Palmed Ace** (Heavier Palmed Ace, Frugal Palmed Ace) | Marked Card, Hidden Ace | Wrong Hand / Off the Bottom | Never in the First Hand: +20% damage, -10% defense. | Trickster’s Grin |
+| The Fates | **Stack the Deck** (Mended Stack the Deck, Frugal Stack the Deck); **Fortune’s Glimpse** (Mended Fortune’s Glimpse, Frugal Fortune’s Glimpse) | Stacked Odds, Clear Glimpse | Quiet Table / Reserved Seat | The Table Is Yours: +20% damage, -10% defense. | Fate-Dealer |
+
+### Mindwright (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Lash | **Mind Lash** (Heavier Mind Lash, Guarded Mind Lash); **Thought-Shape** (Heavier Thought-Shape, Quicker Thought-Shape) | Hard Thought, Pointed Thought | Long Reach / Held Idea | The Idea Spreads: +12% magic attack, -5% defense. Immune to Silence: Mindwright power needs no god and no voice. | Mind Unbound |
+| The Wards | **Psychic Ward** (Mended Psychic Ward, Quicker Psychic Ward); **Mind Wall** (Mended Mind Wall, Quicker Mind Wall) | Bright Wall, Locked Gate | Calm Center / Held Breath | Nothing Gets In: +20% damage, -10% defense. | Warden of the Mind |
+| The Whispers | **Whisper In** (Mended Whisper In, Quicker Whisper In); **Mind Read** (Mended Mind Read, Quicker Mind Read) | Planted Doubt, Listening Look | Hidden Door / Quiet Word | The Thing They Think: +20% damage, -10% defense. | Voice in the Head |
+| The Hand Unseen | **Telekinetic Throw** (Heavier Telekinetic Throw, Quicker Telekinetic Throw); **Force Wave** (Heavier Force Wave, Quicker Force Wave) | Hurled, Pushed | Pinned / Dragged | Moving the Mountain: +20% damage, -10% defense. | The Hand Unseen |
+| The Still Pool | **Clear the Mind** (Mended Clear the Mind, Quicker Clear the Mind); **Mind Leap** (Mended Mind Leap, Quicker Mind Leap) | Release, Let It Go | Quick Leap / Light Step | Clear as Glass: +20% damage, -10% defense. | The Still Pool |
+
+### Marshal (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Orders | **Pointed Order** (Heavier Pointed Order, Guarded Pointed Order); **Act Now** (Mended Act Now, Frugal Act Now) | Good Staffwork, Quick Relay | Quiet Authority / Pen and Map | The Order Is Heard: +20% damage, -10% defense. | Master of Orders |
+| The Line | **Hold the Order** (Mended Hold the Order, Frugal Hold the Order); **Fall Back** (Mended Fall Back, Frugal Fall Back) | Good Footing, Clean Retreat | Tidy Line / Camp Discipline | The Line Holds: +20% damage, -10% defense. | Keeper of the Line |
+| The Push | **Press the Line** (Mended Press the Line, Frugal Press the Line); **Flag Signal** (Mended Flag Signal, Quicker Flag Signal) | Forward March, Banner Up | Drum Beat / Wide Front | No Time to Rest: +20% damage, -10% defense. | The Push Never Stops |
+| The Morale | **Rally Cry** (Mended Rally Cry, Frugal Rally Cry); **Standard Bearer** (Mended Standard Bearer, Quicker Standard Bearer) | Rallied, Standing Tall | Old Flag / Held Standard | Hearts High: +20% damage, -10% defense. | Keeper of the Standard |
+| The Tactics | **Study the Field** (Mended Study the Field, Quicker Study the Field); **Flanking Order** (Mended Flanking Order, Frugal Flanking Order) | Marked Target, Open Flank | Hidden Reserve / Ambush | Plan B Is Plan A: +20% damage, -10% defense. | Strategist |
+
+### Corsair (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Blade | **Cutlass Flick** (Heavier Cutlass Flick, Guarded Cutlass Flick); **Pistol Shot** (Heavier Pistol Shot, Quicker Pistol Shot) | Swordsman’s Edge, Pistol Hand | Roll With It / Steady Deck | The Old Dance: +20% damage, -10% defense. | Blade of the Black Flag |
+| The Guns | **Cannon Fire** (Heavier Cannon Fire, Frugal Cannon Fire); **Grapeshot** (Heavier Grapeshot, Frugal Grapeshot) | Heavy Ball, Wide Spread | Long Gun / Cannon Drill | Broadside: +20% damage, -10% defense. | Master Gunner |
+| The Crew | **Boarding Party** (Heavier Boarding Party, Frugal Boarding Party); **Rally the Crew** (Mended Rally the Crew, Frugal Rally the Crew) | Boarding Axes, Rousing Song | Full Hold / Tight Ship | Every Hand on Deck: +20% damage, -10% defense. | Captain of the Crew |
+| The Sail | **Hard A-Port** (Mended Hard A-Port, Frugal Hard A-Port); **Storm Sails** (Heavier Storm Sails, Frugal Storm Sails) | Full Canvas, Gale Force | Storm Reader / Eye of the Storm | Ride the Weather: +20% damage, -10% defense. | Stormcaptain’s Gale |
+| The Colors | **Run Up the Colors** (Mended Run Up the Colors, Quicker Run Up the Colors); **Dead Calm** (Mended Dead Calm, Frugal Dead Calm) | Struck Colors, Dead Calm | Fear of the Flag / Raised Voices | The Name Is Enough: +20% damage, -10% defense. | Terror of the Sea |
+
 ### Tree skills
 
 | Skill | Class | Cost | CD | Description |
@@ -2416,6 +2501,31 @@ Generated from the data files by `npm run content:md`.
 | **Wide Surge** | Godblooded | 25 Spark | 3 | Widen: spend 25 Spark; 150% MAG arcane damage to every enemy. |
 | **Ancestral Mend** | Godblooded | 20 Spark | 3 | Spend 20 Spark: heal 16% of max HP; the ancestors are generous. |
 | **Ember Vein** | Godblooded | 5 MP | 0 | Fire in the blood: 140% MAG fire damage and Burn. Gain 10 Spark. |
+| **Rite of Rime** | Ichorbound | free | 0 | Pay 5% HP: 170% ATK ice damage that Slows. Gain 12 Ichor. |
+| **Rite of Dawn** | Ichorbound | free | 0 | Pay 5% HP: 170% ATK holy damage and you heal 8%. Gain 12 Ichor. |
+| **Ichor Surge** | Ichorbound | 25 Ichor | 3 | Spend 25 Ichor: heal 20% of max HP as the blood answers. |
+| **Hex of Ruin** | Ichorbound | 20 Ichor | 4 | Spend 20 Ichor: every enemy is hexed: Vulnerable and Cursed for 2 turns. |
+| **Bloodied Guard** | Ichorbound | 15 Ichor | 3 | Spend 15 Ichor: take 25% less damage for 2 turns and gain 5% lifesteal. |
+| **Hold the Card** | Fatedealer | free | 3 | Hold: +25% crit chance and +15% accuracy for 3 turns. Gain 10 Fortune. |
+| **Double Down** | Fatedealer | 20 Fortune | 2 | Spend 20 Fortune: 150% MAG twice at the same foe. |
+| **Delay the Turn** | Fatedealer | 20 Fortune | 3 | Spend 20 Fortune: 110% MAG, and the foe’s next turn is pushed back. |
+| **Palmed Ace** | Fatedealer | 25 Fortune | 3 | Spend 25 Fortune: 260% MAG; the foe is Confused for 2 turns. |
+| **Fortune’s Glimpse** | Fatedealer | 15 Fortune | 3 | Spend 15 Fortune: see what is coming: +20% dodge for 3 turns and a 10% shield. |
+| **Thought-Shape** | Mindwright | free | 2 | Strain 15: 160% MAG arcane damage and the target is Confused for 2 turns. |
+| **Mind Wall** | Mindwright | free | 4 | Strain 12: the party is shielded for 12% max HP and takes 10% less damage for 2 turns. |
+| **Mind Read** | Mindwright | free | 3 | Strain 8: the target is Marked and Vulnerable for 3 turns; you gain +12% accuracy. |
+| **Force Wave** | Mindwright | free | 3 | Strain 20: 140% MAG to every enemy and they are Slowed for 2 turns. |
+| **Mind Leap** | Mindwright | free | 3 | Strain 10: +20% speed and +10% dodge for 3 turns. |
+| **Act Now** | Marshal | 25 Command | 3 | Spend 25 Command: an ally takes an extra turn. |
+| **Fall Back** | Marshal | 10 Command | 3 | Spend 10 Command: the party is shielded for 12% max HP and takes 15% less damage for 2 turns. |
+| **Flag Signal** | Marshal | free | 4 | Raise the banner: +10% damage to the party for 3 turns. Gain 15 Command. |
+| **Standard Bearer** | Marshal | free | 4 | Plant the standard: you are shielded for 15% and the party gains +8% resource gain for 3 turns. |
+| **Flanking Order** | Marshal | 20 Command | 3 | Spend 20 Command: an ally strikes: they take an extra turn and gain +20% crit. |
+| **Pistol Shot** | Corsair | free | 2 | A shot for 140% ATK that cannot be dodged. Gain 8 Crew. |
+| **Grapeshot** | Corsair | 15 Crew | 3 | Spend 15 Crew: 160% ATK to every enemy that also Blinds them for a turn. |
+| **Rally the Crew** | Corsair | 15 Crew | 4 | Spend 15 Crew: the party heals 10% of max HP and gains +10% damage for 3 turns. |
+| **Storm Sails** | Corsair | 20 Crew | 4 | Spend 20 Crew: a lightning-struck gust: 180% ATK to every enemy and a 10% shield for you. |
+| **Dead Calm** | Corsair | 15 Crew | 3 | Spend 15 Crew: every enemy is Slowed for 2 turns and you gain +15% accuracy. |
 <!-- trees:end -->
 
 ## Not yet added
@@ -2424,7 +2534,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-98 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+113 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
@@ -2526,12 +2636,27 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | Godblooded | **Stormblood**: A grandparent who threw lightning, and did not apologize for it. | Stormborn Bolt (Heavier Stormborn Bolt, Frugal Stormborn Bolt) | **Godstorm**: The sky is your relative: 320% MAG lightning to every enemy, all Stunned for a turn. | Stormblood Ascendant: +15% lightning damage, +10 speed. |
 | Godblooded | **Emberblood**: The family hearth is a very old, very hungry thing. | Emberborn Wave (Heavier Emberborn Wave, Frugal Emberborn Wave) | **Ember Ascendant**: You burn like a small god: 320% MAG fire to every enemy, all Burning; Spark fills. | Emberblood Ascendant: +15% fire damage, +10% magic attack. |
 | Godblooded | **Vex-Touched**: The magic is yours. It has opinions about that. | Vex Surge (Heavier Vex Surge, Frugal Vex Surge) | **Wild Bloodline**: Pure chaos: 6 surges of 120% MAG at random enemies, each with a random status; you heal 15%. | Vex-Touched Ascendant: +15 LUK, +10% magic attack. |
+| Ichorbound | **Moonblood**: Lyssara’s children, and Moonfen’s. Mostly Moonfen’s. | Moon Maul (Heavier Moon Maul, Frugal Moon Maul) | **The Full Moon Hunt**: The beast takes the wheel: 300% ATK to every enemy, all Bleeding; you heal 20%. | Moonblood Ascendant: +15% physical attack, +10 speed. |
+| Ichorbound | **Hollowblade**: The dead had their turn. Yours now. | Hollow Cut (Heavier Hollow Cut, Frugal Hollow Cut) | **Hollow Verdict**: The dead do not get a second chance: 330% ATK holy damage to every enemy; Ichor fills. | Hollowblade Ascendant: +15% holy damage, +10% physical attack. |
+| Ichorbound | **Hexwright**: Never raise a hand when a word will do. | Ruinous Hex (Heavier Ruinous Hex, Frugal Ruinous Hex) | **Seven Hexes**: Everything you know, at once: 280% ATK to every enemy, all Weakened, Cursed and Vulnerable. | Hexwright Ascendant: +15% status chance, +10% shadow damage. |
+| Fatedealer | **Gambit**: Everything on one card. | High Stakes (Heavier High Stakes, Frugal High Stakes) | **The Last Hand**: One card: 450% MAG to a single foe that cannot miss, and you heal 15%. | Gambit Ascendant: +15% damage, +10% crit chance. |
+| Fatedealer | **Oracle**: You have already seen how this ends. It was fine. | Foretold Ending (Heavier Foretold Ending, Frugal Foretold Ending) | **Read the End**: You turn the last page: 300% MAG to every enemy, all Slowed and Cursed. | Oracle Ascendant: +15% cooldown reduction, +10% status chance. |
+| Fatedealer | **Trickster**: The Vex have been very good to you. | Marked Deck (Heavier Marked Deck, Frugal Marked Deck) | **The House Always Wins**: The odds were never yours: 340% MAG to every enemy, all Marked; Fortune fills. | Trickster Ascendant: +15 LUK, +10% crit chance. |
+| Mindwright | **Shaper**: Matter has opinions. You have better ones. | Reshape Matter (Heavier Reshape Matter, Quicker Reshape Matter) | **Mind Over Matter**: The world rearranges itself: 320% MAG to every enemy, a shield of 20% max HP, and Strain clears. | Shaper Ascendant: +15% magic attack, +10% defense. |
+| Mindwright | **Whisperer**: The loudest thing in any room is a thought. | Mind Fray (Heavier Mind Fray, Quicker Mind Fray) | **A Thousand Voices**: Everyone in the room hears you: 300% MAG to every enemy, all Feared and Confused. | Whisperer Ascendant: +15% status chance, +10 WIS. |
+| Mindwright | **Kineticist**: Force, politely applied. | Kinetic Barrage (Heavier Kinetic Barrage, Quicker Kinetic Barrage) | **The Hurled World**: Everything that is not nailed down: 330% MAG physical damage to every enemy; they are Stunned for a turn. | Kineticist Ascendant: +15% physical attack, +10 speed. |
+| Marshal | **Banner Lord**: Everyone can see where you are. That is the point. | Banner Charge (Heavier Banner Charge, Frugal Banner Charge) | **Voice of the War**: You are heard by every soul on the field: every enemy is Feared and Slowed; the party heals 15% and gains +25% damage. | Banner Lord Ascendant: +15% resource gain, +10% max HP. |
+| Marshal | **Tactician**: You were planning this while they were arguing about it. | Coordinated Strike (Heavier Coordinated Strike, Frugal Coordinated Strike) | **The Masterstroke**: The plan was always this one: 300% ATK to every enemy, all Vulnerable and Marked. | Tactician Ascendant: +15 accuracy, +10% crit chance. |
+| Marshal | **Warcaller**: You have a voice. You have decided to use it. | Warcall (Mended Warcall, Frugal Warcall) | **The Grand Order**: Everyone, now: the party takes extra turns in order, +25% damage and +15% crit for 3 turns. | Warcaller Ascendant: +15 speed, +10% damage. |
+| Corsair | **Privateer**: It is not piracy. It is paperwork. | Privateer’s Letter (Heavier Privateer’s Letter, Frugal Privateer’s Letter) | **Plunder the Sea**: Everything left floating is yours: 300% ATK to every enemy and 100 gold; Crew fills. | Privateer Ascendant: +15% gold found, +10% physical attack. |
+| Corsair | **Stormcaptain**: The weather is on your side. It has not been told. | Hurricane Broadside (Heavier Hurricane Broadside, Frugal Hurricane Broadside) | **The Kraken Answers**: The deep takes sides: 340% ATK lightning to every enemy, all Slowed. | Stormcaptain Ascendant: +15% lightning damage, +10 speed. |
+| Corsair | **Deadeye**: One shot. You have a lot of time before it. | Deadeye Shot (Heavier Deadeye Shot, Frugal Deadeye Shot) | **One Shot, One Ship**: The last cannonball: 450% ATK to a single foe that cannot miss. | Deadeye Ascendant: +15 accuracy, +10% crit chance. |
 <!-- specializations:end -->
 
 ## General skills (81)
 
 <!-- general:start -->
-187 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+192 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -2697,6 +2822,11 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Wind Kick (Grimoire)** (level 15) | grimoire | Epic | Wind Kick | Use the Wind Kick skill of another class at 70% power. |
 | **Snare (Grimoire)** (level 15) | grimoire | Epic | Snare | Use the Snare skill of another class at 70% power. |
 | **Storm Vein (Grimoire)** (level 15) | grimoire | Epic | Storm Vein | Use the Storm Vein skill of another class at 70% power. |
+| **Rite of Ember (Grimoire)** (level 15) | grimoire | Epic | Rite of Ember | Use the Rite of Ember skill of another class at 70% power. |
+| **Draw a Card (Grimoire)** (level 15) | grimoire | Epic | Draw a Card | Use the Draw a Card skill of another class at 70% power. |
+| **Mind Lash (Grimoire)** (level 15) | grimoire | Epic | Mind Lash | Use the Mind Lash skill of another class at 70% power. |
+| **Flag Signal (Grimoire)** (level 15) | grimoire | Epic | Flag Signal | Use the Flag Signal skill of another class at 70% power. |
+| **Pistol Shot (Grimoire)** (level 15) | grimoire | Epic | Pistol Shot | Use the Pistol Shot skill of another class at 70% power. |
 | **Sunder Halo (Grimoire)** (level 40) | grimoire | Legendary | Sunder Halo | Use the Sunder Halo skill of another class at 70% power. |
 | **Hollow Shroud (Grimoire)** (level 40) | grimoire | Legendary | Hollow Shroud | Use the Hollow Shroud skill of another class at 70% power. |
 | **Radiant Ward (Grimoire)** (level 40) | grimoire | Legendary | Radiant Ward | Use the Radiant Ward skill of another class at 70% power. |
@@ -2761,6 +2891,11 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | Stillhand | **Master Oyen Lo**: Has not raised her voice in forty years. Several people have raised theirs, briefly. | Lv 15: Master Oyen Lo, Bandit Thug | Now You See Me, Dirty Stab |
 | Wayfinder | **Tessaly Greyroad**: Has walked every road in Vael at least twice, and a few of them backwards, to make a point. | Lv 15: Tessaly Greyroad, Dire Wolf | Now You See Me, Dirty Stab |
 | Godblooded | **Isolde Sparkwright**: Her great-grandmother was struck by lightning and enjoyed it. The family has been fine since. | Lv 15: Isolde Sparkwright, Bandit Thug | Now You See Me, Dirty Stab |
+| Ichorbound | **Warden Cael Dray**: Drank the ichor sixteen years ago and has been polite about it ever since. | Lv 15: Warden Cael Dray, Bandit Thug | Shield Bash, Dirty Stab |
+| Fatedealer | **Madame Oriel Kast**: Has never lost a hand she did not intend to. Has intended to, twice. | Lv 15: Madame Oriel Kast, Bandit Thug | Now You See Me, Dirty Stab |
+| Mindwright | **Archivist Pell Orrow**: Has not been surprised since the second Age of Rain. Is working on it. | Lv 15: Archivist Pell Orrow, Bandit Thug | Now You See Me, Dirty Stab |
+| Marshal | **High Marshal Oswin Thrale**: Has won eleven wars on paper and one on foot. Prefers paper. | Lv 15: High Marshal Oswin Thrale, Bandit Thug | Shield Bash, Dirty Stab |
+| Corsair | **Captain Odalie Brack**: Retired twice. The ship objected both times. | Lv 15: Captain Odalie Brack, Bandit Thug | Shield Bash, Dirty Stab |
 
 ### Hybrid prestige classes
 
@@ -3424,7 +3559,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-846 quests, 265 NPCs, 560 dialogues, 14 companions, 17 endings.
+876 quests, 270 NPCs, 565 dialogues, 14 companions, 17 endings.
 
 ### Main story (54)
 
@@ -3917,7 +4052,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Against Morrath** | 30 | Archivist Tamsin | Defeat the herald of Morrath (fight) |
 | **The Covenant of Mirrin** | 40 | Archivist Tamsin | Offer the shards (deliver) |
 
-### Class trials (203)
+### Class trials (233)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -4096,6 +4231,31 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Webbed Hall** | 20 | Isolde Sparkwright | Clear spider hollow (clear) |
 | **The Elder Ghost** | 25 | Isolde Sparkwright | Face the test of nerve (fight) |
 | **The Bloodline Awakened** | 30 | Isolde Sparkwright | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Drop in the Cup** | 12 | Warden Cael Dray | Reach the shrine of Solenne (visit) |
+| **The Pale Hunt** | 16 | Warden Cael Dray | Defeat the trouble on the road (fight) |
+| **The Crypt Beneath** | 20 | Warden Cael Dray | Clear old crypt (clear) |
+| **The Dry Well** | 25 | Warden Cael Dray | Face the test of nerve (fight) |
+| **The Ichor Remembers** | 30 | Warden Cael Dray | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Seat at the Table** | 12 | Madame Oriel Kast | Reach the shrine of Morrath (visit) |
+| **The Marked Deck** | 16 | Madame Oriel Kast | Defeat the trouble on the road (fight) |
+| **The Warren Game** | 20 | Madame Oriel Kast | Clear goblin warren (clear) |
+| **A Hand Against the House** | 25 | Madame Oriel Kast | Face the test of nerve (fight) |
+| **The Last Hand** | 30 | Madame Oriel Kast | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Quiet Thought** | 12 | Archivist Pell Orrow | Reach the shrine of Aurelis (visit) |
+| **The Loud Room** | 16 | Archivist Pell Orrow | Defeat the trouble on the road (fight) |
+| **The Webbed Library** | 20 | Archivist Pell Orrow | Clear spider hollow (clear) |
+| **The Ghost Who Thought** | 25 | Archivist Pell Orrow | Face the test of nerve (fight) |
+| **The Still Pool** | 30 | Archivist Pell Orrow | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Word of Command** | 12 | High Marshal Oswin Thrale | Reach the shrine of Kael (visit) |
+| **The Stranded Caravan** | 16 | High Marshal Oswin Thrale | Defeat the trouble on the road (fight) |
+| **The Crypt Garrison** | 20 | High Marshal Oswin Thrale | Clear old crypt (clear) |
+| **The Hollow Siege** | 25 | High Marshal Oswin Thrale | Face the test of nerve (fight) |
+| **The Standard Raised** | 30 | High Marshal Oswin Thrale | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Berth for the Night** | 12 | Captain Odalie Brack | Reach the shrine of Nymira (visit) |
+| **The Ship in the Fog** | 16 | Captain Odalie Brack | Defeat the trouble on the road (fight) |
+| **The Drowned Hold** | 20 | Captain Odalie Brack | Clear drowned grotto (clear) |
+| **The Hag’s Toll** | 25 | Captain Odalie Brack | Face the test of nerve (fight) |
+| **The Black Flag Raised** | 30 | Captain Odalie Brack | Face the final lesson (fight); Speak to your mentor (talk) |
 | **Trial of the Warrior** | 15 | Sword-Master Bram | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Mage** | 15 | Archmage Velis | Read a skillbook (deed); Win the trial (state) |
 | **Trial of the Rogue** | 15 | Nell the Knife | Land 12 critical hits (deed); Win the trial (state) |
@@ -4124,6 +4284,11 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Trial of the Stillhand** | 15 | Master Oyen Lo | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Wayfinder** | 15 | Tessaly Greyroad | Win 5 battles in the wild (deed); Win the trial (state) |
 | **Trial of the Godblooded** | 15 | Isolde Sparkwright | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Ichorbound** | 15 | Warden Cael Dray | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Fatedealer** | 15 | Madame Oriel Kast | Land 10 critical hits (deed); Win the trial (state) |
+| **Trial of the Mindwright** | 15 | Archivist Pell Orrow | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Marshal** | 15 | High Marshal Oswin Thrale | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Corsair** | 15 | Captain Odalie Brack | Win 5 battles (deed); Win the trial (state) |
 
 ### Hybrid trials (45)
 
@@ -4271,6 +4436,11 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Stillhand | -30% | - |
 | Wayfinder | -30% | - |
 | Godblooded | -30% | - |
+| Ichorbound | -30% | - |
+| Fatedealer | -30% | - |
+| Mindwright | -30% | - |
+| Marshal | -30% | - |
+| Corsair | -30% | - |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
@@ -4318,7 +4488,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Ratchet:** Factor Moll Pennick (Keeper of the Open Ledger), Tick (Forged Artificer), Foreman Hask (Shift Foreman of Ratchet), Engineer Lorne (Chief Engineer), Ten (Forged Veteran), Rosa (Steam-Medic), Nix (Gear-Scrapper), Dagmar (Union Representative), Ordwin (Priest of Ordrun), Wren (Wandering Tinker)
 - **Ashfold:** Keeper Orsolya (Teller of the Turning), Reeve Halwin (Village Reeve), Gran Pell (Hearth-Keeper), Tobin (Farm Boy), Brannoc (Village Smith), Brother Ansel (Priest of Solenne), Dessa (Miller’s Wife), Orrin (Hunter), Mavis (Keeper of the Temporary Inn)
 - **Wreck’s End:** Ringmaster Zephyr Quill (Master of Misrule), Zephyra Lark (Wind-Dancer), Harbormaster Fenn (Master of the Port), Jaya Brineheart (Queen of the Wreckers), Sol (Bridge-Weaver), Mari (Shell-Seller), Vanya (Storm-Chaser), Oakes (Salvage-Bosun), Trin (Gull-Keeper), Hedda (Matron of the Rope & Anchor)
-- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld, Bruna Oathless, Ilen of the Gap, Aurelia the Unwinged, Ser Halric Vane, Brannoch One-Ear, Master Oyen Lo, Tessaly Greyroad, Isolde Sparkwright
+- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld, Bruna Oathless, Ilen of the Gap, Aurelia the Unwinged, Ser Halric Vane, Brannoch One-Ear, Master Oyen Lo, Tessaly Greyroad, Isolde Sparkwright, Warden Cael Dray, Madame Oriel Kast, Archivist Pell Orrow, High Marshal Oswin Thrale, Captain Odalie Brack
 <!-- story:end -->
 
 ## Bosses, elites, bestiary and achievements

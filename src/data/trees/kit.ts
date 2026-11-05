@@ -25,6 +25,8 @@ interface ActOpts {
   dmg?: ['p' | 'm' | 'd', number, number, number?];
   heal?: ['p' | 'm' | 'd', number, number];
   fx?: EffectSpec[];
+  /** Percent of max HP paid to cast. */
+  hp?: number;
   gen?: [string, number];
   fin?: [string, number];
   crit?: boolean;
@@ -37,7 +39,7 @@ function build(source: SkillDef['source'], id: string, name: string, description
   const [hst, hm, hpr] = o.heal ?? ['p', 0, 0];
   return {
     id, name, description, source, tags: o.tags, element: o.el, targeting: o.to, maxRank: source === 'ultimate' ? 1 : 5,
-    cost: { ...(o.mp ? { mp: o.mp } : {}), ...(o.res ? { resource: { id: o.res[0], amount: o.res[1] } } : {}) },
+    cost: { ...(o.mp ? { mp: o.mp } : {}), ...(o.hp ? { hpPct: o.hp } : {}), ...(o.res ? { resource: { id: o.res[0], amount: o.res[1] } } : {}) },
     cooldown: o.cd ?? 0,
     ...(o.dmg ? { damage: { stat: SCALE[dst], multiplier: dm, perRank: dpr, ...(hits ? { hits } : {}) } } : {}),
     ...(o.heal ? { heal: { stat: SCALE[hst], multiplier: hm, perRank: hpr } } : {}),
