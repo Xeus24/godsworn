@@ -273,8 +273,10 @@ export class TreeScreen implements Screen {
       const { x, y, scale } = this.view;
       layer.setAttribute('transform', `translate(${x} ${y}) scale(${scale})`);
       root.classList.toggle('far', scale < FAR_SCALE);
-      const titleSize = Math.min(64, Math.max(18, 14 / scale));
+      const wanted = Math.min(64, Math.max(18, 14 / scale));
       for (const { text, icon, x: tx } of titles) {
+        // Never wider than its own column (about 470 tree units with its icon), so neighbours and the stage edge do not clip it.
+        const titleSize = Math.min(wanted, 400 / Math.max(8, (text.textContent?.length ?? 0) * 0.55));
         text.style.fontSize = `${titleSize}px`;
         const half = ((text.textContent?.length ?? 0) * titleSize * 0.27);
         const side = titleSize * 1.35;
@@ -323,8 +325,8 @@ export class TreeScreen implements Screen {
         if (!rect.width || !rect.height || !tree.nodes.length) return;
         const xs = tree.nodes.map((n) => n.x);
         const ys = tree.nodes.map((n) => n.y);
-        const minX = Math.min(...xs) - 60;
-        const maxX = Math.max(...xs) + 60;
+        const minX = Math.min(...xs) - 110;
+        const maxX = Math.max(...xs) + 110;
         const minY = -10;
         const maxY = Math.max(...ys) + 50;
         const scale = Math.min(1.1, Math.max(this.fitAll ? 0.12 : 0.75, Math.min(rect.width / (maxX - minX), rect.height / (maxY - minY))));
