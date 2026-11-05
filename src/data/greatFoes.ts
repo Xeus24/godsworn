@@ -129,3 +129,12 @@ export const GREAT_FOES: GreatFoe[] = [
   { id: 'grudgebound-emperor', enemy: 'grudgebound-emperor', zone: '', waves: [], boss: 'grudgebound-emperor', title: 'Emperor of Nothing', boon: flat('maxHp', 60), boonText: '+60 max HP.', hint: 'Needs three Grudgebound still alive. Seek him anywhere.', goldPerLevel: 140 },
   { id: 'sir-remnant', enemy: 'sir-remnant', zone: 'hollow-barrows', waves: [], boss: 'sir-remnant', title: 'Let Him Rest', boon: more('healingReceived', 6), boonText: '+6% healing received.', hint: 'Standing guard at a door in the Hollow Barrows. He can be talked into rest.', goldPerLevel: 60 },
 ];
+
+// ------------------------------------------------------------------ 150: Choir Defectors
+
+export const DEFECTOR_NAMES = ['Wren the Tenor', 'Pell the Alto', 'Orrin the Bass', 'Sive the Soprano', 'Dunmore the Cantor', 'Isa the Chorister', 'Hob the Precentor', 'Lark the Treble'];
+// prettier-ignore
+export const DEFECTORS: EnemyDef[] = DEFECTOR_NAMES.map((name, i) =>
+  foe({ id: `choir-defector-${i + 1}`, name, family: 'humanoid', types: ['humanoid', 'choir', 'defector'], level: 26 + (i % 4), flags: ['rule:defector'], ai: i % 2 ? 'caster' : 'aggressive', row: i % 2 ? 'back' : 'front', stats: st(52 + i, 14, 12, 8, 9, 11), resists: { shadow: 20 }, skills: sk(i % 2 ? 'shadow-bolt' : 'dark-cleave', 'wail'), basicAttack: i % 2 ? { element: 'shadow', ranged: true, magic: true, name: 'Held Note' } : phys('Tuning Fork'), description: `${name} sings in the Unsworn King’s Choir, and is tired of the hymn. Talk to ${i % 2 ? 'her' : 'them'}, and they may walk out.`, palette: pal('#4a4a6a', '#c8c8e8') }),
+);
+export const DEFECTOR_GROUPS: string[][] = [[1, 2], [3, 4], [5, 6], [7, 8]].map(([a, b]) => [`choir-defector-${a}`, `choir-defector-${b}`]);

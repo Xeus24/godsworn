@@ -10,6 +10,14 @@ export interface MechanicDef {
 }
 
 export const MECHANICS: MechanicDef[] = [
+  { id: 'rule:defector', text: 'A Choir member who can be turned through Talk.' },
+  { id: 'cannotKill', text: 'Cannot kill: reducing a foe to 0 HP spares them instead.' },
+  { id: 'secretSense', text: 'Points to the nearest undiscovered secret.' },
+  { id: 'yesterday', text: 'Once per fight, undoes the first hit you take.' },
+  { id: 'choirbreaker', text: 'Silences singing enemies it hits.' },
+  { id: 'quietCrown', text: 'While worn, the gods fall silent in battle.' },
+  { id: 'wicks', text: 'Gains a wick and a small passive for each light source collected.' },
+  { id: 'debtor', text: 'Takes 10% of your gold each day.' },
   { id: 'rule:tithe', text: 'Each hit on the party takes a share of its gold; a win returns it with 25% interest.' },
   { id: 'rule:mother', text: 'Mother Ninefold: her last phase follows the order her heads were severed.' },
   { id: 'rule:head', text: 'One of Mother Ninefold’s nine heads.' },

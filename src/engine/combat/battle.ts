@@ -33,6 +33,8 @@ export interface BattleSetup {
   purse?: number;
   opening?: 'ambush' | 'preemptive';
   volley?: number;
+  /** The festival being held today, if any (Longest Quiet: nobody dies; Upside Day: foes apologize). */
+  festival?: string;
   c?: Content;
 }
 
@@ -86,6 +88,7 @@ export class Battle {
   opening?: 'ambush' | 'preemptive';
   /** Naval battle: the ship's broadside at the start. */
   volley = 0;
+  festival: string | undefined;
   /** The terrain in force, if any. */
   terrain?: { id: string; turns: number };
   readonly tally: BattleTally = { parts: [], bound: [], mercy: [], kills: [], interrupts: 0, partyCrits: 0, partyHeals: 0, highestHit: 0, goldFound: 0, favor: [], itemsUsed: {}, skillUses: {}, stolen: [], spent: 0, spared: [], talked: [], generalUses: {}, tagUses: {}, summons: 0, oathsBroken: 0 };
@@ -110,6 +113,7 @@ export class Battle {
     this.purse = setup.purse ?? 0;
     this.opening = setup.opening;
     this.volley = setup.volley ?? 0;
+    this.festival = setup.festival;
     this.triggers = new TriggerSystem(this.rng);
     for (const x of this.combatants) this.registerTriggers(x);
   }

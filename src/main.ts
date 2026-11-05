@@ -1,3 +1,4 @@
+import { festivalOn } from './engine/realm/wheel';
 import './style.css';
 import './ui/inventory/inventory.css';
 import './ui/combat/combat.css';
@@ -407,6 +408,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     weather: s.world.weatherNow(),
     punisher,
     purse: s.state.gold,
+    ...(festivalOn(s.state.clock.day) ? { festival: festivalOn(s.state.clock.day)!.id } : {}),
     autoTactics: { mercy: settings().autoMercy, maneuvers: settings().autoManeuvers },
     mercy: { deeds: Number(s.state.flags['mercy'] ?? 0), hesha: atLeast(s.player, 'hesha', 'favored') },
     ...(volley ? { volley } : {}),

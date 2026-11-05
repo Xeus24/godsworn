@@ -32,6 +32,14 @@ export function startBattle(b: Battle): BattleEvent[] {
     }
     x.nextAt = b.hasFlag(x, 'firstStrike') ? 0 : (100 / Math.max(1, stats.speed)) * b.rng.float(0.3, 1);
   }
+  if (b.festival === 'longest-quiet') for (const x of b.alive('party')) if (!x.flags.includes('cannotKill')) x.flags.push('cannotKill');
+  if (b.festival === 'upside-day') {
+    for (const x of b.alive('enemy')) {
+      if (x.tier === 'boss' || x.tier === 'worldBoss') continue;
+      applyStatus(b, x, x, 'stun', { duration: 1, unresistable: true });
+      b.log(`${x.name} bows deeply and apologizes for the inconvenience.`);
+    }
+  }
   for (const x of [...b.alive('party')]) {
     const cls = x.classId ? b.c.classes.get(x.classId) : undefined;
     if (cls?.startingSummon) summon(b, x, cls.startingSummon, false);
@@ -152,7 +160,7 @@ function beginTurn(b: Battle, x: Combatant): void {
   tickStatusesAtTurnStart(b, x);
   if (!x.alive) return;
   bossTurnStart(b, x);
-  if (x.side === 'enemy' && !x.midSaid && x.hp <= x.maxHp / 2) {
+  if (x.side === 'enemy' && !x.midSaid && x.hp <= x.maxHp / 2 && !(x.enemyId?.startsWith('aspect-') && b.combatants.some((c) => c.side === 'party' && c.flags.includes('quietCrown')))) {
     x.midSaid = true;
     const lines = BOSS_LINES[x.enemyId ?? ''];
     if (lines) b.log(`${x.name}: ${lines[1]}`);

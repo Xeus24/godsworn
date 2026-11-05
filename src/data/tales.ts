@@ -9,7 +9,7 @@ export type Fx =
   | ['gold', number] | ['goldL', number] | ['xp', number] | ['favor', string, number] | ['rep', string, number]
   | ['flag', string] | ['gflag', string] | ['title', string] | ['days', number] | ['mod', string, number] | ['clue', number]
   | ['reveal'] | ['favorV', number] | ['loseJournal'] | ['hurt', number] | ['statue'] | ['approval', number];
-export interface Req { flag?: string; not?: string; ev?: number; lvl?: number }
+export interface Req { flag?: string; not?: string; ev?: number; lvl?: number; /** Choir defectors turned. */ def?: number }
 export interface Opt {
   l: string;
   t: string;
@@ -170,6 +170,20 @@ export const TALES: Tale[] = [
       o('Pay with a memory', 'She takes a line from your Godsworn Journal, gently, as if folding a handkerchief. The page is blank where it was. You cannot say what it said.', [['loseJournal'], ['flag', 'ferried'], ['xp', 40], ['mod', 'ward', 0], ['title', 'Ferried by Mag']], undefined, { req: { lvl: 1 } }),
       o('Pay in gold, regardless', 'She sniffs the coins and takes them, “for the boat.” The crossing is rougher.', [['flag', 'ferried'], ['xp', 15]], undefined, { cost: 50 }),
       o('Refuse, and wade', 'The black water takes a bite out of you on the way over.', [['hurt', 30], ['flag', 'ferried'], ['xp', 20]]),
+    ] },
+  } },
+  { id: 'choir-inside', no: 150, name: 'Voices From Inside', blurb: 'Eight Choir members can be turned through Talk. Each one tells you more of the Choir from the inside.', where: { zone: 'gloamwood' }, lvl: 26, first: 'a', steps: {
+    a: { text: 'Turn a member of the Choir in the Bellhouse (use Talk, not a sword). Each defector opens a little more of what the Choir is doing.', opts: [
+      o('The first informant speaks', 'The Choir’s members are not volunteers. They were given a hymn, and a debt. Wren draws you the rehearsal hall on a napkin.', [['xp', 15], ['flag', 'one']], 'b', { req: { def: 1 } }),
+    ] },
+    b: { text: 'With three turned, the Choir’s timetable is no secret.', opts: [
+      o('Learn the hymn’s weak line', 'Every verse ends on the same breath. A heavy mace at that breath will break the note. (Choirbreaker was cast for this.)', [['xp', 25], ['mod', 'edge', 0]], 'c', { req: { def: 3 } }),
+    ] },
+    c: { text: 'Five defectors sit round your fire, humming very quietly and hating that they know the tune.', opts: [
+      o('Ruin the rehearsal', 'The defectors sing the wrong key at the wrong moment, together. The Choir goes silent for a day.', [['goldL', 40], ['favor', 'morrath', 4]], 'd', { req: { def: 5 } }),
+    ] },
+    d: { text: 'All eight are out. They give you the last secret, the Conductor’s tell: he lifts his baton a half-breath before the downbeat.', opts: [
+      o('Remember the tell', 'You know the baton now. Dancers and bards will keep time against him a little easier.', [['title', 'Eight Voices Freed'], ['xp', 60], ['mod', 'voice', 0]], undefined, { req: { def: 8 } }),
     ] },
   } },
   { id: 'pim', no: 141, name: 'Pim', blurb: 'A talking cat, and a god’s runaway familiar. Three errands reveal which god.', where: { town: 'brightwater' }, lvl: 10, first: 'a', variants: PIM, steps: {

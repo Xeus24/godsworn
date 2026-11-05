@@ -121,6 +121,7 @@ export function settleBattle(s: GameSession, b: Battle): BattleRewards {
   const seen = b.combatants.flatMap((x) => (x.side === 'enemy' && x.enemyId ? [x.enemyId] : []));
   for (const news of recordBattle(p, seen, b.tally.kills.map((k) => k.enemyId))) s.bus.emit('toast', { kind: 'info', text: news });
 
+  s.craft.afterBattle(b);
   if (b.outcome === 'victory') {
     stats.battlesWon++;
     rewards.trialWon = s.multiclass.recordVictory(b.encounterId);

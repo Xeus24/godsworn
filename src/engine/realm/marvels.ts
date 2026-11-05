@@ -285,7 +285,44 @@ export interface TalesState {
 }
 export const createTales = (): TalesState => ({ at: {}, mods: [], temptTry: {}, quill: { last: -999, asked: 0, correct: 0, best: 0 } });
 
+export interface CraftState {
+  /** Talking Relics (142): taken up, carried (up to three) and their moods. */
+  relics: { owned: string[]; carried: string[]; mood: Record<string, number>; day: number };
+  /** Thalor's Unfinished Hammer (147): steps of the forging done. */
+  hammer: number;
+  /** Lantern of a Thousand Wicks (147): the light sources collected (by name). */
+  wicks: string[];
+  /** Hearth Meals (146): the day of the last meal and how each companion took it. */
+  meals: { day: number; count: number };
+  /** Godforge Relics (148): pieces forged (god ids). */
+  forged: string[];
+  /** Pet talents (145): the day of the last forage. */
+  forage: number;
+  /** The Debtor's Ring: the day gold was last taken. */
+  debt: number;
+  /** Choir Defectors (150): enemy ids turned through Talk. */
+  defectors: string[];
+}
+export const createCraft = (): CraftState => ({ relics: { owned: [], carried: [], mood: {}, day: 0 }, hammer: 0, wicks: [], meals: { day: -99, count: 0 }, forged: [], forage: -99, debt: 0, defectors: [] });
+
+export interface FunState {
+  /** Festival and town games (152-156): best score and plays by game. */
+  best: Record<string, number>;
+  plays: Record<string, number>;
+  active?: { id: string; seed: number; at: number; score: number; log: string[]; town?: string; rounds: { text: string; opts: { l: string; v: number }[] }[] };
+  /** Bellringing (153) trains the Dancer's Rhythm: points toward Resource Gain. */
+  rhythm: number;
+  /** Goatherding (155): scars on Old Billy, the goat Grudgebound. */
+  billy: number;
+  /** Hearthfolk Cook-Off (156): the day each town's contest was last entered, and ribbons won (town ids). */
+  cooked: Record<string, number>;
+  ribbons: string[];
+}
+export const createFun = (): FunState => ({ best: {}, plays: {}, rhythm: 0, billy: 0, cooked: {}, ribbons: [] });
+
 export interface MarvelsState {
+  fun?: FunState;
+  craft?: CraftState;
   tales?: TalesState;
   foes?: FoesState;
   pockets?: PocketsState;

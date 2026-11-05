@@ -97,6 +97,7 @@ export class TalesActions {
     if (req.flag && !flags.includes(req.flag)) return false;
     if (req.not && flags.includes(req.not)) return false;
     if (req.lvl !== undefined && this.s.player.level < req.lvl) return false;
+    if (req.def !== undefined && this.s.craft.k.defectors.length < req.def) return false;
     if (req.ev !== undefined) {
       const n = flags.filter((f) => f.startsWith('ev:')).length;
       if (req.ev > 0 ? n < req.ev : n >= 2) return false;

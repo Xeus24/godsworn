@@ -165,3 +165,6 @@ Tricks are data-switched by enemy `flags` (`rule:*`, listed in `data/mechanics.t
 
 ## Tales and strangers (section H-5)
 `TalesActions` (`s.tales`) runs the data in `data/tales.ts`: `choose(id, i)` checks the place (`Step.at` or the tale's `where`), the option's requirement, gold cost and stat roll, applies `Fx` tuples (`days` advances the clock, `loseJournal` edits the fellowship journal, `favorV`/`clue`/`reveal` use the tale's seeded `variants`), and moves to the next step. Verdicts are written to global flags. The Oathbreaker rides the hidden-class `LINES` table in `story/hiddenLines.ts`.
+
+## Relics, meals, festivals and games (section H-6)
+`CraftActions` (`s.craft`) is called from `settleBattle` (`afterBattle`: relic moods, awakening, defectors) and adds relic, pet, Lantern and defector modifiers through `mods()`. Named legendary rules are flags: `cannotKill` and `yesterday` live in `combat/hits.ts`, `choirbreaker` in `combat/rules.ts`, `quietCrown` in `combat/turns.ts`, `debtor` in the daily tick. `Battle.festival` (set in `main.ts` from `festivalOn`) drives the Longest Quiet and Upside Day in `startBattle`. `FunActions` (`s.fun`) builds each game's rounds from a seed so the best answer is fixed but hidden.

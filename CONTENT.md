@@ -186,7 +186,7 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (164)
+### Legendaries (172)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -212,6 +212,14 @@ Generated from the data files by `npm run content:md`.
 | **Heaven’s Quarrel** | Adamant Greataxe | 25 | +16% Damage Bonus; +15% Crit Damage; 35% chance on hit: gain 3 Defiance; Critical hits leave the target Vulnerable |
 | **The Gap Between** | Elderwood Staff | 25 | +18% Void Damage; +6% Dodge; 35% chance on cast: gain 4 Null; Dodging shields you for 8% of max HP |
 | **Crown of the Dayspring** | Sapphire Orb | 25 | +16% Healing Power; +14% Holy Damage; 40% chance when you heal: gain 4 Halo; Below 30% HP, once per battle: shield the party for 25% of max HP |
+| **Hesha’s Last Kindness** | Adamant Dagger | 24 | +8% Healing Power; +3 Luck; Cannot kill: reducing a foe to 0 HP spares them instead.; Living: it grows when you spare foes. |
+| **The Mapless Compass** | Gold Amulet | 18 | +4 Luck; +6% Magic Find; Points to the nearest undiscovered secret on the map (Codex > Realm > Relics & Meals). |
+| **Coat of Yesterday** | Drakehide Cloak | 22 | +4% Dodge; +6% increased Max HP; Once per fight, undoes the first hit you take. |
+| **Choirbreaker** | Mithril Mace | 30 | +12% increased Physical Attack; +6% Status Resist; Silences singing enemies (the Choir, sirens) it hits. |
+| **Thalor’s Unfinished Hammer** | Mithril Mace | 20 | +5% increased Physical Attack; Finished through a six-step forging quest; it grows at each step.; Living: it grows when you break boss parts. |
+| **The Quiet Crown** | Mithril Helm | 40 | +10% Status Resist; +8% increased Max HP; 10% less Favor Gain; The Unsworn King’s first crown. While worn, the gods’ voices fall silent in battle. |
+| **Lantern of a Thousand Wicks** | Gold Amulet | 26 | +3% Accuracy; Each light source you add gives it a wick and a small passive (see Relics & Meals). |
+| **The Debtor’s Ring** | Gold Ring | 34 | +15% increased Physical Attack; +15% increased Magic Attack; +12% increased Max HP; +5 Luck; Huge power, but it takes 10% of your gold each day. |
 | **Emberheart** | Mithril Sword | 20 | +20% Fire Damage; +15% increased Physical Attack; 25% chance on hit to Burn the target |
 | **Widowmaker** | Adamant Greatsword | 30 | +40% Crit Damage; Attacks against enemies below 20% HP always crit |
 | **Grudgebearer** | Steel Axe | 10 | +15% Resource Gain; Gain 6 Rage whenever you are hit |
@@ -395,10 +403,16 @@ Generated from the data files by `npm run content:md`.
 | **The Warden’s Oath** | Starsilver Ring | 42 | +15% increased Defense; +25% Status Resist; Start every battle with a 15% shield; Kills shield you for 5% of max HP |
 | **Bardmaster’s Baton** | Moonwood Wand | 42 | +25% Resource Gain; +10 Charisma; Two songs can play at once; 15% chance on hit to Charm |
 
-### Relics (30)
+### Relics (36)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
+| **Solenne’s Last Light** | Ancient Relic | 60 | +12% Healing Power; +10% Holy Damage; Forged from the slain Solenne. |
+| **Morrath’s Last Door** | Ancient Relic | 60 | +12% Shadow Damage; +8% increased Max HP; Forged from the slain Morrath. |
+| **Kael’s Last Challenge** | Ancient Relic | 60 | +12% increased Physical Attack; +4% Crit Chance; Forged from the slain Kael. |
+| **Thalor’s Last Blow** | Ancient Relic | 60 | +6% Damage Bonus; +8% increased Defense; Forged from the slain Thalor. |
+| **Hesha’s Last Meal** | Ancient Relic | 60 | +12% increased Max HP; +8% Healing Received; Forged from the slain Hesha. |
+| **Mirrin’s Last Hour** | Ancient Relic | 60 | +8% Cooldown Reduction; +4 Speed; Forged from the slain Mirrin. |
 | **Reliquary of the Eight** | Ancient Relic | 30 | +8% increased Max HP; +10% Status Resist; Eight small bones in eight small boxes, and each one hums a different note; Use: Eight Voices: Heal the party for 20% of max HP and give +15% damage for 3 turns.; Awakens (Win 100 battles while wearing it.): +8% max HP, +15% healing power |
 | **Shard of the First Dawn** | Ancient Relic | 10 | +10% increased Divine Power; +10% Holy Damage; A splinter of the sun from the morning the world began; Use: First Light: Holy light sears all enemies for 120% DIV.; Awakens (Slay 50 undead while wearing it.): +20% holy damage |
 | **Horn of Kael** | Ancient Relic | 10 | +10% increased Physical Attack; Blown before the first war, it has never sounded a retreat; Use: Call to Arms: The party deals +25% damage for 3 turns.; Awakens (Win 25 battles while wearing it.): +30% crit damage |
@@ -860,7 +874,7 @@ Generated from the data files by `npm run content:md`.
 
 **Curiosities (81):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap, Moon-Stuffed Pillow, Chip of a Cornerstone, Little Wind-Bell, Dated Ledger Page, Dead Man’s Pocketwatch, Saint’s Fingerbone Charm, Pressed Thornberry, Lopsided Tin Soldier, Torn Treasure Chart, Crowned Key, Moth-Eaten Playbill, Glass Feather, Miller's Lucky Penny, Straw Crown, Amber Honeycomb, Shepherd Whistle, Twin-Name Willow Ring, Royal Tax Ledger, Brass Windvane, Poacher Tally-Stick, Seed of the Last Grove, Bottled Whisper, Silver Fox Collar, Unlit Lantern Core, Antler Circlet, Moth-Eaten Folio, Tide-Stained Chart, Foreman Lunchbox, Humming Geode, Clapper of the Drowned Bell, Eyeless Fish Idol, Calcified Key, Fungal Ledger, Caravan Master Seal, Priest's Glass Tear, Scorpion Crown Spur, Mirage Bucket, Bone Chess Queen, Fulgurite Blossom, Sandworm Eggshell, Frost-Stilled Lute String, Climber Prayer Flag, Yeti Hair Charm, Comb of Frozen Hours, Snowbound Vow-Scroll, Pilgrim Ember-Box, Captain's Frozen Log, Black Mara's Compass, Keeper Lamp Wick, Pearl Comb, Bottled Squall, Salt Merchant Seal, Whalebone Veil, Kraken Sucker-Ring, Wagered Hammerhead, Cradle of Cinders, Obsidian Hand-Mirror, Salamander Scale Charm, Anvil Tuning Fork, Magma Pearl, Ash Prophet Bowl, Gaoler Keyring, Splinter of the Black Throne, Queen's Unsent Letter, Executioner Whetstone, Silent Jester Bell, Shard of a Broken Oath, Hollow Knight Gauntlet
 
-**Mechanic flags (30):** `rule:tithe` (Each hit on the party takes a share of its gold; a win returns it with 25% interest.) · `rule:mother` (Mother Ninefold: her last phase follows the order her heads were severed.) · `rule:head` (One of Mother Ninefold’s nine heads.) · `rule:wyrm` (Redraws the battlefield every third turn (party rows shift).) · `rule:understudy` (Copies the party’s last three moves: skills make it stronger, plain attacks and defending do not.) · `rule:conductor` (Fights on a four-beat rhythm; dancers and bards can keep time against it.) · `rule:emperor` (Built from the three strongest surviving Grudgebound.) · `rule:oathless` (Sworn to nothing: holy damage passes through it.) · `rule:ink` (Copies Glyphs the party places.) · `rule:clocktide` (Acts on a fixed turn pattern the party can learn.) · `rule:ghoul` (Grows stronger when Wet, and soaks itself in rain and fog.) · `rule:moth` (Hits blind the target and drink its mana.) · `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
+**Mechanic flags (38):** `rule:defector` (A Choir member who can be turned through Talk.) · `cannotKill` (Cannot kill: reducing a foe to 0 HP spares them instead.) · `secretSense` (Points to the nearest undiscovered secret.) · `yesterday` (Once per fight, undoes the first hit you take.) · `choirbreaker` (Silences singing enemies it hits.) · `quietCrown` (While worn, the gods fall silent in battle.) · `wicks` (Gains a wick and a small passive for each light source collected.) · `debtor` (Takes 10% of your gold each day.) · `rule:tithe` (Each hit on the party takes a share of its gold; a win returns it with 25% interest.) · `rule:mother` (Mother Ninefold: her last phase follows the order her heads were severed.) · `rule:head` (One of Mother Ninefold’s nine heads.) · `rule:wyrm` (Redraws the battlefield every third turn (party rows shift).) · `rule:understudy` (Copies the party’s last three moves: skills make it stronger, plain attacks and defending do not.) · `rule:conductor` (Fights on a four-beat rhythm; dancers and bards can keep time against it.) · `rule:emperor` (Built from the three strongest surviving Grudgebound.) · `rule:oathless` (Sworn to nothing: holy damage passes through it.) · `rule:ink` (Copies Glyphs the party places.) · `rule:clocktide` (Acts on a fixed turn pattern the party can learn.) · `rule:ghoul` (Grows stronger when Wet, and soaks itself in rain and fog.) · `rule:moth` (Hits blind the target and drink its mana.) · `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
 <!-- items:end -->
 
 ## Combat
@@ -959,7 +973,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (528)
+### Enemies (536)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1491,6 +1505,14 @@ Generated from the data files by `npm run content:md`.
 | **Hollowed Pilgrim** | 60 | normal | humanoid, hollowed, pilgrim | front | aggressive | Dark Cleave, Curse of Ages | holy -20%, shadow +20% |
 | **Hollowed Penitent** | 62 | normal | humanoid, hollowed, pilgrim | back | caster | Banshee Wail, Shadow Bolt, Corruption Wave | holy -25%, shadow +25% |
 | **Hollowed Prior** | 66 | elite | humanoid, hollowed, pilgrim | front | aggressive | Dark Cleave, Void Rend, Curse of Ages | holy -25%, shadow +30% |
+| **Wren the Tenor** | 26 | normal | humanoid, choir, defector | front | aggressive | Dark Cleave, Banshee Wail | shadow +20% |
+| **Pell the Alto** | 27 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
+| **Orrin the Bass** | 28 | normal | humanoid, choir, defector | front | aggressive | Dark Cleave, Banshee Wail | shadow +20% |
+| **Sive the Soprano** | 29 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
+| **Dunmore the Cantor** | 26 | normal | humanoid, choir, defector | front | aggressive | Dark Cleave, Banshee Wail | shadow +20% |
+| **Isa the Chorister** | 27 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
+| **Hob the Precentor** | 28 | normal | humanoid, choir, defector | front | aggressive | Dark Cleave, Banshee Wail | shadow +20% |
+| **Lark the Treble** | 29 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 

@@ -23,8 +23,8 @@ const pick = (s: ReturnType<typeof session>, id: string, label: string) => {
 };
 
 describe('the tales are well formed', () => {
-  it('twelve tales, every step reachable, every place and god real', () => {
-    expect(TALES.map((t) => t.no).sort()).toEqual([128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 139, 141]);
+  it('thirteen tales, every step reachable, every place and god real', () => {
+    expect(TALES.map((t) => t.no).sort()).toEqual([128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 139, 141, 150]);
     for (const t of TALES) {
       expect(t.steps[t.first], t.id).toBeTruthy();
       const where = [t.where, ...Object.values(t.steps).map((x) => x.at ?? {})];

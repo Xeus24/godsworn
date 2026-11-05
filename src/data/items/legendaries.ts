@@ -1,9 +1,12 @@
 import { GREATER_CLASSES } from '../classesGreater';
 import type { UniqueItemDef } from '../../engine/items/types';
+import { GODFORGE_ITEMS, NAMED_LEGENDS } from '../craft';
 
 /** Hand-designed legendaries: one build-enabling effect plus random affixes. */
 export const LEGENDARIES: UniqueItemDef[] = [
   ...GREATER_CLASSES.map((g) => g.legendary),
+  ...NAMED_LEGENDS,
+  ...GODFORGE_ITEMS,
   // ---------- Weapons ----------
   {
     id: 'emberheart', name: 'Emberheart', rarity: 'legendary', baseId: 'sword-t3', level: 20,

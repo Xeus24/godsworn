@@ -61,7 +61,7 @@ import { SONGS } from './songs';
 import { DEEP_ENEMIES } from './bestiary/enemies';
 import { DEEP_ENEMY_SKILLS } from './bestiary/skills';
 import { BOSS_SCRIPTS, BOSS_SKILLS } from './bestiary/bossScripts';
-import { FAMILY_ENEMIES, GREAT_ENEMIES, GREAT_SCRIPTS } from './greatFoes';
+import { DEFECTORS, FAMILY_ENEMIES, GREAT_ENEMIES, GREAT_SCRIPTS } from './greatFoes';
 import { ELITE_AFFIXES } from './bestiary/affixes';
 import { ACHIEVEMENTS, ACHIEVEMENT_MILESTONES } from './achievements';
 import { ACHIEVEMENTS_GREATER } from './achievementsGreater';
@@ -153,7 +153,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES, ...BATCH4_ENEMIES, ...MIMICS, ...GREAT_ENEMIES, ...FAMILY_ENEMIES].map(withEarth).map(withFamily)),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES, ...BATCH4_ENEMIES, ...MIMICS, ...GREAT_ENEMIES, ...FAMILY_ENEMIES, ...DEFECTORS].map(withEarth).map(withFamily)),
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', [...BOSS_SCRIPTS, ...GREAT_SCRIPTS]),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),

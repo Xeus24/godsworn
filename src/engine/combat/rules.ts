@@ -48,6 +48,9 @@ export function observeRules(b: Battle, e: BattleEvent): void {
       checkNinefold(b, tgt);
       return;
     }
+    if (src.side === 'party' && tgt.side === 'enemy' && flagged(src, 'choirbreaker') && (tgt.types.includes('choir') || tgt.types.includes('siren') || /chorister|siren|choir|singer/i.test(tgt.name))) {
+      applyStatus(b, src, tgt, 'silence', { duration: 2, unresistable: true } as never);
+    }
     if (src.side === 'enemy' && tgt.side === 'party') {
       if (flagged(src, 'rule:tithe') && b.purse > 0) {
         const take = Math.max(1, Math.min(b.purse, Math.round(b.purse * TITHE.share)));

@@ -91,6 +91,7 @@ export interface EncounterOptions {
   /** Phase 11: room features, gold for bribes and how the fight began. */
   features?: import('./types').FeatureKind[];
   purse?: number;
+  festival?: string;
   opening?: 'ambush' | 'preemptive';
   /** A naval battle's opening broadside: share of each enemy's max HP. */
   volley?: number;
@@ -210,6 +211,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     ...(opts.weather ? { weather: opts.weather } : {}),
     ...(opts.features ? { features: opts.features } : {}),
     ...(opts.purse !== undefined ? { purse: opts.purse } : {}),
+    ...(opts.festival ? { festival: opts.festival } : {}),
     ...(opts.opening ? { opening: opts.opening } : {}),
     ...(opts.volley ? { volley: opts.volley } : {}),
     hooks: opts.hooks,

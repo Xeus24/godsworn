@@ -168,6 +168,14 @@ export function applyDamage(
   target.hp = Math.max(0, target.hp - dealt);
   if (dealt > 0) for (const s of [...target.statuses]) if (b.c.statuses.find(s.id)?.breakOnDamage) removeStatus(b, target, s.id);
   b.emit({ type: 'damage', sourceId: source.id, targetId: target.id, amount, element: info.element, crit: info.crit, absorbed, dot: info.dot });
+  // Coat of Yesterday: the first real hit of the fight never happened.
+  if (target.side === 'party' && !info.dot && dealt > 0 && target.flags.includes('yesterday') && dealt / Math.max(1, target.maxHp) >= 0.04 && !b.rules.turns[`yesterday:${target.id}`]) {
+    b.rules.turns[`yesterday:${target.id}`] = 1;
+    target.hp = Math.min(target.maxHp, target.hp + dealt);
+    target.shield += absorbed;
+    b.log(`${target.name}’s coat remembers yesterday: that hit never happened.`);
+    return;
+  }
   if (!info.dot) covenantHit(b, source, target, dealt);
 
   const hpShare = dealt / Math.max(1, target.maxHp);
@@ -202,7 +210,7 @@ export function applyDamage(
     b.log(`${target.name} refuses to fall!`);
     return;
   }
-  if (b.pacifist && target.side === 'enemy' && source.side === 'party') {
+  if ((b.pacifist || source.flags.includes('cannotKill')) && target.side === 'enemy' && source.side === 'party') {
     // The Pacifist challenge: nothing dies by your hand. The foe yields and walks away.
     target.hp = 1;
     target.alive = false;

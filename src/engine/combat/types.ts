@@ -324,7 +324,7 @@ export type BattleEvent =
   | { type: 'revive'; targetId: string }
   | { type: 'summon'; combatantId: string }
   | { type: 'break'; targetId: string }
-  | { type: 'combo'; targetId: string; name: 'Shatter' | 'Conduct' | 'Electrify' | 'Explosion' | 'Covenant' | 'Part Broken' }
+  | { type: 'combo'; targetId: string; name: 'Shatter' | 'Conduct' | 'Electrify' | 'Explosion' | 'Covenant' | 'Part Broken' | 'Mud' | 'Magma' }
   | { type: 'chain'; count: number }
   | { type: 'skip'; actorId: string; reason: string }
   | { type: 'resource'; targetId: string }

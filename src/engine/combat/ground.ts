@@ -57,6 +57,30 @@ export function groundAfterHit(b: Battle, attacker: Combatant, target: Combatant
     b.log('The ice melts into black water.');
     lay(b, side, 'water');
   }
+  // Earth meets the ground: mud, magma, roots in blessed ground and a burial for the cursed.
+  if (element === 'earth' && hasGround(b, side, 'water')) {
+    clear(b, side, 'water');
+    b.emit({ type: 'combo', targetId: target.id, name: 'Mud' });
+    b.log('Earth and water make a sucking mud: everyone on it is slowed.');
+    for (const x of sideOf(b, side)) applyStatus(b, attacker, x, 'slow', { duration: 2 });
+  }
+  if (element === 'earth' && hasGround(b, side, 'fire')) {
+    clear(b, side, 'fire');
+    b.emit({ type: 'combo', targetId: target.id, name: 'Magma' });
+    b.log('Earth and fire fuse into magma: it bursts over everyone standing on it!');
+    spread(GROUND_RULES.magma, 'fire');
+    for (const x of sideOf(b, side)) applyStatus(b, attacker, x, 'burn', { duration: 2 });
+  }
+  if (element === 'earth' && hasGround(b, side, 'holy')) {
+    const g = b.ground.find((x) => x.side === side && x.kind === 'holy');
+    if (g) g.turns += GROUND_RULES.rootTurns;
+    b.log('The blessed ground takes root and lasts longer.');
+  }
+  if (element === 'earth' && (hasGround(b, side, 'poison') || hasGround(b, side, 'blood'))) {
+    const buried = clear(b, side, 'poison') || clear(b, side, 'blood');
+    clear(b, side, 'blood');
+    if (buried) b.log('The cursed ground is buried under fresh earth.');
+  }
   if (element === 'ice' && hasGround(b, side, 'water')) {
     clear(b, side, 'water');
     b.log('The standing water freezes over.');

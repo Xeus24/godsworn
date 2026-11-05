@@ -59,4 +59,7 @@ export const GROUND_RULES = {
   explosion: 0.7,
   freezeChance: 0.25,
   stunChance: 0.3,
+  /** Earth combos: the share of the hit magma spreads, and turns added to blessed ground that takes root. */
+  magma: 0.5,
+  rootTurns: 2,
 } as const;
