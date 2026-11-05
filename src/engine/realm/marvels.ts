@@ -320,7 +320,28 @@ export interface FunState {
 }
 export const createFun = (): FunState => ({ best: {}, plays: {}, rhythm: 0, billy: 0, cooked: {}, ribbons: [] });
 
+export interface TwilightState {
+  /** The day the Twilight began (first seen in New Game+). */
+  start: number;
+  /** The Last Rites (159): how each dying god ended, and the epilogue slides told. */
+  rites: Record<string, 'saved' | 'inherited' | 'released'>;
+  slides: Record<string, string[]>;
+  trials: Record<string, number>;
+  /** The Unsworn Ending (160): steps walked. */
+  unsworn: { step: number; done: boolean };
+  /** Your Flock (161). */
+  flock: { on: boolean; followers: number; prayers: { id: string; day: number }[]; answered: number; lost: number; day: number };
+  /** The Grudgebound Conclave (163). */
+  conclave: { at: number; active?: { town: string; day: number; strength: number }; repelled: number; lost: string[]; day: number };
+  /** The War of the Wheel (164). */
+  war: { active?: { turn: number; seed: number; fronts: { ours: number; enemy: number }[]; log: string[] }; wins: number };
+  /** Archivist's Trials (166): the day of the last trial, and best score. */
+  archive: { last: number; best: number; taken: number };
+}
+export const createTwilight = (): TwilightState => ({ start: 0, rites: {}, slides: {}, trials: {}, unsworn: { step: 0, done: false }, flock: { on: false, followers: 0, prayers: [], answered: 0, lost: 0, day: 0 }, conclave: { at: 0, repelled: 0, lost: [], day: 0 }, war: { wins: 0 }, archive: { last: -999, best: 0, taken: 0 } });
+
 export interface MarvelsState {
+  twilight?: TwilightState;
   fun?: FunState;
   craft?: CraftState;
   tales?: TalesState;

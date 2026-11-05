@@ -121,6 +121,7 @@ test.describe('World secrets and the Completion tracker', () => {
 
     // The Codex's Completion tab.
     await page.keyboard.press('b');
+    await page.getByRole('button', { name: 'Progress', exact: true }).click();
     await page.getByRole('button', { name: 'Completion', exact: true }).click();
     await expect(page.getByText(/Secrets/).first()).toBeVisible();
     await expect(page.getByText(/%/).first()).toBeVisible();

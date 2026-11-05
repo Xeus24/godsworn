@@ -1,5 +1,6 @@
 import type { DialogueDef, NpcDef } from '../../engine/quests/types';
 import { VEX_PRANK_ENDING } from '../pilgrimage';
+import { UNSWORN_ENDING } from '../twilight';
 import { choice, dialogue, say, leave } from './helpers';
 
 /** Vex's prank ending (Innovation Pack, item 34): a peddler in Brightwater with a chest to sell for one coin. */
@@ -19,4 +20,4 @@ export const FATES_DIALOGUES: DialogueDef[] = [
   }),
 ];
 
-export const FATES_ENDINGS = [VEX_PRANK_ENDING];
+export const FATES_ENDINGS = [VEX_PRANK_ENDING, UNSWORN_ENDING];

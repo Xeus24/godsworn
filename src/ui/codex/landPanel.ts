@@ -16,7 +16,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | undefined)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body.filter((x): x is HTMLElement => !!x));
+const section = (title: string, ...body: (HTMLElement | undefined)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body.filter((x): x is HTMLElement => !!x));
 
 /** Items 37, 38, 46, 53 and 58: heirlooms, the Bazaar, buried temples, broken relics and statues. */
 export function landPanel(s: GameSession, rerender: () => void, open: RealmView): HTMLElement {

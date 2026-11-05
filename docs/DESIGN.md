@@ -168,3 +168,6 @@ Tricks are data-switched by enemy `flags` (`rule:*`, listed in `data/mechanics.t
 
 ## Relics, meals, festivals and games (section H-6)
 `CraftActions` (`s.craft`) is called from `settleBattle` (`afterBattle`: relic moods, awakening, defectors) and adds relic, pet, Lantern and defector modifiers through `mods()`. Named legendary rules are flags: `cannotKill` and `yesterday` live in `combat/hits.ts`, `choirbreaker` in `combat/rules.ts`, `quietCrown` in `combat/turns.ts`, `debtor` in the daily tick. `Battle.festival` (set in `main.ts` from `festivalOn`) drives the Longest Quiet and Upside Day in `startBattle`. `FunActions` (`s.fun`) builds each game's rounds from a seed so the best answer is fixed but hidden.
+
+## The Twilight and the endgame (section H-7)
+`TwilightActions` (`s.twilight`) derives each god's fade from the day (no stored counter), so rites and saves only store the choice. It silences festivals through `silenceFestivals` (module state in `realm/wheel.ts`), freezes bonds in `HeartActions.grow`, and bleeds Fortunes in the daily tick. Flock, Conclave and War are small seeded ledgers; their fights are `s.specials['twilight']`. The Unsworn Ending goes through `reachEnding` like any other ending.

@@ -1,9 +1,10 @@
 import { content } from '../../data';
+import { ARCHIVE } from '../../data/twilight';
 import { TALES, TALE_MODS, type Fx, type Opt, type Req, type Step, type Tale, type Where } from '../../data/tales';
 import { Rng } from '../core/rng';
 import { characterStats } from '../character/stats';
 import { heartOf, heldConvictions } from '../heart/heart';
-import { createFellowship, createTales, type TalesState } from '../realm/marvels';
+import { createFellowship, createTales, createTwilight, type TalesState } from '../realm/marvels';
 import type { ModifierSpec } from '../stats/modifiers';
 import type { GameSession } from './gameState';
 
@@ -88,7 +89,8 @@ export class TalesActions {
   fill(tale: Tale, text: string): string {
     const st = this.t.at[tale.id];
     const v = tale.variants?.[this.variant(tale)];
-    return text.replace('{statue}', st?.statue ?? 'the road').replace('{reveal}', v?.name ?? 'someone');
+    const rival = this.s.society.figure();
+    return text.replace('{statue}', st?.statue ?? 'the road').replace('{reveal}', v?.name ?? 'someone').replace(/\{rival\}/g, rival ? `${rival.name}, ${rival.title}` : 'your rival');
   }
 
   private reqOk(id: string, req?: Req): boolean {
@@ -122,6 +124,7 @@ export class TalesActions {
     if (!tale) return fail('No such tale.');
     if (this.t.at[id]?.done !== undefined) return fail('That tale is finished.');
     if (this.s.player.level < tale.lvl) return fail(`Come back at level ${tale.lvl}.`);
+    if (tale.needs && !this.s.state.flags[tale.needs]) return fail('This chapter opens when the story has ended.');
     if (!this.here(this.where(id))) return fail(this.whereText(this.where(id)));
     return { ok: true, text: '' };
   }
@@ -306,6 +309,64 @@ export class TalesActions {
       text += ' He writes it in the Final Testament in his own hand.';
     }
     this.changed('quill');
+    return { ok: true, text };
+  }
+
+  // ------------------------------------------------------------------ 166: Archivist’s Trials
+
+  /** Ten harder questions about the details of this playthrough. */
+  archive(): QuizQ[] {
+    const p = this.s.player;
+    const st = this.s.state.stats;
+    const rng = new Rng(hash(`archive:${p.name}:${Math.floor(this.s.state.clock.day / QUILL.yearDays)}`));
+    const near = (n: number, step: number): string[] => [String(n), String(n + step), String(Math.max(0, n - step)), String(n + step * 2)];
+    const num = (q: string, n: number, step: number): QuizQ => {
+      const opts = rng.shuffle(near(n, step).slice(0, 3));
+      if (!opts.includes(String(n))) opts[0] = String(n);
+      const shuffled = rng.shuffle(opts);
+      return { q, options: shuffled, right: shuffled.indexOf(String(n)) };
+    };
+    const primary = p.classes.find((c) => c.slot === 'primary') ?? p.classes[0];
+    const named = (q: string, right: string, others: string[]): QuizQ => {
+      const opts = rng.shuffle([right, ...others.filter((x) => x !== right).slice(0, 2)]);
+      return { q, options: opts, right: opts.indexOf(right) };
+    };
+    return [
+      named('What race are you?', content.races.get(p.raceId).name, content.races.all().map((r) => r.name)),
+      named('Which class did you begin as?', primary ? content.classes.get(primary.classId).name : 'none', content.classes.all().filter((c) => !c.hidden).map((c) => c.name)),
+      named('Which birth sign is yours?', content.birthSigns.get(p.birthSignId).name, content.birthSigns.all().map((b) => b.name)),
+      named('What was your background?', p.backgroundId ? content.backgrounds.get(p.backgroundId).name : 'none', content.backgrounds.all().map((b) => b.name)),
+      num('How many bosses have you slain?', st.bossesKilled, 5),
+      num('How many foes have you killed in all?', st.kills, 40),
+      num('How many titles do you hold?', p.devotion.titles.length, 3),
+      num('How many companions have you recruited?', this.s.party.recruited().length, 1),
+      num('What level are you?', p.level, 3),
+      num('Which day of the road is it?', this.s.state.clock.day, 9),
+    ];
+  }
+
+  answerArchive(answers: number[]): TResult {
+    if (!this.quillHere()) return fail(`Brother Quill is in ${content.towns.get(this.quillTown()).name} this week.`);
+    const a = this.s.state.realm.marvels.twilight;
+    const day = this.s.state.clock.day;
+    const rec = (this.s.state.realm.marvels.twilight ??= createTwilight()).archive;
+    if (day - rec.last < ARCHIVE.yearDays) return fail('He has already tried you this year.');
+    void a;
+    const quiz = this.archive();
+    const right = quiz.filter((x, i) => answers[i] === x.right).length;
+    rec.last = day;
+    rec.taken++;
+    rec.best = Math.max(rec.best, right);
+    const gold = right * ARCHIVE.goldPerLevel * this.s.player.level;
+    if (gold) this.s.addGold(gold, 'archive');
+    this.s.grantXp(right * 12 * this.s.player.level, true);
+    let text = `${right} of ${quiz.length} right. (+${gold} gold)`;
+    if (right >= 8 && !this.t.mods.includes('wit')) this.t.mods.push('wit');
+    if (right === quiz.length) {
+      if (!this.s.player.devotion.titles.includes(ARCHIVE.perfectTitle)) this.s.player.devotion.titles.push(ARCHIVE.perfectTitle);
+      text += ' A perfect record; he writes it down twice.';
+    }
+    this.changed('archive');
     return { ok: true, text };
   }
 }

@@ -20,7 +20,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
 }
 
 const section = (title: string, ...body: (HTMLElement | undefined)[]): HTMLElement => {
-  const d = el('details', { open: '' }, el('summary', {}, title), ...body.filter((x): x is HTMLElement => !!x));
+  const d = el('details', {}, el('summary', {}, title), ...body.filter((x): x is HTMLElement => !!x));
   return d;
 };
 

@@ -3287,7 +3287,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-816 quests, 260 NPCs, 555 dialogues, 14 companions, 16 endings.
+816 quests, 260 NPCs, 555 dialogues, 14 companions, 17 endings.
 
 ### Main story (54)
 
@@ -4061,6 +4061,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 - **The Last Bargain** (title “the Nameless Heir”): You rise with the Nameless One’s hand in yours, and it does not let go. It has no name. You give it yours, a little at a time, and it takes only what you can spare. In the villages they say a new god walks the road in the dusk. Nobody can say what it is the god of. Everybody agrees it is kind.
 - **The Dawn After** (title “Namebearer”): You have stood at the end of every road: you have broken the six, you have been a god, you have carried two oaths. You speak the whole name, and the name is not a word. It is a long, quiet list of everyone who was ever forgotten, and the Nameless One is the last entry. It listens to itself being read. Then there is light on the Black Throne, ordinary and low, like the first morning of a long journey. The sky has its color back. Every god, including the new ones, stands in it.
 - **The Prank** (title “Punchline”), with a paragraph for each god’s Apostle: You pay a gold coin for the chest, the ancient, glowing, unmistakably cursed chest, and the stranger beaming at you takes her hood down. It is Vex. She is laughing too hard to speak. The chest is full of confetti, and a note: “THE END (for now).” The gods hear about it by evening. Kael declares it the finest opening he has ever seen. Morrath says it was the quickest death he has ever had to not-collect. The world, in the end, has nothing to say about it, and carries on. So, you suspect, will you.
+- **The Unsworn Ending** (title “Unsworn”): You refused every god, and the Unsworn King’s path ended, as the last of his pages said it would, in a doorway with no door. You walked through. Behind you, the gods kept their counts; ahead there was only the road, and nobody to swear it to. It is the freest ending, and the loneliest, and you are, as far as anyone can tell, content.
 
 ### Companions
 
@@ -4371,7 +4372,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 
 **Pastimes** (16): Casting Off (Catch 10 kinds of fish; 5 pts) · Fishmonger (Catch 30 kinds of fish; 15 pts; title “the Fisher”) · The Whole Catch (Catch all 69 kinds of fish; 40 pts; title “the Angler”) · Net Full (Catch 500 fish; 20 pts) · A Fair Hand (Own 30 different Pantheon Cards; 10 pts) · Card Collector (Own 75 different Pantheon Cards; 20 pts; title “the Collector”) · The Full Deck (Own all 124 Pantheon Cards; 45 pts; title “Card Sovereign”) · Table Regular (Win 10 games of Pantheon Cards; 10 pts) · Pantheon Champion (Win 50 games of Pantheon Cards; 25 pts; title “Pantheon Champion”) · The Lucky (Win 25 rounds of tavern dice; 15 pts; title “the Lucky”) · First Past the Post (Win 10 mount races; 15 pts; title “the Swift”) · True Strike (Score 92 or more at the forge; 20 pts) · Dirty Hands (Find buried treasure 10 times; 10 pts) · Treasure Hunter (Find buried treasure 25 times; 20 pts; title “Treasure-Hunter”) · Crowd Favourite (Reach the sixth rung of the arena ladder; 15 pts) · Top of the Ladder (Beat the twelfth rung of the arena ladder; 30 pts; title “the Gladiator”)
 
-**Sea & Sky** (13): Sea Legs (Make your first voyage by ship; 10 pts) · Old Salt (Make 10 voyages; 20 pts) · Sailor of the Isles (Make 25 voyages; 30 pts; title “Sailor of the Isles”) · Skyborne (Own an airship; 25 pts; title “Skyborne”) · Halfway Round (Set foot in 13 regions; 15 pts) · Far Traveller (Set foot in 20 regions; 25 pts) · Cartographer of Everything (Set foot in all 26 regions; 45 pts; title “Cartographer”) · Delver (Clear 30 dungeons; 25 pts) · Every Door Opened (Clear all 65 dungeons; 50 pts; title “Delver of Depths”; 10000 gold) · Set in Stone (Earn a statue in a town square; 20 pts; title “the Honored”) · Five Squares (Earn statues in five towns; 35 pts) · Hero of Every Hearth (Earn statues in all 15 towns; 60 pts; title “Hero of Every Hearth”) · The Magnate (Invest in 3 town businesses; 20 pts; title “the Magnate”)
+**Sea & Sky** (13): Sea Legs (Make your first voyage by ship; 10 pts) · Old Salt (Make 10 voyages; 20 pts) · Sailor of the Isles (Make 25 voyages; 30 pts; title “Sailor of the Isles”) · Skyborne (Own an airship; 25 pts; title “Skyborne”) · Halfway Round (Set foot in 13 regions; 15 pts) · Far Traveller (Set foot in 20 regions; 25 pts) · Cartographer of Everything (Set foot in all 26 regions; 45 pts; title “Cartographer”) · Delver (Clear 30 dungeons; 25 pts) · Every Door Opened (Clear all 71 dungeons; 50 pts; title “Delver of Depths”; 10000 gold) · Set in Stone (Earn a statue in a town square; 20 pts; title “the Honored”) · Five Squares (Earn statues in five towns; 35 pts) · Hero of Every Hearth (Earn statues in all 15 towns; 60 pts; title “Hero of Every Hearth”) · The Magnate (Invest in 3 town businesses; 20 pts; title “the Magnate”)
 <!-- codex:end -->
 
 ## New Game+, heresy and the Defender path
@@ -4430,7 +4431,7 @@ Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every
 
 ### The Boss Rush
 
-At any town (level 30+): all 65 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
+At any town (level 30+): all 71 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
 
 ### Challenge modes
 

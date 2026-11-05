@@ -16,7 +16,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 
 /** Items 43, 54, 55, 56 and 57: tournaments, dreams, hunts, wrecks and the Sky Islands. */
 export function trialsPanel(s: GameSession, rerender: () => void, open: RealmView): HTMLElement {

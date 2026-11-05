@@ -433,7 +433,51 @@ export class CivicActions {
     return res.ok ? { ok: true } : { ok: false, reason: res.reason };
   }
 
+  /** Sea and Sky Finale (167): once both raiders are at their worst, they come together. */
+  finaleReady(): boolean {
+    return RAIDERS.every((r) => {
+      const st = this.raider(r.id);
+      return st.slain === undefined && st.scars >= r.maxScars;
+    });
+  }
+
+  finale(): CResult {
+    if (!this.finaleReady()) return fail('Both Harrow Thane and Vessa Gale must be at the height of their grudge, and alive.');
+    if (this.s.world.inTown() !== 'saltmere') return fail('They will meet you at the Saltmere docks.');
+    const rng = new Rng(hash(`finale:${this.s.state.clock.day}`));
+    const pool = content.enemies.filter((e) => e.types.includes('humanoid') && e.tier === 'normal' && Math.abs(e.level - this.s.player.level) <= 12);
+    const wave = (n: number): string[] => (pool.length ? Array.from({ length: n }, () => rng.pick(pool).id) : []);
+    const elites = content.enemies.filter((e) => e.types.includes('humanoid') && e.tier === 'elite' && Math.abs(e.level - this.s.player.level) <= 14);
+    const r = this.s.endgame.startSpecial({
+      module: 'seasky', ref: 'finale', label: 'Harrow Thane and Vessa Gale: the Finale', level: this.s.player.level + 4,
+      waves: [wave(3), wave(4), wave(5)], ...(elites.length ? { boss: rng.pick(elites).id } : {}), threat: 40,
+    });
+    return r.ok ? { ok: true } : { ok: false, reason: r.reason };
+  }
+
+  private finaleEnded(won: boolean): void {
+    if (!won) {
+      const loss = Math.round(this.s.state.gold * RAID.loseGoldShare * 2);
+      if (loss > 0) this.s.spendGold(loss, 'finale');
+      this.note('The two crews take the deck, the hold and a good deal of your purse. They are not done.', 'warning');
+      return;
+    }
+    for (const r of RAIDERS) {
+      const st = this.raider(r.id);
+      st.slain = this.s.state.clock.day;
+      st.hunting = false;
+      st.beaten++;
+      this.title(r.title);
+    }
+    const gold = RAIDERS.reduce((n, r) => n + r.bountyGoldPerLevel, 0) * this.s.player.level * 2;
+    this.s.addGold(gold, 'finale');
+    this.title('Master of Sea and Sky');
+    this.note(`Harrow Thane and Vessa Gale are done, together. (+${gold} gold) ${RAIDERS.map((r) => r.modText).join(' ')}`, 'level');
+    this.changed('raider');
+  }
+
   private raidEnded(a: GauntletState, won: boolean): void {
+    if (a.special?.ref === 'finale') return this.finaleEnded(won);
     const id = a.special?.ref ?? '';
     const def = RAIDERS.find((x) => x.id === id) as RaiderDef | undefined;
     if (!def) return;

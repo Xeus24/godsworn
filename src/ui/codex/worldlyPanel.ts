@@ -16,7 +16,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 
 /** Items 88, 89, 93, 94, 97 and 98: the almanac, rumors, trade, the museum, tablets and dreams. */
 export function worldlyPanel(s: GameSession, rerender: () => void, open: RealmView): HTMLElement {

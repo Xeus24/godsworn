@@ -17,7 +17,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 const fname = (id: string): string => content.factions.get(id).name;
 
 /** Items 90, 91, 92, 95 and 96: laws and crimes, disguises, the Crown Council, the Sundering and the sea and sky raiders. */

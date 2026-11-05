@@ -179,6 +179,8 @@ export class HeartActions {
   // ------------------------------------------------------------ bonds
 
   private grow(bondId: string, points: number): void {
+    const frozen = BONDS.find((b) => b.id === bondId);
+    if (frozen?.kind === 'god' && this.s.twilight.frozen(frozen.ref)) return;
     const r = growBond(this.h, bondId, points);
     if (!r) return;
     const def = BONDS.find((b) => b.id === bondId);

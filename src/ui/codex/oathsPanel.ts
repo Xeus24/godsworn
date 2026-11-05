@@ -16,7 +16,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 
 /** Items 61-65 and 67: Caerith, the Lineage, the Cipher, Oathcraft and the Forsworn Path. */
 export function oathsPanel(s: GameSession, rerender: () => void, open: RealmView): HTMLElement {

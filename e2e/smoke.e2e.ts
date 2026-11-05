@@ -33,7 +33,13 @@ test.describe('screens added after phase 14 in a real browser', () => {
     // Codex tabs: families, backgrounds, companions, cards, ship, completion.
     await page.keyboard.press('b');
     for (const tab of ['By family', 'Backgrounds', 'Companions', 'Cards', 'Ship', 'Realm', 'Compendium', 'Heart', 'Completion']) {
-      await page.getByRole('button', { name: tab, exact: true }).click();
+      // The Codex tabs sit in groups: open whichever group holds the tab.
+      const button = page.getByRole('button', { name: tab, exact: true });
+      for (const group of ['Creatures', 'World', 'People', 'Lore & items', 'Progress']) {
+        if (await button.isVisible()) break;
+        await page.getByRole('button', { name: group, exact: true }).click();
+      }
+      await button.click();
       await expect(page.locator('.sheet section.panel, .sheet .panel').first()).toBeVisible();
     }
     await page.keyboard.press('g');

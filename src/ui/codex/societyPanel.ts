@@ -16,7 +16,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 
 /** Items 70, 71, 76, 78, 80 and 81: apostles, saints, origin rivals, modules, conjunctions and class rivals. */
 export function societyPanel(s: GameSession, rerender: () => void, open: RealmView): HTMLElement {

@@ -15,7 +15,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 const dim = (t: string): HTMLElement => el('p', { class: 'dim small' }, t);
 
 /** Items 99 to 112: the Godless Wilds, the pocket regions and the seven dungeons’ rules. Each is worked while you stand in the place. */

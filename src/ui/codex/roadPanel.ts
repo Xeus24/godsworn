@@ -16,7 +16,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 
 /** Items 40, 44, 45, 47, 49 and 50: the road, the inns, the bards, the sky, the watch and the ball. */
 export function roadPanel(s: GameSession, rerender: () => void, open: RealmView): HTMLElement {

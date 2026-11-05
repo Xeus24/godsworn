@@ -26,9 +26,15 @@ export const formatDate = (day: number): string => {
 const festivalDayOfYear = (f: FestivalDef): number => f.season * SEASON_DAYS + (f.day - 1);
 
 /** The festival being kept today, if any. */
+/** Gods whose festivals have left the Wheel (the Twilight of the Wheel, item 158): set daily by `TwilightActions`. */
+let silenced: ReadonlySet<string> = new Set();
+export const silenceFestivals = (gods: ReadonlySet<string>): void => {
+  silenced = gods;
+};
+
 export function festivalOn(day: number): FestivalDef | undefined {
   const d = dateOf(day).dayOfYear;
-  return FESTIVALS.find((f) => festivalDayOfYear(f) === d);
+  return FESTIVALS.find((f) => festivalDayOfYear(f) === d && !silenced.has(f.god));
 }
 
 /** The next festival (today counts) and how many days away it is. */

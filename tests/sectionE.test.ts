@@ -107,9 +107,9 @@ describe('Trials and the Humbled Path (items 30 and 33)', () => {
 describe('Fates (item 34)', () => {
   it('counts every ending, including Vex’s prank, reachable in town at the start', () => {
     expect(ALL_ENDINGS.some((e) => e.id === VEX_PRANK_ENDING.id)).toBe(true);
-    expect(ALL_ENDINGS.length).toBe(16);
+    expect(ALL_ENDINGS.length).toBe(17);
     const s = session();
-    expect(s.pilgrimage.fates()).toHaveLength(16);
+    expect(s.pilgrimage.fates()).toHaveLength(17);
     const npc = content.npcs.get('peddler-vex');
     expect(npc.town).toBe('brightwater');
     s.quests.reachEnding('vex-prank');

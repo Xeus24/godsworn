@@ -19,7 +19,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 const GLYPH: Record<string, string> = { o: '♚', b: '♜', s: '♝', t: '♞', w: '▣', p: '✦' };
 
 /** Items 41, 59 and 60: Shrine Defense, the Gods' Gambit and the Final Testament. */

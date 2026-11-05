@@ -17,7 +17,7 @@ function act(label: string, run: () => R | void, open: RealmView, rerender: () =
   });
   return b;
 }
-const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', { open: '' }, el('summary', {}, title), ...body);
+const section = (title: string, ...body: (HTMLElement | string)[]): HTMLElement => el('details', {}, el('summary', {}, title), ...body);
 const dim = (t: string): HTMLElement => el('p', { class: 'dim small' }, t);
 
 /** Items 142-148: Talking Relics, awakening, rumors, pet talents, meals, the named legendaries and the Godforge. */
