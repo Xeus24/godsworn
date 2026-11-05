@@ -150,3 +150,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## Society (section H-2b)
 `SocietyActions` (`s.society`, `realm.marvels.society`) adds conjunction power, vigil gifts, fitted Forged modules, allied rival apostles and raised saints to `heart.wonderMods`. Class rival duels and apostle contests run as special gauntlets (`s.specials['rival'|'apostle']`). `prejudiceMult(char, town)` is called from `buyPrice`.
+
+## The realm at large (section H-3a)
+`WorldlyActions` (`s.worldly`) advances rumors daily and mirrors their price effect to `hero.world.rumorMult`, which `economy/shops.ts` reads through `realm/rumors.ts` (a pure function). Dreams come at hour 6; battle dreams run as `special` gauntlets (`s.specials['lyssara']`). Relic Restoration's excavation calls `worldly.foundFossil()`.

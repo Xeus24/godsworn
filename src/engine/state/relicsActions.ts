@@ -147,6 +147,7 @@ export class RelicsActions {
     if (this.s.state.gold < EXCAVATION.digGold) return fail(`Labourers cost ${EXCAVATION.digGold} gold a dig.`);
     this.s.spendGold(EXCAVATION.digGold, 'excavation');
     this.s.advanceTime(EXCAVATION.digMinutes);
+    this.s.worldly.foundFossil();
     const n = (this.r.dug[id] = (this.r.dug[id] ?? 0) + 1);
     if (n < EXCAVATION.digs) {
       this.s.bus.emit('stateChanged', { reason: 'dig' });

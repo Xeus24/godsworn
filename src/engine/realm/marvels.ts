@@ -173,7 +173,38 @@ export interface SocietyState {
 
 export const createSociety = (): SocietyState => ({ vigils: [], rivals: {}, modules: { owned: {}, fitted: [] }, origin: { handled: {} }, apostles: { standing: {}, raced: 0, allies: [], enemies: [], lastKey: '' }, saints: [] });
 
+export interface Rumor {
+  id: string;
+  tpl: string;
+  origin: string;
+  /** Towns it has reached, in order. */
+  reached: string[];
+  born: number;
+  planted: boolean;
+}
+
+export interface WorldlyState {
+  /** The Calendar of Vael (88): the last year announced. */
+  yearSeen: number;
+  /** The Rumor Mill (89). */
+  rumors: Rumor[];
+  /** Trade Winds (93): cargo held, and profit made. */
+  cargo: Record<string, { qty: number; paid: number }>;
+  profit: number;
+  /** The Grand Museum (94): curiosities donated, fossils found, wings claimed. */
+  museum: { donated: string[]; fossils: string[]; claimed: string[] };
+  /** Lost Tongues (97): tablets read (zone ids). */
+  tablets: string[];
+  /** Lyssara's Dreams (98): tonight's dream, how many you have had, shards won. */
+  dream?: { n: number; day: number; done: boolean };
+  dreams: number;
+  shards: number;
+}
+
+export const createWorldly = (): WorldlyState => ({ yearSeen: 1, rumors: [], cargo: {}, profit: 0, museum: { donated: [], fossils: [], claimed: [] }, tablets: [], dreams: 0, shards: 0 });
+
 export interface MarvelsState {
+  worldly?: WorldlyState;
   society?: SocietyState;
   fellowship?: FellowshipState;
   oaths?: OathsState;

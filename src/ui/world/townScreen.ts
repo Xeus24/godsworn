@@ -121,7 +121,7 @@ export class TownScreen implements Screen {
   private npcRow(npc: NpcDef): HTMLElement {
     const mark = this.session.quests.npcMark(npc.id);
     const bubble = emoteFor(npc.id, this.session.state.clock.day, this.session.timeOfDay === 'night');
-    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), uiGlyph(npc.place === 'temple' ? 'temple' : 'figure', mark === '!' ? '#b8892a' : mark === '?' ? '#2a7a8a' : undefined), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}`)), ...(bubble ? [el('span', { class: 'emote', title: bubble.label, 'aria-label': bubble.label }, bubble.glyph)] : []));
+    const b = el('button', { class: `npc-row${mark ? ' marked' : ''}` }, el('span', { class: `npc-mark ${mark === '!' ? 'new' : mark === '?' ? 'turnin' : ''}` }, mark || '·'), uiGlyph(npc.place === 'temple' ? 'temple' : 'figure', mark === '!' ? '#b8892a' : mark === '?' ? '#2a7a8a' : undefined), el('span', {}, el('b', {}, npc.name), el('span', { class: 'dim small' }, ` ${npc.title}${this.session.worldly.status(npc.id) ? ` (${this.session.worldly.status(npc.id)})` : ''}`)), ...(bubble ? [el('span', { class: 'emote', title: bubble.label, 'aria-label': bubble.label }, bubble.glyph)] : []));
     b.addEventListener('click', () => {
       const conv = this.session.quests.talkTo(npc.id);
       if (conv) this.town.talk(conv);

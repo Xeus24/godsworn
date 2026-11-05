@@ -2,6 +2,7 @@ import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
 import { renownDiscount } from '../world/renown';
 import { prejudiceMult } from '../world/prejudice';
+import { rumorMult } from '../realm/rumors';
 import { FESTIVALS } from '../../data/realm/wheel';
 import { chaosMult, effectOn, festivalOn } from '../realm/wheel';
 import { characterStats } from '../character/stats';
@@ -82,7 +83,7 @@ export function buyDiscount(shop: ShopDef, town: string, char: Character, c: Con
 
 export function buyPrice(item: ItemInstance, shop: ShopDef, town: string, char: Character, c: Content = content): number {
   const distrust = 1 + (c.races.get(char.raceId).shopMarkup ?? 0) / 100;
-  return Math.max(1, Math.round(itemValue(item, c) * shop.markup * distrust * prejudiceMult(char, town) * (1 - buyDiscount(shop, town, char, c))));
+  return Math.max(1, Math.round(itemValue(item, c) * shop.markup * distrust * prejudiceMult(char, town) * rumorMult(char, town) * (1 - buyDiscount(shop, town, char, c))));
 }
 
 /** What a shop pays: 25% of value, +2% per Haggle rank. */
