@@ -170,6 +170,32 @@
   gap: 6px;
 }
 
+.town-fold > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.town-fold > summary::before {
+  content: '▸';
+  color: var(--gold, #c8a040);
+}
+
+.town-fold[open] > summary::before {
+  content: '▾';
+}
+
+.town-fold[open] > summary {
+  margin-bottom: 6px;
+}
+
+.town-card.folded {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 .room-row {
   display: flex;
   flex-direction: column;
@@ -410,3 +436,25 @@
 
 /* Omen: Giant Heads. Portraits and bestiary figures get a very large head (the whole figure grows from the feet). */
 .omen-bigheads .codex-portrait canvas, .omen-bigheads canvas.portrait, .omen-bigheads .portrait canvas { transform: scale(1.25); transform-origin: 50% 100%; }
+
+/* The People card is the longest on the town screen: it spans two columns and lists townsfolk in two. */
+.town-card[data-card='People'] {
+  grid-column: span 2;
+}
+
+.npc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 4px;
+}
+
+.npc-list .npc-row {
+  margin: 0;
+  padding: 4px 6px;
+}
+
+@media (max-width: 700px) {
+  .town-card[data-card='People'] {
+    grid-column: auto;
+  }
+}

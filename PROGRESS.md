@@ -1011,6 +1011,11 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - **Celestial** trait damage goes from +85% to +120%: phase 20c's new Drowned Orator script (adds, a heal, a telegraph) made the NG+1 fight a stall again, on the remote's code alone as well as the merged code.
 - **Merge note:** phase 20e (another session) and this phase were built in parallel. For renown, its tier-based condition was kept and this phase's points-based one dropped (a tier survives retuning the points); both sets of quests stay (4 gated board quests, 15 Honored quests). For controller prompts this phase's bar was kept over its fixed list.
 
+### UI declutter pass
+- Town screen: Renown, Town Fortunes, Stables, Library, faction hall, Investments and House cards fold to one line (open state kept per visit); launcher blurbs shortened; People spans two columns with a two-column NPC list. Page height 2129px -> 1626px.
+- World screen sidebar: action buttons moved to the top; region rule text, weather text and controls hint moved to tooltips.
+- Not yet checked for clutter: Character, Inventory, Codex, Party and combat screens.
+
 ## Known bugs
 - None known.
 

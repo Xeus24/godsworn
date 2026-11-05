@@ -288,7 +288,7 @@ export class WorldScreen implements Screen {
     const zone = s.world.zone;
     const def = mechanicOf(zone);
     const count = secretCount(s.state, zone.id);
-    const secrets = el('div', { class: 'dim small', title: 'Cracked walls, gated finds, night-only paths, puzzles, beetles and fragments hide in every region.' }, `Secrets found here: ${count.found}/${count.total}`);
+    const secrets = el('div', { class: 'dim small', title: 'Cracked walls, gated finds, night-only paths, puzzles, beetles and fragments hide in every region.' }, `Secrets: ${count.found}/${count.total}`);
     if (!def) return [secrets];
     const rows: HTMLElement[] = [el('div', { class: 'small', title: def.description }, def.name), secrets];
     const meter = currentMeter(s.player, zone);
@@ -298,7 +298,6 @@ export class WorldScreen implements Screen {
     }
     if (def.id === 'moon') rows.push(el('div', { class: 'small' }, `${MOON_PHASES[moonPhase(s.state.clock.day)]}.`));
     if (def.id === 'tides') rows.push(el('div', { class: 'small' }, `The tide is ${s.state.world.tideHigh ? 'high' : 'low'}.`));
-    rows.push(el('div', { class: 'dim small' }, def.description));
     return rows;
   }
 
@@ -739,15 +738,13 @@ export class WorldScreen implements Screen {
     this.side.replaceChildren(
       el('h2', {}, map.name),
       el('div', { class: 'dim small' }, `${levels}${dungeon && s.state.world.dungeonsCleared.includes(dungeon.id) ? ' · cleared' : ''}`),
-      el('div', { class: 'small' }, `${formatClock(s.state.clock)} · ${calendarLine(s.state.clock.day)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
-      ...(weather && !dungeon && weather.id !== 'clear' ? [el('div', { class: 'dim small' }, weather.description)] : []),
+      el('div', { class: 'small', title: weather && !dungeon ? weather.description : '' }, `${formatClock(s.state.clock)} · ${calendarLine(s.state.clock.day)} · ${timeOfDay(s.state.clock) === 'night' ? 'Night' : 'Day'}${dungeon ? '' : ` · ${weather?.name ?? ''}`}`),
+      el('div', { class: 'world-actions', title: 'WASD or arrows to move. Walk into things to use them. E uses what you stand on. Cracked walls hide secrets.' }, ...actions),
       ...this.regionPanel(),
       ...this.hintPanel(),
       this.minimap,
       ...this.trackedPanel(),
-      el('div', { class: 'world-actions' }, ...actions),
       el('div', { class: 'world-log small' }, ...this.log.map((line) => el('div', {}, line))),
-      el('p', { class: 'dim small' }, 'WASD or arrows to move. Walk into things to use them. E uses what you stand on. Cracked walls hide secrets.'),
     );
   }
 }

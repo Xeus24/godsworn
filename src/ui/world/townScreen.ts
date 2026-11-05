@@ -72,6 +72,8 @@ export class TownScreen implements Screen {
   private message = '';
   private overlay: WorldMapOverlay | undefined;
   private arranging = false;
+  /** Folded cards the player has opened, kept across re-renders. */
+  private open = new Set<string>();
 
   constructor(
     private readonly session: GameSession,
@@ -117,6 +119,15 @@ export class TownScreen implements Screen {
     return el('section', { class: 'panel town-card', 'data-card': title }, el('h3', {}, ...(icon ? [uiGlyph(icon), ' '] : []), title), ...children);
   }
 
+  /** A card folded to one line (title and a short summary) until opened: keeps the town screen short. */
+  private fold(title: string, summary: string, ...children: (Node | string)[]): HTMLElement {
+    const icon = CARD_ICONS[title] ?? (title.endsWith('(hall)') ? 'hall' : undefined);
+    const d = el('details', { class: 'town-fold' }, el('summary', {}, ...(icon ? [uiGlyph(icon), ' '] : []), el('b', {}, title), el('span', { class: 'dim small' }, ` ${summary}`)), ...children) as HTMLDetailsElement;
+    d.open = this.open.has(title);
+    d.addEventListener('toggle', () => (d.open ? this.open.add(title) : this.open.delete(title)));
+    return el('section', { class: 'panel town-card folded', 'data-card': title }, d);
+  }
+
   /** A person to talk to, marked ! (a new quest) or ? (something to hand in). */
   private npcRow(npc: NpcDef): HTMLElement {
     const mark = this.session.quests.npcMark(npc.id);
@@ -146,8 +157,9 @@ export class TownScreen implements Screen {
     const rank = rankOf(f, rep);
     const next = nextRank(f, rep);
     const rows = f.ranks.map((r) => el('li', { class: rank?.name === r.name ? 'tip-good' : rep >= r.rep ? '' : 'dim' }, `${r.name} (${r.rep})${r.modifiers.length ? `: ${r.modifiers.map((m) => `${m.value > 0 ? '+' : ''}${m.value}${m.type === 'percent' ? '%' : ''} ${content.stats.find(m.stat)?.name ?? m.stat}`).join(', ')}` : ''}`));
-    return this.card(
+    return this.fold(
       `${f.name} (hall)`,
+      `${rep < 0 ? 'Hostile' : (rank?.name ?? 'Stranger')} · ${Math.floor(rep)} rep`,
       el('p', { class: 'small' }, f.description),
       el('div', {}, `Your standing: ${rep < 0 ? 'Hostile' : (rank?.name ?? 'Stranger')} · ${Math.floor(rep)} reputation${next ? ` (next: ${next.name} at ${next.rep})` : ''}`),
       el('div', { class: 'small' }, `They value: ${f.likes.map((d) => d.text.toLowerCase()).join(', ')}. They frown on: ${f.dislikes.map((d) => d.text.toLowerCase()).join(', ')}.`),
@@ -215,7 +227,7 @@ export class TownScreen implements Screen {
     cards.push(
       this.card(
         'The Inn',
-        el('p', { class: 'small' }, 'A hot meal and a soft bed: full HP and MP, 8 hours pass, and you wake Well Rested (+5% damage for 3 battles).'),
+        el('p', { class: 'small' }, 'Full HP and MP, 8 hours pass, Well Rested (+5% damage, 3 battles).'),
         this.btn(`Rent a room (${s.world.innCost()}g)`, () => this.say(s.world.stayAtInn()), s.state.gold < s.world.innCost(), 'primary'),
       ),
     );
@@ -223,8 +235,9 @@ export class TownScreen implements Screen {
     const tier = renownTier(renown);
     const next = nextRenownTier(renown);
     cards.push(
-      this.card(
+      this.fold(
         'Renown',
+        `${tier.name} · ${renown}`,
         el('div', {}, `${t.name} thinks of you as: `, el('b', { class: tier.id === 'stranger' ? 'dim' : 'tip-good' }, tier.name), ` (${renown} renown${next ? `, ${next.name} at ${next.points}` : ''})`),
         el('p', { class: 'small' }, tier.perk),
         ...(renown >= STATUE_POINTS ? [el('p', { class: 'small', 'data-statue': t.id }, `In the square stands a statue of ${p.name}. Statues across the land: ${statueTowns(p).length}.`)] : []),
@@ -234,11 +247,11 @@ export class TownScreen implements Screen {
     const people = s.quests.townNpcs(this.townId);
     const heard = s.road.reaction(this.townId);
     const att = attitudeName(s.player, this.townId);
-    cards.push(this.card('People', el('p', { class: 'dim small' }, `The townsfolk are ${att.toLowerCase()} toward ${content.races.get(s.player.raceId).name}s (${prejudiceMult(s.player, this.townId) === 1 ? 'prices unchanged' : `prices ${prejudiceMult(s.player, this.townId) > 1 ? '+' : ''}${Math.round((prejudiceMult(s.player, this.townId) - 1) * 100)}%`}).`), ...(heard ? [el('p', { class: 'dim small' }, heard)] : []), ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n))), this.boardCard());
+    cards.push(this.card('People', el('p', { class: 'dim small' }, `The townsfolk are ${att.toLowerCase()} toward ${content.races.get(s.player.raceId).name}s (${prejudiceMult(s.player, this.townId) === 1 ? 'prices unchanged' : `prices ${prejudiceMult(s.player, this.townId) > 1 ? '+' : ''}${Math.round((prejudiceMult(s.player, this.townId) - 1) * 100)}%`}).`), ...(heard ? [el('p', { class: 'dim small' }, heard)] : []), el('div', { class: 'npc-list' }, ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n)))), this.boardCard());
     cards.push(
       this.card(
         'Temple',
-        el('p', { class: 'small' }, `Honors ${t.temple.map((g) => content.gods.get(g).name).join(' and ')}: pray, make offerings, receive blessings and face Trials of Apostleship.`),
+        el('p', { class: 'small' }, `Honors ${t.temple.map((g) => content.gods.get(g).name).join(' and ')}.`),
         ...people.filter((n) => n.place === 'temple').map((n) => this.npcRow(n)),
         this.btn('Enter the temple', () => this.nav.pantheon(), false, 'primary'),
       ),
@@ -248,22 +261,22 @@ export class TownScreen implements Screen {
     cards.push(
       this.card(
         'Market',
-        el('p', { class: 'small' }, `Blacksmith, Armorer, Alchemist, General Store, Magic Shop, Library and Temple Merchant${t.faction ? ', the faction quartermaster' : ''}${extras ? `, ${extras}` : ''}. Sell, buy back and repair here.${(t.extraShops ?? []).includes('black-market') ? (night ? ' The Black Market is open tonight.' : ' A Black Market opens after dark.') : ''}`),
+        el('p', { class: 'small', title: `Blacksmith, Armorer, Alchemist, General Store, Magic Shop, Library and Temple Merchant${t.faction ? ', the faction quartermaster' : ''}${extras ? `, ${extras}` : ''}.` }, `Buy, sell and repair.${(t.extraShops ?? []).includes('black-market') ? (night ? ' The Black Market is open tonight.' : ' A Black Market opens after dark.') : ''}`),
         this.btn('Go to the market', () => this.town.market(), false, 'primary'),
       ),
-      this.card('Workshop', el('p', { class: 'small' }, 'Learn professions, craft, upgrade gear, reroll affixes, add sockets and raise quality.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
+      this.card('Workshop', el('p', { class: 'small' }, 'Professions, crafting, upgrades, sockets.'), this.btn('Enter the workshop', () => this.town.workshop(), false, 'primary')),
     );
     {
       const f = s.realm.fortune(t.id);
-      cards.push(this.card('Town Fortunes', el('p', { class: 'small' }, `${t.name} is ${f.tier.name} (${Math.round(f.prosperity)}/100). ${f.tier.text}`), this.btn(`Fund repairs (${s.realm.fundCost()}g)`, () => this.say(s.realm.fund(t.id)), s.state.gold < s.realm.fundCost())));
+      cards.push(this.fold('Town Fortunes', `${f.tier.name} ${Math.round(f.prosperity)}/100`, el('p', { class: 'small' }, `${t.name} is ${f.tier.name} (${Math.round(f.prosperity)}/100). ${f.tier.text}`), this.btn(`Fund repairs (${s.realm.fundCost()}g)`, () => this.say(s.realm.fund(t.id)), s.state.gold < s.realm.fundCost())));
     }
-    cards.push(this.card('Pastimes', el('p', { class: 'small' }, `${t.minigame ? `${t.name} is known for ${({ fishing: 'its fishing', dice: 'its dice tables', digging: 'treasure digging', forging: 'its forge contests', cards: 'Pantheon Cards', racing: 'mount racing' } as Record<string, string>)[t.minigame] ?? t.minigame}. ` : ''}Fishing, Pantheon Cards, tavern dice, mount racing, the forge, digging and the arena ladder.`), this.btn('Play', () => this.town.games(), false, 'primary')));
+    cards.push(this.card('Pastimes', el('p', { class: 'small' }, t.minigame ? `Known for ${({ fishing: 'its fishing', dice: 'its dice tables', digging: 'treasure digging', forging: 'its forge contests', cards: 'Pantheon Cards', racing: 'mount racing' } as Record<string, string>)[t.minigame] ?? t.minigame}.` : 'Fishing, cards, dice, racing and more.'), this.btn('Play', () => this.town.games(), false, 'primary')));
     if (t.id === 'mirewick' && s.state.flags['marrow-open']) cards.push(this.card('The Fog Ferry', el('p', { class: 'small' }, s.state.realm.marrow.saved ? 'Marrow is quiet now. The ferry still runs, and the passengers get off, and stay off.' : 'A ferry across the fog, to a town that drowns every third night. Learn it, and break the loop.'), this.btn('Cross to Marrow', () => this.town.marrow(), false, 'primary')));
     if (t.id === 'saltmere') cards.push(this.card('Harbor', el('p', { class: 'small' }, 'Build a ship, set sail for the islands, and one day take to the air.'), this.btn('Go to the harbor', () => this.town.harbor(), false, 'primary')));
     const late = endgameUnlocked(s.state);
     const forSale = content.mounts.filter((m) => m.price !== undefined);
     const petsForSale = content.pets.filter((pt) => pt.price !== undefined);
-    if (late || s.player.level >= 12 || s.player.stable.mounts.length > 0) cards.push(this.card('Stables', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you. Some swim or climb for you. Pets follow you about and help a little.'), ...forSale.map((m) => {
+    if (late || s.player.level >= 12 || s.player.stable.mounts.length > 0) cards.push(this.fold('Stables', 'mounts & pets', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you. Some swim or climb for you. Pets follow you about and help a little.'), ...forSale.map((m) => {
       const owned = s.player.stable.mounts.includes(m.id);
       return el('div', { class: 'board-row' }, el('b', {}, m.name), el('div', { class: 'dim small' }, `${m.description} ${m.stepMinutes} min per step, ${Math.round((1 - m.encounterMult) * 100)}% fewer ambushes.`), this.btn(owned ? 'Owned' : `Buy (${m.price}g)`, () => this.say(s.world.buyMount(m.id)), owned || s.state.gold < (m.price ?? 0)));
     }), ...petsForSale.map((pt) => {
@@ -271,12 +284,13 @@ export class TownScreen implements Screen {
       return el('div', { class: 'board-row' }, el('b', {}, pt.name), el('div', { class: 'dim small' }, pt.description), this.btn(owned ? 'Owned' : `Buy (${pt.price}g)`, () => this.say(s.world.buyPet(pt.id)), owned || s.state.gold < (pt.price ?? 0)));
     })));
     if (late) cards.push(this.card('Rift Gate & Boss Rush', el('p', { class: 'small' }, s.endgame.active ? 'Your run is waiting for you.' : 'Open a Rift with a Rift Map, or take on every dungeon boss in a row in the arena’s Boss Rush.'), this.btn(s.endgame.active ? 'Return to your run' : 'Go to the Rift Gate', () => this.town.endgame(), false, 'primary')));
-    cards.push(this.card('Arena & Class Trainers', el('p', { class: 'small' }, 'Spar against the beasts of the land in the arena, or train in a new class.'), this.btn('Go to the arena', () => this.town.arena(), false, 'primary')));
+    cards.push(this.card('Arena & Class Trainers', el('p', { class: 'small' }, 'Spar in the arena or train a new class.'), this.btn('Go to the arena', () => this.town.arena(), false, 'primary')));
 
     const books = s.state.inventory.slots.map((it, i) => ({ it, i })).filter((x) => x.it && bookSkill(x.it.baseId));
     cards.push(
-      this.card(
+      this.fold(
         'Library',
+        books.length ? `${books.length} skillbook${books.length === 1 ? '' : 's'} to study` : 'no skillbooks',
         el('p', { class: 'small' }, 'Study a skillbook here instead of reading it: you keep the book, but it costs gold and days.'),
         ...(books.length
           ? books.map(({ it, i }) => {
@@ -287,14 +301,14 @@ export class TownScreen implements Screen {
           : [el('p', { class: 'dim small' }, 'You carry no skillbooks.')]),
       ),
     );
-    cards.push(this.card('Stash', el('p', { class: 'small' }, 'Your shared stash is open in every town.'), this.btn('Open the stash (I)', () => this.nav.inventory())));
+    cards.push(this.card('Stash', el('p', { class: 'small' }, 'Shared in every town.'), this.btn('Open the stash (I)', () => this.nav.inventory())));
     if (t.faction) cards.push(this.factionCard(content.factions.get(t.faction)));
 
     const ventures = content.investments.filter((i) => i.town === t.id);
     if (ventures.length > 0) {
       const day = s.state.clock.day;
       const waiting = ventures.reduce((n, i) => n + investmentWaiting(p, i.id, day), 0);
-      cards.push(this.card('Investments', el('p', { class: 'small' }, 'Put money into local business. It earns gold for every day you are away (up to 30 days), collected here.'),
+      cards.push(this.fold('Investments', waiting > 0 ? `${waiting}g waiting` : 'local business', el('p', { class: 'small' }, 'Put money into local business. It earns gold for every day you are away (up to 30 days), collected here.'),
         ...ventures.map((i) => {
           const lvl = investmentLevel(p, i.id);
           const cost = investmentCost(p, i.id);
@@ -306,7 +320,7 @@ export class TownScreen implements Screen {
     if (t.housing || p.world.house?.town === t.id) {
       const house = p.world.house;
       if (!house) {
-        cards.push(this.card('House for sale', el('p', { class: 'small' }, 'A house of your own: build rooms for lasting bonuses, free rest and daily potions.'), this.btn(`Buy the house (${HOUSE_PRICE}g)`, () => this.say(s.world.buyHouse()), s.state.gold < HOUSE_PRICE, 'primary')));
+        cards.push(this.fold('House for sale', `${HOUSE_PRICE}g`, el('p', { class: 'small' }, 'A house of your own: build rooms for lasting bonuses, free rest and daily potions.'), this.btn(`Buy the house (${HOUSE_PRICE}g)`, () => this.say(s.world.buyHouse()), s.state.gold < HOUSE_PRICE, 'primary')));
       } else if (house.town === t.id) {
         const rooms = content.houseRooms.all().map((r) => {
           const lvl = roomLevel(p, r.id);
@@ -324,7 +338,7 @@ export class TownScreen implements Screen {
           const open = content.furniture.filter((f) => f.room === r.id && !owned.includes(f.id)).slice(0, 4);
           return el('div', { class: 'room-row' }, el('b', {}, `${r.name} furniture: ${owned.length}/${furnitureCap(roomLevel(p, r.id))}`), el('div', { class: 'dim small' }, owned.map((id) => content.furniture.get(id).name).join(', ') || 'Bare walls.'), ...open.map((f) => this.btn(`${f.name} (${f.price}g): ${f.description}`, () => this.say(s.world.buyFurniture(f.id)), s.state.gold < f.price || !canBuyFurniture(p, f.id).ok, 'tab')));
         });
-        cards.push(this.card('Your House', ...(roomLevel(p, 'bedroom') ? [this.btn('Sleep at home (free)', () => this.say(s.world.restAtHome()), false, 'primary')] : []), ...rooms, ...furnish));
+        cards.push(this.fold('Your House', 'rooms & furniture', ...(roomLevel(p, 'bedroom') ? [this.btn('Sleep at home (free)', () => this.say(s.world.restAtHome()), false, 'primary')] : []), ...rooms, ...furnish));
       } else {
         cards.push(this.card('Housing', el('p', { class: 'dim small' }, `You already own a house in ${content.towns.get(house.town).name}.`)));
       }
