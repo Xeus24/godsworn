@@ -19,6 +19,7 @@ import { apostleTreeId, canAscend, canAttemptTrial, canDefend, currentEdict, tri
 import { availablePoints } from '../../engine/skills/tree';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
+import { foldHeadings } from '../components/fold';
 import { el, type Screen } from '../screen';
 
 /** Emblem drawn beside each god (reuses the shared pixel glyphs). */
@@ -244,6 +245,7 @@ export class PantheonScreen implements Screen {
         this.btn(`Buy scripture (${DEVOTION.scriptureCost} favor)`, () => this.say(s.devotion.buyScripture(g.id)), !atLeast(p, g.id, DEVOTION.scriptureTier) || favor < DEVOTION.scriptureCost),
       );
     }
+    foldHeadings(panel, { Offerings: 'gold and items', 'Minor blessings': `${minors.length} available`, Scripture: scripture?.name ?? '', 'Trial of Apostleship': 'three stages', 'The Defender path': 'second god' });
     return panel;
   }
 

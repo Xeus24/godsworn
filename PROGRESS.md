@@ -1016,7 +1016,8 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - World screen sidebar: action buttons moved to the top; region rule text, weather text and controls hint moved to tooltips.
 - Character sheet: Title, Difficulty, Wardrobe, Classes, Reputation, Skills, Pet & Mount and Legacy panels fold to one line via `components/fold.ts` (`foldPanel`). Height 2132px -> 781px.
 - Skill tree sidebar: Specialization, Builds, Share and Legend fold; it no longer scrolls.
-- Not yet checked: Pantheon, Codex lists, Inventory, Party and combat screens.
+- Pantheon god details: Offerings, Minor blessings, Scripture, Trial of Apostleship and Defender path fold (`foldHeadings`); the pane no longer scrolls. Inventory and Party already fit.
+- Not yet checked: combat screens and Codex list paging.
 
 ## Known bugs
 - None known.

@@ -19,3 +19,24 @@ export function foldPanel(section: HTMLElement, summary: string): HTMLElement {
   section.classList.add('folded');
   return section;
 }
+
+/**
+ * Folds the heading groups of a flat panel: each h3 whose text has a summary in `summaries`
+ * is wrapped with the siblings that follow it (up to the next heading) and folded.
+ */
+export function foldHeadings(container: HTMLElement, summaries: Record<string, string>): void {
+  for (const h of [...container.querySelectorAll(':scope > h3')]) {
+    const summary = summaries[h.textContent ?? ''];
+    if (summary === undefined) continue;
+    const group = el('div', {});
+    let n: Node | null = h.nextSibling;
+    while (n && !(n instanceof HTMLElement && /^H[23]$/.test(n.tagName))) {
+      const next: Node | null = n.nextSibling;
+      group.append(n);
+      n = next;
+    }
+    h.replaceWith(group);
+    group.prepend(h);
+    foldPanel(group, summary);
+  }
+}
