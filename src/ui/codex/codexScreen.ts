@@ -68,14 +68,39 @@ function listedEnemies(): EnemyDef[] {
   return content.enemies.filter((e) => !e.types.includes('mentor') && !e.types.includes('follower')).sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
 }
 
-/** A fresh copy of the creature's cached sprite; unmet creatures are a dark silhouette. */
+/** Sprites paint only once they scroll into view: the bestiary lists hundreds of creatures and most are never seen. */
+const paintWhenVisible =
+  typeof IntersectionObserver === 'undefined'
+    ? undefined
+    : new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const c = entry.target as HTMLCanvasElement;
+          paintWhenVisible?.unobserve(c);
+          const paint = pending.get(c);
+          pending.delete(c);
+          paint?.();
+        }
+      }, { rootMargin: '200px' });
+const pending = new WeakMap<HTMLCanvasElement, () => void>();
+
+/** A copy of the creature's cached sprite (painted lazily); unmet creatures are a dark silhouette. */
 function spriteIcon(e: EnemyDef, cls: string, known: boolean): HTMLCanvasElement {
-  const src = monsterTile(e.id, e.family) ?? creatureSprite(e.family, e.palette.main, e.palette.accent);
   const c = document.createElement('canvas');
-  c.width = src.width;
-  c.height = src.height;
   c.className = `${cls} pixel${known ? '' : ' silhouette'}`;
-  c.getContext('2d')?.drawImage(src, 0, 0);
+  const paint = (): void => {
+    const src = monsterTile(e.id, e.family) ?? creatureSprite(e.family, e.palette.main, e.palette.accent);
+    c.width = src.width;
+    c.height = src.height;
+    c.getContext('2d')?.drawImage(src, 0, 0);
+  };
+  if (!paintWhenVisible || !cls.includes('codex-icon')) paint();
+  else {
+    c.width = 32;
+    c.height = 32;
+    pending.set(c, paint);
+    paintWhenVisible.observe(c);
+  }
   return c;
 }
 

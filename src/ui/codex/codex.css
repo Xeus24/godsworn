@@ -132,3 +132,9 @@
   height: 192px;
   image-rendering: pixelated;
 }
+
+/* Long lists (the bestiary): skip layout and paint for rows that are scrolled out of view. */
+.quest-list .quest-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 52px;
+}
