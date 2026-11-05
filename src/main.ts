@@ -16,41 +16,28 @@ import { rollFeatures } from './engine/combat/features';
 import { utilityRank } from './engine/skills/general';
 import { characterStats } from './engine/character/stats';
 import { timeOfDay } from './engine/state/clock';
-import { CharacterScreen } from './ui/character/characterScreen';
 import { CombatScreen, inventoryHooks } from './ui/combat/combatScreen';
-import { ProvingGroundsScreen } from './ui/combat/provingGrounds';
 import type { Nav } from './ui/components/navBar';
 import { Toasts } from './ui/components/toasts';
 import { CreationScreen } from './ui/creation/creationScreen';
 import { registerCoreSections } from './ui/debug/coreSections';
 import { DebugPanel } from './ui/debug/debugPanel';
-import { GeneralScreen } from './ui/general/generalScreen';
 import { registerItemSections } from './ui/debug/itemSections';
 import { registerQuestSections } from './ui/debug/questSections';
-import { InventoryScreen } from './ui/inventory/inventoryScreen';
-import { PantheonScreen } from './ui/pantheon/pantheonScreen';
 import { ScreenManager } from './ui/screen';
 import { TitleScreen } from './ui/title/titleScreen';
-import { TreeScreen } from './ui/tree/treeScreen';
-import { MarketScreen } from './ui/world/marketScreen';
 import { TownScreen } from './ui/world/townScreen';
-import { WorkshopScreen } from './ui/world/workshopScreen';
-import { ShipScreen } from './ui/world/shipScreen';
 import { atLeast } from './engine/gods/devotion';
 import { HeirScreen } from './ui/heir/heirScreen';
 import { HeartActions } from './engine/state/heartActions';
 import { createCharacter } from './engine/character/create';
 import type { Ancestor, Heir } from './engine/realm/types';
 import type { DifficultyId } from './data/difficulty';
-import { MarrowScreen } from './ui/world/marrowScreen';
-import { MinigameScreen } from './ui/world/minigameScreen';
 import { WorldScreen } from './ui/world/worldScreen';
 import './ui/world/world.css';
 import './ui/quests/quests.css';
 import type { Conversation, ConversationOutcome } from './engine/state/conversation';
 import { DialogueOverlay, EndingOverlay } from './ui/quests/dialogueOverlay';
-import { QuestLogScreen } from './ui/quests/questLog';
-import { PartyScreen } from './ui/party/partyScreen';
 import { AUTOSAVE_SLOT, SaveSlots, serialize, type SaveStore } from './engine/state/save';
 import { HelpOverlay, PauseMenu, SaveLoadScreen, SettingsOverlay, UnlockOverlay } from './ui/menu/menus';
 import { startPadPrompts } from './ui/gamepad/padPrompts';
@@ -61,8 +48,6 @@ import { audio } from './ui/audio/audio';
 import { syncAreaAudio } from './ui/audio/areaAudio';
 import { AudioPad } from './ui/audio/audioPad';
 import { moodForTown } from './ui/audio/musicFiles';
-import { CodexScreen } from './ui/codex/codexScreen';
-import { EndgameScreen } from './ui/endgame/endgameScreen';
 import type { ModifierSpec } from './engine/stats/modifiers';
 import './ui/codex/codex.css';
 
@@ -306,35 +291,35 @@ function startHeir(heir: Heir, ancestors: Ancestor[]): void {
 }
 
 function showCharacter(): void {
-  if (session) screens.show(new CharacterScreen(session, nav));
+  if (session) void import('./ui/character/characterScreen').then((m) => { if (session) screens.show(new m.CharacterScreen(session, nav)); });
 }
 
 function showInventory(): void {
-  if (session) screens.show(new InventoryScreen(session, nav));
+  if (session) void import('./ui/inventory/inventoryScreen').then((m) => { if (session) screens.show(new m.InventoryScreen(session, nav)); });
 }
 
 function showSkills(): void {
-  if (session) screens.show(new TreeScreen(session, nav));
+  if (session) void import('./ui/tree/treeScreen').then((m) => { if (session) screens.show(new m.TreeScreen(session, nav)); });
 }
 
 function showGeneral(): void {
-  if (session) screens.show(new GeneralScreen(session, nav));
+  if (session) void import('./ui/general/generalScreen').then((m) => { if (session) screens.show(new m.GeneralScreen(session, nav)); });
 }
 
 function showQuests(): void {
-  if (session) screens.show(new QuestLogScreen(session, nav));
+  if (session) void import('./ui/quests/questLog').then((m) => { if (session) screens.show(new m.QuestLogScreen(session, nav)); });
 }
 
 function showParty(): void {
-  if (session) screens.show(new PartyScreen(session, nav, talk));
+  if (session) void import('./ui/party/partyScreen').then((m) => { if (session) screens.show(new m.PartyScreen(session, nav, talk)); });
 }
 
 function showCodex(): void {
-  if (session) screens.show(new CodexScreen(session, nav));
+  if (session) void import('./ui/codex/codexScreen').then((m) => { if (session) screens.show(new m.CodexScreen(session, nav)); });
 }
 
 function showEndgame(): void {
-  if (session) screens.show(new EndgameScreen(session, nav, startGauntletFight, () => showTown(session?.world.inTown() ?? 'brightwater')));
+  if (session) void import('./ui/endgame/endgameScreen').then((m) => { if (session) screens.show(new m.EndgameScreen(session, nav, startGauntletFight, () => showTown(session?.world.inTown() ?? 'brightwater'))); });
 }
 
 /** The next fight of the Rift or Boss Rush in progress. */
@@ -344,11 +329,11 @@ function startGauntletFight(): void {
 }
 
 function showPantheon(): void {
-  if (session) screens.show(new PantheonScreen(session, nav, startFight));
+  if (session) void import('./ui/pantheon/pantheonScreen').then((m) => { if (session) screens.show(new m.PantheonScreen(session, nav, startFight)); });
 }
 
 function showGrounds(): void {
-  if (session) screens.show(new ProvingGroundsScreen(session, nav, (enc) => startFight(enc), showWorld, talk));
+  if (session) void import('./ui/combat/provingGrounds').then((m) => { if (session) screens.show(new m.ProvingGroundsScreen(session, nav, (enc) => startFight(enc), showWorld, talk)); });
 }
 
 /** The overworld, or the town screen when you are standing in a town you just entered. */
@@ -364,25 +349,25 @@ function showTown(town: string): void {
 }
 
 function showMarket(town: string): void {
-  if (session) screens.show(new MarketScreen(session, nav, town, () => showTown(town)));
+  if (session) void import('./ui/world/marketScreen').then((m) => { if (session) screens.show(new m.MarketScreen(session, nav, town, () => showTown(town))); });
 }
 
 function showMarrow(town: string): void {
-  if (session) screens.show(new MarrowScreen(session, nav, () => showTown(town)));
+  if (session) void import('./ui/world/marrowScreen').then((m) => { if (session) screens.show(new m.MarrowScreen(session, nav, () => showTown(town))); });
 }
 
 function showGames(town: string): void {
-  if (session) screens.show(new MinigameScreen(session, nav, town, () => showTown(town)));
+  if (session) void import('./ui/world/minigameScreen').then((m) => { if (session) screens.show(new m.MinigameScreen(session, nav, town, () => showTown(town))); });
 }
 
 function showHarbor(town: string): void {
   if (!session) return;
   const s = session;
-  screens.show(new ShipScreen(s, nav, () => showTown(town), (encounter, level, volley) => startFight(encounter, level, true, undefined, volley)));
+  void import('./ui/world/shipScreen').then((m) => { if (session) screens.show(new m.ShipScreen(s, nav, () => showTown(town), (encounter, level, volley) => startFight(encounter, level, true, undefined, volley))); });
 }
 
 function showWorkshop(town: string): void {
-  if (session) screens.show(new WorkshopScreen(session, nav, () => showTown(town)));
+  if (session) void import('./ui/world/workshopScreen').then((m) => { if (session) screens.show(new m.WorkshopScreen(session, nav, () => showTown(town))); });
 }
 
 /**
