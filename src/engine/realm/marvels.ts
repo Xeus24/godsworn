@@ -272,7 +272,21 @@ export interface FoesState {
 }
 export const createFoes = (): FoesState => ({ defeated: {}, wins: {} });
 
+export interface TalesState {
+  /** Story beats (127-141): where each tale stands. */
+  at: Record<string, { step: string; flags: string[]; log: string[]; done?: number; v?: number; statue?: string }>;
+  /** Boons earned (keys of `TALE_MODS`). */
+  mods: string[];
+  /** The Temptation (127): how each companion answered the Unsworn King. */
+  tempt?: Record<string, 'resisted' | 'wavering' | 'fell' | 'won'>;
+  temptTry: Record<string, number>;
+  /** Brother Quill (138): the last day he paid out, quizzes taken and answers right. */
+  quill: { last: number; asked: number; correct: number; best: number };
+}
+export const createTales = (): TalesState => ({ at: {}, mods: [], temptTry: {}, quill: { last: -999, asked: 0, correct: 0, best: 0 } });
+
 export interface MarvelsState {
+  tales?: TalesState;
   foes?: FoesState;
   pockets?: PocketsState;
   civic?: CivicState;

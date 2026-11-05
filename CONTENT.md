@@ -186,7 +186,7 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (163)
+### Legendaries (164)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -208,6 +208,7 @@ Generated from the data files by `npm run content:md`.
 | **The Fourfold Fang** | Adamant Spear | 56 | +12% increased Physical Attack; +25% Crit Damage; 30% chance on hit to gain 4 Dragonfire; Below 30% HP, once per battle: shield yourself for 30% of max HP |
 | **Crossbar of the Last Puppet** | Elderwood Wand | 34 | +12% increased Magic Attack; +10% Status Chance; Gain 1 String at the start of each turn; Kills grant 2 Strings |
 | **The Fourth Question** | Adamant Greatsword | 60 | +15% increased Physical Attack; +15% Void Damage; Kills grant 12 Dominion; Below 30% HP, once per battle: shield yourself for 30% and heal 15% |
+| **Ledger of Unkept Promises** | Adamant Sword | 40 | +12% increased Physical Attack; +12% Shadow Damage; Gain 3 Breach on each hit. |
 | **Heaven’s Quarrel** | Adamant Greataxe | 25 | +16% Damage Bonus; +15% Crit Damage; 35% chance on hit: gain 3 Defiance; Critical hits leave the target Vulnerable |
 | **The Gap Between** | Elderwood Staff | 25 | +18% Void Damage; +6% Dodge; 35% chance on cast: gain 4 Null; Dodging shields you for 8% of max HP |
 | **Crown of the Dayspring** | Sapphire Orb | 25 | +16% Healing Power; +14% Holy Damage; 40% chance when you heal: gain 4 Halo; Below 30% HP, once per battle: shield the party for 25% of max HP |
@@ -919,7 +920,7 @@ Generated from the data files by `npm run content:md`.
 | **Nightmare** | debuff | Tormented: loses 3% of max HP each turn and may flinch away (25% to lose its turn). |
 | **Strung** | debuff | On a string: deals 20% less damage, acts 10% slower and takes 10% more damage. |
 
-### Class ultimates and traits (29)
+### Class ultimates and traits (30)
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
@@ -949,6 +950,7 @@ Generated from the data files by `npm run content:md`.
 | Dragonsoul | **The Fifth Voice** | A voice no drake has: 260% ATK to every enemy, +25% damage and +25% crit damage for 3 turns, and full Dragonfire. | **Four Voices**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
 | Puppeteer | **Exit, Stage Left** | You step out of the strings: 250% MAG to every enemy, heal 20%, and the party takes 25% less damage for 3 turns. | **Hands Behind the Curtain**: 95% more max HP, 30% less damage taken, 60% more magic attack and +50% damage. |
 | Hollow King | **The Hollow Crown** | You wear it: 260% ATK void damage to every enemy; you gain +30% damage and 25% less damage taken for 3 turns and full Dominion. | **Unfallen**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
+| Oathbreaker | **The Oathbreaker’s Reckoning** | All you ever swore comes due at once: 320% ATK to every enemy, your Breach fills, and you heal 20%. | **Nothing Sworn**: 95% more max HP, 30% less damage taken, 35% more physical attack, +45% damage and +8% crit chance. |
 | Godslayer | **Heaven-Breaker** | The sky breaks: 430% ATK to every enemy, who are all Weakened for 3 turns. | **Heaven’s Bane**: 60% more max HP, 20% less damage taken, 35% more physical attack, +40% damage and 5% lifesteal. |
 | Voidwalker | **The Unmaking** | Everything leans toward nothing: 440% MAG void damage to every enemy. | **Hollow Mastery**: 50% more magic attack, 45% more max HP, 18% less damage taken, +40% damage and 4% lifesteal. |
 | Celestial | **Apotheosis** | For one moment you are all of it: 380% DIV holy to every enemy and a 20% heal for the party. | **Heavenly Body**: 45% more divine power, 40% more max HP, 20% less damage taken, +120% damage and +25 healing power. |
@@ -957,7 +959,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (527)
+### Enemies (528)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1461,6 +1463,7 @@ Generated from the data files by `npm run content:md`.
 | **The Last Conductor** | 50 | boss | spirit, choir, caster | back | caster | Banshee Wail, Shadow Bolt, Thunderstorm, Enrage | shadow +40%, lightning +20%, earth -25% |
 | **The Grudgebound Emperor** | 70 | boss | humanoid, grudgebound, emperor | front | aggressive | Dark Cleave, Void Rend, Corruption Wave, Enrage | shadow +30%, holy -10% |
 | **Sir Remnant** | 30 | boss | construct, undead, knight, oathbound | front | aggressive | Shield Bash, Dark Cleave, Enrage | physical +20%, lightning -20%, earth +40% |
+| **The Pale Auditor** | 54 | boss | humanoid, nameless, auditor | front | aggressive | Curse of Ages, Void Rend, Dark Cleave, Enrage | shadow +40%, holy +10% |
 | **The Blinding Head** | 42 | normal | beast, hydra, head | back | aggressive | Shadow Bolt |  |
 | **The Grave Head** | 42 | normal | beast, hydra, head | back | aggressive | Curse of Ages |  |
 | **The Wrathful Head** | 42 | normal | beast, hydra, head | back | aggressive | Dark Cleave |  |
@@ -1491,7 +1494,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
-### Encounters (311)
+### Encounters (313)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1624,6 +1627,8 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 28 | Desert Raider, Sand Scorpion, Dust Elemental |
 | **Trouble on the Road** | 36 | Yeti, Frost Wolf, Ice Witch |
 | **Trouble on the Road** | 44 | Corsair, Corsair, Siren |
+| **The Secret’s Guard** | 48 | Oathless Soldier, Oathless Soldier, Oathless Standard-Bearer |
+| **Trial of the Oathbreaker** | 56 | The Pale Auditor, Oathless Soldier, Oathless Standard-Bearer |
 | **The Secret’s Guard** | 30 | Crimson Acolyte, Crimson Acolyte, Crimson Acolyte |
 | **Trial of the Hemomancer** | 34 | The Sanguine Archivist, Crimson Acolyte, Crimson Acolyte |
 | **The Secret’s Guard** | 42 | Hollow Hand Fence, Hollow Hand Fence, Hollow Hand Fence |
@@ -1813,7 +1818,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-88 class trees, 1888 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+89 class trees, 1952 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -2057,6 +2062,15 @@ Generated from the data files by `npm run content:md`.
 | The Crown | **Crown Strike** (Weighty, Dominating); **Hollow Mantle** (Thicker Mantle, Quick Mantle) | Crowned, Weight of Rule | Regal Might / Regal Poise | Unfallen: Survive a killing blow once per battle, but 10% less damage. | The Weight Is Mine |
 | The Void Throne | **Throne of Nothing** (Bigger Void, Cold Void); **Abdicate** (Deeper Rest, Quick Rest) | Absent, Empty Throne | Entropy’s Rule / Echoing Halls | Nobody Rules: +25% void damage and +15% dodge, but 15% less max HP. | King of Nothing |
 
+### Oathbreaker (64 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Broken Word | **Oath-Shatter** (Harder Break, Cruel Break); **Perjure** (Bolder Lie, Cheap Lie) | Practiced Liar, No Remorse | Bold Face / Cold Heart | Nothing Sworn: +25% damage, but 15% less max HP. | Oathbreaker |
+| The Forsworn Hand | **Unbind** (Loose Knot, Frayed); **Renounce** (Louder Refusal, Quick Refusal) | Let Go, Loose Grip | Light Step / Free Hands | Faithless: +20% damage, +10% dodge, but no healing from blessings. | Hand Without a Leash |
+| No God | **Godless Ward** (Thicker Ward, Warded Heart); **Silence Heaven** (Longer Hush, Quicker Hush) | Godless, Nobody’s Servant | Iron Will / Thick Skin | Heaven Is Quiet: +25% magic resist and +15% max HP, but 15% less damage dealt. | Godless Bulwark |
+| The Unpaid Debt | **Call In the Debt** (Heavy Interest, Cheap Collection); **Bad Faith** (Wider Doubt, Quicker Doubt) | Interest, Collector | Sharp Eye / Deep Pockets | Everything Is Owed: +20% damage and +15% gold, but 10% less defense. | Debt Collected |
+
 ### Godslayer (64 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
@@ -2246,6 +2260,10 @@ Generated from the data files by `npm run content:md`.
 | **Hollow Mantle** | Hollow King | 20 Dominion | 4 | Spend 20 Dominion: wrap yourself in nothing: take 30% less damage and shield yourself for 15% for 3 turns. |
 | **Throne of Nothing** | Hollow King | 30 Dominion | 3 | Spend 30 Dominion: the throne of nothing: 150% ATK void damage to every enemy and Weaken. |
 | **Abdicate** | Hollow King | free | 5 | Put the weight down: heal 25% of max HP and gain 20 Dominion. |
+| **Perjure** | Oathbreaker | 25 Breach | 3 | Spend 25 Breach: 270% ATK and a curse that sticks. |
+| **Renounce** | Oathbreaker | free | 4 | Cast off your restraints: +30% damage for 3 turns, 15% less defense. Gain 20 Breach. |
+| **Silence Heaven** | Oathbreaker | 15 Breach | 4 | Spend 15 Breach: every enemy is Silenced for 2 turns. |
+| **Bad Faith** | Oathbreaker | 15 Breach | 4 | Spend 15 Breach: every enemy is Weakened and Vulnerable for 2 turns. |
 | **Rend Divinity** | Godslayer | 25 Defiance | 1 | Spend 25 Defiance: 290% ATK, and the target is left Vulnerable. |
 | **Blasphemy** | Godslayer | 20 Defiance | 3 | Spend 20 Defiance: a sneer for 90% ATK to every enemy that leaves them Weakened. |
 | **Mortal Pride** | Godslayer | free | 4 | Gain +20% damage and +15% defense for 3 turns, and 15 Defiance. |
@@ -2272,7 +2290,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-81 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+83 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
@@ -2348,6 +2366,8 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | Puppeteer | **Stringbinder**: Strings on everything, all at once. | Tangle (Wide Tangle, Snarl) | **The Grand Puppet Show**: Every enemy dances: 240% MAG to all, Charmed for a turn and Strung; you act again at once. | The Hand Behind All Hands: +15% magic attack and +10% status chance. |
 | Hollow King | **Usurper**: Take the crown from whoever wears it. | Regicide (Deeper Cut, Cheaper Cut) | **Dethrone**: No more crowns: 350% ATK void damage to every enemy, Weakened and Silenced. | The Throne Is Mine: +15% physical attack and +10% crit chance. |
 | Hollow King | **Sovereign**: Rule so well that no one remembers the king was hollow. | Royal Command (Louder Command, Quick Command) | **Age of the Hollow**: The hollow age begins: 240% ATK void damage to every enemy, the party is healed for 25%, Hasted and gains +30% damage for 3 turns. | The Hollow Made Whole: +15% max HP, 12% less damage taken and +15% blessing power. |
+| Oathbreaker | **Perjurer**: Every word is a knife, and every knife lies. | Break the Bond (Deeper Cuts, Fourth Cut) | **False Witness**: Swear to a lie: 280% ATK to every enemy, all cursed, and you gain full Breach. | Master Perjurer: +15% physical attack and +10% crit chance. |
+| Oathbreaker | **Unsworn**: No oath will ever bind you again. | Faithless Blow (Blunter Faith, Cheaper Blow) | **No Oath Binds Me**: Every vow dissolves: 250% ATK to every enemy, and your party gains +20% damage and +15% dodge for 3 turns. | The Unsworn: +15% physical attack and +10% cooldown reduction. |
 | Godslayer | **Deicide**: One target, one blow, one very quiet throne. | Deicide Strike (Surgical, Killing Joke) | **God-Killer**: Everything you have, once: 750% ATK to one enemy, and it is Vulnerable and Weakened. | The Last Deicide: +12% physical attack; Deicide Strike generates 15 Defiance. |
 | Godslayer | **Blasphemer**: Make the sacred sorry it ever was. | Curse the Heavens (Longer Curse, Spiteful) | **Unholy Sermon**: A sermon in iron: 260% ATK shadow to every enemy; they are Feared for 2 turns. | Voice of the Fallen: +10% damage; Curse the Heavens costs 5 Defiance less. |
 | Godslayer | **Titan-Bane**: The bigger they are, the harder they listen to you. | Giantfall (Higher Fall, Crushing) | **Avalanche of Bones**: The mountain comes down: 320% ATK earth damage to every enemy. | The Mountain Remembers: +12% max HP; Giantfall generates 10 Defiance. |
@@ -3245,7 +3265,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-811 quests, 259 NPCs, 551 dialogues, 14 companions, 16 endings.
+816 quests, 260 NPCs, 555 dialogues, 14 companions, 16 endings.
 
 ### Main story (54)
 
@@ -3738,10 +3758,15 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Against Morrath** | 30 | Archivist Tamsin | Defeat the herald of Morrath (fight) |
 | **The Covenant of Mirrin** | 40 | Archivist Tamsin | Offer the shards (deliver) |
 
-### Class trials (168)
+### Class trials (173)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
+| **The Account Is Open** | 40 | starts by itself | Become Forsworn (state) |
+| **The Auditor’s Office** | 44 | starts by itself | Reach the secret place (visit); Speak to The Pale Auditor (talk) |
+| **Vows Owed** | 48 | starts by itself | Defeat the secret’s guard (fight) |
+| **A Question of Interest** | 52 | starts by itself | Answer The Pale Auditor (talk) |
+| **Reconciliation** | 56 | starts by itself | Face the secret’s master (fight); Speak to The Pale Auditor (talk) |
 | **The Seventh Page** | 26 | starts by itself | Read all seven Crimson Pages (state) |
 | **The Red Library** | 28 | starts by itself | Reach the secret place (visit); Speak to Maelis Vane (talk) |
 | **Blood Price** | 30 | starts by itself | Defeat the secret’s guard (fight) |
@@ -4047,6 +4072,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Dragonsoul | -30% | - |
 | Puppeteer | -30% | - |
 | Hollow King | -30% | - |
+| Oathbreaker | -30% | - |
 | Godslayer | -30% | - |
 | Voidwalker | -30% | - |
 | Celestial | -30% | - |
@@ -4107,7 +4133,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss), 50 of its own turns (boss), 60 of its own turns (worldBoss), and grows angrier every 4 turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.
 
-133 scripted bosses:
+134 scripted bosses:
 
 | Boss | Phases | Telegraphs |
 |---|---|---|
@@ -4243,6 +4269,7 @@ Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss)
 | Saint Gallowmere | 88%: **Unburdened Ferry** (+5% Damage Bonus); 76%: **The Root Unforgiving** (+10% increased Defense); 64%: **Candle Snuffer** (heals or shields); 52%: **Dust That Drinks** (10% more Speed); 40%: **The Long Night Sleeps You** (+10% Damage Bonus); 28%: **The Door Opens Inward** (heals or shields); 16%: **Blood Left on the Anvil** (+15% Damage Bonus); 8%: **The Name Eats the Citadel** (+20% Damage Bonus, 15% more Speed) | Doom Mark every 5 turns |
 | The Last Conductor | 50%: **Crescendo** (+15% Damage Bonus, 10% more Speed) | Unmaking every 4 turns |
 | The Grudgebound Emperor | 60%: **The Court Assembles** (+15% Damage Bonus); 30%: **Crown of Scars** (+25% Damage Bonus) (heals or shields) | Final Judgment every 5 turns |
+| The Pale Auditor | 50%: **Final Reckoning** (+20% Damage Bonus) (heals or shields) | Doom Mark every 5 turns |
 | Sir Remnant | 50%: **The Oath Remembered** (+10% increased Defense) | Crushing Blow every 6 turns |
 
 Telegraphed attacks:

@@ -47,6 +47,7 @@ export const ARTS: ArtDef[] = [
   { classId: 'geomancer', name: 'Feel the Ley', effect: 'reveal', text: 'The ground hums where it has been disturbed, and you follow the hum.' },
   { classId: 'hemomancer', name: 'Taste the Air', effect: 'scout', text: 'Blood has a scent. So does a hunt. You know where neither is.' },
   { classId: 'hollowhand', name: 'The Open Palm', effect: 'inquire', text: 'The hand that is not there closes on a fact somebody would have preferred you not to have.' },
+  { classId: 'oathbreaker', name: 'The Quiet Refusal', effect: 'inquire', text: 'You ask a question the answer was sworn never to give, and the answer, embarrassed, gives.' },
   { classId: 'dreamwalker', name: 'Walk the Dream', effect: 'mend', text: 'A very short dream, and everyone wakes better than they slept.' },
   { classId: 'dragonsoul', name: 'Dragon’s Appetite', effect: 'forage', text: 'You smell what the wild has hoarded and go to take it.' },
   { classId: 'puppeteer', name: 'Pull the Strings', effect: 'haggle', text: 'A shopkeeper’s hand moves a little further down the price than he meant it to.' },

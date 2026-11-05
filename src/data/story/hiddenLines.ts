@@ -38,6 +38,20 @@ const stones = (map: string) => [near(map, 'shrine', 'kael', 'The bronze juggler
 
 const LINES: Line[] = [
   {
+    cls: 'oathbreaker', name: 'Oathbreaker', zone: 'volcanic-rift', dungeon: 'godless-hollow', levels: [40, 44, 48, 52, 56],
+    requires: { kind: 'flag', flag: 'forsworn' },
+    step1: state('s', 'Become Forsworn', { kind: 'flag', flag: 'forsworn' }),
+    step1Text: 'You have broken your oaths, enough of them to be called Forsworn. Someone keeps accounts of that.',
+    teacher: { id: 'the-pale-auditor', name: 'The Pale Auditor', title: 'Collector for the Nameless One', race: 'human', portrait: 2, color: '#d8d8e0', greeting: '“Ah. The account of one who swore. Please, sit. This will take some time and no one will be hurt, except, in the end, everyone.”' },
+    titles: ['The Account Is Open', 'The Auditor’s Office', 'Vows Owed', 'A Question of Interest', 'Reconciliation'],
+    summaries: ['“Four vows broken, by a careful count. A pale man has begun to ask after you in towns you have not yet visited.”', '“The Pale Auditor keeps his office in the Godless Hollow, where no god can read his books.”', '“His clerks are the Oathless, who have sworn nothing and so can be trusted with everything.”', '“The Auditor wants to know why you broke what you broke. The answer is the price of what he teaches.”', '“A last reckoning. Settle the account, and you may keep what the breaking made of you.”'],
+    pack: ['oathless-soldier', 'oathless-soldier', '^oathless-standard-bearer'], boss: ['pale-auditor', 'oathless-soldier', '^oathless-standard-bearer'],
+    trialLine: '“Which oath was the first you broke, and did you mean to?”',
+    gate: { cond: stat('cha', 40), text: '[CHA 40] “I meant to. I would again. Enter it in your ledger exactly so.”', reply: '“…Exactly so. How rarely anyone is exact. Take the job.”' },
+    cha: '“Charming. The Nameless One does not mind charm. It has had so little.”', plain: '“Honest. Mm. A line in the margin: ‘at least that’.”',
+    final: '“The account is closed. You may break what you like, and I shall note it, and nothing will come of it. That is the Oathbreaker’s craft. Do try to be happy.”', earned: 'Account Settled',
+  },
+  {
     cls: 'hemomancer', name: 'Hemomancer', zone: 'sunken-caves', dungeon: 'drowned-grotto', levels: [26, 28, 30, 32, 34],
     requires: { kind: 'lorePages', ids: [1, 2, 3, 4, 5, 6, 7].map((n) => `crimson-page-${n}`) },
     step1: state('s', 'Read all seven Crimson Pages', { kind: 'lorePages', ids: [1, 2, 3, 4, 5, 6, 7].map((n) => `crimson-page-${n}`) }),
@@ -182,6 +196,7 @@ export const HIDDEN_RUMORS: { npc: string; cls: string; topic: string; lines: st
   { npc: 'sister-wenna', cls: 'dreamwalker', topic: 'Have you slept well?', lines: ['“There is a story that someone who has slept in every inn hears the beds talk. I have only slept in two. They are very boring.”'] },
   { npc: 'forgemaster-brunhild', cls: 'dragonsoul', topic: 'Any old stories about the drakes?', lines: ['“Four elder drakes: one for each of the old elements. A smith’s grandmother told me: beat all four, and they stop being enemies and start being relatives.”'] },
   { npc: 'oduya', cls: 'puppeteer', topic: 'Anything odd in the dunes?', lines: ['“Four statues out in the sand that move when you are not looking. A horse, a clown, a queen and a juggler. Do not look away from them. Or do. Honestly, I have not decided.”'] },
+  { npc: 'marta', cls: 'oathbreaker', topic: 'Have you seen anyone odd lately?', lines: ['“A pale man in a grey coat, asking after people who have broken vows. He had a ledger. He would not say whose. I did not like how neatly he wrote.”'] },
   { npc: 'lector-amara', cls: 'hollowking', topic: 'Any whispers about the Citadel?', lines: ['“There is a crown in the old throne room that only speaks to one who has never fallen. I have fallen in a hundred ways, so I have never heard it. I hope it likes you better.”'] },
 ];
 

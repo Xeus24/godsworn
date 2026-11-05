@@ -55,6 +55,7 @@ const HAND: Record<string, BossLines> = {
   'saint-gallowmere': ['“Eight of them walked the road with a lantern. I walked it with a rope.”', '“Every kindness has a mirror, and I am the glass.”', '“The ninth saint. The last page. Close it gently.”'],
   'last-conductor': ['“Take your places. We begin on the downbeat.”', '“Tempo! Keep time, or be kept.”', '“The hymn… has no… final… note…”'],
   'grudgebound-emperor': ['“Every grudge you ever made now kneels to me.”', '“They sing of you in the dark. It is not a kind song.”', '“A crown of scars. It was always yours, you know.”'],
+  'pale-auditor': ['“Vows broken: four. Vows owed: all of them. I am here to reconcile.”', '“The account does not balance. It never has.”', '“Paid. The Nameless One thanks you, in the only way it can.”'],
   'sir-remnant': ['“Halt. I hold this door.”', '“I swore. I swore. What did I swear?”', '“The door is open. The oath is kept. I may rest.”'],
   'crown-warden': ['“No one wears the crown without answering to me.”', '“The Crown watches. The Crown judges.”', '“The Crown… approves…”'],
 };

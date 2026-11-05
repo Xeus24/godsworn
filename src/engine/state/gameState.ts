@@ -15,6 +15,7 @@ import { WorldlyActions } from './worldlyActions';
 import { CivicActions } from './civicActions';
 import { PocketActions } from './pocketActions';
 import { FoesActions } from './foesActions';
+import { TalesActions } from './talesActions';
 import type { GauntletState } from '../endgame/types';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
@@ -245,6 +246,7 @@ export class GameSession {
   readonly civic: CivicActions;
   readonly pockets: PocketActions;
   readonly foes: FoesActions;
+  readonly tales: TalesActions;
   /** Owners of special endgame runs register how a finished run is settled, by module name. */
   readonly specials: Record<string, (a: GauntletState, won: boolean) => void> = {};
   readonly heart: HeartActions;
@@ -282,6 +284,7 @@ export class GameSession {
     this.civic = new CivicActions(this);
     this.pockets = new PocketActions(this);
     this.foes = new FoesActions(this);
+    this.tales = new TalesActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {

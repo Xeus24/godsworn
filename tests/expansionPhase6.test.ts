@@ -10,11 +10,11 @@ import { canAddClass } from '../src/engine/character/multiclass';
 import { Rng } from '../src/engine/core/rng';
 import { makeHero } from './helpers';
 
-const HIDDEN = ['hemomancer', 'hollowhand', 'dreamwalker', 'dragonsoul', 'puppeteer', 'hollowking'];
+const HIDDEN = ['hemomancer', 'hollowhand', 'dreamwalker', 'dragonsoul', 'puppeteer', 'hollowking', 'oathbreaker'];
 
-describe('the six hidden classes', () => {
+describe('the seven hidden classes', () => {
   it('exist, are flagged hidden, and have trees, a resource and a Legendary', () => {
-    expect(GREATER_CLASSES.map((g) => g.def.id).slice(12, 18)).toEqual(HIDDEN);
+    expect(GREATER_CLASSES.map((g) => g.def.id).slice(12, 19)).toEqual(HIDDEN);
     for (const id of HIDDEN) {
       expect(content.classes.get(id).hidden, id).toBe(true);
       expect(content.trees.get(id).branches.filter((b) => b.spec), id).toHaveLength(2);

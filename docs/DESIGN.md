@@ -162,3 +162,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## Great foes and families (section H-4b)
 Tricks are data-switched by enemy `flags` (`rule:*`, listed in `data/mechanics.ts`) and implemented in `combat/rules.ts`: `Battle.emit` forwards every event to `observeRules` (gold theft, head tally, row redraws, rehearsal stacks, beats, wet, moth bites), and `ai.chooseAction` asks `ruleAction` for fixed patterns. Adding a foe with an existing trick needs data only. `FoesActions` (`s.foes`) starts each great foe as a `special` gauntlet (`s.specials['greatfoe']`).
+
+## Tales and strangers (section H-5)
+`TalesActions` (`s.tales`) runs the data in `data/tales.ts`: `choose(id, i)` checks the place (`Step.at` or the tale's `where`), the option's requirement, gold cost and stat roll, applies `Fx` tuples (`days` advances the clock, `loseJournal` edits the fellowship journal, `favorV`/`clue`/`reveal` use the tale's seeded `variants`), and moves to the next step. Verdicts are written to global flags. The Oathbreaker rides the hidden-class `LINES` table in `story/hiddenLines.ts`.
