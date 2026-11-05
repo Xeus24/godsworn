@@ -176,3 +176,5 @@ Tricks are data-switched by enemy `flags` (`rule:*`, listed in `data/mechanics.t
 Five classes are built from `data/trees/tabletop.ts`, which turns a table row into a 16-node branch (skill modifiers are generated from what the skill has: power, cost or cooldown). Vowknight Tenets are stances; Wrathsworn and Wayfinder add a status and summons through `extras`; Godblooded's Spellshaping is a set of shaped surges. Spec branches are placed after the last regular branch.
 
 I-2 classes reuse the same factory. Costs: Ichorbound pays HP, Mindwright gains Strain with overflow backlash, Marshal spends Command on `timeShift` (extra turns).
+
+I-3 stretch classes reuse the factory: Facewright's masks are generated stances; Whisperknight and Hedgewitch place sigils; Soulblade and Hedgewitch summon; Whisperknight and Bellwarden carry `choirbreaker`.

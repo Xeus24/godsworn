@@ -186,7 +186,7 @@ Generated from the data files by `npm run content:md`.
 **Armor:** 8 slots × 4 weights × 7 tiers = 224 bases.
 **Accessories:** 42 bases (rings, amulets, earrings, holy symbols, trinkets with on-use abilities).
 
-### Legendaries (182)
+### Legendaries (190)
 
 | Item | Base | Lvl | Effects |
 |---|---|---|---|
@@ -222,6 +222,14 @@ Generated from the data files by `npm run content:md`.
 | **Circlet of the Held Thought** | Elderwood Staff | 25 | +12% increased Magic Attack; +10% Status Resist; Each skill sheds 2 Strain. |
 | **Baton of the Last Order** | Adamant Rapier | 25 | +10% Resource Gain; +6 Speed; Each skill gives 2 Command. |
 | **Cutlass of the Black Tide** | Adamant Sword | 25 | +10% increased Physical Attack; +12% Gold Find; Kills give 6 Crew. |
+| **The Barkeep’s Stool-Leg** | Adamant Mace | 25 | +10% increased Physical Attack; +8% Status Chance; Gain 3 Grit on each hit. |
+| **The Unsounded Blade** | Adamant Sword | 25 | +12% Shadow Damage; +10% increased Physical Attack; Gain 3 Hush on each hit. |
+| **The Eternal Ladle** | Adamant Mace | 25 | +12% Healing Power; +8% increased Max HP; Healing gives 3 Simmer. |
+| **Lens of the Last Clue** | Adamant Rapier | 25 | +12% Accuracy; +6% Crit Chance; Critical hits give 5 Deduction. |
+| **Cauldron of the Hedge** | Elderwood Staff | 25 | +12% Healing Power; +10% Nature Damage; Healing gives 3 Brew. |
+| **The Oldest Opinion** | Adamant Sword | 25 | +12% increased Physical Attack; +5% Crit Chance; Critical hits give 4 Bond. |
+| **The Thirteenth Mask** | Adamant Rapier | 25 | +6% Dodge; +8% Damage Bonus; Each skill gives 3 Persona. |
+| **The Unbroken Bell** | Adamant Mace | 25 | +12% Holy Damage; +10% increased Magic Attack; Gain 3 Toll on each hit. |
 | **Hesha’s Last Kindness** | Adamant Dagger | 24 | +8% Healing Power; +3 Luck; Cannot kill: reducing a foe to 0 HP spares them instead.; Living: it grows when you spare foes. |
 | **The Mapless Compass** | Gold Amulet | 18 | +4 Luck; +6% Magic Find; Points to the nearest undiscovered secret on the map (Codex > Realm > Relics & Meals). |
 | **Coat of Yesterday** | Drakehide Cloak | 22 | +4% Dodge; +6% increased Max HP; Once per fight, undoes the first hit you take. |
@@ -892,7 +900,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (49)
+### Status effects (50)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -945,8 +953,9 @@ Generated from the data files by `npm run content:md`.
 | **Strung** | debuff | On a string: deals 20% less damage, acts 10% slower and takes 10% more damage. |
 | **Wrath** | buff | The Rage state: +25% damage, 20% less damage taken, 15% less dodge. |
 | **Quarry** | debuff | Chosen prey: 15% more damage taken and 12 less dodge. |
+| **Tipsy** | buff | A drunken stance: +20% dodge and +12% damage, 10% less accuracy. |
 
-### Class ultimates and traits (40)
+### Class ultimates and traits (48)
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
@@ -988,14 +997,22 @@ Generated from the data files by `npm run content:md`.
 | Ichorbound | **The Ichor Ascendant** | The god’s blood sings: 320% ATK in all five Rites to every enemy; you heal 20%. | **Borrowed Blood**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +4% lifesteal. |
 | Fatedealer | **The Fatedealer’s Deck** | The whole deck falls: 320% MAG to every enemy, a Held Card boon and Fortune fills. | **Lucky Hands**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +4 LUK. |
 | Mindwright | **The Mindwright’s Calm** | A very quiet storm: 310% MAG to every enemy, heal 20% and Strain clears. | **Unquiet Mind**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 magic attack. |
-| Marshal | **The Marshal’s Command** | Every order at once: 280% ATK to every enemy, the party heals 15% and gains +20% damage; Command fills. | **Born to Lead**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% resource gain. |
+| Marshal | **The Marshal’s Command** | Every order at once: 280% ATK to every enemy, the party heals 15% and gains +20% damage; Command fills. | **Born to Lead**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% resource gain and +15% damage. |
 | Corsair | **The Corsair’s Reckoning** | The whole crew, all at once: 310% ATK to every enemy, the party heals 15% and gains +20% damage. | **Sea Legs**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% gold found. |
+| Brawler | **The Brawler’s Last Round** | Last one standing: 310% ATK to every enemy, heal 20% and the Tipsy state. | **Tavern Tough**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% status resist. |
+| Whisperknight | **The Whisperknight’s Vigil** | A watch kept in silence: 310% ATK to every enemy, heal 15%, Hush fills. | **Sworn to Silence**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +12% shadow damage. |
+| Hearthmaster | **The Hearthmaster’s Table** | Every course, in order: 290% ATK to every enemy, the party heals 20% and gains +20% damage; Simmer fills. | **Good Cook**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% healing power and +15% damage. |
+| Truthseeker | **The Truthseeker’s Verdict** | The truth, out loud: 320% MAG to every enemy; the party gains +20% damage and +15% crit for 3 turns. | **Sharp Mind**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 accuracy and +4% crit chance. |
+| Hedgewitch | **The Hedgewitch’s Brew** | The pot is ready: 300% MAG to every enemy, the party heals 20% and gains +20% damage; Brew fills. | **Village Wisdom**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% healing power. |
+| Soulblade | **The Soulblade’s Pact** | You and the blade, in full agreement: 310% ATK to every enemy, +25% damage for 3 turns and heal 15%. | **A Voice in the Hilt**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +6% crit chance. |
+| Facewright | **The Facewright’s Final Face** | The face behind the faces: 310% ATK to every enemy, heal 15% and +20% damage and crit for 3 turns. | **A Face for Every Occasion**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +6 dodge. |
+| Bellwarden | **The Bellwarden’s Peal** | The great peal: 320% MAG to every enemy, the party heals 15% and gains +20% damage. | **Ringing Ears**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% holy damage, +15% damage and 40% more magic attack. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
 
-**Stances (19):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.) · Tenet of Mercy (+15% healing received and +10% magic resist. Basic attacks mend you for 4% HP.) · Tenet of Vengeance (+15% damage. Basic attacks hit for 125% and Mark the foe.) · Tenet of Dawn (+20% holy damage and +10% defense. Basic attacks hit for 110% and Blind.)
+**Stances (31):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.) · Tenet of Mercy (+15% healing received and +10% magic resist. Basic attacks mend you for 4% HP.) · Tenet of Vengeance (+15% damage. Basic attacks hit for 125% and Mark the foe.) · Tenet of Dawn (+20% holy damage and +10% defense. Basic attacks hit for 110% and Blind.) · Mask of the Fool (+15 dodge and +3 LUK; basic attacks may Confuse. “Oh, I never meant to hit you.”) · Mask of the Sage (+15% magic attack and 8% cooldown reduction. “Let me explain, as I strike.”) · Mask of the Hero (+12% physical attack and +10% defense. “Stand behind me. I mean it.”) · Mask of the Knave (+12% crit and +10% gold found; basic attacks lift 3 gold. “Whose purse is this? Mine, now.”) · Mask of the Widow (+15% shadow damage and +10% status chance. “I have buried better.”) · Mask of the Hound (+15% speed and +10 accuracy; basic attacks may Bleed. “Smell that? Fear.”) · Mask of the Lord (+12% damage and +10% status resist. “Kneel. Do not be tiresome.”) · Mask of the Ghost (+20 dodge and 8% less damage taken. “Did you feel that? No?”) · Mask of the Saint (+15% healing power and +12% holy damage; basic attacks heal 3%. “Be at peace. Hold still.”) · Mask of the Sinner (+15% damage, 8% less defense; basic attacks may Burn. “Do not look at the hands.”) · Mask of the Muse (+15% resource gain and +8 speed; basic attacks give 6 Persona. “Someone is watching. Let us be marvelous.”) · Mask of the Tyrant (+18% damage and +10% max HP; basic attacks may Slow. “Sit down. Everyone.”)
 
-### Enemies (546)
+### Enemies (554)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1098,6 +1115,14 @@ Generated from the data files by `npm run content:md`.
 | **Archivist Pell Orrow** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
 | **High Marshal Oswin Thrale** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
 | **Captain Odalie Brack** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Big Marta Quill** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Ser Imrel the Quiet** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Cookmother Oda Brune** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Inspector Ismene Vaul** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **Goodwife Ashby Tarn** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **Warden Quenna Iss** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
+| **Maestro Veyl Dorrance** | 15 | miniboss | humanoid, mentor | front | aggressive | Now You See Me, Dirty Stab |  |
+| **Bell-Reeve Jonas Orrin** | 15 | miniboss | humanoid, mentor | front | aggressive | Shield Bash, Dirty Stab |  |
 | **Herald of Solenne** | 1 | punisher | spirit, divine | back | caster | Wrath of Solenne | holy +50%, earth -25% |
 | **Herald of Morrath** | 1 | punisher | spirit, divine | back | caster | Wrath of Morrath | shadow +50%, earth -25% |
 | **Herald of Kael** | 1 | punisher | spirit, divine | back | caster | Wrath of Kael | physical +50%, earth -25% |
@@ -1546,9 +1571,9 @@ Generated from the data files by `npm run content:md`.
 | **Hob the Precentor** | 28 | normal | humanoid, choir, defector | front | aggressive | Dark Cleave, Banshee Wail | shadow +20% |
 | **Lark the Treble** | 29 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
 
-**Summons (54):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald, Wolf Totem, Bear Totem, Trail Hound, Trail Hawk
+**Summons (58):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald, Wolf Totem, Bear Totem, Trail Hound, Trail Hawk, Hedge Cat, Cauldron Toad, The Bonded Blade, The Unleashed Blade
 
-### Encounters (353)
+### Encounters (385)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1599,6 +1624,14 @@ Generated from the data files by `npm run content:md`.
 | **Trial: Archivist Pell Orrow** | 15 | Archivist Pell Orrow, Bandit Thug |
 | **Trial: High Marshal Oswin Thrale** | 15 | High Marshal Oswin Thrale, Bandit Thug |
 | **Trial: Captain Odalie Brack** | 15 | Captain Odalie Brack, Bandit Thug |
+| **Trial: Big Marta Quill** | 15 | Big Marta Quill, Bandit Thug |
+| **Trial: Ser Imrel the Quiet** | 15 | Ser Imrel the Quiet, Bandit Thug |
+| **Trial: Cookmother Oda Brune** | 15 | Cookmother Oda Brune, Bandit Thug |
+| **Trial: Inspector Ismene Vaul** | 15 | Inspector Ismene Vaul, Bandit Thug |
+| **Trial: Goodwife Ashby Tarn** | 15 | Goodwife Ashby Tarn, Bandit Thug |
+| **Trial: Warden Quenna Iss** | 15 | Warden Quenna Iss, Bandit Thug |
+| **Trial: Maestro Veyl Dorrance** | 15 | Maestro Veyl Dorrance, Bandit Thug |
+| **Trial: Bell-Reeve Jonas Orrin** | 15 | Bell-Reeve Jonas Orrin, Bandit Thug |
 | **Trial of the Spellblade** | 36 | Sword-Master Bram, Bandit Thug, Archmage Velis, Will-o'-Wisp |
 | **Trial of the Warpriest** | 36 | Sword-Master Bram, Bandit Thug, Mother Aurelie, Skeleton Soldier |
 | **Trial of the Deathknight** | 36 | Sword-Master Bram, Bandit Thug, The Pale Tutor, Skeleton Soldier |
@@ -1819,6 +1852,30 @@ Generated from the data files by `npm run content:md`.
 | **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
 | **A Test of Nerve** | 25 | The Tide Hag, Drowned Sailor |
 | **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Shaman |
+| **The Final Lesson** | 30 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Restless Ghost |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Shaman |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | The Bone Lord, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Broodmother, Whisperwood Spider |
+| **The Final Lesson** | 30 | Dire Wolf, Dire Wolf, Alpha of the Whisperwood |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Skeleton Soldier |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | Grukk the Goblin King, Goblin Cutthroat, Goblin Shaman |
+| **The Final Lesson** | 30 | The Broodmother, Whisperwood Spider, Whisperwood Spider |
+| **Trouble on the Road** | 16 | Dire Wolf, Dire Wolf, Wyld Boar |
+| **A Test of Nerve** | 25 | The Bone Lord, Restless Ghost |
+| **The Final Lesson** | 30 | The Tide Hag, Restless Ghost, Restless Ghost |
 | **Unsworn Zealots** | 4 | Unsworn Zealot, Unsworn Zealot, Unsworn Adept |
 | **Deacon Mott** | 6 | Unsworn Zealot, Deacon Mott |
 | **Varn the Hollow** | 14 | Dire Wolf, Dire Wolf, Varn the Hollow |
@@ -1912,7 +1969,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-99 class trees, 2752 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+107 class trees, 3392 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -2292,6 +2349,86 @@ Generated from the data files by `npm run content:md`.
 | The Sail | **Hard A-Port** (Mended Hard A-Port, Frugal Hard A-Port); **Storm Sails** (Heavier Storm Sails, Frugal Storm Sails) | Full Canvas, Gale Force | Storm Reader / Eye of the Storm | Ride the Weather: +20% damage, -10% defense. | Stormcaptain’s Gale |
 | The Colors | **Run Up the Colors** (Mended Run Up the Colors, Quicker Run Up the Colors); **Dead Calm** (Mended Dead Calm, Frugal Dead Calm) | Struck Colors, Dead Calm | Fear of the Flag / Raised Voices | The Name Is Enough: +20% damage, -10% defense. | Terror of the Sea |
 
+### Brawler (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| Dirty Fighting | **Dirty Jab** (Heavier Dirty Jab, Guarded Dirty Jab); **Pocket Sand** (Mended Pocket Sand, Frugal Pocket Sand) | Cheap Shot, Handful of Dust | Sly Look / Stacked Odds | No Rules Apply: +20% damage, -10% defense. | Master of the Dirty Trick |
+| Improvised Arms | **Bottle Smash** (Heavier Bottle Smash, Quicker Bottle Smash); **Chair Swing** (Heavier Chair Swing, Frugal Chair Swing) | Broken Glass, Splintered Plank | Flung Mug / Found Weapon | Everything Is a Weapon: +20% damage, -10% defense. | Furniture Master |
+| The Grapple | **Bear Hug** (Heavier Bear Hug, Frugal Bear Hug); **Slam Down** (Heavier Slam Down, Frugal Slam Down) | Crushing Hold, Hard Landing | Pinned / Dragged Down | No Escape: +20% damage, -10% defense. | Master of the Hold |
+| The Drunken Stance | **Drunken Stance** (Mended Drunken Stance, Quicker Drunken Stance); **Stagger Away** (Mended Stagger Away, Frugal Stagger Away) | Fluid Fall, Swaying | Happy Accident / Soft Landing | Falling Upward: +20% damage, -10% defense. | Master of the Stagger |
+| The Tavern Code | **Take It on the Chin** (Mended Take It on the Chin, Frugal Take It on the Chin); **Last Orders** (Mended Last Orders, Frugal Last Orders) | Bar Legend, Always a Table | Round on Me / Raised Glass | Bouncer’s Bane: +20% damage, -10% defense. | Legend of the Taproom |
+
+### Whisperknight (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Quiet Blade | **Hushed Blade** (Heavier Hushed Blade, Guarded Hushed Blade); **Pale Lance** (Heavier Pale Lance, Frugal Pale Lance) | Muffled Edge, Pale Edge | Silent Draw / Long Reach | Blade Without a Name: +20% damage, -10% defense. | Whisperknight’s Edge |
+| The Seals | **Seal of Silence** (Mended Seal of Silence, Frugal Seal of Silence); **Seal of Ruin** (Mended Seal of Ruin, Frugal Seal of Ruin) | Silent Seal, Ruin Seal | Hidden Mark / Second Seal | Seals Without End: +20% damage, -10% defense. | Warden of Seals |
+| The Nameless Oath | **Unheard Oath** (Mended Unheard Oath, Frugal Unheard Oath); **Quiet Guard** (Mended Quiet Guard, Frugal Quiet Guard) | Unheard Vow, Quiet Armor | Long Watch / Sealed Lips | Oath Without a Name: +20% damage, -10% defense. | Sworn to Nothing |
+| The Auditor’s Mark | **Nameless Mark** (Mended Nameless Mark, Quicker Nameless Mark); **Auditor’s Shadow** (Mended Auditor’s Shadow, Frugal Auditor’s Shadow) | Marked in Full, Audited | Unbalanced / Final Sum | The Count Is Kept: +20% damage, -10% defense. | Auditor’s Hand |
+| The Listening Dark | **Listening Dark** (Mended Listening Dark, Frugal Listening Dark); **Void Stitch** (Heavier Void Stitch, Frugal Void Stitch) | Silent Dark, Stitched Void | Hollow Hush / Edge of Nothing | The Dark Listens: +12% void damage, -5% defense. Your blows Silence singing enemies: the Choir hates a Whisperknight. | Void-Stitcher |
+
+### Hearthmaster (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Pot | **Ladle Strike** (Heavier Ladle Strike, Guarded Ladle Strike); **Hearty Stew** (Mended Hearty Stew, Frugal Hearty Stew) | Rich Broth, Full Bowl | Long Boil / Proper Stock | Never an Empty Pot: +20% damage, -10% defense. | Master of the Pot |
+| The Spice Rack | **Spiced Roast** (Mended Spiced Roast, Frugal Spiced Roast); **Flambé** (Heavier Flambé, Frugal Flambé) | Hot Pan, Open Flame | Charred Edge / Roasted Right | The Perfect Sear: +20% damage, -10% defense. | Spice Master |
+| The Poison Courses | **Poison Course** (Heavier Poison Course, Quicker Poison Course); **Sour Surprise** (Mended Sour Surprise, Frugal Sour Surprise) | Death Cap, Foxglove | Slow Venom / Garnish | The Dish Is Poison: +20% damage, -10% defense. | Poisoner at Table |
+| The Hearth | **Pan Guard** (Mended Pan Guard, Quicker Pan Guard); **Warm Bread** (Mended Warm Bread, Frugal Warm Bread) | Pan Guard, Bread Oven | Door Open / Kettle On | Always Room: +20% damage, -10% defense. | Keeper of the Hearth |
+| The Table | **Slow Simmer** (Mended Slow Simmer, Frugal Slow Simmer); **Last Spoonful** (Mended Last Spoonful, Frugal Last Spoonful) | Slow Simmer, Last Spoon | Second Helping / Clean Plate | A Seat for Everyone: +20% damage, -10% defense. | Host of the Table |
+
+### Truthseeker (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Study | **Study the Foe** (Heavier Study the Foe, Guarded Study the Foe); **Expose Weakness** (Heavier Expose Weakness, Frugal Expose Weakness) | Keen Observation, Probing Question | Note to Self / Deep Cut | Nothing Escapes Notice: +20% damage, -10% defense. | Master Observer |
+| The Forecast | **Anticipate** (Mended Anticipate, Frugal Anticipate); **Cold Reading** (Mended Cold Reading, Frugal Cold Reading) | Foresight, Reading the Room | Leaned Forward / Two Steps Ahead | The Next Move: +20% damage, -10% defense. | Reader of Moves |
+| The Case File | **Case Notes** (Mended Case Notes, Frugal Case Notes); **Second Opinion** (Mended Second Opinion, Frugal Second Opinion) | Case Notes, Second Opinion | Tidy Files / Shared Findings | The Whole File: +20% damage, -10% defense. | Keeper of the Case |
+| The Logical Conclusion | **Point Out the Inconsistency** (Heavier Point Out the Inconsistency, Quicker Point Out the Inconsistency); **Logical Conclusion** (Heavier Logical Conclusion, Frugal Logical Conclusion) | Reductio, Inference | Proof / Corollary | QED: +20% damage, -10% defense. | Master of Logic |
+| The Lamp | **Sharp Eye** (Mended Sharp Eye, Frugal Sharp Eye); **Lantern Light** (Mended Lantern Light, Quicker Lantern Light) | Eagle Eye, Bull’s-Eye Beam | Long Wick / Full Flame | Light on the Matter: +20% damage, -10% defense. | Bearer of the Lamp |
+
+### Hedgewitch (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Hedge | **Hedge Bolt** (Heavier Hedge Bolt, Guarded Hedge Bolt); **Bitter Brew** (Heavier Bitter Brew, Frugal Bitter Brew) | Thorn Bolt, Bitter Draught | Wild Pollen / Wicked Root | The Hedge Answers: +20% damage, -10% defense. | Hedge Speaker |
+| The Cauldron | **Stir the Cauldron** (Mended Stir the Cauldron, Frugal Stir the Cauldron); **Herb Poultice** (Mended Herb Poultice, Frugal Herb Poultice) | Simmering, Poultice | Dried Bunch / Fresh Cut | Never Empty: +20% damage, -10% defense. | Cauldron-Keeper |
+| The Familiars | **Call the Cat** (Mended Call the Cat, Frugal Call the Cat); **Call the Toad** (Mended Call the Toad, Frugal Call the Toad) | Cat’s Pace, Toad’s Patience | Shared Sight / Familiar Bond | Four Eyes: +20% damage, -10% defense. | Mistress of Familiars |
+| The Effigies | **Straw Effigy** (Mended Straw Effigy, Frugal Straw Effigy); **Wax Effigy** (Mended Wax Effigy, Frugal Wax Effigy) | Straw Man, Wax Likeness | Pinned Hair / Tied Knot | Dolls Without Number: +20% damage, -10% defense. | Effigy-Maker |
+| The Night Road | **Hedge Ward** (Mended Hedge Ward, Frugal Hedge Ward); **Night Flight** (Mended Night Flight, Frugal Night Flight) | Thorn Ward, Moonlit Flight | Broom Handle / Cold Moon | Over the Hedge: +20% damage, -10% defense. | Rider of the Night |
+
+### Soulblade (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Bond | **Bonded Strike** (Heavier Bonded Strike, Guarded Bonded Strike); **Draw the Spirit** (Mended Draw the Spirit, Frugal Draw the Spirit) | Twin Edge, Spirit Drawn | Whispered Advice / Old Voice | One Mind, Two Edges: +20% damage, -10% defense. | Wielder of the Bond |
+| The Argument | **Argued Point** (Heavier Argued Point, Frugal Argued Point); **Ring the Steel** (Mended Ring the Steel, Frugal Ring the Steel) | Sharp Point, Ringing Note | Raised Voice / Stubborn Edge | The Blade Is Right: +20% damage, -10% defense. | Sword’s Advocate |
+| The Guard | **Shared Wounds** (Mended Shared Wounds, Quicker Shared Wounds); **Parry With Opinion** (Mended Parry With Opinion, Frugal Parry With Opinion) | Shared Pain, Opinionated Parry | Warded Hilt / Lowered Point | Never Struck Twice: +20% damage, -10% defense. | Guard of the Pair |
+| The Dance | **Blade Dance** (Heavier Blade Dance, Frugal Blade Dance); **Heavy Silence** (Heavier Heavy Silence, Frugal Heavy Silence) | Whirling Edge, Silent Blow | Long Reach / Tight Spin | Every Cut Is a Step: +20% damage, -10% defense. | Duelist of the Pair |
+| The Whetstone | **Whetstone Oath** (Mended Whetstone Oath, Frugal Whetstone Oath); **Remembered Wound** (Mended Remembered Wound, Frugal Remembered Wound) | Honed Oath, Remembered | Old Scar / Kept Edge | The Edge Remembers: +20% damage, -10% defense. | Keeper of the Edge |
+
+### Facewright (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Comic Masks | **Mask of the Fool** (Heavier Mask of the Fool, Quicker Mask of the Fool); **Mask of the Sage** (Heavier Mask of the Sage, Quicker Mask of the Sage) | Bell Cap, Wise Brow | Raised Eyebrow / Long Beard | Wisdom of Fools: +20% damage, -10% defense. | Master of Comic Masks |
+| The Martial Masks | **Mask of the Hero** (Heavier Mask of the Hero, Quicker Mask of the Hero); **Mask of the Knave** (Heavier Mask of the Knave, Quicker Mask of the Knave) | Heroic Brow, Sly Grin | Fast Hands / Flashy Cape | Two Faces: +20% damage, -10% defense. | Master of Martial Masks |
+| The Dark Masks | **Mask of the Widow** (Heavier Mask of the Widow, Quicker Mask of the Widow); **Mask of the Hound** (Heavier Mask of the Hound, Quicker Mask of the Hound) | Mourning Face, Hunting Face | Deep Hood / Silent Step | Night Faces: +20% damage, -10% defense. | Master of Dark Masks |
+| The Court Masks | **Mask of the Lord** (Heavier Mask of the Lord, Quicker Mask of the Lord); **Mask of the Ghost** (Heavier Mask of the Ghost, Quicker Mask of the Ghost) | Lord’s Face, Ghost’s Face | Pale Hand / Thin Smile | Court Intrigue: +20% damage, -10% defense. | Master of Court Masks |
+| The Faithful Masks | **Mask of the Saint** (Heavier Mask of the Saint, Quicker Mask of the Saint); **Mask of the Sinner** (Heavier Mask of the Sinner, Quicker Mask of the Sinner) | Saint’s Face, Sinner’s Face | Pious Eyes / Wicked Grin | Faith and Sin: +20% damage, -10% defense. | Master of Faithful Masks |
+
+### Bellwarden (80 nodes)
+
+| Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
+|---|---|---|---|---|---|
+| The Toll | **Toll the Bell** (Heavier Toll the Bell, Guarded Toll the Bell); **Tolling for the Dead** (Heavier Tolling for the Dead, Frugal Tolling for the Dead) | Bright Toll, Dark Toll | Rope Burn / Deep Resonance | Toll Without End: +20% damage, -10% defense. | Warden of the Toll |
+| The Tones | **Low Tone** (Mended Low Tone, Frugal Low Tone); **High Tone** (Mended High Tone, Frugal High Tone) | Deep Tone, Bright Tone | Overtone / Clean Pitch | Perfect Pitch: +20% damage, -10% defense. | Tonemaster |
+| The Alarm | **Clanging Alarm** (Mended Clanging Alarm, Frugal Clanging Alarm); **Cracked Chime** (Heavier Cracked Chime, Quicker Cracked Chime) | Sour Note, Flat Chime | Alarm Bell / Fire Bell | The Town Wakes: +12% status chance, -5% defense. Your tones Silence singing enemies it hits: the Choir cannot sing over a bell. | Master of Alarms |
+| The Bell Ward | **Muffled Bell** (Mended Muffled Bell, Frugal Muffled Bell); **Bell Ward** (Mended Bell Ward, Frugal Bell Ward) | Warded Tone, Held Sound | Safe Hour / Roof Over | Sound Within Walls: +20% damage, -10% defense. | Warden of the Bell |
+| The Peal | **Resonance** (Heavier Resonance, Frugal Resonance); **The Quiet After** (Mended The Quiet After, Frugal The Quiet After) | Full Peal, Ringing Silence | Long Echo / Fading Note | The Last Echo: +20% damage, -10% defense. | Master of the Peal |
+
 ### Tree skills
 
 | Skill | Class | Cost | CD | Description |
@@ -2526,6 +2663,46 @@ Generated from the data files by `npm run content:md`.
 | **Rally the Crew** | Corsair | 15 Crew | 4 | Spend 15 Crew: the party heals 10% of max HP and gains +10% damage for 3 turns. |
 | **Storm Sails** | Corsair | 20 Crew | 4 | Spend 20 Crew: a lightning-struck gust: 180% ATK to every enemy and a 10% shield for you. |
 | **Dead Calm** | Corsair | 15 Crew | 3 | Spend 15 Crew: every enemy is Slowed for 2 turns and you gain +15% accuracy. |
+| **Pocket Sand** | Brawler | 10 Grit | 3 | Spend 10 Grit: Blind the foe for 2 turns and Weaken it. |
+| **Chair Swing** | Brawler | 20 Grit | 3 | Spend 20 Grit: an improvised weapon hits every enemy for 160% ATK. |
+| **Slam Down** | Brawler | 25 Grit | 3 | Spend 25 Grit: 260% ATK and the foe is Slowed for 2 turns. |
+| **Stagger Away** | Brawler | 10 Grit | 3 | Spend 10 Grit: dodge everything next turn (+60% dodge for 1 turn) and gain a 8% shield. |
+| **Last Orders** | Brawler | 20 Grit | 4 | Spend 20 Grit: a rousing roar: the party gains +12% damage and 6% max HP shield. |
+| **Pale Lance** | Whisperknight | 20 Hush | 2 | Spend 20 Hush: 230% ATK shadow damage. |
+| **Seal of Ruin** | Whisperknight | 20 Hush | 3 | Spend 20 Hush: a Seal that detonates for 120% ATK and a Curse on whoever acts next (3 charges). |
+| **Quiet Guard** | Whisperknight | 10 Hush | 3 | Spend 10 Hush: 25% less damage taken for 2 turns and a 6% heal. |
+| **Auditor’s Shadow** | Whisperknight | 15 Hush | 4 | Spend 15 Hush: +20% crit chance and +15% damage for 3 turns, in the Pale Auditor’s name. |
+| **Void Stitch** | Whisperknight | 25 Hush | 3 | Spend 25 Hush: 150% ATK void damage to every enemy. |
+| **Hearty Stew** | Hearthmaster | 15 Simmer | 3 | Spend 15 Simmer: the party heals 12% of max HP and gains +10% max HP for 3 turns. |
+| **Flambé** | Hearthmaster | 20 Simmer | 3 | Spend 20 Simmer: 190% ATK fire damage to every enemy and Burn. |
+| **Sour Surprise** | Hearthmaster | 15 Simmer | 4 | Spend 15 Simmer: every enemy is Poisoned and Weakened for 2 turns. |
+| **Warm Bread** | Hearthmaster | 10 Simmer | 2 | Spend 10 Simmer: heal one ally for 15% of max HP and Regen for 3 turns. |
+| **Last Spoonful** | Hearthmaster | 20 Simmer | 4 | Spend 20 Simmer: a restorative for one ally: heal 25% of max HP and cleanse its Poison. |
+| **Expose Weakness** | Truthseeker | 20 Deduction | 2 | Spend 20 Deduction: 250% MAG on a studied foe, and it is Weakened. |
+| **Cold Reading** | Truthseeker | 10 Deduction | 3 | Spend 10 Deduction: Confuse and Slow the target for 2 turns. |
+| **Second Opinion** | Truthseeker | 15 Deduction | 3 | Spend 15 Deduction: heal 15% and a shield of 10%. |
+| **Logical Conclusion** | Truthseeker | 30 Deduction | 3 | Spend 30 Deduction: 350% MAG that always crits. |
+| **Lantern Light** | Truthseeker | free | 3 | Light up the room: every enemy is Blinded for a turn and loses 15 dodge for 3 turns. Gain 12 Deduction. |
+| **Bitter Brew** | Hedgewitch | 15 Brew | 2 | Spend 15 Brew: throw a vial: 150% MAG and Poison for 4 turns. |
+| **Herb Poultice** | Hedgewitch | 15 Brew | 2 | Spend 15 Brew: heal one ally for 20% of max HP and Regen for 3 turns. |
+| **Call the Toad** | Hedgewitch | 15 Brew | 3 | Spend 15 Brew: a Cauldron Toad guards you for 8 turns. |
+| **Wax Effigy** | Hedgewitch | 20 Brew | 3 | Spend 20 Brew: an effigy that cuts for 120% MAG and Curses whoever acts next (3 charges). |
+| **Night Flight** | Hedgewitch | 10 Brew | 3 | Spend 10 Brew: +25% dodge and +15% speed for 3 turns. |
+| **Draw the Spirit** | Soulblade | 15 Bond | 3 | Spend 15 Bond: the Bonded Blade fights beside you for 8 turns. |
+| **Ring the Steel** | Soulblade | 15 Bond | 4 | Spend 15 Bond: a ringing note: every enemy is Slowed and Weakened for 2 turns. |
+| **Parry With Opinion** | Soulblade | 10 Bond | 3 | Spend 10 Bond: +30% dodge and 15% less damage for 2 turns, with comments. |
+| **Heavy Silence** | Soulblade | 25 Bond | 3 | Spend 25 Bond: 250% ATK to one foe; the blade stops talking, and it is much worse. |
+| **Remembered Wound** | Soulblade | 20 Bond | 3 | Spend 20 Bond: heal 18% of max HP; the blade remembers the last wearer’s mercy. |
+| **Mask of the Sage** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +15% magic attack and 8% cooldown reduction. Gain 12 Persona. “Let me explain, as I strike.” |
+| **Mask of the Knave** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +12% crit and +10% gold found; basic attacks lift 3 gold. Gain 12 Persona. “Whose purse is this? Mine, now.” |
+| **Mask of the Hound** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +15% speed and +10 accuracy; basic attacks may Bleed. Gain 12 Persona. “Smell that? Fear.” |
+| **Mask of the Ghost** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +20 dodge and 8% less damage taken. Gain 12 Persona. “Did you feel that? No?” |
+| **Mask of the Sinner** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +15% damage, 8% less defense; basic attacks may Burn. Gain 12 Persona. “Do not look at the hands.” |
+| **Tolling for the Dead** | Bellwarden | 20 Toll | 3 | Spend 20 Toll: 220% MAG holy damage; the foe is Feared. |
+| **High Tone** | Bellwarden | 15 Toll | 3 | Spend 15 Toll: a thin, bright tone: +15% speed and +10% crit for the party for 3 turns. |
+| **Cracked Chime** | Bellwarden | free | 2 | 150% MAG; the foe is Confused for a turn. Gain 10 Toll. |
+| **Bell Ward** | Bellwarden | 20 Toll | 4 | Spend 20 Toll: the party is shielded for 12% max HP and takes 10% less damage for 2 turns. |
+| **The Quiet After** | Bellwarden | 15 Toll | 3 | Spend 15 Toll: heal 15% of max HP and +5 HP regen for 3 turns. |
 <!-- trees:end -->
 
 ## Not yet added
@@ -2534,7 +2711,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-113 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+137 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
@@ -2651,12 +2828,36 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | Corsair | **Privateer**: It is not piracy. It is paperwork. | Privateer’s Letter (Heavier Privateer’s Letter, Frugal Privateer’s Letter) | **Plunder the Sea**: Everything left floating is yours: 300% ATK to every enemy and 100 gold; Crew fills. | Privateer Ascendant: +15% gold found, +10% physical attack. |
 | Corsair | **Stormcaptain**: The weather is on your side. It has not been told. | Hurricane Broadside (Heavier Hurricane Broadside, Frugal Hurricane Broadside) | **The Kraken Answers**: The deep takes sides: 340% ATK lightning to every enemy, all Slowed. | Stormcaptain Ascendant: +15% lightning damage, +10 speed. |
 | Corsair | **Deadeye**: One shot. You have a lot of time before it. | Deadeye Shot (Heavier Deadeye Shot, Frugal Deadeye Shot) | **One Shot, One Ship**: The last cannonball: 450% ATK to a single foe that cannot miss. | Deadeye Ascendant: +15 accuracy, +10% crit chance. |
+| Brawler | **Barroom Legend**: There was a fight. You were in it. It was a good one. | Barroom Brawl (Heavier Barroom Brawl, Frugal Barroom Brawl) | **House Clearing**: Everyone out: 320% ATK to every enemy, all Stunned for a turn; Grit fills. | Barroom Legend Ascendant: +15% physical attack, +10 speed. |
+| Brawler | **Wrestler**: The floor is your friend. You introduce it to others. | Suplex (Heavier Suplex, Frugal Suplex) | **The Big Finish**: One enormous blow: 450% ATK; you heal 20%. | Wrestler Ascendant: +15 STR, +10% physical attack. |
+| Brawler | **Gutter Scrapper**: You did not win clean. You did win. | Gutter Trick (Heavier Gutter Trick, Frugal Gutter Trick) | **Dirty Fighting Masterclass**: No rules: 300% ATK to every enemy, all Blinded and Bleeding. | Scrapper Ascendant: +15% crit chance, +10% status chance. |
+| Whisperknight | **Sealbearer**: Every wall you leave is a trap. | Seal Storm (Mended Seal Storm, Frugal Seal Storm) | **Every Seal at Once**: All your Seals fire: 310% ATK to every enemy, all Silenced and Cursed; Hush fills. | Sealbearer Ascendant: +15% status chance, +10% shadow damage. |
+| Whisperknight | **Last-Word**: You say it last. It is the only one. | The Last Word (Heavier The Last Word, Frugal The Last Word) | **Hush of Ages**: The world stops speaking: 330% ATK to every enemy, all Silenced. | Last-Word Ascendant: +15% physical attack, +10% crit chance. |
+| Whisperknight | **Unnamed**: There is nothing to call you. That is how it works. | Unspoken Name (Heavier Unspoken Name, Frugal Unspoken Name) | **The Nameless Oath**: You swear to nothing, and are heard: 300% ATK void damage to every enemy; heal 20%. | Unnamed Ascendant: +15% void damage, +10% max HP. |
+| Hearthmaster | **Feastmaker**: Everyone is full. Everyone is also invincible, briefly. | Feast of the Hearth (Mended Feast of the Hearth, Frugal Feast of the Hearth) | **The Grand Feast**: A table laid for everyone: the party heals 35%, gains +25% damage and Regen; Simmer fills. | Feastmaker Ascendant: +15% healing power, +10% max HP. |
+| Hearthmaster | **Cook of the Black Table**: The recipe has one extra ingredient. | Poisoned Banquet (Heavier Poisoned Banquet, Frugal Poisoned Banquet) | **The Last Supper of a Tyrant**: 300% ATK to every enemy, all Poisoned, Weakened and Slowed. | Cook of the Black Table Ascendant: +15% nature damage, +10% status chance. |
+| Hearthmaster | **Trailcook**: Good food, anywhere, in a quarter hour. | Trail Rations (Mended Trail Rations, Frugal Trail Rations) | **Hearth and Home**: The warmest room in the world: the party heals 25%, is shielded for 15% and takes 20% less damage for 3 turns. | Trailcook Ascendant: +15 speed, +10% dodge. |
+| Truthseeker | **Revealer**: The curtain, pulled back with some flourish. | The Reveal (Heavier The Reveal, Frugal The Reveal) | **The Whole Picture**: Everything in the room, understood: 310% MAG to every enemy, all Vulnerable and Marked. | Revealer Ascendant: +15% status chance, +10% magic attack. |
+| Truthseeker | **Prosecutor**: The evidence will speak. You will speak for it. | Closing Argument (Heavier Closing Argument, Frugal Closing Argument) | **Case Closed**: It was the one who did it: 450% MAG to one foe that cannot miss; Deduction fills. | Prosecutor Ascendant: +15% damage, +10% crit chance. |
+| Truthseeker | **Interrogator**: You asked three questions. You already knew two. | Break the Alibi (Heavier Break the Alibi, Frugal Break the Alibi) | **The Last Clue**: It was in the question: 300% MAG to every enemy, all Confused; heal 15%. | Interrogator Ascendant: +15% status chance, +10 WIS. |
+| Hedgewitch | **Cauldron-Mistress**: It is probably soup. Probably. | Boiling Over (Heavier Boiling Over, Frugal Boiling Over) | **The Witch’s Sabbath**: The whole hedge answers: 310% MAG to every enemy, all Poisoned and Cursed; Brew fills. | Cauldron-Mistress Ascendant: +15% fire damage, +10% nature damage. |
+| Hedgewitch | **Poppet-Binder**: A promise, in straw. | Pin the Doll (Heavier Pin the Doll, Frugal Pin the Doll) | **Hex of Ten Thousand Pins**: Every doll is yours: 330% shadow MAG to every enemy, all Weakened and Slowed. | Poppet-Binder Ascendant: +15% shadow damage, +10% status chance. |
+| Hedgewitch | **Familiar-Keeper**: Two animals, three opinions. | Familiar Pounce (Heavier Familiar Pounce, Frugal Familiar Pounce) | **The Hedge Comes Calling**: Cat, toad and thorn: 290% MAG to every enemy, both familiars arrive, heal 15%. | Familiar-Keeper Ascendant: +15% max HP, +10 speed. |
+| Soulblade | **The Unleashed**: Let it off its sheath. | Loose the Blade (Heavier Loose the Blade, Frugal Loose the Blade) | **The Blade Wakes**: The weapon is fully itself: 320% ATK to every enemy, the Unleashed Blade arrives, Bond fills. | The Unleashed Ascendant: +15% physical attack, +10 speed. |
+| Soulblade | **Duelist of One**: Just you, it, and one other person. | Duelist’s Oath (Heavier Duelist’s Oath, Frugal Duelist’s Oath) | **Duel Without End**: One cut that does not stop: 450% ATK to one foe, cannot miss; heal 15%. | Duelist of One Ascendant: +15% crit chance, +10 accuracy. |
+| Soulblade | **Hallowed Edge**: The weapon once belonged to a saint. She is still there. | Hallowed Edge (Heavier Hallowed Edge, Frugal Hallowed Edge) | **Last Light of the Saint**: The saint’s mercy, returned: 310% holy ATK to every enemy; the party heals 15%. | Hallowed Edge Ascendant: +15% holy damage, +10% healing power. |
+| Facewright | **Stage-Muse**: Everyone is looking at you. You are, therefore, wonderful. | Mask of the Muse (Heavier Mask of the Muse, Quicker Mask of the Muse) | **Curtain Call**: Take the final bow: 300% ATK to every enemy; heal 20%. | Stage-Muse Ascendant: +15% resource gain, +10 speed. |
+| Facewright | **Mask-Tyrant**: You are only wearing it. That is the horror. | Mask of the Tyrant (Heavier Mask of the Tyrant, Quicker Mask of the Tyrant) | **Rule of the Throne**: The Tyrant’s hour: 340% ATK to every enemy, all Slowed; +25% damage for you for 3 turns. | Mask-Tyrant Ascendant: +15% damage, +10% max HP. |
+| Facewright | **Unmasker**: Under every face is another face. You know where the seam is. | The Unmasking (Heavier The Unmasking, Frugal The Unmasking) | **The Grand Masquerade**: Every face at once: 320% ATK to every enemy, all Confused and Feared; Persona fills. | Unmasker Ascendant: +15% crit chance, +10% status chance. |
+| Bellwarden | **Greatbell Ringer**: One big one, and everyone remembers where they were. | The Great Bell (Heavier The Great Bell, Frugal The Great Bell) | **The Bell That Ends It**: One toll, heard everywhere: 340% MAG to every enemy, all Stunned and Silenced. | Greatbell Ringer Ascendant: +15% holy damage, +10% magic attack. |
+| Bellwarden | **Counter-Choir**: The Choir cannot sing over a bell. | Counter-Chime (Heavier Counter-Chime, Frugal Counter-Chime) | **Silencing the Choir**: 320% MAG; every enemy is Silenced for 3 turns and the party shielded for 12%. | Counter-Choir Ascendant: +15% status chance, +10 accuracy. |
+| Bellwarden | **Dawn-Ringer**: The bells for the morning, rung for those who got there. | Hallowed Peal (Mended Hallowed Peal, Frugal Hallowed Peal) | **The Sunrise Bells**: Every bell in the valley: the party heals 30%, gains +20% damage and Regen; Toll fills. | Dawn-Ringer Ascendant: +15% healing power, +10% resource gain. |
 <!-- specializations:end -->
 
 ## General skills (81)
 
 <!-- general:start -->
-192 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+200 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -2827,6 +3028,14 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Mind Lash (Grimoire)** (level 15) | grimoire | Epic | Mind Lash | Use the Mind Lash skill of another class at 70% power. |
 | **Flag Signal (Grimoire)** (level 15) | grimoire | Epic | Flag Signal | Use the Flag Signal skill of another class at 70% power. |
 | **Pistol Shot (Grimoire)** (level 15) | grimoire | Epic | Pistol Shot | Use the Pistol Shot skill of another class at 70% power. |
+| **Dirty Jab (Grimoire)** (level 15) | grimoire | Epic | Dirty Jab | Use the Dirty Jab skill of another class at 70% power. |
+| **Hushed Blade (Grimoire)** (level 15) | grimoire | Epic | Hushed Blade | Use the Hushed Blade skill of another class at 70% power. |
+| **Ladle Strike (Grimoire)** (level 15) | grimoire | Epic | Ladle Strike | Use the Ladle Strike skill of another class at 70% power. |
+| **Study the Foe (Grimoire)** (level 15) | grimoire | Epic | Study the Foe | Use the Study the Foe skill of another class at 70% power. |
+| **Hedge Bolt (Grimoire)** (level 15) | grimoire | Epic | Hedge Bolt | Use the Hedge Bolt skill of another class at 70% power. |
+| **Bonded Strike (Grimoire)** (level 15) | grimoire | Epic | Bonded Strike | Use the Bonded Strike skill of another class at 70% power. |
+| **Mask of the Fool (Grimoire)** (level 15) | grimoire | Epic | Mask of the Fool | Use the Mask of the Fool skill of another class at 70% power. |
+| **Toll the Bell (Grimoire)** (level 15) | grimoire | Epic | Toll the Bell | Use the Toll the Bell skill of another class at 70% power. |
 | **Sunder Halo (Grimoire)** (level 40) | grimoire | Legendary | Sunder Halo | Use the Sunder Halo skill of another class at 70% power. |
 | **Hollow Shroud (Grimoire)** (level 40) | grimoire | Legendary | Hollow Shroud | Use the Hollow Shroud skill of another class at 70% power. |
 | **Radiant Ward (Grimoire)** (level 40) | grimoire | Legendary | Radiant Ward | Use the Radiant Ward skill of another class at 70% power. |
@@ -2896,6 +3105,14 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | Mindwright | **Archivist Pell Orrow**: Has not been surprised since the second Age of Rain. Is working on it. | Lv 15: Archivist Pell Orrow, Bandit Thug | Now You See Me, Dirty Stab |
 | Marshal | **High Marshal Oswin Thrale**: Has won eleven wars on paper and one on foot. Prefers paper. | Lv 15: High Marshal Oswin Thrale, Bandit Thug | Shield Bash, Dirty Stab |
 | Corsair | **Captain Odalie Brack**: Retired twice. The ship objected both times. | Lv 15: Captain Odalie Brack, Bandit Thug | Shield Bash, Dirty Stab |
+| Brawler | **Big Marta Quill**: Has thrown out three mayors and one dragon. The dragon came back. | Lv 15: Big Marta Quill, Bandit Thug | Shield Bash, Dirty Stab |
+| Whisperknight | **Ser Imrel the Quiet**: Took an oath so quiet that nobody has been able to remember what it was. He keeps it anyway. | Lv 15: Ser Imrel the Quiet, Bandit Thug | Shield Bash, Dirty Stab |
+| Hearthmaster | **Cookmother Oda Brune**: Fed a besieged city for two winters on a barrel of lard and sheer disappointment. | Lv 15: Cookmother Oda Brune, Bandit Thug | Shield Bash, Dirty Stab |
+| Truthseeker | **Inspector Ismene Vaul**: Solved the case of the missing lighthouse. It was never lost. It was moved. | Lv 15: Inspector Ismene Vaul, Bandit Thug | Now You See Me, Dirty Stab |
+| Hedgewitch | **Goodwife Ashby Tarn**: Has been blamed for every bad harvest since her grandmother’s time. Has caused two. | Lv 15: Goodwife Ashby Tarn, Bandit Thug | Now You See Me, Dirty Stab |
+| Soulblade | **Warden Quenna Iss**: Has carried the same sword for forty years. They have been arguing for thirty-nine. | Lv 15: Warden Quenna Iss, Bandit Thug | Shield Bash, Dirty Stab |
+| Facewright | **Maestro Veyl Dorrance**: Has not shown the same face to the same person twice. Several people have noticed. | Lv 15: Maestro Veyl Dorrance, Bandit Thug | Now You See Me, Dirty Stab |
+| Bellwarden | **Bell-Reeve Jonas Orrin**: Rang the same bell every dawn for sixty years, and has opinions about the one in the next town. | Lv 15: Bell-Reeve Jonas Orrin, Bandit Thug | Shield Bash, Dirty Stab |
 
 ### Hybrid prestige classes
 
@@ -3559,7 +3776,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-876 quests, 270 NPCs, 565 dialogues, 14 companions, 17 endings.
+924 quests, 278 NPCs, 573 dialogues, 14 companions, 17 endings.
 
 ### Main story (54)
 
@@ -4052,7 +4269,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Against Morrath** | 30 | Archivist Tamsin | Defeat the herald of Morrath (fight) |
 | **The Covenant of Mirrin** | 40 | Archivist Tamsin | Offer the shards (deliver) |
 
-### Class trials (233)
+### Class trials (281)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -4256,6 +4473,46 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Drowned Hold** | 20 | Captain Odalie Brack | Clear drowned grotto (clear) |
 | **The Hag’s Toll** | 25 | Captain Odalie Brack | Face the test of nerve (fight) |
 | **The Black Flag Raised** | 30 | Captain Odalie Brack | Face the final lesson (fight); Speak to your mentor (talk) |
+| **One for the Road** | 12 | Big Marta Quill | Reach the shrine of Grimvald (visit) |
+| **The Back-Alley Bet** | 16 | Big Marta Quill | Defeat the trouble on the road (fight) |
+| **The Warren Tap-House** | 20 | Big Marta Quill | Clear goblin warren (clear) |
+| **The Champion of the Pit** | 25 | Big Marta Quill | Face the test of nerve (fight) |
+| **Last Orders** | 30 | Big Marta Quill | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Candle Unlit** | 12 | Ser Imrel the Quiet | Reach the shrine of Morrath (visit) |
+| **The Audited Hall** | 16 | Ser Imrel the Quiet | Defeat the trouble on the road (fight) |
+| **The Crypt of Unspoken Names** | 20 | Ser Imrel the Quiet | Clear old crypt (clear) |
+| **The Seal That Would Not Hold** | 25 | Ser Imrel the Quiet | Face the test of nerve (fight) |
+| **The Count Is Kept** | 30 | Ser Imrel the Quiet | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Pot for the Road** | 12 | Cookmother Oda Brune | Reach the shrine of Hesha (visit) |
+| **The Starving Village** | 16 | Cookmother Oda Brune | Defeat the trouble on the road (fight) |
+| **The Warren Kitchen** | 20 | Cookmother Oda Brune | Clear goblin warren (clear) |
+| **The Banquet of the Brood** | 25 | Cookmother Oda Brune | Face the test of nerve (fight) |
+| **The Last Supper** | 30 | Cookmother Oda Brune | Face the final lesson (fight); Speak to your mentor (talk) |
+| **The First Question** | 12 | Inspector Ismene Vaul | Reach the shrine of Aurelis (visit) |
+| **The Missing Cargo** | 16 | Inspector Ismene Vaul | Defeat the trouble on the road (fight) |
+| **The Webbed Study** | 20 | Inspector Ismene Vaul | Clear spider hollow (clear) |
+| **The Alibi of the Dead** | 25 | Inspector Ismene Vaul | Face the test of nerve (fight) |
+| **Case Closed** | 30 | Inspector Ismene Vaul | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Pinch of Salt** | 12 | Goodwife Ashby Tarn | Reach the shrine of Ysolde (visit) |
+| **The Blighted Field** | 16 | Goodwife Ashby Tarn | Defeat the trouble on the road (fight) |
+| **The Webbed Lane** | 20 | Goodwife Ashby Tarn | Clear spider hollow (clear) |
+| **The Wolf at the Hedge** | 25 | Goodwife Ashby Tarn | Face the test of nerve (fight) |
+| **The Last Brew** | 30 | Goodwife Ashby Tarn | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Voice in the Hilt** | 12 | Warden Quenna Iss | Reach the shrine of Kael (visit) |
+| **The Rival Heir** | 16 | Warden Quenna Iss | Defeat the trouble on the road (fight) |
+| **The Armory Crypt** | 20 | Warden Quenna Iss | Clear old crypt (clear) |
+| **The Saint’s Last Wielder** | 25 | Warden Quenna Iss | Face the test of nerve (fight) |
+| **The Blade Wakes** | 30 | Warden Quenna Iss | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Face in the Mirror** | 12 | Maestro Veyl Dorrance | Reach the shrine of Hesha (visit) |
+| **The Rival Troupe** | 16 | Maestro Veyl Dorrance | Defeat the trouble on the road (fight) |
+| **The Warren Masque** | 20 | Maestro Veyl Dorrance | Clear goblin warren (clear) |
+| **The Mask That Would Not Come Off** | 25 | Maestro Veyl Dorrance | Face the test of nerve (fight) |
+| **The Final Face** | 30 | Maestro Veyl Dorrance | Face the final lesson (fight); Speak to your mentor (talk) |
+| **A Bell for the Morning** | 12 | Bell-Reeve Jonas Orrin | Reach the shrine of Solenne (visit) |
+| **The Cracked Tower** | 16 | Bell-Reeve Jonas Orrin | Defeat the trouble on the road (fight) |
+| **The Crypt of Unrung Bells** | 20 | Bell-Reeve Jonas Orrin | Clear old crypt (clear) |
+| **The Choir at the Pass** | 25 | Bell-Reeve Jonas Orrin | Face the test of nerve (fight) |
+| **The Last Toll** | 30 | Bell-Reeve Jonas Orrin | Face the final lesson (fight); Speak to your mentor (talk) |
 | **Trial of the Warrior** | 15 | Sword-Master Bram | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Mage** | 15 | Archmage Velis | Read a skillbook (deed); Win the trial (state) |
 | **Trial of the Rogue** | 15 | Nell the Knife | Land 12 critical hits (deed); Win the trial (state) |
@@ -4289,6 +4546,14 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Trial of the Mindwright** | 15 | Archivist Pell Orrow | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Marshal** | 15 | High Marshal Oswin Thrale | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Corsair** | 15 | Captain Odalie Brack | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Brawler** | 15 | Big Marta Quill | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Whisperknight** | 15 | Ser Imrel the Quiet | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Hearthmaster** | 15 | Cookmother Oda Brune | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Truthseeker** | 15 | Inspector Ismene Vaul | Land 10 critical hits (deed); Win the trial (state) |
+| **Trial of the Hedgewitch** | 15 | Goodwife Ashby Tarn | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Soulblade** | 15 | Warden Quenna Iss | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Facewright** | 15 | Maestro Veyl Dorrance | Win 5 battles (deed); Win the trial (state) |
+| **Trial of the Bellwarden** | 15 | Bell-Reeve Jonas Orrin | Win 5 battles (deed); Win the trial (state) |
 
 ### Hybrid trials (45)
 
@@ -4441,6 +4706,14 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 | Mindwright | -30% | - |
 | Marshal | -30% | - |
 | Corsair | -30% | - |
+| Brawler | -30% | - |
+| Whisperknight | -30% | - |
+| Hearthmaster | -30% | - |
+| Truthseeker | -30% | - |
+| Hedgewitch | -30% | - |
+| Soulblade | -30% | - |
+| Facewright | -30% | - |
+| Bellwarden | -30% | - |
 
 - **Brother Aldric**, Priest of Solenne: Human Cleric (Saint), follows Solenne, met in Brightwater. Likes smiting the dead, helping people, mercy, healing; dislikes raising the dead, stealing, running from evil.
   - Bond: 20: Steady Hands (+15 Healing Power.) or Sunlit Fury (+12% Holy damage.) · 40: Morning Ward (Every ally starts battle with a shield of 8% of max HP.) or Zeal (+8% max HP and +10 Status Resist.) · 60: Answered Prayer (Once per battle, below 30% HP: heal every ally for 20%.) or Lance of Dawn (+15% Divine Power and +10% Magic Attack.) · 80: Living Saint (+20 Healing Power and +10% Ultimate Charge.) or Unbroken Faith (+15% max HP and +10% defense.) · Oath: Lantern-Bearer (+10% damage and +10 Holy resistance; heals the party 5% at the start of each turn of his.)
@@ -4488,7 +4761,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 - **Ratchet:** Factor Moll Pennick (Keeper of the Open Ledger), Tick (Forged Artificer), Foreman Hask (Shift Foreman of Ratchet), Engineer Lorne (Chief Engineer), Ten (Forged Veteran), Rosa (Steam-Medic), Nix (Gear-Scrapper), Dagmar (Union Representative), Ordwin (Priest of Ordrun), Wren (Wandering Tinker)
 - **Ashfold:** Keeper Orsolya (Teller of the Turning), Reeve Halwin (Village Reeve), Gran Pell (Hearth-Keeper), Tobin (Farm Boy), Brannoc (Village Smith), Brother Ansel (Priest of Solenne), Dessa (Miller’s Wife), Orrin (Hunter), Mavis (Keeper of the Temporary Inn)
 - **Wreck’s End:** Ringmaster Zephyr Quill (Master of Misrule), Zephyra Lark (Wind-Dancer), Harbormaster Fenn (Master of the Port), Jaya Brineheart (Queen of the Wreckers), Sol (Bridge-Weaver), Mari (Shell-Seller), Vanya (Storm-Chaser), Oakes (Salvage-Bosun), Trin (Gull-Keeper), Hedda (Matron of the Rope & Anchor)
-- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld, Bruna Oathless, Ilen of the Gap, Aurelia the Unwinged, Ser Halric Vane, Brannoch One-Ear, Master Oyen Lo, Tessaly Greyroad, Isolde Sparkwright, Warden Cael Dray, Madame Oriel Kast, Archivist Pell Orrow, High Marshal Oswin Thrale, Captain Odalie Brack
+- **Every arena:** Sword-Master Bram, Archmage Velis, Nell the Knife, Mother Aurelie, Warden Sylas, The Pale Tutor, Master Ren, Lyra Silvertongue, Ser Haldane Vael, Elder Maeve Thornwood, Magister Corvane Ash, Calling-Mother Isaure, Apothecary Dunmore Pell, Voice-of-Stone Tamsin, Hourkeeper Vessa Lund, Foreman Iseult Brant, Prima Odalys Ferne, Scribe-Mother Hallowe, Inquisitor Sabine Crowe, Stonewife Orsa Keld, Bruna Oathless, Ilen of the Gap, Aurelia the Unwinged, Ser Halric Vane, Brannoch One-Ear, Master Oyen Lo, Tessaly Greyroad, Isolde Sparkwright, Warden Cael Dray, Madame Oriel Kast, Archivist Pell Orrow, High Marshal Oswin Thrale, Captain Odalie Brack, Big Marta Quill, Ser Imrel the Quiet, Cookmother Oda Brune, Inspector Ismene Vaul, Goodwife Ashby Tarn, Warden Quenna Iss, Maestro Veyl Dorrance, Bell-Reeve Jonas Orrin
 <!-- story:end -->
 
 ## Bosses, elites, bestiary and achievements
