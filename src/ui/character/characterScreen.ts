@@ -18,6 +18,7 @@ import { difficultyPanel, mendPanel, wardrobePanel } from './appearancePanel';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { formatStat, skillCard, statBreakdownTooltip } from '../format';
+import { foldPanel } from '../components/fold';
 import { el, type Screen } from '../screen';
 
 const GROUPS: [string, StatId[]][] = [
@@ -214,7 +215,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, this.titles(), difficultyPanel(this.session, this.render), ...mendPanel(this.session, this.render), wardrobePanel(this.session, this.render), ...(late || own ? [this.stable()] : []), ...(late ? [this.legacy()] : []), classes, this.reputation(), skills, ...(late ? [paragon] : [])),
+          el('div', { class: 'sheet-col' }, foldPanel(this.titles(), p.title ?? 'none chosen'), foldPanel(difficultyPanel(this.session, this.render), p.difficulty), ...mendPanel(this.session, this.render), foldPanel(wardrobePanel(this.session, this.render), 'looks and dyes'), ...(late || own ? [foldPanel(this.stable(), 'pet and mount')] : []), ...(late ? [foldPanel(this.legacy(), s.state.ngPlus > 0 ? `NG+${s.state.ngPlus}` : 'first playthrough')] : []), foldPanel(classes, p.classes.map((cp) => content.classes.get(cp.classId).name).join(' / ')), foldPanel(this.reputation(), `${content.factions.all().length} factions`), foldPanel(skills, `${knownSkills(p).length} known`), ...(late ? [paragon] : [])),
         ),
       ),
     );

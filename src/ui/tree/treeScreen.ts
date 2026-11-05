@@ -25,6 +25,7 @@ import type { GameSession } from '../../engine/state/gameState';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { skillCard } from '../format';
+import { foldPanel } from '../components/fold';
 import { el, type Screen } from '../screen';
 import { branchGlyph, uiGlyph } from '../art/uiGlyphs';
 import { describeNode, KIND_LABEL } from './nodeText';
@@ -423,22 +424,15 @@ export class TreeScreen implements Screen {
       ...(progress && progress.slot !== 'primary' ? [el('div', { class: 'small' }, `${masteryPointsLeft(p, this.classId)} Mastery Point(s): secondary-class keystones and capstones each need one (1 per ${MULTICLASS.masteryPointEvery} class levels).`)] : []),
       ...(hybrid ? [el('p', { class: 'dim small' }, `${hybrid.description} Points: ${MULTICLASS.hybridBasePoints} on unlock, +1 per ${MULTICLASS.hybridLevelsPerPoint} combined ${hybrid.classes.map((id) => content.classes.get(id).name).join('/')} levels above ${MULTICLASS.hybridLevel}. Tiers need ${MULTICLASS.hybridTierGate} points each.`)] : []),
       el('p', { class: 'dim small' }, 'Double-click or shift-click to learn. Right-click to refund. Drag to pan, scroll to zoom.'),
-      ...(progress ? [this.specPanel()] : []),
-      el('h3', {}, 'Builds'),
-      el('div', { class: 'tabs' }, ...builds),
-      nameInput,
-      saveGear,
-      reset,
-      el('p', { class: 'dim small' }, 'Switching builds is free and re-equips the build’s saved gear from your bags.'),
-      this.sharePanel(),
+      ...(progress ? [foldPanel(this.specPanel(), chosenSpec(p, this.classId)?.name ?? 'choose a path')] : []),
+      foldPanel(el('div', {}, el('h3', {}, 'Builds'), el('div', { class: 'tabs' }, ...builds), nameInput, saveGear, reset, el('p', { class: 'dim small' }, 'Switching builds is free and re-equips the build’s saved gear from your bags.')), 'saved loadouts'),
+      foldPanel(this.sharePanel(), 'export / import'),
       ...this.perkPanel(),
       el('h3', {}, 'Find'),
       search,
       center,
       ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-      el('h3', {}, 'Legend'),
-      el('div', { class: 'tree-legend small dim' }, ...(['active', 'modifier', 'minor', 'notable', 'choice', 'keystone', 'capstone'] as const).map((k) => el('div', {}, KIND_LABEL[k]))),
-      el('p', { class: 'dim small' }, `${tree.nodes.length} nodes in ${tree.branches.length} branches.`),
+      foldPanel(el('div', {}, el('h3', {}, 'Legend'), el('div', { class: 'tree-legend small dim' }, ...(['active', 'modifier', 'minor', 'notable', 'choice', 'keystone', 'capstone'] as const).map((k) => el('div', {}, KIND_LABEL[k]))), el('p', { class: 'dim small' }, `${tree.nodes.length} nodes in ${tree.branches.length} branches.`)), `${tree.nodes.length} nodes`),
     );
   }
 

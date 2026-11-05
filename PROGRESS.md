@@ -1014,7 +1014,9 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 ### UI declutter pass
 - Town screen: Renown, Town Fortunes, Stables, Library, faction hall, Investments and House cards fold to one line (open state kept per visit); launcher blurbs shortened; People spans two columns with a two-column NPC list. Page height 2129px -> 1626px.
 - World screen sidebar: action buttons moved to the top; region rule text, weather text and controls hint moved to tooltips.
-- Not yet checked for clutter: Character, Inventory, Codex, Party and combat screens.
+- Character sheet: Title, Difficulty, Wardrobe, Classes, Reputation, Skills, Pet & Mount and Legacy panels fold to one line via `components/fold.ts` (`foldPanel`). Height 2132px -> 781px.
+- Skill tree sidebar: Specialization, Builds, Share and Legend fold; it no longer scrolls.
+- Not yet checked: Pantheon, Codex lists, Inventory, Party and combat screens.
 
 ## Known bugs
 - None known.

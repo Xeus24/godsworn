@@ -458,3 +458,27 @@
     grid-column: auto;
   }
 }
+
+/* Folded character-sheet panels (see components/fold.ts). */
+.fold-panel > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.fold-panel > summary::before {
+  content: '▸ ';
+  color: var(--gold, #c8a040);
+}
+
+.fold-panel[open] > summary::before {
+  content: '▾ ';
+}
+
+.fold-panel[open] > summary {
+  margin-bottom: 6px;
+}
+
+.panel.folded {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
