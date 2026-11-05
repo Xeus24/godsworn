@@ -17,6 +17,7 @@ import { realmPanel, type RealmView } from './realmPanel';
 import { completion, overallCompletion } from '../../engine/achievements/completion';
 import { AIRSHIP, SHIP_LEVELS } from '../../data/world/ship';
 import { destinations, hasAirship, shipLevel } from '../../engine/world/ship';
+import { foldPanel } from '../components/fold';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
@@ -37,6 +38,15 @@ const TABS: [Tab, string][] = [
   ['maps', 'Maps'],
   ['statistics', 'Statistics'],
   ['completion', 'Completion'],
+];
+
+/** The fifteen tabs, grouped so only a few show at once. */
+const TAB_GROUPS: { label: string; tabs: Tab[] }[] = [
+  { label: 'Creatures', tabs: ['bestiary', 'families'] },
+  { label: 'World', tabs: ['realm', 'maps', 'ship', 'lore'] },
+  { label: 'People', tabs: ['companions', 'backgrounds', 'heart'] },
+  { label: 'Lore & items', tabs: ['compendium', 'items', 'cards'] },
+  { label: 'Progress', tabs: ['achievements', 'completion', 'statistics'] },
 ];
 
 const TIER_NAMES: Record<string, string> = { normal: 'Normal', elite: 'Elite', champion: 'Champion', miniboss: 'Miniboss', boss: 'Boss', worldBoss: 'World Boss', punisher: 'Divine Punisher' };
@@ -142,8 +152,17 @@ export class CodexScreen implements Screen {
 
   private render = (): void => {
     if (!this.root) return;
-    const tabs = el('nav', { class: 'tabs codex-tabs' }, ...TABS.map(([id, label]) => {
-      const b = el('button', { class: `tab${this.tab === id ? ' active' : ''}` }, label);
+    const group = TAB_GROUPS.find((g) => g.tabs.includes(this.tab)) ?? TAB_GROUPS[0]!;
+    const groupBar = el('nav', { class: 'tabs codex-tabs codex-groups' }, ...TAB_GROUPS.map((g) => {
+      const b = el('button', { class: `tab${g === group ? ' active' : ''}` }, g.label);
+      b.addEventListener('click', () => {
+        this.tab = g.tabs[0]!;
+        this.render();
+      });
+      return b;
+    }));
+    const tabs = el('nav', { class: 'tabs codex-tabs' }, ...group.tabs.map((id) => {
+      const b = el('button', { class: `tab${this.tab === id ? ' active' : ''}` }, TABS.find(([t]) => t === id)?.[1] ?? id);
       b.addEventListener('click', () => {
         this.tab = id;
         this.render();
@@ -151,7 +170,7 @@ export class CodexScreen implements Screen {
       return b;
     }));
     const body = this.tab === 'heart' ? heartPanel(this.session, () => this.render(), this.heartOpen) : this.tab === 'compendium' ? compendiumPanel(() => this.render(), this.compendiumOpen) : this.tab === 'realm' ? realmPanel(this.session, () => this.render(), this.realmOpen) : this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
-    this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), tabs, body));
+    this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), groupBar, tabs, body));
   };
 
   // ---------------------------------------------------------------- overview tabs
@@ -330,10 +349,11 @@ export class CodexScreen implements Screen {
     const earned = all.filter((a) => s.achievements.earned(a.id));
     const groups = ACHIEVEMENT_CATEGORIES.map((cat) => {
       const list = all.filter((a) => a.category === cat.id);
-      return el(
+      const got = list.filter((a) => s.achievements.earned(a.id));
+      return foldPanel(el(
         'section',
         { class: 'panel' },
-        el('h3', {}, `${cat.name} (${list.filter((a) => s.achievements.earned(a.id)).length}/${list.length})`),
+        el('h3', {}, cat.name),
         ...list.map((a) => {
           const got = s.achievements.earned(a.id);
           const secret = a.hidden && !got;
@@ -345,7 +365,7 @@ export class CodexScreen implements Screen {
             el('span', { class: 'dim small' }, `${a.points} pts`),
           );
         }),
-      );
+      ), `${got.length}/${list.length} earned`);
     });
     return el(
       'div',
@@ -360,7 +380,7 @@ export class CodexScreen implements Screen {
   private milestones(): HTMLElement {
     const pts = this.session.player.achievementPoints ?? 0;
     const next = ACHIEVEMENT_MILESTONES.find((m) => pts < m.points);
-    return el(
+    return foldPanel(el(
       'section',
       { class: 'panel' },
       el('h3', {}, 'What points do'),
@@ -369,7 +389,7 @@ export class CodexScreen implements Screen {
         const got = pts >= m.points;
         return el('div', { class: `codex-achievement${got ? ' earned' : ''}` }, el('span', { class: 'codex-check' }, got ? '★' : '☆'), el('div', {}, el('b', {}, `${m.points} points`), el('div', { class: 'small' }, m.description)), el('span', { class: 'dim small' }, got ? 'Active' : `${m.points - pts} to go`));
       }),
-    );
+    ), next ? `next milestone at ${next.points} points` : 'every milestone reached');
   }
 
   // ---------------------------------------------------------------- lore
@@ -389,12 +409,12 @@ export class CodexScreen implements Screen {
       { class: 'codex-scroll' },
       el('section', { class: 'panel' }, el('h2', {}, 'Legendary Codex'), el('div', {}, `${found.size} of ${uniques.length} hand-made items found. The shapes are all you get until you hold one.`)),
       ...groups.map((g) =>
-        el(
+        foldPanel(el(
           'section',
           { class: 'panel' },
-          el('h3', {}, `${content.rarities.get(g.r as never).name} (${g.list.filter((u) => found.has(u.id)).length}/${g.list.length})`),
+          el('h3', {}, content.rarities.get(g.r as never).name),
           el('div', { class: 'codex-grid' }, ...g.list.map((u) => (found.has(u.id) ? el('div', { class: 'codex-lore' }, icon(u, false), el('b', {}, u.name), el('p', { class: 'small' }, u.lore ?? '')) : el('div', { class: 'codex-lore dim' }, icon(u, true), el('b', {}, '???'), el('p', { class: 'small' }, `Level ${u.level}+`))))),
-        ),
+        ), `${g.list.filter((u) => found.has(u.id)).length}/${g.list.length} found`),
       ),
     );
   }
@@ -409,12 +429,12 @@ export class CodexScreen implements Screen {
         'div',
         { class: 'codex-grid' },
         ...content.zones.all().map((z) =>
-          el(
+          foldPanel(el(
             'section',
             { class: 'panel' },
             el('h3', {}, z.name),
             ...content.lore.filter((l) => l.zone === z.id).map((l) => (found.includes(l.id) ? el('div', { class: 'codex-lore' }, el('b', {}, l.title), el('p', { class: 'small' }, l.text)) : el('div', { class: 'codex-lore dim' }, el('b', {}, '???'), el('p', { class: 'small' }, 'Not yet found.')))),
-          ),
+          ), `${content.lore.filter((l) => l.zone === z.id && found.includes(l.id)).length}/${content.lore.filter((l) => l.zone === z.id).length} pages`),
         ),
       ),
     );
@@ -432,7 +452,7 @@ export class CodexScreen implements Screen {
         'div',
         { class: 'codex-grid' },
         ...content.zones.all().map((z) =>
-          el(
+          foldPanel(el(
             'section',
             { class: 'panel' },
             el('h3', {}, z.name),
@@ -441,7 +461,7 @@ export class CodexScreen implements Screen {
                 ? el('div', { class: 'codex-lore' }, el('b', {}, `${t.name}${dug(t.id) ? ' (dug up)' : ''}`), el('p', { class: 'small' }, `“${t.clue}”`))
                 : el('div', { class: 'codex-lore dim' }, el('b', {}, '???'), el('p', { class: 'small' }, 'Not yet found.')),
             ),
-          ),
+          ), `${content.treasures.filter((t) => t.zone === z.id && held.includes(t.id)).length}/${content.treasures.filter((t) => t.zone === z.id).length} maps`),
         ),
       ),
     );

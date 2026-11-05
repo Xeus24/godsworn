@@ -1019,6 +1019,7 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Pantheon god details: Offerings, Minor blessings, Scripture, Trial of Apostleship and Defender path fold (`foldHeadings`); the pane no longer scrolls. Inventory and Party already fit.
 - Arena (proving grounds): the Class Trainers/Hybrid block is folded, and trivial fights (4+ levels below you) are hidden behind a toggle. At level 60 the page went 16,729px -> 2,119px.
 - Not yet checked: in-battle combat screen and Codex list paging (Codex files were being edited elsewhere).
+- Second pass: Codex tabs grouped into five (Creatures, World, People, Lore & items, Progress) with a sub-row; Achievements, Legendary Codex, Lore and Maps fold per group (page 6,824px and 14,308px -> 768px); Paragon Board folds on the Character sheet (2,111px -> 781px); bestiary sprites paint lazily. Rules for new UI are now in CLAUDE.md.
 
 ## Known bugs
 - None known.
