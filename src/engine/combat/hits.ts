@@ -67,6 +67,7 @@ function otherMultiplier(b: Battle, attacker: Combatant, target: Combatant, opts
   if (target.defending) m *= COMBAT.defendMult;
   if (target.stagger && target.stagger.brokenTurns > 0) m *= COMBAT.brokenDamageMult;
   if (b.hasFlag(attacker, 'bonusVsBosses') && BOSS_TIERS.has(target.tier)) m *= COMBAT.bonusVsBosses;
+  if (b.hasFlag(attacker, 'rule:ghoul') && attacker.statuses.some((s) => s.id === 'wet')) m *= 1.25;
   if (b.hasFlag(attacker, 'strongerAtNight') && b.timeOfDay === 'night') m *= COMBAT.timeOfDayBonus;
   if (b.hasFlag(attacker, 'strongerByDay') && b.timeOfDay === 'day') m *= COMBAT.timeOfDayBonus;
   const focus = attacker.resources.focus ?? 0;

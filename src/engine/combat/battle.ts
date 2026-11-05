@@ -1,4 +1,5 @@
 import { observeOath } from './oaths';
+import { newRules, observeRules } from './rules';
 import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
 import { content, type Content } from '../../data';
 import type { Rng } from '../core/rng';
@@ -79,6 +80,8 @@ export class Battle {
   mercy = { deeds: 0, hesha: false };
   /** Gold on hand for bribes. */
   purse = 0;
+  /** Tricks of great foes and enemy families (`combat/rules.ts`). */
+  readonly rules = newRules();
   /** How the fight began: an ambush (they act first) or a preemptive strike (you do). */
   opening?: 'ambush' | 'preemptive';
   /** Naval battle: the ship's broadside at the start. */
@@ -123,6 +126,7 @@ export class Battle {
   emit(event: BattleEvent): void {
     this.buffer.push(event);
     observeOath(this, event);
+    observeRules(this, event);
   }
 
   log(text: string): void {

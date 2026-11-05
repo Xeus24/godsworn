@@ -10,6 +10,18 @@ export interface MechanicDef {
 }
 
 export const MECHANICS: MechanicDef[] = [
+  { id: 'rule:tithe', text: 'Each hit on the party takes a share of its gold; a win returns it with 25% interest.' },
+  { id: 'rule:mother', text: 'Mother Ninefold: her last phase follows the order her heads were severed.' },
+  { id: 'rule:head', text: 'One of Mother Ninefold’s nine heads.' },
+  { id: 'rule:wyrm', text: 'Redraws the battlefield every third turn (party rows shift).' },
+  { id: 'rule:understudy', text: 'Copies the party’s last three moves: skills make it stronger, plain attacks and defending do not.' },
+  { id: 'rule:conductor', text: 'Fights on a four-beat rhythm; dancers and bards can keep time against it.' },
+  { id: 'rule:emperor', text: 'Built from the three strongest surviving Grudgebound.' },
+  { id: 'rule:oathless', text: 'Sworn to nothing: holy damage passes through it.' },
+  { id: 'rule:ink', text: 'Copies Glyphs the party places.' },
+  { id: 'rule:clocktide', text: 'Acts on a fixed turn pattern the party can learn.' },
+  { id: 'rule:ghoul', text: 'Grows stronger when Wet, and soaks itself in rain and fog.' },
+  { id: 'rule:moth', text: 'Hits blind the target and drink its mana.' },
   { id: 'firstStrike', text: 'Always act first in the opening round.' },
   { id: 'reviveOnce', text: 'Once per battle, survive a killing blow with 1 HP.' },
   { id: 'burnSpreadsOnDeath', text: 'Burning enemies spread Burn to their allies when they die.' },

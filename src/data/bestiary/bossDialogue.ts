@@ -48,6 +48,14 @@ const HAND: Record<string, BossLines> = {
   'tally-keeper': ['“Fifty marks, and one more. Welcome to the count.”', '“That’s not how the sum is meant to go!”', '“The ledger… is closed…”'],
   'the-insomniac': ['“Don’t sleep. Don’t blink. Don’t you dare.”', '“I can feel you wanting to rest.”', '“Finally… a night… without dreams…”'],
   'the-last-puppet': ['“The strings were cut. I refuse to fall.”', '“Encore! Encore!”', '“Exit… stage… left…”'],
+  'tithe-collector': ['“Good day. You are in arrears. Shall we settle?”', '“Interest, interest, interest.”', '“Paid in full. With, ah, interest. Take it, take it.”'],
+  'mother-ninefold': ['“Nine of us. One of you. The arithmetic is not kind.”', '“Which of us will you silence first?”', '“Hush, children. It is only… sleep.”'],
+  'cartographer-wyrm': ['“Hold still. I am drawing the edge of the world, and you are in it.”', '“Here be dragons. It is me. Here is me.”', '“Unfinished… I never drew the way out.”'],
+  'the-understudy': ['“I know your lines. I know all your lines.”', '“No, no, you are not supposed to do THAT.”', '“I… cannot… follow… that.”'],
+  'saint-gallowmere': ['“Eight of them walked the road with a lantern. I walked it with a rope.”', '“Every kindness has a mirror, and I am the glass.”', '“The ninth saint. The last page. Close it gently.”'],
+  'last-conductor': ['“Take your places. We begin on the downbeat.”', '“Tempo! Keep time, or be kept.”', '“The hymn… has no… final… note…”'],
+  'grudgebound-emperor': ['“Every grudge you ever made now kneels to me.”', '“They sing of you in the dark. It is not a kind song.”', '“A crown of scars. It was always yours, you know.”'],
+  'sir-remnant': ['“Halt. I hold this door.”', '“I swore. I swore. What did I swear?”', '“The door is open. The oath is kept. I may rest.”'],
   'crown-warden': ['“No one wears the crown without answering to me.”', '“The Crown watches. The Crown judges.”', '“The Crown… approves…”'],
 };
 

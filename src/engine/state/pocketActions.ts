@@ -192,7 +192,7 @@ export class PocketActions {
   faceWicks(): PResult {
     if (!this.p.hunted) return fail('Nothing is hunting you.');
     const rng = new Rng(hash(`wicks:${this.s.state.clock.day}`));
-    const pool = ['hollow-woodsman', 'dusk-dryad', 'bone-collector', 'moth-priest'].filter((id) => content.enemies.find(id));
+    const pool = ['lantern-moth', 'moth-swarm', 'lantern-moth-queen', 'lantern-moth'].filter((id) => content.enemies.find(id));
     const wave = (n: number): string[] => Array.from({ length: n }, () => rng.pick(pool));
     return this.fight('wicks', 'The Wick-Eaters', this.s.player.level + LANTERN.wickLevelOffset, [wave(2), wave(3)], 6);
   }

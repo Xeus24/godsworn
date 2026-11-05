@@ -859,7 +859,7 @@ Generated from the data files by `npm run content:md`.
 
 **Curiosities (81):** Loaded Dice, Skeleton Key, Two-Headed Coin, Rubber Chicken, Bent Horseshoe, Jar of Fireflies, Unsent Letter, Cracked Hourglass, Message in a Bottle, Misprinted Spellbook, Polished War Medal, Sun-Bleached Skull, Gilded Mousetrap, Moon-Stuffed Pillow, Chip of a Cornerstone, Little Wind-Bell, Dated Ledger Page, Dead Man’s Pocketwatch, Saint’s Fingerbone Charm, Pressed Thornberry, Lopsided Tin Soldier, Torn Treasure Chart, Crowned Key, Moth-Eaten Playbill, Glass Feather, Miller's Lucky Penny, Straw Crown, Amber Honeycomb, Shepherd Whistle, Twin-Name Willow Ring, Royal Tax Ledger, Brass Windvane, Poacher Tally-Stick, Seed of the Last Grove, Bottled Whisper, Silver Fox Collar, Unlit Lantern Core, Antler Circlet, Moth-Eaten Folio, Tide-Stained Chart, Foreman Lunchbox, Humming Geode, Clapper of the Drowned Bell, Eyeless Fish Idol, Calcified Key, Fungal Ledger, Caravan Master Seal, Priest's Glass Tear, Scorpion Crown Spur, Mirage Bucket, Bone Chess Queen, Fulgurite Blossom, Sandworm Eggshell, Frost-Stilled Lute String, Climber Prayer Flag, Yeti Hair Charm, Comb of Frozen Hours, Snowbound Vow-Scroll, Pilgrim Ember-Box, Captain's Frozen Log, Black Mara's Compass, Keeper Lamp Wick, Pearl Comb, Bottled Squall, Salt Merchant Seal, Whalebone Veil, Kraken Sucker-Ring, Wagered Hammerhead, Cradle of Cinders, Obsidian Hand-Mirror, Salamander Scale Charm, Anvil Tuning Fork, Magma Pearl, Ash Prophet Bowl, Gaoler Keyring, Splinter of the Black Throne, Queen's Unsent Letter, Executioner Whetstone, Silent Jester Bell, Shard of a Broken Oath, Hollow Knight Gauntlet
 
-**Mechanic flags (18):** `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
+**Mechanic flags (30):** `rule:tithe` (Each hit on the party takes a share of its gold; a win returns it with 25% interest.) · `rule:mother` (Mother Ninefold: her last phase follows the order her heads were severed.) · `rule:head` (One of Mother Ninefold’s nine heads.) · `rule:wyrm` (Redraws the battlefield every third turn (party rows shift).) · `rule:understudy` (Copies the party’s last three moves: skills make it stronger, plain attacks and defending do not.) · `rule:conductor` (Fights on a four-beat rhythm; dancers and bards can keep time against it.) · `rule:emperor` (Built from the three strongest surviving Grudgebound.) · `rule:oathless` (Sworn to nothing: holy damage passes through it.) · `rule:ink` (Copies Glyphs the party places.) · `rule:clocktide` (Acts on a fixed turn pattern the party can learn.) · `rule:ghoul` (Grows stronger when Wet, and soaks itself in rain and fog.) · `rule:moth` (Hits blind the target and drink its mana.) · `firstStrike` (Always act first in the opening round.) · `reviveOnce` (Once per battle, survive a killing blow with 1 HP.) · `burnSpreadsOnDeath` (Burning enemies spread Burn to their allies when they die.) · `bonusVsBosses` (Deal 25% more damage to bosses.) · `strongerAtNight` (Deal 20% more damage at night.) · `strongerByDay` (Deal 20% more damage during the day.) · `dotsCanCrit` (Damage over time can critically strike.) · `critsIgnoreDefense` (Critical hits ignore half of the target’s defense and resistance.) · `reach` (Melee attacks can strike the back row.) · `overhealShield` (Half of all overhealing becomes a shield.) · `stealthOnCombatStart` (Begin every battle in stealth.) · `shatterAlways` (Ice damage against Burning enemies always Shatters.) · `twinSongs` (Two songs can play at once.) · `extraSummon` (Summoning skills raise one extra minion.) · `executioner` (Attacks against enemies below 20% HP always crit.) · `spellEcho` (20% chance for spells to cast a second time for free.) · `bloodMagic` (Skills cost HP instead of MP.) · `armorTraining` (No speed penalty for wearing armor only a secondary class allows.) · `immune:<status>`
 <!-- items:end -->
 
 ## Combat
@@ -957,7 +957,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (16):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.)
 
-### Enemies (492)
+### Enemies (527)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1453,6 +1453,41 @@ Generated from the data files by `npm run content:md`.
 | **Vault Mimic** | 55 | normal | mimic, construct | front | defensive | Shield Bash, War Cry | earth +40% |
 | **Void Mimic** | 80 | normal | mimic, void | front | aggressive | Savage Bite, Banshee Wail |  |
 | **The Mimic Emperor** | 70 | boss | mimic, construct | front | aggressive | Savage Bite, Shield Bash, War Cry | earth +40% |
+| **The Tithe-Collector** | 32 | boss | humanoid, bandit, collector | front | aggressive | Dirty Stab, Goblin Hex, Enrage |  |
+| **Mother Ninefold** | 42 | boss | beast, hydra, god-cursed | front | aggressive | Savage Bite, Grave Chill, Curse of Ages, Enrage | shadow +30%, holy -15% |
+| **The Cartographer Wyrm** | 38 | boss | dragon, wyrm, mapmaker | front | aggressive | Savage Bite, Tremor, Frost Breath, Enrage | arcane +30% |
+| **The Understudy** | 34 | boss | humanoid, mimic, actor | front | aggressive | Dirty Stab, Goblin Hex, Shield Bash, Enrage |  |
+| **Saint Gallowmere** | 58 | boss | undead, saint, fallen | front | aggressive | Dark Cleave, Grave Chill, Curse of Ages, Void Rend, Enrage | holy +40%, shadow +60% |
+| **The Last Conductor** | 50 | boss | spirit, choir, caster | back | caster | Banshee Wail, Shadow Bolt, Thunderstorm, Enrage | shadow +40%, lightning +20%, earth -25% |
+| **The Grudgebound Emperor** | 70 | boss | humanoid, grudgebound, emperor | front | aggressive | Dark Cleave, Void Rend, Corruption Wave, Enrage | shadow +30%, holy -10% |
+| **Sir Remnant** | 30 | boss | construct, undead, knight, oathbound | front | aggressive | Shield Bash, Dark Cleave, Enrage | physical +20%, lightning -20%, earth +40% |
+| **The Blinding Head** | 42 | normal | beast, hydra, head | back | aggressive | Shadow Bolt |  |
+| **The Grave Head** | 42 | normal | beast, hydra, head | back | aggressive | Curse of Ages |  |
+| **The Wrathful Head** | 42 | normal | beast, hydra, head | back | aggressive | Dark Cleave |  |
+| **The Thorned Head** | 42 | normal | beast, hydra, head | back | aggressive | Goblin Hex |  |
+| **The Laughing Head** | 42 | normal | beast, hydra, head | back | aggressive | Dirty Stab |  |
+| **The Hammered Head** | 42 | normal | beast, hydra, head | back | aggressive | Shield Bash |  |
+| **The Drowning Head** | 42 | normal | beast, hydra, head | back | aggressive | Grave Chill |  |
+| **The Reading Head** | 42 | normal | beast, hydra, head | back | aggressive | Arc Lightning |  |
+| **The Weeping Head** | 42 | normal | beast, hydra, head | back | aggressive | Banshee Wail |  |
+| **Oathless Soldier** | 44 | normal | humanoid, oathless, unsworn | front | aggressive | Dark Cleave, Shield Bash | holy +100%, physical +10% |
+| **Oathless Standard-Bearer** | 46 | normal | humanoid, oathless, unsworn | back | support | Crude Mending, Banshee Wail | holy +100%, shadow +20% |
+| **Oathless Captain** | 50 | elite | humanoid, oathless, unsworn | front | aggressive | Dark Cleave, Void Rend, Shield Bash | holy +100%, physical +15% |
+| **Ink Blot** | 34 | normal | spirit, inkwraith, ooze | front | aggressive | Shadow Bolt | physical +30%, arcane -20%, earth -25% |
+| **Inkwraith Scribe** | 36 | normal | spirit, inkwraith, caster | back | caster | Shadow Bolt, Curse of Ages | shadow +30%, earth -25% |
+| **Inkwraith Matriarch** | 40 | elite | spirit, inkwraith, caster | front | caster | Shadow Bolt, Grave Chill, Curse of Ages | shadow +40%, physical +25%, earth -25% |
+| **Clocktide Sentry** | 46 | normal | construct, clocktide | front | aggressive | Shield Bash | physical +20%, lightning -25%, earth +40% |
+| **Clocktide Gunner** | 48 | normal | construct, clocktide | back | aggressive | Piercing Volley | lightning -25%, earth +40% |
+| **Clocktide Warden** | 52 | elite | construct, clocktide | front | aggressive | Earthshatter | physical +25%, lightning -30%, earth +40% |
+| **Saltghoul** | 38 | normal | undead, saltghoul, drowned | front | aggressive | Savage Bite | ice +50%, fire -20%, lightning -20% |
+| **Brine Ghoul** | 40 | normal | undead, saltghoul, drowned | front | aggressive | Tidal Wave, Grave Chill | ice +50%, fire -20% |
+| **Saltghoul Reaver** | 44 | elite | undead, saltghoul, drowned | front | aggressive | Cutlass Flurry, Savage Bite | ice +60%, fire -25%, lightning -25% |
+| **Lantern Moth** | 24 | normal | beast, insect, moth, lantern-moth | front | aggressive | Goblin Hex | fire -30% |
+| **Moth Swarm** | 26 | normal | beast, insect, moth, lantern-moth | front | aggressive | Goblin Hex, Banshee Wail | fire -35%, physical +20% |
+| **Lantern-Moth Queen** | 30 | elite | beast, insect, moth, lantern-moth | front | aggressive | Shadow Bolt, Goblin Hex | fire -35% |
+| **Hollowed Pilgrim** | 60 | normal | humanoid, hollowed, pilgrim | front | aggressive | Dark Cleave, Curse of Ages | holy -20%, shadow +20% |
+| **Hollowed Penitent** | 62 | normal | humanoid, hollowed, pilgrim | back | caster | Banshee Wail, Shadow Bolt, Corruption Wave | holy -25%, shadow +25% |
+| **Hollowed Prior** | 66 | elite | humanoid, hollowed, pilgrim | front | aggressive | Dark Cleave, Void Rend, Curse of Ages | holy -25%, shadow +30% |
 
 **Summons (50):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald
 
@@ -4072,7 +4107,7 @@ Each companion in a fight gives every enemy 150% more HP (regeneration still hea
 
 Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss), 50 of its own turns (boss), 60 of its own turns (worldBoss), and grows angrier every 4 turns after (Enraged: +40% damage and 10% more speed per stack). Telegraphed attacks take a wind-up turn first: Break the boss to interrupt it, or Defend.
 
-125 scripted bosses:
+133 scripted bosses:
 
 | Boss | Phases | Telegraphs |
 |---|---|---|
@@ -4201,6 +4236,14 @@ Every miniboss, boss and world boss enrages after 40 of its own turns (miniboss)
 | Aspect of Mirrin (enrages at 80) | - | - |
 | The Nameless One | 66%: **The Blank Page** (adds False Herald); 33%: **Unwriting** (+25% Damage Bonus) | Unmaking every 5 turns; Doom Mark every 5 turns from phase 2 |
 | The Last Light | 60%: **Ten Voices** (15% more Speed); 30%: **Last Rites** (+25% Damage Bonus) (heals or shields) | Final Judgment every 4 turns |
+| The Tithe-Collector | 50%: **Late Fees** (+20% Damage Bonus) | Crushing Blow every 5 turns |
+| Mother Ninefold | 60%: **The Heads Awake** (+10% Damage Bonus) | Grave Toll every 5 turns |
+| The Cartographer Wyrm | 50%: **New Edition** (+15% Damage Bonus) (heals or shields) | Glacial Tomb every 5 turns |
+| The Understudy | 40%: **Improvisation** (15% more Speed) | Piercing Volley every 5 turns |
+| Saint Gallowmere | 88%: **Unburdened Ferry** (+5% Damage Bonus); 76%: **The Root Unforgiving** (+10% increased Defense); 64%: **Candle Snuffer** (heals or shields); 52%: **Dust That Drinks** (10% more Speed); 40%: **The Long Night Sleeps You** (+10% Damage Bonus); 28%: **The Door Opens Inward** (heals or shields); 16%: **Blood Left on the Anvil** (+15% Damage Bonus); 8%: **The Name Eats the Citadel** (+20% Damage Bonus, 15% more Speed) | Doom Mark every 5 turns |
+| The Last Conductor | 50%: **Crescendo** (+15% Damage Bonus, 10% more Speed) | Unmaking every 4 turns |
+| The Grudgebound Emperor | 60%: **The Court Assembles** (+15% Damage Bonus); 30%: **Crown of Scars** (+25% Damage Bonus) (heals or shields) | Final Judgment every 5 turns |
+| Sir Remnant | 50%: **The Oath Remembered** (+10% increased Defense) | Crushing Blow every 6 turns |
 
 Telegraphed attacks:
 

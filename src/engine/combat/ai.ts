@@ -1,5 +1,6 @@
 import type { SkillDef } from '../skills/types';
 import { bossForcedAction, isTelegraphOnly } from './bosses';
+import { ruleAction } from './rules';
 import type { Battle } from './battle';
 import { continuesChain } from './covenant';
 import { talkOptions } from './talk';
@@ -66,6 +67,10 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai,
   if (forced) {
     if (!planning) delete x.intent;
     return forced;
+  }
+  if (!planning && x.side === 'enemy') {
+    const pattern = ruleAction(b, x, () => pickFoe(b, x, b.c.skills.get('shield-bash'), profile));
+    if (pattern) return pattern;
   }
   // An enemy carries out the plan the party has seen, unless it has been spoiled.
   if (!planning && x.side === 'enemy' && b.foresight) {

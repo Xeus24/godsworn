@@ -159,3 +159,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## Pockets, the Wilds and the dungeon rules (section H-4a)
 `PocketActions` (`s.pockets`, `realm.marvels.pockets`). New places are plain `AreaDef`/`DungeonDef` rows flagged `late` (placed last on the zone map); `hidden` areas (Cinderhollow's night face) are reached by `redirect`. `WorldActions.placeAt` -> `onMap` sets `world.godless` for the Wilds (read by `characterModifiers` and by `createEncounterBattle`, which locks the Covenant); `step` -> `pockets.step` returns the place's harm. Hourly rules (lamp oil, candle wax, Cinderhollow's face) are driven from `timeChanged` by absolute hour, so long rests count correctly. Fights (Wick-Eaters, Wardens, the Candle, a painting stepping out) are `s.specials['pocket']`.
+
+## Great foes and families (section H-4b)
+Tricks are data-switched by enemy `flags` (`rule:*`, listed in `data/mechanics.ts`) and implemented in `combat/rules.ts`: `Battle.emit` forwards every event to `observeRules` (gold theft, head tally, row redraws, rehearsal stacks, beats, wet, moth bites), and `ai.chooseAction` asks `ruleAction` for fixed patterns. Adding a foe with an existing trick needs data only. `FoesActions` (`s.foes`) starts each great foe as a `special` gauntlet (`s.specials['greatfoe']`).

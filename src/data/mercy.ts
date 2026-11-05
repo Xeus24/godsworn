@@ -33,6 +33,7 @@ export const MERCY_FOES: Record<string, string> = {
   corsair: '“A kind captain is worse than a cruel one. Now I have to think about it.”',
   'fallen-paladin': '“I had forgotten what it was to be forgiven. It is heavier than I recall.”',
   'unsworn-adept': '“They told me the oath was a cage. You’ve not even asked me to take one.”',
+  'sir-remnant': '“I swore to hold the door. Is the door still there? ...No. Then I may set the sword down.” The armor kneels, empty, at rest.',
   'poacher-chief': '“Hask is done with the wood, and the wood with Hask. Let us leave it at that.”',
   'erased-knight': 'The knight’s armor tilts a degree, like a head being lowered. Nobody inside says anything.',
   'hollow-courtier': '“I was invited to a party. I think it was a very long time ago.”',

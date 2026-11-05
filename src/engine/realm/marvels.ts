@@ -265,7 +265,15 @@ export const createPockets = (): PocketsState => ({
   masque: { mask: 0, room: 0, done: false }, gallery: { room: 0, seen: [], done: false }, wick: { wax: 0, hour: 0, done: false },
 });
 
+export interface FoesState {
+  /** Great foes (113-120) put down, by id: the day of the first victory and the count. */
+  defeated: Record<string, number>;
+  wins: Record<string, number>;
+}
+export const createFoes = (): FoesState => ({ defeated: {}, wins: {} });
+
 export interface MarvelsState {
+  foes?: FoesState;
   pockets?: PocketsState;
   civic?: CivicState;
   worldly?: WorldlyState;
