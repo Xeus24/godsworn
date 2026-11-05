@@ -292,7 +292,7 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   }
 
   // Side maps: four areas to explore from each zone (islands and sky areas are reached by ship and airship instead), and passes to zones that are not next door.
-  for (const area of c.areas.filter((a) => a.zone === zone.id && !a.access)) {
+  for (const area of c.areas.filter((a) => a.zone === zone.id && !a.access && !a.late)) {
     const p = spotFor();
     if (p) add({ id: `area-${area.id}`, kind: 'area', x: p[0], y: p[1], ref: area.id, label: area.name });
   }
@@ -306,6 +306,16 @@ export function generateZone(zone: ZoneDef, c: Content = content): TileMap {
   for (const echo of ECHOES.filter((x) => x.zone === zone.id)) {
     const p = spotFor();
     if (p) add({ id: `lore-${echo.id}`, kind: 'lore', x: p[0], y: p[1], ref: echo.id, label: `Echo of ${echo.name}` });
+  }
+
+  // Pocket regions, the Godless Wilds and their dungeons (placed after everything older, so older layouts do not move).
+  for (const area of c.areas.filter((a) => a.zone === zone.id && !!a.late && !a.hidden)) {
+    const p = spotFor();
+    if (p) add({ id: `area-${area.id}`, kind: 'area', x: p[0], y: p[1], ref: area.id, label: area.name });
+  }
+  for (const d of c.dungeons.filter((x) => x.zone === zone.id && !!x.late)) {
+    const p = spotFor();
+    if (p) add({ id: `dungeon-${d.id}`, kind: 'dungeon', x: p[0], y: p[1], ref: d.id, label: d.name });
   }
 
   // The Chronicle of Ages: two ruins in every region. Which part of the generated history each holds is decided by the save (see `engine/realm/chronicle.ts`).

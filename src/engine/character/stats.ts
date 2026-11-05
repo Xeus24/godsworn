@@ -78,7 +78,8 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   const primaryClass = char.classes.find((p) => p.slot === 'primary') ?? char.classes[0];
   const trait = primaryClass ? c.classes.get(primaryClass.classId).trait : undefined;
   if (trait && primaryClass) mods.push(...withSource(trait.modifiers, `trait:${primaryClass.classId}`));
-  return mods;
+  // The Godless Wilds: no god answers, so blessings and Sigils are silent (Covenant Chains are locked in battle).
+  return char.world.godless ? mods.filter((m) => !/^(blessing|sigil):/.test(m.source ?? '')) : mods;
 }
 
 /**

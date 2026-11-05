@@ -3,6 +3,7 @@ import { BATCH1_AREAS } from '../regions/batch1';
 import { BATCH2_AREAS, BATCH2_PASSES } from '../regions/batch2';
 import { BATCH3_AREAS, BATCH3_PASSES } from '../regions/batch3';
 import { BATCH4_AREAS, BATCH4_PASSES } from '../regions/batch4';
+import { POCKET_AREAS, POCKET_LORE } from '../pockets';
 
 /** What kind of place an area is: it shapes the terrain and what is lying about. */
 export type AreaTheme = 'grove' | 'ruin' | 'cave' | 'shore' | 'camp' | 'peak' | 'oasis' | 'district';
@@ -21,6 +22,10 @@ export interface AreaDef {
   /** A short page of lore found here. */
   lore: string;
   access?: { by: 'ship' | 'airship'; level: number };
+  /** Pocket regions and the Godless Wilds: placed after everything else in the zone so older layouts do not move. */
+  late?: boolean;
+  /** Reached only by a rule (Cinderhollow by night), so the zone map shows no entrance for it. */
+  hidden?: boolean;
 }
 
 type Row = [id: string, name: string, zone: string, theme: AreaTheme, description: string, lore: string];
@@ -98,10 +103,11 @@ export const AREAS: AreaDef[] = [
   ...BATCH4_AREAS,
   ...make(SEA, (i) => ({ by: 'ship', level: [1, 1, 2, 2, 3, 4][i] ?? 1 })),
   ...make(SKY, () => ({ by: 'airship', level: 1 })),
+  ...POCKET_AREAS,
 ];
 
 /** Each area keeps one page of lore on its map. */
-export const AREA_LORE: import('../../engine/world/types').LoreDef[] = AREAS.map((a) => ({ id: `lore-area-${a.id}`, zone: a.zone, title: a.name, text: a.lore }));
+export const AREA_LORE: import('../../engine/world/types').LoreDef[] = AREAS.filter((a) => !a.late).map((a) => ({ id: `lore-area-${a.id}`, zone: a.zone, title: a.name, text: a.lore })).concat(POCKET_LORE);
 
 /** Short cuts between zones that are not neighbours on the road: the world is a web, not a line. */
 export interface PassDef {

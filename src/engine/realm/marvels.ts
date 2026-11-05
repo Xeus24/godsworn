@@ -225,7 +225,48 @@ export interface CivicState {
 
 export const createCivic = (): CivicState => ({ record: {}, escapes: [], arrests: 0, halls: {}, year: 1, seats: {}, ruler: 'order-of-dawn', used: {}, backing: {}, raiders: {} });
 
+export interface PocketsState {
+  /** Lanternmarch (100): oil in the lamp, the absolute hour last counted, and the Wick-Eaters on your heels. */
+  oil: number;
+  burnHour: number;
+  hunted: boolean;
+  lanternDone: boolean;
+  /** The Ossuary Coast (101): marrow carried, and bone-forged boons bought. */
+  marrow: number;
+  wrights: number;
+  /** The Weeping Steppe (102): hospitality per clan, and the camp cycle it was last given in. */
+  hosp: Record<string, number>;
+  hospCycle: Record<string, number>;
+  /** Verdigris Canals (103): bridges that are raised (40), the tide cycle they were set for, the day the Exchange last paid. */
+  raised: boolean[];
+  tide: number;
+  paidDay: number;
+  /** Cinderhollow (104): ash and emberbloom gathered. */
+  ash: number;
+  bloom: number;
+  /** The Inverted Library (105): which way is down, and books read. */
+  flipped: boolean;
+  read: string[];
+  /** The Godless Wilds (99): the maps visited, and the secret boss. */
+  wilds: string[];
+  /** Dungeon rules (106-112). */
+  bells: { noise: number; paths: number; done: boolean };
+  throat: { wades: number; done: boolean };
+  paper: { prog: number; shortcuts: number; done: boolean };
+  hourglass: { bits: boolean[]; done: boolean };
+  masque: { mask: number; room: number; done: boolean };
+  gallery: { room: number; seen: number[]; done: boolean };
+  wick: { wax: number; hour: number; done: boolean };
+}
+
+export const createPockets = (): PocketsState => ({
+  oil: 0, burnHour: 0, hunted: false, lanternDone: false, marrow: 0, wrights: 0, hosp: {}, hospCycle: {}, raised: [], tide: -1, paidDay: -99, ash: 0, bloom: 0, flipped: false, read: [], wilds: [],
+  bells: { noise: 0, paths: 0, done: false }, throat: { wades: 0, done: false }, paper: { prog: 0, shortcuts: 0, done: false }, hourglass: { bits: [], done: false },
+  masque: { mask: 0, room: 0, done: false }, gallery: { room: 0, seen: [], done: false }, wick: { wax: 0, hour: 0, done: false },
+});
+
 export interface MarvelsState {
+  pockets?: PocketsState;
   civic?: CivicState;
   worldly?: WorldlyState;
   society?: SocietyState;

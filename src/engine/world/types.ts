@@ -90,6 +90,8 @@ export interface DungeonDef {
   hint?: string;
   /** An optional hard side path with a champion pack and a better hoard. */
   hard?: boolean;
+  /** Placed after everything else in the zone, so older layouts do not move. */
+  late?: boolean;
 }
 
 export interface WeatherDef {
@@ -239,6 +241,8 @@ export interface HouseState {
 
 /** Reputation, house and trophies travel with the character (they carry into NG+). */
 export interface WorldProgress {
+  /** Inside the Godless Wilds: blessings, Sigils and Covenant Chains do not work. */
+  godless?: boolean;
   reputation: Record<string, number>;
   /** Town renown (see data/world/renown.ts), by town id. */
   renown?: Record<string, number>;

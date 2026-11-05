@@ -21,7 +21,7 @@ function give(s: GameSession, id: string, qty: number): void {
 
 describe('areas', () => {
   it('gives every zone four side maps, plus six islands and four sky areas', () => {
-    for (const z of content.zones.filter((x) => !x.off)) expect(content.areas.filter((a) => a.zone === z.id && !a.access).length, z.id).toBe(4);
+    for (const z of content.zones.filter((x) => !x.off)) expect(content.areas.filter((a) => a.zone === z.id && !a.access && !a.late).length, z.id).toBe(4);
     expect(content.areas.filter((a) => a.access?.by === 'ship')).toHaveLength(6);
     expect(content.areas.filter((a) => a.access?.by === 'airship')).toHaveLength(4);
   });
@@ -44,7 +44,7 @@ describe('areas', () => {
       }
       for (const e of map.entities.filter((e) => e.kind !== 'exit' && !e.hidden)) expect(seen.has(`${e.x},${e.y}`), `${a.id} ${e.id}`).toBe(true);
       expect(exit.ref).toBe(a.access ? 'stormcoast' : a.zone);
-      if (!a.access) expect(mapFor(a.zone).entities.some((e) => e.kind === 'area' && e.ref === a.id), a.id).toBe(true);
+      if (!a.access && !a.hidden) expect(mapFor(a.zone).entities.some((e) => e.kind === 'area' && e.ref === a.id), a.id).toBe(true);
     }
   });
 

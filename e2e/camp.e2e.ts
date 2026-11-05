@@ -97,7 +97,7 @@ test.describe('World secrets and the Completion tracker', () => {
     page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
     await newHero(page);
     await page.keyboard.press('g');
-    await expect(page.getByText(/Secrets found here: 0\/\d+/)).toBeVisible();
+    await expect(page.getByText(/Secrets: 0\/\d+/)).toBeVisible();
     // Meadowlands hides a night-only secret: make it midnight, stand beside it (found on the real map) and step onto it.
     const dir = await page.evaluate(async () => {
       const g = (window as unknown as { __game: any }).__game;
@@ -117,7 +117,7 @@ test.describe('World secrets and the Completion tracker', () => {
     });
     expect(dir, 'an ungated secret with an open neighbour exists in the first region').not.toBe('');
     await page.keyboard.press(dir);
-    await expect(page.getByText(/Secrets found here: 1\/\d+/)).toBeVisible();
+    await expect(page.getByText(/Secrets: 1\/\d+/)).toBeVisible();
 
     // The Codex's Completion tab.
     await page.keyboard.press('b');

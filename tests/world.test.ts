@@ -63,7 +63,7 @@ function winPending(s: GameSession, encounter: Parameters<typeof createEncounter
 describe('maps', () => {
   it('are generated the same way every time, with the road’s 8 zones and 10 dungeons (and the newer regions off it)', () => {
     expect(content.zones.filter((z) => !z.off).length).toBe(8);
-    expect(content.dungeons.filter((d) => !content.zones.get(d.zone).off).length).toBe(10);
+    expect(content.dungeons.filter((d) => !content.zones.get(d.zone).off && !d.late).length).toBe(10);
     const zone = content.zones.get('whisperwood');
     expect(generateZone(zone).tiles).toBe(generateZone(zone).tiles);
   });
@@ -87,7 +87,7 @@ describe('maps', () => {
     for (const z of content.zones.all()) {
       const m = mapFor(z.id);
       const kinds = m.entities.map((e) => e.kind);
-      expect(kinds.filter((k) => k === 'dungeon')).toHaveLength(z.dungeons.length);
+      expect(kinds.filter((k) => k === 'dungeon')).toHaveLength(z.dungeons.length + content.dungeons.filter((d) => d.zone === z.id && !!d.late).length);
       expect(kinds.filter((k) => k === 'shrine').length).toBeGreaterThanOrEqual(z.shrines.length);
       expect(kinds).toContain('waypoint');
       expect(kinds).toContain('worldBoss');

@@ -204,6 +204,7 @@ export class WorldActions {
 
   private placeAt(map: string, x: number, y: number): void {
     this.world.position = { map, x, y };
+    this.s.pockets.onMap(map);
     this.look();
     this.s.realm?.onArrive(this.zone.id);
   }
@@ -246,7 +247,8 @@ export class WorldActions {
     if (target && entityActive(this.world, map, target, this.day)) return this.interact(target);
     // The region's own rule: meters, vents and getting lost.
     const dungeon = content.dungeons.find(map.id);
-    const mech = dungeon ? dungeonStep(this.s.player, dungeon.gimmick) : mechanicStep(this.s.player, this.zone, this.s.timeOfDay === 'night', tileAt(map, nx, ny) === '=', this.s.rng);
+    const pocket = this.s.pockets.step(map.id);
+    const mech = pocket.harm || pocket.message ? pocket : dungeon ? dungeonStep(this.s.player, dungeon.gimmick) : mechanicStep(this.s.player, this.zone, this.s.timeOfDay === 'night', tileAt(map, nx, ny) === '=', this.s.rng);
     if (mech.harm) {
       const stats = characterStats(this.s.player);
       this.s.player.hp = Math.max(1, this.s.player.hp - Math.max(1, Math.round(stats.maxHp * mech.harm)));
@@ -408,7 +410,7 @@ export class WorldActions {
         return { kind: 'map', message: `You enter ${dm.name}.` };
       }
       case 'area': {
-        const am = mapFor(e.ref as string);
+        const am = mapFor(this.s.pockets.redirect(e.ref as string));
         this.placeAt(am.id, am.spawns.entrance[0] + 1, am.spawns.entrance[1]);
         this.world.grace = ENCOUNTER_GRACE;
         return { kind: 'map', message: `You come to ${am.name}.` };

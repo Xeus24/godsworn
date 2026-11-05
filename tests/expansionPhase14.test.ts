@@ -18,7 +18,7 @@ describe('four more new regions', () => {
       expect(z.dungeons, id).toHaveLength(3);
       expect(content.enemies.get(z.worldBoss).tier, id).toBe('worldBoss');
       expect(z.mechanic, id).toBeDefined();
-      expect(content.areas.filter((a) => a.zone === id), id).toHaveLength(4);
+      expect(content.areas.filter((a) => a.zone === id && !a.late), id).toHaveLength(4);
       const map = mapFor(id);
       expect(map.entities.some((e) => e.kind === 'exit' && e.arrive === 'pass'), id).toBe(true);
       expect(map.entities.some((e) => e.kind === 'exit' && (e.arrive === 'west' || e.arrive === 'east')), id).toBe(false);

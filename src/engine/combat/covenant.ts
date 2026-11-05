@@ -18,6 +18,8 @@ export interface CovenantChain {
 export interface CovenantState {
   gauge: number;
   ready: boolean;
+  /** Inside the Godless Wilds the Covenant does not answer. */
+  locked?: boolean;
   chain?: CovenantChain;
 }
 
@@ -36,7 +38,7 @@ export function continuesChain(c: CovenantChain, x: Combatant, skill: SkillDef):
 /** Fills the gauge (only while no chain is running). */
 export function covenantGain(b: Battle, amount: number): void {
   const c = b.covenant;
-  if (c.ready || c.chain || amount <= 0) return;
+  if (c.ready || c.chain || c.locked || amount <= 0) return;
   c.gauge = Math.min(COVENANT.max, c.gauge + amount);
   if (c.gauge >= COVENANT.max) {
     c.ready = true;

@@ -83,7 +83,7 @@ describe('four new regions', () => {
 
 describe('dungeon tricks', () => {
   it('floods, gates and darkness: every thirteen-dungeon gimmick is set', () => {
-    const fresh = content.dungeons.filter((d) => NEW_ZONES.includes(d.zone));
+    const fresh = content.dungeons.filter((d) => NEW_ZONES.includes(d.zone) && !d.late);
     expect(fresh).toHaveLength(13);
     for (const d of fresh) {
       expect(d.gimmick, d.id).toBeDefined();

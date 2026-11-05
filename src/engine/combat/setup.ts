@@ -216,6 +216,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
     aiSharpness: difficulty.enemy.aiSharpness,
     c,
   });
+  if (hero.world.godless) battle.covenant.locked = true;
   battle.pacifist = hasRule(hero, 'pacifist', c);
   if (opts.mercy) battle.mercy = opts.mercy;
   if (opts.autoTactics) battle.autoTactics = opts.autoTactics;
