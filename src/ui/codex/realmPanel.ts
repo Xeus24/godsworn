@@ -23,10 +23,11 @@ import { oathsPanel } from './oathsPanel';
 import { fellowshipPanel } from './fellowshipPanel';
 import { societyPanel } from './societyPanel';
 import { worldlyPanel } from './worldlyPanel';
+import { civicPanel } from './civicPanel';
 import { fatesPanel, omensPanel, seasonsPanel, toolsPanel } from './pilgrimagePanel';
 import { cardSpirePanel, painterPanel, sunderedPanel, watersPanel } from './wondersPanel';
 
-export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies' | 'observatory' | 'emberfall' | 'waters' | 'cardspire' | 'sundered' | 'painter' | 'seasons' | 'omens' | 'tools' | 'fates' | 'faith' | 'land' | 'road' | 'trials' | 'games' | 'oaths' | 'fellowship' | 'society' | 'worldly';
+export type Section = 'grudge' | 'wheel' | 'fortunes' | 'echoes' | 'chronicle' | 'ranch' | 'trophies' | 'observatory' | 'emberfall' | 'waters' | 'cardspire' | 'sundered' | 'painter' | 'seasons' | 'omens' | 'tools' | 'fates' | 'faith' | 'land' | 'road' | 'trials' | 'games' | 'oaths' | 'fellowship' | 'society' | 'worldly' | 'civic';
 export interface RealmView {
   section: Section;
   echo?: string;
@@ -38,12 +39,13 @@ export interface RealmView {
   cell?: number;
   vowCond?: string;
   rumor?: string;
+  civicFaction?: string;
   vowReward?: string;
   sparkA?: string;
   sparkB?: string;
   exam?: { god: string; attempt: number; answers: number[] };
 }
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall'], ['waters', 'Waters'], ['cardspire', 'Spire of Cards'], ['sundered', 'Sundered Hours'], ['painter', 'Painter’s Eye'], ['seasons', 'Divine Seasons'], ['omens', 'Omens'], ['tools', 'Chronicler’s Tools'], ['fates', 'Fates'], ['faith', 'Faith'], ['land', 'Relics & Land'], ['road', 'The Road'], ['trials', 'Trials & Wonders'], ['games', 'Games & Testament'], ['oaths', 'Oaths'], ['fellowship', 'Gods & Party'], ['society', 'Society'], ['worldly', 'The Realm at Large']];
+const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall'], ['waters', 'Waters'], ['cardspire', 'Spire of Cards'], ['sundered', 'Sundered Hours'], ['painter', 'Painter’s Eye'], ['seasons', 'Divine Seasons'], ['omens', 'Omens'], ['tools', 'Chronicler’s Tools'], ['fates', 'Fates'], ['faith', 'Faith'], ['land', 'Relics & Land'], ['road', 'The Road'], ['trials', 'Trials & Wonders'], ['games', 'Games & Testament'], ['oaths', 'Oaths'], ['fellowship', 'Gods & Party'], ['society', 'Society'], ['worldly', 'The Realm at Large'], ['civic', 'Crown & Law']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
@@ -55,7 +57,7 @@ export function realmPanel(session: GameSession, rerender: () => void, open: Rea
     });
     return b;
   }));
-  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : open.section === 'observatory' ? observatoryPanel(session, rerender, open) : open.section === 'emberfall' ? emberfallPanel(session, rerender, open) : open.section === 'waters' ? watersPanel(session, rerender, open) : open.section === 'cardspire' ? cardSpirePanel(session, rerender, open) : open.section === 'sundered' ? sunderedPanel(session, rerender, open) : open.section === 'painter' ? painterPanel(session, rerender, open) : open.section === 'seasons' ? seasonsPanel(session) : open.section === 'omens' ? omensPanel(session, rerender, open) : open.section === 'tools' ? toolsPanel(session, rerender, open) : open.section === 'fates' ? fatesPanel(session) : open.section === 'faith' ? faithPanel(session, rerender, open) : open.section === 'land' ? landPanel(session, rerender, open) : open.section === 'road' ? roadPanel(session, rerender, open) : open.section === 'trials' ? trialsPanel(session, rerender, open) : open.section === 'games' ? gamesPanel(session, rerender, open) : open.section === 'oaths' ? oathsPanel(session, rerender, open) : open.section === 'fellowship' ? fellowshipPanel(session, rerender, open) : open.section === 'society' ? societyPanel(session, rerender, open) : open.section === 'worldly' ? worldlyPanel(session, rerender, open) : chroniclePanel(session, rerender);
+  const body = open.section === 'grudge' ? grudgePanel(session) : open.section === 'wheel' ? wheelPanel(session) : open.section === 'fortunes' ? fortunesPanel(session) : open.section === 'echoes' ? echoesPanel(session, rerender, open) : open.section === 'ranch' ? ranchPanel(session, rerender) : open.section === 'trophies' ? trophyPanel(session, rerender, open) : open.section === 'observatory' ? observatoryPanel(session, rerender, open) : open.section === 'emberfall' ? emberfallPanel(session, rerender, open) : open.section === 'waters' ? watersPanel(session, rerender, open) : open.section === 'cardspire' ? cardSpirePanel(session, rerender, open) : open.section === 'sundered' ? sunderedPanel(session, rerender, open) : open.section === 'painter' ? painterPanel(session, rerender, open) : open.section === 'seasons' ? seasonsPanel(session) : open.section === 'omens' ? omensPanel(session, rerender, open) : open.section === 'tools' ? toolsPanel(session, rerender, open) : open.section === 'fates' ? fatesPanel(session) : open.section === 'faith' ? faithPanel(session, rerender, open) : open.section === 'land' ? landPanel(session, rerender, open) : open.section === 'road' ? roadPanel(session, rerender, open) : open.section === 'trials' ? trialsPanel(session, rerender, open) : open.section === 'games' ? gamesPanel(session, rerender, open) : open.section === 'oaths' ? oathsPanel(session, rerender, open) : open.section === 'fellowship' ? fellowshipPanel(session, rerender, open) : open.section === 'society' ? societyPanel(session, rerender, open) : open.section === 'worldly' ? worldlyPanel(session, rerender, open) : open.section === 'civic' ? civicPanel(session, rerender, open) : chroniclePanel(session, rerender);
   return el('section', { class: 'panel' }, el('h2', {}, 'The Realm'), tabs, body);
 }
 

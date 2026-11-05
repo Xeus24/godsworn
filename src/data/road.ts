@@ -28,18 +28,33 @@ export const CRIMES: CrimeDef[] = [
   { id: 'theft', name: 'Theft', heat: 3 },
   { id: 'smuggling', name: 'Smuggling', heat: 2 },
   { id: 'forgery', name: 'Forgery', heat: 2 },
+  { id: 'assault', name: 'Assault', heat: 3 },
+  { id: 'bribery', name: 'Bribing an official', heat: 2 },
 ];
 
 // ------------------------------------------------------------------ 50: Masquerade Balls (and the disguises they share with Wanted)
 
-export interface OutfitDef { id: string; name: string; text: string; cost: number; /** Suspicion removed from towns/balls it suits. */ cover: number }
+// prettier-ignore
+const FACTION_OUTFITS: [string, string, string, number, number, string?][] = [
+  ['dawn-acolyte', 'Acolyte’s White', 'Spotless, and a little too eager.', 180, 15, 'order-of-dawn'], ['dawn-templar', 'Templar’s Surcoat', 'The sunburst is stitched crooked, but nobody checks.', 420, 20, 'order-of-dawn'],
+  ['warden-greens', 'Warden’s Greens', 'Moss-coloured and smelling faintly of rain.', 160, 14, 'wardens'], ['warden-ranger', 'Ranger’s Cloak', 'Hood up; nobody asks a ranger anything.', 300, 18, 'wardens'],
+  ['legion-private', 'Legion Greys', 'A private’s coat, with a stain you have decided is stew.', 220, 15, 'iron-legion'], ['legion-officer', 'Officer’s Cuirass', 'Borrowed from a man who is, you hope, still asleep.', 600, 22, 'iron-legion'],
+  ['mage-apprentice', 'Apprentice Smock', 'Ink to the elbows, which is the real disguise.', 150, 13, 'mages-guild'], ['mage-robe', 'Magister’s Robes', 'They hum when you walk.', 520, 21, 'mages-guild'],
+  ['den-cutpurse', 'Cutpurse’s Dark', 'Nothing to see here; that is the point.', 140, 14, 'thieves-den'], ['den-fence', 'Fence’s Coat', 'Many pockets, none of them yours.', 380, 19, 'thieves-den'],
+  ['lantern-lamplighter', 'Lamplighter’s Livery', 'A pole, a taper and a look of weary civic pride.', 200, 15, 'lantern-concord'], ['lantern-envoy', 'Envoy’s Sash', 'A sash with seven seals on it, five of them real.', 480, 21, 'lantern-concord'],
+  ['cog-greaser', 'Greaser’s Overalls', 'Oil to the knees and no questions asked.', 130, 13, 'cog-union'], ['cog-foreman', 'Foreman’s Apron', 'The union badge is the one thing on you that is not fake.', 350, 19, 'cog-union'],
+  ['sailor', 'Sailor’s Slops', 'Salt-stiff and rolling gait included.', 90, 11], ['scholar', 'Scholar’s Gown', 'Nobody looks at a scholar for long.', 170, 13],
+];
+
+export interface OutfitDef { id: string; name: string; text: string; cost: number; /** Suspicion removed from towns/balls it suits. */ cover: number; /** The faction whose guards and halls it passes (Disguises, 91). */ faction?: string }
 export const OUTFITS: OutfitDef[] = [
   { id: 'pilgrim', name: 'Pilgrim’s Grey', text: 'Nobody looks at a pilgrim.', cost: 80, cover: 12 },
   { id: 'merchant', name: 'Merchant’s Velvet', text: 'Good cloth, a little over-dyed.', cost: 200, cover: 16 },
   { id: 'noble', name: 'Noble’s Finery', text: 'Expensive, and cut to be looked at.', cost: 500, cover: 22 },
-  { id: 'guard', name: 'Borrowed Watch Tabard', text: 'Very convincing from across the street.', cost: 300, cover: 18 },
+  { id: 'guard', name: 'Borrowed Watch Tabard', text: 'Very convincing from across the street.', cost: 300, cover: 18, faction: 'wardens' },
   { id: 'mourner', name: 'Mourner’s Veil', text: 'No one asks a mourner to lift the veil.', cost: 150, cover: 14 },
   { id: 'jester', name: 'Jester’s Motley', text: 'Everyone sees you. No one believes it.', cost: 120, cover: 10 },
+  ...FACTION_OUTFITS.map(([id, name, text, cost, cover, faction]) => ({ id, name, text, cost, cover, ...(faction ? { faction } : {}) })),
 ];
 export const SUSPICION = { max: 100, coolPerDay: 8, wantedPerLevel: 6 } as const;
 

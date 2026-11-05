@@ -65,13 +65,16 @@ export class RoadActions {
   commit(crimeId: string): void {
     const c = CRIMES.find((x) => x.id === crimeId);
     if (!c) return;
+    const heat = this.s.civic.heatFor(c.id);
+    if (heat <= 0) return;
     const before = this.wantedLevel();
-    this.o.heat += c.heat;
+    this.o.heat += heat;
     this.o.lastCrime = this.s.state.clock.day;
     const after = this.wantedLevel();
     if (after > before) this.note(`Wanted: ${'★'.repeat(after)} (${c.name}).`, 'warning');
     if (after >= WANTED.maxLevel && !this.s.player.devotion.titles.includes(WANTED.title)) this.s.player.devotion.titles.push(WANTED.title);
     this.s.bus.emit('stateChanged', { reason: 'wanted' });
+    this.s.civic.crimeSeen(c.id, heat);
   }
 
   /** Heat cools while you keep your head down; suspicion fades with the days. */

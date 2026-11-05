@@ -26,6 +26,7 @@ import { trainGeneral, utilityChance, utilityRank } from '../skills/general';
 import { applyRep, FACTION_FAVOR_SHARE, judgeFactions, rankOf, repOf, type RepChange } from '../world/factions';
 import { collectInvestments, investmentCost, investmentLevel, raiseInvestment } from '../world/investments';
 import { AIRSHIP } from '../../data/world/ship';
+import { RAID } from '../../data/civic';
 import { canBuildAirship, canUpgradeShip, destinations, navalChance, nextShip, volleyPercent } from '../world/ship';
 import { addFurniture, canBuyFurniture, canBuyHouse, buyHouse, roomCost, roomLevel, upgradeRoom } from '../world/housing';
 import { mapFor } from '../world/mapgen';
@@ -75,6 +76,8 @@ export interface PendingFight {
   kind: 'wild' | 'roaming' | 'worldBoss' | 'pack' | 'boss' | 'quest' | 'sea' | 'mimic';
   /** A voyage in progress: where the ship was going. */
   dest?: string;
+  /** The voyage is by airship (Sea and Sky Grudgebound). */
+  air?: boolean;
 }
 
 export type StepResult =
@@ -210,6 +213,7 @@ export class WorldActions {
    * stepping onto something interacts with it.
    */
   step(dx: number, dy: number): StepResult {
+    if (this.s.civic.jailed()) return { kind: 'blocked', message: 'You are held in the cells. See Codex > Realm > Crown & Law.' };
     const p = this.world.position;
     const map = this.map;
     const nx = p.x + dx;
@@ -733,6 +737,7 @@ export class WorldActions {
     const pending = this.pending;
     this.pending = undefined;
     this.world.grace = ENCOUNTER_GRACE;
+    if (pending?.kind === 'sea') this.s.civic.voyageEnded(outcome, pending.air ? 'airship' : 'ship');
     if (pending?.kind === 'sea' && pending.dest && outcome !== 'defeat') {
       this.arriveAt(pending.dest);
       return;
@@ -889,6 +894,15 @@ export class WorldActions {
         this.pending = { map: this.world.position.map, kind: 'sea', dest: areaId };
         return { ok: true, fight: { encounter, level: encounter.level, volley: volleyPercent(this.s.player) } };
       }
+    }
+    if (area.access?.by === 'airship' && this.s.rng.chance(RAID.skyChance + (this.s.civic.raider('vessa').hunting ? 0.1 : 0))) {
+      const zone = content.zones.get('stormcoast');
+      const encounter = randomEncounter(zone, this.weatherNow(), this.s.timeOfDay === 'night', this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened']));
+      encounter.id = `sky:${areaId}`;
+      encounter.name = 'Sky raid';
+      encounter.description = 'Raiders drop out of the cloud on ropes.';
+      this.pending = { map: this.world.position.map, kind: 'sea', dest: areaId, air: true };
+      return { ok: true, fight: { encounter, level: encounter.level, volley: volleyPercent(this.s.player) } };
     }
     this.arriveAt(areaId);
     this.toast('info', `You arrive at ${area.name}.`);

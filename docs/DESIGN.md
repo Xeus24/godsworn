@@ -153,3 +153,6 @@ Controller rebinding (Settings), renown from shop spending (1 per 150 gold, 4 a 
 
 ## The realm at large (section H-3a)
 `WorldlyActions` (`s.worldly`) advances rumors daily and mirrors their price effect to `hero.world.rumorMult`, which `economy/shops.ts` reads through `realm/rumors.ts` (a pure function). Dreams come at hour 6; battle dreams run as `special` gauntlets (`s.specials['lyssara']`). Relic Restoration's excavation calls `worldly.foundFossil()`.
+
+## Crown, law and the Sundering (section H-3b)
+`CivicActions` (`s.civic`, `realm.marvels.civic`) sits on top of the road's Wanted heat and suspicion (R14): `RoadActions.commit` asks `heatFor` (legal crimes give none) and reports back through `crimeSeen`. Jail blocks `WorldActions.step`. The Council's ruler picks a stance from `STANCES`; `taxMult`/`tariffMult` feed `WorldlyActions` trade prices, `watchMult` the catch chance, and `mods()` the magic and shrine laws into `heart.wonderMods`. The Sundering runs once from the daily tick when the `world-darkened` flag is set and writes into Fortunes (`lift`). Raiders are fought as `s.specials['seasky']` and grow from `WorldActions.afterBattle` sea results.

@@ -203,7 +203,30 @@ export interface WorldlyState {
 
 export const createWorldly = (): WorldlyState => ({ yearSeen: 1, rumors: [], cargo: {}, profit: 0, museum: { donated: [], fossils: [], claimed: [] }, tablets: [], dreams: 0, shards: 0 });
 
+export interface CivicState {
+  /** Laws and Crimes (90): crimes by id, who holds you, jailbreaks done (ids), and arrests. */
+  record: Record<string, number>;
+  jail?: { town: string; day: number; days: number };
+  escapes: string[];
+  arrests: number;
+  /** Disguises (91): the day a faction hall was last entered. */
+  halls: Record<string, number>;
+  /** The Crown Council (92): year of the last election, seats (`district -> faction`), the ruler, and what the hero has done this year (`district -> methods`, `district -> faction -> support`). */
+  year: number;
+  seats: Record<string, string>;
+  ruler: string;
+  used: Record<string, string[]>;
+  backing: Record<string, Record<string, number>>;
+  /** The Sundering (95): when it happened and each town's fate. */
+  sundering?: { day: number; towns: Record<string, 'intact' | 'damaged' | 'fallen'> };
+  /** Sea and Sky Grudgebound (96): scars, how often beaten, the day slain, and whether it is hunting you. */
+  raiders: Record<string, { scars: number; beaten: number; slain?: number; hunting: boolean }>;
+}
+
+export const createCivic = (): CivicState => ({ record: {}, escapes: [], arrests: 0, halls: {}, year: 1, seats: {}, ruler: 'order-of-dawn', used: {}, backing: {}, raiders: {} });
+
 export interface MarvelsState {
+  civic?: CivicState;
   worldly?: WorldlyState;
   society?: SocietyState;
   fellowship?: FellowshipState;

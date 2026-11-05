@@ -163,7 +163,7 @@ export class WorldlyActions {
     if (!town) return fail('Goods are traded in towns.');
     if (!GOODS.some((g) => g.id === good) || qty < 1) return fail('No such goods.');
     if (this.held() + qty > this.capacity()) return fail(`Your hold takes ${this.capacity()} in all.`);
-    const price = Math.round(this.quote(town, good) * (1 + TRADE.spread));
+    const price = Math.round(this.quote(town, good) * (1 + TRADE.spread) * this.s.civic.tariffMult());
     if (this.s.state.gold < price * qty) return fail(`That costs ${price * qty} gold.`);
     this.s.spendGold(price * qty, 'trade');
     const c = (this.w.cargo[good] ??= { qty: 0, paid: 0 });
@@ -178,7 +178,7 @@ export class WorldlyActions {
     const c = this.w.cargo[good];
     if (!town) return fail('Goods are traded in towns.');
     if (!c || c.qty < qty || qty < 1) return fail('You do not hold that many.');
-    const price = Math.round(this.quote(town, good) * (1 - TRADE.spread));
+    const price = Math.round(this.quote(town, good) * (1 - TRADE.spread) * this.s.civic.taxMult());
     const cost = Math.round((c.paid * qty) / c.qty);
     this.s.addGold(price * qty, 'trade');
     c.qty -= qty;
