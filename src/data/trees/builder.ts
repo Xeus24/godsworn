@@ -204,10 +204,10 @@ const SPEC_LAYOUT: Placed[] = [
   { key: 'cap', kind: 'capstone', tier: 5, lane: 1, parents: ['n2', 'c1', 'c2'] },
 ];
 
-function buildSpecBranch(classId: string, spec: SpecBranchSpec): TreeNodeDef[] {
+function buildSpecBranch(classId: string, spec: SpecBranchSpec, column = 4): TreeNodeDef[] {
   const id = (key: string): string => `${classId}.${spec.id}.${key}`;
   // Every spec branch sits in the fifth column; only the chosen one is shown.
-  const index = 4;
+  const index = column;
   return SPEC_LAYOUT.map((slot): TreeNodeDef => {
     const base = {
       id: id(slot.key),
@@ -256,7 +256,7 @@ export function withSpecs(tree: SkillTreeDef, specs: SpecBranchSpec[]): SkillTre
       ...tree.branches,
       ...specs.map((s): BranchDef => ({ id: s.id, classId: tree.classId, name: s.name, description: s.description, color: s.color, spec: s.id, tierGate: SPEC_TIER_GATE })),
     ],
-    nodes: [...tree.nodes, ...specs.flatMap((s) => buildSpecBranch(tree.classId, s))],
+    nodes: [...tree.nodes, ...specs.flatMap((s) => buildSpecBranch(tree.classId, s, tree.branches.length))],
   };
 }
 

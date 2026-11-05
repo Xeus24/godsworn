@@ -15,7 +15,7 @@ describe('the three New Game+ classes', () => {
   it('open at NG+1, NG+2 and NG+3, and are not hidden', () => {
     expect(NEW.map((id) => content.classes.get(id).ngPlus)).toEqual([1, 2, 3]);
     for (const id of NEW) expect(content.classes.get(id).hidden).toBeFalsy();
-    expect(content.classes.all().filter((k) => !k.hidden)).toHaveLength(23);
+    expect(content.classes.all().filter((k) => !k.hidden)).toHaveLength(28);
   });
 
   it('each has a resource, 15+ skills, a tree of 80 nodes with three specializations, a trial, a mentor and a five-quest line', () => {

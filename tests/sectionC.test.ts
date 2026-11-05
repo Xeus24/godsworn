@@ -42,7 +42,7 @@ describe('the data', () => {
       expect(t.stages).toHaveLength(4);
       expect(content.companions.find(t.a) && content.companions.find(t.b)).toBeTruthy();
     }
-    expect(ARTS).toHaveLength(30);
+    expect(ARTS).toHaveLength(35);
     for (const id of content.classes.ids()) expect(ARTS.some((a) => a.classId === id), id).toBe(true);
     expect(QUIRKS.length).toBeGreaterThanOrEqual(24);
   });
