@@ -1017,7 +1017,8 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Character sheet: Title, Difficulty, Wardrobe, Classes, Reputation, Skills, Pet & Mount and Legacy panels fold to one line via `components/fold.ts` (`foldPanel`). Height 2132px -> 781px.
 - Skill tree sidebar: Specialization, Builds, Share and Legend fold; it no longer scrolls.
 - Pantheon god details: Offerings, Minor blessings, Scripture, Trial of Apostleship and Defender path fold (`foldHeadings`); the pane no longer scrolls. Inventory and Party already fit.
-- Not yet checked: combat screens and Codex list paging.
+- Arena (proving grounds): the Class Trainers/Hybrid block is folded, and trivial fights (4+ levels below you) are hidden behind a toggle. At level 60 the page went 16,729px -> 2,119px.
+- Not yet checked: in-battle combat screen and Codex list paging (Codex files were being edited elsewhere).
 
 ## Known bugs
 - None known.

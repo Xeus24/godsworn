@@ -8,6 +8,7 @@ import type { GameSession } from '../../engine/state/gameState';
 import type { Conversation } from '../../engine/state/conversation';
 import { portraitCanvas } from '../art/portraits';
 import { navBar, type Nav } from '../components/navBar';
+import { foldPanel } from '../components/fold';
 import { el, type Screen } from '../screen';
 import { monsterTile } from '../art/tileSprites';
 import { creatureSprite } from './creatureSprites';
@@ -30,6 +31,8 @@ export class ProvingGroundsScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
   private message = '';
+  /** Trivial fights (four or more levels below you) are hidden unless asked for. */
+  private showTrivial = false;
 
   constructor(
     private readonly session: GameSession,
@@ -76,7 +79,9 @@ export class ProvingGroundsScreen implements Screen {
     const rest = el('button', {}, 'Back to the world');
     rest.addEventListener('click', () => this.back());
 
-    const cards = content.encounters.filter((enc) => !isTrialEncounter(enc.id) && !enc.id.startsWith('apostle-trial-')).map((enc) => {
+    const all = content.encounters.filter((enc) => !isTrialEncounter(enc.id) && !enc.id.startsWith('apostle-trial-'));
+    const trivialCount = all.filter((enc) => enc.level - p.level <= -4).length;
+    const cards = all.filter((enc) => this.showTrivial || enc.level - p.level > -4).map((enc) => {
       const diff = enc.level - p.level;
       const tag = diff >= 3 ? ['Deadly', 'danger'] : diff >= 1 ? ['Hard', 'warn'] : diff <= -4 ? ['Trivial', 'dim'] : ['Fair', 'ok'];
       const fightBtn = el('button', { class: 'primary' }, 'Fight');
@@ -99,6 +104,11 @@ export class ProvingGroundsScreen implements Screen {
       );
     });
 
+    const toggle = el('button', { class: 'tab' }, this.showTrivial ? `Hide ${trivialCount} trivial fights` : `Show ${trivialCount} trivial fights (hidden: well below your level)`);
+    toggle.addEventListener('click', () => {
+      this.showTrivial = !this.showTrivial;
+      this.render();
+    });
     this.root.replaceChildren(
       el(
         'div',
@@ -117,7 +127,7 @@ export class ProvingGroundsScreen implements Screen {
             rest,
             el('p', { class: 'dim small' }, `Record: ${s.state.stats.battlesWon} won, ${s.state.stats.battlesLost} lost, ${s.state.stats.kills} enemies slain.`),
           ),
-          el('div', { class: 'grounds-main' }, this.trainers(), el('div', { class: 'encounter-grid' }, ...cards)),
+          el('div', { class: 'grounds-main' }, foldPanel(this.trainers(), 'trials, new classes, hybrids'), ...(trivialCount > 0 ? [toggle] : []), el('div', { class: 'encounter-grid' }, ...cards)),
         ),
       ),
     );
