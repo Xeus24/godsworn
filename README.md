@@ -32,6 +32,28 @@ Then open http://localhost:5173.
 | `npm run sim:loot` | Roll 100,000 drops per source tier and NG+ level; print rarity rates |
 | `npm run playtest` | Play the main story to an ending with every class, using real auto-battles (`npm run playtest -- mage` logs every fight of one class; `npm run playtest -- ng` plays it again through New Game+1, `npm run playtest -- ng monk` for one class) |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
+| `npm run app:build` | Build the production game and package it as a macOS app (Apple Silicon) at `release/Godsworn-darwin-arm64/Godsworn.app` |
+| `npm run app:dev` | Build the game and open it in the desktop shell without packaging |
+
+### Run it as a Mac app
+
+You can play Godsworn as a native-style macOS app instead of in a browser. It wraps the same build in Electron, so the game and its content are unchanged.
+
+```bash
+npm install
+```
+
+```bash
+npm run app:build
+```
+
+Open `release/Godsworn-darwin-arm64/Godsworn.app` (drag it into Applications if you like). Notes:
+
+- The app is unsigned, so the first time, right-click it and choose Open to get past Gatekeeper.
+- It keeps its own storage, separate from your browser saves, and mirrors autosaves to `~/Library/Application Support/Godsworn/saves/`.
+- It serves the game on local port 47321, so only one copy can run at a time.
+- The build targets Apple Silicon. For an Intel Mac, change `--arch=arm64` to `--arch=x64` in the `app:build` script.
+- The desktop shell is [electron/main.cjs](electron/main.cjs). Rebuild with `npm run app:build` after any game change.
 
 ## Play
 

@@ -19,15 +19,20 @@
     "tune:hybrids": "tsx scripts/tuneHybridTrials.ts",
     "playtest": "tsx scripts/playtest.ts",
     "test:e2e": "playwright test",
-    "secrets:md": "tsx scripts/secretsDoc.ts"
+    "secrets:md": "tsx scripts/secretsDoc.ts",
+    "app:dev": "npm run build && electron .",
+    "app:build": "npm run build && electron-packager . Godsworn --platform=darwin --arch=arm64 --out=release --overwrite --prune --ignore=\"^/(src|tests|e2e|scripts|docs|saves|test-results|release|playwright-report|public|node_modules|\\.claude|\\.git|\\.github)\" --ignore=\"\\.md$\" --ignore=\"^/(tsconfig|vite\\.config|playwright\\.config|package-lock)\""
   },
   "devDependencies": {
+    "@electron/packager": "^20.3.0",
     "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.5",
+    "electron": "^45.2.3",
     "happy-dom": "^21.0.4",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
     "vitest": "^5.0.5"
-  }
+  },
+  "main": "electron/main.cjs"
 }
