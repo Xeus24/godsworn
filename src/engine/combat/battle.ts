@@ -57,6 +57,9 @@ export class Battle {
   round = 0;
   inTabletopHit = false;
   lastBreath = false;
+  /** Weariness level of the hero at the start of the fight (6 = knocked down), and flanking hits landed. */
+  weary = 0;
+  flanks = 0;
   readonly canFlee: boolean;
   readonly isBoss: boolean;
   readonly timeOfDay: 'day' | 'night';

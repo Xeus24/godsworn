@@ -103,6 +103,10 @@ export class GeneralActions {
 
   /** Rest at camp: full HP/MP; Camping also grants Well Rested. */
   rest(): void {
+    if (this.s.afflictions.hardRoad && !this.s.world.inTown()) {
+      this.s.bus.emit('toast', { kind: 'info', text: this.s.afflictions.roughCamp().ok ? 'You make a rough camp on the Hard Road: half the strength returns, and no Night’s Rest.' : '' });
+      return;
+    }
     const p = this.s.player;
     restoreFull(p);
     this.s.party.restoreAll();

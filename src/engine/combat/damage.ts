@@ -59,6 +59,6 @@ export function computeDamage(input: DamageInput, rng: Rng): number {
 }
 
 /** Hit chance in %: attacker accuracy minus target dodge, clamped. */
-export function hitChance(attacker: StatBlock, target: StatBlock): number {
-  return Math.min(COMBAT.hitChance.max, Math.max(COMBAT.hitChance.min, attacker.accuracy - target.dodge));
+export function hitChance(attacker: StatBlock, target: StatBlock, bonus = 0): number {
+  return Math.min(COMBAT.hitChance.max, Math.max(COMBAT.hitChance.min, attacker.accuracy - target.dodge + bonus));
 }

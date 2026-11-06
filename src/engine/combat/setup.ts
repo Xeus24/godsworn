@@ -224,6 +224,7 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   battle.pacifist = hasRule(hero, 'pacifist', c);
   battle.tabletop = hero.tabletop === true;
   battle.lastBreath = hero.tabletop === true && !hero.hardcore;
+  battle.weary = hero.weary ?? 0;
   startTabletop(battle);
   if (hero.tabletop && hero.timedBuffs.some((t) => t.id === 'familiar')) {
     const heroC = battle.combatants.find((x) => x.kind === 'hero');

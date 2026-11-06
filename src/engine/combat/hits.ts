@@ -78,6 +78,13 @@ function otherMultiplier(b: Battle, attacker: Combatant, target: Combatant, opts
   return m;
 }
 
+/** Flanking (item 215): a second ally has struck the same foe since its last turn. */
+export const FLANK_BONUS = 15;
+function flankedBy(b: Battle, attacker: Combatant, target: Combatant): boolean {
+  if (attacker.side !== 'party' || target.side !== 'enemy') return false;
+  return (target.flankers ?? []).some((id) => id !== attacker.id && b.combatants.some((x) => x.id === id && x.alive));
+}
+
 /**
  * One hit from attacker to target: accuracy, crit, the damage formula,
  * shields, death, and every side effect (resources, Ultimate gauge,
@@ -95,7 +102,16 @@ export function dealDamage(b: Battle, attacker: Combatant, target: Combatant, op
   });
   const tStats = b.stats(target);
 
-  if (opts.canMiss && !opts.isDot && !b.rng.percent(hitChance(aStats, tStats))) {
+  const flanked = !opts.isDot && flankedBy(b, attacker, target);
+  let landed = true;
+  if (opts.canMiss && !opts.isDot) {
+    // Flanking (item 215): Favored (roll twice) with the Tabletop Rules, +15% to hit without them.
+    landed = b.rng.percent(hitChance(aStats, tStats, flanked && !b.tabletop ? FLANK_BONUS : 0));
+    if (!landed && flanked && b.tabletop) landed = b.rng.percent(hitChance(aStats, tStats));
+  }
+  if (flanked) { b.flanks++; if (landed) b.log(`${attacker.name} flanks ${target.name}.`); }
+  if (!opts.isDot && attacker.side === 'party' && target.side === 'enemy' && !(target.flankers ?? []).includes(attacker.id)) (target.flankers ??= []).push(attacker.id);
+  if (!landed) {
     b.emit({ type: 'miss', sourceId: attacker.id, targetId: target.id });
     fireTrigger(b, target, 'onDodge', attacker);
     return { missed: true, crit: false, amount: 0 };

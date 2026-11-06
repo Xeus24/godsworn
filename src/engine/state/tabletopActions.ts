@@ -172,6 +172,7 @@ export class TabletopActions {
 
   /** The full rest resets the day's Breathers. (Camp, inn and home rests all call this.) */
   nightsRest(): void {
+    this.s.afflictions.onRest();
     if (this.on) this.t.breathers = { day: this.day, n: 0 };
   }
 

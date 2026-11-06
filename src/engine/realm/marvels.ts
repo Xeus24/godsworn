@@ -355,7 +355,21 @@ export interface TabletopState {
 }
 export const createTabletop = (): TabletopState => ({ nods: 0, nodDays: {}, breathers: { day: 0, n: 0 } });
 
+/** Afflictions, Weariness, the Hard Road and the Whisper Meter (Section I-7a). */
+export interface AfflictionsState {
+  /** Afflictions carried, whether embraced, power-tree points earned, and the day caught. */
+  active: Record<string, { embraced: boolean; points: number; since: number }>;
+  nodes: Record<string, string[]>;
+  cured: string[];
+  weary: { level: number; steps: number; lastRest: number };
+  whisper: { meter: number; short?: { id: string; battles: number }; long?: { id: string; until: number } };
+  hardRoad?: boolean;
+  lastDay?: number;
+}
+export const createAfflictions = (): AfflictionsState => ({ active: {}, nodes: {}, cured: [], weary: { level: 0, steps: 0, lastRest: 0 }, whisper: { meter: 0 } });
+
 export interface MarvelsState {
+  afflictions?: AfflictionsState;
   tabletop?: TabletopState;
   twilight?: TwilightState;
   fun?: FunState;

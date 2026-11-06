@@ -41,6 +41,13 @@ export function startBattle(b: Battle): BattleEvent[] {
       b.log(`${x.name} bows deeply and apologizes for the inconvenience.`);
     }
   }
+  if (b.weary >= 6) {
+    const hero = b.alive('party').find((x) => x.kind === 'hero');
+    if (hero) {
+      applyStatus(b, hero, hero, 'stun', { duration: 1, unresistable: true });
+      b.log(`${hero.name} is too weary to stand: the first blow finds them on their knees.`);
+    }
+  }
   for (const x of [...b.alive('party')]) {
     const cls = x.classId ? b.c.classes.get(x.classId) : undefined;
     if (cls?.startingSummon) summon(b, x, cls.startingSummon, false);
@@ -159,6 +166,7 @@ function fireSigils(b: Battle, x: Combatant): void {
 
 function beginTurn(b: Battle, x: Combatant): void {
   x.defending = false;
+  x.flankers = undefined;
   turnStart(b, x);
   x.hpHistory = [...(x.hpHistory ?? []), x.hp].slice(-3);
   if (b.terrain && x.side === 'party' && x.kind === 'hero' && --b.terrain.turns <= 0) b.terrain = undefined;

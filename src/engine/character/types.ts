@@ -46,6 +46,8 @@ export interface Character {
   personality?: { ideal?: string; bond?: string; flaw?: string };
   /** Tabletop Rules (R26): off by default; chosen at creation and fixed for the save. */
   tabletop?: boolean;
+  /** Weariness 0-6 (Section I-7a): level 6 starts the next battle knocked down. Kept in sync by `s.afflictions`. */
+  weary?: number;
   /** Boons taken under the Tabletop Rules (data/tabletop.ts), and how many times +2 stat points were taken instead. */
   boons?: string[];
   boonStatPicks?: number;
