@@ -1249,6 +1249,11 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Trial threat was tuned with `npm run tune:hybrids` (4 fights a step, target 55% win); values are in `HYBRID_TRIAL_THREAT`.
 - Tests: `tests/sectionI8c.test.ts` (3); `expansionPhase7` now expects 60 hybrids. This finishes I-8 (224-229).
 
+### Section I, Final: balance and audit
+- Class sweep (`classSweep.ts`, all 48 classes, levels 1/12/30/45/60, 10 fights a cell): every class wins at least 60% of ordinary fights at every level; no outliers to fix. The full playtest (base story, NG+1 and its Twilight of the Gods arc) finished 96 of 96 with Tabletop Rules on and off at the I-8c commit, with none lost or stalled.
+- Browser check at the new-game state: the town's Guild and Tales & Tankards cards, Codex > Realm > Pockets & Wilds (Gloaming Court, Four Thresholds) and the Character screen's Road's Toll, Workbench and Holdings render folded, with no console errors.
+- `CONTENT.md` regenerated (60 hybrids, 27 races, 18 backgrounds, 73 dungeons, 26 zones, 147 areas, 1096 quests); `README.md` updated for Section I.
+
 ## Cut / deferred
 - **Section I-8c:** the 15 hybrids are not balance-tested in real play beyond the trial tuning (4 fights per step, so the win rates are rough); none has its own art or mentor lines.
 - **Section I-8b:** contracts are fight sequences only (no escort, fetch or delivery contracts); rival parties do not take contracts from the board (their standings are a display); Tales & Tankards is dice and text with no dice animation, no art, and no custom NPC dialogue; narration changes toasts only, not scene text, dialogue or the journal.
@@ -1299,7 +1304,7 @@ Six systems that make the world change while you are away, built as sub-phases A
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
-**Section I is under way: I-1 to I-5 (168-189), I-6 (190-210), I-7 (211-223) and I-8 (224-229) is done. Next: the Final phase (balance pass, both-mode playtests across base, NG+1 and Twilight, CONTENT.md audit)** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
+**Section I is under way: I-1 to I-5 (168-189), I-6 (190-210), I-7 (211-223) and all of Section I is done, including the Final phase. Sections J and K come next and have not been started** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
 
 **The pattern that has worked** (every batch since Section D):
 1. Data in `src/data/<name>.ts` (compact tables, generate repetitive entries from short tables).
