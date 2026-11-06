@@ -9,10 +9,10 @@ import { Rng } from '../src/engine/core/rng';
 import { makeHero } from './helpers';
 
 describe('forty-five hybrids', () => {
-  it('has 45 hybrids: 13 old, 26 new pairings and 6 more god-hybrids', () => {
-    expect(content.hybrids.size).toBe(45);
+  it('has 60 hybrids: 13 old, 26 pairings, 6 god-hybrids and 15 tabletop pairings', () => {
+    expect(content.hybrids.size).toBe(60);
     expect(content.hybrids.all().filter((h) => h.requires?.apostleOf)).toHaveLength(7);
-    expect(content.hybrids.all().filter((h) => h.classes.length === 2)).toHaveLength(12 + 26);
+    expect(content.hybrids.all().filter((h) => h.classes.length === 2)).toHaveLength(12 + 26 + 15);
   });
 
   it('each new hybrid has a 16-node tree, two skills and a level 36 trial', () => {

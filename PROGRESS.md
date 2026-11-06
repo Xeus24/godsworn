@@ -1244,7 +1244,13 @@ Six systems that make the world change while you are away, built as sub-phases A
 - **228 Tale-Teller Narration:** an off-by-default setting (Settings menu) that frames info and quest toasts in a narrator's voice (`taleTell` in `ui/components/toasts.ts`).
 - Tests: `tests/sectionI8b.test.ts` (9); both-modes playtests below.
 
+### Section I, batch I-8c: fifteen more hybrids (item 229)
+- `data/trees/hybridsTabletop.ts` (same generator as the Greater hybrids; `hybridsGreater.ts` now exports `HybridSpec`, `skillsOf`, `branchOf`): Stormrager (Wrathsworn + Shaman), Momentless (Stillhand + Chronomancer), Wildstrider (Wayfinder + Druid), Doubleblood (Godblooded + Warlock), Graveblood (Ichorbound + Necromancer), Cardsharp (Fatedealer + Bard), Thoughtscribe (Mindwright + Inkweaver), Warden-General (Marshal + Knight), Gunwright (Corsair + Artificer), Templar of Ash (Vowknight + Witch Hunter), plus Ring Dancer (Brawler + Dancer), Hearth Priest (Hearthmaster + Cleric), Cold Reader (Truthseeker + Rogue), Hedgewalker (Hedgewitch + Ranger) and Pactblade (Soulblade + Warlock). That makes 60 hybrids. Each has a 16-node tree (2 skills), a level-36 trial against both mentors, and a hybrid quest.
+- Trial threat was tuned with `npm run tune:hybrids` (4 fights a step, target 55% win); values are in `HYBRID_TRIAL_THREAT`.
+- Tests: `tests/sectionI8c.test.ts` (3); `expansionPhase7` now expects 60 hybrids. This finishes I-8 (224-229).
+
 ## Cut / deferred
+- **Section I-8c:** the 15 hybrids are not balance-tested in real play beyond the trial tuning (4 fights per step, so the win rates are rough); none has its own art or mentor lines.
 - **Section I-8b:** contracts are fight sequences only (no escort, fetch or delivery contracts); rival parties do not take contracts from the board (their standings are a display); Tales & Tankards is dice and text with no dice animation, no art, and no custom NPC dialogue; narration changes toasts only, not scene text, dialogue or the journal.
 - **Section I-8a:** the Court and the planes use the host zone's random encounters (their own foes appear in the dungeons and the Warden fights only); there is no Court town, no true-name minigame (the Duskfae halving is the only name tie-in), no plane-specific side quests, and no art for the new foes beyond the generated family sprites.
 - **Section I-7c2:** Holdings have no building art and no villagers; the upgrade quests are plain kill quests; the weekly call does not change the existing Intervention (it still recharges on rest); the Last Prayer is for the hero only, not companions; Mounted Combat is one rider with no mount stats or mount HP (the mount just soaks one blow) and does not yet gate any other zone than the Steppe's penalty.
@@ -1293,7 +1299,7 @@ Six systems that make the world change while you are away, built as sub-phases A
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
-**Section I is under way: I-1 to I-5 (168-189), I-6 (190-210), I-7 (211-223) and I-8a (224, 225) and I-8b (226-228) are done. Next: I-8c (229, +15 hybrids), then the Final phase** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
+**Section I is under way: I-1 to I-5 (168-189), I-6 (190-210), I-7 (211-223) and I-8 (224-229) is done. Next: the Final phase (balance pass, both-mode playtests across base, NG+1 and Twilight, CONTENT.md audit)** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
 
 **The pattern that has worked** (every batch since Section D):
 1. Data in `src/data/<name>.ts` (compact tables, generate repetitive entries from short tables).

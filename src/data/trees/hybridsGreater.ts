@@ -16,7 +16,7 @@ type Second =
   | { name: string; kind: 'haste'; flavor: string; status: 'haste' | 'stealth' }
   | { name: string; kind: 'summon'; flavor: string; summon: string };
 
-interface HybridSpec {
+export interface HybridSpec {
   id: string;
   name: string;
   color: string;
@@ -59,7 +59,7 @@ function keystoneOf(p: Pass): PassiveSpec {
 const st = (status: string, duration: number, chance?: number): EffectSpec => ({ kind: 'applyStatus', status, duration, ...(chance ? { chance } : {}) });
 const buff = (id: string, duration: number, modifiers: { stat: StatId; type: 'flat' | 'percent' | 'more'; value: number }[], target: 'self' | 'allAllies'): EffectSpec => ({ kind: 'buff', id, duration, modifiers, target });
 
-function skillsOf(h: HybridSpec): SkillDef[] {
+export function skillsOf(h: HybridSpec): SkillDef[] {
   const [aName, aFlavor, mult, status, dur, chance] = h.a;
   const element = cap(h.el);
   const strike: SkillDef = {
@@ -95,7 +95,7 @@ function skillsOf(h: HybridSpec): SkillDef[] {
   return [strike, second];
 }
 
-function branchOf(h: HybridSpec): BranchSpec {
+export function branchOf(h: HybridSpec): BranchSpec {
   const a = slug(h.a[0]);
   const b = slug(h.b.name);
   const aMods: [ModSpec, ModSpec] = [

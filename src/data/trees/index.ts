@@ -14,6 +14,7 @@ import { withHidden } from './hidden';
 import { buildTree, withSpecs, type BranchSpec, type SpecBranchSpec } from './builder';
 import { CUNNING_HYBRID_BRANCHES, CUNNING_HYBRID_SKILLS } from './hybridsCunning';
 import { GREATER_HYBRID_BRANCHES, GREATER_HYBRID_SKILLS } from './hybridsGreater';
+import { TABLETOP_HYBRID_BRANCHES, TABLETOP_HYBRID_SKILLS } from './hybridsTabletop';
 import { MARTIAL_HYBRID_BRANCHES, MARTIAL_HYBRID_SKILLS } from './hybridsMartial';
 import { ARCANE_SPEC_BRANCHES, ARCANE_SPEC_SKILLS } from './specsArcane';
 import { MARTIAL_SPEC_BRANCHES, MARTIAL_SPEC_SKILLS } from './specsMartial';
@@ -38,6 +39,7 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...MARTIAL_HYBRID_SKILLS,
   ...CUNNING_HYBRID_SKILLS,
   ...GREATER_HYBRID_SKILLS,
+  ...TABLETOP_HYBRID_SKILLS,
   ...APOSTLE_SKILLS,
 ];
 
@@ -49,7 +51,7 @@ export const SPECIALIZATIONS: SpecializationDef[] = Object.entries(SPEC_BRANCHES
   specs.map((sp) => ({ id: sp.id, classId, name: sp.name, description: sp.description, ultimate: sp.ultimate, branch: sp.id })),
 );
 
-const HYBRID_BRANCHES: Record<string, BranchSpec> = { ...MARTIAL_HYBRID_BRANCHES, ...CUNNING_HYBRID_BRANCHES, ...GREATER_HYBRID_BRANCHES };
+const HYBRID_BRANCHES: Record<string, BranchSpec> = { ...MARTIAL_HYBRID_BRANCHES, ...CUNNING_HYBRID_BRANCHES, ...GREATER_HYBRID_BRANCHES, ...TABLETOP_HYBRID_BRANCHES };
 
 /** A hybrid tree is one standard 16-node branch, gated at 3 points per tier. Its id is the hybrid's id. */
 const HYBRID_TREES: SkillTreeDef[] = Object.entries(HYBRID_BRANCHES).map(([id, branch]) => {

@@ -1600,7 +1600,7 @@ Generated from the data files by `npm run content:md`.
 
 **Summons (59):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Owl Familiar, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald, Wolf Totem, Bear Totem, Trail Hound, Trail Hawk, Hedge Cat, Cauldron Toad, The Bonded Blade, The Unleashed Blade
 
-### Encounters (385)
+### Encounters (400)
 
 | Encounter | Lvl | Enemies |
 |---|---|---|
@@ -1704,6 +1704,21 @@ Generated from the data files by `npm run content:md`.
 | **Trial of the Loremaster** | 36 | Archmage Velis, Will-o'-Wisp, Herald of Aurelis, Herald of Aurelis |
 | **Trial of the Fortune’s Fool** | 36 | Lyra Silvertongue, Bandit Thug, Herald of Vex, Herald of Vex |
 | **Trial of the Tempest Prophet** | 36 | Voice-of-Stone Tamsin, Bandit Thug, Herald of Nymira, Herald of Nymira |
+| **Trial of the Stormrager** | 36 | Brannoch One-Ear, Bandit Thug, Voice-of-Stone Tamsin, Bandit Thug |
+| **Trial of the Momentless** | 36 | Master Oyen Lo, Bandit Thug, Hourkeeper Vessa Lund, Will-o'-Wisp |
+| **Trial of the Wildstrider** | 36 | Tessaly Greyroad, Dire Wolf, Elder Maeve Thornwood, Wyld Boar |
+| **Trial of the Doubleblood** | 36 | Isolde Sparkwright, Bandit Thug, Magister Corvane Ash, Will-o'-Wisp |
+| **Trial of the Graveblood** | 36 | Warden Cael Dray, Bandit Thug, The Pale Tutor, Skeleton Soldier |
+| **Trial of the Cardsharp** | 36 | Madame Oriel Kast, Bandit Thug, Lyra Silvertongue, Bandit Thug |
+| **Trial of the Thoughtscribe** | 36 | Archivist Pell Orrow, Bandit Thug, Scribe-Mother Hallowe, Will-o'-Wisp |
+| **Trial of the Warden-General** | 36 | High Marshal Oswin Thrale, Bandit Thug, Ser Haldane Vael, Bandit Thug |
+| **Trial of the Gunwright** | 36 | Captain Odalie Brack, Bandit Thug, Foreman Iseult Brant, Bandit Archer |
+| **Trial of the Templar of Ash** | 36 | Ser Halric Vane, Bandit Thug, Inquisitor Sabine Crowe, Dark Cultist |
+| **Trial of the Ring Dancer** | 36 | Big Marta Quill, Bandit Thug, Prima Odalys Ferne, Bandit Thug |
+| **Trial of the Hearth Priest** | 36 | Cookmother Oda Brune, Bandit Thug, Mother Aurelie, Skeleton Soldier |
+| **Trial of the Cold Reader** | 36 | Inspector Ismene Vaul, Bandit Thug, Nell the Knife, Goblin Cutthroat |
+| **Trial of the Hedgewalker** | 36 | Goodwife Ashby Tarn, Bandit Thug, Warden Sylas, Dire Wolf |
+| **Trial of the Pactblade** | 36 | Warden Quenna Iss, Bandit Thug, Magister Corvane Ash, Will-o'-Wisp |
 | **Trial of Solenne: the Ordeal** | 30 | Herald of Solenne, Herald of Solenne |
 | **Trial of Solenne: the Gauntlet** | 30 | Herald of Solenne, Herald of Solenne, Herald of Solenne |
 | **Trial of Solenne: the Aspect** | 30 | Aspect of Solenne, Herald of Solenne |
@@ -1996,7 +2011,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-107 class trees, 3392 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+122 class trees, 3392 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
 ### Warrior (68 nodes)
 
@@ -3129,7 +3144,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Multiclassing (8 trials, 13 hybrids)
 
 <!-- multiclass:start -->
-Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 45 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
+Second class at level 15 (third at 40 in NG+2+), after beating that class's mentor in a trial. 60 hybrid prestige classes unlock when both classes reach 25 and the hybrid trial is won. Each hybrid tree is one 16-node branch (2 skills with 2 modifiers each, 4 minors, 2 notables, a choice pair, a keystone and a capstone) gated at 3 points per tier.
 
 ### Class mentors and trials
 
@@ -3226,6 +3241,21 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Loremaster**: A Stormcaller sworn as Aurelis’ Apostle: knowledge that crackles. | Mage | **Index of Ruin** (Cross-Reference, Thick Volume); **Archive of Spells** (Quick Lookup, Reading Room) | Footnoted, Photographic | Keystone: +25% damage, -15% max HP. | Loremaster |
 | **Fortune’s Fool**: A Trickster sworn as Vex’s Apostle: a lucky joke at the right moment. | Bard | **Loaded Lyric** (Double or Nothing, High Roller); **Lucky Break** (Quick Shuffle, Rigged Table) | Vex’s Wink, Fool’s Luck | Keystone: +20% crit chance, -15% max HP. | Fortune’s Fool |
 | **Tempest Prophet**: A Stormshaman sworn as Nymira’s Apostle: the sea speaks through lightning. | Shaman | **Tidecall Bolt** (Brine, Thunderhead); **Storm’s Favor** (Quick Swell, Squall Ward) | Nymira’s Voice, Rogue Wave | Keystone: +25% damage, -15% defense. | Tempest Prophet |
+| **Stormrager**: A rage with a thundercloud over it. | Wrathsworn + Shaman | **Thunder Rage** (Static Fury, Heavy Bolt); **Rage of the Storm** (Short Temper, Cloud Mantle) | Storm in the Chest, Unbridled | Keystone: +25% damage, -15% defense. | Stormrager |
+| **Momentless**: A stillness that happens a beat before the fight. | Stillhand + Chronomancer | **Held Breath** (Frozen Edge, Long Pause); **Skipped Moment** (Short Wait, Stilled Ward) | Between Seconds, Patience | Keystone: +25% damage, -15% speed. | Momentless |
+| **Wildstrider**: A walker who goes where the road is not. | Wayfinder + Druid | **Trail Strike** (Thorn Edge, Hard Step); **Wild Cloak** (Quick Camp, Bark Skin) | Where the Road Isn’t, Pathfinder | Keystone: +25% damage, -15% defense. | Wildstrider |
+| **Doubleblood**: Two debts in one body, and both are paid in kind. | Godblooded + Warlock | **Twin Pact** (Second Claim, Heavy Debt); **Blood Ledger** (Quick Interest, Blood Shield) | Both Lines, Paid in Full | Keystone: +25% damage, -15% max HP. | Doubleblood |
+| **Graveblood**: Ichor and ash: the dead walk in the veins. | Ichorbound + Necromancer | **Ichor Wither** (Black Vein, Heavy Rot); **Rise, Ichor** (Short Wake, Bone Ward) | Dead Blood, Ichor Tide | Keystone: +25% damage, -15% max HP. | Graveblood |
+| **Cardsharp**: A deck that is always the right one. | Fatedealer + Bard | **Marked Card** (Up the Sleeve, High Stakes); **Dealer’s Hand** (Quick Deal, Poker Face) | Counting Cards, Hot Streak | Keystone: +20% crit chance, -15% max HP. | Cardsharp |
+| **Thoughtscribe**: Whatever it thinks, it writes, and it comes true. | Mindwright + Inkweaver | **Written Thought** (Fine Nib, Dense Text); **Margin Note** (Quick Draft, Inked Ward) | Said and Done, Footnote | Keystone: +25% damage, -15% defense. | Thoughtscribe |
+| **Warden-General**: A shield-wall with a plan behind it. | Marshal + Knight | **Command Strike** (Drilled Edge, Heavy Orders); **Rally the Ranks** (Short Muster, Staff Plate) | Command Voice, Unbroken | Keystone: +25% damage, -10% speed. | Warden-General |
+| **Gunwright**: A sailor who kept the black powder. | Corsair + Artificer | **Powder Shot** (Hot Barrel, Heavy Load); **Full Broadside** (Quick Swab, Gun Deck) | Black Powder, Dead Eye | Keystone: +25% damage, -15% defense. | Gunwright |
+| **Templar of Ash**: An oath burned down to a blade that cannot be put out. | Vowknight + Witch Hunter | **Cinder Verdict** (Burnt Oath, Heavy Sentence); **Ashen Vow** (Short Vigil, Ash Plate) | Ember Vow, Scorched Earth | Keystone: +25% damage, -15% max HP. | Templar of Ash |
+| **Ring Dancer**: A brawl choreographed to a tune only the dancer hears. | Brawler + Dancer | **Footwork Hook** (Quick Jab, Heavy Spin); **Second Wind Waltz** (Short Break, Corner Rest) | Crowd Favorite, Slip the Punch | Keystone: +25% damage, -10% defense. | Ring Dancer |
+| **Hearth Priest**: A prayer that always smells like bread. | Hearthmaster + Cleric | **Warm Rebuke** (Banked Coals, Full Hearth); **Table Blessing** (Quick Grace, Kitchen Ward) | Warm Welcome, Sacred Fire | Keystone: +20% healing power, -10% damage. | Hearth Priest |
+| **Cold Reader**: Knows what you will do before you have decided. | Truthseeker + Rogue | **Tell Strike** (Sharp Eye, Cold Open); **Read the Room** (Fast Read, Poker Face) | Reading You, Three Moves Ahead | Keystone: +20% crit chance, -15% max HP. | Cold Reader |
+| **Hedgewalker**: A witch’s green lanes and a hunter’s quiet feet. | Hedgewitch + Ranger | **Brambleshot** (Thorned Tip, Full Draw); **Hedgerow Friend** (Fast Whistle, Leaf Mantle) | Hedgerow Wisdom, Pack Friend | Keystone: +25% damage, -15% max HP. | Hedgewalker |
+| **Pactblade**: A sword that holds up its end of the bargain, and yours. | Soulblade + Warlock | **Bound Cut** (Fine Print, Heavy Clause); **Clause of Iron** (Short Term, Pact Plate) | Signed in Black, Honored | Keystone: +25% damage, -15% max HP. | Pactblade |
 
 ### Hybrid skills
 
@@ -3321,6 +3351,36 @@ Second class at level 15 (third at 40 in NG+2+), after beating that class's ment
 | **Lucky Break** | Fortune’s Fool | 14 MP | 5 | The dice fall your way. The party gains +14% damage and +8% defense for 3 turns. |
 | **Tidecall Bolt** | Tempest Prophet | 8 MP | 1 | A bolt that smells of salt for 160% MAG lightning damage; Slow (45%). |
 | **Storm’s Favor** | Tempest Prophet | 14 MP | 5 | The waves lift everyone. The party gains +14% damage and +8% defense for 3 turns. |
+| **Thunder Rage** | Stormrager | 8 MP | 1 | A roar that calls lightning down the blade for 170% ATK lightning damage; Vulnerable (45%). |
+| **Rage of the Storm** | Stormrager | 16 MP | 4 | The sky answers the shout. 90% ATK lightning damage to every enemy; Slow for 2 turns. |
+| **Held Breath** | Momentless | 8 MP | 1 | A strike that waits for the exact instant for 160% MAG arcane damage; Slow (50%). |
+| **Skipped Moment** | Momentless | 10 MP | 4 | The next beat is yours alone. Gain Haste for 2 turns and shield yourself for 8% of max HP. |
+| **Trail Strike** | Wildstrider | 8 MP | 1 | A cut learned on a path that was not there for 160% ATK nature damage; Bleed (55%). |
+| **Wild Cloak** | Wildstrider | 10 MP | 4 | The leaves close around you. Shield yourself for 14% of max HP and gain +14% damage for 2 turns. |
+| **Twin Pact** | Doubleblood | 8 MP | 1 | A bolt owed to two creditors for 170% MAG shadow damage; Curse (45%). |
+| **Blood Ledger** | Doubleblood | 14 MP | 5 | Both lines of blood answer. The party gains +15% damage and +6% defense for 3 turns. |
+| **Ichor Wither** | Graveblood | 8 MP | 1 | A cold bleed through the lines for 160% MAG shadow damage; Poison (55%). |
+| **Rise, Ichor** | Graveblood | 14 MP | 5 | A bone-thing stands up from the black. A summoned ally fights beside you. |
+| **Marked Card** | Cardsharp | 8 MP | 1 | A card thrown edge-first for 150% MAG arcane damage; Charm (35%). |
+| **Dealer’s Hand** | Cardsharp | 14 MP | 5 | Everyone gets the card they needed. The party gains +14% damage and +8% defense for 3 turns. |
+| **Written Thought** | Thoughtscribe | 8 MP | 1 | A thought set down in glowing ink for 170% MAG arcane damage; Silence (40%). |
+| **Margin Note** | Thoughtscribe | 10 MP | 4 | A neat line in the margin of reality. Shield yourself for 12% of max HP and gain +14% damage for 2 turns. |
+| **Command Strike** | Warden-General | 8 MP | 1 | A blow struck on the word for 160% ATK physical damage; Weaken (50%). |
+| **Rally the Ranks** | Warden-General | 14 MP | 5 | The order carries down the rank. The party gains +14% damage and +12% defense for 3 turns. |
+| **Powder Shot** | Gunwright | 8 MP | 1 | A shot that smells of the sea and sulphur for 170% ATK fire damage; Weaken (40%). |
+| **Full Broadside** | Gunwright | 16 MP | 4 | The whole rail goes off at once. 95% ATK fire damage to every enemy; Slow for 2 turns. |
+| **Cinder Verdict** | Templar of Ash | 8 MP | 1 | A sentence passed in ash and flame for 170% ATK fire damage; Weaken (45%). |
+| **Ashen Vow** | Templar of Ash | 10 MP | 4 | The vow burns, and you do not. Shield yourself for 14% of max HP and gain +14% damage for 2 turns. |
+| **Footwork Hook** | Ring Dancer | 8 MP | 1 | A hook thrown on the half-beat for 150% ATK physical damage; Slow (50%). |
+| **Second Wind Waltz** | Ring Dancer | 10 MP | 4 | The crowd carries the next step. Gain Haste for 2 turns and shield yourself for 8% of max HP. |
+| **Warm Rebuke** | Hearth Priest | 8 MP | 1 | Light with the warmth of an oven for 160% Divine Power holy damage; Weaken (45%). |
+| **Table Blessing** | Hearth Priest | 14 MP | 5 | Everyone eats first. Heal the party for 16% of max HP and Regenerate for 3 turns. |
+| **Tell Strike** | Cold Reader | 8 MP | 1 | A cut at the exact moment you blink for 160% ATK shadow damage; Vulnerable (50%). |
+| **Read the Room** | Cold Reader | 10 MP | 4 | The pattern is obvious now. Gain Stealth for 2 turns and shield yourself for 8% of max HP. |
+| **Brambleshot** | Hedgewalker | 8 MP | 1 | An arrow wrapped in thorn-vine for 160% ATK nature damage; Poison (55%). |
+| **Hedgerow Friend** | Hedgewalker | 14 MP | 5 | Something with fur steps out of the hedge. A summoned ally fights beside you. |
+| **Bound Cut** | Pactblade | 8 MP | 1 | A cut that keeps its contract for 170% ATK shadow damage; Curse (45%). |
+| **Clause of Iron** | Pactblade | 10 MP | 4 | The pact hardens around you. Shield yourself for 14% of max HP and gain +14% damage for 2 turns. |
 <!-- multiclass:end -->
 
 ## Gods, favor and blessings
@@ -3839,7 +3899,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-1081 quests, 292 NPCs, 587 dialogues, 14 companions, 17 endings.
+1096 quests, 292 NPCs, 587 dialogues, 14 companions, 17 endings.
 
 ### Main story (54)
 
@@ -4618,7 +4678,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **Trial of the Facewright** | 15 | Maestro Veyl Dorrance | Win 5 battles (deed); Win the trial (state) |
 | **Trial of the Bellwarden** | 15 | Bell-Reeve Jonas Orrin | Win 5 battles (deed); Win the trial (state) |
 
-### Hybrid trials (45)
+### Hybrid trials (60)
 
 | Quest | Lvl | From | Objectives |
 |---|---|---|---|
@@ -4667,6 +4727,21 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 | **The Way of the Loremaster** | 36 | Archmage Velis | Speak with the priest (talk); Win the Trial of the Loremaster (state) |
 | **The Way of the Fortune’s Fool** | 36 | Lyra Silvertongue | Speak with the priest (talk); Win the Trial of the Fortune’s Fool (state) |
 | **The Way of the Tempest Prophet** | 36 | Voice-of-Stone Tamsin | Speak with the priest (talk); Win the Trial of the Tempest Prophet (state) |
+| **The Way of the Stormrager** | 36 | Brannoch One-Ear | Speak with your other mentor (talk); Win the Trial of the Stormrager (state) |
+| **The Way of the Momentless** | 36 | Master Oyen Lo | Speak with your other mentor (talk); Win the Trial of the Momentless (state) |
+| **The Way of the Wildstrider** | 36 | Tessaly Greyroad | Speak with your other mentor (talk); Win the Trial of the Wildstrider (state) |
+| **The Way of the Doubleblood** | 36 | Isolde Sparkwright | Speak with your other mentor (talk); Win the Trial of the Doubleblood (state) |
+| **The Way of the Graveblood** | 36 | Warden Cael Dray | Speak with your other mentor (talk); Win the Trial of the Graveblood (state) |
+| **The Way of the Cardsharp** | 36 | Madame Oriel Kast | Speak with your other mentor (talk); Win the Trial of the Cardsharp (state) |
+| **The Way of the Thoughtscribe** | 36 | Archivist Pell Orrow | Speak with your other mentor (talk); Win the Trial of the Thoughtscribe (state) |
+| **The Way of the Warden-General** | 36 | High Marshal Oswin Thrale | Speak with your other mentor (talk); Win the Trial of the Warden-General (state) |
+| **The Way of the Gunwright** | 36 | Captain Odalie Brack | Speak with your other mentor (talk); Win the Trial of the Gunwright (state) |
+| **The Way of the Templar of Ash** | 36 | Ser Halric Vane | Speak with your other mentor (talk); Win the Trial of the Templar of Ash (state) |
+| **The Way of the Ring Dancer** | 36 | Big Marta Quill | Speak with your other mentor (talk); Win the Trial of the Ring Dancer (state) |
+| **The Way of the Hearth Priest** | 36 | Cookmother Oda Brune | Speak with your other mentor (talk); Win the Trial of the Hearth Priest (state) |
+| **The Way of the Cold Reader** | 36 | Inspector Ismene Vaul | Speak with your other mentor (talk); Win the Trial of the Cold Reader (state) |
+| **The Way of the Hedgewalker** | 36 | Goodwife Ashby Tarn | Speak with your other mentor (talk); Win the Trial of the Hedgewalker (state) |
+| **The Way of the Pactblade** | 36 | Warden Quenna Iss | Speak with your other mentor (talk); Win the Trial of the Pactblade (state) |
 
 ### Bounties (repeatable daily) (30)
 

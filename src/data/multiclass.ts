@@ -112,7 +112,26 @@ const GREATER_HYBRIDS: HybridDef[] = [
   apostle('tempest-prophet', 'Tempest Prophet', 'shaman', 'stormshaman', 'nymira', 'A Stormshaman sworn as Nymira’s Apostle: the sea speaks through lightning.'),
 ];
 
-export const HYBRIDS: HybridDef[] = [...BASE_HYBRIDS, ...GREATER_HYBRIDS];
+/** Section I-8c: fifteen hybrids of the tabletop-tradition classes. */
+const TABLETOP_HYBRIDS: HybridDef[] = [
+  pair('stormrager', 'Stormrager', ['wrathsworn', 'shaman'], 'A rage with a thundercloud over it.'),
+  pair('momentless', 'Momentless', ['stillhand', 'chronomancer'], 'A stillness that happens a beat before the fight.'),
+  pair('wildstrider', 'Wildstrider', ['wayfinder', 'druid'], 'A walker who goes where the road is not.'),
+  pair('doubleblood', 'Doubleblood', ['godblooded', 'warlock'], 'Two debts in one body, and both are paid in kind.'),
+  pair('graveblood', 'Graveblood', ['ichorbound', 'necromancer'], 'Ichor and ash: the dead walk in the veins.'),
+  pair('cardsharp', 'Cardsharp', ['fatedealer', 'bard'], 'A deck that is always the right one.'),
+  pair('thoughtscribe', 'Thoughtscribe', ['mindwright', 'inkweaver'], 'Whatever it thinks, it writes, and it comes true.'),
+  pair('warden-general', 'Warden-General', ['marshal', 'knight'], 'A shield-wall with a plan behind it.'),
+  pair('gunwright', 'Gunwright', ['corsair', 'artificer'], 'A sailor who kept the black powder.'),
+  pair('templar-of-ash', 'Templar of Ash', ['vowknight', 'witchhunter'], 'An oath burned down to a blade that cannot be put out.'),
+  pair('ring-dancer', 'Ring Dancer', ['brawler', 'dancer'], 'A brawl choreographed to a tune only the dancer hears.'),
+  pair('hearth-priest', 'Hearth Priest', ['hearthmaster', 'cleric'], 'A prayer that always smells like bread.'),
+  pair('cold-reader', 'Cold Reader', ['truthseeker', 'rogue'], 'Knows what you will do before you have decided.'),
+  pair('hedgewalker', 'Hedgewalker', ['hedgewitch', 'ranger'], 'A witch’s green lanes and a hunter’s quiet feet.'),
+  pair('pactblade', 'Pactblade', ['soulblade', 'warlock'], 'A sword that holds up its end of the bargain, and yours.'),
+];
+
+export const HYBRIDS: HybridDef[] = [...BASE_HYBRIDS, ...GREATER_HYBRIDS, ...TABLETOP_HYBRIDS];
 
 const trialSupport: Record<string, EncounterDef['enemies']> = {
   warrior: [{ enemyId: 'bandit-thug' }],
@@ -145,6 +164,9 @@ export const HYBRID_TRIAL_THREAT: Record<string, number> = {
   muse: 170, glyphmaster: 170, 'grand-inquisitor': 0, mountainbreaker: 170, 'golem-master': 200, crusader: -45, 'rune-knight': 80,
   thornstalker: 170, greenseer: 100, 'dark-magus': 140, hexblade: 15, soulbinder: 170, 'spirit-lord': 100, venomancer: 230, transmuter: 270,
   ghostfist: 40, metronome: 15, gadgeteer: 170, ironclad: 400, 'windstep-master': 170, silkblade: 170, lorekeeper: 170, 'bounty-hunter': 230,
+  // Section I-8c
+  stormrager: 40, momentless: -15, wildstrider: 170, doubleblood: 40, graveblood: 80, cardsharp: 80, thoughtscribe: 120, 'warden-general': 300,
+  gunwright: 500, 'templar-of-ash': 80, 'ring-dancer': 230, 'hearth-priest': -30, 'cold-reader': 80, hedgewalker: 170, pactblade: 120,
 };
 
 /** Class trials (level 15: mentor plus a helper) and hybrid trials (both mentors and their helpers at level 36). */
