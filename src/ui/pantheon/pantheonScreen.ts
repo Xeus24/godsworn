@@ -108,6 +108,18 @@ export class PantheonScreen implements Screen {
     return el('section', { class: 'panel god-list' }, ...cards);
   }
 
+  /** Divine Intervention (item 222): the weekly call, and the Last Prayer line. */
+  private callPanel(): HTMLElement {
+    const g = this.session.grace;
+    const d = this.session.player.devotion;
+    const call = this.btn(g.callReady ? `Call on your god (${g.callChance()}%)` : `Call on your god (${g.daysToCall}d)`, () => {
+      const r = g.callOnGod();
+      this.session.bus.emit('toast', { kind: 'favor', text: r.ok ? r.text : r.reason });
+      this.render();
+    }, !g.callReady);
+    return el('p', { class: 'small' }, call, el('span', { class: 'dim small' }, ` Once a week; your level and the god’s mood decide. ${d.lastPrayerUsed ? 'The Last Prayer is spent.' : `A Last Prayer (${d.lastPrayerChance ?? 0}%) answers one fall, once a playthrough.`}`));
+  }
+
   private summary(): HTMLElement {
     const p = this.session.player;
     const slots = blessingSlotCount(p);
@@ -131,6 +143,7 @@ export class PantheonScreen implements Screen {
       el('div', { class: 'blessing-row' }, ...slotted, ...empty),
       ...(minors.length ? [el('h3', {}, 'Minor blessings'), el('div', { class: 'blessing-row' }, ...minors)] : []),
       el('p', { class: 'small' }, `Patron: ${p.devotion.patron ? content.gods.get(p.devotion.patron).name : 'none'} · ${iv}`),
+      ...(p.devotion.patron ? [this.callPanel()] : []),
       el('p', { class: 'dim small' }, `More slots at levels ${DEVOTION.blessingSlotLevels.join(' and ')}. Rival gods will not share you.`),
     );
   }

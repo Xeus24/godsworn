@@ -1,4 +1,5 @@
 import { content } from '../../data';
+import { MOUNTED } from '../../data/mounted';
 import { BELLS, BOOKS, CANALS, CINDER, CLANS, GALLERY, GODLESS, HOURGLASS, LANTERN, LIBRARY, MASQUE, OSSUARY, PAPER, STEPPE, THROAT, WICK, WILDS, WILDS_HOLLOW } from '../../data/pockets';
 import type { GauntletState } from '../endgame/types';
 import { Rng } from '../core/rng';
@@ -76,7 +77,7 @@ export class PocketActions {
   /** What the pockets give the hero: the mounted steppe, the clans’ boons, bone-forged vigor, ash and emberbloom, the library. */
   mods(): ModifierSpec[] {
     const out: ModifierSpec[] = [];
-    if (this.here() === 'weeping-steppe') out.push(...STEPPE.mounted);
+    if (this.here() === 'weeping-steppe') out.push(...(this.s.player.stable?.mount ? STEPPE.mounted : MOUNTED.steppeOnFoot));
     for (const c of CLANS) if ((this.p.hosp[c.id] ?? 0) >= STEPPE.boonAt) out.push(c.boon);
     for (let i = 0; i < this.p.wrights; i++) out.push(OSSUARY.wrightMod);
     if (this.p.ash >= CINDER.target) out.push(CINDER.ashMod);

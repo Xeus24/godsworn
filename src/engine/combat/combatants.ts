@@ -215,6 +215,14 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
     x.skills.push({ id: g.skillId, rank: g.rank, general: g.generalId, ...(g.patch ? { patch: g.patch } : {}) });
   }
   x.hotbar = hotbar(char).filter((h): h is string => h !== null);
+  // Mounted Combat (item 223): a hero with a mount out fights from the saddle.
+  if (char.stable?.mount) {
+    x.mounted = true;
+    for (const id of ['g-mount-charge', 'g-mount-trample']) {
+      x.skills.push({ id, rank: Math.min(10, 1 + Math.floor(char.level / 8)) });
+      x.hotbar.push(id);
+    }
+  }
   // Spells forged at the Spellforge (item 218), usable beside the hotbar.
   for (const id of char.forged ?? []) {
     if (x.skills.some((s) => s.id === id) || !ensureForged(id)) continue;

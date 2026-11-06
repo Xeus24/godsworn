@@ -57,5 +57,16 @@ export function workshopPanel(s: GameSession, render: () => void): HTMLElement[]
     : HIRELINGS.map((d) => el('div', { class: 'small', title: d.text }, el('b', {}, d.name), el('span', { class: 'dim' }, ` ${d.perk} `), btn(`Hire ${d.hire}g`, d.text, () => note(w.hire(d.id)))));
   const hire = el('details', { class: 'small' }, el('summary', {}, h ? `Retainer: ${h.def.name} (level ${h.level})` : 'Hirelings'), ...hireBody);
 
-  return [foldPanel(el('section', { class: 'panel' }, el('h3', {}, 'The Workbench'), forge, kits, hire), `${w.forgedIds.length} forged · ${KITS.filter((k) => w.owns(k.id)).length} kits${h ? ` · ${h.def.name}` : ''}`)];
+  // Holdings (item 221)
+  const gr = s.grace;
+  const holdRows = gr.mine().map((h) => {
+    const lvl = gr.levelOf(h.classId);
+    const why = gr.why(h.classId);
+    const next = lvl < 3 ? h.costs[lvl] : undefined;
+    return el('div', { class: 'small', title: h.text }, el('b', {}, h.name), el('span', { class: 'dim' }, ` level ${lvl}/3 · ${h.perk} `),
+      lvl >= 3 ? el('span', { class: 'dim' }, 'complete') : btn(`${lvl === 0 ? 'Build' : 'Raise'} (${next ? `${next[0]}g ${next[1]}t ${next[2]}s` : ''})`, why ?? h.text, () => note(gr.build(h.classId)), why !== undefined));
+  });
+  const holds = el('details', { class: 'small' }, el('summary', {}, `Holdings in Emberfall (${gr.mine().reduce((n, h) => n + gr.levelOf(h.classId), 0)} levels)`), ...(holdRows.length ? holdRows : [el('p', { class: 'dim small' }, 'None of your classes has a hall here yet.')]));
+
+  return [foldPanel(el('section', { class: 'panel' }, el('h3', {}, 'The Workbench'), forge, kits, hire, holds), `${w.forgedIds.length} forged · ${KITS.filter((k) => w.owns(k.id)).length} kits${h ? ` · ${h.def.name}` : ''}`)];
 }

@@ -119,6 +119,9 @@ export interface Devotion {
   offeredTier: Record<string, number>;
   /** Divine Intervention recharges when you rest. */
   interventionReady: boolean;
+  /** The Last Prayer (item 222): used once a playthrough, and its chance (%) kept current by `s.grace`. */
+  lastPrayerUsed?: boolean;
+  lastPrayerChance?: number;
   /** Apostle trial stages won per god (0-3). */
   trialStage: Record<string, number>;
   /** The god you are Apostle of, if any. */

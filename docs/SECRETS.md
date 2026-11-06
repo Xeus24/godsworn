@@ -1,2 +1,2 @@
 
-- Section I-7c1: a hero who forges a Circle 5+ spell with the Tabletop Rules on burns one spell-ink every cast. A Guide hireling halves the road's Weariness.
+- Section I-7c2: every class, even the secret ones, has a hall in Emberfall. A god you call on in a good mood is more likely to answer. The Last Prayer is only ever tried once.

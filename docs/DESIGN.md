@@ -1,3 +1,3 @@
 
 
-I-7c1: `WorkshopActions` (`s.workshop`) owns the Spellforge, Kits and Hirelings; state `realm.marvels.workshop` plus `character.forged`. Forged spells are not content files: `engine/skills/forge.ts` builds a `SkillDef` from its recipe id and registers it on demand, so a save only stores ids.
+I-7c2: `GraceActions` (`s.grace`) owns Holdings and the weekly call; the Last Prayer lives on `Combatant.lastPrayer` (set in `applyDivineCombat`, resolved in `hits.ts`). Mounted Combat is `Combatant.mounted` set in `createHero` when `stable.mount` is out; the dismount reaction is in `applyDamage`.

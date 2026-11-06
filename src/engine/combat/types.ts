@@ -187,6 +187,8 @@ export interface Combatant {
   reaction?: boolean;
   /** Tactic Dice held (Battle Techniques, item 212) and the most it can hold. */
   tactic?: number;
+  /** Riding a mount (item 223): the charge and trample skills work, until a blow throws the rider. */
+  mounted?: boolean;
   tacticMax?: number;
   /** Allies that have struck this fighter since its last turn (Flanking, item 215). */
   flankers?: string[];
@@ -297,6 +299,8 @@ export interface Combatant {
   /** Pray: spends favor with the patron for a divine effect. */
   prayer?: { god: string; name: string; description: string; effects: EffectSpec[]; cost: number; uses: number };
   /** Divine Intervention: a Devoted+ god may save the hero from death once. */
+  /** The Last Prayer: once per playthrough a patron may answer a fall that no Intervention caught (item 222). */
+  lastPrayer?: { god: string; chance: number; used: boolean };
   intervention?: { god: string; name: string; text: string; effects: EffectSpec[]; chance: number; used: boolean };
   /** On-use abilities from equipped trinket and relic. */
   abilities: { slot: 'trinket' | 'relic'; name: string; description: string; effects: EffectSpec[]; cooldown: number }[];
@@ -384,4 +388,6 @@ export interface BattleTally {
   oathsBroken: number;
   /** God that intervened to save the hero this battle. */
   intervention?: string;
+  /** The Last Prayer answered this battle (item 222). */
+  lastPrayer?: string;
 }

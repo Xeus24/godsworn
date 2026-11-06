@@ -397,6 +397,7 @@ export class DevotionActions {
       if (god) changes.push(...this.apply({ [god]: DEVOTION.penanceFavor }, 'penance', true));
     }
     if (t.intervention) this.p.devotion.interventionReady = false;
+    if (t.lastPrayer) this.p.devotion.lastPrayerUsed = true;
     // Apostle trial stages, edicts and apostasy hunts.
     if (b.outcome === 'victory') {
       const god = recordTrialStage(this.p, b.encounterId);

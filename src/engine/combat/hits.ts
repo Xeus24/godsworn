@@ -6,6 +6,7 @@ import { rollD20 } from '../tabletop/dice';
 import { onHit as tabletopOnHit } from './tabletopRules';
 import type { Element } from '../stats/types';
 import type { Battle } from './battle';
+import { MOUNTED } from '../../data/mounted';
 import { TECHNIQUE_RULES } from '../../data/general/techniques';
 import { computeDamage, hitChance } from './damage';
 import { applyEffects, fireTrigger } from './effects';
@@ -186,6 +187,14 @@ export function applyDamage(
       if (amount <= 0) return;
     }
   }
+  // Dismount (item 223): the first blow that would leave a rider under 30% HP throws them; the mount soaks most of it.
+  if (target.mounted && !info.dot && target.hp - amount < (target.maxHp * MOUNTED.dismountPct) / 100) {
+    target.mounted = false;
+    target.buffs = target.buffs.filter((x) => x.id !== 'mounted');
+    amount -= Math.round((amount * MOUNTED.soakPct) / 100);
+    b.log(`${target.name} is thrown from the saddle; the mount takes most of the blow.`);
+    if (amount <= 0) return;
+  }
   const absorbed = Math.min(Math.round(target.shield * (1 - (info.shieldPierce ?? 0) / 100)), amount);
   target.shield -= absorbed;
   const dealt = amount - absorbed;
@@ -296,9 +305,24 @@ export function deathRoll(b: Battle, x: Combatant): void {
   }
 }
 
+function lastPrayer(b: Battle, target: Combatant): boolean {
+  const lp = target.lastPrayer;
+  if (!lp || lp.used || target.kind !== 'hero') return false;
+  lp.used = true; // one try a playthrough, answered or not
+  b.tally.lastPrayer = lp.god;
+  if (!b.rng.chance(lp.chance / 100)) {
+    b.log(`${target.name} whispers a last prayer to ${b.c.gods.get(lp.god).name}. Nothing answers.`);
+    return false;
+  }
+  target.hp = Math.max(1, Math.round(target.maxHp * 0.5));
+  b.emit({ type: 'revive', targetId: target.id });
+  b.log(`${b.c.gods.get(lp.god).name} answers a last prayer: ${target.name} stands again, at half strength.`);
+  return true;
+}
+
 function divineIntervention(b: Battle, target: Combatant): boolean {
   const iv = target.intervention;
-  if (!iv || iv.used || !b.rng.chance(iv.chance / 100)) return false;
+  if (!iv || iv.used || !b.rng.chance(iv.chance / 100)) return lastPrayer(b, target);
   iv.used = true;
   b.tally.intervention = iv.god;
   target.hp = Math.max(1, Math.round((target.maxHp * DEVOTION.intervention.hpAfter) / 100));

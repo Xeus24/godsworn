@@ -377,7 +377,16 @@ export interface WorkshopState {
 }
 export const createWorkshop = (): WorkshopState => ({ kits: { owned: [], prof: [], used: {} }, gone: [] });
 
+/** Holdings and the weekly call on a god (Section I-7c). */
+export interface GraceState {
+  holdings: Record<string, number>;
+  lastCall: number;
+  answered: number;
+}
+export const createGrace = (): GraceState => ({ holdings: {}, lastCall: -999, answered: 0 });
+
 export interface MarvelsState {
+  grace?: GraceState;
   workshop?: WorkshopState;
   afflictions?: AfflictionsState;
   tabletop?: TabletopState;

@@ -37,6 +37,7 @@ export function applyDivineCombat(x: Combatant, char: Character, fai: number, c:
       if (uses > 0) x.prayer = { god: patron, ...def.prayer, uses };
     }
   }
+  if (patron && !char.devotion.lastPrayerUsed && char.devotion.lastPrayerChance) x.lastPrayer = { god: patron, chance: char.devotion.lastPrayerChance, used: false };
   const god = char.devotion.interventionReady ? interveningGod(char, c) : undefined;
   if (god) {
     const def = c.pantheon.get(god).intervention;

@@ -1,4 +1,5 @@
 import { COMBAT } from '../../data/combat';
+import { MOUNTED } from '../../data/mounted';
 import { TECHNIQUE_CLASSES, TECHNIQUE_RULES } from '../../data/general/techniques';
 import type { Battle } from './battle';
 import { bossActed, bossTurnStart, bossWindUp, initBoss } from './bosses';
@@ -47,6 +48,9 @@ export function startBattle(b: Battle): BattleEvent[] {
       x.tacticMax = Math.min(TECHNIQUE_RULES.max, TECHNIQUE_RULES.base + Math.floor(x.level / TECHNIQUE_RULES.perLevels));
       x.tactic = x.tacticMax;
     }
+  }
+  for (const x of b.alive('party')) {
+    if (x.mounted) x.buffs.push({ id: 'mounted', name: 'Mounted', modifiers: MOUNTED.rider, turns: 999, sourceId: x.id });
   }
   if (b.weary >= 6) {
     const hero = b.alive('party').find((x) => x.kind === 'hero');
