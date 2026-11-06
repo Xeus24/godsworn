@@ -1,3 +1,3 @@
 
 
-I-7a: `AfflictionActions` (`s.afflictions`) owns Afflictions, Weariness, the Hard Road and the Whisper Meter; its `mods()` feed `WondersActions.refresh()`. Cure quests are ordinary `QuestDef`s gated on the flag `affliction:<id>`. Flanking lives in `dealDamage` (a `flankers` list on the target, cleared at its turn); weariness 6 is read at `startBattle` through `battle.weary`.
+I-7b: Tactic Dice are `Combatant.tactic`/`tacticMax`, set in `startBattle` for the four martial classes and refilled in `kill`. Techniques are ordinary general combat skills; `generalCombatSkills` adds the known ones without a slot. Extra specs are appended to each base class in `trees/index.ts` (`withExtra`).

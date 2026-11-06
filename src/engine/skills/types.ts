@@ -33,6 +33,8 @@ export interface SkillCost {
   /** Percentage of max HP. */
   hpPct?: number;
   resource?: { id: string; amount: number };
+  /** Tactic Dice spent (Battle Techniques, item 212). */
+  tactic?: number;
 }
 
 export interface SkillDef {

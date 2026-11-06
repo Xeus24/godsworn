@@ -6,6 +6,7 @@ import { rollD20 } from '../tabletop/dice';
 import { onHit as tabletopOnHit } from './tabletopRules';
 import type { Element } from '../stats/types';
 import type { Battle } from './battle';
+import { TECHNIQUE_RULES } from '../../data/general/techniques';
 import { computeDamage, hitChance } from './damage';
 import { applyEffects, fireTrigger } from './effects';
 import { covenantHit } from './covenant';
@@ -355,6 +356,7 @@ export function kill(b: Battle, target: Combatant, killer: Combatant, element?: 
       if (gains?.onEnemyDeath) gainResource(b, x, x.resourceId as string, gains.onEnemyDeath);
     }
   }
+  if (killer.tacticMax && killer.side === 'party' && target.side === 'enemy') killer.tactic = Math.min(killer.tacticMax, (killer.tactic ?? 0) + TECHNIQUE_RULES.onKill);
   fireTrigger(b, killer, 'onKill', target);
   fireTrigger(b, target, 'onDeath', killer);
   if (hadBurn && b.hasFlag(killer, 'burnSpreadsOnDeath')) {

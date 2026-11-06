@@ -60,6 +60,7 @@ export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
   if (skill.stances && !skill.stances.includes(x.stance ?? 'natural')) return { ok: false, reason: `${skill.stances.map((s) => b.c.stances.find(s)?.name ?? s).join(' or ')} form only` };
   const reagent = b.tabletop && x.side === 'party' ? REAGENTS[skill.id] : undefined;
   if (reagent && (b.hooks.itemCount?.(reagent.itemId) ?? 0) < reagent.qty) return { ok: false, reason: `Needs a ${reagent.name}` };
+  if (skill.cost.tactic && (x.tactic ?? 0) < skill.cost.tactic) return { ok: false, reason: `${skill.cost.tactic} Tactic Di${skill.cost.tactic > 1 ? 'ce' : 'e'}` };
   if (skill.ultimate && ((skill.id === x.avatarSkill && x.avatarUsed) || (skill.id === x.avatarSkill2 && x.avatarUsed2))) return { ok: false, reason: 'Once per battle' };
   if (skill.ultimate) return x.ultimate >= 100 ? { ok: true } : { ok: false, reason: `Ultimate ${Math.floor(x.ultimate)}%` };
   const cd = x.cooldowns[skill.id] ?? 0;
@@ -216,6 +217,7 @@ function resolveTargets(b: Battle, x: Combatant, skill: SkillDef, targetId?: str
 }
 
 function payCosts(b: Battle, x: Combatant, skill: SkillDef): void {
+  if (skill.cost.tactic) x.tactic = Math.max(0, (x.tactic ?? 0) - skill.cost.tactic);
   const reagent = b.tabletop && x.side === 'party' ? REAGENTS[skill.id] : undefined;
   if (reagent) {
     for (let i = 0; i < reagent.qty; i++) b.hooks.consumeItem?.(reagent.itemId);

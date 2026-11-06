@@ -49,7 +49,7 @@ describe('tree content', () => {
       const classBranches = new Set(tree.branches.filter((b) => !b.spec && !b.id.endsWith('.secrets')).map((b) => b.id));
       // Tabletop Tradition classes (Section I) carry a fifth branch of extra techniques.
       expect([4, 5], cls.id).toContain(classBranches.size);
-      expect(tree.branches.filter((b) => b.spec), cls.id).toHaveLength(cls.hidden ? 2 : 3);
+      expect(tree.branches.filter((b) => b.spec).length, cls.id).toBeGreaterThanOrEqual(cls.hidden ? 2 : 3);
       const classNodes = tree.nodes.filter((n) => classBranches.has(n.branch));
       expect(classNodes.length, cls.id).toBeGreaterThanOrEqual(50);
       expect(classNodes.length, cls.id).toBeLessThanOrEqual(classBranches.size === 5 ? 80 : 70);

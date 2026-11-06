@@ -1,4 +1,5 @@
 import { COMBAT } from '../../data/combat';
+import { TECHNIQUE_CLASSES, TECHNIQUE_RULES } from '../../data/general/techniques';
 import type { Battle } from './battle';
 import { bossActed, bossTurnStart, bossWindUp, initBoss } from './bosses';
 import { applyEffects, fireTrigger, summon } from './effects';
@@ -39,6 +40,12 @@ export function startBattle(b: Battle): BattleEvent[] {
       if (x.tier === 'boss' || x.tier === 'worldBoss') continue;
       applyStatus(b, x, x, 'stun', { duration: 1, unresistable: true });
       b.log(`${x.name} bows deeply and apologizes for the inconvenience.`);
+    }
+  }
+  for (const x of b.alive('party')) {
+    if (x.classId && (TECHNIQUE_CLASSES as readonly string[]).includes(x.classId)) {
+      x.tacticMax = Math.min(TECHNIQUE_RULES.max, TECHNIQUE_RULES.base + Math.floor(x.level / TECHNIQUE_RULES.perLevels));
+      x.tactic = x.tacticMax;
     }
   }
   if (b.weary >= 6) {

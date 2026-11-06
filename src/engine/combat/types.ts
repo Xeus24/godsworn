@@ -185,6 +185,9 @@ export interface Combatant {
   id: string;
   /** Tabletop Rules: the reaction (Riposte) used this round, the sustained spell held in Focus, Muse Dice held, and a boss's Unyielding shrugs left. */
   reaction?: boolean;
+  /** Tactic Dice held (Battle Techniques, item 212) and the most it can hold. */
+  tactic?: number;
+  tacticMax?: number;
   /** Allies that have struck this fighter since its last turn (Flanking, item 215). */
   flankers?: string[];
   focus?: { name: string; buffs: string[] };

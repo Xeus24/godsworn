@@ -2711,34 +2711,42 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## Specializations (24)
 
 <!-- specializations:start -->
-137 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
+145 specializations, 3 per class, chosen at class level 20. Each adds a 12-node branch (signature skill with 2 modifiers, 3 minors, Signature Mastery, 2 notables, a choice pair, a capstone; tiers need (t - 1) x 4 points) and replaces the class ultimate.
 
 | Class | Specialization | Signature skill (modifiers) | Ultimate | Capstone |
 |---|---|---|---|---|
 | Warrior | **Berserker**: Unbound fury: the closer to death, the deadlier. | Frenzied Assault (Blood Spray, Endless Frenzy) | **Bloodstorm**: A storm of blades: 300% ATK to every enemy, heal 20% of max HP and go Berserk. | Undying Rage |
 | Warrior | **Paladin**: A holy warrior: steel and faith as one. | Crusader Strike (Judgement Strike, Blessed Strike) | **Hammer of Heaven**: A hammer of light: 220% ATK holy damage to every enemy and Divine Protection for the party. | Lay on Hands: The first time you fall below 30% HP each battle, heal 50%. |
 | Warrior | **Warlord**: A commander who wins battles before they start. | Rallying Banner (War Banner, Iron Banner) | **Grand Offensive**: Lead the charge: 200% ATK to every enemy (30% Stun) and Haste the party. | Supreme Commander: The party starts every battle with +20% damage for 3 turns. |
+| Warrior | **Duelist**: One blade, one foe, and a great deal of footwork. | Duelist’s Thrust (Heavier Duelist’s Thrust, Frugal Duelist’s Thrust) | **Perfect Duel**: One foe, one answer: 450% ATK that always crits, and you take 20% less damage for 2 turns. | Duelist Ascendant: +15% crit chance, +10 accuracy. |
 | Rogue | **Assassin**: One target. One strike. No witnesses. | Assassinate (Silent Kill, Deathblow) | **Thousand Cuts**: Ten flashing cuts on one enemy, 50% ATK each, every one a critical hit. | Angel of Death |
 | Rogue | **Shadowdancer**: Never where the blade falls. | Shadow Step (Umbral Blade, Shadow Veil) | **Shadow Storm**: Shadows erupt: 250% ATK shadow damage to every enemy, and you vanish into Stealth. | One with Darkness |
 | Rogue | **Swashbuckler**: Style, luck and a dazzling blade. | Flourish (Dazzling Flourish, Flashy) | **Grand Flourish**: A whirlwind performance: six strikes of 80% ATK at random enemies; the party gains +20% crit for 2 turns. | Legend of the Seas |
+| Rogue | **Gambit**: The odds are a suggestion. You make a counter-offer. | Loaded Wager (Heavier Loaded Wager, Frugal Loaded Wager) | **The House Takes All**: The whole pot: six strikes of 110% ATK at random enemies, every one a critical hit. | Gambit Ascendant: +15% crit chance, +10 LUK. |
 | Ranger | **Beastmaster**: The pack is the weapon. | Bestial Wrath (Pack Hunt, Feral Roar) | **Stampede**: A stampede of spirit beasts: 220% ATK nature damage to every enemy, and a spirit stag joins you. | King of the Wild: A second wolf joins every battle. |
 | Ranger | **Sharpshooter**: Patience, then one perfect shot. | Deadly Aim (Kill Shot, Penetrating Shot) | **Final Arrow**: One perfect arrow: 600% ATK, always a critical hit. | Perfect Shot |
 | Ranger | **Warden**: Guardian of the wild places. | Entangling Roots (Thorned Roots, Binding Roots) | **Wrath of Nature**: The forest rises: 250% ATK nature damage to every enemy with heavy Poison, and the party regenerates. | Heart of the Forest |
+| Ranger | **Trapper**: The best shot is the one they walk into. | Snare Field (Heavier Snare Field, Frugal Snare Field) | **Kill Zone**: Everything inside the lines: 270% ATK to every enemy, who are left Vulnerable for 3 turns. | Trapper Ascendant: +15 accuracy, +10% status chance. |
 | Monk | **Grandmaster**: Perfection of the fist. | Seven-Sided Strike (Focused Strikes, Whirling Strikes) | **Fists of Fury**: Sixteen strikes on one enemy, 40% ATK each. | True Grandmaster |
 | Monk | **Mystic**: Spirit made flesh: healing and inner light. | Spirit Palm (Radiant Palm, Soothing Palm) | **Nirvana**: Perfect calm: heal 60% of max HP, gain Divine Protection and full Chi, and strike every enemy for 150% ATK. | Enlightened One |
 | Monk | **Wind Dancer**: Untouchable as the wind. | Cyclone Kick (Gale Kick, Wind Wall) | **Tempest Dance**: A dance like a storm: ten strikes of 50% ATK at random enemies, and you are Hasted. | Eye of the Hurricane |
+| Monk | **Tideheart**: Give way, give way, give way, and then not. | Swaying Palm (Heavier Swaying Palm, Frugal Swaying Palm) | **Ebb and Flow**: The tide turns: eight strikes of 55% ATK at random enemies, the party gains +15% dodge for 3 turns and you heal 15%. | Tideheart Ascendant: +15% dodge, +10 speed. |
 | Mage | **Pyromancer**: Fire, and nothing but fire. | Meteor (Meteor Shower, Impact) | **Sunfall**: Drop a piece of the sun: 320% MAG fire to every enemy with 3 stacks of Burn. | Lord of Flame: Fire crits explode on every enemy for 30% MAG. |
 | Mage | **Chronomancer**: Master of time: act more, wait less. | Time Warp (Accelerate, Slow Time) | **Time Stop**: Freeze time: Stun every enemy, Haste the party and reduce your cooldowns by 3. | Master of Time: Skills have a 20% chance to reduce your cooldowns by 1. |
 | Mage | **Stormcaller**: Ride the storm: soak, then strike. | Storm Surge (Tidal Surge, Static Surge) | **Maelstrom**: A raging maelstrom: every enemy is soaked, then eight bolts of 70% MAG lightning strike at random. | Avatar of Storms |
+| Mage | **Spellsculptor**: Magic is clay. You are very fond of clay. | Sculpt Spell (Heavier Sculpt Spell, Quicker Sculpt Spell) | **Grand Sculpture**: You carve the battlefield: 300% MAG arcane to every enemy, your skills cool by 2 turns and you gain a shield of 15% max HP. | Spellsculptor Ascendant: +15% magic attack, +10% cooldown reduction. |
 | Cleric | **Inquisitor**: Hunter of heretics. The light that burns. | Condemn (Purge, Zealous Condemnation) | **Final Judgement**: The gods’ verdict: 300% DIV holy damage to every enemy. | Grand Inquisitor |
 | Cleric | **Oracle**: She sees the blow before it falls. | Foresight (Prophecy, Clairvoyance) | **Divine Prophecy**: Fate bends: heal the party for 50% of max HP, then grant Divine Protection and Haste. | Voice of the Gods |
 | Cleric | **Saint**: Mercy made flesh. No one dies on her watch. | Sacred Renewal (Radiant Renewal, Blessed Renewal) | **Resurrection**: Life without limit: fully heal the party and grant Regen and Divine Protection. | Living Saint: At the start of your turn, every ally heals 6% of max HP. |
+| Cleric | **Gravekeeper**: The dead are owed rest and the living owed time. | Hallow Ground (Heavier Hallow Ground, Frugal Hallow Ground) | **Last Rites**: The grave is given its due: 220% DIV holy to every enemy, the party is healed for 35% of max HP and gains Divine Protection. | Gravekeeper Ascendant: +15% healing power, +10% max HP. |
 | Necromancer | **Lich**: Undeath, frost and endless spellcraft. | Soul Frost (Frozen Soul, Phylactery Drain) | **Eternal Winter**: The cold of the grave: 260% MAG ice to every enemy, with a 50% chance to Freeze. | Archlich |
 | Necromancer | **Bonelord**: An army of bone, and a golem to lead it. | Raise Bone Golem (Reinforced Golem, Bone Wall) | **Bone Apocalypse**: A storm of bone: 240% MAG physical to every enemy, and a Bone Golem rises. | Lord of the Ossuary: Two skeleton warriors rise at the start of every battle. |
 | Necromancer | **Plaguebringer**: Sickness that spreads, stacks and never stops. | Plague Bomb (Virulent Bomb, Concentrated) | **Black Death**: The great plague: 200% MAG nature to every enemy, 5 stacks of Poison and a Curse. | Herald of Pestilence |
+| Necromancer | **Bonewright**: You build with what is left over. | Bone Lattice (Heavier Bone Lattice, Frugal Bone Lattice) | **Ossuary Cathedral**: A vaulted hall of the dead rises: 290% MAG shadow to every enemy and a shield of 25% max HP for the party. | Bonewright Ascendant: +15% max HP, +10% magic attack. |
 | Bard | **Virtuoso**: Pure musical genius, sharp enough to cut. | Masterpiece (Encore Performance, Crescendo Strike) | **Symphony of Destruction**: The final movement: 300% MAG arcane damage to every enemy. | Living Legend |
 | Bard | **Skald**: War-singer of the north. Songs that make heroes. | War Chant (Chant of Blood, Chant of Iron) | **Ragnarok Chorus**: A chorus to end the world: 250% MAG physical to every enemy, and the whole party goes Berserk. | Voice of Valhalla: Start every battle with the Song of Valor playing and the party Hasted. |
 | Bard | **Trickster**: Nothing is what it seems. | Misdirect (Confusion, Mirror Image) | **Grand Illusion**: Nothing is real: every enemy may be Charmed (70%), and the party vanishes into Stealth. | Master of Illusion: Crits may Charm the target. |
+| Bard | **Satirist**: The sharpest weapon is a rhyme at the wrong funeral. | Cutting Verse (Heavier Cutting Verse, Frugal Cutting Verse) | **Scathing Ballad**: A ballad of every foe’s worst day: 240% MAG to every enemy, who may be Charmed or Feared, while the party is Inspired. | Satirist Ascendant: +15% status chance, +10% magic attack. |
 | Knight | **Oathbound**: A holy tank: light that heals, a shield that burns. | Consecrated Ground (Radiant Footing, Healing Light) | **Oath Eternal**: The oath answers: 250% DIV holy damage to every enemy, the party is healed for 25% and gains Divine Protection. | Sun Sworn: +10% divine power and heal 5% of max HP at each turn start. |
 | Knight | **Dragoon**: A lancer who fights from above and lands like a comet. | Sky Lance (Higher Leap, Wyrmscale) | **Dragonfall**: Fall from the sky: 520% ATK to one enemy, and it is Stunned. | Lord of Lances: +12% physical attack; Sky Lance generates 15 Resolve. |
 | Knight | **Bulwark**: The wall that does not move, whatever it costs. | Immovable Wall (Thicker Shell, Spiked) | **Last Bastion**: The whole party is shielded for 35% of max HP and takes 30% less damage for 3 turns. | Bastion Eternal: 15% less damage taken and +10% max HP. |
@@ -2857,7 +2865,7 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 ## General skills (81)
 
 <!-- general:start -->
-204 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
+228 general skills (ranks 1-10; Grimoires and Divine skills 1-5). Learn or rank up by reading a skillbook (consumed) or studying it at the Library (gold + days, kept). Slotted skills train: battle skills by use, passives by 1 per victory (6 x rank to the next rank). Slots: 2, +1 at levels 10/20/30/40/50.
 
 | Skill | Category | Book rarity | Battle skill | Effect |
 |---|---|---|---|---|
@@ -3002,6 +3010,30 @@ Elite affixes, the bestiary, achievements and the codex (Phase 13), NG+ content 
 | **Murmur of Mending** | elemental | Common | Murmur of Mending | A free basic heal (Tabletop Rules). |
 | **Cold Whisper** | elemental | Common | Cold Whisper | A free basic frost (Tabletop Rules). |
 | **Warding Murmur** | elemental | Common | Warding Murmur | A free basic ward (Tabletop Rules). |
+| **Trip** | combat | Common | Trip | A Battle Technique (costs 1 Tactic Dice). A low sweep: 70% ATK and a chance to Slow. |
+| **Feint** | combat | Common | Feint | A Battle Technique (costs 1 Tactic Dice). A false opening: 60% ATK and the target is Vulnerable. |
+| **Disarm** | combat | Common | Disarm | A Battle Technique (costs 1 Tactic Dice). Knock the weapon aside: 65% ATK and Weaken. |
+| **Rally** | combat | Common | Rally | A Battle Technique (costs 1 Tactic Dice). A shout that steadies the line: heal every ally for 8% max HP. |
+| **Shield Bash** | combat | Common | Shield Bash | A Battle Technique (costs 1 Tactic Dice). Slam the guard in: 80% ATK and a chance to Stun. |
+| **Counterstroke** | combat | Common | Counterstroke | A Battle Technique (costs 1 Tactic Dice). Brace and answer: shield 10% max HP and Taunt for a turn. |
+| **Sunder** | combat | Common | Sunder | A Battle Technique (costs 1 Tactic Dice). Break their armour: 75% ATK and Vulnerable for 3 turns. |
+| **Hamstring** | combat | Common | Hamstring | A Battle Technique (costs 1 Tactic Dice). Cut the leg: 60% ATK, Bleed and Slow. |
+| **Cleave** | combat | Common | Cleave | A Battle Technique (costs 2 Tactic Dice). Strike every foe: 55% ATK to all enemies. |
+| **Guarded Stance** | combat | Common | Guarded Stance | A Battle Technique (costs 1 Tactic Dice). Take half the blows meant for an ally for 2 turns. |
+| **Mock** | combat | Common | Mock | A Battle Technique (costs 1 Tactic Dice). Insult them into looking only at you for 2 turns. |
+| **Shove** | combat | Common | Shove | A Battle Technique (costs 1 Tactic Dice). Put them off balance: 50% ATK and their next turn comes later. |
+| **Lunge** | combat | Common | Lunge | A Battle Technique (costs 1 Tactic Dice). A long reach: 110% ATK, always hits. |
+| **Whirlwind** | combat | Common | Whirlwind | A Battle Technique (costs 2 Tactic Dice). Spin through the room: 70% ATK to all enemies. |
+| **Pin Down** | combat | Common | Pin Down | A Battle Technique (costs 1 Tactic Dice). Hold them still: 60% ATK and Entangle. |
+| **Headbutt** | combat | Common | Headbutt | A Battle Technique (costs 1 Tactic Dice). Rattle their skull: 75% ATK and Blind. |
+| **Inspiring Word** | combat | Common | Inspiring Word | A Battle Technique (costs 2 Tactic Dice). Everyone fights harder for 3 turns. |
+| **Dirty Trick** | combat | Common | Dirty Trick | A Battle Technique (costs 1 Tactic Dice). A handful of dust: 40% ATK, Blind and Confuse. |
+| **Brace for Impact** | combat | Common | Brace for Impact | A Battle Technique (costs 1 Tactic Dice). Plant your feet: shield 14% max HP. |
+| **Hooking Strike** | combat | Common | Hooking Strike | A Battle Technique (costs 2 Tactic Dice). Pull them out of position: 70% ATK and bring your next turn forward. |
+| **Second Wind** | combat | Common | Second Wind | A Battle Technique (costs 1 Tactic Dice). Draw breath mid-fight: heal 15% max HP. |
+| **Opening Gambit** | combat | Common | Opening Gambit | A Battle Technique (costs 2 Tactic Dice). Hit a wounded foe hard: 140% ATK. |
+| **Rallying Cry** | combat | Common | Rallying Cry | A Battle Technique (costs 2 Tactic Dice). Cool the party’s skills by 1 turn. |
+| **Master Stroke** | combat | Common | Master Stroke | A Battle Technique (costs 2 Tactic Dice). The perfect blow: 180% ATK. |
 | **Shield Slam (Grimoire)** (level 15) | grimoire | Epic | Shield Slam | Use the Shield Slam skill of another class at 70% power. |
 | **Flame Wave (Grimoire)** (level 15) | grimoire | Epic | Flame Wave | Use the Flame Wave skill of another class at 70% power. |
 | **Fan of Knives (Grimoire)** (level 15) | grimoire | Epic | Fan of Knives | Use the Fan of Knives skill of another class at 70% power. |

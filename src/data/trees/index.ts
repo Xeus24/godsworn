@@ -17,6 +17,7 @@ import { GREATER_HYBRID_BRANCHES, GREATER_HYBRID_SKILLS } from './hybridsGreater
 import { MARTIAL_HYBRID_BRANCHES, MARTIAL_HYBRID_SKILLS } from './hybridsMartial';
 import { ARCANE_SPEC_BRANCHES, ARCANE_SPEC_SKILLS } from './specsArcane';
 import { MARTIAL_SPEC_BRANCHES, MARTIAL_SPEC_SKILLS } from './specsMartial';
+import { EXTRA_SPEC_BRANCHES, EXTRA_SPEC_SKILLS } from './specsExtra';
 import { WARRIOR_SKILLS, WARRIOR_TREE } from './warrior';
 import type { SpecializationDef } from '../../engine/skills/generalTypes';
 
@@ -33,13 +34,15 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...BARD_SKILLS,
   ...MARTIAL_SPEC_SKILLS,
   ...ARCANE_SPEC_SKILLS,
+  ...EXTRA_SPEC_SKILLS,
   ...MARTIAL_HYBRID_SKILLS,
   ...CUNNING_HYBRID_SKILLS,
   ...GREATER_HYBRID_SKILLS,
   ...APOSTLE_SKILLS,
 ];
 
-const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES, ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.specs])) };
+const withExtra = (base: Record<string, SpecBranchSpec[]>): Record<string, SpecBranchSpec[]> => Object.fromEntries(Object.entries(base).map(([c, s]) => [c, [...s, ...(EXTRA_SPEC_BRANCHES[c] ?? [])]]));
+const SPEC_BRANCHES: Record<string, SpecBranchSpec[]> = { ...withExtra({ ...MARTIAL_SPEC_BRANCHES, ...ARCANE_SPEC_BRANCHES }), ...Object.fromEntries(GREATER_CLASSES.map((g) => [g.def.id, g.specs])) };
 
 /** Three specializations per class, chosen at class level 20. */
 export const SPECIALIZATIONS: SpecializationDef[] = Object.entries(SPEC_BRANCHES).flatMap(([classId, specs]) =>

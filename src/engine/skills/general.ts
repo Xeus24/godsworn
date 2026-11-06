@@ -1,3 +1,4 @@
+import { TECHNIQUE_ORDER } from '../../data/general/techniques';
 import { HERESY } from '../../data/heresy';
 import { heresyTier } from '../gods/heresy';
 import { content, type Content } from '../../data';
@@ -134,9 +135,16 @@ export interface GeneralCombatSkill {
 
 /** Battle skills granted by slotted general skills (and Grimoires). */
 export function generalCombatSkills(char: Character, c: Content = content): GeneralCombatSkill[] {
-  return slotted(char, c).flatMap(({ def, rank }) =>
+  const out = slotted(char, c).flatMap(({ def, rank }) =>
     def.combatSkill ? [{ generalId: def.id, skillId: def.combatSkill, rank: Math.min(rank, c.skills.get(def.combatSkill).maxRank), ...(def.patch ? { patch: def.patch } : {}) }] : [],
   );
+  // Battle Techniques (item 212) are always ready: a technique the hero knows needs no General slot.
+  for (const id of TECHNIQUE_ORDER) {
+    const known = char.generalSkills[id];
+    const def = known ? c.generalSkills.find(id) : undefined;
+    if (known && def?.combatSkill && !out.some((o) => o.generalId === id)) out.push({ generalId: id, skillId: def.combatSkill, rank: Math.min(known.rank, c.skills.get(def.combatSkill).maxRank) });
+  }
+  return out;
 }
 
 /** Mechanic flags of slotted general skills. */

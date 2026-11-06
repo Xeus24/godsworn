@@ -102,7 +102,7 @@ describe('general skills in battle', () => {
   it('slotted combat skills join the hero outside the hotbar and train by use', () => {
     const s = newSession(4);
     learnGeneral(s.player, 'power-attack');
-    expect(generalCombatSkills(s.player)).toEqual([{ generalId: 'power-attack', skillId: 'g-power-attack', rank: 1 }]);
+    expect(generalCombatSkills(s.player).filter((g) => !g.generalId.startsWith('tech-'))).toEqual([{ generalId: 'power-attack', skillId: 'g-power-attack', rank: 1 }]);
     const b = createEncounterBattle(s.player, content.encounters.get('slime-puddle'), { rng: s.rng });
     startBattle(b);
     const hero = b.combatants.find((x) => x.kind === 'hero');
