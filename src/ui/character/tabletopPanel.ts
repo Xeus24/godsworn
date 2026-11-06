@@ -1,4 +1,4 @@
-import { BOONS, BREATHER, NOD_MAX } from '../../data/tabletop';
+import { ARCANA, ARCANA_TEXT, BOONS, BREATHER, DOWNTIME, NOD_MAX, RITES, type Downtime } from '../../data/tabletop';
 import type { GameSession } from '../../engine/state/gameState';
 import { foldPanel } from '../components/fold';
 import { el } from '../screen';
@@ -50,6 +50,40 @@ export function tabletopPanel(s: GameSession, render: () => void): HTMLElement[]
     const r = tt.breather();
     note(r.ok ? r.text : r.reason);
   });
+  const rites = RITES.map((r) => {
+    const b = el('button', { title: r.text }, `${r.name} (${r.minutes} min)`) as HTMLButtonElement;
+    b.addEventListener('click', () => {
+      const out = tt.rite(r.id);
+      note(out.ok ? out.text : out.reason);
+    });
+    return el('div', {}, b, el('span', { class: 'dim small' }, ` ${r.text}`));
+  });
+  const bonds = tt.bonds();
+  const bondRows = bonds.length
+    ? bonds.map((x) => {
+        const b = el('button', {}, x.bonded ? `Release ${x.name}` : `Bond ${x.name}`) as HTMLButtonElement;
+        b.addEventListener('click', () => {
+          const out = tt.toggleBond(x.uid);
+          note(out.ok ? out.text : out.reason);
+        });
+        return el('div', {}, b, el('span', { class: 'dim small' }, x.bonded ? ' bonded' : ' unbonded: its powers sleep'));
+      })
+    : [el('p', { class: 'dim small' }, 'No magic items worn. At most three can be bonded at once.')];
+  const book = tt.spellbook();
+  const bookRows = ARCANA.map((a) => {
+    const mine = book.filter((x) => x.arcanum === a);
+    return el('p', { class: 'small', title: ARCANA_TEXT[a] }, el('b', {}, `${a}: `), mine.length ? mine.map((x) => `${x.name} (Circle ${x.circle})`).join(', ') : el('span', { class: 'dim' }, 'none'));
+  });
+  const days = el('select', { 'aria-label': 'Days' }) as HTMLSelectElement;
+  for (let d = 1; d <= 7; d++) days.append(el('option', { value: String(d) }, `${d} day${d > 1 ? 's' : ''}`));
+  const downtime = DOWNTIME.map((d) => {
+    const b = el('button', { title: d.text }, d.name) as HTMLButtonElement;
+    b.addEventListener('click', () => {
+      const out = tt.downtime(d.id as Downtime, Number(days.value));
+      note(out.ok ? out.text : out.reason);
+    });
+    return el('div', {}, b, el('span', { class: 'dim small' }, ` ${d.text}`));
+  });
   return [
     foldPanel(
       el('section', { class: 'panel' },
@@ -59,7 +93,11 @@ export function tabletopPanel(s: GameSession, render: () => void): HTMLElement[]
         breather,
         el('h4', {}, 'Boons'),
         el('p', { class: 'dim small' }, `Taken: ${(p.boons ?? []).map((id) => BOONS.find((b) => b.id === id)?.name ?? id).join(', ') || 'none'}.`),
-        ...boons),
+        ...boons,
+        el('details', { class: 'small' }, el('summary', {}, 'Rites (slow, free)'), ...rites),
+        el('details', { class: 'small' }, el('summary', {}, `Bonding (${bonds.filter((x) => x.bonded).length}/3)`), ...bondRows),
+        el('details', { class: 'small' }, el('summary', {}, 'Circles and the Eight Arcana'), ...bookRows),
+        el('details', { class: 'small' }, el('summary', {}, 'Between-Acts Downtime (in town)'), days, ...downtime)),
       `${pending > 0 ? `${pending} Boon${pending > 1 ? 's' : ''} · ` : ''}${tt.nods} Nod${tt.nods === 1 ? '' : 's'}`,
     ),
   ];

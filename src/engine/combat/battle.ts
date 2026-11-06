@@ -53,6 +53,9 @@ export class Battle {
   pacifist = false;
   /** Tabletop Rules (R26): saving throws, and Last Breath (a hero at 0 HP is downed and makes death rolls; off in Hardcore). */
   tabletop = false;
+  /** Rounds played (counted from the hero's turns) and a guard against Riposte answering Riposte. */
+  round = 0;
+  inTabletopHit = false;
   lastBreath = false;
   readonly canFlee: boolean;
   readonly isBoss: boolean;

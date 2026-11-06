@@ -189,8 +189,28 @@ function activeSetBonuses(char: Character, c: Content) {
   );
 }
 
+/** Tabletop Rules, Bonding (203): only items of these rarities need a bond. */
+export const BONDABLE = new Set<string>(['legendary', 'mythic', 'divine', 'relic', 'ascended', 'primordial']);
+export const MAX_BONDS = 3;
+
+/** The magic items worn that are bonded: the ones chosen (`char.bonded`), then the rest in slot order, up to three. Everything is bonded when the rules are off. */
+export function bondedUids(char: Character): Set<string> {
+  const magic = equippedItems(char).filter(([, it]) => BONDABLE.has(it.rarity)).map(([, it]) => it.uid);
+  if (!char.tabletop) return new Set(magic);
+  // Until the hero chooses, the first three worn magic items are bonded; once they choose, the list is exactly theirs.
+  const chosen = char.bonded ? char.bonded.filter((u) => magic.includes(u)) : magic.slice(0, MAX_BONDS);
+  return new Set(chosen.slice(0, MAX_BONDS));
+}
+
+/** Worn items whose powers are live: plain gear always, magic items only while bonded. */
+function livePieces(char: Character): [EquipSlot, ItemInstance][] {
+  if (!char.tabletop) return equippedItems(char);
+  const bonded = bondedUids(char);
+  return equippedItems(char).filter(([, it]) => !BONDABLE.has(it.rarity) || bonded.has(it.uid));
+}
+
 export function equipmentModifiers(char: Character, c: Content = content): Modifier[] {
-  const mods = equippedItems(char).flatMap(([slot, item]) => itemModifiers(item, slot, c));
+  const mods = livePieces(char).flatMap(([slot, item]) => itemModifiers(item, slot, c));
   for (const { setId, bonus } of activeSetBonuses(char, c)) {
     for (const m of bonus.modifiers) mods.push({ ...m, source: `set:${setId}:${bonus.pieces}` });
   }
@@ -199,7 +219,7 @@ export function equipmentModifiers(char: Character, c: Content = content): Modif
 
 /** Triggered effects from gear and set bonuses, each tagged with its source. */
 export function equipmentTriggers(char: Character, c: Content = content): { effect: TriggeredEffect; source: string }[] {
-  const out = equippedItems(char).flatMap(([, item]) => itemTriggers(item, c).map((effect) => ({ effect, source: `item:${item.uid}` })));
+  const out = livePieces(char).flatMap(([, item]) => itemTriggers(item, c).map((effect) => ({ effect, source: `item:${item.uid}` })));
   for (const { setId, bonus } of activeSetBonuses(char, c)) {
     for (const effect of bonus.triggers ?? []) out.push({ effect, source: `set:${setId}:${bonus.pieces}` });
   }
@@ -207,7 +227,7 @@ export function equipmentTriggers(char: Character, c: Content = content): { effe
 }
 
 export function equipmentFlags(char: Character, c: Content = content): string[] {
-  const flags = equippedItems(char).flatMap(([, item]) => itemFlags(item, c));
+  const flags = livePieces(char).flatMap(([, item]) => itemFlags(item, c));
   for (const { bonus } of activeSetBonuses(char, c)) flags.push(...(bonus.flags ?? []));
   return [...new Set(flags)];
 }

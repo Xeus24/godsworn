@@ -9,6 +9,8 @@ import { chooseAction } from './ai';
 import { Battle, type BattleHooks } from './battle';
 import { createEnemy, createHero } from './combatants';
 import { advance, perform, startBattle } from './turns';
+import { startTabletop } from './tabletopRules';
+import { summon } from './effects';
 import { calculateStats } from '../stats/calculate';
 import type { BattleEvent, Combatant, EncounterDef } from './types';
 import type { CompanionExtras } from '../party/party';
@@ -222,6 +224,11 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   battle.pacifist = hasRule(hero, 'pacifist', c);
   battle.tabletop = hero.tabletop === true;
   battle.lastBreath = hero.tabletop === true && !hero.hardcore;
+  startTabletop(battle);
+  if (hero.tabletop && hero.timedBuffs.some((t) => t.id === 'familiar')) {
+    const heroC = battle.combatants.find((x) => x.kind === 'hero');
+    if (heroC) summon(battle, heroC, 'owl-familiar', false);
+  }
   if (opts.mercy) battle.mercy = opts.mercy;
   if (opts.autoTactics) battle.autoTactics = opts.autoTactics;
   for (const e of encounter.enemies) if (e.grudge) battle.log(`${e.grudge.name}: ${e.grudge.line}`);

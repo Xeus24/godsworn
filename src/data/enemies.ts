@@ -1,3 +1,4 @@
+import { OWL } from './tabletop';
 import { GREATER_CLASSES } from './classesGreater';
 import type { EncounterDef, EnemyDef, SummonDef } from '../engine/combat/types';
 
@@ -204,4 +205,4 @@ export const ENCOUNTERS: EncounterDef[] = [
   { id: 'alpha-hunt', name: 'Hunt of the Alpha', description: 'The Alpha and its pack.', level: 15, canFlee: true, enemies: [{ enemyId: 'alpha-wolf' }, { enemyId: 'dire-wolf' }, { enemyId: 'dire-wolf' }] },
 ];
 
-export const SUMMONS: SummonDef[] = [...BASE_SUMMONS, ...GREATER_CLASSES.flatMap((g) => g.extras?.summons ?? [])];
+export const SUMMONS: SummonDef[] = [...BASE_SUMMONS, { ...OWL, types: [...OWL.types], skills: [...OWL.skills], stats: { ...OWL.stats }, palette: { ...OWL.palette }, basicAttack: { ...OWL.basicAttack } } as SummonDef, ...GREATER_CLASSES.flatMap((g) => g.extras?.summons ?? [])];

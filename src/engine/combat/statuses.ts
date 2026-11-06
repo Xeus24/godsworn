@@ -1,6 +1,7 @@
 import { IMMUNITY_PREFIX } from '../../data/mechanics';
 import { saveStatFor } from '../../data/tabletop';
 import { check, statMod } from '../tabletop/dice';
+import { muse, unyieldingBlocks } from './tabletopRules';
 import type { Battle } from './battle';
 import { fireTrigger } from './effects';
 import { dealDamage, healTarget } from './hits';
@@ -38,6 +39,10 @@ export function applyStatus(b: Battle, source: Combatant, target: Combatant, sta
       const mod = statMod(tStats[stat], target.level) + Math.floor(tStats.statusResist / 10);
       const dc = 8 + Math.floor(source.level / 3) + Math.floor(sourceStats.statusChance / 10);
       const save = check(b.rng, mod, dc);
+      if (!save.success) {
+        const extra = save.crit === 'nat1' ? 0 : muse(b, target, dc - save.total);
+        if (extra > 0) save.success = true;
+      }
       b.log(`${target.name} saves against ${def.name}: d20 ${save.die} ${mod >= 0 ? '+' : '-'} ${Math.abs(mod)} = ${save.total} vs DC ${dc} (${stat.toUpperCase()}): ${save.success ? 'resisted' : 'fails'}.`);
       if (save.success) {
         b.emit({ type: 'resisted', targetId: target.id, statusId });
@@ -48,6 +53,7 @@ export function applyStatus(b: Battle, source: Combatant, target: Combatant, sta
       return false;
     }
   }
+  if (hostile && !opts.unresistable && source.side !== target.side && unyieldingBlocks(b, target, def.name)) return false;
   const sourceStats = b.stats(source);
   const power = Math.max(sourceStats.physicalAttack, sourceStats.magicAttack);
   const existing = target.statuses.find((s) => s.id === statusId);

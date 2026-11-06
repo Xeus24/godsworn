@@ -349,6 +349,9 @@ export interface TabletopState {
   lastRoll?: import('../tabletop/dice').Roll & { label: string };
   /** Breathers taken on this day. */
   breathers: { day: number; n: number };
+  /** Muse Dice spent out of battle today, and the Rites performed today. */
+  muse?: { day: number; n: number };
+  ritesDay?: Record<string, number>;
 }
 export const createTabletop = (): TabletopState => ({ nods: 0, nodDays: {}, breathers: { day: 0, n: 0 } });
 

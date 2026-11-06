@@ -49,6 +49,8 @@ export interface Character {
   /** Boons taken under the Tabletop Rules (data/tabletop.ts), and how many times +2 stat points were taken instead. */
   boons?: string[];
   boonStatPicks?: number;
+  /** Magic items chosen to stay bonded under the Tabletop Rules (at most three; item uids). */
+  bonded?: string[];
   /** The keepsake rolled at creation (data/trinkets.ts); handed over as an item when a new game starts. */
   trinketId?: string;
   birthSignId: string;

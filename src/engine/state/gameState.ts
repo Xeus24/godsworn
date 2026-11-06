@@ -326,6 +326,7 @@ export class GameSession {
     }
     if (player.trinketId && content.items.find(player.trinketId)) addItem(session.state.inventory, createItem(player.trinketId, 1, () => session.newUid()));
     session.checkSpirits();
+    session.tabletop.syncMurmurs();
     // Begin at full HP and MP with the starting gear on.
     restoreFull(session.player);
     session.bus.emit('gameStarted', { seed: session.state.seed });

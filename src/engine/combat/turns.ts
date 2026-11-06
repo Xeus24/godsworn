@@ -3,6 +3,7 @@ import type { Battle } from './battle';
 import { bossActed, bossTurnStart, bossWindUp, initBoss } from './bosses';
 import { applyEffects, fireTrigger, summon } from './effects';
 import { deathRoll, gainResource, healTarget, kill } from './hits';
+import { turnStart } from './tabletopRules';
 import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
 import { featureTick, useFeature } from './features';
 import { groundExpire, groundTick } from './ground';
@@ -158,6 +159,7 @@ function fireSigils(b: Battle, x: Combatant): void {
 
 function beginTurn(b: Battle, x: Combatant): void {
   x.defending = false;
+  turnStart(b, x);
   x.hpHistory = [...(x.hpHistory ?? []), x.hp].slice(-3);
   if (b.terrain && x.side === 'party' && x.kind === 'hero' && --b.terrain.turns <= 0) b.terrain = undefined;
   if (x.side === 'party' && x.kind === 'hero') groundExpire(b);

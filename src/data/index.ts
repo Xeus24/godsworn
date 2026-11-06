@@ -42,6 +42,7 @@ import { buildBooks } from './general/books';
 import { grimoireSkills, GRIMOIRES } from './general/grimoires';
 import { GENERAL_COMBAT_SKILLS, GENERAL_SKILLS } from './general/skills';
 import { GREATER_GENERAL_COMBAT, GREATER_GENERAL_SKILLS } from './general/greater';
+import { MURMUR_COMBAT, MURMUR_GENERAL } from './general/murmurs';
 import { DIVINE_COMBAT_SKILLS, DIVINE_SKILLS } from './general/divine';
 import { FORBIDDEN_COMBAT_SKILLS, FORBIDDEN_SKILLS } from './general/forbidden';
 import { BLESSINGS } from './blessings';
@@ -105,10 +106,10 @@ function withEarth<T extends { types: string[]; family: string; resists?: Partia
   return { ...e, resists: { ...e.resists, earth: stone ? 40 : -25 } };
 }
 
-const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...TABLETOP_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...DIVINE_COMBAT_SKILLS, ...GREATER_DIVINE_COMBAT, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS, ...WEAPON_ARTS];
+const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...TABLETOP_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...MURMUR_COMBAT, ...DIVINE_COMBAT_SKILLS, ...GREATER_DIVINE_COMBAT, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS, ...WEAPON_ARTS];
 const ALL_SKILLS = [...BASE_SKILLS, ...evolvedSkills((id) => BASE_SKILLS.find((s) => s.id === id) as (typeof BASE_SKILLS)[number])];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
-const ALL_GENERAL = [...GENERAL_SKILLS, ...GREATER_GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...GREATER_DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
+const ALL_GENERAL = [...GENERAL_SKILLS, ...GREATER_GENERAL_SKILLS, ...MURMUR_GENERAL, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...GREATER_DIVINE_SKILLS, ...FORBIDDEN_SKILLS];
 
 /**
  * The game's content, assembled from the data files in this folder. Engine

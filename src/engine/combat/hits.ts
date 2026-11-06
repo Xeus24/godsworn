@@ -3,6 +3,7 @@ import { COMBAT } from '../../data/combat';
 import { DEVOTION } from '../../data/devotion';
 import { LAST_BREATH } from '../../data/tabletop';
 import { rollD20 } from '../tabletop/dice';
+import { onHit as tabletopOnHit } from './tabletopRules';
 import type { Element } from '../stats/types';
 import type { Battle } from './battle';
 import { computeDamage, hitChance } from './damage';
@@ -201,6 +202,7 @@ export function applyDamage(
   if (target.hp > 0) {
     if (target.boss) checkBossPhase(b, target);
     if (source !== target) fireTrigger(b, target, 'onDamageTaken', source);
+    if (source !== target) tabletopOnHit(b, source, target, dealt, info.element, info.dot === true);
     const pct = (target.hp / Math.max(1, target.maxHp)) * 100;
     if (!target.lowHpFired && pct < COMBAT.lowHpPct) {
       target.lowHpFired = true;

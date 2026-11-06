@@ -183,6 +183,11 @@ export interface Intent {
 
 export interface Combatant {
   id: string;
+  /** Tabletop Rules: the reaction (Riposte) used this round, the sustained spell held in Focus, Muse Dice held, and a boss's Unyielding shrugs left. */
+  reaction?: boolean;
+  focus?: { name: string; buffs: string[] };
+  muse?: number;
+  unyielding?: number;
   /** Last Breath (Tabletop Rules): downed at 0 HP, with death rolls made on each of its turns. */
   downed?: { ok: number; fail: number };
   name: string;

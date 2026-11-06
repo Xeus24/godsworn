@@ -7,6 +7,8 @@ import { covenantAfter, covenantBegin } from './covenant';
 import { applyEffects, fireTrigger } from './effects';
 import { dealDamage, gainResource, healTarget } from './hits';
 import { isSilenced, isStealthed, removeStatus } from './statuses';
+import { focusAfterSkill } from './tabletopRules';
+import { REAGENTS } from '../../data/tabletop';
 import type { Combatant } from './types';
 
 export const BASIC_ATTACK_ID = 'basic-attack';
@@ -56,6 +58,8 @@ export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
   if (skill.id === BASIC_ATTACK_ID) return { ok: true };
   if (isSilenced(b, x)) return { ok: false, reason: 'Silenced' };
   if (skill.stances && !skill.stances.includes(x.stance ?? 'natural')) return { ok: false, reason: `${skill.stances.map((s) => b.c.stances.find(s)?.name ?? s).join(' or ')} form only` };
+  const reagent = b.tabletop && x.side === 'party' ? REAGENTS[skill.id] : undefined;
+  if (reagent && (b.hooks.itemCount?.(reagent.itemId) ?? 0) < reagent.qty) return { ok: false, reason: `Needs a ${reagent.name}` };
   if (skill.ultimate && ((skill.id === x.avatarSkill && x.avatarUsed) || (skill.id === x.avatarSkill2 && x.avatarUsed2))) return { ok: false, reason: 'Once per battle' };
   if (skill.ultimate) return x.ultimate >= 100 ? { ok: true } : { ok: false, reason: `Ultimate ${Math.floor(x.ultimate)}%` };
   const cd = x.cooldowns[skill.id] ?? 0;
@@ -212,6 +216,12 @@ function resolveTargets(b: Battle, x: Combatant, skill: SkillDef, targetId?: str
 }
 
 function payCosts(b: Battle, x: Combatant, skill: SkillDef): void {
+  const reagent = b.tabletop && x.side === 'party' ? REAGENTS[skill.id] : undefined;
+  if (reagent) {
+    for (let i = 0; i < reagent.qty; i++) b.hooks.consumeItem?.(reagent.itemId);
+    b.tally.itemsUsed[reagent.itemId] = (b.tally.itemsUsed[reagent.itemId] ?? 0) + reagent.qty;
+    b.log(`The ${reagent.name} is consumed.`);
+  }
   if (skill.cost.mp) {
     if (b.hasFlag(x, 'bloodMagic')) x.hp = Math.max(1, x.hp - skill.cost.mp);
     else x.mp -= skill.cost.mp;
@@ -323,6 +333,7 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
 
   const effectTargets = skill.damage ? hitTargets : targets;
   if (skill.effects) applyEffects(b, x, skill.effects, effectTargets);
+  focusAfterSkill(b, x, skill);
 
   if (skill.id === BASIC_ATTACK_ID) {
     const gains = x.resourceId ? b.c.resources.get(x.resourceId).gains : undefined;

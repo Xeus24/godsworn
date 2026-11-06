@@ -63,3 +63,71 @@ export const saveStatFor = (statusId: string): 'str' | 'dex' | 'vit' | 'wis' => 
 // ------------------------------------------------------------------ 198: Last Breath / 199: rests
 export const LAST_BREATH = { rolls: 3, dc: 10 };
 export const BREATHER = { hpPct: 40, mpPct: 40, minutes: 60, perDay: 2 };
+
+// ------------------------------------------------------------------ 201: Circles and the Eight Arcana
+import type { SkillDef } from '../engine/skills/types';
+export const ARCANA = ['Warding', 'Calling', 'Seeing', 'Binding', 'Veiling', 'Unmaking', 'Shaping', 'Ending'] as const;
+export type Arcanum = (typeof ARCANA)[number];
+export const ARCANA_TEXT: Record<Arcanum, string> = {
+  Warding: 'Shields, wards and mending: keeping a thing whole.',
+  Calling: 'Summons, spirits and companions: asking for company.',
+  Seeing: 'Marks, foresight and time: knowing what comes.',
+  Binding: 'Curses, snares and compulsions: making a thing stay.',
+  Veiling: 'Stealth, evasion and illusion: being somewhere else.',
+  Unmaking: 'Decay, shadow and the void: taking a thing apart.',
+  Shaping: 'Fire, frost, stone and storm: moving the world about.',
+  Ending: 'Finishers and ultimates: saying the last word.',
+};
+/** The school a spell belongs to, from its tags and element. */
+export function arcanaOf(s: Pick<SkillDef, 'tags' | 'element' | 'ultimate' | 'effects'>): Arcanum {
+  const t = s.tags as readonly string[];
+  if (s.ultimate || t.includes('Finisher')) return 'Ending';
+  if (t.some((x) => ['Summon', 'Pet', 'Spirit', 'Totem'].includes(x))) return 'Calling';
+  if (t.some((x) => ['Stealth', 'Movement'].includes(x)) || s.effects?.some((e) => e.kind === 'applyStatus' && e.status === 'stealth')) return 'Veiling';
+  if (t.some((x) => ['Mark', 'Time', 'Sigil'].includes(x))) return 'Seeing';
+  if (t.some((x) => ['Curse', 'Debuff', 'Pact'].includes(x))) return 'Binding';
+  if (t.some((x) => ['Defensive', 'Heal', 'Buff'].includes(x))) return 'Warding';
+  if (['void', 'shadow'].includes(s.element) || t.some((x) => ['DoT', 'Poison'].includes(x))) return 'Unmaking';
+  return 'Shaping';
+}
+/** The Circle of a spell, 0 (a free Murmur) to 9 (an ultimate). */
+export function circleOf(s: Pick<SkillDef, 'id' | 'ultimate' | 'damage' | 'heal' | 'cooldown' | 'cost' | 'tags'>): number {
+  if (s.id.startsWith('g-murmur-')) return 0;
+  if (s.ultimate) return 9;
+  const power = s.damage ? s.damage.multiplier * (s.damage.hits ?? 1) : s.heal ? s.heal.multiplier : 1;
+  const score = power * 1.6 + s.cooldown * 0.7 + (s.cost.mp ?? 0) / 8 + (s.cost.resource ? 1 : 0);
+  return Math.max(1, Math.min(8, Math.floor(score)));
+}
+
+// ------------------------------------------------------------------ 204: Costly Reagents
+/** Major spells that consume a rare reagent each cast (Tabletop Rules). */
+export const REAGENTS: Record<string, { itemId: string; qty: number; name: string }> = {
+  resurrection: { itemId: 'sun-pearl', qty: 1, name: 'Sun Pearl' },
+};
+export const SUN_PEARL = { id: 'sun-pearl', name: 'Sun Pearl', category: 'material', kind: 'divine', tier: 5, level: 1, value: 500, stack: 99, description: 'A pearl grown in a sunlit pool. Resurrection will not be cast without one.' } as const;
+
+// ------------------------------------------------------------------ 202, 208: Rites
+export interface RiteDef { id: string; name: string; minutes: number; text: string }
+export const RITES: RiteDef[] = [
+  { id: 'detect', name: 'Detect Magic', minutes: 30, text: 'Slow and quiet: +10% magic find for your next three battles.' },
+  { id: 'commune', name: 'Commune', minutes: 60, text: 'An hour with your patron: +12 favor, once a day.' },
+  { id: 'identify', name: 'Identify', minutes: 10, text: 'Study everything you carry: every unknown item is identified.' },
+  { id: 'safe-camp', name: 'Safe Camp', minutes: 60, text: 'Ward the site: 15% HP and MP back and Well Rested for three battles.' },
+  { id: 'find-familiar', name: 'Find Familiar', minutes: 60, text: 'Call an owl scout: it fights beside you for your next five battles and delivers a touch of healing.' },
+];
+export const OWL = {
+  id: 'owl-familiar', name: 'Owl Familiar', family: 'beast', types: ['beast', 'summon', 'familiar'], stats: { hp: 35, attack: 4, magic: 6, defense: 3, magicResist: 6, speed: 15 }, ownerPowerShare: 0.5,
+  skills: [{ id: 'mend' }], basicAttack: { element: 'physical', ranged: true, name: 'Talons' }, ai: 'support', palette: { main: '#8a7a5a', accent: '#e8d8a8' },
+} as const;
+
+// ------------------------------------------------------------------ 209: Between-Acts Downtime
+export type Downtime = 'train' | 'craft' | 'carouse' | 'research' | 'business' | 'rumors';
+export const DOWNTIME: { id: Downtime; name: string; perDayGold: number; text: string }[] = [
+  { id: 'train', name: 'Training', perDayGold: 0, text: 'Drill with a master: each day is worth a tenth of a level in experience.' },
+  { id: 'craft', name: 'Crafting', perDayGold: 0, text: 'Work at a bench: each day yields materials of your tier. Three days and 500 gold distil a Sun Pearl.' },
+  { id: 'carouse', name: 'Carousing', perDayGold: 30, text: 'Spend 30 gold a day among the taverns; a CHA check may leave you Well Rested and in favor with the Regulars.' },
+  { id: 'research', name: 'Research', perDayGold: 0, text: 'Libraries and old letters: an INT check turns a day into half a level of experience.' },
+  { id: 'business', name: 'Running a Business', perDayGold: 0, text: 'Mind a stall: earn gold each day, more on a good roll.' },
+  { id: 'rumors', name: 'Chasing Rumors', perDayGold: 10, text: 'Ask around for 10 gold a day; a WIS check turns up a find (an item and a little favor).' },
+];
+export const DOWNTIME_MAX_DAYS = 7;

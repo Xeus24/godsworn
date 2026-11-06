@@ -184,3 +184,5 @@ I-4 races live in `data/racesTabletop.ts`; adding a race there needs no engine c
 I-5: personality traits are plain data (`data/personality.ts`) read by `characterModifiers` and `journalEntry`; trinkets are curiosity items with a `trinket-` prefix, so the museum and offerings work unchanged.
 
 I-6a Tabletop Rules: one flag on the character (`tabletop`), one actions class (`s.tabletop`), pure dice in `engine/tabletop/dice.ts`. The combat engine reads `battle.tabletop` / `battle.lastBreath` (set from the hero in `createEncounterBattle`): saves in `applyStatus`, downing in `applyDamage`, death rolls in `advance`.
+
+I-6b: battle rules in `combat/tabletopRules.ts` (hooks in `applyDamage`, `beginTurn`, `useSkill`, `applyStatus`, `createEncounterBattle`); out-of-battle rules (Murmurs, Rites, Bonding, Downtime, spellbook) in `TabletopActions`; Bonding filters `equipmentModifiers` through `bondedUids`.
