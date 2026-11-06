@@ -24,6 +24,7 @@ import { AfflictionActions } from './afflictionActions';
 import { TechniqueActions } from './techniqueActions';
 import { WorkshopActions } from './workshopActions';
 import { GraceActions } from './graceActions';
+import { RealmsActions } from './realmsActions';
 import type { GauntletState } from '../endgame/types';
 import { createMinigameState, type MinigameState } from '../minigames/state';
 import { MULTICLASS, PROGRESSION } from '../../data/progression';
@@ -263,6 +264,7 @@ export class GameSession {
   readonly techniques: TechniqueActions;
   readonly workshop: WorkshopActions;
   readonly grace: GraceActions;
+  readonly realms: RealmsActions;
   /** Owners of special endgame runs register how a finished run is settled, by module name. */
   readonly specials: Record<string, (a: GauntletState, won: boolean) => void> = {};
   readonly heart: HeartActions;
@@ -309,6 +311,7 @@ export class GameSession {
     this.techniques = new TechniqueActions(this);
     this.workshop = new WorkshopActions(this);
     this.grace = new GraceActions(this);
+    this.realms = new RealmsActions(this);
     this.heart = new HeartActions(this);
     this.world.look();
     this.bus.on('goldChanged', ({ amount, reason }) => {

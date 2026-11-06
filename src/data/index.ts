@@ -83,6 +83,7 @@ import { BATCH1_ENEMIES, BATCH1_LORE } from './regions/batch1';
 import { BATCH2_ENEMIES, BATCH2_LORE } from './regions/batch2';
 import { BATCH3_ENEMIES, BATCH3_LORE } from './regions/batch3';
 import { BATCH4_ENEMIES, BATCH4_LORE } from './regions/batch4';
+import { REALM_ENEMIES } from './realms';
 import { INVESTMENTS } from './world/investments';
 import { LORE } from './world/lore';
 import { DUNGEONS, TOWNS } from './world/places';
@@ -157,7 +158,7 @@ export const content = {
   statuses: new ContentTable('status', STATUSES),
   songs: new ContentTable('song', SONGS),
   stances: new ContentTable('stance', STANCES),
-  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES, ...BATCH4_ENEMIES, ...MIMICS, ...GREAT_ENEMIES, ...FAMILY_ENEMIES, ...DEFECTORS].map(withEarth).map(withFamily)),
+  enemies: new ContentTable('enemy', [...ENEMIES, ...DEEP_ENEMIES, ...MENTORS, ...PUNISHERS, ...ASPECTS, ...STORY_ENEMIES, ...FOLLOWERS, ...BATCH1_ENEMIES, ...BATCH2_ENEMIES, ...BATCH3_ENEMIES, ...BATCH4_ENEMIES, ...MIMICS, ...GREAT_ENEMIES, ...FAMILY_ENEMIES, ...DEFECTORS, ...REALM_ENEMIES].map(withEarth).map(withFamily)),
   summons: new ContentTable('summon', SUMMONS),
   bossScripts: new ContentTable('boss script', [...BOSS_SCRIPTS, ...GREAT_SCRIPTS]),
   eliteAffixes: new ContentTable('elite affix', ELITE_AFFIXES),

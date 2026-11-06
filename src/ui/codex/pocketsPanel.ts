@@ -1,4 +1,5 @@
 import { BELLS, BOOKS, CANALS, CINDER, CLANS, GALLERY, GODLESS, HOURGLASS, LANTERN, LIBRARY, MASQUE, OSSUARY, PAPER, STEPPE, THROAT, WICK, WILDS } from '../../data/pockets';
+import { BARGAIN, BARGAINS, PLANES } from '../../data/realms';
 import type { GameSession } from '../../engine/state/gameState';
 import { el } from '../screen';
 import type { RealmView } from './realmPanel';
@@ -58,5 +59,19 @@ export function pocketsPanel(s: GameSession, rerender: () => void, open: RealmVi
     el('div', { class: 'small' }, el('b', {}, `The Gallery: room ${p.gallery.room + 1}/${GALLERY.rooms} `), go('Look closely', () => { const d = k.inspect(); return { ok: true, text: `Still in doubt: frames ${d.map((n) => n + 1).join(', ')}.` }; }, 'gallery-of-stolen-faces'), ...Array.from({ length: GALLERY.frames }, (_, i) => go(`Frame ${i + 1}`, () => k.chooseFrame(i), 'gallery-of-stolen-faces'))),
     el('div', { class: 'small' }, el('b', {}, `Old Wick’s Chapel: ${p.wick.wax}/${WICK.hours} hours of wax `), go('Light a new candle', () => k.relight(), 'old-wicks-chapel'), go('Snuff the Candle', () => k.faceCandle(), 'old-wicks-chapel')));
   void LIBRARY;
-  return el('div', {}, lantern, ossuary, steppe, canals, cinder, library, wilds, dungeons, ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []));
+  const rl = s.realms;
+  const rr = rl.t;
+  const court = section(`The Gloaming Court (${rl.owing().length}/${BARGAIN.maxActive} bargains owing)`,
+    dim(rr.ringSeen ? 'Every deal has a cost. It is not on the label, and it comes due in a few days. Settling it costs gold; the gain stays.' : 'Find the Mushroom Ring in the Gloamwood after dark. Step in politely.'),
+    ...BARGAINS.map((b) => {
+      const mine = rr.bargains[b.id];
+      const status = mine ? (mine.paid ? 'settled' : mine.due ? `due: ${b.costText}` : `cost in ${rl.daysLeft(b.id)} days`) : '';
+      return el('div', { class: 'row wrap small' }, el('b', {}, b.name), ` ${b.offer} `, mine ? (mine.paid ? status : el('span', { class: 'dim' }, status)) : '',
+        mine ? (mine.paid ? '' : act(`Settle (${rl.buybackCost()})`, () => rl.settle(b.id), open, rerender)) : act('Strike the bargain', () => rl.strike(b.id), open, rerender, !rl.inCourt()));
+    }));
+  const thresholds = section(`The Four Thresholds (${rr.open.length} open, ${rr.wardens.length}/${PLANES.length} Wardens)`,
+    dim(`The Geomancer’s and the Summoner’s mentors open them. For anyone else the toll is ${rl.openCost()} gold each. Each plane harms you as you walk; its resistance eases that.`),
+    ...PLANES.map((pl) => el('div', { class: 'row wrap small' }, el('b', {}, pl.name), ` (${pl.element}) `,
+      rr.open.includes(pl.id) ? (rr.wardens.includes(pl.id) ? 'Warden yielded ' : act('Face the Warden', () => rl.faceWarden(pl.id), open, rerender, rl.here() !== pl.areas[2])) : act(rl.mentorBeaten(pl) ? 'Open (mentor’s leave)' : `Open (${rl.openCost()})`, () => rl.open(pl.id), open, rerender))));
+  return el('div', {}, court, thresholds, lantern, ossuary, steppe, canals, cinder, library, wilds, dungeons, ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []));
 }

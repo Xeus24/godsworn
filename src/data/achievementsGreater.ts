@@ -76,7 +76,7 @@ export const ACHIEVEMENTS_GREATER: AchievementDef[] = [
   travel('zones-20', 'Far Traveller', 'Set foot in 20 regions.', 25, { kind: 'zones', min: 20 }),
   travel('zones-26', 'Cartographer of Everything', 'Set foot in all 26 regions.', 45, { kind: 'zones', min: 26 }, { title: 'Cartographer' }),
   travel('dungeons-30', 'Delver', 'Clear 30 dungeons.', 25, { kind: 'dungeons', min: 30 }),
-  travel('dungeons-57', 'Every Door Opened', 'Clear all 71 dungeons.', 50, { kind: 'dungeons', min: 71 }, { title: 'Delver of Depths', gold: 10000 }),
+  travel('dungeons-57', 'Every Door Opened', 'Clear all 73 dungeons.', 50, { kind: 'dungeons', min: 73 }, { title: 'Delver of Depths', gold: 10000 }),
   travel('statue-1', 'Set in Stone', 'Earn a statue in a town square.', 20, prog('statues', 1), { title: 'the Honored' }),
   travel('statue-5', 'Five Squares', 'Earn statues in five towns.', 35, prog('statues', 5)),
   travel('statue-all', 'Hero of Every Hearth', 'Earn statues in all 15 towns.', 60, prog('statues', 15), { title: 'Hero of Every Hearth' }),

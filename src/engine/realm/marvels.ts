@@ -385,7 +385,19 @@ export interface GraceState {
 }
 export const createGrace = (): GraceState => ({ holdings: {}, lastCall: -999, answered: 0 });
 
+/** The Gloaming Court's bargains and the Four Thresholds (Section I-8a). */
+export interface RealmsState {
+  /** Bargain id -> the day it was struck, and whether its cost has come due or been paid off. */
+  bargains: Record<string, { day: number; due: boolean; paid: boolean }>;
+  ringSeen: boolean;
+  open: string[];
+  wardens: string[];
+  tollPaid: number;
+}
+export const createRealms = (): RealmsState => ({ bargains: {}, ringSeen: false, open: [], wardens: [], tollPaid: 0 });
+
 export interface MarvelsState {
+  realms?: RealmsState;
   grace?: GraceState;
   workshop?: WorkshopState;
   afflictions?: AfflictionsState;

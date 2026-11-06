@@ -410,6 +410,8 @@ export class WorldActions {
         return { kind: 'map', message: `You enter ${dm.name}.` };
       }
       case 'area': {
+        const shut = this.s.realms.shut(e.ref as string);
+        if (shut) return { kind: 'moved', message: shut };
         const am = mapFor(this.s.pockets.redirect(e.ref as string));
         this.placeAt(am.id, am.spawns.entrance[0] + 1, am.spawns.entrance[1]);
         this.world.grace = ENCOUNTER_GRACE;

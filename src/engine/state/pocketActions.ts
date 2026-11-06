@@ -108,6 +108,7 @@ export class PocketActions {
       p.wick.wax = WICK.hours;
       p.wick.hour = this.absHour();
     }
+    this.s.realms.onMap(map);
     if (godless !== was || map === 'weeping-steppe') this.changed('pocket');
   }
 
@@ -127,7 +128,7 @@ export class PocketActions {
     }
     if (map === 'paper-labyrinth' && (w.dsteps ?? 0) % PAPER.decayEvery === 0 && p.paper.prog > 0) p.paper.prog--;
     if (map === 'old-wicks-chapel' && p.wick.wax <= 0) return { harm: WICK.harm, message: 'The candle is out, and the dark bites.' };
-    return {};
+    return this.s.realms.step(map);
   }
 
   /** What shields you where no god will: Wayfarer’s Arts you carry, Relic Tools you own and a proper kit. */

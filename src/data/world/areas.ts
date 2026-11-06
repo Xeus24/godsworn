@@ -4,6 +4,7 @@ import { BATCH2_AREAS, BATCH2_PASSES } from '../regions/batch2';
 import { BATCH3_AREAS, BATCH3_PASSES } from '../regions/batch3';
 import { BATCH4_AREAS, BATCH4_PASSES } from '../regions/batch4';
 import { POCKET_AREAS, POCKET_LORE } from '../pockets';
+import { REALM_AREAS } from '../realms';
 
 /** What kind of place an area is: it shapes the terrain and what is lying about. */
 export type AreaTheme = 'grove' | 'ruin' | 'cave' | 'shore' | 'camp' | 'peak' | 'oasis' | 'district';
@@ -104,6 +105,7 @@ export const AREAS: AreaDef[] = [
   ...make(SEA, (i) => ({ by: 'ship', level: [1, 1, 2, 2, 3, 4][i] ?? 1 })),
   ...make(SKY, () => ({ by: 'airship', level: 1 })),
   ...POCKET_AREAS,
+  ...REALM_AREAS,
 ];
 
 /** Each area keeps one page of lore on its map. */

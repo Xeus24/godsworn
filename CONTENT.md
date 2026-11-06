@@ -1012,7 +1012,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (31):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.) · Tenet of Mercy (+15% healing received and +10% magic resist. Basic attacks mend you for 4% HP.) · Tenet of Vengeance (+15% damage. Basic attacks hit for 125% and Mark the foe.) · Tenet of Dawn (+20% holy damage and +10% defense. Basic attacks hit for 110% and Blind.) · Mask of the Fool (+15 dodge and +3 LUK; basic attacks may Confuse. “Oh, I never meant to hit you.”) · Mask of the Sage (+15% magic attack and 8% cooldown reduction. “Let me explain, as I strike.”) · Mask of the Hero (+12% physical attack and +10% defense. “Stand behind me. I mean it.”) · Mask of the Knave (+12% crit and +10% gold found; basic attacks lift 3 gold. “Whose purse is this? Mine, now.”) · Mask of the Widow (+15% shadow damage and +10% status chance. “I have buried better.”) · Mask of the Hound (+15% speed and +10 accuracy; basic attacks may Bleed. “Smell that? Fear.”) · Mask of the Lord (+12% damage and +10% status resist. “Kneel. Do not be tiresome.”) · Mask of the Ghost (+20 dodge and 8% less damage taken. “Did you feel that? No?”) · Mask of the Saint (+15% healing power and +12% holy damage; basic attacks heal 3%. “Be at peace. Hold still.”) · Mask of the Sinner (+15% damage, 8% less defense; basic attacks may Burn. “Do not look at the hands.”) · Mask of the Muse (+15% resource gain and +8 speed; basic attacks give 6 Persona. “Someone is watching. Let us be marvelous.”) · Mask of the Tyrant (+18% damage and +10% max HP; basic attacks may Slow. “Sit down. Everyone.”)
 
-### Enemies (554)
+### Enemies (574)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1570,6 +1570,26 @@ Generated from the data files by `npm run content:md`.
 | **Isa the Chorister** | 27 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
 | **Hob the Precentor** | 28 | normal | humanoid, choir, defector | front | aggressive | Dark Cleave, Banshee Wail | shadow +20% |
 | **Lark the Treble** | 29 | normal | humanoid, choir, defector | back | caster | Shadow Bolt, Banshee Wail | shadow +20% |
+| **Thistle Knight** | 27 | normal | fey, humanoid | front | defensive | Shield Bash, Harden |  |
+| **Wisp Courtier** | 26 | normal | fey, spirit | back | caster | Dazzle, Curse of Ages | earth -25% |
+| **Glamour Hound** | 27 | normal | fey, beast | front | aggressive | Savage Bite, Pack Howl |  |
+| **Changeling Twin** | 28 | normal | fey, humanoid | front | aggressive | Dirty Stab, Doom Mark |  |
+| **Mushroom Matron** | 28 | normal | fey, plant | back | caster | Root Lash, Crude Mending |  |
+| **Briar Bailiff** | 29 | normal | fey, plant | front | aggressive | Constrict, Cleave |  |
+| **Cinder Imp** | 53 | normal | elemental, fire | back | caster | Magma Burst, Dazzle | earth +40% |
+| **Ember Hound** | 54 | normal | elemental, beast | front | aggressive | Savage Bite, Flame Breath | earth +40% |
+| **Tide Wraith** | 48 | normal | elemental, spirit | back | caster | Frost Breath, Drown | earth +40% |
+| **Brine Golem** | 49 | normal | elemental, construct | front | defensive | Harden, Crushing Blow | earth +40% |
+| **Gale Sprite** | 42 | normal | elemental, spirit | back | caster | Arc Lightning, Dazzle | earth +40% |
+| **Storm Hawk** | 43 | normal | elemental, beast | front | aggressive | Dive Bomb, Screech | earth +40% |
+| **Quarry Golem** | 45 | normal | elemental, construct | front | aggressive | Crushing Blow, Tremor | earth +40% |
+| **Geode Beetle** | 46 | normal | elemental, beast | front | defensive | Harden, Crushing Blow | earth +40% |
+| **The Thistle Regent** | 30 | boss | fey, humanoid | front | defensive | Shield Bash, Root Lash, Enrage |  |
+| **The Hollow Queen** | 33 | boss | fey, humanoid | back | caster | Curse of Ages, Doom Mark, Enrage |  |
+| **The Warden of Ember** | 56 | boss | elemental, fire | front | defensive | Flame Breath, Magma Burst, Enrage | earth +40% |
+| **The Warden of Tide** | 51 | boss | elemental, water | back | caster | Frost Breath, Drown, Enrage | earth +40% |
+| **The Warden of Gale** | 45 | boss | elemental, spirit | back | caster | Arc Lightning, Screech, Enrage | earth +40% |
+| **The Warden of Stone** | 48 | boss | elemental, construct | front | defensive | Earthshatter, Crushing Blow, Enrage | earth +40% |
 
 **Summons (59):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Owl Familiar, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald, Wolf Totem, Bear Totem, Trail Hound, Trail Hawk, Hedge Cat, Cauldron Toad, The Bonded Blade, The Unleashed Blade
 
@@ -5023,7 +5043,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 
 **Pastimes** (16): Casting Off (Catch 10 kinds of fish; 5 pts) · Fishmonger (Catch 30 kinds of fish; 15 pts; title “the Fisher”) · The Whole Catch (Catch all 69 kinds of fish; 40 pts; title “the Angler”) · Net Full (Catch 500 fish; 20 pts) · A Fair Hand (Own 30 different Pantheon Cards; 10 pts) · Card Collector (Own 75 different Pantheon Cards; 20 pts; title “the Collector”) · The Full Deck (Own all 124 Pantheon Cards; 45 pts; title “Card Sovereign”) · Table Regular (Win 10 games of Pantheon Cards; 10 pts) · Pantheon Champion (Win 50 games of Pantheon Cards; 25 pts; title “Pantheon Champion”) · The Lucky (Win 25 rounds of tavern dice; 15 pts; title “the Lucky”) · First Past the Post (Win 10 mount races; 15 pts; title “the Swift”) · True Strike (Score 92 or more at the forge; 20 pts) · Dirty Hands (Find buried treasure 10 times; 10 pts) · Treasure Hunter (Find buried treasure 25 times; 20 pts; title “Treasure-Hunter”) · Crowd Favourite (Reach the sixth rung of the arena ladder; 15 pts) · Top of the Ladder (Beat the twelfth rung of the arena ladder; 30 pts; title “the Gladiator”)
 
-**Sea & Sky** (13): Sea Legs (Make your first voyage by ship; 10 pts) · Old Salt (Make 10 voyages; 20 pts) · Sailor of the Isles (Make 25 voyages; 30 pts; title “Sailor of the Isles”) · Skyborne (Own an airship; 25 pts; title “Skyborne”) · Halfway Round (Set foot in 13 regions; 15 pts) · Far Traveller (Set foot in 20 regions; 25 pts) · Cartographer of Everything (Set foot in all 26 regions; 45 pts; title “Cartographer”) · Delver (Clear 30 dungeons; 25 pts) · Every Door Opened (Clear all 71 dungeons; 50 pts; title “Delver of Depths”; 10000 gold) · Set in Stone (Earn a statue in a town square; 20 pts; title “the Honored”) · Five Squares (Earn statues in five towns; 35 pts) · Hero of Every Hearth (Earn statues in all 15 towns; 60 pts; title “Hero of Every Hearth”) · The Magnate (Invest in 3 town businesses; 20 pts; title “the Magnate”)
+**Sea & Sky** (13): Sea Legs (Make your first voyage by ship; 10 pts) · Old Salt (Make 10 voyages; 20 pts) · Sailor of the Isles (Make 25 voyages; 30 pts; title “Sailor of the Isles”) · Skyborne (Own an airship; 25 pts; title “Skyborne”) · Halfway Round (Set foot in 13 regions; 15 pts) · Far Traveller (Set foot in 20 regions; 25 pts) · Cartographer of Everything (Set foot in all 26 regions; 45 pts; title “Cartographer”) · Delver (Clear 30 dungeons; 25 pts) · Every Door Opened (Clear all 73 dungeons; 50 pts; title “Delver of Depths”; 10000 gold) · Set in Stone (Earn a statue in a town square; 20 pts; title “the Honored”) · Five Squares (Earn statues in five towns; 35 pts) · Hero of Every Hearth (Earn statues in all 15 towns; 60 pts; title “Hero of Every Hearth”) · The Magnate (Invest in 3 town businesses; 20 pts; title “the Magnate”)
 <!-- codex:end -->
 
 ## New Game+, heresy and the Defender path
@@ -5082,7 +5102,7 @@ Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every
 
 ### The Boss Rush
 
-At any town (level 30+): all 71 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
+At any town (level 30+): all 73 dungeon bosses in road order at your level, HP carried over. A full clear pays 40 gold × level; best run and fastest clear are kept.
 
 ### Challenge modes
 
