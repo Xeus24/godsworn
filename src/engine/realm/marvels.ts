@@ -396,7 +396,22 @@ export interface RealmsState {
 }
 export const createRealms = (): RealmsState => ({ bargains: {}, ringSeen: false, open: [], wardens: [], tollPaid: 0 });
 
+/** The Adventurers' Guild and Tales & Tankards (Section I-8b). */
+export interface GuildContract { id: string; town: string; kind: 'hunt' | 'cull' | 'party'; name: string; waves: string[][]; level: number; gold: number; points: number }
+export interface TaleRun { adv: string; scene: number; wins: number; table: string[]; stake: number; log: string[] }
+export interface GuildState {
+  points: number;
+  done: number;
+  active?: GuildContract;
+  /** Contract ids already finished (they stay off the board that day). */
+  finished: string[];
+  rivals: string[];
+  tales: { best: Record<string, number>; played: Record<string, number>; run?: TaleRun };
+}
+export const createGuild = (): GuildState => ({ points: 0, done: 0, finished: [], rivals: [], tales: { best: {}, played: {} } });
+
 export interface MarvelsState {
+  guild?: GuildState;
   realms?: RealmsState;
   grace?: GraceState;
   workshop?: WorkshopState;

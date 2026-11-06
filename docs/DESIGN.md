@@ -1,3 +1,4 @@
+I-8b: `GuildActions` (`s.guild`) runs the Guild (contracts are `startSpecial` fights, module `guild`, ref `c:<id>` or `r:<rival>`) and the Tales & Tankards game (state in `guild.tales.run`). Narration is a pure UI transform on toasts.
 I-8a: `RealmsActions` (`s.realms`) owns the Gloaming Court's bargains and the Four Thresholds; areas and dungeons are `late` content in `data/realms.ts` (appended after the pocket and Twilight ones so older layouts do not move). `WorldActions` asks `realms.shut(ref)` before entering an area; `PocketActions.step/onMap` delegate to `realms.step/onMap`.
 
 

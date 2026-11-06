@@ -1,3 +1,4 @@
+import { guildBody, talesBody } from './guildCards';
 import { nextRenownTier, renownOf, renownTier, statueTowns } from '../../engine/world/renown';
 import { STATUE_POINTS } from '../../data/world/renown';
 import { uiGlyph } from '../art/uiGlyphs';
@@ -48,6 +49,8 @@ const CARD_ICONS: Record<string, string> = {
   'The Inn': 'inn',
   People: 'figure',
   'Quest Board': 'scroll',
+  "Adventurers' Guild": 'scroll',
+  'Tales & Tankards': 'arena',
   Temple: 'temple',
   Market: 'market',
   Workshop: 'workshop',
@@ -248,6 +251,8 @@ export class TownScreen implements Screen {
     const heard = s.road.reaction(this.townId);
     const att = attitudeName(s.player, this.townId);
     cards.push(this.card('People', el('p', { class: 'dim small' }, `The townsfolk are ${att.toLowerCase()} toward ${content.races.get(s.player.raceId).name}s (${prejudiceMult(s.player, this.townId) === 1 ? 'prices unchanged' : `prices ${prejudiceMult(s.player, this.townId) > 1 ? '+' : ''}${Math.round((prejudiceMult(s.player, this.townId) - 1) * 100)}%`}).`), ...(heard ? [el('p', { class: 'dim small' }, heard)] : []), el('div', { class: 'npc-list' }, ...people.filter((n) => n.place === 'people').map((n) => this.npcRow(n)))), this.boardCard());
+    cards.push(this.fold("Adventurers' Guild", `${s.guild.rank().name}, ${s.guild.t.points} pts`, ...guildBody(s, this.townId, (r) => this.say(r))));
+    cards.push(this.fold('Tales & Tankards', 'tavern game', ...talesBody(s, (r) => this.say(r), this.render)));
     cards.push(
       this.card(
         'Temple',

@@ -43,6 +43,8 @@ export interface Settings {
   encounterRate: number;
   /** Larger, thicker outlines on focus and a stronger border on panels. */
   highContrast: boolean;
+  /** Toasts are rewritten in a game-master narrator's voice (Section I-8b). */
+  taleTeller: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -71,6 +73,7 @@ export const DEFAULT_SETTINGS: Settings = {
   reduceFlashing: false,
   encounterRate: 1,
   highContrast: false,
+  taleTeller: false,
 };
 
 const KEY = 'godsworn:settings';
