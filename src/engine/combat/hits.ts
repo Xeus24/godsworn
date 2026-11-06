@@ -1,6 +1,8 @@
 import { checkBossPhase, interruptCharge } from './bosses';
 import { COMBAT } from '../../data/combat';
 import { DEVOTION } from '../../data/devotion';
+import { LAST_BREATH } from '../../data/tabletop';
+import { rollD20 } from '../tabletop/dice';
 import type { Element } from '../stats/types';
 import type { Battle } from './battle';
 import { computeDamage, hitChance } from './damage';
@@ -152,6 +154,10 @@ export function applyDamage(
   info: { element: Element; crit: boolean; dot?: boolean; staggerMult?: number; shieldPierce?: number; guarded?: boolean },
 ): void {
   if (!target.alive || amount <= 0) return;
+  if (target.downed) {
+    downedHit(b, target, info.crit);
+    return;
+  }
   // A guardian takes a share of what would hit the one it guards.
   const guardian = target.guard ? b.get(target.guard.by) : undefined;
   if (target.guard && guardian?.alive && guardian.id !== target.id && !info.guarded) {
@@ -210,6 +216,15 @@ export function applyDamage(
     b.log(`${target.name} refuses to fall!`);
     return;
   }
+  if (b.lastBreath && target.side === 'party' && (target.kind === 'hero' || target.kind === 'companion')) {
+    // Last Breath (Tabletop Rules): downed, not dead. Three death rolls decide it.
+    target.hp = 0;
+    target.shield = 0;
+    target.downed = { ok: 0, fail: 0 };
+    target.defending = false;
+    b.log(`${target.name} falls, but is not gone yet: Last Breath.`);
+    return;
+  }
   if ((b.pacifist || source.flags.includes('cannotKill')) && target.side === 'enemy' && source.side === 'party') {
     // The Pacifist challenge: nothing dies by your hand. The foe yields and walks away.
     target.hp = 1;
@@ -225,6 +240,43 @@ export function applyDamage(
 }
 
 /** A Devoted+ god may catch the hero at death's door: back to 40% HP plus the god's own effect. */
+/** A hit on a downed hero is a failed death roll (two on a critical). */
+function downedHit(b: Battle, target: Combatant, crit: boolean): void {
+  const d = target.downed as { ok: number; fail: number };
+  d.fail += crit ? 2 : 1;
+  b.log(`${target.name} is struck while down (${Math.min(3, d.fail)}/3 failures).`);
+  if (d.fail >= LAST_BREATH.rolls) {
+    target.downed = undefined;
+    kill(b, target, target);
+  }
+}
+
+/** One death roll at the start of a downed hero's turn: 10 or more succeeds, a natural 20 rises with 1 HP, a natural 1 fails twice. */
+export function deathRoll(b: Battle, x: Combatant): void {
+  const d = x.downed;
+  if (!d) return;
+  const r = rollD20(b.rng).die;
+  if (r === 20) {
+    x.downed = undefined;
+    x.hp = 1;
+    b.emit({ type: 'revive', targetId: x.id });
+    b.log(`${x.name} rolls a natural 20 and rises with 1 HP!`);
+    return;
+  }
+  if (r >= LAST_BREATH.dc) d.ok++;
+  else d.fail += r === 1 ? 2 : 1;
+  b.log(`${x.name}'s death roll: ${r} (${d.ok}/3 saves, ${Math.min(3, d.fail)}/3 failures).`);
+  if (d.ok >= LAST_BREATH.rolls) {
+    x.downed = undefined;
+    x.hp = 1;
+    b.emit({ type: 'revive', targetId: x.id });
+    b.log(`${x.name} stabilises and gets back up.`);
+  } else if (d.fail >= LAST_BREATH.rolls) {
+    x.downed = undefined;
+    kill(b, x, x);
+  }
+}
+
 function divineIntervention(b: Battle, target: Combatant): boolean {
   const iv = target.intervention;
   if (!iv || iv.used || !b.rng.chance(iv.chance / 100)) return false;
@@ -306,6 +358,10 @@ export function healTarget(b: Battle, source: Combatant, target: Combatant, amou
   const healed = Math.round(Math.min(total, target.maxHp - target.hp));
   const overheal = total - Math.max(0, healed);
   if (healed > 0) {
+    if (target.downed) {
+      target.downed = undefined;
+      b.log(`${target.name} is back on their feet.`);
+    }
     target.hp += healed;
     b.emit({ type: 'heal', targetId: target.id, amount: healed });
   }

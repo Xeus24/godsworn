@@ -23,6 +23,7 @@ export interface NewCharacterOptions {
   bond?: string;
   flaw?: string;
   trinket?: string;
+  tabletop?: boolean;
   id?: string;
 }
 
@@ -53,6 +54,7 @@ export function createCharacter(opts: NewCharacterOptions, c: Content = content)
     ...(opts.background ? { backgroundId: opts.background } : {}),
     ...(opts.ideal || opts.bond || opts.flaw ? { personality: { ...(opts.ideal ? { ideal: opts.ideal } : {}), ...(opts.bond ? { bond: opts.bond } : {}), ...(opts.flaw ? { flaw: opts.flaw } : {}) } } : {}),
     ...(opts.trinket ? { trinketId: opts.trinket } : {}),
+    ...(opts.tabletop ? { tabletop: true } : {}),
     hardcore: opts.hardcore ?? false,
     challenges: [...(opts.challenges ?? [])],
     stable: { pets: [], mounts: [] },

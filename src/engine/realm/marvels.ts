@@ -340,7 +340,20 @@ export interface TwilightState {
 }
 export const createTwilight = (): TwilightState => ({ start: 0, rites: {}, slides: {}, trials: {}, unsworn: { step: 0, done: false }, flock: { on: false, followers: 0, prayers: [], answered: 0, lost: 0, day: 0 }, conclave: { at: 0, repelled: 0, lost: [], day: 0 }, war: { wins: 0 }, archive: { last: -999, best: 0, taken: 0 } });
 
+/** Tabletop Rules state (Section I-6). */
+export interface TabletopState {
+  /** God's Nods held (up to 3), and the day each trait last earned one. */
+  nods: number;
+  nodDays: Record<string, number>;
+  /** The most recent Fate Die roll, for the dialogue and log display. */
+  lastRoll?: import('../tabletop/dice').Roll & { label: string };
+  /** Breathers taken on this day. */
+  breathers: { day: number; n: number };
+}
+export const createTabletop = (): TabletopState => ({ nods: 0, nodDays: {}, breathers: { day: 0, n: 0 } });
+
 export interface MarvelsState {
+  tabletop?: TabletopState;
   twilight?: TwilightState;
   fun?: FunState;
   craft?: CraftState;

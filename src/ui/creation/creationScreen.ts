@@ -22,6 +22,7 @@ export interface CreationChoice {
   bond: string;
   flaw: string;
   trinket: string;
+  tabletop: boolean;
   hardcore: boolean;
   challenges: string[];
   difficulty: DifficultyId;
@@ -45,6 +46,7 @@ export class CreationScreen implements Screen {
     bond: '',
     flaw: '',
     trinket: rollTrinket(),
+    tabletop: false,
     hardcore: false,
     challenges: [],
     difficulty: DEFAULT_DIFFICULTY,
@@ -79,6 +81,11 @@ export class CreationScreen implements Screen {
       this.refresh();
     });
 
+    const tabletopBox = el('input', { type: 'checkbox', id: 'tabletop' }) as HTMLInputElement;
+    tabletopBox.addEventListener('change', () => {
+      this.choice.tabletop = tabletopBox.checked;
+      this.refresh();
+    });
     const randomize = el('button', {}, 'Randomize');
     randomize.addEventListener('click', () => this.randomize(hardcore));
     const back = el('button', {}, 'Back');
@@ -96,6 +103,12 @@ export class CreationScreen implements Screen {
         { class: 'checkbox', for: 'hardcore' },
         hardcore,
         el('span', {}, 'Hardcore: death is permanent'),
+      ),
+      el(
+        'label',
+        { class: 'checkbox', for: 'tabletop', title: 'Dice rolls for dialogue and exploration checks, saving throws, a Last Breath instead of instant death, Breathers, Boons and the God’s Nod. Everything stays beatable either way. Fixed for the save.' },
+        tabletopBox,
+        el('span', {}, 'Tabletop Rules: dice, saves, Last Breath and Boons'),
       ),
       ...(!endgameSeen() ? [] : [el(
         'details',
@@ -161,6 +174,7 @@ export class CreationScreen implements Screen {
       bond: pickRandom(TRAIT_KINDS.bond).id,
       flaw: pickRandom(TRAIT_KINDS.flaw).id,
       trinket: rollTrinket(),
+      tabletop: this.choice.tabletop,
       hardcore: this.choice.hardcore,
       challenges: this.choice.challenges,
       difficulty: this.choice.difficulty,

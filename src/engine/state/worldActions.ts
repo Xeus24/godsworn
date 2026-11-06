@@ -699,7 +699,7 @@ export class WorldActions {
         notes.push('Your Skeleton Key turns, and snaps.');
       } else if (lastFail !== undefined && now - lastFail < LOCKPICK_RETRY) {
         return 'Locked. Your last attempt bent your picks; try again in an hour.';
-      } else if (this.s.rng.chance(utilityChance(p, 'lockpicking'))) {
+      } else if (this.s.tabletop.on ? this.s.tabletop.roll('dex', 10 + Math.floor(map.level[1] / 4), 'Lockpicking', utilityRank(p, 'lockpicking')).success : this.s.rng.chance(utilityChance(p, 'lockpicking'))) {
         notes.push('You pick the lock.');
       } else {
         this.world.lockpickFailed[key] = now;
@@ -708,7 +708,9 @@ export class WorldActions {
       }
     }
     if (e.trapped) {
-      if (this.s.rng.chance(utilityChance(p, 'detectTraps'))) notes.push('You spot and disarm a trap.');
+      const trapDc = 11 + Math.floor(map.level[1] / 3);
+      if (this.s.tabletop.on && this.s.tabletop.passivePerception >= trapDc) notes.push('Your Passive Perception spots the trap before you touch it, and you disarm it.');
+      else if (this.s.tabletop.on ? this.s.tabletop.roll('dex', trapDc, 'Trap', utilityRank(p, 'detectTraps')).success : this.s.rng.chance(utilityChance(p, 'detectTraps'))) notes.push('You spot and disarm a trap.');
       else {
         const dmg = Math.round(characterStats(p).maxHp * TRAP_DAMAGE);
         p.hp = Math.max(1, p.hp - dmg);
@@ -826,6 +828,7 @@ export class WorldActions {
     this.s.advanceTime(8 * 60);
     p.timedBuffs = [...p.timedBuffs.filter((b) => b.id !== WELL_RESTED.id), { ...WELL_RESTED, modifiers: [...WELL_RESTED.modifiers] }];
     this.s.devotion.onRest();
+    this.s.tabletop.nightsRest();
     this.changed('rest');
   }
 

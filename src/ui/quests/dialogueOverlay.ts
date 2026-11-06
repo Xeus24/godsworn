@@ -78,6 +78,7 @@ export class DialogueOverlay {
           el('div', {}, el('div', { class: 'dialogue-name' }, v.narrator ? '' : v.speaker), el('div', { class: 'dim small' }, v.narrator ? '' : (v.title ?? ''))),
         ),
         el('p', { class: 'dialogue-text' }, v.text),
+        ...(v.roll ? [el('p', { class: 'dice-roll small', 'aria-live': 'polite' }, `🎲 ${v.roll}`)] : []),
         el('div', { class: 'dialogue-choices' }, ...choices),
       ),
     );

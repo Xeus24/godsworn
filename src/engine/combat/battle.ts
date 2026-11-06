@@ -51,6 +51,9 @@ export class Battle {
   readonly encounterId: string;
   /** Pacifist challenge: a foe that would die yields instead. */
   pacifist = false;
+  /** Tabletop Rules (R26): saving throws, and Last Breath (a hero at 0 HP is downed and makes death rolls; off in Hardcore). */
+  tabletop = false;
+  lastBreath = false;
   readonly canFlee: boolean;
   readonly isBoss: boolean;
   readonly timeOfDay: 'day' | 'night';

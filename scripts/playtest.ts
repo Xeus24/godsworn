@@ -38,6 +38,8 @@ function catchUp(s: GameSession, level: number): void {
   // Companions earn their share of the XP, as they would have along the way.
   s.party.shareXp(totalXpForLevel(level) - totalXpForLevel(s.player.level));
   for (const k of BUILD) (s.player as unknown as Record<string, unknown>)[k] = structuredClone(bench[k]);
+  // Tabletop Rules: a careful player takes a Boon whenever one is waiting (martial, guardian, survivor, healer and merchant first).
+  if (s.player.tabletop) for (const theme of ['martial', 'guardian', 'survivor', 'healer', 'merchant', 'scholar', 'arcane', 'devout', 'rogue', 'beast', 'wanderer', 'elementalist']) for (let n = 1; n <= 5 && s.tabletop.boonsPending > 0; n++) s.tabletop.takeBoon(`boon-${theme}-${n}`);
 }
 
 
@@ -151,7 +153,9 @@ for (const [i, cls] of classes.entries()) {
       ...(only ? { log: (line: string) => console.log(`  ${line}`) } : {}),
     });
   };
-  const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), benchmarkHero(cls, 1));
+  const startHero = benchmarkHero(cls, 1);
+  if (process.env.PLAYTEST_TABLETOP) startHero.tabletop = true;
+  const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), startHero);
   const r = run(base, 0);
   console.log(`${cls.padEnd(13)} ${(r.ending ?? '-').padEnd(12)} ${String(r.fights).padStart(6)}  ${String(r.losses).padStart(6)}  ${r.stuck ?? 'finished'}  ~${clockLine()}`);
   if (ng && r.ending) {

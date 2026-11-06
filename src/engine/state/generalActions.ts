@@ -119,6 +119,7 @@ export class GeneralActions {
     }
     this.s.bus.emit('toast', { kind: 'info', text: camping > 0 ? `You rest by the fire and wake Well Rested (+${camping}% damage for ${WELL_RESTED_BATTLES} battles).` : 'You rest by the fire and wake refreshed.' });
     this.s.devotion.onRest();
+    this.s.tabletop.nightsRest();
     this.s.bus.emit('stateChanged', { reason: 'rest' });
   }
 

@@ -220,6 +220,8 @@ export function createEncounterBattle(hero: Character, encounter: EncounterDef, 
   });
   if (hero.world.godless) battle.covenant.locked = true;
   battle.pacifist = hasRule(hero, 'pacifist', c);
+  battle.tabletop = hero.tabletop === true;
+  battle.lastBreath = hero.tabletop === true && !hero.hardcore;
   if (opts.mercy) battle.mercy = opts.mercy;
   if (opts.autoTactics) battle.autoTactics = opts.autoTactics;
   for (const e of encounter.enemies) if (e.grudge) battle.log(`${e.grudge.name}: ${e.grudge.line}`);

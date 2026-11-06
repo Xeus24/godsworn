@@ -183,6 +183,8 @@ export interface Intent {
 
 export interface Combatant {
   id: string;
+  /** Last Breath (Tabletop Rules): downed at 0 HP, with death rolls made on each of its turns. */
+  downed?: { ok: number; fail: number };
   name: string;
   side: Side;
   row: Row;

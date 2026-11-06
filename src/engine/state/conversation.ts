@@ -3,6 +3,8 @@ import { describe } from '../quests/conditions';
 import { objectiveDone, progressOf, stageOf } from '../quests/quests';
 import type { ActionDef, ChoiceDef, DialogueDef, DialogueNode, NpcDef } from '../quests/types';
 import type { GameSession } from './gameState';
+import { describeRoll } from '../tabletop/dice';
+import type { Cond } from '../quests/types';
 
 export interface ChoiceView {
   label: string;
@@ -21,6 +23,8 @@ export interface ConversationView {
   narrator: boolean;
   text: string;
   choices: ChoiceView[];
+  /** The Fate Die's latest roll in this conversation (Tabletop Rules). */
+  roll?: string;
 }
 
 /** What a conversation leaves behind: a fight to start, or the story's ending. */
@@ -58,6 +62,10 @@ export class Conversation {
   private returned = false;
   /** Set when an action asks the conversation to close (a fight, the ending). */
   private closing = false;
+  /** Fate Die checks failed here: they stay locked, unless a God's Nod buys another roll. */
+  private failed = new Set<string>();
+  private rerollKey: string | undefined;
+  private rollText: string | undefined;
   done = false;
   readonly outcome: ConversationOutcome = {};
 
@@ -196,6 +204,45 @@ export class Conversation {
 
   // ------------------------------------------------------------ view and input
 
+  /** The one stat requirement in a choice's condition, and what is left of it. */
+  private statCheck(cond: Cond | undefined): { stat: 'str' | 'dex' | 'int' | 'vit' | 'wis' | 'luk' | 'fai' | 'cha'; min: number; rest: Cond | undefined } | undefined {
+    if (!cond) return undefined;
+    if (cond.kind === 'stat') return { stat: cond.stat as 'str', min: cond.min, rest: undefined };
+    if (cond.kind === 'all') {
+      const stats = cond.conds.filter((x) => x.kind === 'stat');
+      if (stats.length !== 1) return undefined;
+      const st = stats[0] as Extract<Cond, { kind: 'stat' }>;
+      const others = cond.conds.filter((x) => x !== st);
+      return { stat: st.stat as 'str', min: st.min, rest: others.length ? { kind: 'all', conds: others } : undefined };
+    }
+    return undefined;
+  }
+
+  /** Rolls the Fate Die for a stat-gated choice (Tabletop Rules): a natural 20 is a windfall, a natural 1 a small disaster. */
+  private fate(key: string, chk: { stat: 'str' | 'dex' | 'int' | 'vit' | 'wis' | 'luk' | 'fai' | 'cha'; min: number }, onSuccess: () => void): void {
+    const tt = this.s.tabletop;
+    const r = tt.roll(chk.stat, tt.dc(chk.min), 'Fate Die');
+    this.rollText = describeRoll(r, `Fate Die (${chk.stat.toUpperCase()})`);
+    if (r.success) {
+      this.failed.delete(key);
+      this.rerollKey = undefined;
+      if (r.crit === 'nat20') {
+        const bonus = 10 * Math.max(1, this.s.player.level);
+        this.s.addGold(bonus, 'fate die');
+        this.s.bus.emit('toast', { kind: 'level', text: `A natural 20! ${bonus} gold finds its way into your hand.` });
+      }
+      onSuccess();
+      return;
+    }
+    this.failed.add(key);
+    this.rerollKey = r.crit === 'nat1' ? undefined : key;
+    if (r.crit === 'nat1') {
+      const loss = Math.min(this.s.state.gold, 5 * Math.max(1, this.s.player.level));
+      if (loss > 0) this.s.spendGold(loss, 'fate die');
+      this.s.bus.emit('toast', { kind: 'warning', text: `A natural 1. You fumble, and ${loss} gold goes missing.` });
+    }
+  }
+
   private choices(): Choice[] {
     if (this.closing && this.frame) return [{ label: this.outcome.fight ? 'To arms!' : 'Continue', enabled: true, run: () => this.endThread(false) }];
     const node = this.node();
@@ -204,10 +251,30 @@ export class Conversation {
     if (data.length === 0) {
       return [{ label: node.next ? 'Continue' : this.hub ? 'Back' : 'Farewell.', enabled: true, run: () => (node.next ? this.enter(node.next) : this.endThread(false)) }];
     }
-    return data
+    const tabletop = this.s.tabletop.on;
+    const frameKey = `${this.frame?.def.id}:${this.frame?.node}`;
+    const out = data
       // Locked choices show their requirement; ones that hinge on story state (no requirement to show) stay hidden.
-      .filter((ch) => this.s.quests.holds(ch.cond) || !(ch.hideLocked || !ch.cond || describe(ch.cond) === ''))
-      .map((ch: ChoiceDef): Choice => {
+      .filter((ch) => this.s.quests.holds(ch.cond) || (tabletop && !!this.statCheck(ch.cond) && this.s.quests.holds(this.statCheck(ch.cond)?.rest)) || !(ch.hideLocked || !ch.cond || describe(ch.cond) === ''))
+      .map((ch: ChoiceDef, idx): Choice => {
+        const chk = tabletop ? this.statCheck(ch.cond) : undefined;
+        if (chk && this.s.quests.holds(chk.rest)) {
+          const key = `${frameKey}:${idx}`;
+          const failed = this.failed.has(key);
+          const tag = `${chk.stat.toUpperCase()} check, DC ${this.s.tabletop.dc(chk.min)}`;
+          return {
+            label: `[${tag}] ${this.fill(ch.text)}`,
+            enabled: !failed,
+            ...(failed ? { requirement: 'failed' } : {}),
+            run: () =>
+              this.fate(key, chk, () => {
+                this.act(ch.actions);
+                if (this.closing) return this.endThread(ch.leave ?? false);
+                if (ch.next) this.enter(ch.next);
+                else this.endThread(ch.leave ?? false);
+              }),
+          };
+        }
         const ok = this.s.quests.holds(ch.cond);
         const tag = ch.cond ? describe(ch.cond) : '';
         return {
@@ -222,6 +289,30 @@ export class Conversation {
           },
         };
       });
+    // A failed check can be rolled again by spending a God's Nod.
+    const key = this.rerollKey;
+    if (tabletop && key && this.failed.has(key)) {
+      const idx = Number(key.split(':').pop());
+      const ch = data[idx];
+      const chk = ch ? this.statCheck(ch.cond) : undefined;
+      if (ch && chk) {
+        out.push({
+          label: `Spend a God’s Nod to roll again (${this.s.tabletop.nods} held)`,
+          enabled: this.s.tabletop.nods > 0,
+          ...(this.s.tabletop.nods > 0 ? {} : { requirement: 'no Nod' }),
+          run: () => {
+            if (!this.s.tabletop.spendNod()) return;
+            this.fate(key, chk, () => {
+              this.act(ch.actions);
+              if (this.closing) return this.endThread(ch.leave ?? false);
+              if (ch.next) this.enter(ch.next);
+              else this.endThread(ch.leave ?? false);
+            });
+          },
+        });
+      }
+    }
+    return out;
   }
 
   view(): ConversationView {
@@ -234,7 +325,7 @@ export class Conversation {
         choices: this.hubChoices().map(({ run: _run, ...v }) => v),
       };
     }
-    return { ...this.speakerOf(node), text: this.fill(node.text), choices: this.choices().map(({ run: _run, ...v }) => v) };
+    return { ...this.speakerOf(node), text: this.fill(node.text), choices: this.choices().map(({ run: _run, ...v }) => v), ...(this.rollText ? { roll: this.rollText } : {}) };
   }
 
   choose(index: number): void {

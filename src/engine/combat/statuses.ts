@@ -1,4 +1,6 @@
 import { IMMUNITY_PREFIX } from '../../data/mechanics';
+import { saveStatFor } from '../../data/tabletop';
+import { check, statMod } from '../tabletop/dice';
 import type { Battle } from './battle';
 import { fireTrigger } from './effects';
 import { dealDamage, healTarget } from './hits';
@@ -29,7 +31,19 @@ export function applyStatus(b: Battle, source: Combatant, target: Combatant, sta
     const sourceStats = b.stats(source);
     const chance = (opts.chance ?? 100) * (hostile ? 1 + sourceStats.statusChance / 100 : 1);
     if (!b.rng.percent(chance)) return false;
-    if (hostile && b.rng.percent(b.stats(target).statusResist)) {
+    if (hostile && b.tabletop && target.side === 'party') {
+      // Saving Throws (Tabletop Rules): a stat save against the foe's DC, in place of the flat resist chance.
+      const stat = saveStatFor(statusId);
+      const tStats = b.stats(target);
+      const mod = statMod(tStats[stat], target.level) + Math.floor(tStats.statusResist / 10);
+      const dc = 8 + Math.floor(source.level / 3) + Math.floor(sourceStats.statusChance / 10);
+      const save = check(b.rng, mod, dc);
+      b.log(`${target.name} saves against ${def.name}: d20 ${save.die} ${mod >= 0 ? '+' : '-'} ${Math.abs(mod)} = ${save.total} vs DC ${dc} (${stat.toUpperCase()}): ${save.success ? 'resisted' : 'fails'}.`);
+      if (save.success) {
+        b.emit({ type: 'resisted', targetId: target.id, statusId });
+        return false;
+      }
+    } else if (hostile && b.rng.percent(b.stats(target).statusResist)) {
       b.emit({ type: 'resisted', targetId: target.id, statusId });
       return false;
     }

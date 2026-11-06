@@ -22,6 +22,7 @@ import { withSource, type Modifier } from '../stats/modifiers';
 import { emptyPrimaryStats, PRIMARY_STATS, type PrimaryStats, type StatBlock } from '../stats/types';
 import type { Character } from './types';
 import { ALL_TRAITS } from '../../data/personality';
+import { BOONS } from '../../data/tabletop';
 
 /**
  * Base primaries before modifiers:
@@ -61,6 +62,10 @@ export function characterModifiers(char: Character, c: Content = content): Modif
   for (const [kind, id] of Object.entries(char.personality ?? {})) {
     const trait = ALL_TRAITS.find((t) => t.id === id);
     if (trait) mods.push(...withSource(trait.modifiers, `personality:${kind}`));
+  }
+  for (const id of char.boons ?? []) {
+    const boon = BOONS.find((b) => b.id === id);
+    if (boon) mods.push(...withSource(boon.modifiers, `boon:${id}`));
   }
   for (const [nodeId, ranks] of Object.entries(char.paragon)) {
     const node = c.paragon.find(nodeId);

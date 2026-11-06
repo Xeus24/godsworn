@@ -15,6 +15,7 @@ import { availablePoints, earnedPoints, knownSkills, masteryPointsLeft } from '.
 import type { GameSession } from '../../engine/state/gameState';
 import { ELEMENTS, PRIMARY_STATS, type StatId } from '../../engine/stats/types';
 import { difficultyPanel, mendPanel, wardrobePanel } from './appearancePanel';
+import { tabletopPanel } from './tabletopPanel';
 import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip, hideTooltip } from '../components/tooltip';
 import { formatStat, skillCard, statBreakdownTooltip } from '../format';
@@ -215,7 +216,7 @@ export class CharacterScreen implements Screen {
           { class: 'sheet-body' },
           el('div', { class: 'sheet-col' }, attributes, elemental),
           el('div', { class: 'sheet-col' }, ...derived),
-          el('div', { class: 'sheet-col' }, foldPanel(this.titles(), p.title ?? 'none chosen'), foldPanel(difficultyPanel(this.session, this.render), p.difficulty), ...mendPanel(this.session, this.render), foldPanel(wardrobePanel(this.session, this.render), 'looks and dyes'), ...(late || own ? [foldPanel(this.stable(), 'pet and mount')] : []), ...(late ? [foldPanel(this.legacy(), s.state.ngPlus > 0 ? `NG+${s.state.ngPlus}` : 'first playthrough')] : []), foldPanel(classes, p.classes.map((cp) => content.classes.get(cp.classId).name).join(' / ')), foldPanel(this.reputation(), `${content.factions.all().length} factions`), foldPanel(skills, `${knownSkills(p).length} known`), ...(late ? [foldPanel(paragon, `level ${p.paragonLevel}`)] : [])),
+          el('div', { class: 'sheet-col' }, ...tabletopPanel(this.session, this.render), foldPanel(this.titles(), p.title ?? 'none chosen'), foldPanel(difficultyPanel(this.session, this.render), p.difficulty), ...mendPanel(this.session, this.render), foldPanel(wardrobePanel(this.session, this.render), 'looks and dyes'), ...(late || own ? [foldPanel(this.stable(), 'pet and mount')] : []), ...(late ? [foldPanel(this.legacy(), s.state.ngPlus > 0 ? `NG+${s.state.ngPlus}` : 'first playthrough')] : []), foldPanel(classes, p.classes.map((cp) => content.classes.get(cp.classId).name).join(' / ')), foldPanel(this.reputation(), `${content.factions.all().length} factions`), foldPanel(skills, `${knownSkills(p).length} known`), ...(late ? [foldPanel(paragon, `level ${p.paragonLevel}`)] : [])),
         ),
       ),
     );

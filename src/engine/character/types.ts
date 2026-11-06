@@ -44,6 +44,11 @@ export interface Character {
   backgroundId?: string;
   /** Ideal, Bond and Flaw chosen at creation (data/personality.ts); absent on older saves. */
   personality?: { ideal?: string; bond?: string; flaw?: string };
+  /** Tabletop Rules (R26): off by default; chosen at creation and fixed for the save. */
+  tabletop?: boolean;
+  /** Boons taken under the Tabletop Rules (data/tabletop.ts), and how many times +2 stat points were taken instead. */
+  boons?: string[];
+  boonStatPicks?: number;
   /** The keepsake rolled at creation (data/trinkets.ts); handed over as an item when a new game starts. */
   trinketId?: string;
   birthSignId: string;

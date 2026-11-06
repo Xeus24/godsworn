@@ -2,7 +2,7 @@ import { COMBAT } from '../../data/combat';
 import type { Battle } from './battle';
 import { bossActed, bossTurnStart, bossWindUp, initBoss } from './bosses';
 import { applyEffects, fireTrigger, summon } from './effects';
-import { gainResource, healTarget, kill } from './hits';
+import { deathRoll, gainResource, healTarget, kill } from './hits';
 import { BOSS_LINES } from '../../data/bestiary/bossDialogue';
 import { featureTick, useFeature } from './features';
 import { groundExpire, groundTick } from './ground';
@@ -114,6 +114,11 @@ export function advance(b: Battle): BattleEvent[] {
     if (b.checkOutcome() !== 'ongoing') break;
     if (!x.alive) continue;
 
+    if (x.downed) {
+      deathRoll(b, x);
+      endTurn(b, x);
+      continue;
+    }
     const blocker = turnBlocker(b, x);
     if (blocker) {
       b.emit({ type: 'skip', actorId: x.id, reason: blocker });
