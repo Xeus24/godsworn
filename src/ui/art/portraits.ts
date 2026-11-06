@@ -78,6 +78,46 @@ const PALETTES: Record<string, RacePalette> = {
     hairs: ['#8a5a2a', '#c9a66b', '#a33a1c', '#5a3a1a', '#e8c880'],
     clothes: ['#a85a3a', '#5a8a4a', '#c8a050', '#7a5a8a'],
   },
+  stonekin: {
+    skins: ['#a8a8b0', '#8a8a96', '#b8b0a0'],
+    hairs: ['#4a4a4a', '#2a2a2a', '#8a8a8a'],
+    clothes: ['#6a5a4a', '#4a5a6a', '#5a4a3a'],
+  },
+  tuskborn: {
+    skins: ['#7a9a5a', '#6a8a4a', '#8aaa6a'],
+    hairs: ['#1a1a1a', '#3a2a1a', '#5a3a1a'],
+    clothes: ['#6a3a2a', '#4a4a3a', '#3a3a4a'],
+  },
+  dawnblooded: {
+    skins: ['#f8e8c8', '#f0d8b0', '#e8d0a8'],
+    hairs: ['#f0e0a0', '#e8c870', '#fff8d8'],
+    clothes: ['#e8d8a0', '#c8b070', '#f4ecc8'],
+  },
+  tinkerfolk: {
+    skins: ['#e8b890', '#d8a880', '#f0c8a0'],
+    hairs: ['#8a4a2a', '#c8a050', '#3a3a3a', '#a83a1c'],
+    clothes: ['#6a4a2a', '#3a5a6a', '#8a6a3a'],
+  },
+  corvani: {
+    skins: ['#5a5a70', '#4a4a60', '#6a6a80'],
+    hairs: ['#1a1a2a', '#2a2a3a', '#3a3a4a'],
+    clothes: ['#2a2a3a', '#4a3a5a', '#3a4a5a'],
+  },
+  pardeen: {
+    skins: ['#d8b070', '#c8a060', '#e8c890'],
+    hairs: ['#8a5a2a', '#2a2a2a', '#c89050'],
+    clothes: ['#5a6a3a', '#8a5a3a', '#4a5a6a'],
+  },
+  mossborn: {
+    skins: ['#7a9a5a', '#6a8a4a', '#8aaa6a'],
+    hairs: ['#4a6a2a', '#3a5a2a', '#8a9a4a'],
+    clothes: ['#4a5a2a', '#5a4a2a', '#3a4a2a'],
+  },
+  duskfae: {
+    skins: ['#8a78a8', '#7a6898', '#9a88b8'],
+    hairs: ['#2a1a3a', '#c0b0e0', '#4a3a6a'],
+    clothes: ['#3a2a5a', '#2a2a4a', '#5a3a6a'],
+  },
   nephilim: {
     skins: ['#f8e8d8', '#d8c0a8', '#a88868', '#e8d0c0'],
     hairs: ['#fff4c0', '#e8e8f8', '#d8a838', '#c8b8e8'],

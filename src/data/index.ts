@@ -34,6 +34,7 @@ import { MIMICS } from './mimics';
 import { ENEMY_SKILLS } from './skills/enemy';
 import { CLASS_STARTER_SKILLS, RACIAL_SKILLS } from './skills/starter';
 import { GREATER_RACIAL_SKILLS } from './skills/racialGreater';
+import { TABLETOP_RACIAL_SKILLS } from './racesTabletop';
 import { ULTIMATE_SKILLS } from './skills/ultimates';
 import { CLASS_TREE_SKILLS, finalizeTrees, SPECIALIZATIONS } from './trees';
 import { evolvedSkills, EVOLUTIONS } from './evolutions';
@@ -104,7 +105,7 @@ function withEarth<T extends { types: string[]; family: string; resists?: Partia
   return { ...e, resists: { ...e.resists, earth: stone ? 40 : -25 } };
 }
 
-const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...DIVINE_COMBAT_SKILLS, ...GREATER_DIVINE_COMBAT, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS, ...WEAPON_ARTS];
+const BASE_SKILLS = [...CLASS_STARTER_SKILLS, ...RACIAL_SKILLS, ...GREATER_RACIAL_SKILLS, ...TABLETOP_RACIAL_SKILLS, ...ULTIMATE_SKILLS, ...ENEMY_SKILLS, ...MENTOR_SKILLS, ...PUNISHER_SKILLS, ...ASPECT_SKILLS, ...DEEP_ENEMY_SKILLS, ...BOSS_SKILLS, ...CLASS_TREE_SKILLS, ...GENERAL_COMBAT_SKILLS, ...GREATER_GENERAL_COMBAT, ...DIVINE_COMBAT_SKILLS, ...GREATER_DIVINE_COMBAT, ...FORBIDDEN_COMBAT_SKILLS, ...TEAM_SKILLS, ...WEAPON_ARTS];
 const ALL_SKILLS = [...BASE_SKILLS, ...evolvedSkills((id) => BASE_SKILLS.find((s) => s.id === id) as (typeof BASE_SKILLS)[number])];
 const skillName = (id: string): string => ALL_SKILLS.find((s) => s.id === id)?.name ?? id;
 const ALL_GENERAL = [...GENERAL_SKILLS, ...GREATER_GENERAL_SKILLS, ...grimoireSkills(skillName), ...DIVINE_SKILLS, ...GREATER_DIVINE_SKILLS, ...FORBIDDEN_SKILLS];

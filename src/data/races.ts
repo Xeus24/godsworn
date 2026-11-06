@@ -1,4 +1,5 @@
 import { GREATER_RACES } from './racesGreater';
+import { TABLETOP_RACES } from './racesTabletop';
 import type { ModifierSpec } from '../engine/stats/modifiers';
 import { ELEMENTS, type PrimaryStats } from '../engine/stats/types';
 
@@ -273,4 +274,5 @@ export const RACES: RaceDef[] = [
     bonusSkillPointEvery: 5,
   },
   ...GREATER_RACES,
+  ...TABLETOP_RACES,
 ];

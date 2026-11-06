@@ -1,4 +1,5 @@
 import type { RaceDef } from './races';
+import { TABLETOP_RACE_VOICES } from './racesTabletop';
 
 /** The eight races added by the Greater Pantheon update. */
 export const GREATER_RACES: RaceDef[] = [
@@ -179,6 +180,7 @@ export const GREATER_RACES: RaceDef[] = [
 
 /** Two lines every race says in its own voice. Racial questlines and checks use them. */
 export const RACE_VOICES: Record<string, [string, string]> = {
+  ...TABLETOP_RACE_VOICES,
   human: ['“We’re short on time, so we make a lot of it.”', '“Somebody had to climb that mountain first. It was probably a human who didn’t read the sign.”'],
   elf: ['“I remember when that forest was a seedling. It was rude then, too.”', '“Ask me again in a century. I may have an answer.”'],
   dwarf: ['“Measure twice. Drink once. Then measure again.”', '“Anything worth doing is worth doing in iron.”'],

@@ -103,7 +103,7 @@ describe('personal questlines', () => {
     for (const b of content.backgrounds.all()) {
       expect(content.quests.filter((x) => x.id.startsWith(`bg-${b.id}-`)), b.id).toHaveLength(3);
     }
-    expect(content.quests.filter((q) => q.kind === 'racial')).toHaveLength(57);
+    expect(content.quests.filter((q) => q.kind === 'racial')).toHaveLength(81);
     expect(content.quests.filter((q) => q.kind === 'background')).toHaveLength(36);
   });
 });

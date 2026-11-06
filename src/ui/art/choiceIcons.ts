@@ -97,6 +97,7 @@ const SKIN: Record<string, string> = {
   human: '#e8b078', elf: '#f0d8b0', dwarf: '#d89a6a', orc: '#6aa84a', beastkin: '#c8883a', nephilim: '#f4e8d0',
   gnome: '#e8a890', fae: '#b8e8d8', giant: '#a8b8c8', dragon: '#c83a3a', primordial: '#6a4ab0',
   'wood-elf': '#d8c4a0', ashborn: '#b0604a', tidekin: '#7ab0c8', scaleborn: '#7a9a4a', shadekin: '#5a5a78', forged: '#8a929a', revenant: '#b8c0b0', hearthfolk: '#f4c8a0',
+  stonekin: '#a8a8b0', tuskborn: '#7a9a5a', dawnblooded: '#f8e8b0', tinkerfolk: '#e8b890', corvani: '#5a5a70', pardeen: '#d8b070', mossborn: '#7a9a5a', duskfae: '#8a78a8',
 };
 
 function raceArt(id: string): Art {

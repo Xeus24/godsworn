@@ -55,8 +55,8 @@ describe('New Game+ races', () => {
 });
 
 describe('the Greater Pantheon races', () => {
-  it('has 19 races; the eight new ones each carry a passive, an active and two voice lines', () => {
-    expect(content.races.size).toBe(19);
+  it('has 27 races; the eight Greater Pantheon ones each carry a passive, an active and two voice lines', () => {
+    expect(content.races.size).toBe(27);
     for (const id of ['wood-elf', 'ashborn', 'tidekin', 'scaleborn', 'shadekin', 'forged', 'revenant', 'hearthfolk']) {
       const r = content.races.get(id);
       expect(content.skills.has(r.activeSkill)).toBe(true);

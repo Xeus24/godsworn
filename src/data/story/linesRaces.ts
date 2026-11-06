@@ -1,4 +1,5 @@
 import type { LineSpec } from './lines';
+import { TABLETOP_RACE_ROWS } from '../racesTabletop';
 
 /**
  * Racial questlines: three quests per race, from an elder of that people. Each line is
@@ -7,6 +8,7 @@ import type { LineSpec } from './lines';
 type R = [town: string, id: string, name: string, title: string, titles: [string, string, string], offers: [string, string, string], finale: string, own: string, cha: string, plain: string, earned: string];
 
 const ROWS: Record<string, R> = {
+  ...TABLETOP_RACE_ROWS,
   human: ['brightwater', 'elder-hale', 'Granny Hale', 'Keeper of the Long Ledger', ['Short Candles', 'The Ambition Tax', 'A Name in the Ledger'], ['“Our people keep a ledger of every human who tried something foolish and wrote it down. Visit the shrines and read the first page for me.”', '“Ambition draws trouble the way honey draws wasps. Thin out the wasps.”', '“Your name goes in the ledger when you finish something that matters. Show me yours is worth the ink.”'], '“Every human thinks they’re the first to try. We were always the first to write it down. What will you write?”', '“We’re short on time, so we make a lot of it.”', '“I can’t promise you’ll live long. I can promise you’ll be remembered, if you let me.”', '“I’ll write something worth reading.”', 'Of the Long Ledger'],
   elf: ['thornwick', 'elder-sylwen', 'Sylwen', 'Last Singer of the Old Grove', ['The Slow Answer', 'Wolves of the Grove', 'The Starlit Oath'], ['“The old grove has asked a question for three hundred years. Visit its shrines and hear whether it has changed its mind.”', '“Something has taken the grove’s edge. Drive it back.”', '“An oath was sworn under starlight before your grandparents were born. Come and hear who it bound.”'], '“I have waited three hundred years for someone who would walk slowly enough to hear the answer. Walk with me now.”', '“Ask me again in a century. I may have an answer.”', '“Time is the only gift I have to give. Take an hour, and I will give you a decade.”', '“I’ll listen.”', 'Starlit Walker'],
   dwarf: ['frosthold', 'elder-grundi', 'Grundi Anvilbrow', 'Warden of the Cold Forge', ['Mountain Debts', 'The Collapsed Gallery', 'Stone Remembers'], ['“A dwarf pays what she owes. The old halls owe the mountain a debt. Visit its shrines and settle it.”', '“Frost-wolves have taken the lower gallery. Take it back.”', '“Our oldest forge has gone cold. Walk to the ice palace and bring back what remains.”'], '“Stone remembers. Gold forgets. Iron does what it is told. Tell me which you are.”', '“Anything worth doing is worth doing in iron.”', '“I do not trust smooth talkers. I trust the ones who bring the ale. You brought the ale.”', '“I’ll hold the line.”', 'Heir of the Cold Forge'],

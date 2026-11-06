@@ -178,3 +178,5 @@ Five classes are built from `data/trees/tabletop.ts`, which turns a table row in
 I-2 classes reuse the same factory. Costs: Ichorbound pays HP, Mindwright gains Strain with overflow backlash, Marshal spends Command on `timeShift` (extra turns).
 
 I-3 stretch classes reuse the factory: Facewright's masks are generated stances; Whisperknight and Hedgewitch place sigils; Soulblade and Hedgewitch summon; Whisperknight and Bellwarden carry `choirbreaker`.
+
+I-4 races live in `data/racesTabletop.ts`; adding a race there needs no engine change (a passive, a racial skill, voices and a quest row).

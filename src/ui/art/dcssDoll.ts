@@ -52,7 +52,15 @@ export const DOLL = {
     'shadekin': ['base__shadow', 'base__shadow'],
     'forged': ['base__ogre_male', 'base__ogre_female'],
     'revenant': ['base__shadow', 'base__shadow'],
-    'hearthfolk': ['base__halfling_male', 'base__halfling_female']
+    'hearthfolk': ['base__halfling_male', 'base__halfling_female'],
+    'stonekin': ['base__ogre_male', 'base__ogre_female'],
+    'tuskborn': ['base__orc_male', 'base__orc_female'],
+    'dawnblooded': ['base__demigod_male', 'base__demigod_male'],
+    'tinkerfolk': ['base__gnome_male', 'base__gnome_female'],
+    'corvani': ['base__shadow', 'base__shadow'],
+    'pardeen': ['base__kobold_male_new', 'base__kobold_female_new'],
+    'mossborn': ['base__elf_male', 'base__elf_female'],
+    'duskfae': ['base__elf_male', 'base__elf_female']
   },
   'hair': [
     'hair__short_black',
