@@ -6,6 +6,7 @@ import { blessingFlags, blessingTriggers } from '../gods/blessings';
 import { applyDivineCombat } from '../gods/combat';
 import { equipmentFlags, equipmentTriggers, equippedGearLook, equippedWeaponTypes } from '../items/equipment';
 import { generalCombatSkills, generalFlags } from '../skills/general';
+import { ensureForged } from '../skills/forge';
 import { classUltimate } from '../skills/specs';
 import { hotbar, knownSkills, treeFlags, treeTriggers } from '../skills/tree';
 import { baseOf, isBroken, uniqueOf } from '../items/lookup';
@@ -214,6 +215,12 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
     x.skills.push({ id: g.skillId, rank: g.rank, general: g.generalId, ...(g.patch ? { patch: g.patch } : {}) });
   }
   x.hotbar = hotbar(char).filter((h): h is string => h !== null);
+  // Spells forged at the Spellforge (item 218), usable beside the hotbar.
+  for (const id of char.forged ?? []) {
+    if (x.skills.some((s) => s.id === id) || !ensureForged(id)) continue;
+    x.skills.push({ id, rank: Math.min(10, 1 + Math.floor(char.level / 10)) });
+    x.hotbar.push(id);
+  }
   // Learned Arts: skills borrowed from another class (Innovation Pack, item 14), usable beside the hotbar.
   for (const id of (char.world as { heart?: { borrowed?: string[] } }).heart?.borrowed ?? []) {
     if (x.skills.some((s) => s.id === id) || !c.skills.find(id)) continue;

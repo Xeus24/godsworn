@@ -10,6 +10,7 @@ import { CURIOSITIES, MATERIALS } from './materials';
 import { GREATER_CURIOSITIES } from './greaterCuriosities';
 import { TRINKETS } from '../trinkets';
 import { SUN_PEARL } from '../tabletop';
+import { INK } from '../spellforge';
 import { MYTHICS } from './mythics';
 import { PRIMORDIALS } from './primordials';
 import { RELICS } from './relics';
@@ -42,6 +43,7 @@ export const ITEM_BASES: ItemBaseDef[] = [
   ...GREATER_CURIOSITIES,
   ...TRINKETS,
   { ...SUN_PEARL },
+  { ...INK },
 ];
 
 /** Every hand-designed item. Divine (Phase 8) and Primordial (Phase 15) items join this list later. */

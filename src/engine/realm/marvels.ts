@@ -368,7 +368,17 @@ export interface AfflictionsState {
 }
 export const createAfflictions = (): AfflictionsState => ({ active: {}, nodes: {}, cured: [], weary: { level: 0, steps: 0, lastRest: 0 }, whisper: { meter: 0 } });
 
+/** Kits, Hirelings and the Spellforge (Section I-7c). */
+export interface WorkshopState {
+  kits: { owned: string[]; prof: string[]; used: Record<string, number> };
+  hire?: { type: string; level: number; xp: number; morale: number; paidDay: number };
+  /** Retainers who left, for the log. */
+  gone: string[];
+}
+export const createWorkshop = (): WorkshopState => ({ kits: { owned: [], prof: [], used: {} }, gone: [] });
+
 export interface MarvelsState {
+  workshop?: WorkshopState;
   afflictions?: AfflictionsState;
   tabletop?: TabletopState;
   twilight?: TwilightState;

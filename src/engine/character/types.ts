@@ -48,6 +48,8 @@ export interface Character {
   tabletop?: boolean;
   /** Weariness 0-6 (Section I-7a): level 6 starts the next battle knocked down. Kept in sync by `s.afflictions`. */
   weary?: number;
+  /** Spells forged at the Spellforge (item 218): ids that rebuild their own definition (`engine/skills/forge.ts`). */
+  forged?: string[];
   /** Boons taken under the Tabletop Rules (data/tabletop.ts), and how many times +2 stat points were taken instead. */
   boons?: string[];
   boonStatPicks?: number;

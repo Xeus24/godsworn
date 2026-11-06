@@ -52,6 +52,7 @@ export const SKILL_TAGS = [
   'Mark',
   'Murmur',
   'Technique',
+  'Forged',
 ] as const;
 
 export type SkillTag = (typeof SKILL_TAGS)[number];

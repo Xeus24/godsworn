@@ -22,6 +22,11 @@ export class ContentTable<T extends { id: string }> {
     return entry;
   }
 
+  /** Adds (or replaces) an entry after construction: only for forged spells, which are built from their own id. */
+  register(entry: T): void {
+    this.byId.set(entry.id, entry);
+  }
+
   find(id: string): T | undefined {
     return this.byId.get(id);
   }

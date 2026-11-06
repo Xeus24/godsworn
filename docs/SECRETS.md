@@ -1,2 +1,2 @@
 
-- Section I-7b: the fourth specializations (Duelist, Spellsculptor, Gambit, Gravekeeper, Satirist, Bonewright, Trapper, Tideheart) are open from class level 20 like the others.
+- Section I-7c1: a hero who forges a Circle 5+ spell with the Tabletop Rules on burns one spell-ink every cast. A Guide hireling halves the road's Weariness.

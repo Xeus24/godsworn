@@ -176,7 +176,7 @@ export class AfflictionActions {
 
   private onZone(zoneId: string): void {
     const t = this.t.weary;
-    t.steps++;
+    t.steps += this.s.workshop.marchStep;
     if (t.steps >= MARCH_STEPS) {
       t.steps = 0;
       this.addWeary(1, 'A forced march wears you down.');
