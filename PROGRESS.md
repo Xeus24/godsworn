@@ -1185,7 +1185,14 @@ Six systems that make the world change while you are away, built as sub-phases A
 - `data/racesTabletop.ts` holds Stonekin, Tuskborn, Dawnblooded, Tinkerfolk, Corvani, Pardeen, Mossborn and Duskfae: races, their eight racial actives, two voice lines each and the eight three-quest racial lines (spread into `races.ts`, `index.ts`, `racesGreater.ts` voices and `linesRaces.ts`). Races are now 27. Portrait palettes, icon colours and sprite mappings added (the Corvani and Pardeen reuse the shadow and kobold sprites: there are no raven or cat bodies).
 - Tests: `tests/sectionI4.test.ts`; racial quests 57 to 81, races 19 to 27.
 
+### Section I, batch I-5: backgrounds, personality and trinkets (items 187-189)
+- **187 Backgrounds:** Criminal, Folk Hero, Hermit, Outlander, Charlatan and Guild Envoy (18 in all) in `backgrounds.ts`, with journal voices (`fellowship.ts`) and three-quest lines (`linesBackgrounds.ts`).
+- **188 Ideals, Bonds and Flaws:** `data/personality.ts` (12 each, a small passive each, a journal note); stored as `character.personality`, applied in `characterModifiers`, chosen in a folded "Personality and trinket" panel on the creation screen, shown in the preview and mixed into Godsworn Journal entries (`journalEntry`). The God's Nod that acting on them earns is item 193 (batch I-7).
+- **189 Trinkets:** `data/trinkets.ts` generates 100 keepsakes as curiosities (`trinket-NNN`, excluded from the loot pool, usable for the museum and gods), rolled at creation and handed over by `newGame`; fifteen start secret auto-quests (new quest kind `trinket`, "Keepsakes" in the log).
+- Tests: `tests/sectionI5.test.ts`; backgrounds 18, background quests 54, journal voices 18.
+
 ## Cut / deferred
+- **Section I-5:** the Ideals, Bonds and Flaws give small passives and journal colour only; acting on them does not yet earn the God's Nod (item 193, batch I-7); the new backgrounds have a skill and an item as their feature, no extra dialogue-check lines beyond their two voices; a trinket's curiosity link is the museum and the gods' offerings (no unique per-trinket effect).
 - **Section I-4:** Dawnblooded's wing burst is a skill, not a map effect; Mossborn plant-speech and Duskfae true names are skills, not dialogue or exploration abilities; no town welcome or hostility entries and no race-gated dialogue checks beyond the two voice lines; no new sprites for the raven and cat folk.
 - **Section I-3:** the Soulblade's weapon does not level, argue or refuse orders (needs the Talking Relics system); the Facewright has no Masque Catacombs or Masquerade hooks; the Bellwarden is not linked to the Bellhouse or the Bellringing minigame; the Brawler has no tavern-brawl Renown; the Hearthmaster does not use the Cooking and Hearth Meals systems; the Truthseeker gets no extra clues in investigation quests; the Hedgewitch's cauldron is a skill, not a map object.
 - **Section I-2:** the Fatedealer's cards use their own battle numbers but the 20-card deck is not yet built from the Pantheon Cards collection (R24); the Corsair has no naval-battle bonus; Marshal Formations (item 83) are not hooked in; Ichorbound Hexes are active skills, not reactions, and Hollowblade's anti-undead bonus is text only; Moonblood's beast form is a skill, not a form change.
@@ -1225,7 +1232,7 @@ Six systems that make the world change while you are away, built as sub-phases A
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
-**Section I is under way: I-1 to I-4 (168-186) are done. Next: I-5 (backgrounds, personality, trinkets: 187-189), then I-6 to I-8** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
+**Section I is under way: I-1 to I-5 (168-189) are done. Next: I-6 (Tabletop Rules toggle, 190-192 and the R26 rules), then I-7 and I-8** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
 
 **The pattern that has worked** (every batch since Section D):
 1. Data in `src/data/<name>.ts` (compact tables, generate repetitive entries from short tables).

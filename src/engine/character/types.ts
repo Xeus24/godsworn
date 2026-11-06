@@ -42,6 +42,10 @@ export interface Character {
   raceId: string;
   /** Who the hero was before the oath (data/backgrounds.ts); absent on older saves. */
   backgroundId?: string;
+  /** Ideal, Bond and Flaw chosen at creation (data/personality.ts); absent on older saves. */
+  personality?: { ideal?: string; bond?: string; flaw?: string };
+  /** The keepsake rolled at creation (data/trinkets.ts); handed over as an item when a new game starts. */
+  trinketId?: string;
   birthSignId: string;
   hardcore: boolean;
   /** Challenge modes chosen at creation (see data/challenges.ts). */

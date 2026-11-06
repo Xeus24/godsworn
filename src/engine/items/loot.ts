@@ -38,7 +38,7 @@ export function poolCandidates(pool: Extract<LootEntry, { kind: 'pool' }>['pool'
       // Material tiers roughly track 12 levels each.
       return c.items.filter((b) => b.category === 'material' && b.tier <= Math.ceil(itemLevel / 12) && b.kind !== 'essence');
     case 'curiosity':
-      return c.items.filter((b) => b.category === 'curiosity' && atLevel(b));
+      return c.items.filter((b) => b.category === 'curiosity' && !b.id.startsWith('trinket-') && atLevel(b));
     case 'book':
       return c.items.filter((b) => b.category === 'book' && atLevel(b) && (BOOK_DROP_WEIGHT[b.rarity] ?? 0) > 0);
   }

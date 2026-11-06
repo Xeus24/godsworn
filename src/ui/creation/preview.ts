@@ -5,6 +5,7 @@ import type { Character } from '../../engine/character/types';
 import { PRIMARY_STATS, type StatId } from '../../engine/stats/types';
 import { formatStat, skillCard } from '../format';
 import { el } from '../screen';
+import { ALL_TRAITS } from '../../data/personality';
 
 const PREVIEW_DERIVED: StatId[] = [
   'maxHp',
@@ -62,6 +63,7 @@ export function renderPreview(char: Character, hardcore: boolean): HTMLElement {
     el('p', {}, race.flavor.lore),
     el('p', { class: 'dim' }, race.flavor.saying),
     ...(char.backgroundId ? [el('h3', {}, `Background: ${content.backgrounds.get(char.backgroundId).name}`), el('p', {}, content.backgrounds.get(char.backgroundId).description), el('p', { class: 'dim small' }, `Starts with ${content.backgrounds.get(char.backgroundId).item.qty}× ${content.items.get(content.backgrounds.get(char.backgroundId).item.itemId).name}.`)] : []),
+    ...(char.personality ? [el('h3', {}, 'Personality'), ...Object.entries(char.personality).map(([kind, id]) => { const t = ALL_TRAITS.find((x) => x.id === id); return el('p', { class: 'small' }, `${kind[0]?.toUpperCase()}${kind.slice(1)}: ${t?.name ?? id}. ${t?.text ?? ''}`); })] : []),
     el('h3', {}, sign.name),
     el('p', {}, el('span', { style: `color:${god.color}` }, `${god.name}, ${god.domain}. `), sign.description),
   );

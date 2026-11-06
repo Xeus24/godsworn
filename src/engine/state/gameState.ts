@@ -321,6 +321,7 @@ export class GameSession {
       addItem(session.state.inventory, createItem(bg.item.itemId, bg.item.qty, () => session.newUid()));
       learnGeneral(player, bg.skill);
     }
+    if (player.trinketId && content.items.find(player.trinketId)) addItem(session.state.inventory, createItem(player.trinketId, 1, () => session.newUid()));
     session.checkSpirits();
     // Begin at full HP and MP with the starting gear on.
     restoreFull(session.player);

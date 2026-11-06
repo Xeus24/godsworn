@@ -42,8 +42,8 @@ describe('Charisma', () => {
 });
 
 describe('backgrounds', () => {
-  it('has twelve, each with a real item, a free skill and two voice lines', () => {
-    expect(content.backgrounds.size).toBe(12);
+  it('has eighteen, each with a real item, a free skill and two voice lines', () => {
+    expect(content.backgrounds.size).toBe(18);
     for (const b of content.backgrounds.all()) {
       expect(content.items.has(b.item.itemId), b.id).toBe(true);
       expect(content.generalSkills.has(b.skill), b.id).toBe(true);
@@ -104,7 +104,7 @@ describe('personal questlines', () => {
       expect(content.quests.filter((x) => x.id.startsWith(`bg-${b.id}-`)), b.id).toHaveLength(3);
     }
     expect(content.quests.filter((q) => q.kind === 'racial')).toHaveLength(81);
-    expect(content.quests.filter((q) => q.kind === 'background')).toHaveLength(36);
+    expect(content.quests.filter((q) => q.kind === 'background')).toHaveLength(54);
   });
 });
 

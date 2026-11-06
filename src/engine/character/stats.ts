@@ -21,6 +21,7 @@ import type { ConditionContext } from '../stats/conditions';
 import { withSource, type Modifier } from '../stats/modifiers';
 import { emptyPrimaryStats, PRIMARY_STATS, type PrimaryStats, type StatBlock } from '../stats/types';
 import type { Character } from './types';
+import { ALL_TRAITS } from '../../data/personality';
 
 /**
  * Base primaries before modifiers:
@@ -57,6 +58,10 @@ export function characterModifiers(char: Character, c: Content = content): Modif
     ...withSource(race.passive.modifiers, `race:${race.id}`),
     ...withSource(sign.modifiers, `sign:${sign.id}`),
   ];
+  for (const [kind, id] of Object.entries(char.personality ?? {})) {
+    const trait = ALL_TRAITS.find((t) => t.id === id);
+    if (trait) mods.push(...withSource(trait.modifiers, `personality:${kind}`));
+  }
   for (const [nodeId, ranks] of Object.entries(char.paragon)) {
     const node = c.paragon.find(nodeId);
     if (!node || ranks <= 0 || !difficultyMeets(char, node.minDifficulty)) continue;

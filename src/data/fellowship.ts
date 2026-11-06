@@ -126,6 +126,12 @@ export const JOURNAL_VOICE: Record<string, { lead: string[]; tail: string[] }> =
   gravedigger: { lead: ['I have buried worse.', 'A quiet sort of day, all told.', 'Somebody will have to tidy.'], tail: ['The dead keep better company than most.', 'Everyone ends in the same dirt.', 'I said a word for them, out of habit.'] },
   merchant: { lead: ['A fair price, in the end.', 'Not a bad bargain.', 'I counted the cost twice.'], tail: ['Everything has a margin.', 'No one gives anything for free.', 'Ledgers, not luck.'] },
   exile: { lead: ['Another place that does not know me.', 'Far from home, as ever.', 'Nobody asked where I was from.'], tail: ['I travel light for a reason.', 'Home is a story I stopped telling.', 'Wherever I am, I am not stayed.'] },
+  criminal: { lead: ['Quietly, and without witnesses.', 'I checked the doors first.', 'No one will remember my face.'], tail: ['I know three ways out of here.', 'Never be the last one in the room.', 'Old habits keep a person unarrested.'] },
+  'folk-hero': { lead: ['It was nothing, truly.', 'They will make a song of it. Pity.', 'Someone had to, and I was standing there.'], tail: ['I hope they remember the others.', 'The village is still waiting for me.', 'A hero is just a neighbor who did not leave.'] },
+  hermit: { lead: ['In the stillness, I wrote it down.', 'A quiet day, noisy only in the middle.', 'I sat with it a while.'], tail: ['I miss the kettle.', 'Silence is a kind of company.', 'Somewhere a candle is still burning for this.'] },
+  outlander: { lead: ['Nothing in this country is quite level.', 'I read the ground first, as ever.', 'Your people have a lot of walls.'], tail: ['I miss the horizon.', 'The wind knows where I am from.', 'A stranger everywhere. That suits me.'] },
+  charlatan: { lead: ['A touch of showmanship was needed.', 'I may have embellished. Slightly.', 'A good story, in the end.'], tail: ['The mark never suspected.', 'Next time I will use a better name.', 'Confidence is a kind of medicine.'] },
+  'guild-envoy': { lead: ['A fair exchange, all told.', 'I recorded the terms.', 'It was in the contract, near the back.'], tail: ['The Guild will want a report.', 'Everything has a clause.', 'I settled it. Mostly.'] },
   'circus-performer': { lead: ['It was quite the show.', 'I took a bow, from habit.', 'There was an audience, I am certain.'], tail: ['The crowd is always somewhere.', 'Timing is everything.', 'Smile, and keep moving.'] },
 };
 /** An aside that follows the heart: the conviction the hero holds most dear, if any. */

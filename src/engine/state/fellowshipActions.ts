@@ -266,7 +266,7 @@ export class FellowshipActions {
     const day = this.s.state.clock.day;
     if (f.journalLast[event] === day) return;
     f.journalLast[event] = day;
-    f.journal.unshift({ day, event, text: journalEntry(event, this.s.player.backgroundId ?? 'soldier', day, detail) });
+    f.journal.unshift({ day, event, text: journalEntry(event, this.s.player.backgroundId ?? 'soldier', day, detail, this.s.player.personality) });
     if (f.journal.length > 200) f.journal.length = 200;
   }
 

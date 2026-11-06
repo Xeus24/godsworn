@@ -228,7 +228,7 @@ export interface StageDef {
   onComplete?: ActionDef[];
 }
 
-export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background' | 'festival';
+export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background' | 'festival' | 'trinket';
 
 export interface RewardDef {
   /** Share of the quest level's XP-to-next-level (0.3 = 30% of a level). */

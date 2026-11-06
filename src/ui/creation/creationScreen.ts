@@ -8,6 +8,8 @@ import { choiceIcon, type ChoiceKind } from '../art/choiceIcons';
 import { drawPortrait, PORTRAIT_VARIANTS } from '../art/portraits';
 import { el, type Screen } from '../screen';
 import { renderPreview } from './preview';
+import { TRAIT_KINDS, type TraitKind } from '../../data/personality';
+import { rollTrinket } from '../../data/trinkets';
 
 export interface CreationChoice {
   name: string;
@@ -16,6 +18,10 @@ export interface CreationChoice {
   classId: string;
   birthSignId: string;
   background: string;
+  ideal: string;
+  bond: string;
+  flaw: string;
+  trinket: string;
   hardcore: boolean;
   challenges: string[];
   difficulty: DifficultyId;
@@ -35,6 +41,10 @@ export class CreationScreen implements Screen {
     classId: 'warrior',
     birthSignId: 'the-forge',
     background: 'soldier',
+    ideal: '',
+    bond: '',
+    flaw: '',
+    trinket: rollTrinket(),
     hardcore: false,
     challenges: [],
     difficulty: DEFAULT_DIFFICULTY,
@@ -99,6 +109,7 @@ export class CreationScreen implements Screen {
           return el('label', { class: 'checkbox', for: `challenge-${ch.id}`, title: ch.description }, box, el('span', {}, `${ch.name}: ${ch.description}`));
         }),
       )]),
+      this.personalityPanel(),
       el('div', { class: 'creation-actions' }, this.beginButton, randomize, back),
     );
 
@@ -108,6 +119,30 @@ export class CreationScreen implements Screen {
   }
 
   unmount(): void {}
+
+  /** Ideal, Bond, Flaw and the keepsake: one folded panel so the screen stays short. */
+  private personalityPanel(): HTMLElement {
+    const select = (kind: TraitKind, label: string): HTMLElement => {
+      const box = el('select', { 'aria-label': label }) as HTMLSelectElement;
+      box.append(el('option', { value: '' }, `${label}: none`));
+      for (const t of TRAIT_KINDS[kind]) box.append(el('option', { value: t.id, title: t.text }, `${t.name}: ${t.text}`));
+      box.addEventListener('change', () => {
+        this.choice[kind] = box.value;
+        this.refresh();
+      });
+      this.traitBoxes[kind] = box;
+      return box;
+    };
+    const reroll = el('button', {}, 'Roll another trinket');
+    reroll.addEventListener('click', () => {
+      this.choice.trinket = rollTrinket();
+      this.refresh();
+    });
+    return el('details', { class: 'small' }, el('summary', {}, 'Personality and trinket'), select('ideal', 'Ideal'), select('bond', 'Bond'), select('flaw', 'Flaw'), this.trinketLine, reroll);
+  }
+
+  private traitBoxes: Partial<Record<TraitKind, HTMLSelectElement>> = {};
+  private trinketLine = el('p', { class: 'dim small' });
 
   private cyclePortrait(delta: number): void {
     this.choice.portrait = (this.choice.portrait + delta + PORTRAIT_VARIANTS) % PORTRAIT_VARIANTS;
@@ -122,12 +157,17 @@ export class CreationScreen implements Screen {
       classId: pickRandom(content.classes.all().filter((k) => !k.hidden && (k.ngPlus ?? 0) <= highestNgPlus()).map((k) => k.id)),
       birthSignId: pickRandom(content.birthSigns.all().filter((b) => !b.hidden || cipherSeen()).map((b) => b.id)),
       background: pickRandom(content.backgrounds.ids()),
+      ideal: pickRandom(TRAIT_KINDS.ideal).id,
+      bond: pickRandom(TRAIT_KINDS.bond).id,
+      flaw: pickRandom(TRAIT_KINDS.flaw).id,
+      trinket: rollTrinket(),
       hardcore: this.choice.hardcore,
       challenges: this.choice.challenges,
       difficulty: this.choice.difficulty,
     };
     hardcore.checked = this.choice.hardcore;
     this.nameInput.value = this.choice.name;
+    for (const kind of ['ideal', 'bond', 'flaw'] as const) if (this.traitBoxes[kind]) (this.traitBoxes[kind] as HTMLSelectElement).value = this.choice[kind];
     this.refresh();
   }
 
@@ -144,6 +184,8 @@ export class CreationScreen implements Screen {
     const error = validateName(this.choice.name);
     this.nameError.textContent = error && (showErrors || this.choice.name.length > 0) ? error : '';
     this.beginButton.disabled = error !== undefined;
+    const trinket = content.items.find(this.choice.trinket);
+    this.trinketLine.textContent = trinket ? `Your keepsake: ${trinket.name}. ${trinket.description ?? ''}` : '';
 
     this.choices.replaceChildren(
       this.group(

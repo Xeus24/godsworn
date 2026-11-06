@@ -84,7 +84,7 @@ describe('Companion Oaths (item 75)', () => {
 
 describe('The Godsworn Journal and class moments (items 86, 82)', () => {
   it('writes in the hero’s voice, with well over 120 possible entries; every class has two moments', () => {
-    expect(Object.keys(JOURNAL_VOICE)).toHaveLength(12);
+    expect(Object.keys(JOURNAL_VOICE)).toHaveLength(18);
     for (const bg of content.backgrounds.all()) expect(JOURNAL_VOICE[bg.id], bg.id).toBeTruthy();
     expect(journalVariants()).toBeGreaterThan(120);
     expect(journalEntry('boss', 'sailor', 4)).toBe(journalEntry('boss', 'sailor', 4));

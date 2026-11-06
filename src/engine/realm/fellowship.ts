@@ -1,3 +1,4 @@
+import { ALL_TRAITS } from '../../data/personality';
 import { JOURNAL_BASE, JOURNAL_HEART, JOURNAL_VOICE, type JournalEvent } from '../../data/fellowship';
 
 const hash = (s: string): number => {
@@ -7,7 +8,7 @@ const hash = (s: string): number => {
 };
 
 /** One journal entry in the hero’s own voice: how the event is told, coloured by the hero’s past and what they hold dear. A pure function of its inputs. */
-export function journalEntry(event: JournalEvent, background: string, day: number, detail = ''): string {
+export function journalEntry(event: JournalEvent, background: string, day: number, detail = '', personality?: { ideal?: string; bond?: string; flaw?: string }): string {
   const voice = JOURNAL_VOICE[background] ?? JOURNAL_VOICE['soldier']!;
   const h = hash(`${event}:${background}:${day}`);
   const base = JOURNAL_BASE[event];
@@ -15,7 +16,9 @@ export function journalEntry(event: JournalEvent, background: string, day: numbe
   const tail = voice.tail[(h >>> 4) % voice.tail.length] as string;
   const core = base[(h >>> 8) % base.length] as string;
   const heart = (h >>> 12) % 4 === 0 ? ` ${JOURNAL_HEART[(h >>> 16) % JOURNAL_HEART.length]}` : '';
-  return `${lead} ${core}${detail ? ` (${detail})` : ''} ${tail}${heart}`;
+  const picks = [personality?.ideal, personality?.bond, personality?.flaw].filter((x): x is string => !!x);
+  const trait = picks.length && (h >>> 20) % 3 === 0 ? ALL_TRAITS.find((t) => t.id === picks[(h >>> 24) % picks.length]) : undefined;
+  return `${lead} ${core}${detail ? ` (${detail})` : ''} ${tail}${heart}${trait ? ` ${trait.note}` : ''}`;
 }
 
 /** How many distinct entries the writer can produce for an event and a past. */

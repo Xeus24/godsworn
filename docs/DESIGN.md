@@ -180,3 +180,5 @@ I-2 classes reuse the same factory. Costs: Ichorbound pays HP, Mindwright gains 
 I-3 stretch classes reuse the factory: Facewright's masks are generated stances; Whisperknight and Hedgewitch place sigils; Soulblade and Hedgewitch summon; Whisperknight and Bellwarden carry `choirbreaker`.
 
 I-4 races live in `data/racesTabletop.ts`; adding a race there needs no engine change (a passive, a racial skill, voices and a quest row).
+
+I-5: personality traits are plain data (`data/personality.ts`) read by `characterModifiers` and `journalEntry`; trinkets are curiosity items with a `trinket-` prefix, so the museum and offerings work unchanged.
