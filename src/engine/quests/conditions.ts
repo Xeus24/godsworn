@@ -133,6 +133,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
         return all.length > 0 && all.every((e) => p.evolved[e.from]);
       });
     }
+    case 'promoted':
+      return p.classes.filter((x) => (x.promotion ?? 1) >= cond.tier).length >= cond.min;
     case 'dungeons':
       return state.world.dungeonsCleared.length >= cond.min;
     case 'waypoints':

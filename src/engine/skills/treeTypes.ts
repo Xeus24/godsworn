@@ -73,6 +73,8 @@ export interface BranchDef {
   color: string;
   /** Specialization branches only open once that specialization is chosen. */
   spec?: string;
+  /** A class promotion's branch: opens once the class has reached this tier (Section K). */
+  promotion?: 2 | 3;
   /** Points per tier for this branch (default TIER_GATE). */
   tierGate?: number;
 }

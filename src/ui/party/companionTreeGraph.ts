@@ -40,7 +40,7 @@ export function graphNodes(char: Character, classId: string): { branches: { id: 
   const spec = chosenSpec(char, classId)?.id;
   const build = activeBuild(char, classId);
   const shown = (n: TreeNodeDef): boolean => n.kind !== 'keystone' && (!n.feat || featMet(char, n.feat, classId) || rankOf(build, n.id) > 0);
-  const branches = tree.branches.filter((b) => !b.spec || b.spec === spec);
+  const branches = tree.branches.filter((b) => (!b.spec || b.spec === spec) && !b.promotion);
   const ids = new Set(branches.map((b) => b.id));
   const nodes = tree.nodes.filter((n) => ids.has(n.branch) && shown(n));
   return { branches: branches.filter((b) => nodes.some((n) => n.branch === b.id)), nodes };

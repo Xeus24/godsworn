@@ -184,7 +184,7 @@ export class TreeScreen implements Screen {
     // Secret nodes stay out of sight until their feat is met (or the hero already bought them).
     const revealed = (n: TreeNodeDef): boolean => !n.feat || featMet(p, n.feat, this.classId) || (activeBuild(p, this.classId).ranks[n.id] ?? 0) > 0;
     const nodes = tree.nodes.filter(revealed);
-    const branches = tree.branches.filter((b) => (!b.spec || b.spec === shown) && (!b.id.endsWith('.secrets') || nodes.some((n) => n.branch === b.id)));
+    const branches = tree.branches.filter((b) => (!b.spec || b.spec === shown) && (!b.promotion || (p.classes.find((c) => c.classId === this.classId)?.promotion ?? 1) >= b.promotion) && (!b.id.endsWith('.secrets') || nodes.some((n) => n.branch === b.id)));
     const ids = new Set(branches.map((b) => b.id));
     return { ...tree, branches, nodes: nodes.filter((n) => ids.has(n.branch)) };
   }

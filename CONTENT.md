@@ -1012,7 +1012,7 @@ Generated from the data files by `npm run content:md`.
 
 **Stances (31):** Tiger (+10% damage. Basic attacks hit for 130% and may cause Bleed.) · Crane (+25% defense, +5% dodge. Basic attacks heal you for 5% of max HP.) · Serpent (+10% dodge and status chance. Basic attacks may Poison.) · Natural (Your own shape: no bonus, but all caster skills are open.) · Bear (+30% defense, 15% less damage taken. Heavy basic attacks.) · Wolf (+10% damage, +6 speed, +8% dodge. Basic attacks may cause Bleed.) · Owl (+15% magic attack, 8% cooldown reduction. Basic attacks are arcane bolts.) · Treant (+20% defense and regeneration. Basic attacks heal you for 4% of max HP.) · Pact of Cinders (+20% fire damage. Basic attacks may Burn.) · Pact of the Hollow Star (+20% void damage. Basic attacks may Weaken.) · Pact of Thorns (+10% crit chance, +20% nature damage. Basic attacks may Slow.) · Mech Suit (+30% defense, +25% physical attack. Basic attacks hit for 140%.) · Aspect of Ember (+25% fire damage. Basic attacks may Burn.) · Aspect of Rime (+25% ice damage, +20% defense. Basic attacks may Slow.) · Aspect of Tempest (+25% lightning damage, +8 speed. Basic attacks may Stun.) · Aspect of the Grave (+25% shadow damage, 8% lifesteal. Basic attacks may Curse.) · Tenet of Mercy (+15% healing received and +10% magic resist. Basic attacks mend you for 4% HP.) · Tenet of Vengeance (+15% damage. Basic attacks hit for 125% and Mark the foe.) · Tenet of Dawn (+20% holy damage and +10% defense. Basic attacks hit for 110% and Blind.) · Mask of the Fool (+15 dodge and +3 LUK; basic attacks may Confuse. “Oh, I never meant to hit you.”) · Mask of the Sage (+15% magic attack and 8% cooldown reduction. “Let me explain, as I strike.”) · Mask of the Hero (+12% physical attack and +10% defense. “Stand behind me. I mean it.”) · Mask of the Knave (+12% crit and +10% gold found; basic attacks lift 3 gold. “Whose purse is this? Mine, now.”) · Mask of the Widow (+15% shadow damage and +10% status chance. “I have buried better.”) · Mask of the Hound (+15% speed and +10 accuracy; basic attacks may Bleed. “Smell that? Fear.”) · Mask of the Lord (+12% damage and +10% status resist. “Kneel. Do not be tiresome.”) · Mask of the Ghost (+20 dodge and 8% less damage taken. “Did you feel that? No?”) · Mask of the Saint (+15% healing power and +12% holy damage; basic attacks heal 3%. “Be at peace. Hold still.”) · Mask of the Sinner (+15% damage, 8% less defense; basic attacks may Burn. “Do not look at the hands.”) · Mask of the Muse (+15% resource gain and +8 speed; basic attacks give 6 Persona. “Someone is watching. Let us be marvelous.”) · Mask of the Tyrant (+18% damage and +10% max HP; basic attacks may Slow. “Sit down. Everyone.”)
 
-### Enemies (581)
+### Enemies (677)
 
 | Enemy | Lvl | Tier | Types | Row | AI | Skills | Weak / resists |
 |---|---|---|---|---|---|---|---|
@@ -1597,6 +1597,102 @@ Generated from the data files by `npm run content:md`.
 | **Ysolde Candlewick** | 32 | elite | humanoid | back | caster | Crude Mending, Arc Lightning |  |
 | **Sir Corvane Hale** | 36 | elite | humanoid | front | defensive | Shield Bash, Harden |  |
 | **Mirelle Starcross** | 40 | elite | humanoid | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Warlord** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Archmage** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Shadowmaster** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Bishop** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Warden-Captain** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Lich-Adept** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Grand Adept** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Maestro** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Knight-Captain** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Archdruid** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Pactmaster** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Spirit Lord** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Master Alchemist** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Elder Shaman** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Timelord** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Master Artificer** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Prima** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Scrivener-Mage** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Inquisitor** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Earthshaper** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Oathlord** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Berserker Chief** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Grandmaster** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Pathmaster** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Demigod-Born** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Ichor Lord** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the High Roller** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Mindlord** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the General** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Captain** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Pit Champion** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Hushlord** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Master Cook** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Chief Inspector** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Hedge Crone** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Blademaster** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Mask-Master** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Bell-Captain** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Bloodlord** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Phantom Thief** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Dreamlord** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Wyrm-Touched** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Stringmaster** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Hollow Lord** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Forsworn Lord** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Giant-Killer** | 30 | elite | humanoid, trial | front | aggressive | Cleave, War Cry |  |
+| **Shade of the Rift-Lord** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Archangel** | 30 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark |  |
+| **Shade of the Champion of Vael** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Arcane Sovereign** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Nightsovereign** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Living Saint** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Huntsman Eternal** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Deathlord** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Ascended Fist** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Voice of Legends** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the High Paladin of the Wheel** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Wildlord** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Archfiend-Bound** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Sovereign of Pacts** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Philosopher Supreme** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Ancestor-Voice** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Eternal** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Grand Machinist** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Dance of Ages** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Living Legend** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Hammer of the Gods** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Worldheart** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Sworn Eternal** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Wrath Incarnate** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Enlightened One** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Warden of the Wilds** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Divine Scion** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Godblood Hunter** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Hand of Fate** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Overmind** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Lord Commander** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Admiral of the Shattered Seas** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Undisputed** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Voice Unheard** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Heart of the Hearth** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Oracle of the Plain Truth** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Mother of the Wild Lane** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Edge Eternal** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Face of Faces** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Great Bell Incarnate** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Crimson Sovereign** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Master of Nothing** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Sovereign of Sleep** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Dragon Ascendant** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Hand of the Stage** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the King of Nothing** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Breaker of Heavens** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Deicide Eternal** | 60 | elite | humanoid, trial | front | aggressive | Cleave, War Cry, Enrage |  |
+| **Shade of the Void Sovereign** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
+| **Shade of the Star-Crowned** | 60 | elite | humanoid, trial | back | caster | Crystal Shard, Doom Mark, Enrage |  |
 
 **Summons (59):** Skeleton Warrior, Skeleton Mage, Bone Golem, Wolf Companion, Spirit Stag, Bone Servant, Owl Familiar, Cinder Imp, Hollow Infernal, Ember Sprite, Mossback, Dust Devil, Rime Wraith, Storm Finch, Gravel Hound, Brineling, Emberhound, Hollow Lantern, Thornmother, Gutterking’s Shade, Silkweaver, Gravewarden, Tidemother, Sunwisp, Frostfang, Salt Reaver, Deepcoil, Magma Heart, Void Moth, Oathwisp, Wildmane, Stormcaller Spirit, Ashen Sage, Ancestor King, Stone Golem, Colossus, Storm Totem, Stoneward Totem, Ember Totem, Tide Totem, Gun Turret, Tesla Coil, Repair Drone, Ink Phantom, Living Scroll, Blood Thrall, Dream Hound, Wooden Knight, Jester Doll, Hollow Knight, Hollow Herald, Wolf Totem, Bear Totem, Trail Hound, Trail Hawk, Hedge Cat, Cauldron Toad, The Bonded Blade, The Unleashed Blade
 
@@ -2011,9 +2107,9 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- trees:start -->
-122 class trees, 3392 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
+122 class trees, 4352 nodes. Each branch has 2 active skills (each with 2 modifier nodes), 4 minor passives, 2 notables, a choice pair, a keystone and a capstone across 6 tiers. Tier t needs (t - 1) x 5 points in the branch.
 
-### Warrior (68 nodes)
+### Warrior (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2022,8 +2118,10 @@ Generated from the data files by `npm run content:md`.
 | Protection | **Shield Wall** (Bulwark, Last Bastion); **Shield Slam** (Concussive Slam, Ricochet) | Iron Skin, Second Wind | Stalwart / Thorns | Unbreakable: Keystone: take 20% less damage, but deal 20% less. | Immortal |
 | Warcraft | **Battle Shout** (Commanding Shout, Intimidating Shout); **Whirlwind** (Bladestorm, Sweeping Strikes) | Opportunist, Momentum | Veteran / Brute | Glory Hound: Keystone: +15% damage and +25% XP, but -15% defense. | Unstoppable Force |
 | Secrets |  | Scar Tissue, Veteran’s Grip, Unyielding, Warlord’s Mark |  | :  |  |
+| Warlord (Tier 2) | **Warlord’s Onslaught** (); **Warlord’s Blessing** () | Warlord’s Command, Warlord’s Poise |  | Warlord’s Gamble: Keystone: +20% damage, -10% max HP. | Warlord |
+| Champion of Vael (Tier 3) | **Champion of Vael’s Decree** (); **Champion of Vael’s Standard** () | Champion of Vael’s Command, Champion of Vael’s Poise |  | Champion of Vael’s Gamble: Keystone: +25% damage, -10% max HP. | Champion of Vael |
 
-### Mage (68 nodes)
+### Mage (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2032,8 +2130,10 @@ Generated from the data files by `npm run content:md`.
 | Stormcalling | **Lightning Bolt** (Overcharge, Static); **Chain Lightning** (Forked Lightning, Thunderstorm) | Conductor, Eye of the Storm | Stormcaller’s Fury / Rain Dance | Glass Cannon: Keystone: +35% damage, but -25% max HP. | Tempest |
 | Arcana | **Arcane Missiles** (Barrage, Seeking Missiles); **Mana Shield** (Reflective Shield, Arcane Ward) | Arcane Intellect, Clarity | Evocation / Spell Echo | Blood Magic: Keystone: skills cost HP instead of MP. +15% magic attack. | Archmage |
 | Secrets |  | Ember Memory, Echoing Bolt, Leyline Reader, Archmage’s Insight |  | :  |  |
+| Archmage (Tier 2) | **Archmage’s Onslaught** (); **Archmage’s Blessing** () | Archmage’s Command, Archmage’s Poise |  | Archmage’s Gamble: Keystone: +20% damage, -10% max HP. | Archmage |
+| Arcane Sovereign (Tier 3) | **Arcane Sovereign’s Decree** (); **Arcane Sovereign’s Standard** () | Arcane Sovereign’s Command, Arcane Sovereign’s Poise |  | Arcane Sovereign’s Gamble: Keystone: +25% damage, -10% max HP. | Arcane Sovereign |
 
-### Rogue (68 nodes)
+### Rogue (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2042,8 +2142,10 @@ Generated from the data files by `npm run content:md`.
 | Trickery | **Fan of Knives** (Razor Fan, Twin Fans); **Cheap Shot** (Blinding Powder, Dirty Tricks) | Pickpocket, Misdirection | Fleet-Footed / Tough as Nails | Gambler’s Edge: Keystone: +20% crit chance, but -15 accuracy. | Trickster’s Gambit |
 | Poisons | **Poison Blade** (Deadly Poison, Crippling Poison); **Toxic Cloud** (Miasma, Lingering Toxins) | Virulence, Festering | Toxicologist / Antidote | Plague Lord: Keystone: +25% status chance, but -20% physical damage. | Venom Master |
 | Secrets |  | Knife in the Dark, Muscle Memory, Ghost of the Road, Master of the Shadow Trade |  | :  |  |
+| Shadowmaster (Tier 2) | **Shadowmaster’s Onslaught** (); **Shadowmaster’s Aegis** () | Shadowmaster’s Command, Shadowmaster’s Poise |  | Shadowmaster’s Gamble: Keystone: +20% damage, -10% max HP. | Shadowmaster |
+| Nightsovereign (Tier 3) | **Nightsovereign’s Decree** (); **Nightsovereign’s Rally** () | Nightsovereign’s Command, Nightsovereign’s Poise |  | Nightsovereign’s Gamble: Keystone: +25% damage, -10% max HP. | Nightsovereign |
 
-### Cleric (68 nodes)
+### Cleric (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2052,8 +2154,10 @@ Generated from the data files by `npm run content:md`.
 | Discipline | **Power Word: Shield** (Aegis, Barrier); **Penance** (Atonement, Contrition) | Inner Focus, Divine Aegis | Rapture / Borrowed Time | Penitent: Keystone: take 15% less damage, but deal 15% less. | Power Infusion |
 | Benediction | **Blessing of Might** (Blessing of Kings, Blessing of Haste); **Holy Nova** (Radiant Nova, Healing Nova) | Faithful, Grace | Pilgrim / Templar | Zealotry: Keystone: +25% damage, but -20% status resist. | Avatar of Light |
 | Secrets |  | Hallowed Ground, Practiced Mercy, Witness of Giants, Saint-in-Waiting |  | :  |  |
+| Bishop (Tier 2) | **Bishop’s Judgment** (); **Bishop’s Blessing** () | Bishop’s Command, Bishop’s Poise |  | Bishop’s Gamble: Keystone: +20% damage, -10% max HP. | Bishop |
+| Living Saint (Tier 3) | **Living Saint’s Verdict** (); **Living Saint’s Standard** () | Living Saint’s Command, Living Saint’s Poise |  | Living Saint’s Gamble: Keystone: +25% damage, -10% max HP. | Living Saint |
 
-### Ranger (68 nodes)
+### Ranger (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2062,8 +2166,10 @@ Generated from the data files by `npm run content:md`.
 | Survival | **Serpent Sting** (Viper Sting, Scorpid Sting); **Explosive Shot** (Cluster Bomb, Napalm) | Survivalist, Toxic Expertise | Camouflage / Trap Master | Hunter’s Instinct: Keystone: +10% dodge, but -20% defense. | Apex Predator |
 | Wilds | **Arrow Barrage** (Hail of Arrows, Focused Barrage); **Nature’s Grace** (Wild Growth, Thornskin) | Windwalker, Wind Shear | Hunter’s Mark / Nature’s Ally | Untamed: Keystone: +10 speed, but -15% max HP. | Storm of Arrows |
 | Secrets |  | Trophy Hunter, Steady Hand, Giant-Tracker, Legend of the Wild |  | :  |  |
+| Warden-Captain (Tier 2) | **Warden-Captain’s Decree** (); **Warden-Captain’s Standard** () | Warden-Captain’s Command, Warden-Captain’s Poise |  | Warden-Captain’s Gamble: Keystone: +20% damage, -10% max HP. | Warden-Captain |
+| Huntsman Eternal (Tier 3) | **Huntsman Eternal’s Strike** (); **Huntsman Eternal’s Aegis** () | Huntsman Eternal’s Command, Huntsman Eternal’s Poise |  | Huntsman Eternal’s Gamble: Keystone: +25% damage, -10% max HP. | Huntsman Eternal |
 
-### Necromancer (68 nodes)
+### Necromancer (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2072,8 +2178,10 @@ Generated from the data files by `npm run content:md`.
 | Souls | **Soul Bolt** (Soul Rend, Twin Souls); **Soul Harvest** (Reaping, Soul Feast) | Soul Siphon, Dark Harvest | Soulstorm / Hoarder | Blood Pact: Keystone: skills cost HP instead of MP. +20% shadow damage. | Lord of Souls |
 | Death | **Death Coil** (Dark Mending, Unholy Coil); **Curse of Agony** (Curse of Weakness, Mass Curse) | Death’s Embrace, Fear Itself | Night Terror / Morbid | Undying: Keystone: +15 HP per turn, but healing you receive is halved. | Avatar of Death |
 | Secrets |  | Grave Courtesy, Familiar Bones, Collector of Last Breaths, Lord of Quiet Rows |  | :  |  |
+| Lich-Adept (Tier 2) | **Lich-Adept’s Verdict** (); **Lich-Adept’s Rally** () | Lich-Adept’s Command, Lich-Adept’s Poise |  | Lich-Adept’s Gamble: Keystone: +20% damage, -10% max HP. | Lich-Adept |
+| Deathlord (Tier 3) | **Deathlord’s Onslaught** (); **Deathlord’s Mantle** () | Deathlord’s Command, Deathlord’s Poise |  | Deathlord’s Gamble: Keystone: +25% damage, -10% max HP. | Deathlord |
 
-### Monk (68 nodes)
+### Monk (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2082,8 +2190,10 @@ Generated from the data files by `npm run content:md`.
 | Way of the Serpent | **Serpent Stance** (Coiled, Venomous Stance); **Viper Strike** (Neurotoxin, Twin Fangs) | Serpent’s Patience, Constrict | Venom Mastery / Slippery | Cold-Blooded: Keystone: +25% status chance, but -10% max HP. | Serpent God |
 | Way of the Spirit | **Chi Burst** (Spirit Wave, Chi Explosion); **Meditation** (Transcendence, Focus Mind) | Spirit Flow, Ki Mastery | Enlightenment / Harmony | Ascetic: Keystone: +20% max HP, but -10% damage. | Way of the Open Hand |
 | Secrets |  | Still Mind, Open Palm, Walker Among Giants, One With the Road |  | :  |  |
+| Grand Adept (Tier 2) | **Grand Adept’s Reckoning** (); **Grand Adept’s Rally** () | Grand Adept’s Command, Grand Adept’s Poise |  | Grand Adept’s Gamble: Keystone: +20% damage, -10% max HP. | Grand Adept |
+| Ascended Fist (Tier 3) | **Ascended Fist’s Judgment** (); **Ascended Fist’s Mantle** () | Ascended Fist’s Command, Ascended Fist’s Poise |  | Ascended Fist’s Gamble: Keystone: +25% damage, -10% max HP. | Ascended Fist |
 
-### Bard (68 nodes)
+### Bard (88 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2092,8 +2202,10 @@ Generated from the data files by `npm run content:md`.
 | Discord | **Discordant Note** (Shattering Note, Dissonance); **Cacophony** (Deafening, Mind Shatter) | Jarring Rhythm, Feedback | Hex Song / Nerve Pinch | Atonal: Keystone: +30% status chance, but -15 accuracy. | Maestro of Madness |
 | Showmanship | **Jig of Swiftness** (Quickstep, Hearthside Lullaby); **Dazzling Display** (Grand Display, Blinding Light) | Crowd Pleaser, Standing Ovation | Lucky Break / Showboat | Fortune’s Fool: Keystone: +25 LUK, but -20% defense. | Star of the Show |
 | Secrets |  | Opening Number, Perfect Pitch, Songs of Three Giants, Headliner |  | :  |  |
+| Maestro (Tier 2) | **Maestro’s Verdict** (); **Maestro’s Bulwark** () | Maestro’s Command, Maestro’s Poise |  | Maestro’s Gamble: Keystone: +20% damage, -10% max HP. | Maestro |
+| Voice of Legends (Tier 3) | **Voice of Legends’ Onslaught** (); **Voice of Legends’ Blessing** () | Voice of Legends’ Command, Voice of Legends’ Poise |  | Voice of Legends’ Gamble: Keystone: +25% damage, -10% max HP. | Voice of Legends |
 
-### Knight (64 nodes)
+### Knight (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2101,8 +2213,10 @@ Generated from the data files by `npm run content:md`.
 | The Sword Oath | **Oath Strike** (Sworn Edge, Binding Oath); **Avenging Blow** (Sanctified Steel, Righteous Fury) | Vengeful, Smite the Wicked | Punishing Strikes / Oathbreaker’s Bane | Crusader’s Zeal: +25% damage, but your guards last a turn less (they take 15% more damage). | Blade of the Oath |
 | The Banner Oath | **Knight’s Standard** (Long Standard, Battle Colors); **Inspiring Charge** (Spur Onward, Lance Charge) | Standard-Bearer, Pride of the Line | Tactician / Beacon | Unity of Steel: Party-wide buffs last a turn longer, but cost 30% more Resolve. | Banner That Never Falls |
 | Iron Discipline | **Steel Resolve** (Deep Breath, Cleansing Resolve); **Last Stand** (Unyielding, Dying Light) | Tempered, Grit | Unflinching / Iron Constitution | Unbreakable: Once per battle, survive a killing blow with 1 HP. 10% less damage dealt. | Death’s Doorkeeper |
+| Knight-Captain (Tier 2) | **Knight-Captain’s Verdict** (); **Knight-Captain’s Standard** () | Knight-Captain’s Command, Knight-Captain’s Poise |  | Knight-Captain’s Gamble: Keystone: +20% damage, -10% max HP. | Knight-Captain |
+| High Paladin of the Wheel (Tier 3) | **High Paladin of the Wheel’s Onslaught** (); **High Paladin of the Wheel’s Aegis** () | High Paladin of the Wheel’s Command, High Paladin of the Wheel’s Poise |  | High Paladin of the Wheel’s Gamble: Keystone: +25% damage, -10% max HP. | High Paladin of the Wheel |
 
-### Druid (64 nodes)
+### Druid (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2110,8 +2224,10 @@ Generated from the data files by `npm run content:md`.
 | Heart of the Wolf | **Wolf Form** (Hunting Pack, Blood Scent); **Rending Bite** (Hamstring, Frenzy Bite) | Alpha, Run Down | Lone Wolf / Pack Leader | Feral Fury: +30% damage and +10% crit chance, but 15% more damage taken. | Dire Form |
 | Heart of the Owl | **Moonfire** (Silver Flame, Hungry Flame); **Owl Form** (Night Vision, Silent Wings) | Night’s Watch, Celestial Rhythm | Eclipse Born / Starsight | Lunar Tide: +30% magic attack, but physical attacks deal 25% less damage. | Moonlit Sage |
 | Heart of the Grove | **Treant Form** (Deep Roots, Blossoming); **Rejuvenate** (Lifebloom, Thorned Mending) | Grovewarden, Seed of Life | Evergreen / Sylvan Ward | Heart of the Wood: +35% healing power, but 15% less damage dealt. | Ancient Grove |
+| Archdruid (Tier 2) | **Archdruid’s Strike** (); **Archdruid’s Blessing** () | Archdruid’s Command, Archdruid’s Poise |  | Archdruid’s Gamble: Keystone: +20% damage, -10% max HP. | Archdruid |
+| Wildlord (Tier 3) | **Wildlord’s Reckoning** (); **Wildlord’s Standard** () | Wildlord’s Command, Wildlord’s Poise |  | Wildlord’s Gamble: Keystone: +25% damage, -10% max HP. | Wildlord |
 
-### Warlock (64 nodes)
+### Warlock (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2119,8 +2235,10 @@ Generated from the data files by `npm run content:md`.
 | The Hollow Pact | **Pact of the Hollow Star** (Starless Oath, Dim Light); **Void Rift** (Wide Rift, Entropic) | Star’s Gaze, Entropy’s Tithe | Event Horizon / Cold Calculation | Hollow Heart: +30% void damage, but 15% less max HP. | Voice of the Star |
 | The Thorn Pact | **Pact of Thorns** (Thorned Oath, Queen’s Favor); **Withering Hex** (Deep Hex, Spiteful Hex) | Cursed Ground, Thorns of Spite | Bargain’s Edge / Blackthorn | Glamoured: +20% dodge and +10% status chance, but 15% less defense. | Queen’s Own |
 | The Tithe | **Siphon Soul** (Deep Draught, Stolen Strength); **Purge Taint** (Quick Purge, Cleansing Fire) | Collector’s Discipline, Open Ledger | Debt Collector / Unspent | Corruption Embraced: Fel Taint makes you stronger: +50% damage at 5+ stacks, but you cannot Purge. | The Books Balance |
+| Pactmaster (Tier 2) | **Pactmaster’s Verdict** (); **Pactmaster’s Rally** () | Pactmaster’s Command, Pactmaster’s Poise |  | Pactmaster’s Gamble: Keystone: +20% damage, -10% max HP. | Pactmaster |
+| Archfiend-Bound (Tier 3) | **Archfiend-Bound’s Onslaught** (); **Archfiend-Bound’s Mantle** () | Archfiend-Bound’s Command, Archfiend-Bound’s Poise |  | Archfiend-Bound’s Gamble: Keystone: +25% damage, -10% max HP. | Archfiend-Bound |
 
-### Summoner (64 nodes)
+### Summoner (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2128,8 +2246,10 @@ Generated from the data files by `npm run content:md`.
 | The Elements | **Elemental Surge** (Searing Surge, Frozen Surge); **Conduit** (Wide Conduit, Overflow) | Elemental Harmony, Storm Heart | Wildfire / Deep Winter | Primordial Pull: +30% elemental damage, but healing is 20% weaker. | Elementalist’s Chord |
 | The Guardians | **Spirit Ward** (Deep Ward, Quick Ward); **Sacrifice** (Gentle Sacrifice, Willing Offering) | Shared Shield, Refuge | Stalwart Spirits / Gentle Guardians | Warded Heart: 25% less damage taken, but 20% less damage dealt. | Sanctuary |
 | The Ritual | **Greater Summoning** (Twinned Call, Hurried Rite); **Banish** (Hard Banishment, Long Banishment) | Master of Rites, Final Offering | Binder’s Patience / Stolen Names | Soul Debt: Spirits last twice as long, but cost 40% more Bond. | The Last Door |
+| Spirit Lord (Tier 2) | **Spirit Lord’s Judgment** (); **Spirit Lord’s Aegis** () | Spirit Lord’s Command, Spirit Lord’s Poise |  | Spirit Lord’s Gamble: Keystone: +20% damage, -10% max HP. | Spirit Lord |
+| Sovereign of Pacts (Tier 3) | **Sovereign of Pacts’ Verdict** (); **Sovereign of Pacts’ Rally** () | Sovereign of Pacts’ Command, Sovereign of Pacts’ Poise |  | Sovereign of Pacts’ Gamble: Keystone: +25% damage, -10% max HP. | Sovereign of Pacts |
 
-### Alchemist (64 nodes)
+### Alchemist (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2137,8 +2257,10 @@ Generated from the data files by `npm run content:md`.
 | Mutations | **Mutagen of Might** (Steady Dose, Bitter Dose); **Mutagen of Swiftness** (Quicker Dose, Dosed Reflexes) | Tolerance, Adrenal Surge | Regenerative / Berserk Mutation | Beast Within: +35% physical attack and +10% lifesteal, but no healing from other sources. | Perfected Mutation |
 | Remedies | **Restorative Draught** (Stronger Draught, Soothing Draught); **Antidote Mist** (Wider Mist, Fast Mist) | Bedside Manner, Triage | Apothecary’s Eye / Second Dose | Miracle Cure: +35% healing power, but 15% less damage dealt. | Master Apothecary |
 | Transmutation | **Quicksilver Tonic** (Quicker Silver, Silver Shield); **Philosopher’s Gambit** (Rich Residue, Bright Reaction) | Lead to Gold, Reagent Reuse | Catalyst / Transmuter’s Luck | Philosopher’s Stone: +15% resource gain, but 10% less max HP. | The Great Work |
+| Master Alchemist (Tier 2) | **Master Alchemist’s Onslaught** (); **Master Alchemist’s Mantle** () | Master Alchemist’s Command, Master Alchemist’s Poise |  | Master Alchemist’s Gamble: Keystone: +20% damage, -10% max HP. | Master Alchemist |
+| Philosopher Supreme (Tier 3) | **Philosopher Supreme’s Decree** (); **Philosopher Supreme’s Bulwark** () | Philosopher Supreme’s Command, Philosopher Supreme’s Poise |  | Philosopher Supreme’s Gamble: Keystone: +25% damage, -10% max HP. | Philosopher Supreme |
 
-### Shaman (64 nodes)
+### Shaman (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2146,8 +2268,10 @@ Generated from the data files by `npm run content:md`.
 | The Earth Voice | **Stoneward Totem** (Deep Totem, Quick Stone); **Earthbind** (Hard Bind, Cracked Bind) | Mountain Child, Tremor | Bedrock / Sturdy Totems | Stone Heart: 25% less damage taken and +20% max HP, but 15% less damage dealt. | Earthwarden’s Oath |
 | The Ancestors | **Call Ancestor** (Louder Call, Long Memory); **Spirit Walk** (Lighter Step, Between Worlds) | Voices of the Dead, Reverence | Lineage / Hollow Reed | Haunted: +30% healing power and +15% resource gain, but 15% less defense. | Chosen of the Line |
 | Flame and Tide | **Ember Totem** (Hotter Totem, Quick Ember); **Tide Totem** (Deep Tide, Fast Tide) | Totem Master, Hearth and Wave | Wildfire / High Tide | Totem Bond: Totems last twice as long, but each costs 30% more MP. | Master of Totems |
+| Elder Shaman (Tier 2) | **Elder Shaman’s Strike** (); **Elder Shaman’s Aegis** () | Elder Shaman’s Command, Elder Shaman’s Poise |  | Elder Shaman’s Gamble: Keystone: +20% damage, -10% max HP. | Elder Shaman |
+| Ancestor-Voice (Tier 3) | **Ancestor-Voice’s Reckoning** (); **Ancestor-Voice’s Rally** () | Ancestor-Voice’s Command, Ancestor-Voice’s Poise |  | Ancestor-Voice’s Gamble: Keystone: +25% damage, -10% max HP. | Ancestor-Voice |
 
-### Chronomancer (64 nodes)
+### Chronomancer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2155,8 +2279,10 @@ Generated from the data files by `npm run content:md`.
 | Haste | **Quicken** (Quicker Quicken, Warm Seconds); **Temporal Surge** (Cheap Surge, Recovered Surge) | Rushing, Time Debt | Metronome / Clockwork Heart | Borrowed Time: +15 speed, but you take 15% more damage. | Master of Moments |
 | Rewind | **Rewind** (Long Rewind, Quick Rewind); **Echo of the Hour** (Clear Echo, Louder Echo) | Second Chances, Perfect Memory | Sharp Recall / Healing Hindsight | Fixed Point: Echo costs nothing, but you cannot use Time Lock. | Remembered Future |
 | Entropy | **Withering Years** (Decades, Centuries); **Decay Field** (Wide Field, Brittle Field) | Inevitable, Wearing Down | Decay Lore / Lingering | Heat Death’s Hand: +30% damage to debuffed enemies, but you take 10% more damage. | Lord of the Last Hour |
+| Timelord (Tier 2) | **Timelord’s Reckoning** (); **Timelord’s Rally** () | Timelord’s Command, Timelord’s Poise |  | Timelord’s Gamble: Keystone: +20% damage, -10% max HP. | Timelord |
+| Eternal (Tier 3) | **Eternal’s Judgment** (); **Eternal’s Mantle** () | Eternal’s Command, Eternal’s Poise |  | Eternal’s Gamble: Keystone: +25% damage, -10% max HP. | Eternal |
 
-### Artificer (64 nodes)
+### Artificer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2164,8 +2290,10 @@ Generated from the data files by `npm run content:md`.
 | Turrets | **Deploy Gun Turret** (Reinforced Mount, Fast Deploy); **Tesla Coil** (Static Field, Fast Coil) | Turret Commander, Extra Mounts | Armor Plating / Auto-Loader | Fortress Protocol: Gadgets last twice as long, but cost 30% more MP. | Chief Engineer |
 | Mechanics | **Repair Drone** (Nano Drone, Fast Drone); **Mech Suit** (Heavier Plating, Gyro Mount) | Exosuit Training, Field Repairs | Reactive Plating / Servo Boost | Iron Man: +40% max HP and 20% less damage taken, but 15% less speed. | Exo-Master |
 | Runecraft | **Rune Charge** (Deep Etching, Quick Etching); **Vent Steam** (Pressurized, Scalding) | Master Etcher, Safety Rune | Runic Edge / Ward-Glyph | Living Glyph: +25% buff strength, but 15% less defense. | Runesmith’s Seal |
+| Master Artificer (Tier 2) | **Master Artificer’s Reckoning** (); **Master Artificer’s Rally** () | Master Artificer’s Command, Master Artificer’s Poise |  | Master Artificer’s Gamble: Keystone: +20% damage, -10% max HP. | Master Artificer |
+| Grand Machinist (Tier 3) | **Grand Machinist’s Judgment** (); **Grand Machinist’s Mantle** () | Grand Machinist’s Command, Grand Machinist’s Poise |  | Grand Machinist’s Gamble: Keystone: +25% damage, -10% max HP. | Grand Machinist |
 
-### Dancer (64 nodes)
+### Dancer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2173,8 +2301,10 @@ Generated from the data files by `npm run content:md`.
 | Veils and Mirrors | **Veil Step** (Longer Veil, Cutting Veil); **Dazzling Spin** (Blinding Spin, Dizzying Spin) | Afterimage, Veiled Intent | Phantom Grace / Flash | Untouchable: +25% dodge, but 20% less max HP. | Mistress of Mirrors |
 | The Drums | **War Drum** (Louder Drum, Warding Drum); **March Beat** (Quick March, Fast March) | Rhythm Section, Marching Order | Tempo Keeper / Loud Hall | The Beat Goes On: Buffs last a turn longer, but you take 15% more damage. | Drum-Major |
 | The Finale | **Curtain Call** (Bigger Bow, Flourish); **Encore** (Cheap Encore, Ringing Encore) | Standing Ovation, Last Bar | Encore Ready / Showstopper | All or Nothing: Finishers deal 40% more damage, but Rhythm decays twice as fast. | Final Curtain |
+| Prima (Tier 2) | **Prima’s Decree** (); **Prima’s Rally** () | Prima’s Command, Prima’s Poise |  | Prima’s Gamble: Keystone: +20% damage, -10% max HP. | Prima |
+| Dance of Ages (Tier 3) | **Dance of Ages’ Strike** (); **Dance of Ages’ Mantle** () | Dance of Ages’ Command, Dance of Ages’ Poise |  | Dance of Ages’ Gamble: Keystone: +25% damage, -10% max HP. | Dance of Ages |
 
-### Inkweaver (64 nodes)
+### Inkweaver (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2182,8 +2312,10 @@ Generated from the data files by `npm run content:md`.
 | Illusion | **Phantom Brush** (Sturdy Phantom, Quick Sketch); **Sigil of Doubt** (Deep Doubt, Quick Doubt) | Trompe l’Oeil, Masterful Forgery | Vivid / Smoke and Mirrors | Everything Is a Painting: +20% dodge, but 20% less max HP. | Illusionist’s Gambit |
 | Living Scroll | **Living Scroll** (Long Scroll, Quick Unroll); **Sigil of Mending** (Deeper Mending, Quick Mending) | Annotated, Bookbinder | Bound in Leather / Illuminated | Library of Alexandria: Scrolls last twice as long, but cost 30% more Ink. | Archivist-Mage |
 | Seals | **Sigil of Fire** (Hotter Ink, Quick Fire); **Great Seal** (Seal Wax, Cheap Seal) | Official Seal, Notarized | Broad Seal / Sharp Seal | Binding Contract: +30% sigil damage, but sigils cost 30% more Ink. | Keeper of the Seal |
+| Scrivener-Mage (Tier 2) | **Scrivener-Mage’s Onslaught** (); **Scrivener-Mage’s Aegis** () | Scrivener-Mage’s Command, Scrivener-Mage’s Poise |  | Scrivener-Mage’s Gamble: Keystone: +20% damage, -10% max HP. | Scrivener-Mage |
+| Living Legend (Tier 3) | **Living Legend’s Decree** (); **Living Legend’s Rally** () | Living Legend’s Command, Living Legend’s Poise |  | Living Legend’s Gamble: Keystone: +25% damage, -10% max HP. | Living Legend |
 
-### Witch Hunter (64 nodes)
+### Witch Hunter (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2191,8 +2323,10 @@ Generated from the data files by `npm run content:md`.
 | Silver and Salt | **Silver Lash** (Silver Edge, Silver Chain); **Null Shot** (Blessed Bolt, Cold Salt) | Caster-Bane, Silencer | Silver Sheen / Steady Hands | Argent Edge: +25% damage to casters and summons, but 15% less damage to the rest. | Silver Prime |
 | Zeal | **Righteous Fury** (Burning Fury, Quick Fury); **Smite the Profane** (Wrathful Smite, Cheap Smite) | Conviction Unshaken, Burning Eyes | Fanatic / Unyielding | Burn Brightly: +30% damage, but 15% more damage taken. | Voice of Heaven’s Judgment |
 | Wards and Banishment | **Ward Against Evil** (Deep Ward, Quick Ward); **Exorcism** (Harsh Rites, Binding Rites) | Summon-Bane, Sanctum | Devout / Ironclad | Sealed Gate: 20% less damage taken from magic, but 10% less damage dealt. | Warden of the Threshold |
+| Inquisitor (Tier 2) | **Inquisitor’s Decree** (); **Inquisitor’s Standard** () | Inquisitor’s Command, Inquisitor’s Poise |  | Inquisitor’s Gamble: Keystone: +20% damage, -10% max HP. | Inquisitor |
+| Hammer of the Gods (Tier 3) | **Hammer of the Gods’ Strike** (); **Hammer of the Gods’ Aegis** () | Hammer of the Gods’ Command, Hammer of the Gods’ Poise |  | Hammer of the Gods’ Gamble: Keystone: +25% damage, -10% max HP. | Hammer of the Gods |
 
-### Geomancer (64 nodes)
+### Geomancer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2200,8 +2334,10 @@ Generated from the data files by `npm run content:md`.
 | The Crystal | **Crystal Growth** (Deep Crystal, Quick Crystal); **Shard Volley** (More Shards, Sharper Shards) | Prismatic, Reflective | Brilliant / Flawless | Living Crystal: 25% less damage taken, but 15% less damage dealt. | Crystalmancer’s Edge |
 | The Sand | **Dust Storm** (Thick Storm, Biting Storm); **Quicksand** (Deep Sand, Cheap Sand) | Sand-Walker, Blinding Grit | Dune-Runner / Parched | Whirlwind Mind: +25% dodge, but 15% less max HP. | Sandshaper’s Gift |
 | The Lava | **Magma Vent** (Wider Vent, Searing Vent); **Eruption** (Bigger Eruption, Quick Eruption) | Lava Walker, Molten Core | Obsidian Skin / Pyroclast | Volcanic: +30% fire damage, but 15% more damage taken. | Child of the Rift |
+| Earthshaper (Tier 2) | **Earthshaper’s Reckoning** (); **Earthshaper’s Bulwark** () | Earthshaper’s Command, Earthshaper’s Poise |  | Earthshaper’s Gamble: Keystone: +20% damage, -10% max HP. | Earthshaper |
+| Worldheart (Tier 3) | **Worldheart’s Judgment** (); **Worldheart’s Blessing** () | Worldheart’s Command, Worldheart’s Poise |  | Worldheart’s Gamble: Keystone: +25% damage, -10% max HP. | Worldheart |
 
-### Hemomancer (64 nodes)
+### Hemomancer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2209,8 +2345,10 @@ Generated from the data files by `npm run content:md`.
 | The Sanguine | **Hemorrhage** (Hot Blood, Red Tide); **Blood Nova** (Wider Ring, Clotting Ring) | Bloodthirst, Frenzy | Haemorrhage Master / Open Wound | Bloodbath: Kills heal 15% of max HP, but you take 10% more damage. | Lord of the Wound |
 | The Vitae | **Transfuse** (Generous, Cheap Gift); **Blood Pact** (Deep Pact, Cheap Pact) | Blood Brother, Shared Pulse | Lifegiver / Thick Blood | Heart of the Party: +35% healing power, but 15% less damage. | Fount of Life |
 | The Crimson Court | **Sanguine Thrall** (Hardy Thrall, Quick Thrall); **Crimson Veil** (Thick Veil, Quick Veil) | Thrall Master, Court of Blood | Armored Court / Vigorous Court | Blood Monarch: Thralls last twice as long, but cost 30% more HP. | Crowned in Red |
+| Bloodlord (Tier 2) | **Bloodlord’s Reckoning** (); **Bloodlord’s Bulwark** () | Bloodlord’s Command, Bloodlord’s Poise |  | Bloodlord’s Gamble: Keystone: +20% damage, -10% max HP. | Bloodlord |
+| Crimson Sovereign (Tier 3) | **Crimson Sovereign’s Judgment** (); **Crimson Sovereign’s Blessing** () | Crimson Sovereign’s Command, Crimson Sovereign’s Poise |  | Crimson Sovereign’s Gamble: Keystone: +25% damage, -10% max HP. | Crimson Sovereign |
 
-### Hollow Hand (64 nodes)
+### Hollow Hand (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2218,8 +2356,10 @@ Generated from the data files by `npm run content:md`.
 | The Borrowing | **Borrow Spell** (Easy Mark, Deep Take); **Spend the Loan** (Interest, Quick Return) | Borrowed Power, Library Card | Fast Fingers / Deep Memory | Spell Sponge: Take 15% less damage from spells, but 10% less damage dealt. | Archthief of Magic |
 | The Fence | **Sleight of Hand** (Longer Sleight, Quick Sleight); **Smoke and Mirrors** (Thicker Smoke, Smoke Bomb) | Slip Away, Honor Among Thieves | Cat Burglar / Gambler | Nobody Saw: +20% dodge and 15% more gold, but 15% less defense. | Fence of Legends |
 | The Hollow | **Hollow Touch** (Hollower, Dread Touch); **Vanishing Trick** (Cheaper Trick, Quicker Trick) | Nothing There, Cold Reach | Empty Hand / Empty Heart | The Hollow Hand: +25% damage, +15% dodge, but you cannot be healed. | Hollow Crown of Thieves |
+| Phantom Thief (Tier 2) | **Phantom Thief’s Onslaught** (); **Phantom Thief’s Mantle** () | Phantom Thief’s Command, Phantom Thief’s Poise |  | Phantom Thief’s Gamble: Keystone: +20% damage, -10% max HP. | Phantom Thief |
+| Master of Nothing (Tier 3) | **Master of Nothing’s Decree** (); **Master of Nothing’s Bulwark** () | Master of Nothing’s Command, Master of Nothing’s Poise |  | Master of Nothing’s Gamble: Keystone: +25% damage, -10% max HP. | Master of Nothing |
 
-### Dreamwalker (64 nodes)
+### Dreamwalker (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2227,8 +2367,10 @@ Generated from the data files by `npm run content:md`.
 | Nightmares | **Nightmare Touch** (Vivid, Lingering); **Terror Dream** (Waking Terror, Cold Sweat) | Bad Dreams, Fear Itself | Haunting / Insomnia | Waking Nightmare: +30% damage to Nightmared enemies, but 10% more damage taken. | Lord of Nightmares |
 | Dream Eating | **Dream Eater** (Hungrier, Fuller); **Wake-Up Call** (Rude Awakening, Cheap Alarm) | Satisfying Meal, Sleeper’s Prey | Gourmand / Digestion | Insatiable: +8% lifesteal, but your skills cost 20% more Slumber. | Dream Glutton |
 | Lucid Dreaming | **Dreamveil** (Deeper Veil, Quick Veil); **Sleepwalk** (Cheap Walk, Quick Walk) | Lucidity, Control | Awake in the Dream / Dream Logic | Between Waking and Sleep: 25% less damage taken, but 15% less damage dealt. | Master of the Waking Dream |
+| Dreamlord (Tier 2) | **Dreamlord’s Reckoning** (); **Dreamlord’s Standard** () | Dreamlord’s Command, Dreamlord’s Poise |  | Dreamlord’s Gamble: Keystone: +20% damage, -10% max HP. | Dreamlord |
+| Sovereign of Sleep (Tier 3) | **Sovereign of Sleep’s Judgment** (); **Sovereign of Sleep’s Aegis** () | Sovereign of Sleep’s Command, Sovereign of Sleep’s Poise |  | Sovereign of Sleep’s Gamble: Keystone: +25% damage, -10% max HP. | Sovereign of Sleep |
 
-### Dragonsoul (64 nodes)
+### Dragonsoul (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2236,8 +2378,10 @@ Generated from the data files by `npm run content:md`.
 | The Rime Voice | **Aspect of Rime** (Frost Mantle, Rime Mind); **Rime Breath** (Colder Breath, Hoarfrost) | Frozen Heart, Cold Patience | Blizzard / Deep Winter | Glacial Dragon: +25% defense, but 10% less damage. | Voice of the Rime |
 | The Tempest Voice | **Aspect of Tempest** (Static Mantle, Eye of the Storm); **Tempest Breath** (Forked Breath, Thunder Breath) | Stormbringer, Windborne | Thunderhead / Skybound | Storm Dragon: +10 speed and +20% lightning damage, but 15% less max HP. | Voice of the Tempest |
 | The Grave Voice | **Aspect of the Grave** (Crowned in Ash, Grave Mantle); **Grave Breath** (Foul Breath, Grave Chill) | Bargained Life, Curse of the King | Ruin / Undying | Grave-King’s Bargain: Survive a killing blow once per battle, but 10% less damage. | Voice of the Grave |
+| Wyrm-Touched (Tier 2) | **Wyrm-Touched’s Onslaught** (); **Wyrm-Touched’s Blessing** () | Wyrm-Touched’s Command, Wyrm-Touched’s Poise |  | Wyrm-Touched’s Gamble: Keystone: +20% damage, -10% max HP. | Wyrm-Touched |
+| Dragon Ascendant (Tier 3) | **Dragon Ascendant’s Decree** (); **Dragon Ascendant’s Standard** () | Dragon Ascendant’s Command, Dragon Ascendant’s Poise |  | Dragon Ascendant’s Gamble: Keystone: +25% damage, -10% max HP. | Dragon Ascendant |
 
-### Puppeteer (64 nodes)
+### Puppeteer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2245,8 +2389,10 @@ Generated from the data files by `npm run content:md`.
 | The Marionettes | **Puppet Show** (Oaken Knight, Quick Rehearsal); **Jester’s Gambit** (Sharper Jester, Quick Jest) | Stage Hands, Full Cast | Sturdy Puppets / Clever Puppets | The Show Goes On: Puppets last twice as long, but cost 30% more Strings. | Impresario |
 | Stagecraft | **Curtain Drop** (Heavy Curtain, Black Curtain); **Spotlight** (Bright Spotlight, Quick Cue) | Dramatic Timing, Good Review | Encore / Standing Ovation | All the World: +25% party damage, but you take 15% more. | Director’s Cut |
 | Grand Guignol | **Dead Man’s Dance** (Macabre, Gruesome); **Cut the Strings** (Sharp Scissors, Quick Snip) | Cheap Thrills, Final Curtain | Gallows Humor / Sharp Wit | No Intermission: +30% finisher damage, but you lose 10% max HP. | Curtain of Blood |
+| Stringmaster (Tier 2) | **Stringmaster’s Judgment** (); **Stringmaster’s Mantle** () | Stringmaster’s Command, Stringmaster’s Poise |  | Stringmaster’s Gamble: Keystone: +20% damage, -10% max HP. | Stringmaster |
+| Hand of the Stage (Tier 3) | **Hand of the Stage’s Verdict** (); **Hand of the Stage’s Bulwark** () | Hand of the Stage’s Command, Hand of the Stage’s Poise |  | Hand of the Stage’s Gamble: Keystone: +25% damage, -10% max HP. | Hand of the Stage |
 
-### Hollow King (64 nodes)
+### Hollow King (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2254,8 +2400,10 @@ Generated from the data files by `npm run content:md`.
 | The Court | **Summon the Court** (Larger Court, Quick Court); **Royal Guard** (Thicker Guard, Quick Guard) | Knights of Nothing, Full Court | Hardy Court / Fleet Court | Everyone Remembered: Court members last twice as long, but cost 30% more Dominion. | Sovereign of the Hollow |
 | The Crown | **Crown Strike** (Weighty, Dominating); **Hollow Mantle** (Thicker Mantle, Quick Mantle) | Crowned, Weight of Rule | Regal Might / Regal Poise | Unfallen: Survive a killing blow once per battle, but 10% less damage. | The Weight Is Mine |
 | The Void Throne | **Throne of Nothing** (Bigger Void, Cold Void); **Abdicate** (Deeper Rest, Quick Rest) | Absent, Empty Throne | Entropy’s Rule / Echoing Halls | Nobody Rules: +25% void damage and +15% dodge, but 15% less max HP. | King of Nothing |
+| Hollow Lord (Tier 2) | **Hollow Lord’s Strike** (); **Hollow Lord’s Blessing** () | Hollow Lord’s Command, Hollow Lord’s Poise |  | Hollow Lord’s Gamble: Keystone: +20% damage, -10% max HP. | Hollow Lord |
+| King of Nothing (Tier 3) | **King of Nothing’s Reckoning** (); **King of Nothing’s Standard** () | King of Nothing’s Command, King of Nothing’s Poise |  | King of Nothing’s Gamble: Keystone: +25% damage, -10% max HP. | King of Nothing |
 
-### Oathbreaker (64 nodes)
+### Oathbreaker (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2263,8 +2411,10 @@ Generated from the data files by `npm run content:md`.
 | The Forsworn Hand | **Unbind** (Loose Knot, Frayed); **Renounce** (Louder Refusal, Quick Refusal) | Let Go, Loose Grip | Light Step / Free Hands | Faithless: +20% damage, +10% dodge, but no healing from blessings. | Hand Without a Leash |
 | No God | **Godless Ward** (Thicker Ward, Warded Heart); **Silence Heaven** (Longer Hush, Quicker Hush) | Godless, Nobody’s Servant | Iron Will / Thick Skin | Heaven Is Quiet: +25% magic resist and +15% max HP, but 15% less damage dealt. | Godless Bulwark |
 | The Unpaid Debt | **Call In the Debt** (Heavy Interest, Cheap Collection); **Bad Faith** (Wider Doubt, Quicker Doubt) | Interest, Collector | Sharp Eye / Deep Pockets | Everything Is Owed: +20% damage and +15% gold, but 10% less defense. | Debt Collected |
+| Forsworn Lord (Tier 2) | **Forsworn Lord’s Judgment** (); **Forsworn Lord’s Mantle** () | Forsworn Lord’s Command, Forsworn Lord’s Poise |  | Forsworn Lord’s Gamble: Keystone: +20% damage, -10% max HP. | Forsworn Lord |
+| Breaker of Heavens (Tier 3) | **Breaker of Heavens’ Verdict** (); **Breaker of Heavens’ Bulwark** () | Breaker of Heavens’ Command, Breaker of Heavens’ Poise |  | Breaker of Heavens’ Gamble: Keystone: +25% damage, -10% max HP. | Breaker of Heavens |
 
-### Godslayer (64 nodes)
+### Godslayer (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2272,8 +2422,10 @@ Generated from the data files by `npm run content:md`.
 | Sacrilege | **Blasphemy** (Louder, Heresy); **Mortal Pride** (Swagger, Chin Up) | Unholy Sermon, No Gods, No Masters | Silver Tongue / Iron Pride | Blasphemer’s Crown: Debuffs you inflict last a turn longer, but your healing is 20% weaker. | Hymn of the Fallen |
 | The Unbroken | **Unbowed** (Second Wind, Spit It Out); **Last Defiance** (Rooted, Defiant Wall) | Bleeds Gold, Grit | Iron Constitution / Unflinching | Unkillable: Once per battle, survive a killing blow with 1 HP. 10% less damage dealt. | Death’s Doorkeeper |
 | The Slaying | **Sunder Halo** (Shattering, Halo-Breaker); **Titan’s Wrath** (Colossal Swing, Quake) | Colossus-Killer, Tower-Toppler | Bone-Breaker / Iron Reach | Everything Falls: +20% damage to bosses, but you take 8% more damage from them. | Slayer of the Slayers |
+| Giant-Killer (Tier 2) | **Giant-Killer’s Onslaught** (); **Giant-Killer’s Blessing** () | Giant-Killer’s Command, Giant-Killer’s Poise |  | Giant-Killer’s Gamble: Keystone: +20% damage, -10% max HP. | Giant-Killer |
+| Deicide Eternal (Tier 3) | **Deicide Eternal’s Decree** (); **Deicide Eternal’s Standard** () | Deicide Eternal’s Command, Deicide Eternal’s Poise |  | Deicide Eternal’s Gamble: Keystone: +25% damage, -10% max HP. | Deicide Eternal |
 
-### Voidwalker (64 nodes)
+### Voidwalker (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2281,8 +2433,10 @@ Generated from the data files by `npm run content:md`.
 | Passage | **Step Between** (Lighter, Fade); **Vanish From Sight** (Long Absence, Returns Hungry) | Slipstream, Ghost Walk | Blink / Pale Hunter | Not Quite Here: 20% of hits miss you outright, but your max HP is 12% lower. | Between the Seconds |
 | Entropy | **Entropy Wave** (Broader Wave, Creeping Cold); **Null Field** (Wider Field, Bleak) | Slow Rot, All Things End | Withering Gaze / Cold Calm | Heat Death: Debuffs last a turn longer, but your direct damage is 10% lower. | Slow End |
 | Silence | **Silence the Spell** (Harder Silence, Lingering Quiet); **Hollow Shroud** (Thicker Nothing, Echoless) | Spellbreaker, Mind Like Glass | Still Waters / Null Armor | The Quiet Room: Immune to Silence and Curse, but +15% MP costs. | Hush of the Void |
+| Rift-Lord (Tier 2) | **Rift-Lord’s Onslaught** (); **Rift-Lord’s Aegis** () | Rift-Lord’s Command, Rift-Lord’s Poise |  | Rift-Lord’s Gamble: Keystone: +20% damage, -10% max HP. | Rift-Lord |
+| Void Sovereign (Tier 3) | **Void Sovereign’s Decree** (); **Void Sovereign’s Rally** () | Void Sovereign’s Command, Void Sovereign’s Poise |  | Void Sovereign’s Gamble: Keystone: +25% damage, -10% max HP. | Void Sovereign |
 
-### Celestial (64 nodes)
+### Celestial (84 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2290,8 +2444,10 @@ Generated from the data files by `npm run content:md`.
 | Grace | **Benediction** (Deeper Blessing, Lasting); **Gentle Hand** (Soothing, Quick Mercy) | Mender’s Grace, Quiet Miracle | Merciful / Steady Hands | Selfless: Your heals are 25% stronger on others, but you receive 20% less healing. | Grace Abounding |
 | Aegis | **Radiant Ward** (Thicker Light, Mending Ward); **Ascend** (Higher, Radiant Rise) | Sanctuary, Halo of Plenty | Lightbound / Hale and Hearty | Last Light: Once per battle, survive a killing blow with 1 HP and heal 25%. 10% less damage dealt. | Dome of Dawn |
 | Guidance | **Guiding Light** (Long Road, Quicker Step); **Sunburst** (Wider Dawn, Dazzling) | Beacon of Hope, Waystation | Brisk / Far-Seeing | Pillar of Light: Party-wide buffs are 25% stronger, but cost 30% more Halo. | Light Before Dawn |
+| Archangel (Tier 2) | **Archangel’s Onslaught** (); **Archangel’s Mantle** () | Archangel’s Command, Archangel’s Poise |  | Archangel’s Gamble: Keystone: +20% damage, -10% max HP. | Archangel |
+| Star-Crowned (Tier 3) | **Star-Crowned’s Decree** (); **Star-Crowned’s Bulwark** () | Star-Crowned’s Command, Star-Crowned’s Poise |  | Star-Crowned’s Gamble: Keystone: +25% damage, -10% max HP. | Star-Crowned |
 
-### Vowknight (80 nodes)
+### Vowknight (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2300,8 +2456,10 @@ Generated from the data files by `npm run content:md`.
 | The Tenet of Dawn | **Swear Dawn** (Mended Swear Dawn, Guarded Swear Dawn); **Daybreak Surge** (Heavier Daybreak Surge, Frugal Daybreak Surge) | Sunlit Blade, Long Shadow | Morning Prayer / Gold Hour | Noon Without End: +20% damage, -10% defense. | Herald of the Dawn |
 | The Sworn Wall | **Sworn Shield** (Mended Sworn Shield, Frugal Sworn Shield); **Hold the Line** (Mended Hold the Line, Quicker Hold the Line) | Immovable, Second Wind | Held Ground / Unbent Knee | Wall of One: +20% damage, -10% defense. | The Last Standing |
 | The Sworn Arms | **Mercy’s Edge** (Heavier Mercy’s Edge, Guarded Mercy’s Edge); **Vow-Bound Smite** (Heavier Vow-Bound Smite, Frugal Vow-Bound Smite) | Clean Cut, Bound Strike | Measured Blow / Oath-Forged | Every Blow a Promise: +20% damage, -10% defense. | Blade of the Kept Word |
+| Oathlord (Tier 2) | **Oathlord’s Reckoning** (); **Oathlord’s Standard** () | Oathlord’s Command, Oathlord’s Poise |  | Oathlord’s Gamble: Keystone: +20% damage, -10% max HP. | Oathlord |
+| Sworn Eternal (Tier 3) | **Sworn Eternal’s Judgment** (); **Sworn Eternal’s Aegis** () | Sworn Eternal’s Command, Sworn Eternal’s Poise |  | Sworn Eternal’s Gamble: Keystone: +25% damage, -10% max HP. | Sworn Eternal |
 
-### Wrathsworn (80 nodes)
+### Wrathsworn (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2310,8 +2468,10 @@ Generated from the data files by `npm run content:md`.
 | The Frenzy | **Reckless Swing** (Heavier Reckless Swing, Guarded Reckless Swing); **Frenzy** (Heavier Frenzy, Frugal Frenzy) | Wild Swing, Bloodscent | Fresh Wound / Open Veins | Nothing Held Back: +20% damage, -10% defense. | The Wild Blade |
 | The Unbroken | **Refuse to Fall** (Mended Refuse to Fall, Quicker Refuse to Fall); **Grit Teeth** (Mended Grit Teeth, Frugal Grit Teeth) | Bull Neck, Scar Tissue | Dogged / Iron Gut | Cannot Be Moved: +20% damage, -10% defense. | The Unbroken |
 | The Brawl | **Brow Strike** (Heavier Brow Strike, Quicker Brow Strike); **Earthshaker** (Heavier Earthshaker, Frugal Earthshaker) | Stunning Blow, Ground Pounder | Rattled Teeth / Table Flip | Break the Room: +20% damage, -10% defense. | Earthshaker |
+| Berserker Chief (Tier 2) | **Berserker Chief’s Verdict** (); **Berserker Chief’s Standard** () | Berserker Chief’s Command, Berserker Chief’s Poise |  | Berserker Chief’s Gamble: Keystone: +20% damage, -10% max HP. | Berserker Chief |
+| Wrath Incarnate (Tier 3) | **Wrath Incarnate’s Onslaught** (); **Wrath Incarnate’s Aegis** () | Wrath Incarnate’s Command, Wrath Incarnate’s Poise |  | Wrath Incarnate’s Gamble: Keystone: +25% damage, -10% max HP. | Wrath Incarnate |
 
-### Stillhand (80 nodes)
+### Stillhand (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2320,8 +2480,10 @@ Generated from the data files by `npm run content:md`.
 | The Shadow Path | **Shade Step** (Mended Shade Step, Frugal Shade Step); **Pressure Point** (Heavier Pressure Point, Frugal Pressure Point) | Hush, Knowing Touch | Nerve Reader / Slipping Blade | Dusk Hand: +20% damage, -10% defense. | Walker of Shadows |
 | The Four Gusts | **First Gust** (Heavier First Gust, Guarded First Gust); **Ring of Gusts** (Heavier Ring of Gusts, Frugal Ring of Gusts) | Gale Force, Storm Edge | Gathered Wind / Four Corners | Wind Without Limit: +20% damage, -10% defense. | Voice of the Gale |
 | The Discipline | **Wind Kick** (Heavier Wind Kick, Quicker Wind Kick); **Stone Within** (Mended Stone Within, Frugal Stone Within) | Iron Shin, Unmoved | Slow Count / Held Form | Stone Within: +20% damage, -10% defense. | Master of the Form |
+| Grandmaster (Tier 2) | **Grandmaster’s Decree** (); **Grandmaster’s Bulwark** () | Grandmaster’s Command, Grandmaster’s Poise |  | Grandmaster’s Gamble: Keystone: +20% damage, -10% max HP. | Grandmaster |
+| Enlightened One (Tier 3) | **Enlightened One’s Strike** (); **Enlightened One’s Blessing** () | Enlightened One’s Command, Enlightened One’s Poise |  | Enlightened One’s Gamble: Keystone: +25% damage, -10% max HP. | Enlightened One |
 
-### Wayfinder (80 nodes)
+### Wayfinder (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2330,8 +2492,10 @@ Generated from the data files by `npm run content:md`.
 | The Favored Ground | **Favored Ground** (Mended Favored Ground, Frugal Favored Ground); **Snare** (Heavier Snare, Quicker Snare) | Home Turf, Bog Lore | Hidden Path / Old Trail | The Land Itself: +20% damage, -10% defense. | Warden of the Wild |
 | The Long Draw | **Long Draw** (Heavier Long Draw, Frugal Long Draw); **Sky Volley** (Heavier Sky Volley, Frugal Sky Volley) | Far Sight, Rain of Shafts | Wind Read / Perfect Draw | One Shot, One Reason: +20% damage, -10% defense. | Horizon Archer |
 | Woodcraft | **Hunter’s Focus** (Mended Hunter’s Focus, Frugal Hunter’s Focus); **Quiet Step** (Mended Quiet Step, Frugal Quiet Step) | Deep Focus, Silent Step | Camouflage / Slow Breath | One With the Brush: +20% damage, -10% defense. | Warden of the Road |
+| Pathmaster (Tier 2) | **Pathmaster’s Reckoning** (); **Pathmaster’s Bulwark** () | Pathmaster’s Command, Pathmaster’s Poise |  | Pathmaster’s Gamble: Keystone: +20% damage, -10% max HP. | Pathmaster |
+| Warden of the Wilds (Tier 3) | **Warden of the Wilds’ Judgment** (); **Warden of the Wilds’ Blessing** () | Warden of the Wilds’ Command, Warden of the Wilds’ Poise |  | Warden of the Wilds’ Gamble: Keystone: +25% damage, -10% max HP. | Warden of the Wilds |
 
-### Godblooded (80 nodes)
+### Godblooded (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2340,8 +2504,10 @@ Generated from the data files by `npm run content:md`.
 | The Wide Surge | **Quickened Surge** (Heavier Quickened Surge, Guarded Quickened Surge); **Wide Surge** (Heavier Wide Surge, Frugal Wide Surge) | Wide Reach, Rapid Cast | Sudden Surge / Two at Once | The Whole Room: +20% damage, -10% defense. | Reach of the Blood |
 | The Blood | **Bloodline Ward** (Mended Bloodline Ward, Frugal Bloodline Ward); **Ancestral Mend** (Mended Ancestral Mend, Frugal Ancestral Mend) | Ancestor’s Gift, Ward of Kin | Divine Leftovers / Faint Halo | The Bloodline Holds: +20% damage, -10% defense. | Heir of a God |
 | The Two Veins | **Storm Vein** (Heavier Storm Vein, Guarded Storm Vein); **Ember Vein** (Heavier Ember Vein, Guarded Ember Vein) | Storm Leaning, Ember Leaning | Even Temper / Balanced Blood | Both Ancestors: +20% damage, -10% defense. | Heir of Storm and Flame |
+| Demigod-Born (Tier 2) | **Demigod-Born’s Verdict** (); **Demigod-Born’s Bulwark** () | Demigod-Born’s Command, Demigod-Born’s Poise |  | Demigod-Born’s Gamble: Keystone: +20% damage, -10% max HP. | Demigod-Born |
+| Divine Scion (Tier 3) | **Divine Scion’s Onslaught** (); **Divine Scion’s Blessing** () | Divine Scion’s Command, Divine Scion’s Poise |  | Divine Scion’s Gamble: Keystone: +25% damage, -10% max HP. | Divine Scion |
 
-### Ichorbound (80 nodes)
+### Ichorbound (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2350,8 +2516,10 @@ Generated from the data files by `npm run content:md`.
 | The Void and the Blood | **Rite of the Void** (Heavier Rite of the Void, Quicker Rite of the Void); **Ichor Surge** (Mended Ichor Surge, Frugal Ichor Surge) | Void Edge, Second Pulse | Crimson Tide / Heavy Pour | Nothing Answers: +20% damage, -10% defense. | Rite-Master of the Void |
 | The Hexes | **Hex of Weakness** (Mended Hex of Weakness, Frugal Hex of Weakness); **Hex of Ruin** (Mended Hex of Ruin, Frugal Hex of Ruin) | Evil Eye, Bad Omen | Whispered Ill / Tied Knot | Curse Without End: +20% damage, -10% defense. | Hexwright’s Mark |
 | The Long Vigil | **Ichor Draught** (Mended Ichor Draught, Quicker Ichor Draught); **Bloodied Guard** (Mended Bloodied Guard, Frugal Bloodied Guard) | Bloodied but Steady, Pain Is a Price | Drink Deep / Bleed Slowly | Nothing Wasted: +20% damage, -10% defense. | The Ichor Remembers |
+| Ichor Lord (Tier 2) | **Ichor Lord’s Decree** (); **Ichor Lord’s Rally** () | Ichor Lord’s Command, Ichor Lord’s Poise |  | Ichor Lord’s Gamble: Keystone: +20% damage, -10% max HP. | Ichor Lord |
+| Godblood Hunter (Tier 3) | **Godblood Hunter’s Strike** (); **Godblood Hunter’s Mantle** () | Godblood Hunter’s Command, Godblood Hunter’s Poise |  | Godblood Hunter’s Gamble: Keystone: +25% damage, -10% max HP. | Godblood Hunter |
 
-### Fatedealer (80 nodes)
+### Fatedealer (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2360,8 +2528,10 @@ Generated from the data files by `npm run content:md`.
 | The Oracle | **Read the Table** (Mended Read the Table, Frugal Read the Table); **Delay the Turn** (Heavier Delay the Turn, Frugal Delay the Turn) | Read of the Room, Turning Card | Slow Hand / Twice-Told | The Future Was Marked: +20% damage, -10% defense. | Oracle of the Table |
 | The Trick | **Sleight of Hand** (Heavier Sleight of Hand, Quicker Sleight of Hand); **Palmed Ace** (Heavier Palmed Ace, Frugal Palmed Ace) | Marked Card, Hidden Ace | Wrong Hand / Off the Bottom | Never in the First Hand: +20% damage, -10% defense. | Trickster’s Grin |
 | The Fates | **Stack the Deck** (Mended Stack the Deck, Frugal Stack the Deck); **Fortune’s Glimpse** (Mended Fortune’s Glimpse, Frugal Fortune’s Glimpse) | Stacked Odds, Clear Glimpse | Quiet Table / Reserved Seat | The Table Is Yours: +20% damage, -10% defense. | Fate-Dealer |
+| High Roller (Tier 2) | **High Roller’s Verdict** (); **High Roller’s Bulwark** () | High Roller’s Command, High Roller’s Poise |  | High Roller’s Gamble: Keystone: +20% damage, -10% max HP. | High Roller |
+| Hand of Fate (Tier 3) | **Hand of Fate’s Onslaught** (); **Hand of Fate’s Blessing** () | Hand of Fate’s Command, Hand of Fate’s Poise |  | Hand of Fate’s Gamble: Keystone: +25% damage, -10% max HP. | Hand of Fate |
 
-### Mindwright (80 nodes)
+### Mindwright (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2370,8 +2540,10 @@ Generated from the data files by `npm run content:md`.
 | The Whispers | **Whisper In** (Mended Whisper In, Quicker Whisper In); **Mind Read** (Mended Mind Read, Quicker Mind Read) | Planted Doubt, Listening Look | Hidden Door / Quiet Word | The Thing They Think: +20% damage, -10% defense. | Voice in the Head |
 | The Hand Unseen | **Telekinetic Throw** (Heavier Telekinetic Throw, Quicker Telekinetic Throw); **Force Wave** (Heavier Force Wave, Quicker Force Wave) | Hurled, Pushed | Pinned / Dragged | Moving the Mountain: +20% damage, -10% defense. | The Hand Unseen |
 | The Still Pool | **Clear the Mind** (Mended Clear the Mind, Quicker Clear the Mind); **Mind Leap** (Mended Mind Leap, Quicker Mind Leap) | Release, Let It Go | Quick Leap / Light Step | Clear as Glass: +20% damage, -10% defense. | The Still Pool |
+| Mindlord (Tier 2) | **Mindlord’s Verdict** (); **Mindlord’s Bulwark** () | Mindlord’s Command, Mindlord’s Poise |  | Mindlord’s Gamble: Keystone: +20% damage, -10% max HP. | Mindlord |
+| Overmind (Tier 3) | **Overmind’s Onslaught** (); **Overmind’s Blessing** () | Overmind’s Command, Overmind’s Poise |  | Overmind’s Gamble: Keystone: +25% damage, -10% max HP. | Overmind |
 
-### Marshal (80 nodes)
+### Marshal (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2380,8 +2552,10 @@ Generated from the data files by `npm run content:md`.
 | The Push | **Press the Line** (Mended Press the Line, Frugal Press the Line); **Flag Signal** (Mended Flag Signal, Quicker Flag Signal) | Forward March, Banner Up | Drum Beat / Wide Front | No Time to Rest: +20% damage, -10% defense. | The Push Never Stops |
 | The Morale | **Rally Cry** (Mended Rally Cry, Frugal Rally Cry); **Standard Bearer** (Mended Standard Bearer, Quicker Standard Bearer) | Rallied, Standing Tall | Old Flag / Held Standard | Hearts High: +20% damage, -10% defense. | Keeper of the Standard |
 | The Tactics | **Study the Field** (Mended Study the Field, Quicker Study the Field); **Flanking Order** (Mended Flanking Order, Frugal Flanking Order) | Marked Target, Open Flank | Hidden Reserve / Ambush | Plan B Is Plan A: +20% damage, -10% defense. | Strategist |
+| General (Tier 2) | **General’s Onslaught** (); **General’s Aegis** () | General’s Command, General’s Poise |  | General’s Gamble: Keystone: +20% damage, -10% max HP. | General |
+| Lord Commander (Tier 3) | **Lord Commander’s Decree** (); **Lord Commander’s Rally** () | Lord Commander’s Command, Lord Commander’s Poise |  | Lord Commander’s Gamble: Keystone: +25% damage, -10% max HP. | Lord Commander |
 
-### Corsair (80 nodes)
+### Corsair (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2390,8 +2564,10 @@ Generated from the data files by `npm run content:md`.
 | The Crew | **Boarding Party** (Heavier Boarding Party, Frugal Boarding Party); **Rally the Crew** (Mended Rally the Crew, Frugal Rally the Crew) | Boarding Axes, Rousing Song | Full Hold / Tight Ship | Every Hand on Deck: +20% damage, -10% defense. | Captain of the Crew |
 | The Sail | **Hard A-Port** (Mended Hard A-Port, Frugal Hard A-Port); **Storm Sails** (Heavier Storm Sails, Frugal Storm Sails) | Full Canvas, Gale Force | Storm Reader / Eye of the Storm | Ride the Weather: +20% damage, -10% defense. | Stormcaptain’s Gale |
 | The Colors | **Run Up the Colors** (Mended Run Up the Colors, Quicker Run Up the Colors); **Dead Calm** (Mended Dead Calm, Frugal Dead Calm) | Struck Colors, Dead Calm | Fear of the Flag / Raised Voices | The Name Is Enough: +20% damage, -10% defense. | Terror of the Sea |
+| Captain (Tier 2) | **Captain’s Verdict** (); **Captain’s Bulwark** () | Captain’s Command, Captain’s Poise |  | Captain’s Gamble: Keystone: +20% damage, -10% max HP. | Captain |
+| Admiral of the Shattered Seas (Tier 3) | **Admiral of the Shattered Seas’ Onslaught** (); **Admiral of the Shattered Seas’ Blessing** () | Admiral of the Shattered Seas’ Command, Admiral of the Shattered Seas’ Poise |  | Admiral of the Shattered Seas’ Gamble: Keystone: +25% damage, -10% max HP. | Admiral of the Shattered Seas |
 
-### Brawler (80 nodes)
+### Brawler (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2400,8 +2576,10 @@ Generated from the data files by `npm run content:md`.
 | The Grapple | **Bear Hug** (Heavier Bear Hug, Frugal Bear Hug); **Slam Down** (Heavier Slam Down, Frugal Slam Down) | Crushing Hold, Hard Landing | Pinned / Dragged Down | No Escape: +20% damage, -10% defense. | Master of the Hold |
 | The Drunken Stance | **Drunken Stance** (Mended Drunken Stance, Quicker Drunken Stance); **Stagger Away** (Mended Stagger Away, Frugal Stagger Away) | Fluid Fall, Swaying | Happy Accident / Soft Landing | Falling Upward: +20% damage, -10% defense. | Master of the Stagger |
 | The Tavern Code | **Take It on the Chin** (Mended Take It on the Chin, Frugal Take It on the Chin); **Last Orders** (Mended Last Orders, Frugal Last Orders) | Bar Legend, Always a Table | Round on Me / Raised Glass | Bouncer’s Bane: +20% damage, -10% defense. | Legend of the Taproom |
+| Pit Champion (Tier 2) | **Pit Champion’s Decree** (); **Pit Champion’s Bulwark** () | Pit Champion’s Command, Pit Champion’s Poise |  | Pit Champion’s Gamble: Keystone: +20% damage, -10% max HP. | Pit Champion |
+| Undisputed (Tier 3) | **Undisputed’s Strike** (); **Undisputed’s Blessing** () | Undisputed’s Command, Undisputed’s Poise |  | Undisputed’s Gamble: Keystone: +25% damage, -10% max HP. | Undisputed |
 
-### Whisperknight (80 nodes)
+### Whisperknight (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2410,8 +2588,10 @@ Generated from the data files by `npm run content:md`.
 | The Nameless Oath | **Unheard Oath** (Mended Unheard Oath, Frugal Unheard Oath); **Quiet Guard** (Mended Quiet Guard, Frugal Quiet Guard) | Unheard Vow, Quiet Armor | Long Watch / Sealed Lips | Oath Without a Name: +20% damage, -10% defense. | Sworn to Nothing |
 | The Auditor’s Mark | **Nameless Mark** (Mended Nameless Mark, Quicker Nameless Mark); **Auditor’s Shadow** (Mended Auditor’s Shadow, Frugal Auditor’s Shadow) | Marked in Full, Audited | Unbalanced / Final Sum | The Count Is Kept: +20% damage, -10% defense. | Auditor’s Hand |
 | The Listening Dark | **Listening Dark** (Mended Listening Dark, Frugal Listening Dark); **Void Stitch** (Heavier Void Stitch, Frugal Void Stitch) | Silent Dark, Stitched Void | Hollow Hush / Edge of Nothing | The Dark Listens: +12% void damage, -5% defense. Your blows Silence singing enemies: the Choir hates a Whisperknight. | Void-Stitcher |
+| Hushlord (Tier 2) | **Hushlord’s Verdict** (); **Hushlord’s Bulwark** () | Hushlord’s Command, Hushlord’s Poise |  | Hushlord’s Gamble: Keystone: +20% damage, -10% max HP. | Hushlord |
+| Voice Unheard (Tier 3) | **Voice Unheard’s Onslaught** (); **Voice Unheard’s Blessing** () | Voice Unheard’s Command, Voice Unheard’s Poise |  | Voice Unheard’s Gamble: Keystone: +25% damage, -10% max HP. | Voice Unheard |
 
-### Hearthmaster (80 nodes)
+### Hearthmaster (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2420,8 +2600,10 @@ Generated from the data files by `npm run content:md`.
 | The Poison Courses | **Poison Course** (Heavier Poison Course, Quicker Poison Course); **Sour Surprise** (Mended Sour Surprise, Frugal Sour Surprise) | Death Cap, Foxglove | Slow Venom / Garnish | The Dish Is Poison: +20% damage, -10% defense. | Poisoner at Table |
 | The Hearth | **Pan Guard** (Mended Pan Guard, Quicker Pan Guard); **Warm Bread** (Mended Warm Bread, Frugal Warm Bread) | Pan Guard, Bread Oven | Door Open / Kettle On | Always Room: +20% damage, -10% defense. | Keeper of the Hearth |
 | The Table | **Slow Simmer** (Mended Slow Simmer, Frugal Slow Simmer); **Last Spoonful** (Mended Last Spoonful, Frugal Last Spoonful) | Slow Simmer, Last Spoon | Second Helping / Clean Plate | A Seat for Everyone: +20% damage, -10% defense. | Host of the Table |
+| Master Cook (Tier 2) | **Master Cook’s Strike** (); **Master Cook’s Mantle** () | Master Cook’s Command, Master Cook’s Poise |  | Master Cook’s Gamble: Keystone: +20% damage, -10% max HP. | Master Cook |
+| Heart of the Hearth (Tier 3) | **Heart of the Hearth’s Reckoning** (); **Heart of the Hearth’s Bulwark** () | Heart of the Hearth’s Command, Heart of the Hearth’s Poise |  | Heart of the Hearth’s Gamble: Keystone: +25% damage, -10% max HP. | Heart of the Hearth |
 
-### Truthseeker (80 nodes)
+### Truthseeker (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2430,8 +2612,10 @@ Generated from the data files by `npm run content:md`.
 | The Case File | **Case Notes** (Mended Case Notes, Frugal Case Notes); **Second Opinion** (Mended Second Opinion, Frugal Second Opinion) | Case Notes, Second Opinion | Tidy Files / Shared Findings | The Whole File: +20% damage, -10% defense. | Keeper of the Case |
 | The Logical Conclusion | **Point Out the Inconsistency** (Heavier Point Out the Inconsistency, Quicker Point Out the Inconsistency); **Logical Conclusion** (Heavier Logical Conclusion, Frugal Logical Conclusion) | Reductio, Inference | Proof / Corollary | QED: +20% damage, -10% defense. | Master of Logic |
 | The Lamp | **Sharp Eye** (Mended Sharp Eye, Frugal Sharp Eye); **Lantern Light** (Mended Lantern Light, Quicker Lantern Light) | Eagle Eye, Bull’s-Eye Beam | Long Wick / Full Flame | Light on the Matter: +20% damage, -10% defense. | Bearer of the Lamp |
+| Chief Inspector (Tier 2) | **Chief Inspector’s Onslaught** (); **Chief Inspector’s Blessing** () | Chief Inspector’s Command, Chief Inspector’s Poise |  | Chief Inspector’s Gamble: Keystone: +20% damage, -10% max HP. | Chief Inspector |
+| Oracle of the Plain Truth (Tier 3) | **Oracle of the Plain Truth’s Decree** (); **Oracle of the Plain Truth’s Standard** () | Oracle of the Plain Truth’s Command, Oracle of the Plain Truth’s Poise |  | Oracle of the Plain Truth’s Gamble: Keystone: +25% damage, -10% max HP. | Oracle of the Plain Truth |
 
-### Hedgewitch (80 nodes)
+### Hedgewitch (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2440,8 +2624,10 @@ Generated from the data files by `npm run content:md`.
 | The Familiars | **Call the Cat** (Mended Call the Cat, Frugal Call the Cat); **Call the Toad** (Mended Call the Toad, Frugal Call the Toad) | Cat’s Pace, Toad’s Patience | Shared Sight / Familiar Bond | Four Eyes: +20% damage, -10% defense. | Mistress of Familiars |
 | The Effigies | **Straw Effigy** (Mended Straw Effigy, Frugal Straw Effigy); **Wax Effigy** (Mended Wax Effigy, Frugal Wax Effigy) | Straw Man, Wax Likeness | Pinned Hair / Tied Knot | Dolls Without Number: +20% damage, -10% defense. | Effigy-Maker |
 | The Night Road | **Hedge Ward** (Mended Hedge Ward, Frugal Hedge Ward); **Night Flight** (Mended Night Flight, Frugal Night Flight) | Thorn Ward, Moonlit Flight | Broom Handle / Cold Moon | Over the Hedge: +20% damage, -10% defense. | Rider of the Night |
+| Hedge Crone (Tier 2) | **Hedge Crone’s Onslaught** (); **Hedge Crone’s Mantle** () | Hedge Crone’s Command, Hedge Crone’s Poise |  | Hedge Crone’s Gamble: Keystone: +20% damage, -10% max HP. | Hedge Crone |
+| Mother of the Wild Lane (Tier 3) | **Mother of the Wild Lane’s Decree** (); **Mother of the Wild Lane’s Bulwark** () | Mother of the Wild Lane’s Command, Mother of the Wild Lane’s Poise |  | Mother of the Wild Lane’s Gamble: Keystone: +25% damage, -10% max HP. | Mother of the Wild Lane |
 
-### Soulblade (80 nodes)
+### Soulblade (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2450,8 +2636,10 @@ Generated from the data files by `npm run content:md`.
 | The Guard | **Shared Wounds** (Mended Shared Wounds, Quicker Shared Wounds); **Parry With Opinion** (Mended Parry With Opinion, Frugal Parry With Opinion) | Shared Pain, Opinionated Parry | Warded Hilt / Lowered Point | Never Struck Twice: +20% damage, -10% defense. | Guard of the Pair |
 | The Dance | **Blade Dance** (Heavier Blade Dance, Frugal Blade Dance); **Heavy Silence** (Heavier Heavy Silence, Frugal Heavy Silence) | Whirling Edge, Silent Blow | Long Reach / Tight Spin | Every Cut Is a Step: +20% damage, -10% defense. | Duelist of the Pair |
 | The Whetstone | **Whetstone Oath** (Mended Whetstone Oath, Frugal Whetstone Oath); **Remembered Wound** (Mended Remembered Wound, Frugal Remembered Wound) | Honed Oath, Remembered | Old Scar / Kept Edge | The Edge Remembers: +20% damage, -10% defense. | Keeper of the Edge |
+| Blademaster (Tier 2) | **Blademaster’s Reckoning** (); **Blademaster’s Rally** () | Blademaster’s Command, Blademaster’s Poise |  | Blademaster’s Gamble: Keystone: +20% damage, -10% max HP. | Blademaster |
+| Edge Eternal (Tier 3) | **Edge Eternal’s Judgment** (); **Edge Eternal’s Mantle** () | Edge Eternal’s Command, Edge Eternal’s Poise |  | Edge Eternal’s Gamble: Keystone: +25% damage, -10% max HP. | Edge Eternal |
 
-### Facewright (80 nodes)
+### Facewright (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2460,8 +2648,10 @@ Generated from the data files by `npm run content:md`.
 | The Dark Masks | **Mask of the Widow** (Heavier Mask of the Widow, Quicker Mask of the Widow); **Mask of the Hound** (Heavier Mask of the Hound, Quicker Mask of the Hound) | Mourning Face, Hunting Face | Deep Hood / Silent Step | Night Faces: +20% damage, -10% defense. | Master of Dark Masks |
 | The Court Masks | **Mask of the Lord** (Heavier Mask of the Lord, Quicker Mask of the Lord); **Mask of the Ghost** (Heavier Mask of the Ghost, Quicker Mask of the Ghost) | Lord’s Face, Ghost’s Face | Pale Hand / Thin Smile | Court Intrigue: +20% damage, -10% defense. | Master of Court Masks |
 | The Faithful Masks | **Mask of the Saint** (Heavier Mask of the Saint, Quicker Mask of the Saint); **Mask of the Sinner** (Heavier Mask of the Sinner, Quicker Mask of the Sinner) | Saint’s Face, Sinner’s Face | Pious Eyes / Wicked Grin | Faith and Sin: +20% damage, -10% defense. | Master of Faithful Masks |
+| Mask-Master (Tier 2) | **Mask-Master’s Strike** (); **Mask-Master’s Mantle** () | Mask-Master’s Command, Mask-Master’s Poise |  | Mask-Master’s Gamble: Keystone: +20% damage, -10% max HP. | Mask-Master |
+| Face of Faces (Tier 3) | **Face of Faces’ Reckoning** (); **Face of Faces’ Bulwark** () | Face of Faces’ Command, Face of Faces’ Poise |  | Face of Faces’ Gamble: Keystone: +25% damage, -10% max HP. | Face of Faces |
 
-### Bellwarden (80 nodes)
+### Bellwarden (100 nodes)
 
 | Branch | Skills (modifiers) | Notables | Choice | Keystone | Capstone |
 |---|---|---|---|---|---|
@@ -2470,6 +2660,8 @@ Generated from the data files by `npm run content:md`.
 | The Alarm | **Clanging Alarm** (Mended Clanging Alarm, Frugal Clanging Alarm); **Cracked Chime** (Heavier Cracked Chime, Quicker Cracked Chime) | Sour Note, Flat Chime | Alarm Bell / Fire Bell | The Town Wakes: +12% status chance, -5% defense. Your tones Silence singing enemies it hits: the Choir cannot sing over a bell. | Master of Alarms |
 | The Bell Ward | **Muffled Bell** (Mended Muffled Bell, Frugal Muffled Bell); **Bell Ward** (Mended Bell Ward, Frugal Bell Ward) | Warded Tone, Held Sound | Safe Hour / Roof Over | Sound Within Walls: +20% damage, -10% defense. | Warden of the Bell |
 | The Peal | **Resonance** (Heavier Resonance, Frugal Resonance); **The Quiet After** (Mended The Quiet After, Frugal The Quiet After) | Full Peal, Ringing Silence | Long Echo / Fading Note | The Last Echo: +20% damage, -10% defense. | Master of the Peal |
+| Bell-Captain (Tier 2) | **Bell-Captain’s Strike** (); **Bell-Captain’s Mantle** () | Bell-Captain’s Command, Bell-Captain’s Poise |  | Bell-Captain’s Gamble: Keystone: +20% damage, -10% max HP. | Bell-Captain |
+| Great Bell Incarnate (Tier 3) | **Great Bell Incarnate’s Reckoning** (); **Great Bell Incarnate’s Bulwark** () | Great Bell Incarnate’s Command, Great Bell Incarnate’s Poise |  | Great Bell Incarnate’s Gamble: Keystone: +25% damage, -10% max HP. | Great Bell Incarnate |
 
 ### Tree skills
 
@@ -2481,36 +2673,60 @@ Generated from the data files by `npm run content:md`.
 | **Shield Slam** | Warrior | free | 3 | Slam for 130% ATK with a 40% chance to Stun. Heavy stagger. |
 | **Battle Shout** | Warrior | free | 5 | The party deals +20% damage for 3 turns. Gain 15 Rage. |
 | **Whirlwind** | Warrior | 35 Rage | 2 | Spin through every enemy for 110% ATK. |
+| **Warlord’s Onslaught** | Warrior | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Warlord’s Blessing** | Warrior | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Champion of Vael’s Decree** | Warrior | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Champion of Vael’s Standard** | Warrior | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Flame Wave** | Mage | 14 MP | 2 | A wall of fire washes over every enemy for 110% MAG, possibly Burning them. |
 | **Frost Nova** | Mage | 16 MP | 3 | Ice erupts around every enemy for 80% MAG: Slowed, maybe Frozen. |
 | **Lightning Bolt** | Mage | 8 MP | 0 | A crack of lightning for 165% MAG. |
 | **Chain Lightning** | Mage | 14 MP | 2 | Lightning leaps between enemies: 4 strikes of 65% MAG at random targets. |
 | **Arcane Missiles** | Mage | 9 MP | 0 | Three seeking missiles, 60% MAG each, at random enemies. |
 | **Mana Shield** | Mage | 15 MP | 4 | Wrap yourself in a shield worth 150% MAG. |
+| **Archmage’s Onslaught** | Mage | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Archmage’s Blessing** | Mage | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Arcane Sovereign’s Decree** | Mage | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Arcane Sovereign’s Standard** | Mage | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Garrote** | Rogue | free | 2 | Choke the target for 90% ATK and 3 stacks of Bleed. Builds a Combo Point. |
 | **Vanish** | Rogue | free | 5 | Disappear into the shadows: Stealth for 2 turns and +20% dodge. |
 | **Fan of Knives** | Rogue | free | 1 | Knives fly at every enemy for 75% ATK. Builds a Combo Point. |
 | **Cheap Shot** | Rogue | free | 3 | A low blow for 70% ATK with a 70% chance to Stun. Builds a Combo Point. |
 | **Poison Blade** | Rogue | free | 0 | A venom-coated cut for 100% ATK as nature damage and 2 stacks of Poison. Builds a Combo Point. |
 | **Toxic Cloud** | Rogue | 2 Combo Points | 3 | A cloud of poison: every enemy takes 50% ATK nature damage and 2 stacks of Poison. |
+| **Shadowmaster’s Onslaught** | Rogue | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Shadowmaster’s Aegis** | Rogue | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Nightsovereign’s Decree** | Rogue | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Nightsovereign’s Rally** | Rogue | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Prayer of Healing** | Cleric | 18 MP | 3 | Heal every ally for 90% DIV. Grants Faith. |
 | **Holy Fire** | Cleric | 10 MP | 1 | Sacred flame for 130% DIV that Burns. |
 | **Power Word: Shield** | Cleric | 10 MP | 2 | Shield an ally for 160% DIV. |
 | **Penance** | Cleric | 12 MP | 2 | Three bolts of judgement, 55% DIV each. |
 | **Blessing of Might** | Cleric | 8 MP | 4 | Bless an ally: +20% damage for 3 turns. |
 | **Holy Nova** | Cleric | 30 Faith | 2 | A burst of light: 80% DIV to every enemy and every ally heals 10% of max HP. |
+| **Bishop’s Judgment** | Cleric | 14 MP | 2 | A master stroke: 200% holy damage, with a 50% chance of blind. |
+| **Bishop’s Blessing** | Cleric | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Living Saint’s Verdict** | Cleric | 20 MP | 2 | A crowning stroke: 260% holy damage, with a 50% chance of blind. |
+| **Living Saint’s Standard** | Cleric | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Snipe** | Ranger | 6 MP | 3 | A long, careful shot for 230% ATK. Heavy stagger. Builds Focus. |
 | **Call of the Wild** | Ranger | 15 MP | 6 | Call a spirit stag to fight beside you. |
 | **Serpent Sting** | Ranger | 4 MP | 1 | A venomed arrow for 90% ATK nature damage and 2 stacks of Poison. Builds Focus. |
 | **Explosive Shot** | Ranger | 12 MP | 3 | An exploding arrow: 90% ATK fire damage to every enemy. |
 | **Arrow Barrage** | Ranger | 10 MP | 2 | Four arrows at random enemies, 55% ATK each. |
 | **Nature’s Grace** | Ranger | 12 MP | 4 | Heal 25% of max HP and gain Regen. |
+| **Warden-Captain’s Decree** | Ranger | 14 MP | 2 | A master stroke: 200% nature damage, with a 50% chance of poison. |
+| **Warden-Captain’s Standard** | Ranger | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Huntsman Eternal’s Strike** | Ranger | 20 MP | 2 | A crowning stroke: 260% nature damage, with a 50% chance of poison. |
+| **Huntsman Eternal’s Aegis** | Ranger | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Bone Spear** | Necromancer | 8 MP | 1 | A spear of bone pierces the whole front row for 120% MAG. |
 | **Plague** | Necromancer | 10 MP | 2 | Infect the target: 60% MAG nature damage, 3 stacks of Poison and a Curse. |
 | **Decay** | Necromancer | 16 MP | 3 | Rot spreads to every enemy: 75% MAG nature damage and Poison. |
 | **Soul Harvest** | Necromancer | 6 MP + 1 Soul Shards | 1 | Finisher. Spends every Soul Shard: 80% MAG shadow damage plus 50% per shard. |
 | **Death Coil** | Necromancer | 10 MP | 1 | A coil of death for 130% MAG that heals you for 6% of max HP. |
 | **Curse of Agony** | Necromancer | 8 MP | 3 | Curse and Weaken the target, with a chance to Fear it. |
+| **Lich-Adept’s Verdict** | Necromancer | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Lich-Adept’s Rally** | Necromancer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Deathlord’s Onslaught** | Necromancer | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Deathlord’s Mantle** | Necromancer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Tiger Claw** | Monk | 2 Chi | 1 | Spend 2 Chi: a raking strike for 210% ATK that causes Bleed. |
 | **Crane Stance** | Monk | free | 0 | Shift into Crane stance: defensive, and basic attacks heal you. |
 | **Crane Kick** | Monk | 1 Chi | 1 | Spend 1 Chi: a graceful kick for 140% ATK that heals you for 8% of max HP. |
@@ -2518,6 +2734,10 @@ Generated from the data files by `npm run content:md`.
 | **Viper Strike** | Monk | 1 Chi | 1 | Spend 1 Chi: a lightning-fast jab for 120% ATK nature damage and 2 stacks of Poison. |
 | **Chi Burst** | Monk | 2 Chi | 2 | Spend 2 Chi: a wave of spirit force hits every enemy for 85% ATK as arcane damage. |
 | **Meditation** | Monk | free | 4 | Center yourself: heal 15% of max HP, restore 20 MP and gain 2 Chi. |
+| **Grand Adept’s Reckoning** | Monk | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Grand Adept’s Rally** | Monk | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Ascended Fist’s Judgment** | Monk | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Ascended Fist’s Mantle** | Monk | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Battle Hymn** | Bard | 8 MP | 2 | A stirring verse: 130% MAG arcane damage and +10% party damage for 2 turns. Builds Verse. |
 | **Heroic Ballad** | Bard | 12 MP | 4 | The party deals +25% damage for 2 turns. |
 | **Ballad of Warding** | Bard | 8 MP | 0 | Begin the Ballad of Warding: allies gain defense and magic resist. |
@@ -2525,24 +2745,40 @@ Generated from the data files by `npm run content:md`.
 | **Cacophony** | Bard | 16 MP | 3 | A wall of noise: 85% MAG to every enemy, Weaken, and a chance to Silence. |
 | **Jig of Swiftness** | Bard | 8 MP | 0 | Begin the Jig of Swiftness: allies gain 10% speed. |
 | **Dazzling Display** | Bard | 12 MP | 2 | A blinding show: three bursts of 75% MAG at random enemies, each may Blind. |
+| **Maestro’s Verdict** | Bard | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Maestro’s Bulwark** | Bard | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Voice of Legends’ Onslaught** | Bard | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Voice of Legends’ Blessing** | Bard | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Bulwark Stand** | Knight | 20 Resolve | 4 | Spend 20 Resolve: take 35% less damage for 2 turns and Taunt every enemy. |
 | **Avenging Blow** | Knight | 25 Resolve | 1 | Spend 25 Resolve: a holy blow for 300% ATK. |
 | **Knight’s Standard** | Knight | 25 Resolve | 5 | Spend 25 Resolve: the party gains +12% damage and +10% defense for 3 turns. |
 | **Inspiring Charge** | Knight | 25 Resolve | 4 | Spend 25 Resolve: charge for 150% ATK and Haste the party for 2 turns. |
 | **Steel Resolve** | Knight | free | 4 | Heal 15% of max HP and gain 15 Resolve. |
 | **Last Stand** | Knight | 40 Resolve | 7 | Spend 40 Resolve: for 2 turns take 50% less damage, heal 10% of max HP now. |
+| **Knight-Captain’s Verdict** | Knight | 14 MP | 2 | A master stroke: 200% holy damage, with a 50% chance of blind. |
+| **Knight-Captain’s Standard** | Knight | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **High Paladin of the Wheel’s Onslaught** | Knight | 20 MP | 2 | A crowning stroke: 260% holy damage, with a 50% chance of blind. |
+| **High Paladin of the Wheel’s Aegis** | Knight | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Maul** | Druid | 20 Primal Spirit | 1 | Bear form, 20 Primal Spirit: a crushing swipe for 290% ATK that Taunts the target. |
 | **Wolf Form** | Druid | free | 0 | Shift into a wolf: +10% damage, +6 speed, +8% dodge; basic attacks cause Bleed. Gain 8 Primal Spirit. |
 | **Rending Bite** | Druid | 20 Primal Spirit | 1 | Wolf form, 20 Primal Spirit: a savage bite for 250% ATK and 2 stacks of Bleed. |
 | **Owl Form** | Druid | free | 0 | Shift into an owl: +15% magic attack and 8% cooldown reduction; basic attacks fire arcane bolts. Gain 8 Primal Spirit. |
 | **Treant Form** | Druid | free | 0 | Shift into a treant: +20% defense, regenerate, basic attacks heal you. Gain 8 Primal Spirit. |
 | **Rejuvenate** | Druid | 15 Primal Spirit | 1 | Natural or Treant form, 15 Primal Spirit: heal an ally for 140% DIV and give them Regeneration for 3 turns. |
+| **Archdruid’s Strike** | Druid | 14 MP | 2 | A master stroke: 200% nature damage, with a 50% chance of poison. |
+| **Archdruid’s Blessing** | Druid | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Wildlord’s Reckoning** | Druid | 20 MP | 2 | A crowning stroke: 260% nature damage, with a 50% chance of poison. |
+| **Wildlord’s Standard** | Druid | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Hellfire** | Warlock | 20 Pact Power | 1 | Spend 20 Pact Power: 200% MAG fire damage to an enemy and Burn. You gain 1 Fel Taint. |
 | **Pact of the Hollow Star** | Warlock | free | 0 | Swear to the Hollow Star: +20% void damage; basic attacks may Weaken. Gain 10 Pact Power. |
 | **Void Rift** | Warlock | 20 Pact Power | 1 | Spend 20 Pact Power: tear a rift for 190% MAG void damage and Weaken. You gain 1 Fel Taint. |
 | **Pact of Thorns** | Warlock | free | 0 | Swear to the Thorned Queen: +10% crit chance, +20% nature damage; basic attacks may Slow. Gain 10 Pact Power. |
 | **Withering Hex** | Warlock | 15 Pact Power | 2 | Spend 15 Pact Power: curse an enemy: Curse, Vulnerable and 140% MAG shadow damage. You gain 1 Fel Taint. |
 | **Purge Taint** | Warlock | 15 Pact Power | 3 | Spend 15 Pact Power: burn the corruption out of you. Lose all Fel Taint and heal 12% of max HP. |
+| **Pactmaster’s Verdict** | Warlock | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Pactmaster’s Rally** | Warlock | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Archfiend-Bound’s Onslaught** | Warlock | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Archfiend-Bound’s Mantle** | Warlock | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Soulbind** | Summoner | 20 Bond | 4 | Spend 20 Bond: your spirits and you deal +25% damage for 3 turns. |
 | **Elemental Surge** | Summoner | 25 Bond | 3 | Spend 25 Bond: the elements answer: 150% MAG damage to every enemy (fire, ice and lightning). |
 | **Conduit** | Summoner | free | 4 | Channel your spirits: heal 12% of max HP, and gain 20 Bond. |
@@ -2550,201 +2786,349 @@ Generated from the data files by `npm run content:md`.
 | **Sacrifice** | Summoner | 30 Bond | 5 | Spend 30 Bond: you take 10% max HP in damage, and your party is healed for 20%. |
 | **Greater Summoning** | Summoner | 35 Bond | 5 | Spend 35 Bond: a ritual that calls a Spirit Stag and a Wolf Companion together. |
 | **Banish** | Summoner | 25 Bond | 4 | Spend 25 Bond: send an enemy elsewhere for a moment: 130% MAG arcane damage and it is Stunned. |
+| **Spirit Lord’s Judgment** | Summoner | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Spirit Lord’s Aegis** | Summoner | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Sovereign of Pacts’ Verdict** | Summoner | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Sovereign of Pacts’ Rally** | Summoner | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Frost Grenade** | Alchemist | 3 Reagents | 2 | Brew, 3 Reagents: a grenade of cold for 120% MAG ice damage to every enemy and Slow. |
 | **Mutagen of Might** | Alchemist | 3 Reagents | 4 | Brew, 3 Reagents: +30% physical attack and +15% damage for 3 turns, but you take 10% more damage. |
 | **Mutagen of Swiftness** | Alchemist | 2 Reagents | 4 | Brew, 2 Reagents: +15 speed and +15% dodge for 3 turns. |
 | **Antidote Mist** | Alchemist | 2 Reagents | 3 | Brew, 2 Reagents: a curative mist cleanses Poison, Bleed and Burn from the whole party and heals 6%. |
 | **Quicksilver Tonic** | Alchemist | 3 Reagents | 4 | Brew, 3 Reagents: an ally is Hasted for 3 turns and their cooldowns drop by 1. |
 | **Philosopher’s Gambit** | Alchemist | 4 Reagents | 3 | Brew, 4 Reagents: a volatile transmutation: 280% MAG arcane damage, and 60 gold spun from the residue. |
+| **Master Alchemist’s Onslaught** | Alchemist | 14 MP | 2 | A master stroke: 200% fire damage, with a 50% chance of burn. |
+| **Master Alchemist’s Mantle** | Alchemist | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Philosopher Supreme’s Decree** | Alchemist | 20 MP | 2 | A crowning stroke: 260% fire damage, with a 50% chance of burn. |
+| **Philosopher Supreme’s Bulwark** | Alchemist | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Storm Totem** | Shaman | 15 MP | 3 | Spend 15 MP: raise a Storm Totem that arcs lightning through three enemies each turn for 6 turns. |
 | **Stoneward Totem** | Shaman | 12 MP | 3 | Spend 12 MP: raise a Stoneward Totem that shields the party for 6% of max HP every other turn. |
 | **Earthbind** | Shaman | 12 MP | 3 | Spend 12 MP: the ground grips every enemy: 90% MAG physical damage and Slow. |
 | **Call Ancestor** | Shaman | 30 Ancestral Spirit | 4 | Spend 30 Ancestral Spirit: the dead lend their strength: heal the party for 15% and grant +15% damage for 3 turns. |
 | **Spirit Walk** | Shaman | free | 4 | Step half out of the world: +20% dodge and +15% damage for 3 turns. Gain 15 Ancestral Spirit. |
 | **Tide Totem** | Shaman | 12 MP | 3 | Spend 12 MP: raise a Tide Totem that heals the party for 6% of max HP each turn. |
+| **Elder Shaman’s Strike** | Shaman | 14 MP | 2 | A master stroke: 200% lightning damage, with a 50% chance of slow. |
+| **Elder Shaman’s Aegis** | Shaman | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Ancestor-Voice’s Reckoning** | Shaman | 20 MP | 2 | A crowning stroke: 260% lightning damage, with a 50% chance of slow. |
+| **Ancestor-Voice’s Rally** | Shaman | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Time Lock** | Chronomancer | 25 Temporal Charge | 4 | Spend 25 Charge: lock an enemy in a single moment: its next turn is pushed back two full turns. |
 | **Temporal Surge** | Chronomancer | 40 Temporal Charge | 5 | Spend 40 Charge: fold a turn out of nowhere. You act again immediately. |
 | **Rewind** | Chronomancer | 20 Temporal Charge | 3 | Spend 20 Charge: wind an ally back to its best health of the last three turns and clear its harmful statuses. |
 | **Echo of the Hour** | Chronomancer | 30 Temporal Charge | 3 | Spend 30 Charge: the last skill you used happens again, free. |
 | **Withering Years** | Chronomancer | free | 2 | Age an enemy by decades: 150% MAG arcane damage, Weaken and Curse for 3 turns. Gain 6 Charge. |
 | **Decay Field** | Chronomancer | 25 Temporal Charge | 3 | Spend 25 Charge: a field of accelerated time: 100% MAG arcane damage to every enemy and Slow. |
+| **Timelord’s Reckoning** | Chronomancer | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Timelord’s Rally** | Chronomancer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Eternal’s Judgment** | Chronomancer | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Eternal’s Mantle** | Chronomancer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Overcharge Shot** | Artificer | free | 2 | A shot loaded past its limit: 330% ATK. Gain 28 Heat. |
 | **Tesla Coil** | Artificer | 14 MP | 4 | Raise a Tesla Coil that arcs lightning through the enemy line for 7 turns. Gain 18 Heat. |
 | **Repair Drone** | Artificer | 12 MP | 4 | Launch a Repair Drone that mends the party each turn for 8 turns. Gain 10 Heat. |
 | **Mech Suit** | Artificer | free | 0 | Climb into the suit: +30% defense, +25% physical attack, heavy basic attacks. Gain 15 Heat. |
 | **Rune Charge** | Artificer | free | 4 | Etch a rune: the party gains +15% damage and +10% crit chance for 3 turns, and you shed 25 Heat. |
 | **Vent Steam** | Artificer | free | 3 | Shed 50 Heat in a scalding cloud: 100% ATK fire damage to every enemy. |
+| **Master Artificer’s Reckoning** | Artificer | 14 MP | 2 | A master stroke: 200% fire damage, with a 50% chance of burn. |
+| **Master Artificer’s Rally** | Artificer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Grand Machinist’s Judgment** | Artificer | 20 MP | 2 | A crowning stroke: 260% fire damage, with a 50% chance of burn. |
+| **Grand Machinist’s Mantle** | Artificer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Whirling Cut** | Dancer | free | 1 | A spin through the front row for 105% ATK. Gain 2 Rhythm and a stack of Tempo. |
 | **Dazzling Spin** | Dancer | free | 2 | A flash of silk: every enemy is Blinded and takes 70% ATK. Gain 2 Rhythm and a stack of Tempo. |
 | **War Drum** | Dancer | free | 3 | Beat out a march: the party gains +15% damage for 3 turns. Gain 2 Rhythm. |
 | **March Beat** | Dancer | free | 4 | A quickening beat: the party is Hasted for 2 turns. Gain 2 Rhythm. |
 | **Curtain Call** | Dancer | free | 2 | Spend all Rhythm and Tempo: a finishing flourish for 180% ATK, plus 35% per Rhythm spent. |
 | **Encore** | Dancer | 4 Rhythm | 3 | Spend 4 Rhythm: the last move you made happens again, free. |
+| **Prima’s Decree** | Dancer | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Prima’s Rally** | Dancer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Dance of Ages’ Strike** | Dancer | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Dance of Ages’ Mantle** | Dancer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Sigil of Binding** | Inkweaver | 20 Ink | 3 | Spend 20 Ink: paint a sigil. The next 3 enemy turns each begin with 60% MAG shadow damage and Slow. |
 | **Sigil of Doubt** | Inkweaver | 20 Ink | 3 | Spend 20 Ink: paint a sigil. The next 3 enemy turns each begin with a 60% chance of Blind and a 30% chance of Fear. |
 | **Living Scroll** | Inkweaver | 20 Ink | 4 | Spend 20 Ink: unroll a Living Scroll that casts for you for 7 turns. |
 | **Sigil of Mending** | Inkweaver | 20 Ink | 3 | Spend 20 Ink: paint a sigil. The next 3 enemy turns each begin by healing the party for 6%. |
 | **Sigil of Fire** | Inkweaver | 20 Ink | 3 | Spend 20 Ink: paint a sigil. The next 3 enemy turns each begin with 70% MAG fire damage and Burn. |
 | **Great Seal** | Inkweaver | 40 Ink | 5 | Spend 40 Ink: paint a great seal. The next 4 enemy turns each begin with 150% MAG arcane damage. |
+| **Scrivener-Mage’s Onslaught** | Inkweaver | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Scrivener-Mage’s Aegis** | Inkweaver | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Living Legend’s Decree** | Inkweaver | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Living Legend’s Rally** | Inkweaver | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Purifying Flame** | Witch Hunter | 20 Conviction | 1 | Spend 20 Conviction: fire for 200% ATK, 60% more against a Marked foe, and Burn. |
 | **Null Shot** | Witch Hunter | 15 Conviction | 2 | Spend 15 Conviction: a blessed bolt for 140% ATK that Silences and Weakens its target. |
 | **Righteous Fury** | Witch Hunter | free | 4 | Gain 15 Conviction, +20% damage and +10% crit chance for 3 turns. |
 | **Smite the Profane** | Witch Hunter | 30 Conviction | 2 | Spend 30 Conviction: 280% ATK holy damage; it always crits a Marked foe… and Marks it. |
 | **Ward Against Evil** | Witch Hunter | 20 Conviction | 4 | Spend 20 Conviction: the party’s magic resist rises by 30% and they take 10% less damage for 3 turns. |
 | **Exorcism** | Witch Hunter | 30 Conviction | 3 | Spend 30 Conviction: 300% ATK holy damage; against a summon it deals double. |
+| **Inquisitor’s Decree** | Witch Hunter | 14 MP | 2 | A master stroke: 200% holy damage, with a 50% chance of blind. |
+| **Inquisitor’s Standard** | Witch Hunter | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Hammer of the Gods’ Strike** | Witch Hunter | 20 MP | 2 | A crowning stroke: 260% holy damage, with a 50% chance of blind. |
+| **Hammer of the Gods’ Aegis** | Witch Hunter | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Fissure** | Geomancer | 20 Ley | 2 | Spend 20 Ley: a crack in the world for 270% MAG physical damage and a Stun. |
 | **Shard Volley** | Geomancer | 20 Ley | 2 | Spend 20 Ley: three crystal shards at random enemies for 100% MAG arcane damage each. |
 | **Dust Storm** | Geomancer | free | 2 | The field becomes Sand for 3 turns (foes blinded and slowed to hit), and every enemy takes 80% MAG physical damage. Gain 10 Ley. |
 | **Quicksand** | Geomancer | 15 Ley | 2 | Spend 15 Ley: an enemy sinks: 150% MAG physical damage, Slow, and Weaken. |
 | **Magma Vent** | Geomancer | free | 3 | The field becomes Lava for 3 turns (foes burn each turn); every enemy takes 100% MAG fire damage. Gain 10 Ley. |
 | **Eruption** | Geomancer | 40 Ley | 4 | Spend 40 Ley: the ground opens: 240% MAG fire damage to every enemy and Stun chance. |
+| **Earthshaper’s Reckoning** | Geomancer | 14 MP | 2 | A master stroke: 200% earth damage, with a 50% chance of slow. |
+| **Earthshaper’s Bulwark** | Geomancer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Worldheart’s Judgment** | Geomancer | 20 MP | 2 | A crowning stroke: 260% earth damage, with a 50% chance of slow. |
+| **Worldheart’s Blessing** | Geomancer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Hemorrhage** | Hemomancer | free | 1 | Lose 5% max HP: the target bleeds heavily: 120% MAG damage and three stacks of Bleed. Gain 8 Blood. |
 | **Blood Nova** | Hemomancer | free | 2 | Lose 8% max HP: a ring of blood for 130% MAG shadow damage to every enemy. Gain 15 Blood. |
 | **Transfuse** | Hemomancer | free | 2 | Lose 10% max HP: give it to an ally: they are healed for 30% of their max HP. Gain 10 Blood. |
 | **Blood Pact** | Hemomancer | 25 Blood | 4 | Spend 25 Blood: for 3 turns you gain +30% damage and 15% lifesteal. |
 | **Sanguine Thrall** | Hemomancer | free | 4 | Lose 10% max HP: shape a thrall of blood that fights beside you for 7 turns. |
 | **Crimson Veil** | Hemomancer | 25 Blood | 3 | Spend 25 Blood: a veil of blood shields you for 25% of max HP. |
+| **Bloodlord’s Reckoning** | Hemomancer | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Bloodlord’s Bulwark** | Hemomancer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Crimson Sovereign’s Judgment** | Hemomancer | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Crimson Sovereign’s Blessing** | Hemomancer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Grand Larceny** | Hollow Hand | 25 Guile | 3 | Spend 25 Guile: 280% ATK, a certain theft, and 40% more gold from it. |
 | **Spend the Loan** | Hollow Hand | 15 Guile | 1 | Spend 15 Guile: cast the skill you are holding, free. |
 | **Sleight of Hand** | Hollow Hand | free | 4 | Gain +25% crit chance and +15% dodge for 3 turns, and a Guile surge. Gain 15 Guile. |
 | **Smoke and Mirrors** | Hollow Hand | 15 Guile | 4 | Spend 15 Guile: vanish into Stealth and gain +20% dodge for 2 turns. |
 | **Hollow Touch** | Hollow Hand | free | 2 | Reach into what makes them tick: 150% ATK shadow damage and Silence. Gain 8 Guile. |
 | **Vanishing Trick** | Hollow Hand | 20 Guile | 5 | Spend 20 Guile: vanish, and act again at once. |
+| **Phantom Thief’s Onslaught** | Hollow Hand | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Phantom Thief’s Mantle** | Hollow Hand | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Master of Nothing’s Decree** | Hollow Hand | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Master of Nothing’s Bulwark** | Hollow Hand | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Drowsy Song** | Dreamwalker | 20 Slumber | 3 | Spend 20 Slumber: every enemy has a 55% chance to fall asleep for 2 turns. |
 | **Terror Dream** | Dreamwalker | 25 Slumber | 3 | Spend 25 Slumber: every enemy is Nightmared and may flee in Fear. |
 | **Dream Eater** | Dreamwalker | 20 Slumber | 2 | Spend 20 Slumber: feed on a dream for 240% MAG arcane damage and heal 12% of max HP. |
 | **Wake-Up Call** | Dreamwalker | 15 Slumber | 3 | Spend 15 Slumber: a harsh awakening for 320% MAG arcane damage… the sleeper gets no defense against it. |
 | **Dreamveil** | Dreamwalker | 15 Slumber | 4 | Spend 15 Slumber: the party gains +15% dodge and 25% magic resist for 3 turns. |
 | **Sleepwalk** | Dreamwalker | 20 Slumber | 5 | Spend 20 Slumber: step out of your body: shield yourself for 15% and act again at once. |
+| **Dreamlord’s Reckoning** | Dreamwalker | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Dreamlord’s Standard** | Dreamwalker | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Sovereign of Sleep’s Judgment** | Dreamwalker | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Sovereign of Sleep’s Aegis** | Dreamwalker | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Aspect of Rime** | Dragonsoul | free | 0 | Take the Rime aspect: +25% ice damage and +20% defense; basic attacks may Slow. Gain 10 Dragonfire. |
 | **Rime Breath** | Dragonsoul | 30 Dragonfire | 2 | Rime aspect, 30 Dragonfire: a blast of cold: 160% ATK to every enemy, Slow, and a chance to Freeze. |
 | **Aspect of Tempest** | Dragonsoul | free | 0 | Take the Tempest aspect: +25% lightning damage and +8 speed; basic attacks may Stun. Gain 10 Dragonfire. |
 | **Tempest Breath** | Dragonsoul | 30 Dragonfire | 2 | Tempest aspect, 30 Dragonfire: lightning forks through the enemy line: 80% ATK, four times, at random enemies. |
 | **Aspect of the Grave** | Dragonsoul | free | 0 | Take the Grave aspect: +25% shadow damage and 8% lifesteal; basic attacks may Curse. Gain 10 Dragonfire. |
 | **Grave Breath** | Dragonsoul | 30 Dragonfire | 2 | Grave aspect, 30 Dragonfire: a breath of ruin: 150% ATK to every enemy, Curse and Weaken; heal 10%. |
+| **Wyrm-Touched’s Onslaught** | Dragonsoul | 14 MP | 2 | A master stroke: 200% fire damage, with a 50% chance of burn. |
+| **Wyrm-Touched’s Blessing** | Dragonsoul | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Dragon Ascendant’s Decree** | Dragonsoul | 20 MP | 2 | A crowning stroke: 260% fire damage, with a 50% chance of burn. |
+| **Dragon Ascendant’s Standard** | Dragonsoul | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Jester’s Gambit** | Puppeteer | 1 Strings | 3 | Spend 1 String: a Jester Doll joins in for 7 turns, throwing hexes. |
 | **Curtain Drop** | Puppeteer | 2 Strings | 3 | Spend 2 Strings: the curtain falls on every enemy: 90% MAG physical damage and a 40% chance to Stun. Gain 1 String. |
 | **Spotlight** | Puppeteer | free | 4 | The whole party gains +20% crit chance and +10% damage for 3 turns. Gain 2 Strings. |
 | **Dead Man’s Dance** | Puppeteer | 2 Strings | 2 | Spend 2 Strings: make them dance: 180% MAG shadow damage, Fear and Weaken. |
 | **Cut the Strings** | Puppeteer | free | 2 | Spend all Strings: a clean cut: 200% MAG, plus 60% per String spent, and the target’s Strung ends. |
+| **Stringmaster’s Judgment** | Puppeteer | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Stringmaster’s Mantle** | Puppeteer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Hand of the Stage’s Verdict** | Puppeteer | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Hand of the Stage’s Bulwark** | Puppeteer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Decree: Silence** | Hollow King | 20 Dominion | 3 | Spend 20 Dominion: every enemy is Silenced and Weakened for 2 turns, and takes 70% ATK void damage. |
 | **Royal Guard** | Hollow King | 25 Dominion | 5 | Spend 25 Dominion: a Hollow Herald guards the party for 7 turns and you are shielded for 15%. |
 | **Crown Strike** | Hollow King | free | 0 | A blow with the weight of a throne: 230% ATK void damage. Gain 10 Dominion. |
 | **Hollow Mantle** | Hollow King | 20 Dominion | 4 | Spend 20 Dominion: wrap yourself in nothing: take 30% less damage and shield yourself for 15% for 3 turns. |
 | **Throne of Nothing** | Hollow King | 30 Dominion | 3 | Spend 30 Dominion: the throne of nothing: 150% ATK void damage to every enemy and Weaken. |
 | **Abdicate** | Hollow King | free | 5 | Put the weight down: heal 25% of max HP and gain 20 Dominion. |
+| **Hollow Lord’s Strike** | Hollow King | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Hollow Lord’s Blessing** | Hollow King | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **King of Nothing’s Reckoning** | Hollow King | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **King of Nothing’s Standard** | Hollow King | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Perjure** | Oathbreaker | 25 Breach | 3 | Spend 25 Breach: 270% ATK and a curse that sticks. |
 | **Renounce** | Oathbreaker | free | 4 | Cast off your restraints: +30% damage for 3 turns, 15% less defense. Gain 20 Breach. |
 | **Silence Heaven** | Oathbreaker | 15 Breach | 4 | Spend 15 Breach: every enemy is Silenced for 2 turns. |
 | **Bad Faith** | Oathbreaker | 15 Breach | 4 | Spend 15 Breach: every enemy is Weakened and Vulnerable for 2 turns. |
+| **Forsworn Lord’s Judgment** | Oathbreaker | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Forsworn Lord’s Mantle** | Oathbreaker | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Breaker of Heavens’ Verdict** | Oathbreaker | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Breaker of Heavens’ Bulwark** | Oathbreaker | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Rend Divinity** | Godslayer | 25 Defiance | 1 | Spend 25 Defiance: 290% ATK, and the target is left Vulnerable. |
 | **Blasphemy** | Godslayer | 20 Defiance | 3 | Spend 20 Defiance: a sneer for 90% ATK to every enemy that leaves them Weakened. |
 | **Mortal Pride** | Godslayer | free | 4 | Gain +20% damage and +15% defense for 3 turns, and 15 Defiance. |
 | **Unbowed** | Godslayer | free | 4 | Heal 15% of max HP, shake off Stun, and gain 15 Defiance. |
 | **Last Defiance** | Godslayer | 40 Defiance | 6 | Spend 40 Defiance: shield yourself for 30% of max HP and Taunt every enemy for 2 turns. |
 | **Titan’s Wrath** | Godslayer | 35 Defiance | 3 | Spend 35 Defiance: two sweeping blows for 170% ATK each to every enemy. |
+| **Giant-Killer’s Onslaught** | Godslayer | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Giant-Killer’s Blessing** | Godslayer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Deicide Eternal’s Decree** | Godslayer | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Deicide Eternal’s Standard** | Godslayer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Unmake** | Voidwalker | 10 MP + 25 Null | 1 | Spend 25 Null: 290% MAG void damage; the target is left Vulnerable. |
 | **Vanish From Sight** | Voidwalker | free | 5 | Step out of the world for a moment: gain Stealth for 1 turn and 20 Null. |
 | **Entropy Wave** | Voidwalker | 12 MP + 20 Null | 3 | Spend 20 Null: 110% MAG void damage to every enemy, who are all left Slowed. |
 | **Null Field** | Voidwalker | 12 MP + 30 Null | 5 | Spend 30 Null: every enemy is Weakened and Cursed for 2 turns. |
 | **Silence the Spell** | Voidwalker | 8 MP + 15 Null | 3 | Spend 15 Null: 120% MAG damage, and the target is Silenced. |
 | **Hollow Shroud** | Voidwalker | free | 4 | A shroud of nothing: shield yourself for 20% of max HP and gain 10 Null. |
+| **Rift-Lord’s Onslaught** | Voidwalker | 14 MP | 2 | A master stroke: 200% void damage, with a 50% chance of weaken. |
+| **Rift-Lord’s Aegis** | Voidwalker | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Void Sovereign’s Decree** | Voidwalker | 20 MP | 2 | A crowning stroke: 260% void damage, with a 50% chance of weaken. |
+| **Void Sovereign’s Rally** | Voidwalker | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Comet** | Celestial | 12 MP + 25 Halo | 2 | Spend 25 Halo: 280% DIV holy damage to one enemy. |
 | **Gentle Hand** | Celestial | 8 MP + 15 Halo | 2 | Spend 15 Halo: cleanse an ally of Burn, Poison, Bleed and Fear, and heal them a little. |
 | **Radiant Ward** | Celestial | 14 MP | 4 | Shield every ally for 14% of max HP, and gain 10 Halo. |
 | **Ascend** | Celestial | 14 MP + 40 Halo | 6 | Spend 40 Halo: you rise: take 40% less damage and heal 6% of max HP each turn for 3 turns. |
 | **Guiding Light** | Celestial | 12 MP | 5 | The party gains +10% speed and +8% crit chance for 3 turns, and you gain 15 Halo. |
 | **Sunburst** | Celestial | 16 MP + 30 Halo | 4 | Spend 30 Halo: 120% DIV holy damage to every enemy; they are all Blinded. |
+| **Archangel’s Onslaught** | Celestial | 14 MP | 2 | A master stroke: 200% holy damage, with a 50% chance of blind. |
+| **Archangel’s Mantle** | Celestial | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Star-Crowned’s Decree** | Celestial | 20 MP | 2 | A crowning stroke: 260% holy damage, with a 50% chance of blind. |
+| **Star-Crowned’s Bulwark** | Celestial | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Mending Vow** | Vowknight | 20 Resolve | 3 | Spend 20 Resolve: heal the party for a share of your max HP. |
 | **Retribution** | Vowknight | 20 Resolve | 2 | Spend 20 Resolve: 260% ATK holy damage. |
 | **Daybreak Surge** | Vowknight | 30 Resolve | 4 | Spend 30 Resolve: 150% ATK holy damage to every enemy; the party gains +12% damage for 3 turns. |
 | **Hold the Line** | Vowknight | free | 4 | Draw every blow for 2 turns and take 25% less damage. |
 | **Vow-Bound Smite** | Vowknight | 25 Resolve | 3 | Spend 25 Resolve: 300% ATK holy damage to one foe. |
+| **Oathlord’s Reckoning** | Vowknight | 14 MP | 2 | A master stroke: 200% holy damage, with a 50% chance of blind. |
+| **Oathlord’s Standard** | Vowknight | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Sworn Eternal’s Judgment** | Vowknight | 20 MP | 2 | A crowning stroke: 260% holy damage, with a 50% chance of blind. |
+| **Sworn Eternal’s Aegis** | Vowknight | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Wrathful Roar** | Wrathsworn | 15 Fury | 4 | Spend 15 Fury: every enemy is Feared for 2 turns and you gain a shield of 10% max HP. |
 | **Bear Hide** | Wrathsworn | 20 Fury | 5 | Spend 20 Fury: a Bear Totem guards you for 8 turns, and you gain +15% defense for 3 turns. |
 | **Frenzy** | Wrathsworn | 25 Fury | 3 | Spend 25 Fury: four chops of 85% ATK at random enemies. |
 | **Grit Teeth** | Wrathsworn | 10 Fury | 3 | Spend 10 Fury: heal 5% and take 20% less damage for 2 turns. |
 | **Earthshaker** | Wrathsworn | 30 Fury | 4 | Spend 30 Fury: 200% ATK to every enemy and they are Slowed for 2 turns. |
+| **Berserker Chief’s Verdict** | Wrathsworn | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Berserker Chief’s Standard** | Wrathsworn | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Wrath Incarnate’s Onslaught** | Wrathsworn | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Wrath Incarnate’s Aegis** | Wrathsworn | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Serene Breath** | Stillhand | 20 Breath | 3 | Spend 20 Breath: heal 15% of max HP. |
 | **Deflect Missiles** | Stillhand | 15 Breath | 3 | Spend 15 Breath: for 2 turns +30% dodge and 30% less ranged damage. |
 | **Pressure Point** | Stillhand | 20 Breath | 3 | Spend 20 Breath: 200% ATK that always crits and Weakens. |
 | **Ring of Gusts** | Stillhand | 25 Breath | 3 | Spend 25 Breath: 170% ATK to every enemy, and you gain +20% speed for 3 turns. |
 | **Stone Within** | Stillhand | 15 Breath | 4 | Spend 15 Breath: +30% status resist and +15% defense for 3 turns. |
+| **Grandmaster’s Decree** | Stillhand | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Grandmaster’s Bulwark** | Stillhand | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Enlightened One’s Strike** | Stillhand | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Enlightened One’s Blessing** | Stillhand | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Quarry Shot** | Wayfinder | free | 0 | A shot for 140% ATK; a Quarry also takes 15% more. Gain 8 Trail. |
 | **Call the Hawk** | Wayfinder | 15 Trail | 3 | Spend 15 Trail: a Trail Hawk circles and strikes for 8 turns. |
 | **Snare** | Wayfinder | free | 3 | Set a snare: 100% ATK and the target is Entangled for 2 turns. |
 | **Sky Volley** | Wayfinder | 25 Trail | 3 | Spend 25 Trail: arrows of 90% ATK rain on every enemy. |
 | **Quiet Step** | Wayfinder | 10 Trail | 3 | Spend 10 Trail: Stealth for 2 turns, and your next shot is 35% stronger. |
+| **Pathmaster’s Reckoning** | Wayfinder | 14 MP | 2 | A master stroke: 200% nature damage, with a 50% chance of poison. |
+| **Pathmaster’s Bulwark** | Wayfinder | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Warden of the Wilds’ Judgment** | Wayfinder | 20 MP | 2 | A crowning stroke: 260% nature damage, with a 50% chance of poison. |
+| **Warden of the Wilds’ Blessing** | Wayfinder | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Twin Surge** | Godblooded | 20 Spark | 2 | Twin: spend 20 Spark; the surge strikes twice at 120% MAG. |
 | **Silent Surge** | Godblooded | 10 Spark | 2 | Silent: spend 10 Spark; 140% MAG that no Silence can stop, and you are shielded for 8%. |
 | **Wide Surge** | Godblooded | 25 Spark | 3 | Widen: spend 25 Spark; 150% MAG arcane damage to every enemy. |
 | **Ancestral Mend** | Godblooded | 20 Spark | 3 | Spend 20 Spark: heal 16% of max HP; the ancestors are generous. |
 | **Ember Vein** | Godblooded | 5 MP | 0 | Fire in the blood: 140% MAG fire damage and Burn. Gain 10 Spark. |
+| **Demigod-Born’s Verdict** | Godblooded | 14 MP | 2 | A master stroke: 200% lightning damage, with a 50% chance of slow. |
+| **Demigod-Born’s Bulwark** | Godblooded | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Divine Scion’s Onslaught** | Godblooded | 20 MP | 2 | A crowning stroke: 260% lightning damage, with a 50% chance of slow. |
+| **Divine Scion’s Blessing** | Godblooded | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Rite of Rime** | Ichorbound | free | 0 | Pay 5% HP: 170% ATK ice damage that Slows. Gain 12 Ichor. |
 | **Rite of Dawn** | Ichorbound | free | 0 | Pay 5% HP: 170% ATK holy damage and you heal 8%. Gain 12 Ichor. |
 | **Ichor Surge** | Ichorbound | 25 Ichor | 3 | Spend 25 Ichor: heal 20% of max HP as the blood answers. |
 | **Hex of Ruin** | Ichorbound | 20 Ichor | 4 | Spend 20 Ichor: every enemy is hexed: Vulnerable and Cursed for 2 turns. |
 | **Bloodied Guard** | Ichorbound | 15 Ichor | 3 | Spend 15 Ichor: take 25% less damage for 2 turns and gain 5% lifesteal. |
+| **Ichor Lord’s Decree** | Ichorbound | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Ichor Lord’s Rally** | Ichorbound | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Godblood Hunter’s Strike** | Ichorbound | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Godblood Hunter’s Mantle** | Ichorbound | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Hold the Card** | Fatedealer | free | 3 | Hold: +25% crit chance and +15% accuracy for 3 turns. Gain 10 Fortune. |
 | **Double Down** | Fatedealer | 20 Fortune | 2 | Spend 20 Fortune: 150% MAG twice at the same foe. |
 | **Delay the Turn** | Fatedealer | 20 Fortune | 3 | Spend 20 Fortune: 110% MAG, and the foe’s next turn is pushed back. |
 | **Palmed Ace** | Fatedealer | 25 Fortune | 3 | Spend 25 Fortune: 260% MAG; the foe is Confused for 2 turns. |
 | **Fortune’s Glimpse** | Fatedealer | 15 Fortune | 3 | Spend 15 Fortune: see what is coming: +20% dodge for 3 turns and a 10% shield. |
+| **High Roller’s Verdict** | Fatedealer | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **High Roller’s Bulwark** | Fatedealer | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Hand of Fate’s Onslaught** | Fatedealer | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Hand of Fate’s Blessing** | Fatedealer | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Thought-Shape** | Mindwright | free | 2 | Strain 15: 160% MAG arcane damage and the target is Confused for 2 turns. |
 | **Mind Wall** | Mindwright | free | 4 | Strain 12: the party is shielded for 12% max HP and takes 10% less damage for 2 turns. |
 | **Mind Read** | Mindwright | free | 3 | Strain 8: the target is Marked and Vulnerable for 3 turns; you gain +12% accuracy. |
 | **Force Wave** | Mindwright | free | 3 | Strain 20: 140% MAG to every enemy and they are Slowed for 2 turns. |
 | **Mind Leap** | Mindwright | free | 3 | Strain 10: +20% speed and +10% dodge for 3 turns. |
+| **Mindlord’s Verdict** | Mindwright | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Mindlord’s Bulwark** | Mindwright | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Overmind’s Onslaught** | Mindwright | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Overmind’s Blessing** | Mindwright | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Act Now** | Marshal | 25 Command | 3 | Spend 25 Command: an ally takes an extra turn. |
 | **Fall Back** | Marshal | 10 Command | 3 | Spend 10 Command: the party is shielded for 12% max HP and takes 15% less damage for 2 turns. |
 | **Flag Signal** | Marshal | free | 4 | Raise the banner: +10% damage to the party for 3 turns. Gain 15 Command. |
 | **Standard Bearer** | Marshal | free | 4 | Plant the standard: you are shielded for 15% and the party gains +8% resource gain for 3 turns. |
 | **Flanking Order** | Marshal | 20 Command | 3 | Spend 20 Command: an ally strikes: they take an extra turn and gain +20% crit. |
+| **General’s Onslaught** | Marshal | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **General’s Aegis** | Marshal | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Lord Commander’s Decree** | Marshal | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Lord Commander’s Rally** | Marshal | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Pistol Shot** | Corsair | free | 2 | A shot for 140% ATK that cannot be dodged. Gain 8 Crew. |
 | **Grapeshot** | Corsair | 15 Crew | 3 | Spend 15 Crew: 160% ATK to every enemy that also Blinds them for a turn. |
 | **Rally the Crew** | Corsair | 15 Crew | 4 | Spend 15 Crew: the party heals 10% of max HP and gains +10% damage for 3 turns. |
 | **Storm Sails** | Corsair | 20 Crew | 4 | Spend 20 Crew: a lightning-struck gust: 180% ATK to every enemy and a 10% shield for you. |
 | **Dead Calm** | Corsair | 15 Crew | 3 | Spend 15 Crew: every enemy is Slowed for 2 turns and you gain +15% accuracy. |
+| **Captain’s Verdict** | Corsair | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Captain’s Bulwark** | Corsair | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Admiral of the Shattered Seas’ Onslaught** | Corsair | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Admiral of the Shattered Seas’ Blessing** | Corsair | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Pocket Sand** | Brawler | 10 Grit | 3 | Spend 10 Grit: Blind the foe for 2 turns and Weaken it. |
 | **Chair Swing** | Brawler | 20 Grit | 3 | Spend 20 Grit: an improvised weapon hits every enemy for 160% ATK. |
 | **Slam Down** | Brawler | 25 Grit | 3 | Spend 25 Grit: 260% ATK and the foe is Slowed for 2 turns. |
 | **Stagger Away** | Brawler | 10 Grit | 3 | Spend 10 Grit: dodge everything next turn (+60% dodge for 1 turn) and gain a 8% shield. |
 | **Last Orders** | Brawler | 20 Grit | 4 | Spend 20 Grit: a rousing roar: the party gains +12% damage and 6% max HP shield. |
+| **Pit Champion’s Decree** | Brawler | 14 MP | 2 | A master stroke: 200% physical damage, with a 50% chance of bleed. |
+| **Pit Champion’s Bulwark** | Brawler | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Undisputed’s Strike** | Brawler | 20 MP | 2 | A crowning stroke: 260% physical damage, with a 50% chance of bleed. |
+| **Undisputed’s Blessing** | Brawler | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Pale Lance** | Whisperknight | 20 Hush | 2 | Spend 20 Hush: 230% ATK shadow damage. |
 | **Seal of Ruin** | Whisperknight | 20 Hush | 3 | Spend 20 Hush: a Seal that detonates for 120% ATK and a Curse on whoever acts next (3 charges). |
 | **Quiet Guard** | Whisperknight | 10 Hush | 3 | Spend 10 Hush: 25% less damage taken for 2 turns and a 6% heal. |
 | **Auditor’s Shadow** | Whisperknight | 15 Hush | 4 | Spend 15 Hush: +20% crit chance and +15% damage for 3 turns, in the Pale Auditor’s name. |
 | **Void Stitch** | Whisperknight | 25 Hush | 3 | Spend 25 Hush: 150% ATK void damage to every enemy. |
+| **Hushlord’s Verdict** | Whisperknight | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Hushlord’s Bulwark** | Whisperknight | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Voice Unheard’s Onslaught** | Whisperknight | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Voice Unheard’s Blessing** | Whisperknight | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Hearty Stew** | Hearthmaster | 15 Simmer | 3 | Spend 15 Simmer: the party heals 12% of max HP and gains +10% max HP for 3 turns. |
 | **Flambé** | Hearthmaster | 20 Simmer | 3 | Spend 20 Simmer: 190% ATK fire damage to every enemy and Burn. |
 | **Sour Surprise** | Hearthmaster | 15 Simmer | 4 | Spend 15 Simmer: every enemy is Poisoned and Weakened for 2 turns. |
 | **Warm Bread** | Hearthmaster | 10 Simmer | 2 | Spend 10 Simmer: heal one ally for 15% of max HP and Regen for 3 turns. |
 | **Last Spoonful** | Hearthmaster | 20 Simmer | 4 | Spend 20 Simmer: a restorative for one ally: heal 25% of max HP and cleanse its Poison. |
+| **Master Cook’s Strike** | Hearthmaster | 14 MP | 2 | A master stroke: 200% fire damage, with a 50% chance of burn. |
+| **Master Cook’s Mantle** | Hearthmaster | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Heart of the Hearth’s Reckoning** | Hearthmaster | 20 MP | 2 | A crowning stroke: 260% fire damage, with a 50% chance of burn. |
+| **Heart of the Hearth’s Bulwark** | Hearthmaster | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Expose Weakness** | Truthseeker | 20 Deduction | 2 | Spend 20 Deduction: 250% MAG on a studied foe, and it is Weakened. |
 | **Cold Reading** | Truthseeker | 10 Deduction | 3 | Spend 10 Deduction: Confuse and Slow the target for 2 turns. |
 | **Second Opinion** | Truthseeker | 15 Deduction | 3 | Spend 15 Deduction: heal 15% and a shield of 10%. |
 | **Logical Conclusion** | Truthseeker | 30 Deduction | 3 | Spend 30 Deduction: 350% MAG that always crits. |
 | **Lantern Light** | Truthseeker | free | 3 | Light up the room: every enemy is Blinded for a turn and loses 15 dodge for 3 turns. Gain 12 Deduction. |
+| **Chief Inspector’s Onslaught** | Truthseeker | 14 MP | 2 | A master stroke: 200% arcane damage, with a 50% chance of vulnerable. |
+| **Chief Inspector’s Blessing** | Truthseeker | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Oracle of the Plain Truth’s Decree** | Truthseeker | 20 MP | 2 | A crowning stroke: 260% arcane damage, with a 50% chance of vulnerable. |
+| **Oracle of the Plain Truth’s Standard** | Truthseeker | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Bitter Brew** | Hedgewitch | 15 Brew | 2 | Spend 15 Brew: throw a vial: 150% MAG and Poison for 4 turns. |
 | **Herb Poultice** | Hedgewitch | 15 Brew | 2 | Spend 15 Brew: heal one ally for 20% of max HP and Regen for 3 turns. |
 | **Call the Toad** | Hedgewitch | 15 Brew | 3 | Spend 15 Brew: a Cauldron Toad guards you for 8 turns. |
 | **Wax Effigy** | Hedgewitch | 20 Brew | 3 | Spend 20 Brew: an effigy that cuts for 120% MAG and Curses whoever acts next (3 charges). |
 | **Night Flight** | Hedgewitch | 10 Brew | 3 | Spend 10 Brew: +25% dodge and +15% speed for 3 turns. |
+| **Hedge Crone’s Onslaught** | Hedgewitch | 14 MP | 2 | A master stroke: 200% nature damage, with a 50% chance of poison. |
+| **Hedge Crone’s Mantle** | Hedgewitch | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Mother of the Wild Lane’s Decree** | Hedgewitch | 20 MP | 2 | A crowning stroke: 260% nature damage, with a 50% chance of poison. |
+| **Mother of the Wild Lane’s Bulwark** | Hedgewitch | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Draw the Spirit** | Soulblade | 15 Bond | 3 | Spend 15 Bond: the Bonded Blade fights beside you for 8 turns. |
 | **Ring the Steel** | Soulblade | 15 Bond | 4 | Spend 15 Bond: a ringing note: every enemy is Slowed and Weakened for 2 turns. |
 | **Parry With Opinion** | Soulblade | 10 Bond | 3 | Spend 10 Bond: +30% dodge and 15% less damage for 2 turns, with comments. |
 | **Heavy Silence** | Soulblade | 25 Bond | 3 | Spend 25 Bond: 250% ATK to one foe; the blade stops talking, and it is much worse. |
 | **Remembered Wound** | Soulblade | 20 Bond | 3 | Spend 20 Bond: heal 18% of max HP; the blade remembers the last wearer’s mercy. |
+| **Blademaster’s Reckoning** | Soulblade | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Blademaster’s Rally** | Soulblade | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Edge Eternal’s Judgment** | Soulblade | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Edge Eternal’s Mantle** | Soulblade | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Mask of the Sage** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +15% magic attack and 8% cooldown reduction. Gain 12 Persona. “Let me explain, as I strike.” |
 | **Mask of the Knave** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +12% crit and +10% gold found; basic attacks lift 3 gold. Gain 12 Persona. “Whose purse is this? Mine, now.” |
 | **Mask of the Hound** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +15% speed and +10 accuracy; basic attacks may Bleed. Gain 12 Persona. “Smell that? Fear.” |
 | **Mask of the Ghost** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +20 dodge and 8% less damage taken. Gain 12 Persona. “Did you feel that? No?” |
 | **Mask of the Sinner** | Facewright | free | 2 | Don the mask and strike for 120% ATK: +15% damage, 8% less defense; basic attacks may Burn. Gain 12 Persona. “Do not look at the hands.” |
+| **Mask-Master’s Strike** | Facewright | 14 MP | 2 | A master stroke: 200% shadow damage, with a 50% chance of weaken. |
+| **Mask-Master’s Mantle** | Facewright | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Face of Faces’ Reckoning** | Facewright | 20 MP | 2 | A crowning stroke: 260% shadow damage, with a 50% chance of weaken. |
+| **Face of Faces’ Bulwark** | Facewright | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 | **Tolling for the Dead** | Bellwarden | 20 Toll | 3 | Spend 20 Toll: 220% MAG holy damage; the foe is Feared. |
 | **High Tone** | Bellwarden | 15 Toll | 3 | Spend 15 Toll: a thin, bright tone: +15% speed and +10% crit for the party for 3 turns. |
 | **Cracked Chime** | Bellwarden | free | 2 | 150% MAG; the foe is Confused for a turn. Gain 10 Toll. |
 | **Bell Ward** | Bellwarden | 20 Toll | 4 | Spend 20 Toll: the party is shielded for 12% max HP and takes 10% less damage for 2 turns. |
 | **The Quiet After** | Bellwarden | 15 Toll | 3 | Spend 15 Toll: heal 15% of max HP and +5 HP regen for 3 turns. |
+| **Bell-Captain’s Strike** | Bellwarden | 14 MP | 2 | A master stroke: 200% holy damage, with a 50% chance of blind. |
+| **Bell-Captain’s Mantle** | Bellwarden | 18 MP | 5 | The whole party gains +15% damage and +10% defense for 3 turns, and you shield yourself for 8% of max HP. |
+| **Great Bell Incarnate’s Reckoning** | Bellwarden | 20 MP | 2 | A crowning stroke: 260% holy damage, with a 50% chance of blind. |
+| **Great Bell Incarnate’s Bulwark** | Bellwarden | 24 MP | 5 | The whole party gains +22% damage and +15% defense for 3 turns, and you shield yourself for 12% of max HP. |
 <!-- trees:end -->
 
 ## Not yet added
@@ -3899,7 +4283,7 @@ Pick 2 of the 5 crafting professions (levels 1-50, 10 x level XP per level); gat
 ## Quests, story and companions
 
 <!-- story:start -->
-1096 quests, 292 NPCs, 587 dialogues, 14 companions, 17 endings.
+1192 quests, 292 NPCs, 587 dialogues, 14 companions, 17 endings.
 
 ### Main story (54)
 
@@ -5095,7 +5479,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 - Knowledge per enemy at 1 / 5 / 15 / 40 kills (bosses 1 / 1 / 2 / 3): Stats, Resistances, Skills, Mastered.
 - Slayer ranks per creature type at 10 / 50 / 150 / 400 / 1000 kills: +2% damage against that type per rank.
 
-### Achievements (242, 107 titles)
+### Achievements (245, 110 titles)
 
 **Combat** (25): First Blood (Win your first battle; 5 pts) · Battle-Hardened (Win 100 battles; 10 pts) · Veteran (Win 500 battles; 20 pts; title “the Veteran”) · Warlord (Win 2,000 battles; 40 pts; title “Warlord”) · Hundred-Slayer (Slay 100 enemies; 10 pts) · Thousand-Slayer (Slay 1,000 enemies; 20 pts) · The Relentless (Slay 5,000 enemies; 40 pts; title “the Relentless”) · Heavy Hitter (Deal 1,000 damage in one hit; 10 pts) · Mountain-Splitter (Deal 10,000 damage in one hit; 20 pts) · Worldbreaker (Deal 50,000 damage in one hit; 40 pts; title “Worldbreaker”) · Critical Thinker (Land 500 critical hits; 10 pts) · Precision (Land 5,000 critical hits; 20 pts; title “the Precise”) · Elite Hunter (Slay 10 elites; 10 pts) · Bane of Elites (Slay 100 elites; 25 pts; title “Elitebane”) · Champion Hunter (Slay 10 champions; 10 pts) · Breaker of Champions (Slay 100 champions; 25 pts; title “Championbreaker”) · Not So Fast (Break a boss while it winds up an attack; 10 pts) · Spellbreaker (Interrupt 25 boss wind-ups; 25 pts; title “Spellbreaker”) · Well Supplied (Use 100 consumables in battle; 10 pts) · Not Today… Oh. (hidden) (Fall in battle for the first time; 5 pts) · Discretion (hidden) (Escape from 10 battles; 5 pts) · Tide of Steel (Slay 25,000 enemies; 50 pts; title “the Tide”) · Skybreaker (hidden) (Deal 250,000 damage in one hit; 50 pts; title “Skybreaker”) · Ever Ready (Win 5,000 battles; 45 pts; title “the Ever-Ready”) · Surgeon (Land 50,000 critical hits; 40 pts; title “the Surgeon”)
 
@@ -5107,7 +5491,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 
 **The Gods** (14): Noticed (Be Acknowledged by a god; 5 pts) · Many Altars (Be Favored by three gods at once; 15 pts) · Devoted (Become Devoted to a god; 15 pts) · Exalted (Become Exalted by a god; 25 pts) · Chosen (Become an Apostle; 40 pts) · Saved by Grace (Be saved from death by divine intervention; 15 pts) · Errands of Heaven (Complete 10 god quests; 20 pts) · Three Altars Lit (Be Exalted by three gods at once; 35 pts) · Half the Pantheon (Be Exalted by seven gods at once; 55 pts; title “Pantheon-Friend”) · Well-Regarded (Be Favored by eight gods at once; 40 pts) · Seraphel's Apostle (Become the Apostle of Seraphel; 30 pts; title “Voice of Seraphel”) · Mirrin's Apostle (Become the Apostle of Mirrin; 30 pts; title “Voice of Mirrin”) · Lyssara's Apostle (Become the Apostle of Lyssara; 30 pts; title “Voice of Lyssara”) · Ordrun's Apostle (Become the Apostle of Ordrun; 30 pts; title “Voice of Ordrun”)
 
-**Hero** (24): Getting Started (Reach level 10; 5 pts) · Seasoned (Reach level 25; 10 pts) · Renowned (Reach level 40; 20 pts) · Legend (Reach level 60; 40 pts; title “the Legendary”) · Beyond Mortal (Reach Paragon level 10; 20 pts) · Specialist (Choose a specialization; 10 pts) · Dual-Trained (Take a second class; 15 pts) · Jack of All Trades (Take a third class; 30 pts; title “the Versatile”) · Prestige (Unlock a hybrid prestige class; 25 pts) · Practice Makes Perfect (Master a skill; 10 pts) · Virtuoso (Master 10 skills; 25 pts; title “the Virtuoso”) · Artisan (Reach level 25 in a crafting profession; 15 pts) · Past the Old Cap (Reach level 75; 30 pts) · The New Summit (Reach level 90; 60 pts; title “the Summit”) · Godslayer Class (Play a Godslayer; 25 pts) · Voidwalker Class (Play a Voidwalker; 25 pts) · Celestial Class (Play a Celestial; 25 pts) · Blended (Hold two hybrid classes at once; 20 pts) · Paragon of Many Boards (Reach Paragon level 50; 25 pts) · Perfected (Reach Paragon level 150; 55 pts; title “the Perfected”) · Every Form (Evolve every skill that can evolve for one class; 40 pts; title “the Transformed”) · Ever-Becoming (Evolve 50 skills; 55 pts; title “Ever-Becoming”) · Hundred Hands (Master 100 skills; 45 pts; title “the Master”) · Master Crafter (Reach level 50 in a crafting profession; 30 pts; title “Master Crafter”)
+**Hero** (27): Getting Started (Reach level 10; 5 pts) · Seasoned (Reach level 25; 10 pts) · Renowned (Reach level 40; 20 pts) · Legend (Reach level 60; 40 pts; title “the Legendary”) · Beyond Mortal (Reach Paragon level 10; 20 pts) · Specialist (Choose a specialization; 10 pts) · Dual-Trained (Take a second class; 15 pts) · Jack of All Trades (Take a third class; 30 pts; title “the Versatile”) · Prestige (Unlock a hybrid prestige class; 25 pts) · Practice Makes Perfect (Master a skill; 10 pts) · Virtuoso (Master 10 skills; 25 pts; title “the Virtuoso”) · Artisan (Reach level 25 in a crafting profession; 15 pts) · Past the Old Cap (Reach level 75; 30 pts) · The New Summit (Reach level 90; 60 pts; title “the Summit”) · Godslayer Class (Play a Godslayer; 25 pts) · Voidwalker Class (Play a Voidwalker; 25 pts) · Celestial Class (Play a Celestial; 25 pts) · Blended (Hold two hybrid classes at once; 20 pts) · Paragon of Many Boards (Reach Paragon level 50; 25 pts) · Perfected (Reach Paragon level 150; 55 pts; title “the Perfected”) · Every Form (Evolve every skill that can evolve for one class; 40 pts; title “the Transformed”) · Ever-Becoming (Evolve 50 skills; 55 pts; title “Ever-Becoming”) · Promoted (Take a class promotion; 25 pts; title “the Promoted”) · Crowned (Reach Tier 3 in a class; 45 pts; title “the Crowned”) · Three Crowns (Hold three classes at Tier 3; 60 pts; title “Triple Crowned”) · Hundred Hands (Master 100 skills; 45 pts; title “the Master”) · Master Crafter (Reach level 50 in a crafting profession; 30 pts; title “Master Crafter”)
 
 **Exploration** (7): Wanderer (Set foot in four zones; 10 pts) · Cartographer (Set foot in all eight zones; 25 pts; title “the Wayfarer”) · Well Traveled (Attune every waypoint; 15 pts) · Curious (Find 5 lore pages; 10 pts) · Lorekeeper (Find all 16 lore pages; 30 pts; title “Lorekeeper”) · Home Sweet Home (Buy a house; 15 pts) · Living Legend (Reach Legend rank with a faction; 30 pts)
 

@@ -112,6 +112,8 @@ export function canAllocate(char: Character, classId: string, nodeId: string, c:
     return fail(`Needs a Mastery Point (a secondary class earns one every ${MULTICLASS.masteryPointEvery} class levels).`);
   }
   if (node.feat && !featMet(char, node.feat, classId)) return fail('Hidden: ' + describeFeat(node.feat, c));
+  const promo = tree.branches.find((b) => b.id === node.branch)?.promotion;
+  if (promo && (char.classes.find((p) => p.classId === classId)?.promotion ?? 1) < promo) return fail(`Earn the Tier ${promo} promotion first (Character screen, Promotion).`);
   const spec = tree.branches.find((b) => b.id === node.branch)?.spec;
   if (spec && char.classes.find((p) => p.classId === classId)?.specialization !== spec) {
     return fail(`Choose the ${c.specializations.find(spec)?.name ?? spec} specialization first.`);

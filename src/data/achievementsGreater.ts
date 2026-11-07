@@ -118,6 +118,9 @@ export const ACHIEVEMENTS_GREATER: AchievementDef[] = [
   hero('paragon-150', 'Perfected', 'Reach Paragon level 150.', 55, { kind: 'paragon', min: 150 }, { title: 'the Perfected' }),
   hero('evolved-class', 'Every Form', 'Evolve every skill that can evolve for one class.', 40, { kind: 'evolved', min: 1, allOfClass: true }, { title: 'the Transformed' }),
   hero('evolved-50', 'Ever-Becoming', 'Evolve 50 skills.', 55, { kind: 'evolved', min: 50 }, { title: 'Ever-Becoming' }),
+  hero('promoted-1', 'Promoted', 'Take a class promotion.', 25, { kind: 'promoted', tier: 2, min: 1 }, { title: 'the Promoted' }),
+  hero('promoted-t3', 'Crowned', 'Reach Tier 3 in a class.', 45, { kind: 'promoted', tier: 3, min: 1 }, { title: 'the Crowned' }),
+  hero('promoted-three', 'Three Crowns', 'Hold three classes at Tier 3.', 60, { kind: 'promoted', tier: 3, min: 3 }, { title: 'Triple Crowned' }),
   hero('mastered-100', 'Hundred Hands', 'Master 100 skills.', 45, { kind: 'mastered', min: 100 }, { title: 'the Master' }),
   hero('profession-50', 'Master Crafter', 'Reach level 50 in a crafting profession.', 30, { kind: 'profession', level: 50 }, { title: 'Master Crafter' }),
 

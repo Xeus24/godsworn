@@ -8,8 +8,8 @@ import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
 import { ACT_NAMES } from '../../data/story/acts';
-const KIND_ORDER: QuestKind[] = ['main', 'twilight', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'racial', 'background', 'festival', 'trinket', 'affliction', 'holding', 'bounty'];
-const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', twilight: 'Twilight of the Gods', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', racial: 'Your People', background: 'Your Past', festival: 'Festivals', trinket: 'Keepsakes', affliction: 'Afflictions', holding: 'Holdings', bounty: 'Bounties' };
+const KIND_ORDER: QuestKind[] = ['main', 'twilight', 'companion', 'side', 'faction', 'god', 'class', 'hybrid', 'racial', 'background', 'festival', 'trinket', 'affliction', 'holding', 'promotion', 'bounty'];
+const KIND_NAMES: Record<QuestKind, string> = { main: 'The Story', twilight: 'Twilight of the Gods', companion: 'Companions', side: 'Side Quests', faction: 'Factions', god: 'The Gods', class: 'Class Trials', hybrid: 'Hybrid Trials', racial: 'Your People', background: 'Your Past', festival: 'Festivals', trinket: 'Keepsakes', affliction: 'Afflictions', holding: 'Holdings', promotion: 'Promotions', bounty: 'Bounties' };
 
 /** Where an objective points you: a marker's place, an NPC's town, a zone. */
 export function objectiveWhere(s: GameSession, q: QuestDef, o: ObjectiveDef): string {

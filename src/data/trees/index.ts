@@ -14,6 +14,7 @@ import { withHidden } from './hidden';
 import { buildTree, withSpecs, type BranchSpec, type SpecBranchSpec } from './builder';
 import { CUNNING_HYBRID_BRANCHES, CUNNING_HYBRID_SKILLS } from './hybridsCunning';
 import { GREATER_HYBRID_BRANCHES, GREATER_HYBRID_SKILLS } from './hybridsGreater';
+import { PROMOTIONS, PROMOTION_SKILLS, promotionBranch, promotionNodes } from '../promotions';
 import { TABLETOP_HYBRID_BRANCHES, TABLETOP_HYBRID_SKILLS } from './hybridsTabletop';
 import { MARTIAL_HYBRID_BRANCHES, MARTIAL_HYBRID_SKILLS } from './hybridsMartial';
 import { ARCANE_SPEC_BRANCHES, ARCANE_SPEC_SKILLS } from './specsArcane';
@@ -40,6 +41,7 @@ export const CLASS_TREE_SKILLS: SkillDef[] = [
   ...CUNNING_HYBRID_SKILLS,
   ...GREATER_HYBRID_SKILLS,
   ...TABLETOP_HYBRID_SKILLS,
+  ...PROMOTION_SKILLS,
   ...APOSTLE_SKILLS,
 ];
 
@@ -59,9 +61,22 @@ const HYBRID_TREES: SkillTreeDef[] = Object.entries(HYBRID_BRANCHES).map(([id, b
   return { ...tree, branches: tree.branches.map((b) => ({ ...b, tierGate: MULTICLASS.hybridTierGate })) };
 });
 
+/** Section K: each class tree gains its two promotion branches (10 nodes each), in the columns after its own. */
+function withPromotions(tree: SkillTreeDef): SkillTreeDef {
+  const promos = PROMOTIONS.filter((p) => p.classId === tree.classId);
+  if (!promos.length) return tree;
+  const base = Math.max(...tree.nodes.map((n) => n.x)) + 180;
+  const col = (base - 60) / (4 * 110 + 80);
+  return {
+    ...tree,
+    branches: [...tree.branches, ...promos.map(promotionBranch)],
+    nodes: [...tree.nodes, ...promos.flatMap((p, i) => promotionNodes(p, col + i))],
+  };
+}
+
 const RAW_TREES: SkillTreeDef[] = [
   ...APOSTLE_TREES,
-  ...[WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE, ...GREATER_CLASSES.map((g) => g.tree)].map((t) => withHidden(withSpecs(t, SPEC_BRANCHES[t.classId] ?? []))),
+  ...[WARRIOR_TREE, MAGE_TREE, ROGUE_TREE, CLERIC_TREE, RANGER_TREE, NECROMANCER_TREE, MONK_TREE, BARD_TREE, ...GREATER_CLASSES.map((g) => g.tree)].map((t) => withPromotions(withHidden(withSpecs(t, SPEC_BRANCHES[t.classId] ?? [])))),
   ...HYBRID_TREES,
 ];
 

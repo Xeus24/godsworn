@@ -32,6 +32,8 @@ export interface ClassProgress {
   skillPoints: number;
   /** Specialization chosen at class level 20. */
   specialization?: string;
+  /** Promotion tier reached (Section K): absent or 1 is the base class, 2 and 3 are the promotions. */
+  promotion?: number;
 }
 
 export interface Character {

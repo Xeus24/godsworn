@@ -46,7 +46,7 @@ describe('tree content', () => {
       const tree = treeOf(cls.id);
       const secrets = tree.nodes.filter((n) => n.feat);
       expect(secrets, cls.id).toHaveLength((BASE_CLASS_IDS as readonly string[]).includes(cls.id) ? 4 : 0);
-      const classBranches = new Set(tree.branches.filter((b) => !b.spec && !b.id.endsWith('.secrets')).map((b) => b.id));
+      const classBranches = new Set(tree.branches.filter((b) => !b.spec && !b.promotion && !b.id.endsWith('.secrets')).map((b) => b.id));
       // Tabletop Tradition classes (Section I) carry a fifth branch of extra techniques.
       expect([4, 5], cls.id).toContain(classBranches.size);
       expect(tree.branches.filter((b) => b.spec).length, cls.id).toBeGreaterThanOrEqual(cls.hidden ? 2 : 3);
@@ -58,11 +58,17 @@ describe('tree content', () => {
 
   it('every active skill node has 2 modifier nodes, and every branch a keystone, capstone and choice pair', () => {
     for (const tree of content.trees.all()) {
-      for (const n of tree.nodes.filter((x) => x.kind === 'active')) {
+      for (const n of tree.nodes.filter((x) => x.kind === 'active' && !tree.branches.find((b) => b.id === x.branch)?.promotion)) {
         expect(tree.nodes.filter((m) => m.variant?.skill === n.skill), n.id).toHaveLength(2);
       }
       for (const b of tree.branches.filter((x) => !x.id.endsWith('.secrets'))) {
         const nodes = tree.nodes.filter((n) => n.branch === b.id);
+        // Promotion branches (Section K) are 10 nodes: two skills, minors, two notables, a keystone and a capstone.
+        if (b.promotion) {
+          expect(nodes, b.id).toHaveLength(10);
+          expect(nodes.filter((n) => n.kind === 'keystone' || n.kind === 'capstone')).toHaveLength(2);
+          continue;
+        }
         // Specialization branches have no keystone.
         expect(nodes.filter((n) => n.kind === 'keystone')).toHaveLength(b.spec ? 0 : 1);
         expect(nodes.filter((n) => n.kind === 'capstone')).toHaveLength(1);

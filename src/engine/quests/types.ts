@@ -70,6 +70,8 @@ export type Cond =
   /** Companions recruited (and still with you), optionally at an approval. */
   | { kind: 'companions'; min: number; minApproval?: number }
   | { kind: 'dungeons'; min: number }
+  /** Classes promoted to at least `tier` (Section K). */
+  | { kind: 'promoted'; tier: number; min: number }
   /** Skills evolved (Section J): at least `min`, or every evolution of one class when `allOfClass` is set. */
   | { kind: 'evolved'; min: number; allOfClass?: boolean }
   | { kind: 'waypoints'; min: number }
@@ -230,7 +232,7 @@ export interface StageDef {
   onComplete?: ActionDef[];
 }
 
-export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background' | 'festival' | 'trinket' | 'affliction' | 'holding';
+export type QuestKind = 'main' | 'twilight' | 'side' | 'god' | 'class' | 'hybrid' | 'faction' | 'companion' | 'bounty' | 'racial' | 'background' | 'festival' | 'trinket' | 'affliction' | 'holding' | 'promotion';
 
 export interface RewardDef {
   /** Share of the quest level's XP-to-next-level (0.3 = 30% of a level). */
