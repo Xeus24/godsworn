@@ -165,8 +165,8 @@ export const HYBRID_TRIAL_THREAT: Record<string, number> = {
   thornstalker: 170, greenseer: 100, 'dark-magus': 140, hexblade: 15, soulbinder: 170, 'spirit-lord': 100, venomancer: 230, transmuter: 270,
   ghostfist: 40, metronome: 15, gadgeteer: 170, ironclad: 400, 'windstep-master': 170, silkblade: 170, lorekeeper: 170, 'bounty-hunter': 230,
   // Section I-8c
-  stormrager: 40, momentless: -15, wildstrider: 170, doubleblood: 40, graveblood: 80, cardsharp: 80, thoughtscribe: 120, 'warden-general': 300,
-  gunwright: 500, 'templar-of-ash': 80, 'ring-dancer': 230, 'hearth-priest': -30, 'cold-reader': 80, hedgewalker: 170, pactblade: 120,
+  stormrager: 20, momentless: -15, wildstrider: 170, doubleblood: 55, graveblood: 100, cardsharp: 80, thoughtscribe: 120, 'warden-general': 300,
+  gunwright: 450, 'templar-of-ash': 95, 'ring-dancer': 230, 'hearth-priest': -30, 'cold-reader': 80, hedgewalker: 120, pactblade: 170,
 };
 
 /** Class trials (level 15: mentor plus a helper) and hybrid trials (both mentors and their helpers at level 36). */
