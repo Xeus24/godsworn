@@ -1,3 +1,4 @@
+import { markPromotion } from '../art/promotionMark';
 import { content } from '../../data';
 import { LOADOUT_NAMES, RESTOCK_TARGET } from '../../engine/state/itemActions';
 import { nextStashTabCost, stashTabName, STASH_NAME_MAX, type Inventory, type SortMode } from '../../engine/items/inventory';
@@ -381,7 +382,8 @@ export class InventoryScreen implements Screen {
     const weaponTypes = equippedWeaponTypes(p, content);
     const look = equippedGearLook(p, content);
     const doll = heroDoll(p.raceId, p.portrait, weaponTypes, look);
-    const sprite = doll ?? heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', weaponTypes, look);
+    const tier = Math.max(1, ...p.classes.map((c) => c.promotion ?? 1));
+    const sprite = markPromotion(doll ?? heroSprite(p.raceId, p.portrait, cls?.color ?? '#888888', weaponTypes, look), tier);
     sprite.className = `doll-sprite pixel${doll ? ' doll-tile' : ''}`;
     // The tile doll loads asynchronously: redraw once it is ready.
     if (doll) dollRetries = 0;

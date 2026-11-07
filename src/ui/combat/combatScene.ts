@@ -1,3 +1,4 @@
+import { markPromotion } from '../art/promotionMark';
 import { content } from '../../data';
 import type { Battle } from '../../engine/combat/battle';
 import type { BattleEvent, Combatant } from '../../engine/combat/types';
@@ -562,6 +563,7 @@ export class CombatScene {
       const doll = heroDoll(x.portrait.raceId, x.portrait.variant, x.weaponTypes, x.portrait.look);
       tiled = !!doll;
       img = doll ?? heroSprite(x.portrait.raceId, x.portrait.variant, x.portrait.color, x.weaponTypes, x.portrait.look);
+      if (x.portrait.promotion) img = markPromotion(img, x.portrait.promotion);
       bw = Math.round(size * (img.width / img.height));
     } else if (x.sprite) {
       const tile = monsterTile(x.enemyId, x.sprite.family);

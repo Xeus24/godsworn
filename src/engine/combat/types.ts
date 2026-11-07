@@ -290,7 +290,7 @@ export interface Combatant {
   lowHpFired: boolean;
   turnsTaken: number;
   /** Visuals. */
-  portrait?: { raceId: string; variant: number; color: string; look?: GearLook };
+  portrait?: { raceId: string; variant: number; color: string; look?: GearLook; /** Highest class promotion tier (Section K). */ promotion?: number };
   sprite?: { family: string; main: string; accent: string };
   /** Weapon types in hand, for weaponType conditions. */
   weaponTypes: string[];
