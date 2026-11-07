@@ -1,4 +1,5 @@
 import type { SummonDef } from '../../engine/combat/types';
+import { scaleTrait } from '../traitScale';
 import type { EffectSpec } from '../../engine/effects/types';
 import type { SpecBranchSpec } from './builder';
 import { buildTree } from './builder';
@@ -118,7 +119,7 @@ export const INKWEAVER: GreaterClass = {
     playstyle: 'Ink builds with every blow. Spend it on sigils that trigger at the start of each enemy turn, on phantoms that take hits for you, and on living scrolls that cast on their own.',
     role: 'Caster / trapper', difficulty: 3, color: '#4a5a8a',
     mechanic: { name: 'Ink and Sigils', description: 'Sigils painted on the field trigger whenever an enemy starts a turn, for a few turns each. Ink fuels them.' },
-    trait: { name: 'Steady Hand', description: '95% more max HP, 30% less damage taken, 80% more magic attack, +60% damage and 6% lifesteal.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'magicAttack', type: 'more', value: 80 }, { stat: 'damageBonus', type: 'flat', value: 60 }, { stat: 'lifesteal', type: 'flat', value: 6 }] },
+    trait: scaleTrait({ name: 'Steady Hand', description: '95% more max HP, 30% less damage taken, 80% more magic attack, +60% damage and 6% lifesteal.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'magicAttack', type: 'more', value: 80 }, { stat: 'damageBonus', type: 'flat', value: 60 }, { stat: 'lifesteal', type: 'flat', value: 6 }] }, 0.55),
     resource: 'ink',
     baseStats: { str: 2, dex: 4, int: 9, vit: 4, wis: 7, luk: 4, fai: 4, cha: 4 },
     growth: { str: 0.1, dex: 0.4, int: 1.8, vit: 0.6, wis: 1.2, luk: 0.4, fai: 0.5, cha: 0.5 },

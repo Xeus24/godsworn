@@ -44,7 +44,7 @@ export const STILLHAND: GreaterClass = {
     playstyle: 'Basic strikes and Step of Wind build Breath; spend it on deflections, pressure points and gusts. Serenity heals, Shadowstep hides, Four Gusts hits everything.',
     role: 'Melee / evasion', difficulty: 3, color: '#a8d8c8',
     mechanic: { name: 'Breath', description: 'Unhurried strikes build Breath, which fades slowly. Deflections, pressure points and gusts spend it. Not a rage: a calm.' },
-    trait: traitOf('Disciplined Calm', [['dodge', 8]], '+8% dodge'),
+    trait: traitOf('Disciplined Calm', [['dodge', 8]], '+8% dodge', 'physicalAttack', 0.22),
     resource: 'breath',
     baseStats: { str: 6, dex: 9, int: 3, vit: 6, wis: 6, luk: 3, fai: 1, cha: 2 },
     growth: { str: 0.9, dex: 1.6, int: 0.3, vit: 0.9, wis: 0.8, luk: 0.4, fai: 0.1, cha: 0.1 },

@@ -1,4 +1,5 @@
 import type { SummonDef } from '../../engine/combat/types';
+import { scaleTrait } from '../traitScale';
 import type { StatusDef } from '../statuses';
 import type { SpecBranchSpec } from './builder';
 import { buildTree } from './builder';
@@ -118,7 +119,7 @@ export const ARTIFICER: GreaterClass = {
     playstyle: 'Heat builds with every shot and gadget. Let it run hot for damage, but at 100 the machinery overheats and bites back. Vent it before then.',
     role: 'Ranged / gadgeteer', difficulty: 3, color: '#c8a050',
     mechanic: { name: 'Heat', description: 'Your gadgets and shots build Heat. At 100 you Overheat: you take 25% more damage and burn, and Heat drops to 40. Venting and runes shed it.' },
-    trait: { name: 'Built to Last', description: '95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'physicalAttack', type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 }] },
+    trait: scaleTrait({ name: 'Built to Last', description: '95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'physicalAttack', type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 }] }, 0.2),
     resource: 'heat',
     baseStats: { str: 4, dex: 7, int: 7, vit: 5, wis: 4, luk: 4, fai: 3, cha: 3 },
     growth: { str: 0.5, dex: 1.2, int: 1.2, vit: 0.8, wis: 0.5, luk: 0.4, fai: 0.4, cha: 0.4 },

@@ -1342,6 +1342,12 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests (1203) and the build pass; `npm run playtest -- ng <class>` finishes New Game+1 for all 11 touched classes. The full 96-run playtest was not rerun.
 - Cut / deferred: Stillhand, Wayfinder, Artificer, Dancer, Inkweaver, Geomancer, Hemomancer and Puppeteer still win about 100% of ordinary fights (kit-level, and the last six use their own traits). Cleric, Knight, Vowknight and Hearthmaster all dip to about 75% at level 20 (likely one fight). Whisperknight and Facewright are still 80% at level 60. Monk (no trait) and Warlock are 86-88%.
 
+### Balance pass 5: the classes that won every ordinary fight
+- Removing a class's trait showed it carries them (Inkweaver 100% to 55%, Hemomancer 100% to 40%, Warrior 80-100% to 28-56%), so the fix is the trait's size, not the skills. `scaleTrait` (`data/traitScale.ts`) scales a trait's power numbers (max HP, damage taken, attack, +damage, lifesteal; dodge, crit and the like are left alone) and its description; Stillhand and Wayfinder use the `tune` argument of `traitOf`. A scan over trait scales set each one.
+- Scales: Stillhand 0.22, Wayfinder 0.15, Artificer 0.2, Dancer 0.4, Inkweaver 0.55, Geomancer 0.35, Hemomancer 0.55. Ordinary-fight averages (levels 10-60, 8 fights per encounter): Stillhand 99 to 93%, Artificer 100 to 95%, Dancer 100 to 94%, Inkweaver 100 to 93%, Geomancer 100 to 91%, Hemomancer 100 to 92%, Wayfinder 100 to 98% (its kit wins almost whatever the trait).
+- `npm run playtest -- ng <class>` finishes New Game+1 for all seven. Tests (1203) and the build pass. The full 96-run playtest was not rerun.
+- Cut / deferred: Puppeteer wins 100% even with its trait at 0.15 (kit-level, left alone); Wayfinder is 98%. Stillhand L45 (81%) and Hemomancer L30 (82%) and several L60 cells (78-80%) are below target. Late world bosses were not re-simmed for these seven, so check them next.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 

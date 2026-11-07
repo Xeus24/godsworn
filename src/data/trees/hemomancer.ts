@@ -1,4 +1,5 @@
 import type { SummonDef } from '../../engine/combat/types';
+import { scaleTrait } from '../traitScale';
 import type { SpecBranchSpec } from './builder';
 import { buildTree } from './builder';
 import type { GreaterClass } from '../greaterClass';
@@ -103,7 +104,7 @@ export const HEMOMANCER: GreaterClass = {
     playstyle: 'Spells cost a share of your max HP and build Blood; spend Blood to drain, heal and shield. Live on the edge, and keep your lifesteal up.',
     role: 'Caster / life-for-power', difficulty: 3, color: '#a82a3a',
     mechanic: { name: 'Blood', description: 'Many spells cost HP instead of MP and build Blood. Blood fuels drains, pacts and veils. Lifesteal keeps it all sustainable.' },
-    trait: { name: 'Thick as Blood', description: '95% more max HP, 30% less damage taken, 60% more magic attack, +50% damage and 12% lifesteal.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'magicAttack', type: 'more', value: 60 }, { stat: 'damageBonus', type: 'flat', value: 50 }, { stat: 'lifesteal', type: 'flat', value: 12 }] },
+    trait: scaleTrait({ name: 'Thick as Blood', description: '95% more max HP, 30% less damage taken, 60% more magic attack, +50% damage and 12% lifesteal.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'magicAttack', type: 'more', value: 60 }, { stat: 'damageBonus', type: 'flat', value: 50 }, { stat: 'lifesteal', type: 'flat', value: 12 }] }, 0.55),
     resource: 'blood',
     baseStats: { str: 2, dex: 4, int: 9, vit: 6, wis: 6, luk: 3, fai: 4, cha: 4 },
     growth: { str: 0.1, dex: 0.4, int: 1.7, vit: 1.0, wis: 1.0, luk: 0.3, fai: 0.5, cha: 0.5 },

@@ -1,4 +1,5 @@
 import type { EffectSpec } from '../../engine/effects/types';
+import { scaleTrait } from '../traitScale';
 import type { StatusDef } from '../statuses';
 import type { SpecBranchSpec } from './builder';
 import { buildTree } from './builder';
@@ -125,7 +126,7 @@ export const GEOMANCER: GreaterClass = {
     playstyle: 'Change the terrain as the fight demands. Quake slows and bruises enemies, Crystal protects your party, Sand blinds them, Lava burns them. Ley builds as you work the ground; spend it on big strikes.',
     role: 'Caster / field controller', difficulty: 3, color: '#8a6a3a',
     mechanic: { name: 'Ley Lines and Terrain', description: 'Terrain skills reshape the field (one terrain at a time). Each terrain buffs your party and debuffs enemies for a few turns. Ley builds with every terrain you raise.' },
-    trait: { name: 'Rooted Power', description: '95% more max HP, 30% less damage taken, 45% more magic attack and +30% damage.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'magicAttack', type: 'more', value: 45 }, { stat: 'damageBonus', type: 'flat', value: 30 }] },
+    trait: scaleTrait({ name: 'Rooted Power', description: '95% more max HP, 30% less damage taken, 45% more magic attack and +30% damage.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'magicAttack', type: 'more', value: 45 }, { stat: 'damageBonus', type: 'flat', value: 30 }] }, 0.35),
     resource: 'ley',
     baseStats: { str: 3, dex: 3, int: 8, vit: 6, wis: 7, luk: 3, fai: 4, cha: 4 },
     growth: { str: 0.3, dex: 0.3, int: 1.5, vit: 1.0, wis: 1.3, luk: 0.3, fai: 0.3, cha: 0.5 },

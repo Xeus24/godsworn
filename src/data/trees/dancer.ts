@@ -1,4 +1,5 @@
 import type { StatusDef } from '../statuses';
+import { scaleTrait } from '../traitScale';
 import type { SpecBranchSpec } from './builder';
 import { buildTree } from './builder';
 import type { GreaterClass } from '../greaterClass';
@@ -113,7 +114,7 @@ export const DANCER: GreaterClass = {
     playstyle: 'String different moves together: each Step and Spin gains Rhythm and a stack of Tempo. Spend it all on a Curtain Call, or Encore the last move for free.',
     role: 'Melee / combo', difficulty: 2, color: '#e85a6a',
     mechanic: { name: 'Rhythm and Tempo', description: 'Dance moves build Rhythm and stack Tempo (+damage, +speed). Finishers spend all Rhythm for escalating damage; Encore repeats your last move.' },
-    trait: { name: 'Natural Grace', description: '95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'physicalAttack', type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 }] },
+    trait: scaleTrait({ name: 'Natural Grace', description: '95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage.', modifiers: [{ stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'physicalAttack', type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 }] }, 0.4),
     resource: 'rhythm',
     baseStats: { str: 5, dex: 10, int: 3, vit: 5, wis: 3, luk: 5, fai: 3, cha: 5 },
     growth: { str: 0.6, dex: 2.1, int: 0.4, vit: 0.8, wis: 0.3, luk: 0.6, fai: 0.2, cha: 0.7 },

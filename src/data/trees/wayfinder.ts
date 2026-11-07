@@ -53,7 +53,7 @@ export const WAYFINDER: GreaterClass = {
     playstyle: 'Mark a Quarry: it takes more damage and cannot hide. Shots build Trail; spend it on companions, long draws and favored ground. Beastbond fights alongside animals, Gloomstalker hunts in the dark, Horizon Archer never misses.',
     role: 'Ranged / tracker', difficulty: 2, color: '#6a9a4a',
     mechanic: { name: 'Quarry and Trail', description: 'Mark one enemy as your Quarry: it takes 15% more damage and cannot dodge as well. Shots and kills build Trail; companions and long draws spend it.' },
-    trait: traitOf('Tracker’s Eye', [['accuracy', 10]], '+10 accuracy'),
+    trait: traitOf('Tracker’s Eye', [['accuracy', 10]], '+10 accuracy', 'physicalAttack', 0.15),
     resource: 'trail',
     baseStats: { str: 5, dex: 9, int: 3, vit: 6, wis: 6, luk: 4, fai: 1, cha: 1 },
     growth: { str: 0.8, dex: 1.6, int: 0.3, vit: 0.9, wis: 0.7, luk: 0.6, fai: 0.1, cha: 0.5 },
