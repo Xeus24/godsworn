@@ -118,13 +118,21 @@ import type { StartingKitItem } from '../items/loot';
 import type { ModifierSpec } from '../../engine/stats/modifiers';
 import { MENTOR_BASE } from './mentorBase';
 
-/** The standard Greater-class trait: tanky, hard-hitting, plus a few class bonuses. Casters pass 'magicAttack' so the attack bonus lands on the stat their spells use. */
-export function traitOf(name: string, extra: [string, number][], text: string, attack: 'physicalAttack' | 'magicAttack' = 'physicalAttack'): { name: string; description: string; modifiers: ModifierSpec[] } {
+/**
+ * The standard Greater-class trait: tanky, hard-hitting, plus a few class bonuses. Casters pass 'magicAttack' so the
+ * attack bonus lands on the stat their spells use. `tune` scales the four template numbers (1 = 95% HP, 30% less damage
+ * taken, 35% attack, +40% damage): above 1 for a class the sim shows is weak, below 1 for one that wins everything.
+ */
+export function traitOf(name: string, extra: [string, number][], text: string, attack: 'physicalAttack' | 'magicAttack' = 'physicalAttack', tune = 1): { name: string; description: string; modifiers: ModifierSpec[] } {
+  const hp = Math.round(95 * tune);
+  const taken = Math.min(60, Math.round(30 * tune));
+  const atk = Math.round(35 * tune);
+  const dmg = Math.round(40 * tune);
   return {
     name,
-    description: `95% more max HP, 30% less damage taken, 35% more ${attack === 'magicAttack' ? 'magic' : 'physical'} attack, +40% damage${text ? `, ${text}` : ''}.`,
+    description: `${hp}% more max HP, ${taken}% less damage taken, ${atk}% more ${attack === 'magicAttack' ? 'magic' : 'physical'} attack, +${dmg}% damage${text ? `, ${text}` : ''}.`,
     modifiers: [
-      { stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: attack, type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 },
+      { stat: 'maxHp', type: 'more', value: hp }, { stat: 'damageTaken', type: 'more', value: -taken }, { stat: attack, type: 'more', value: atk }, { stat: 'damageBonus', type: 'flat', value: dmg },
       ...extra.map(([stat, value]) => ({ stat, type: 'flat', value }) as ModifierSpec),
     ],
   };

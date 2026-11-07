@@ -61,7 +61,7 @@ export const FACEWRIGHT: GreaterClass = {
     playstyle: 'Don a Mask: each one changes your stats and basic attack. Persona builds from each change and spends on the Unmasking. Stage-Muse builds Persona, Mask-Tyrant rules, Unmasker rips faces off.',
     role: 'Melee / shapeshifter', difficulty: 3, color: '#d8a8d8',
     mechanic: { name: 'Persona and Masks', description: 'Donning a Mask is a stance: stats, basic attack and one line of dialogue. Persona builds when you change faces and spends on the Unmasking.' },
-    trait: traitOf('A Face for Every Occasion', [['dodge', 6]], '+6 dodge'),
+    trait: traitOf('A Face for Every Occasion', [['dodge', 6]], '+6 dodge', 'physicalAttack', 1.2),
     resource: 'persona',
     baseStats: { str: 3, dex: 7, int: 5, vit: 5, wis: 4, luk: 6, fai: 4, cha: 7 },
     growth: { str: 0.3, dex: 1.1, int: 0.8, vit: 0.8, wis: 0.6, luk: 0.9, fai: 0.5, cha: 1.1 },

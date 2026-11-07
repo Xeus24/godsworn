@@ -48,7 +48,7 @@ export const WHISPERKNIGHT: GreaterClass = {
     playstyle: 'Hushed blows build Hush. Spend it on Seals that detonate on enemy turns, on pale lances and shields. The Pale Auditor is your patron; the Choir fears you.',
     role: 'Melee / trapper', difficulty: 3, color: '#8a6aa8',
     mechanic: { name: 'Hush and Seals', description: 'Quiet blows build Hush. Seals are placed now and detonate on enemy turns. Shares its lore and audio with the Whisper meter (the Nameless One).' },
-    trait: traitOf('Sworn to Silence', [['shadowDamage', 12]], '+12% shadow damage'),
+    trait: traitOf('Sworn to Silence', [['shadowDamage', 12]], '+12% shadow damage', 'physicalAttack', 1.3),
     resource: 'hush',
     baseStats: { str: 7, dex: 4, int: 4, vit: 6, wis: 5, luk: 3, fai: 5, cha: 3 },
     growth: { str: 1.2, dex: 0.6, int: 0.6, vit: 1.0, wis: 0.7, luk: 0.4, fai: 0.5, cha: 0.4 },

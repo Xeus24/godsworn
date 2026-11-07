@@ -1334,6 +1334,14 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests (1203) and the build pass; `npm run playtest -- ng <class>` finishes New Game+1 for all five.
 - Cut / deferred: about 30 newer classes still share the same trait template (95% more max HP, 30% less damage taken, 35% more attack, +40% damage) with one small bonus each. That is the larger flat-trait problem, and replacing it needs per-class sims. Fatedealer L60 (76%) and Hedgewitch L45 (76%) are still below the 85-95% target. The bard wall at levels 9-17 and the easy early bosses for mage and cleric were not touched.
 
+### Balance pass 4: per-class trait tuning for the shared template
+- Baseline sim of all 49 classes (ordinary fights at levels 10, 20, 30, 45, 60, 6 fights per encounter, target 85-95%): most sit at 90-100%. Outliers were Whisperknight (67% at levels 30 and 45), Fatedealer, Hedgewitch, Facewright, Hearthmaster and Vowknight (weak), and a group that won nearly everything.
+- `traitOf` takes a `tune` scale on its four template numbers (95% HP, 30% less damage taken, 35% attack, +40% damage). Buffed: Whisperknight 1.3, Facewright 1.2, Hearthmaster 1.2, Vowknight 1.2, Fatedealer and Hedgewitch 1.15. Nerfed to 0.6: Corsair, Brawler, Soulblade.
+- Averages after: Whisperknight 82 to 92%, Facewright 88 to 93%, Hearthmaster 88 to 92%, Vowknight 87 to 90%, Fatedealer 89 to 93%, Hedgewitch 89 to 94%, Brawler 100 to 92%, Soulblade 99 to 96%, Corsair 100 to 98%.
+- Tried and reverted: Stillhand and Wayfinder stayed at 99-100% even with the template cut to 0.45, so their strength is in their skills, not the trait; they keep the standard template.
+- Tests (1203) and the build pass; `npm run playtest -- ng <class>` finishes New Game+1 for all 11 touched classes. The full 96-run playtest was not rerun.
+- Cut / deferred: Stillhand, Wayfinder, Artificer, Dancer, Inkweaver, Geomancer, Hemomancer and Puppeteer still win about 100% of ordinary fights (kit-level, and the last six use their own traits). Cleric, Knight, Vowknight and Hearthmaster all dip to about 75% at level 20 (likely one fight). Whisperknight and Facewright are still 80% at level 60. Monk (no trait) and Warlock are 86-88%.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 

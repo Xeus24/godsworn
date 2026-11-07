@@ -45,7 +45,7 @@ export const HEARTHMASTER: GreaterClass = {
     playstyle: 'Ladle strikes and poison courses build Simmer. Spend it on stews, roasts and rations for the party, flambé and sour surprises for the enemy.',
     role: 'Support / cook', difficulty: 2, color: '#d89a4a',
     mechanic: { name: 'Simmer', description: 'Strikes and poison courses build Simmer. Meals for the party and flambé spend it. Works alongside the Cooking and Hearth Meals systems.' },
-    trait: traitOf('Good Cook', [['healingPower', 10], ['damageBonus', 15]], '+10% healing power and +15% damage'),
+    trait: traitOf('Good Cook', [['healingPower', 10], ['damageBonus', 15]], '+10% healing power and +15% damage', 'physicalAttack', 1.2),
     resource: 'simmer',
     baseStats: { str: 4, dex: 4, int: 4, vit: 8, wis: 6, luk: 4, fai: 4, cha: 6 },
     growth: { str: 0.5, dex: 0.6, int: 0.7, vit: 1.3, wis: 1.0, luk: 0.5, fai: 0.4, cha: 0.9 },

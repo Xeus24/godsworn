@@ -50,7 +50,7 @@ export const SOULBLADE: GreaterClass = {
     playstyle: 'Strikes build Bond. Spend it to draw the spirit, to dance, to parry with opinion. The Unleashed releases the blade fully, Duelist of One fights one foe, Hallowed Edge heals.',
     role: 'Melee / duelist', difficulty: 3, color: '#a8a8c8',
     mechanic: { name: 'Bond', description: 'Strikes build Bond. The blade manifests as an ally when you draw its spirit; spending Bond fuels the dance.' },
-    trait: traitOf('A Voice in the Hilt', [['critChance', 6]], '+6% crit chance'),
+    trait: traitOf('A Voice in the Hilt', [['critChance', 6]], '+6% crit chance', 'physicalAttack', 0.6),
     resource: 'bladeBond',
     baseStats: { str: 7, dex: 6, int: 3, vit: 6, wis: 4, luk: 4, fai: 4, cha: 4 },
     growth: { str: 1.2, dex: 0.9, int: 0.4, vit: 1.0, wis: 0.6, luk: 0.5, fai: 0.4, cha: 0.6 },

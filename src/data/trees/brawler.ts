@@ -46,7 +46,7 @@ export const BRAWLER: GreaterClass = {
     playstyle: 'Jabs and bottles build Grit. Spend it on grapples, slams and chair swings. Drunken Stance trades accuracy for dodge and damage.',
     role: 'Melee / dirty fighter', difficulty: 2, color: '#c88a3a',
     mechanic: { name: 'Grit', description: 'Dirty tricks and improvised hits build Grit. Grapples, slams and rousing roars spend it.' },
-    trait: traitOf('Tavern Tough', [['statusResist', 8]], '+8% status resist'),
+    trait: traitOf('Tavern Tough', [['statusResist', 8]], '+8% status resist', 'physicalAttack', 0.6),
     resource: 'grit',
     baseStats: { str: 9, dex: 5, int: 2, vit: 8, wis: 3, luk: 4, fai: 3, cha: 3 },
     growth: { str: 1.6, dex: 0.9, int: 0.2, vit: 1.3, wis: 0.3, luk: 0.5, fai: 0.2, cha: 0.3 },

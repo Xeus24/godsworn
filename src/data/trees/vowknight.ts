@@ -53,7 +53,7 @@ export const VOWKNIGHT: GreaterClass = {
     playstyle: 'Swear Mercy, Vengeance or Dawn: each changes your basic attacks and what you do best. Fighting by your Tenet and taking blows builds Resolve; spend it on Retribution, Mending Vow and Daybreak Surge.',
     role: 'Melee / holy', difficulty: 2, color: '#e8c860',
     mechanic: { name: 'Resolve and Tenets', description: 'Hitting and being hit builds Resolve. Your sworn Tenet is a stance: Mercy mends, Vengeance Marks, Dawn Blinds. Swear a new one and the old one is broken.' },
-    trait: traitOf('Sworn Resolve', [['holyDamage', 12]], '+12% holy damage'),
+    trait: traitOf('Sworn Resolve', [['holyDamage', 12]], '+12% holy damage', 'physicalAttack', 1.2),
     resource: 'vowResolve',
     baseStats: { str: 8, dex: 4, int: 3, vit: 7, wis: 4, luk: 3, fai: 5, cha: 5 },
     growth: { str: 1.2, dex: 0.7, int: 0.4, vit: 1.1, wis: 0.5, luk: 0.4, fai: 0.7, cha: 0.8 },

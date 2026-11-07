@@ -45,7 +45,7 @@ export const CORSAIR: GreaterClass = {
     playstyle: 'Cutlass and pistol build Crew. Spend it on broadsides, boarding parties and rallies. Privateer pays for itself, Stormcaptain brings the weather, Deadeye takes one shot.',
     role: 'Melee / ranged raider', difficulty: 2, color: '#6a8ac8',
     mechanic: { name: 'Crew', description: 'Strikes and kills build Crew. Cannon fire, boarding parties and rallies spend it.' },
-    trait: traitOf('Sea Legs', [['goldFind', 10]], '+10% gold found'),
+    trait: traitOf('Sea Legs', [['goldFind', 10]], '+10% gold found', 'physicalAttack', 0.6),
     resource: 'crew',
     baseStats: { str: 6, dex: 8, int: 3, vit: 6, wis: 3, luk: 6, fai: 2, cha: 6 },
     growth: { str: 1.0, dex: 1.5, int: 0.3, vit: 0.9, wis: 0.3, luk: 0.8, fai: 0.2, cha: 0.8 },

@@ -46,7 +46,7 @@ export const FATEDEALER: GreaterClass = {
     playstyle: 'Draw to build Fortune and a random boon, hold for crit, then bet it: All In and High Stakes pay in HP for huge hits. Oracle bends the order of turns, Trickster cheats.',
     role: 'Caster / gambler', difficulty: 3, color: '#c8a838',
     mechanic: { name: 'Fortune and the Deck', description: 'Draws build Fortune. Bets spend it, some for HP, all for huge damage. Cards are battle-only and never change your Pantheon Cards collection.' },
-    trait: traitOf('Lucky Hands', [['luk', 4]], '+4 LUK', 'magicAttack'),
+    trait: traitOf('Lucky Hands', [['luk', 4]], '+4 LUK', 'magicAttack', 1.15),
     resource: 'fortune',
     baseStats: { str: 3, dex: 6, int: 6, vit: 5, wis: 4, luk: 8, fai: 2, cha: 8 },
     growth: { str: 0.3, dex: 0.9, int: 1.0, vit: 0.8, wis: 0.5, luk: 1.3, fai: 0.2, cha: 0.8 },

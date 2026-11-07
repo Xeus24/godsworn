@@ -52,7 +52,7 @@ export const HEDGEWITCH: GreaterClass = {
     playstyle: 'Bolts build Brew. Spend it on cauldron brews, familiars and effigies. Cauldron-Mistress heals and burns, Poppet-Binder curses, Familiar-Keeper brings the pack.',
     role: 'Caster / brewer', difficulty: 3, color: '#6a9a4a',
     mechanic: { name: 'Brew', description: 'Spells build Brew. Cauldron brews, familiars and effigies spend it.' },
-    trait: traitOf('Village Wisdom', [['healingPower', 8]], '+8% healing power', 'magicAttack'),
+    trait: traitOf('Village Wisdom', [['healingPower', 8]], '+8% healing power', 'magicAttack', 1.15),
     resource: 'brew',
     baseStats: { str: 2, dex: 4, int: 7, vit: 5, wis: 8, luk: 4, fai: 4, cha: 4 },
     growth: { str: 0.2, dex: 0.5, int: 1.4, vit: 0.8, wis: 1.2, luk: 0.5, fai: 0.4, cha: 0.5 },
