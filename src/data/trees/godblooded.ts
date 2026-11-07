@@ -45,7 +45,7 @@ export const GODBLOODED: GreaterClass = {
     playstyle: 'Spark Surge builds Spark. Spend it on shaped surges: Twin, Extended, Silent, Wide. Pick a bloodline: Stormblood, Emberblood, or Vex-Touched, whose surges roll their own luck.',
     role: 'Caster / shaper', difficulty: 3, color: '#a87ad8',
     mechanic: { name: 'Spark and Spellshaping', description: 'A handful of spells, each reshaped by Twin, Extend, Quicken, Silent and Widen versions. Spark builds with every cast and pays for the shaping.' },
-    trait: traitOf('Innate Magic', [['magicAttack', 8]], '+8 magic attack'),
+    trait: traitOf('Innate Magic', [['magicAttack', 8]], '+8 magic attack', 'magicAttack'),
     resource: 'spark',
     baseStats: { str: 3, dex: 4, int: 8, vit: 6, wis: 5, luk: 5, fai: 3, cha: 5 },
     growth: { str: 0.3, dex: 0.6, int: 1.6, vit: 0.8, wis: 0.7, luk: 0.6, fai: 0.4, cha: 0.8 },

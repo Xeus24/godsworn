@@ -1328,6 +1328,12 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests: `tests/guide.test.ts`; 1203 unit tests and the build pass. E2E: 15 of 16 pass; `camp.e2e.ts` "Spire, Divine Trial..." (waits on an enabled "Face the Aspect") also fails on the commit before this one, so it is not caused by this pass.
 - Cut / deferred: the early balance fix (the bard wall at levels 9-17, mage and cleric too easy against early bosses) and the class cut or merge were not done. The full `npm run playtest -- ng` was not rerun (UI-only change).
 
+### Balance pass 3: caster traits used the wrong attack stat
+- `traitOf` (`data/trees/tabletop.ts`), the shared trait for the newer classes, always gave +35% **physical** attack. Five casters used it: Godblooded, Fatedealer, Mindwright, Truthseeker and Hedgewitch, so their trait bonus did nothing for spells. `traitOf` now takes an attack stat (default physical) and those five pass `magicAttack` (Bellwarden already had its own magic bonus).
+- Ordinary-fight wins at the benchmark levels (20 fights per encounter): Hedgewitch L30/L45/L60 75/67/86% to 85/76/89%; Fatedealer 74/74/66% to 87/80/76%. At 6 fights per encounter Godblooded L45 went 70% to 90%, Truthseeker L45 97% to 98% and L30 92% to 99%, Mindwright L30 92% to 97%.
+- Tests (1203) and the build pass; `npm run playtest -- ng <class>` finishes New Game+1 for all five.
+- Cut / deferred: about 30 newer classes still share the same trait template (95% more max HP, 30% less damage taken, 35% more attack, +40% damage) with one small bonus each. That is the larger flat-trait problem, and replacing it needs per-class sims. Fatedealer L60 (76%) and Hedgewitch L45 (76%) are still below the 85-95% target. The bard wall at levels 9-17 and the easy early bosses for mage and cleric were not touched.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 

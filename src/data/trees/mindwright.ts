@@ -45,7 +45,7 @@ export const MINDWRIGHT: GreaterClass = {
     playstyle: 'Every cast builds Strain. Past 100 you take a backlash. Clear the Mind to let it go. Shaper remakes matter, Whisperer rules minds, Kineticist throws everything.',
     role: 'Caster / psychic', difficulty: 3, color: '#8a6ad8',
     mechanic: { name: 'Strain', description: 'Casting builds Strain. At 100 the backlash hits you for 12% of max HP and a Weaken. Clear the Mind sheds Strain. Mindwrights cannot be Silenced.' },
-    trait: traitOf('Unquiet Mind', [['magicAttack', 8]], '+8 magic attack'),
+    trait: traitOf('Unquiet Mind', [['magicAttack', 8]], '+8 magic attack', 'magicAttack'),
     resource: 'strain',
     baseStats: { str: 2, dex: 4, int: 9, vit: 5, wis: 8, luk: 3, fai: 3, cha: 4 },
     growth: { str: 0.2, dex: 0.5, int: 1.7, vit: 0.8, wis: 1.2, luk: 0.4, fai: 0.2, cha: 0.4 },

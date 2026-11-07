@@ -45,7 +45,7 @@ export const TRUTHSEEKER: GreaterClass = {
     playstyle: 'Studies build Deduction. Spend it on exposed weaknesses, logical conclusions and reveals. Revealer exposes everyone, Prosecutor ends one fight with one blow, Interrogator breaks minds.',
     role: 'Caster / analyst', difficulty: 3, color: '#6a8ac8',
     mechanic: { name: 'Deduction', description: 'Studying a foe builds Deduction. Exploits of what you learned spend it. Foes you have studied take extra damage from your next attacks.' },
-    trait: traitOf('Sharp Mind', [['accuracy', 8], ['critChance', 4]], '+8 accuracy and +4% crit chance'),
+    trait: traitOf('Sharp Mind', [['accuracy', 8], ['critChance', 4]], '+8 accuracy and +4% crit chance', 'magicAttack'),
     resource: 'deduction',
     baseStats: { str: 3, dex: 5, int: 8, vit: 4, wis: 8, luk: 4, fai: 2, cha: 5 },
     growth: { str: 0.3, dex: 0.7, int: 1.5, vit: 0.7, wis: 1.3, luk: 0.4, fai: 0.1, cha: 0.6 },

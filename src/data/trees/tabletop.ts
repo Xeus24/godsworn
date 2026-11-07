@@ -118,13 +118,13 @@ import type { StartingKitItem } from '../items/loot';
 import type { ModifierSpec } from '../../engine/stats/modifiers';
 import { MENTOR_BASE } from './mentorBase';
 
-/** The standard Greater-class trait: tanky, hard-hitting, plus a few class bonuses. */
-export function traitOf(name: string, extra: [string, number][], text: string): { name: string; description: string; modifiers: ModifierSpec[] } {
+/** The standard Greater-class trait: tanky, hard-hitting, plus a few class bonuses. Casters pass 'magicAttack' so the attack bonus lands on the stat their spells use. */
+export function traitOf(name: string, extra: [string, number][], text: string, attack: 'physicalAttack' | 'magicAttack' = 'physicalAttack'): { name: string; description: string; modifiers: ModifierSpec[] } {
   return {
     name,
-    description: `95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage${text ? `, ${text}` : ''}.`,
+    description: `95% more max HP, 30% less damage taken, 35% more ${attack === 'magicAttack' ? 'magic' : 'physical'} attack, +40% damage${text ? `, ${text}` : ''}.`,
     modifiers: [
-      { stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: 'physicalAttack', type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 },
+      { stat: 'maxHp', type: 'more', value: 95 }, { stat: 'damageTaken', type: 'more', value: -30 }, { stat: attack, type: 'more', value: 35 }, { stat: 'damageBonus', type: 'flat', value: 40 },
       ...extra.map(([stat, value]) => ({ stat, type: 'flat', value }) as ModifierSpec),
     ],
   };
