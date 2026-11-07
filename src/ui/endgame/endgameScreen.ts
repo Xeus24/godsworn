@@ -6,6 +6,7 @@ import { countHeld } from '../../engine/items/inventory';
 import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
 import { BOSS_RUSH, EndgameActions } from '../../engine/state/endgameActions';
 import type { GameSession } from '../../engine/state/gameState';
+import { foldPanel } from '../components/fold';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
@@ -123,7 +124,7 @@ export class EndgameScreen implements Screen {
   private divine(): HTMLElement {
     const s = this.session;
     const e = s.state.endgame;
-    return el('section', { class: 'panel' }, el('h2', {}, 'The Divine Trials'),
+    return el('section', { class: 'panel' }, el('h3', {}, 'The Divine Trials'),
       el('p', { class: 'small' }, 'Each god tests you in person: one fight against their Aspect, with a theme of its own. A god must have taken notice of you (Acknowledged favor). Pass all fourteen to be called Trialsworn.'),
       el('div', { class: 'small' }, `Passed: ${DIVINE_TRIALS.filter((t) => (e.divine[t.god]?.clears ?? 0) > 0).length} of ${DIVINE_TRIALS.length}`),
       ...DIVINE_TRIALS.map((t) => {
@@ -182,7 +183,7 @@ export class EndgameScreen implements Screen {
       const check = g.canStartAtlas(n.id);
       return el('div', { class: 'row wrap' }, el('b', {}, n.name.split(': ')[1] ?? n.name), el('span', { class: 'dim small' }, best !== undefined ? `lit · best ${best} turns` : g.nodeOpen(n.id) ? 'open' : 'dark'), this.btn('Enter', () => this.say(g.startAtlas(n.id)), !check.ok));
     });
-    return el('section', { class: 'panel' }, el('h2', {}, 'The Celestial Atlas'),
+    return el('section', { class: 'panel' }, el('h3', {}, 'The Celestial Atlas'),
       el('p', { class: 'small' }, `A hundred maps in ten constellations. Light a map to open the next; light ${ATLAS.opensAt} to open the next constellation. Stars: ${st.free} free of ${st.won}.`),
       pick, el('p', { class: 'small' }, con.text),
       el('div', { class: 'small' }, `Board: ${g.boardPoints(this.con)}/${ATLAS.boardMax} points · +${eff.reward}% rewards, +${eff.threat}% danger`),
@@ -202,7 +203,7 @@ export class EndgameScreen implements Screen {
           'div',
           { class: 'codex-scroll' },
           ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.daily(), this.weekly(), this.atlas(), this.divine()),
+          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.daily(), this.weekly(), foldPanel(this.atlas(), `${s.state.endgame.atlas.cleared ? Object.keys(s.state.endgame.atlas.cleared).length : 0} of ${ATLAS_NODES.length} lit`), foldPanel(this.divine(), `${DIVINE_TRIALS.filter((t) => (s.state.endgame.divine[t.god]?.clears ?? 0) > 0).length} of ${DIVINE_TRIALS.length} passed`)),
           this.btn('Back to town', () => this.back()),
         ),
       ),

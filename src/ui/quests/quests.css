@@ -350,3 +350,10 @@ button.marked {
     grid-template-columns: 1fr;
   }
 }
+
+/* Two-column list of board rows (Codex families, backgrounds). */
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 16px;
+}

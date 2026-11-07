@@ -1020,6 +1020,7 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - Arena (proving grounds): the Class Trainers/Hybrid block is folded, and trivial fights (4+ levels below you) are hidden behind a toggle. At level 60 the page went 16,729px -> 2,119px.
 - Not yet checked: in-battle combat screen and Codex list paging (Codex files were being edited elsewhere).
 - Second pass: Codex tabs grouped into five (Creatures, World, People, Lore & items, Progress) with a sub-row; Achievements, Legendary Codex, Lore and Maps fold per group (page 6,824px and 14,308px -> 768px); Paragon Board folds on the Character sheet (2,111px -> 781px); bestiary sprites paint lazily. Rules for new UI are now in CLAUDE.md.
+- Third pass (level 60, 1440x900): Codex By family 1180px and Backgrounds 1431px now use a two-column grid (fit 900px); Arena fight list is its own scroll pane (page 1789px -> 814px); Rift Gate folds the Celestial Atlas and Divine Trials (1968px -> 814px); town page 1882px -> 1373px (People list, Quest Board and Temple scroll inside their cards; cards flow dense). Checked and already fitting: Character, Inventory, Skills, General, Quests, Party, World, Pantheon, Market, Workshop, Pastimes, in-battle screen. Town is still about 1.5 screens: its launcher cards are the remaining bulk.
 
 ## Known bugs
 - None known.

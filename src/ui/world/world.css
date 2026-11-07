@@ -161,7 +161,15 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
+  grid-auto-flow: row dense;
   align-items: start;
+}
+
+/* Long cards scroll inside the card instead of stretching the whole town page. */
+.town-card[data-card='Quest Board'],
+.town-card[data-card='Temple'] {
+  max-height: 190px;
+  overflow-y: auto;
 }
 
 .town-card {
@@ -443,6 +451,8 @@
 }
 
 .npc-list {
+  max-height: 200px;
+  overflow-y: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 4px;

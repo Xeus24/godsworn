@@ -254,6 +254,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 8px;
+  /* A long fight list scrolls in its own pane so the arena page stays one screen tall. */
+  max-height: calc(100vh - 240px);
+  min-height: 240px;
+  overflow-y: auto;
+  align-content: start;
 }
 
 .encounter-card {

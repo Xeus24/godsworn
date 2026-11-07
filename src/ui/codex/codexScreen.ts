@@ -187,7 +187,7 @@ export class CodexScreen implements Screen {
         const names = met.slice(0, 8).map((e) => e.name).join(', ');
         return el('div', { class: 'board-row' }, el('b', {}, `${family[0]?.toUpperCase()}${family.slice(1)}`), el('span', { class: 'dim small' }, ` ${met.length} of ${list.length} met (levels ${Math.min(...list.map((e) => e.level))}-${Math.max(...list.map((e) => e.level))})`), ...(names ? [el('div', { class: 'dim small' }, `${names}${met.length > 8 ? ', ...' : ''}`)] : []));
       });
-    return el('section', { class: 'panel' }, el('h2', {}, `Bestiary by family (${groups.size} families)`), ...rows);
+    return el('section', { class: 'panel' }, el('h2', {}, `Bestiary by family (${groups.size} families)`), el('div', { class: 'board-grid' }, ...rows));
   }
 
   /** All twelve pasts: yours, and what each one gives. */
@@ -197,7 +197,7 @@ export class CodexScreen implements Screen {
       'section',
       { class: 'panel' },
       el('h2', {}, 'Backgrounds'),
-      ...content.backgrounds.all().map((b) => el('div', { class: 'board-row' }, el('b', {}, b.name), ...(b.id === mine ? [el('span', { class: 'enc-tag ok' }, 'Yours')] : []), el('div', { class: 'small' }, b.description), el('div', { class: 'dim small' }, b.voice[0]))),
+      el('div', { class: 'board-grid' }, ...content.backgrounds.all().map((b) => el('div', { class: 'board-row', title: b.voice[0] ?? '' }, el('b', {}, b.name), ...(b.id === mine ? [el('span', { class: 'enc-tag ok' }, 'Yours')] : []), el('div', { class: 'small' }, b.description)))),
     );
   }
 
