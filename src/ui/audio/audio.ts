@@ -22,11 +22,14 @@ interface SynthRecipe {
   /** Loudness (0..1) and how fast it swells, in Hz (0 for steady). */
   level: number;
   swell: number;
+  /** A low-pass ceiling after the main filter (rounds off the hiss), and a fast flutter in Hz (a patter instead of a steady hiss). */
+  cap?: number;
+  flutter?: number;
 }
 
 /** The synthesized stand-ins for the ambience loops; forest and birds have none (they are recordings of birds). */
 const SYNTH_AMBIENCE: Partial<Record<AmbienceId, SynthRecipe>> = {
-  rain: { type: 'highpass', freq: 1500, level: 0.18, swell: 0 },
+  rain: { type: 'highpass', freq: 900, level: 0.16, swell: 0.07, cap: 6500, flutter: 9 },
   desert: { type: 'bandpass', freq: 380, level: 0.2, swell: 0.1 },
   snow: { type: 'bandpass', freq: 900, level: 0.18, swell: 0.14 },
   waves: { type: 'lowpass', freq: 650, level: 0.28, swell: 0.1 },
@@ -524,7 +527,15 @@ class AudioEngine {
       gain.gain.setValueAtTime(0.0001, ctx.currentTime);
       gain.gain.linearRampToValueAtTime(recipe.level, ctx.currentTime + MUSIC_CROSSFADE);
       src.connect(low);
-      low.connect(gain);
+      let tail: AudioNode = low;
+      if (recipe.cap) {
+        const cap = ctx.createBiquadFilter();
+        cap.type = 'lowpass';
+        cap.frequency.value = recipe.cap;
+        low.connect(cap);
+        tail = cap;
+      }
+      tail.connect(gain);
       gain.connect(this.ambienceBus as GainNode);
       const nodes: { stop: () => void }[] = [src];
       if (recipe.swell > 0) {
@@ -536,6 +547,17 @@ class AudioEngine {
         depth.connect(gain.gain);
         lfo.start();
         nodes.push(lfo);
+      }
+      if (recipe.flutter) {
+        const fl = ctx.createOscillator();
+        fl.type = 'triangle';
+        fl.frequency.value = recipe.flutter;
+        const fd = ctx.createGain();
+        fd.gain.value = recipe.level * 0.25;
+        fl.connect(fd);
+        fd.connect(gain.gain);
+        fl.start();
+        nodes.push(fl);
       }
       src.start();
       this.synthAmbience.set(id, { gain, stop: () => nodes.forEach((n) => n.stop()) });

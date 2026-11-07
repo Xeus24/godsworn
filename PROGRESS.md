@@ -1265,6 +1265,8 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Achievements Promoted, Crowned and Three Crowns (three classes at Tier 3, because a hero can only hold three classes). Condition kind `promoted`.
 - Tests: `tests/sectionK.test.ts` (4); `skillTrees.test` now knows promotion branches. Specializations carry over untouched.
 
+- **Synth rain:** the synthesized rain ambience (used when music is set to synthesized) was plain white noise through one high-pass filter, which sounds like static. It is now band-limited (high-pass 900 Hz, low-pass 6.5 kHz) with a slow swell and a 9 Hz triangle flutter for a patter (`SYNTH_AMBIENCE.rain` in `ui/audio/audio.ts`). Not auditioned by ear in this session; adjust `freq`, `cap` and `flutter` there. The recorded rain loop is unchanged.
+
 ## Cut / deferred
 - **Section K:** no new sprite or portrait per tier (the title shows on the Character screen and the Promotion panel only); skill and node names are generated from the title (they read well but are not hand-written); the Shade fights are not balance-tested beyond the same stat formulas as other foes; companions cannot be promoted (their tree view hides promotion branches); the quest kill objective relies on the normal enemy-killed event firing for the special fight, which is checked by the Promotion panel itself rather than by quest progress alone.
 - **Section J:** the new evolutions reuse the base skill's art (no new visual effect per evolution; the tooltip is the description), several take their power from a flat multiplier (1.35-1.45x) plus one status, and 'heal 5-8%' stands in for skills with no damage; they are not balance-tested against Grandmaster costs (2,600 uses each), which stays an endgame goal.
