@@ -6,6 +6,9 @@ import type { GameSession } from '../../engine/state/gameState';
 import { drawPortrait } from '../art/portraits';
 import { frameStyle } from '../character/appearancePanel';
 import { el } from '../screen';
+import { isRevealed } from '../../engine/guide/reveal';
+import { nextStep } from '../../engine/guide/nextStep';
+import { settings } from '../settings';
 
 /** Screen switches available from in-game screens. */
 export interface Nav {
@@ -50,6 +53,24 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
   const title = el('button', {}, 'Menu (Esc)');
   title.addEventListener('click', nav.title);
 
+  // Screens a new hero does not need yet stay hidden until their level (the open screen always shows).
+  const state = session.state;
+  const showAll = settings().showEverything;
+  const shown = (key: 'tab:skills' | 'tab:general' | 'tab:pantheon' | 'tab:party', id: NavTab): boolean => active === id || isRevealed(state, key, showAll);
+  const tabs = [
+    tab('character', 'Character (C)', nav.character),
+    tab('inventory', 'Inventory (I)', nav.inventory),
+    shown('tab:skills', 'skills') ? tab('skills', 'Skills (K)', nav.skills) : null,
+    shown('tab:general', 'general') ? tab('general', 'General (L)', nav.general) : null,
+    shown('tab:pantheon', 'pantheon') ? tab('pantheon', 'Pantheon (P)', nav.pantheon) : null,
+    tab('quests', 'Quests (J)', nav.quests),
+    shown('tab:party', 'party') ? tab('party', 'Party (O)', nav.party) : null,
+    tab('codex', 'Codex (B)', nav.codex),
+    tab('world', 'World (G)', nav.world),
+  ].filter((t): t is HTMLElement => t !== null);
+  const hint = el('button', { class: 'hint-btn', title: 'Tells you one sensible next thing to do' }, 'Next?');
+  hint.addEventListener('click', () => session.bus.emit('toast', { kind: 'info', text: nextStep(session) }));
+
   const header = el(
     'header',
     { class: 'sheet-header' },
@@ -68,7 +89,8 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
       bar(p.mp / Math.max(1, stats.maxMp), 'mp', `MP ${p.mp} / ${stats.maxMp}`),
     ),
     el('div', { class: 'sheet-gold' }, `${session.state.gold} gold`),
-    el('nav', { class: 'tabs' }, tab('character', 'Character (C)', nav.character), tab('inventory', 'Inventory (I)', nav.inventory), tab('skills', 'Skills (K)', nav.skills), tab('general', 'General (L)', nav.general), tab('pantheon', 'Pantheon (P)', nav.pantheon), tab('quests', 'Quests (J)', nav.quests), tab('party', 'Party (O)', nav.party), tab('codex', 'Codex (B)', nav.codex), tab('world', 'World (G)', nav.world)),
+    el('nav', { class: 'tabs' }, ...tabs),
+    hint,
     title,
   );
   // Each screen gets its own accent hue (see `.sheet[data-screen]` in style.css); the sheet is the header's parent once it is placed.

@@ -939,3 +939,5 @@ body.reduce-motion .codex-portrait canvas { animation: none !important; }
 .gambit-cell.theirs { color: #c88; }
 .gambit-cell.sel { outline: 2px solid #ffd84a; }
 .gambit-cell.target { outline: 2px dashed #6fdc8a; }
+
+.hint-btn { margin-left: auto; }

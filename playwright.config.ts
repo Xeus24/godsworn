@@ -15,6 +15,8 @@ export default defineConfig({
     channel: 'chrome',
     headless: true,
     viewport: { width: 1280, height: 900 },
+    // New heroes start at level 1, so the tests show every screen and town service from the start.
+    storageState: { cookies: [], origins: [{ origin: 'http://localhost:5199', localStorage: [{ name: 'godsworn:settings', value: JSON.stringify({ showEverything: true }) }] }] },
   },
   webServer: {
     command: 'npm run dev -- --port 5199 --strictPort',

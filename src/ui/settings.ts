@@ -45,6 +45,8 @@ export interface Settings {
   highContrast: boolean;
   /** Toasts are rewritten in a game-master narrator's voice (Section I-8b). */
   taleTeller: boolean;
+  /** Show every screen and town service from level 1 (otherwise they open as you level). */
+  showEverything: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -74,6 +76,7 @@ export const DEFAULT_SETTINGS: Settings = {
   encounterRate: 1,
   highContrast: false,
   taleTeller: false,
+  showEverything: false,
 };
 
 const KEY = 'godsworn:settings';

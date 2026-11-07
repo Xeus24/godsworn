@@ -1,4 +1,6 @@
 import { guildBody, talesBody } from './guildCards';
+import { isRevealed, nextReveal, type RevealKey } from '../../engine/guide/reveal';
+import { settings } from '../settings';
 import { nextRenownTier, renownOf, renownTier, statueTowns } from '../../engine/world/renown';
 import { STATUE_POINTS } from '../../data/world/renown';
 import { uiGlyph } from '../art/uiGlyphs';
@@ -372,7 +374,17 @@ export class TownScreen implements Screen {
       resetLayout();
       this.render();
     }, false, 'tab');
-    const grid = this.arrangedGrid(cards);
+    // Services a new hero does not need yet stay out of sight until their level (a one-line hint says when the next opens).
+    const showAll = settings().showEverything;
+    const gate: Record<string, RevealKey> = { Renown: 'town:renown', "Adventurers' Guild": 'town:guild', 'Tales & Tankards': 'town:tales', Pastimes: 'town:pastimes', 'Arena & Class Trainers': 'town:arena', Library: 'town:library', Investments: 'town:investments', 'Town Fortunes': 'town:fortunes', 'House for sale': 'town:housing' };
+    const visible = cards.filter((c) => {
+      const key = gate[c.dataset.card ?? ''];
+      if (!key) return true;
+      if (key === 'town:library' && books.length > 0) return true;
+      return isRevealed(s.state, key, showAll);
+    });
+    const soon = nextReveal(s.state, 'town:', showAll);
+    const grid = this.arrangedGrid(visible);
     this.root.replaceChildren(
       el(
         'div',
@@ -393,6 +405,7 @@ export class TownScreen implements Screen {
             ...(this.arranging ? [el('div', { class: 'dim small' }, 'Drag a card to where you want it, or use the arrows. Your layout is saved.')] : []),
           ),
           grid,
+          ...(soon && visible.length < cards.length ? [el('p', { class: 'dim small' }, `More town services open at level ${soon.level}.`)] : []),
         ),
       ),
     );
