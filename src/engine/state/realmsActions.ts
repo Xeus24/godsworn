@@ -4,8 +4,12 @@ import { characterStats } from '../character/stats';
 import type { GauntletState } from '../endgame/types';
 import { createRealms, type RealmsState } from '../realm/marvels';
 import type { ModifierSpec } from '../stats/modifiers';
+import type { EncounterGroup, ZoneDef } from '../world/types';
 import type { MechanicResult } from '../world/mechanics';
 import type { GameSession } from './gameState';
+
+const g = (weight: number, ...ids: string[]): EncounterGroup => ({ weight, enemies: ids.map((raw) => (raw.startsWith('^') ? { enemyId: raw.slice(1), row: 'back' as const } : { enemyId: raw })) });
+const COURT_ENCOUNTERS: EncounterGroup[] = [g(3, 'thistle-knight', 'thistle-knight', '^wisp-courtier'), g(3, 'glamour-hound', 'glamour-hound'), g(2, 'changeling-twin', '^mushroom-matron'), g(2, 'briar-bailiff', '^wisp-courtier')];
 
 export type RResult = { ok: true; text: string } | { ok: false; reason: string };
 const fail = (reason: string): RResult => ({ ok: false, reason });
@@ -50,6 +54,15 @@ export class RealmsActions {
 
   planeAt(map = this.here()): Plane | undefined {
     return PLANES.find((p) => p.areas.includes(map as Plane['areas'][number]));
+  }
+
+  /** On a Court or plane map the random encounters are the realm's own foes (levels follow the realm), not the host zone's. */
+  zoneFor(zone: ZoneDef, map: string): ZoneDef {
+    if (COURT.includes(map)) return { ...zone, encounters: COURT_ENCOUNTERS, levels: [24, 32] };
+    const plane = this.planeAt(map);
+    if (!plane) return zone;
+    const [a, b] = plane.foes;
+    return { ...zone, encounters: [g(3, a, a, `^${b}`), g(3, b, b), g(2, a, b)], levels: [plane.level - 4, plane.level] };
   }
 
   // ------------------------------------------------------------------ doors

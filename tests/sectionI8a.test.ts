@@ -129,4 +129,15 @@ describe('the Four Thresholds (225)', () => {
     expect(s.realms.faceWarden('ember').ok).toBe(true);
     expect(THRESHOLD.harm).toBeGreaterThan(0);
   });
+
+  it('random encounters on realm maps use the realm’s own foes', () => {
+    const s = session();
+    const zone = content.zones.get('volcanic-rift');
+    const ember = s.realms.zoneFor(zone, 'ember-gate');
+    expect(ember.encounters.every((e) => e.enemies.every((x) => ['cinder-imp', 'ember-hound'].includes(x.enemyId)))).toBe(true);
+    expect(ember.levels[1]).toBe(PLANES[0]!.level);
+    expect(s.realms.zoneFor(content.zones.get('gloamwood'), 'thistle-market').encounters.some((e) => e.enemies.some((x) => x.enemyId === 'thistle-knight'))).toBe(true);
+    expect(s.realms.zoneFor(zone, 'ember-gate').id).toBe(zone.id);
+    expect(s.realms.zoneFor(zone, 'some-other-map')).toBe(zone);
+  });
 });

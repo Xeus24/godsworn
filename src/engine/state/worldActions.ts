@@ -261,7 +261,7 @@ export class WorldActions {
       const night = this.s.timeOfDay === 'night';
       const weather = this.weatherNow();
       if (this.s.encounterScale > 0 && this.s.rng.chance(encounterChance(this.zone, tileAt(map, nx, ny), weather, night) * this.s.encounterScale * (effectOn(this.s.state.clock.day).encounters ?? 1) * (mountOf(this.s.player)?.encounterMult ?? 1) * this.s.pilgrimage.encounterMult() * mechanicEncounterMult(this.s.player, this.zone, !!this.world.tideHigh, night, this.day))) {
-        const encounter = this.s.realm.decorate(randomEncounter(this.zone, weather, night, this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened'])), this.zone.id);
+        const encounter = this.s.realm.decorate(randomEncounter(this.s.realms.zoneFor(this.zone, map.id), weather, night, this.s.player.level, this.s.rng, Boolean(this.s.state.flags['world-darkened'])), this.zone.id);
         this.pending = { map: map.id, kind: 'wild' };
         return { kind: 'fight', encounter, level: encounter.level };
       }
