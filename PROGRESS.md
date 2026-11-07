@@ -1348,6 +1348,15 @@ Six systems that make the world change while you are away, built as sub-phases A
 - `npm run playtest -- ng <class>` finishes New Game+1 for all seven. Tests (1203) and the build pass. The full 96-run playtest was not rerun.
 - Cut / deferred: Puppeteer wins 100% even with its trait at 0.15 (kit-level, left alone); Wayfinder is 98%. Stillhand L45 (81%) and Hemomancer L30 (82%) and several L60 cells (78-80%) are below target. Late world bosses were not re-simmed for these seven, so check them next.
 
+### Balance pass 6: early world bosses and the Old Crypt
+- Measured the eight original classes against the first four zones' world and dungeon bosses (30 fights each, benchmark gear). The notes' "bard wall at levels 9-17" was already gone (Bramblehorn 100% for the bard); the real walls were Gnarlroot (Cleric 0%, Bard 0%, Ranger 7%, Necromancer 43%) and the Abyssal Crab (Warrior 0%, Necromancer 10%), and nearly every dungeon boss was 100% for everyone (target 50-80%).
+- **Barkskin** now applies a new `bark-regen` status (3% of max HP per turn, was Regen's 6%), shared by every enemy that uses Barkskin. 6% of a 17,500 HP boss out-healed a level 17 Cleric's damage entirely. Gnarlroot HP 128 to 112.
+- **The Abyssal Crab** HP 95 to 72 (cutting its attack did nothing).
+- **The Bone Lord** (Old Crypt boss) HP 60 to 150 and attack and magic 15 to 24: it was 100% even at +90% threat.
+- Wins after (8 classes, 30 fights): Gnarlroot warrior 93, mage 100, rogue 100, cleric 13, ranger 10, necromancer 90, monk 97, bard 30. Crab warrior 37, necromancer 13, others 87-100. Old Crypt monk 43, rogue 83, others 97-100.
+- Tests (1203) and the build pass; `npm run playtest -- ng` finishes New Game+1 for warrior, cleric, bard, necromancer and monk (the Monk lost one fight and retried it).
+- Cut / deferred: the Cleric still stalls against Gnarlroot (it deals about 235 per action and the auto-battle never saves burst; kit and AI, not boss numbers), the Ranger sits at 10% (it leaves Gnarlroot at about 10% HP), the Necromancer is 13% on the Crab, the Mage wins every boss in these four zones, and the Goblin Warren was left easy on purpose (first boss). Spider Hollow and the Drowned Grotto bite warrior and monk at +40% but were not retuned. Zones 5 and later were not re-measured.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
