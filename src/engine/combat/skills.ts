@@ -1,4 +1,5 @@
 import { COMBAT } from '../../data/combat';
+import { RAGE_TACTICS } from '../../data/general/techniques';
 import { masteryLevel, masteryMultiplier, MASTERED_LEVEL } from '../skills/mastery';
 import { applyPatch } from '../skills/patch';
 import { powerAtRank, type SkillDef } from '../skills/types';
@@ -52,6 +53,9 @@ export function skillDef(b: Battle, x: Combatant, skillId: string): SkillDef {
   return applyPatch(b.c.skills.get(skillId), known?.patch);
 }
 
+/** Tactics mode: the Tactic Dice a Rage cost is worth. */
+export const rageDiceCost = (amount: number): number => Math.max(1, Math.round(amount / RAGE_TACTICS.perDie));
+
 export type Check = { ok: true } | { ok: false; reason: string };
 
 export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
@@ -72,7 +76,10 @@ export function canUseSkill(b: Battle, x: Combatant, skill: SkillDef): Check {
       if (x.hp <= skill.cost.mp) return { ok: false, reason: 'Not enough HP' };
     } else if (x.mp < skill.cost.mp) return { ok: false, reason: 'Not enough MP' };
   }
-  if (skill.cost.resource) {
+  if (x.rageDice && skill.cost.resource?.id === 'rage') {
+    const dice = rageDiceCost(skill.cost.resource.amount);
+    if ((x.tactic ?? 0) < dice) return { ok: false, reason: `${dice} Tactic Di${dice > 1 ? 'ce' : 'e'}` };
+  } else if (skill.cost.resource) {
     const have = x.resources[skill.cost.resource.id];
     if (have === undefined || have < skill.cost.resource.amount) {
       return { ok: false, reason: `Needs ${skill.cost.resource.amount} ${b.c.resources.get(skill.cost.resource.id).name}` };
@@ -231,7 +238,8 @@ function payCosts(b: Battle, x: Combatant, skill: SkillDef): void {
   }
   if (skill.cost.hpPct) x.hp = Math.max(1, x.hp - Math.round((x.maxHp * skill.cost.hpPct) / 100));
   // Finishers spend everything themselves; other skills pay their listed amount.
-  if (skill.cost.resource && !skill.finisher) {
+  if (x.rageDice && skill.cost.resource?.id === 'rage' && !skill.finisher) x.tactic = Math.max(0, (x.tactic ?? 0) - rageDiceCost(skill.cost.resource.amount));
+  else if (skill.cost.resource && !skill.finisher) {
     const id = skill.cost.resource.id;
     x.resources[id] = Math.max(0, (x.resources[id] ?? 0) - skill.cost.resource.amount);
   }
@@ -296,9 +304,13 @@ export function useSkill(b: Battle, x: Combatant, skillId: string, rank: number,
 
   let mult = skill.damage ? powerAtRank(skill.damage, rank) * masteryMult : 0;
   if (skill.finisher) {
-    const points = x.resources[skill.finisher.resource] ?? 0;
+    const dice = x.rageDice && skill.finisher.resource === 'rage';
+    const points = dice ? (x.tactic ?? 0) * RAGE_TACTICS.perDie : (x.resources[skill.finisher.resource] ?? 0);
     mult += skill.finisher.multiplierPerPoint * points;
-    x.resources[skill.finisher.resource] = 0;
+    if (dice) {
+      x.tactic = 0;
+      x.rageBank = 0;
+    } else x.resources[skill.finisher.resource] = 0;
     b.emit({ type: 'resource', targetId: x.id });
   }
 

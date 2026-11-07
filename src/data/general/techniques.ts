@@ -8,6 +8,8 @@ import { combat, dmg, status } from './skills';
  * hero's General slots like any other. Twenty-four techniques: the first few arrive with the class, the rest every few levels.
  */
 export const TECHNIQUE_CLASSES = ['warrior', 'knight', 'brawler', 'marshal'] as const;
+/** The Warrior's optional Tactics mode: Rage is counted in Tactic Dice, one die per this much Rage. */
+export const RAGE_TACTICS = { perDie: 30 };
 export const TECHNIQUE_RULES = { base: 3, perLevels: 12, max: 7, onKill: 1, knownAt1: 4, everyLevels: 3 };
 
 type T = Omit<SkillDef, 'source' | 'maxRank' | 'cost' | 'tags' | 'cooldown'> & { dice: 1 | 2; cd?: number; tags?: string[] };

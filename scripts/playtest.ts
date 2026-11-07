@@ -11,6 +11,7 @@
  *   PLAYTEST_DEBUG=1 npm run playtest   also prints every unit's HP when a fight is lost
  *   PLAYTEST_TRACE=1 npm run playtest   also tallies who did what in a lost fight
  *   npm run playtest -- ng      every class again through New Game+1 (the story restarts at the raised levels)
+ *   PLAYTEST_RAGE_TACTICS=1 npm run playtest -- ng warrior   the Warrior with Rage played as Tactic Dice
  *   npm run playtest -- ng monk one class through the base story and New Game+1, with a log of every fight
  */
 import { content } from '../src/data';
@@ -155,6 +156,7 @@ for (const [i, cls] of classes.entries()) {
   };
   const startHero = benchmarkHero(cls, 1);
   if (process.env.PLAYTEST_TABLETOP) startHero.tabletop = true;
+  if (process.env.PLAYTEST_RAGE_TACTICS) startHero.rageAsTactics = true;
   const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), startHero);
   const r = run(base, 0);
   console.log(`${cls.padEnd(13)} ${(r.ending ?? '-').padEnd(12)} ${String(r.fights).padStart(6)}  ${String(r.losses).padStart(6)}  ${r.stuck ?? 'finished'}  ~${clockLine()}`);

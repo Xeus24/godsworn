@@ -190,6 +190,9 @@ export interface Combatant {
   /** Riding a mount (item 223): the charge and trample skills work, until a blow throws the rider. */
   mounted?: boolean;
   tacticMax?: number;
+  /** The Warrior's Tactics mode: Rage builds and spends Tactic Dice, and `rageBank` holds Rage not yet worth a die. */
+  rageDice?: boolean;
+  rageBank?: number;
   /** Allies that have struck this fighter since its last turn (Flanking, item 215). */
   flankers?: string[];
   focus?: { name: string; buffs: string[] };

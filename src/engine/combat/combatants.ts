@@ -239,6 +239,10 @@ export function createHero(char: Character, id = 'hero', c: Content = content): 
   x.basicAttack = heroBasicAttack(char, c);
   applyDivineCombat(x, char, input.base.fai, c);
   x.portrait = { raceId: char.raceId, variant: char.portrait, color: cls?.color ?? '#888888', look: equippedGearLook(char, c), ...(char.classes.some((p) => (p.promotion ?? 1) > 1) ? { promotion: Math.max(...char.classes.map((p) => p.promotion ?? 1)) } : {}) };
+  if (char.rageAsTactics && x.classId === 'warrior') {
+    x.rageDice = true;
+    x.rageBank = 0;
+  }
   // Every class resource a character has (multiclass characters can have two).
   for (const p of char.classes) {
     const res = c.classes.get(p.classId).resource;

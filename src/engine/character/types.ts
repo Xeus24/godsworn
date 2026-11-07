@@ -48,6 +48,8 @@ export interface Character {
   personality?: { ideal?: string; bond?: string; flaw?: string };
   /** Tabletop Rules (R26): off by default; chosen at creation and fixed for the save. */
   tabletop?: boolean;
+  /** The Warrior's optional Tactics mode: Rage is paid and built as Tactic Dice (see `RAGE_TACTICS`). Off by default. */
+  rageAsTactics?: boolean;
   /** Weariness 0-6 (Section I-7a): level 6 starts the next battle knocked down. Kept in sync by `s.afflictions`. */
   weary?: number;
   /** Spells forged at the Spellforge (item 218): ids that rebuild their own definition (`engine/skills/forge.ts`). */

@@ -7,7 +7,7 @@ import { onHit as tabletopOnHit } from './tabletopRules';
 import type { Element } from '../stats/types';
 import type { Battle } from './battle';
 import { MOUNTED } from '../../data/mounted';
-import { TECHNIQUE_RULES } from '../../data/general/techniques';
+import { RAGE_TACTICS, TECHNIQUE_RULES } from '../../data/general/techniques';
 import { computeDamage, hitChance } from './damage';
 import { applyEffects, fireTrigger } from './effects';
 import { covenantHit } from './covenant';
@@ -47,6 +47,19 @@ export function gainResource(b: Battle, x: Combatant, id: string, amount: number
   if (!resId || x.resources[resId] === undefined) return;
   const def = b.c.resources.get(resId);
   const scaled = amount > 0 ? amount * (1 + b.stats(x).resourceGain / 100) : amount;
+  // Tactics mode: Rage becomes Tactic Dice, one die for each `perDie` Rage built.
+  if (x.rageDice && resId === 'rage' && id !== 'class') {
+    if (scaled <= 0) return;
+    x.rageBank = (x.rageBank ?? 0) + scaled;
+    const before = x.tactic ?? 0;
+    while (x.rageBank >= RAGE_TACTICS.perDie && (x.tactic ?? 0) < (x.tacticMax ?? 0)) {
+      x.rageBank -= RAGE_TACTICS.perDie;
+      x.tactic = (x.tactic ?? 0) + 1;
+    }
+    if ((x.tactic ?? 0) >= (x.tacticMax ?? 0)) x.rageBank = Math.min(x.rageBank, RAGE_TACTICS.perDie - 1);
+    if ((x.tactic ?? 0) !== before) b.emit({ type: 'resource', targetId: x.id });
+    return;
+  }
   // "class" potions restore a percentage of the resource's maximum.
   const value = id === 'class' ? (def.max * scaled) / 100 : scaled;
   const before = x.resources[resId] ?? 0;

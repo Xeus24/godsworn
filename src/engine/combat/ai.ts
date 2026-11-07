@@ -1,4 +1,5 @@
 import type { SkillDef } from '../skills/types';
+import { RAGE_TACTICS } from '../../data/general/techniques';
 import { bossForcedAction, isTelegraphOnly } from './bosses';
 import { ruleAction } from './rules';
 import type { Battle } from './battle';
@@ -110,7 +111,7 @@ export function chooseAction(b: Battle, x: Combatant, profile: AiProfile = x.ai,
       const hits = skill.damage.hits ?? 1;
       const reach = skill.targeting === 'allEnemies' || skill.targeting === 'randomEnemies' ? Math.max(1, foes.length) : skill.targeting === 'frontRow' ? Math.max(1, foes.filter((f) => f.row === 'front').length) : 1;
       let score = (skill.damage.multiplier + skill.damage.perRank * (rank - 1)) * hits * (skill.targeting === 'randomEnemies' ? 1 : reach);
-      if (skill.finisher) score += (x.resources[skill.finisher.resource] ?? 0) * skill.finisher.multiplierPerPoint * 1.5;
+      if (skill.finisher) score += ((x.rageDice && skill.finisher.resource === 'rage' ? (x.tactic ?? 0) * RAGE_TACTICS.perDie : (x.resources[skill.finisher.resource] ?? 0)) * skill.finisher.multiplierPerPoint * 1.5);
       if (skill.effects?.length) score *= 1.15;
       if (profile === 'caster' && skill.tags.includes('Spell')) score *= 1.3;
       // Heroes avoid spending turns on an element the target shrugs off.
