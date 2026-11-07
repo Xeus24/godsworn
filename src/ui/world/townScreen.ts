@@ -119,6 +119,12 @@ export class TownScreen implements Screen {
 
   private card(title: string, ...children: (Node | string)[]): HTMLElement {
     const icon = CARD_ICONS[title] ?? (title.endsWith('(hall)') ? 'hall' : undefined);
+    // A launcher (one blurb and one button) keeps its blurb in a tooltip so the card stays one short row.
+    const [blurb, action] = children;
+    if (children.length === 2 && blurb instanceof HTMLElement && blurb.tagName === 'P' && action instanceof HTMLButtonElement) {
+      const tip = blurb.title ? `${blurb.textContent} ${blurb.title}` : (blurb.textContent ?? '');
+      return el('section', { class: 'panel town-card launcher', 'data-card': title, title: tip }, el('h3', {}, ...(icon ? [uiGlyph(icon), ' '] : []), title), action);
+    }
     return el('section', { class: 'panel town-card', 'data-card': title }, el('h3', {}, ...(icon ? [uiGlyph(icon), ' '] : []), title), ...children);
   }
 

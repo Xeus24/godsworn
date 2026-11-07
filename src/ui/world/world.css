@@ -492,3 +492,15 @@
   padding-top: 6px;
   padding-bottom: 6px;
 }
+
+/* Launcher cards: heading and button only; the blurb is the card's tooltip. */
+.town-card.launcher {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.town-card.launcher h3 {
+  margin: 0;
+}
