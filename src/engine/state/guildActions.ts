@@ -79,7 +79,7 @@ export class GuildActions {
       }
       const id = `${town}:${this.day}:${slot}`;
       const label = { hunt: 'Hunt', cull: 'Cull', party: 'Party contract' }[kind];
-      out.push({ id, town, kind, name: `${label} near ${zone.name}`, waves, level, gold: GUILD.goldPerLevel[kind] * level, points: GUILD.points[kind] });
+      out.push({ id, town, kind, name: `${label} near ${zone.name}${slot === 2 && kind === 'hunt' ? ' (second posting)' : ''}`, waves, level, gold: GUILD.goldPerLevel[kind] * level, points: GUILD.points[kind] });
     }
     return out.filter((c) => !this.t.finished.includes(c.id));
   }
