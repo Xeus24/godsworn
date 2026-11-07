@@ -1254,7 +1254,13 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Browser check at the new-game state: the town's Guild and Tales & Tankards cards, Codex > Realm > Pockets & Wilds (Gloaming Court, Four Thresholds) and the Character screen's Road's Toll, Workbench and Holdings render folded, with no console errors.
 - `CONTENT.md` regenerated (60 hybrids, 27 races, 18 backgrounds, 73 dungeons, 26 zones, 147 areas, 1096 quests); `README.md` updated for Section I.
 
+### Section J: extra skill evolutions
+- `data/evolutions.ts` now holds **240 evolutions: five for each of the 48 classes** (the original eight keep their three and gain two; the other 40 classes get five). Each needs the skill at mastery 10 (Grandmaster) plus its class quest (`cl-<class>-1` to `-5`, in order for the new rows), then replaces the base skill on hotbars and keeps its mastery. The spec's named pairs are used where the class has the skill (e.g. Mage Frost Shard to Winter's Spear, Druid Maul to Elder Ursine, Shaman Lightning Lash to Thunderhead Spire); the others are invented to the same pattern. New skill ids start with `evo-`.
+- New condition kind `evolved` (`min`, or `allOfClass`) and two achievements: **Every Form** (all of one class's evolutions; title the Transformed) and **Ever-Becoming** (50 evolutions; title Ever-Becoming).
+- Tests: `tests/sectionJ.test.ts` (3); `expansionPhase3` now expects five per base class.
+
 ## Cut / deferred
+- **Section J:** the new evolutions reuse the base skill's art (no new visual effect per evolution; the tooltip is the description), several take their power from a flat multiplier (1.35-1.45x) plus one status, and 'heal 5-8%' stands in for skills with no damage; they are not balance-tested against Grandmaster costs (2,600 uses each), which stays an endgame goal.
 - **Section I-8c:** the 15 hybrids are not balance-tested in real play beyond the trial tuning (4 fights per step, so the win rates are rough); none has its own art or mentor lines.
 - **Section I-8b:** contracts are fight sequences only (no escort, fetch or delivery contracts); rival parties do not take contracts from the board (their standings are a display); Tales & Tankards is dice and text with no dice animation, no art, and no custom NPC dialogue; narration changes toasts only, not scene text, dialogue or the journal.
 - **Section I-8a:** the Court and the planes use the host zone's random encounters (their own foes appear in the dungeons and the Warden fights only); there is no Court town, no true-name minigame (the Duskfae halving is the only name tie-in), no plane-specific side quests, and no art for the new foes beyond the generated family sprites.
@@ -1304,7 +1310,7 @@ Six systems that make the world change while you are away, built as sub-phases A
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
-**Section I is under way: I-1 to I-5 (168-189), I-6 (190-210), I-7 (211-223) and all of Section I is done, including the Final phase. Sections J and K come next and have not been started** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
+**Section I is under way: I-1 to I-5 (168-189), I-6 (190-210), I-7 (211-223) and all of Section I is done, including the Final phase. Section J (extra evolutions) is done; Section K (class promotions) has not been started** (168-229: tabletop-style classes and systems, with the R26 off-by-default Tabletop Rules toggle), Section J (extra skill evolutions), Section K (class promotions).
 
 **The pattern that has worked** (every batch since Section D):
 1. Data in `src/data/<name>.ts` (compact tables, generate repetitive entries from short tables).

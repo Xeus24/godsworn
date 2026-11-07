@@ -47,8 +47,8 @@ describe('hidden nodes', () => {
 });
 
 describe('skill evolutions', () => {
-  it('has three per class and replaces the base skill once earned', () => {
-    for (const id of BASE_CLASS_IDS) expect(content.evolutions.filter((e) => e.classId === id), id).toHaveLength(3);
+  it('has at least three per class (five in all after Section J) and replaces the base skill once earned', () => {
+    for (const id of BASE_CLASS_IDS) expect(content.evolutions.filter((e) => e.classId === id), id).toHaveLength(5);
     const hero = makeHero({ classId: 'mage' });
     expect(canEvolve(hero, {}, 'firebolt').ok).toBe(false);
     hero.mastery.firebolt = 2600;

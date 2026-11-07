@@ -70,6 +70,8 @@ export type Cond =
   /** Companions recruited (and still with you), optionally at an approval. */
   | { kind: 'companions'; min: number; minApproval?: number }
   | { kind: 'dungeons'; min: number }
+  /** Skills evolved (Section J): at least `min`, or every evolution of one class when `allOfClass` is set. */
+  | { kind: 'evolved'; min: number; allOfClass?: boolean }
   | { kind: 'waypoints'; min: number }
   /** Zones set foot in. */
   | { kind: 'zones'; min: number }

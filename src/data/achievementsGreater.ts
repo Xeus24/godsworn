@@ -116,6 +116,8 @@ export const ACHIEVEMENTS_GREATER: AchievementDef[] = [
   hero('hybrids-2', 'Blended', 'Hold two hybrid classes at once.', 20, { kind: 'hybrids', min: 2 }),
   hero('paragon-50', 'Paragon of Many Boards', 'Reach Paragon level 50.', 25, { kind: 'paragon', min: 50 }),
   hero('paragon-150', 'Perfected', 'Reach Paragon level 150.', 55, { kind: 'paragon', min: 150 }, { title: 'the Perfected' }),
+  hero('evolved-class', 'Every Form', 'Evolve every skill that can evolve for one class.', 40, { kind: 'evolved', min: 1, allOfClass: true }, { title: 'the Transformed' }),
+  hero('evolved-50', 'Ever-Becoming', 'Evolve 50 skills.', 55, { kind: 'evolved', min: 50 }, { title: 'Ever-Becoming' }),
   hero('mastered-100', 'Hundred Hands', 'Master 100 skills.', 45, { kind: 'mastered', min: 100 }, { title: 'the Master' }),
   hero('profession-50', 'Master Crafter', 'Reach level 50 in a crafting profession.', 30, { kind: 'profession', level: 50 }, { title: 'Master Crafter' }),
 

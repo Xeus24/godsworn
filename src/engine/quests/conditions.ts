@@ -126,6 +126,13 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return Object.values(p.mastery).filter((xp) => masteryLevel(xp) >= MASTERED_LEVEL).length >= cond.min;
     case 'companions':
       return Object.values(state.party.companions).filter((x) => !x.left && (cond.minApproval === undefined || x.approval >= cond.minApproval)).length >= cond.min;
+    case 'evolved': {
+      if (!cond.allOfClass) return Object.keys(p.evolved).length >= cond.min;
+      return c.classes.ids().some((id) => {
+        const all = c.evolutions.filter((e) => e.classId === id);
+        return all.length > 0 && all.every((e) => p.evolved[e.from]);
+      });
+    }
     case 'dungeons':
       return state.world.dungeonsCleared.length >= cond.min;
     case 'waypoints':
