@@ -43,6 +43,8 @@ export interface TownNav {
   /** The fog ferry to Marrow (Mirewick). */
   marrow: () => void;
   leave: () => void;
+  /** The guided first fight: two slimes, no fleeing. */
+  practice: () => void;
   /** Opens a conversation with someone in town. */
   talk: (conv: Conversation) => void;
 }
@@ -118,6 +120,12 @@ export class TownScreen implements Screen {
     const b = el('button', { class: cls }, label);
     b.disabled = disabled;
     b.addEventListener('click', run);
+    return b;
+  }
+
+  /** Marks a control with the pulsing outline of the first-steps coach. */
+  private coach(b: HTMLElement): HTMLElement {
+    b.classList.add('coach-pulse');
     return b;
   }
 
@@ -246,16 +254,17 @@ export class TownScreen implements Screen {
     );
     const fsv = firstSteps(s.state);
     if (fsv.active) {
-      // Open on a fresh hero's first visit, folded afterwards like every other secondary card.
+      // Open while the hero is early in the list, folded afterwards like every other secondary card.
       if (!this.firstStepsSeen) {
         this.firstStepsSeen = true;
-        if (fsv.doneCount === 0) this.open.add('First Steps');
+        if (fsv.doneCount < 3) this.open.add('First Steps');
       }
       cards.push(
         this.fold(
           'First Steps',
           `${fsv.doneCount}/${fsv.total} done`,
           ...fsv.steps.map(({ step, done }) => el('div', { class: `room-row${done ? ' dim' : ''}`, title: step.hint }, el('b', {}, `${done ? '✓' : step === fsv.next ? '▶' : '·'} ${step.label}`), ...(step === fsv.next ? [el('div', { class: 'dim small' }, step.hint)] : []))),
+          ...(fsv.next?.id === 'battle' ? [this.coach(this.btn('Practice fight: two slimes', () => this.town.practice(), false, 'primary'))] : []),
           this.btn('Hide this list', () => {
             hideFirstSteps(s.state);
             this.render();
@@ -387,6 +396,7 @@ export class TownScreen implements Screen {
       this.root?.append(this.overlay.element);
     });
     const leave = this.btn('Leave town (Esc)', () => this.town.leave(), false, 'primary');
+    if (fsv.active && fsv.next && fsv.next.place === 'world' && fsv.next.id !== 'battle') this.coach(leave);
     const arrange = this.btn(this.arranging ? 'Done arranging' : 'Rearrange layout', () => {
       this.arranging = !this.arranging;
       this.render();

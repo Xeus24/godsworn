@@ -1385,6 +1385,14 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests (1208) and the build pass; e2e 15 of 16 (the Spire / Divine Trial test also failed before this pass).
 - Cut / deferred: this is a checklist, not a scripted opening (no forced tutorial fight, no highlight arrows on buttons); Realm sections inside the Codex are not gated individually; the list covers the first hour only and has no rewards.
 
+### Onboarding pass 3: the guided first fight and coach highlights
+- **Practice fight** (`TownNav.practice`, `main.ts`): while "Win your first battle" is the next First Steps step, the list shows a pulsing "Practice fight: two slimes" button. It starts the existing `slime-puddle` encounter with fleeing off (the Flee button is disabled), at level 1, with the normal victory rewards (XP, gold, loot), and the result returns to the town it started in (`practiceTown`), not the world map.
+- **First-battle tip** (`combatScreen.ts`): a dismissible banner on a level 1 hero's first battle (no battles won, `flags['battle-tip-seen']` once dismissed) says to choose an action, click an enemy to target it, and where the turn order is.
+- **Coach highlights**: the control to use next gets a pulsing gold outline (`.coach-pulse`, off under reduced motion or reduced flashing). On the Character, Skills, Inventory, Quests and World tabs it follows the next step's place unless that tab is already open; "Leave town" pulses for the world-based steps. The First Steps fold stays open for the first three steps.
+- Checked in a real browser with a fresh hero: practice fight, tip, victory (+36 XP, +17 gold), return to the town with 1/7 done and "Leave town" pulsing.
+- Tests (1208) and the build pass; e2e 15 of 16 (the Spire / Divine Trial test also failed before).
+- Cut / deferred: the later steps (attributes, skills, potions) are highlighted by tab, not by the exact button; there is no tutorial for the second and later fights, no skippable cutscene, and no dialogue beat from a mentor. Nobody new has played it yet.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 

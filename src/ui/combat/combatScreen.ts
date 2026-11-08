@@ -128,11 +128,18 @@ export class CombatScreen implements Screen {
     this.statsBtn = el('button', { class: `tab${settings().statsWindow ? ' active' : ''}`, title: 'A movable window with every stat and effect (T)' }, 'Stats (T)');
     this.statsBtn.addEventListener('click', () => this.toggleStats());
     const stage = el('div', { class: 'combat-stage' }, this.scene.canvas, this.overlay);
+    const first = this.session.state.stats.battlesWon === 0 && this.session.player.level === 1 && !this.session.state.flags['battle-tip-seen'];
+    const tip = first ? el('div', { class: 'coach-tip' }, el('span', {}, 'Your first battle: choose an action below (Attack, or a skill), then click an enemy to target it. The bar at the top shows who acts next. Win to earn XP and loot.'), el('button', { class: 'tab' }, 'Got it')) : undefined;
+    tip?.querySelector('button')?.addEventListener('click', () => {
+      this.session.state.flags['battle-tip-seen'] = true;
+      tip.remove();
+    });
     root.append(
       el(
         'div',
         { class: 'combat-screen' },
         el('div', { class: 'combat-top' }, this.timelineNode, el('div', { class: 'tabs combat-controls' }, ...speedBtns, autoBtn, this.statsBtn)),
+        ...(tip ? [tip] : []),
         stage,
         el('div', { class: 'combat-bottom' }, this.partyNode, this.commandNode, this.logNode),
       ),

@@ -346,7 +346,10 @@ function showWorld(): void {
 function showTown(town: string): void {
   audio().setTrack(moodForTown(town));
   audio().setWeather(undefined);
-  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), harbor: () => showHarbor(town), games: () => showGames(town), marrow: () => showMarrow(town), endgame: showEndgame, leave: showWorld, talk }, town));
+  if (session) screens.show(new TownScreen(session, nav, { arena: showGrounds, market: () => showMarket(town), workshop: () => showWorkshop(town), harbor: () => showHarbor(town), games: () => showGames(town), marrow: () => showMarrow(town), endgame: showEndgame, leave: showWorld, practice: () => {
+    practiceTown = town;
+    startFight({ ...content.encounters.get('slime-puddle'), canFlee: false }, 1);
+  }, talk }, town));
 }
 
 function showMarket(town: string): void {
@@ -392,6 +395,9 @@ function openingFor(s: GameSession): { opening?: 'ambush' | 'preemptive' } {
   if (roll < ambush + preempt) return { opening: 'preemptive' };
   return {};
 }
+
+/** Set by the First Steps practice fight so the result returns to that town. */
+let practiceTown: string | undefined;
 
 function startFight(encounter: EncounterDef, level?: number, world = false, gauntlet?: GauntletOptions, volley?: number): void {
   const s = session;
@@ -444,7 +450,11 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
         } else if (gauntlet) {
           showEndgame();
         } else {
-          showWorld();
+          // The guided first fight brings you back to the town it started in.
+          const back = practiceTown;
+          practiceTown = undefined;
+          if (back && !s.state.gameOver) showTown(back);
+          else showWorld();
           showEnding();
         }
       },

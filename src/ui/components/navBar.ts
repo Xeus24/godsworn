@@ -8,6 +8,7 @@ import { frameStyle } from '../character/appearancePanel';
 import { el } from '../screen';
 import { isRevealed } from '../../engine/guide/reveal';
 import { nextStep } from '../../engine/guide/nextStep';
+import { firstSteps } from '../../engine/guide/firstSteps';
 import { settings } from '../settings';
 
 /** Screen switches available from in-game screens. */
@@ -44,8 +45,11 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
   const primary = p.classes[0];
   drawPortrait(portrait, p.raceId, p.portrait, primary ? content.classes.get(primary.classId).color + '55' : undefined);
 
+  // The tab the next first step is done on gets a pulsing outline (unless you are already there).
+  const fs = firstSteps(session.state);
+  const coachTab = fs.active ? fs.next?.place : undefined;
   const tab = (id: NavTab, label: string, run: () => void): HTMLElement => {
-    const b = el('button', { class: `tab${active === id ? ' active' : ''}` }, label);
+    const b = el('button', { class: `tab${active === id ? ' active' : ''}${coachTab === id && active !== id ? ' coach-pulse' : ''}` }, label);
     b.addEventListener('click', run);
     return b;
   };
