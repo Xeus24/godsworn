@@ -84,3 +84,15 @@ Baseline numbers: `docs/baseline-sim.md`.
 - Decision: reuse `Cond` and `evaluate()`; add only missing leaf kinds (`zoneVisited`, `bossDefeated`, `skillRank`, `factionRank`, `timeOfDay`/`season`/`weather`, `storyChapter`, `legacyFlag`, `professionLevel` variants) after checking what `progress` and existing kinds already cover.
 - Decision: grandfathering by migration (save version bump) records every currently-held feature as unlocked.
 - Decision: in-world text only; no references to other games anywhere in the repo.
+
+## 6. Phase 1: the lock framework (built)
+
+- **Data:** `src/data/locks.ts` (`LOCKS`, `ENDGAME_COND`, `REVEAL_LEVELS`). A `LockDef` is `{ id, requirement: Cond, visibility: visible | teased | hidden, hint, unlockMessage, category, tutorial? }`. The requirement is an ordinary quest `Cond`, so `all` / `any` / `not` and every existing leaf kind work. Added leaf kinds: `atLevelCap`, `zoneVisited`.
+- **Engine:** `src/engine/locks/locks.ts` has `isUnlocked`, `evaluateLock` (returns `unlocked`, `missing` lines in the game's words, numeric `progress`), `visibleLocks`, and `lockControl.ignore` (developer switch, never saved). `src/engine/state/lockActions.ts` (`session.locks`) opens locks on every `stateChanged` / `levelUp`, records the day, and toasts the unlock message once.
+- **State and save:** `GameState.unlocks { opened, grandfathered }`, save version 25. A save from before the lock system loads with `grandfathered: false`; its first sync opens everything the hero already earned, silently. Opened locks are sticky.
+- **Migrated gates:** all 23 progressive-reveal entries (tabs, Codex tabs, town cards) and the endgame switch are now lock data. `isRevealed`, `nextReveal` and `endgameUnlocked` keep their signatures and read the locks.
+- **Validation:** content validation checks every lock's requirement references and requires a hint and unlock message.
+- **Developer panel:** a "Locks" section with Ignore locks, Unlock all and Reset locks.
+- **Tests:** `tests/locks.test.ts` (open, once-only toast, sticky, any/endgame, developer switch, unlock all/reset, visibility, pre-lock save migration).
+
+Not done yet (assigned to later phases): the Unlocks journal tab and "What's next?" panel (Phase 4), first-use tutorial cards (Phase 4), the remaining leaf kinds from the spec (`bossDefeated`, `skillRank`, `season`, `weather`, `storyChapter`, `legacyFlag`, `professionLevel`), and moving the other ~200 scattered `level >= N` checks into lock data (Phase 2, one system group per commit).

@@ -100,6 +100,7 @@ import { WEAPON_ARTS } from './weaponArts';
 import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { SECRET_LINE_IDS, ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
+import { LOCKS } from './locks';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
 /** Earth (phase 11): constructs and stone things shrug it off; things that fly, swim or float are caught out by it. */
@@ -193,6 +194,7 @@ export const content = {
   shops: new ContentTable('shop', SHOPS),
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
   quests: new ContentTable('quest', QUESTS),
+  locks: new ContentTable('lock', LOCKS),
   npcs: new ContentTable('npc', NPCS),
   dialogues: new ContentTable('dialogue', DIALOGUES),
   companions: new ContentTable('companion', COMPANIONS),
@@ -639,6 +641,7 @@ export function validateContent(c: Content = content): void {
 
   // ---- Quests, dialogue, NPCs and companions ----
   validateStory(v, c);
+  validateLocks(v, c);
 
   v.throwIfInvalid();
 }
@@ -848,5 +851,14 @@ function validateStory(v: ContentValidator, c: Content): void {
       checkFlags(v, c, node.flags, `${where} bond ${node.id}`);
     }
     for (const d of [...comp.likes, ...comp.dislikes]) if (d.tag) v.ref(c.skillTags, d.tag, where);
+  }
+}
+
+function validateLocks(v: ContentValidator, c: Content): void {
+  for (const l of c.locks.all()) {
+    const where = `lock ${l.id}`;
+    checkCond(v, c, l.requirement, where);
+    v.check(l.hint.length > 0, `${where}: needs an in-world hint`);
+    v.check(l.unlockMessage.length > 0, `${where}: needs an unlock message`);
   }
 }

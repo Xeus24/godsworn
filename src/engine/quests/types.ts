@@ -110,6 +110,10 @@ export type Cond =
   | { kind: 'heresy'; min?: number; max?: number }
   /** A counter kept by a newer system (secrets, pastimes, the Spire, voyages...); see engine/achievements/progress.ts. */
   | { kind: 'progress'; stat: ProgressStat; min: number; key?: string }
+  /** The hero stands at the current level cap (60, or 90 in New Game+). */
+  | { kind: 'atLevelCap' }
+  /** Set foot in this zone. */
+  | { kind: 'zoneVisited'; zone: string }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };

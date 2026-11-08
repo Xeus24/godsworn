@@ -68,6 +68,8 @@ import { createQuestState, type QuestState } from '../quests/types';
 import { createPartyState, type PartyState } from '../party/types';
 import { createRealmState, type DeathEcho, type RealmState } from '../realm/types';
 import { RealmActions } from './realmActions';
+import type { UnlockState } from '../locks/types';
+import { LockActions } from './lockActions';
 import { HeartActions } from './heartActions';
 import { effectOn } from '../realm/wheel';
 import type { WorldState } from '../world/types';
@@ -75,7 +77,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 24;
+export const SAVE_VERSION = 25;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -185,10 +187,13 @@ export interface GameState {
   endgame: EndgameState;
   /** The living world (section A): the Grudgebound and the rest. */
   realm: RealmState;
+  /** Locks that have opened, with the day (see `src/data/locks.ts`). */
+  unlocks: UnlockState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
   return {
+    unlocks: { opened: {}, grandfathered: true },
     meta: { game: GAME_NAME, version: SAVE_VERSION, createdAt: now, playTimeMs: 0 },
     seed: seed >>> 0,
     rngState: seed >>> 0,
@@ -272,6 +277,7 @@ export class GameSession {
   /** Owners of special endgame runs register how a finished run is settled, by module name. */
   readonly specials: Record<string, (a: GauntletState, won: boolean) => void> = {};
   readonly heart: HeartActions;
+  readonly locks: LockActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
 
@@ -319,7 +325,11 @@ export class GameSession {
     this.guild = new GuildActions(this);
     this.promotions = new PromotionActions(this);
     this.heart = new HeartActions(this);
+    this.locks = new LockActions(this);
     this.world.look();
+    this.bus.on('stateChanged', () => this.locks.sync());
+    this.bus.on('levelUp', () => this.locks.sync());
+    this.locks.sync();
     this.bus.on('goldChanged', ({ amount, reason }) => {
       this.heart.onGold(amount, reason);
       if (amount > 0) this.state.stats.goldEarned += amount;

@@ -170,6 +170,8 @@ export function migrate(raw: Json): Json {
   const world = obj(state.world);
   world.treasureMaps ??= [];
   state.world = world;
+  // Version 25 (locks): a save from before the lock system opens whatever the hero already earned, silently.
+  state.unlocks ??= { opened: {}, grandfathered: false } as unknown as Json;
   state.meta = { ...obj(state.meta), version: SAVE_VERSION };
   return state;
 }

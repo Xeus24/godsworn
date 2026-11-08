@@ -180,6 +180,10 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return p.devotion.heresy >= (cond.min ?? 0) && (cond.max === undefined || p.devotion.heresy < cond.max);
     case 'progress':
       return progressOf(state, cond.stat, cond.key, c) >= cond.min;
+    case 'atLevelCap':
+      return p.level >= state.levelCap;
+    case 'zoneVisited':
+      return state.world.fog[cond.zone] !== undefined;
     case 'all':
       return cond.conds.every((x) => evaluate(state, x, c));
     case 'any':

@@ -3,6 +3,7 @@ import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import { calculateStats } from '../../engine/stats/calculate';
 import type { Modifier } from '../../engine/stats/modifiers';
+import { lockControl } from '../../engine/locks/locks';
 import { battleFx } from '../combat/combatScene';
 import { el } from '../screen';
 import { debugButton, type DebugPanel } from './debugPanel';
@@ -30,6 +31,39 @@ export function registerCoreSections(panel: DebugPanel, getSession: () => GameSe
           ),
         ),
       ),
+  });
+  panel.addSection({
+    title: 'Locks',
+    render: (refresh, log) => {
+      const s = getSession();
+      return el(
+        'div',
+        {},
+        el('div', { class: 'dim small' }, `Ignore locks: ${lockControl.ignore ? 'ON' : 'off'}. Opened: ${s ? Object.keys(s.state.unlocks.opened).length : 0}.`),
+        el(
+          'div',
+          { class: 'row' },
+          debugButton(lockControl.ignore ? 'Obey locks' : 'Ignore locks', () => {
+            lockControl.ignore = !lockControl.ignore;
+            log(`ignore locks: ${lockControl.ignore}`);
+            s?.bus.emit('stateChanged', { reason: 'debug' });
+            refresh();
+          }),
+          debugButton('Unlock all', () => {
+            s?.locks.unlockAll();
+            s?.bus.emit('stateChanged', { reason: 'debug' });
+            log('all locks opened');
+            refresh();
+          }),
+          debugButton('Reset locks', () => {
+            s?.locks.reset();
+            s?.bus.emit('stateChanged', { reason: 'debug' });
+            log('locks reset');
+            refresh();
+          }),
+        ),
+      );
+    },
   });
   panel.addSection({
     title: 'Session',

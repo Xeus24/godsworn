@@ -17,10 +17,10 @@ describe('progressive reveal', () => {
     const s = session(1);
     expect(isRevealed(s.state, 'tab:skills')).toBe(false);
     expect(isRevealed(s.state, 'town:fortunes')).toBe(false);
-    s.player.level = REVEAL_LEVELS['tab:skills'];
+    s.player.level = REVEAL_LEVELS['tab:skills'][0];
     expect(isRevealed(s.state, 'tab:skills')).toBe(true);
     expect(isRevealed(s.state, 'town:fortunes')).toBe(false);
-    s.player.level = REVEAL_LEVELS['town:fortunes'];
+    s.player.level = REVEAL_LEVELS['town:fortunes'][0];
     expect(isRevealed(s.state, 'town:fortunes')).toBe(true);
   });
 
@@ -100,7 +100,7 @@ describe('codex reveal', () => {
     const s = session(1);
     expect(isRevealed(s.state, 'codex:realm')).toBe(false);
     expect(isRevealed(s.state, 'codex:realm', true)).toBe(true);
-    s.player.level = REVEAL_LEVELS['codex:realm'];
+    s.player.level = REVEAL_LEVELS['codex:realm'][0];
     expect(isRevealed(s.state, 'codex:realm')).toBe(true);
     expect(nextReveal(session(1).state, 'codex:')?.level).toBe(5);
   });
