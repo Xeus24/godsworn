@@ -1364,6 +1364,13 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests (1203) and the build pass; `npm run playtest -- ng` finishes New Game+1 for warrior, mage and rogue.
 - Cut / deferred: Warrior and Monk stay at 0-25% on several of these (the Glass Cardinal's Doom Mark is a timer the Warrior's damage does not beat: Rogue kills it in 9 turns taking 0 damage, Warrior is dead at turn 9 with the boss at 55%); melee DPS or a Doom Mark answer is the real fix. Necromancer is 0% on the Glasswright. Hollow Magistrate (Warrior 6%), Stone Warden (Mage 19%, Necromancer 6%), Storm Roc (Necromancer 25%) and Rootmoth Warren (Warrior 50%) were not eased. Rogue and Ranger remain near 100% on nearly every boss.
 
+### Balance pass 8: Warrior and Monk survive late bosses
+- Against the boss walls the Warrior's damage per turn was fine (about 1,200 against the Rogue's 1,700 on the Glass Cardinal, and more than the Rogue's on Archwinder); it simply died first, to magic-heavy bosses. Its Battle-Hardened trait (45% HP, 20% less damage taken) was the weakest of any class, and the Monk had no trait at all.
+- Trait scan on 8 mid and late bosses plus ordinary fights at levels 10-60 (boss% / ordinary%): Warrior 47/89 and Monk 75/84 at baseline. Any strong Monk trait overshot to 95-100%, and lifesteal alone lifted the Warrior from 75 to 89%, so both were kept small.
+- **Warrior** Battle-Hardened: max HP 45 to 70%, damage taken 20 to 24% less (attack 40%, +10% damage and 5% lifesteal unchanged): 75/92. Starting HP is now 246 (test updated). **Monk** gets Inner Discipline: 20% more max HP, 8% less damage taken, 10% more physical attack, +8% damage: 84/91.
+- Tests (1203) and the build pass; `npm run playtest -- ng warrior` and `... monk` finish New Game+1 with no lost fights (the Monk lost one fight before this).
+- Cut / deferred: Rogue and Ranger still win about 100% of bosses; Knight loses to Gnarlroot and the Glasswright; the Glass Cardinal's Doom Mark and Archwinder still kill a solo Warrior quickly (it lasts 5-6 hero turns on Archwinder). Hybrid heroes keep only their primary class's trait.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
