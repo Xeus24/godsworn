@@ -25,6 +25,14 @@ export function leafText(cond: Cond, c: Content = content): string {
       return `Begin New Game+ ${cond.min}`;
     case 'endingsSeen':
       return `See ${cond.min} ending${cond.min === 1 ? '' : 's'} of the story`;
+    case 'dungeonCleared':
+      return `Clear ${c.dungeons.get(cond.dungeon).name}`;
+    case 'shipLevel':
+      return `Own a ship of level ${cond.min}`;
+    case 'voyages':
+      return `Make ${cond.min} voyage${cond.min === 1 ? '' : 's'} by ship`;
+    case 'airship':
+      return 'Own an airship';
     case 'thirdSlot':
       return "Finish High Lector Amara's errand";
     case 'classUnlocked':
@@ -68,6 +76,10 @@ function measure(state: GameState, cond: Cond, c: Content): LockProgress | undef
       return { label: 'Zones visited', have: c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length, need: cond.min };
     case 'counter':
       return { label: cond.flag, have: Number(state.flags[cond.flag] ?? 0), need: cond.min };
+    case 'shipLevel':
+      return { label: 'Ship level', have: p.world.ship?.level ?? 0, need: cond.min };
+    case 'voyages':
+      return { label: 'Voyages', have: p.world.ship?.voyages ?? 0, need: cond.min };
     case 'heresy':
       return cond.min !== undefined ? { label: 'Heresy', have: p.devotion.heresy, need: cond.min } : undefined;
     default:
@@ -156,4 +168,11 @@ export function zoneShut(state: GameState, zoneId: string, c: Content = content)
   const id = `zone:${zoneId}`;
   if (!c.locks.find(id) || isUnlocked(state, id, c)) return undefined;
   return `The way is shut. ${evaluateLock(state, id, c).missing.join('; ')}.`;
+}
+
+/** Why a dungeon's door will not open, in the game's words; undefined when it is open (or has no lock). */
+export function dungeonShut(state: GameState, dungeonId: string, c: Content = content): string | undefined {
+  const id = `dungeon:${dungeonId}`;
+  if (!c.locks.find(id) || isUnlocked(state, id, c)) return undefined;
+  return `The door will not yield. ${evaluateLock(state, id, c).missing.join('; ')}.`;
 }

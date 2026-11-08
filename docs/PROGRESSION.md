@@ -126,3 +126,12 @@ Decisions:
 - Verified: `npm test` (1,229 pass), build, and the Warrior playtest finishes the story. The playtest teleports between chapters, so it does not exercise the exit gate itself; the world tests do.
 
 Still to do in the world group (2c): tool and ability gates (lantern, rope, ward-stone, skeleton key) for off-road regions and dungeons, dungeon keys and clears, ship charts per island, the airship, and the zone boundary "arrival" moments.
+
+## 9. Phase 2c: dungeons and the sea (built)
+
+Finding: the world already had many tool and ability gates in code (Skeleton Key or Lockpicking for locked chests, Swimming / Climbing / Read Ancient Script / Animal Speech for caches and areas, ship level and voyages for ports, an airship quest). Adding new key items would have meant new item sources and sinks for little gain, so this group puts the existing rules on the lock framework and adds the missing capstone pattern.
+
+- **Capstone dungeons:** each optional "hard" dungeon with ordinary neighbours has a `dungeon:<id>` lock: all ordinary dungeons of its zone cleared. The door answers "The door will not yield. Clear ...". Enforced in the `dungeon` entry case (`dungeonShut`). Hard dungeons alone in their zone stay open.
+- **Ports:** `sea:<area>` (ship level, or owning the airship) and `sea:<area>:chart` (voyages needed before the shore shows on the charts). `destinations()` now reads these locks instead of its own checks and takes the game state, not just the hero. New conditions: `shipLevel`, `voyages`, `airship`.
+- **Left as ability gates in code, documented here:** chest locks (Skeleton Key / Lockpicking), exploration skills on caches and side areas. Their numbers stay in `worldActions.ts` for now; moving them onto locks is a later cleanup, not a player-facing change.
+- Tests: capstone coverage, door message and opening, port locks and progress ("Voyages 0/2").

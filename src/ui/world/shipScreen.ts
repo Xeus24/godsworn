@@ -58,7 +58,7 @@ export class ShipScreen implements Screen {
     const next = nextShip(p);
     const mats = (list: { itemId: string; qty: number }[]): string => list.map((m) => `${countOf(s.state.inventory, m.itemId)}/${m.qty} ${content.items.get(m.itemId).name}`).join(', ');
     const current = lvl > 0 ? SHIP_LEVELS[lvl - 1] : undefined;
-    const dests = destinations(p);
+    const dests = destinations(this.session.state);
     const sails = dests.map((d) =>
       el(
         'div',

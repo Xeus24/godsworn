@@ -116,6 +116,12 @@ export type Cond =
   | { kind: 'thirdSlot' }
   /** A secret class has been unlocked by its questline. */
   | { kind: 'classUnlocked'; classId: string }
+  /** The hero's ship is at least this level (0 = no ship). */
+  | { kind: 'shipLevel'; min: number }
+  /** Voyages made by ship. */
+  | { kind: 'voyages'; min: number }
+  /** The hero owns an airship. */
+  | { kind: 'airship' }
   /** Set foot in this zone. */
   | { kind: 'zoneVisited'; zone: string }
   | { kind: 'all'; conds: Cond[] }

@@ -5,7 +5,7 @@ import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
 import { rearrange } from '../world/living';
 import { content } from '../../data';
-import { zoneShut } from '../locks/locks';
+import { dungeonShut, zoneShut } from '../locks/locks';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { characterStats, restoreFull } from '../character/stats';
 import type { EncounterDef } from '../combat/types';
@@ -399,6 +399,8 @@ export class WorldActions {
       }
       case 'dungeon': {
         const d = e.ref as string;
+        const hardShut = dungeonShut(this.s.state, d);
+        if (hardShut) return { kind: 'moved', message: hardShut };
         enterDungeon(this.world, d, this.day);
         const tv = (this.s.trials.t.visits ??= {});
         tv[d] = (tv[d] ?? 0) + 1;
@@ -896,7 +898,7 @@ export class WorldActions {
    */
   voyage(areaId: string): WorldResult | { ok: true; fight: { encounter: EncounterDef; level: number; volley: number } } {
     if (this.inTown() !== 'saltmere') return fail('Voyages leave from the harbor at Saltmere.');
-    const dest = destinations(this.s.player).find((d) => d.id === areaId);
+    const dest = destinations(this.s.state).find((d) => d.id === areaId);
     if (!dest) return fail('You do not know of such a place.');
     if (dest.locked) return fail(dest.locked);
     const area = content.areas.get(areaId);

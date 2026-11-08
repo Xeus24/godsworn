@@ -182,6 +182,12 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return progressOf(state, cond.stat, cond.key, c) >= cond.min;
     case 'atLevelCap':
       return p.level >= state.levelCap;
+    case 'shipLevel':
+      return (p.world.ship?.level ?? 0) >= cond.min;
+    case 'voyages':
+      return (p.world.ship?.voyages ?? 0) >= cond.min;
+    case 'airship':
+      return p.world.ship?.airship === true;
     case 'thirdSlot':
       return Boolean(p.thirdSlot);
     case 'classUnlocked':

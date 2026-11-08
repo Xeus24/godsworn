@@ -147,7 +147,7 @@ describe('ship and airship', () => {
   it('opens the charts as you sail and lets you reach an island', () => {
     const s = atHarbor();
     s.player.world.ship = { level: 1, airship: false, voyages: 0 };
-    expect(destinations(s.player).map((d) => d.id)).toEqual(['gull-rock']);
+    expect(destinations(s.state).map((d) => d.id)).toEqual(['gull-rock']);
     let arrived = false;
     for (let i = 0; i < 12 && !arrived; i++) {
       s.state.world.position = townSpot('saltmere');
@@ -161,7 +161,7 @@ describe('ship and airship', () => {
     }
     expect(arrived).toBe(true);
     expect(s.player.world.ship?.voyages).toBeGreaterThan(0);
-    expect(destinations(s.player).length).toBeGreaterThan(1);
+    expect(destinations(s.state).length).toBeGreaterThan(1);
   });
 
   it('keeps the airship for those who finished the Frozen Oath', () => {
@@ -172,6 +172,6 @@ describe('ship and airship', () => {
     s.state.quests.completed['main-5'] = 1;
     expect(s.world.buildAirship().ok).toBe(true);
     expect(hasAirship(s.player)).toBe(true);
-    expect(destinations(s.player).some((d) => content.areas.get(d.id).access?.by === 'airship')).toBe(true);
+    expect(destinations(s.state).some((d) => content.areas.get(d.id).access?.by === 'airship')).toBe(true);
   });
 });

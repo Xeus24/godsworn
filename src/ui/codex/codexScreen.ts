@@ -247,7 +247,7 @@ export class CodexScreen implements Screen {
       el('h2', {}, 'Ship'),
       el('p', {}, ship ? `${ship.name}: ${ship.description}` : 'You own no ship yet. Build one at the harbor of Saltmere.'),
       el('p', {}, hasAirship(p) ? `Your airship ${AIRSHIP.name} is built.` : 'No airship yet.'),
-      el('p', { class: 'dim small' }, `Ports you can reach: ${destinations(p).map((d) => d.name).join(', ') || 'none'}.`),
+      el('p', { class: 'dim small' }, `Ports you can reach: ${destinations(this.session.state).map((d) => d.name).join(', ') || 'none'}.`),
     );
   }
 

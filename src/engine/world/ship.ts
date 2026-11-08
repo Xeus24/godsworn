@@ -1,6 +1,8 @@
 import { content, type Content } from '../../data';
 import { AIRSHIP, ISLAND_REVEAL, NAVAL_CHANCE, NAVAL_CHANCE_PER_LEVEL, SHIP_LEVELS, type ShipLevelDef } from '../../data/world/ship';
 import type { Character } from '../character/types';
+import { isUnlocked } from '../locks/locks';
+import type { GameState } from '../state/gameState';
 import { countOf } from '../items/inventory';
 import type { Inventory } from '../items/inventory';
 
@@ -36,18 +38,18 @@ export function canBuildAirship(char: Character, gold: number, inv: Inventory, q
 }
 
 /** Areas the ship (or airship) can reach now: those within the ship's level and revealed by your voyages. */
-export function destinations(char: Character, c: Content = content): { id: string; name: string; hours: number; locked?: string }[] {
+export function destinations(state: GameState, c: Content = content): { id: string; name: string; hours: number; locked?: string }[] {
+  const char = state.player;
   const lvl = shipLevel(char);
-  const voyages = char.world.ship?.voyages ?? 0;
-  const flying = hasAirship(char);
   return c.areas
+    .all()
     .filter((a) => !!a.access)
     .flatMap((a) => {
       const acc = a.access as NonNullable<typeof a.access>;
-      if (acc.by === 'airship') return flying ? [{ id: a.id, name: a.name, hours: 2 }] : [];
+      if (acc.by === 'airship') return isUnlocked(state, `sea:${a.id}`, c) ? [{ id: a.id, name: a.name, hours: 2 }] : [];
       if (lvl === 0) return [];
-      if (voyages < (ISLAND_REVEAL[a.id] ?? 0)) return [];
-      return [{ id: a.id, name: a.name, hours: 3 + (ISLAND_REVEAL[a.id] ?? 0) / 2, ...(lvl < acc.level ? { locked: `Needs a ship of level ${acc.level}.` } : {}) }];
+      if (c.locks.find(`sea:${a.id}:chart`) && !isUnlocked(state, `sea:${a.id}:chart`, c)) return [];
+      return [{ id: a.id, name: a.name, hours: 3 + (ISLAND_REVEAL[a.id] ?? 0) / 2, ...(isUnlocked(state, `sea:${a.id}`, c) ? {} : { locked: c.locks.get(`sea:${a.id}`).hint }) }];
     });
 }
 

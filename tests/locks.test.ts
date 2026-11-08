@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
 import { validateContent } from '../src/data';
-import { evaluateLock, isUnlocked, lockControl, visibleLocks } from '../src/engine/locks/locks';
+import { dungeonShut, evaluateLock, isUnlocked, lockControl, visibleLocks } from '../src/engine/locks/locks';
 import { classSlotCount } from '../src/engine/character/multiclass';
 import { raceUnlocked } from '../src/engine/character/races';
 import { migrate } from '../src/engine/state/save';
@@ -134,5 +134,38 @@ describe('locks', () => {
   it('every NG+ class and every unlock-gated race has a lock with a hint', () => {
     for (const k of content.classes.all()) if (k.ngPlus) expect(content.locks.get(`class:ngplus:${k.id}`).hint.length).toBeGreaterThan(10);
     for (const r of content.races.all()) if (r.unlock) expect(content.locks.get(`race:${r.id}`).hint.length).toBeGreaterThan(10);
+  });
+});
+
+describe('world locks: dungeons and the sea', () => {
+  it('every hard dungeon with ordinary neighbours is a capstone lock', () => {
+    const hard = content.dungeons.all().filter((d) => d.hard && content.dungeons.all().some((x) => x.zone === d.zone && !x.hard && !x.late));
+    expect(hard.length).toBeGreaterThan(5);
+    for (const d of hard) expect(content.locks.find(`dungeon:${d.id}`)).toBeDefined();
+  });
+
+  it('a hard dungeon opens after its zone\'s ordinary dungeons are cleared, and its door says why', () => {
+    const s = newSession();
+    const d = content.dungeons.get('gilded-vault');
+    const before = content.dungeons.all().filter((x) => x.zone === d.zone && !x.hard && !x.late);
+    expect(dungeonShut(s.state, d.id)).toContain('Clear');
+    for (const x of before) s.state.world.dungeonsCleared.push(x.id);
+    expect(dungeonShut(s.state, d.id)).toBeUndefined();
+  });
+
+  it('ports: ship level and voyages are locks, shown in the same words', () => {
+    const s = newSession();
+    expect(isUnlocked(s.state, 'sea:gull-rock')).toBe(false);
+    s.player.world.ship = { level: 1, airship: false, voyages: 0 };
+    expect(isUnlocked(s.state, 'sea:gull-rock')).toBe(true);
+    expect(isUnlocked(s.state, 'sea:kelp-hollow:chart')).toBe(false);
+    s.player.world.ship.voyages = 1;
+    expect(isUnlocked(s.state, 'sea:kelp-hollow:chart')).toBe(true);
+    s.player.world.ship.voyages = 0;
+    expect(isUnlocked(s.state, 'sea:pirates-rest:chart')).toBe(false);
+    expect(evaluateLock(s.state, 'sea:pirates-rest:chart').progress[0]).toEqual({ label: 'Voyages', have: 0, need: 2 });
+    expect(isUnlocked(s.state, 'sea:cloud-orchard')).toBe(false);
+    s.player.world.ship.airship = true;
+    expect(isUnlocked(s.state, 'sea:cloud-orchard')).toBe(true);
   });
 });

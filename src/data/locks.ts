@@ -2,6 +2,9 @@ import type { LockDef } from '../engine/locks/types';
 import { CLASSES } from './classes';
 import { MULTICLASS } from './progression';
 import { RACES } from './races';
+import { ISLAND_REVEAL } from './world/ship';
+import { DUNGEONS } from './world/places';
+import { AREAS } from './world/areas';
 import type { Cond } from '../engine/quests/types';
 
 /**
@@ -110,10 +113,42 @@ const zoneLocks: LockDef[] = Object.entries(ZONE_RITES).map(([zone, quest]) => (
   category: 'world',
 }));
 
+/**
+ * Optional hard dungeons (the "hard" side paths) are capstones: they open once every ordinary
+ * dungeon of their zone has been cleared (or when the hero has cleared that one before).
+ */
+const dungeonLocks: LockDef[] = DUNGEONS.filter((d) => d.hard).flatMap((d): LockDef[] => {
+  const before = DUNGEONS.filter((x) => x.zone === d.zone && !x.hard && !x.late);
+  if (before.length === 0) return [];
+  return [{
+    id: `dungeon:${d.id}`,
+    requirement: { kind: 'all', conds: before.map((x) => ({ kind: 'dungeonCleared', dungeon: x.id }) as Cond) },
+    visibility: 'visible',
+    hint: 'A harder road lies behind its door. Clear the ordinary dungeons of this land first.',
+    unlockMessage: `A harder trial is open to you: ${d.name}.`,
+    category: 'world',
+  }];
+});
+
+/** Ports: a ship of enough level, and (for the far isles) enough voyages for the chart to show them. */
+const seaLocks: LockDef[] = AREAS.filter((a) => a.access).flatMap((a): LockDef[] => {
+  const acc = a.access as NonNullable<typeof a.access>;
+  if (acc.by === 'airship') {
+    return [{ id: `sea:${a.id}`, requirement: { kind: 'airship' }, visibility: 'teased', hint: 'Only a ship that flies can reach it.', unlockMessage: `The sky route to ${a.name} is open.`, category: 'world' }];
+  }
+  const reveal = ISLAND_REVEAL[a.id] ?? 0;
+  return [
+    { id: `sea:${a.id}`, requirement: { kind: 'shipLevel', min: acc.level }, visibility: 'visible', hint: `Needs a ship of level ${acc.level}: upgrade it at the Saltmere harbor.`, unlockMessage: `Your ship can now make the crossing to ${a.name}.`, category: 'world' },
+    ...(reveal > 0 ? [{ id: `sea:${a.id}:chart`, requirement: { kind: 'voyages', min: ISLAND_REVEAL[a.id] ?? 0 }, visibility: 'teased', hint: 'Sail more, and the charts will show new shores.', unlockMessage: `A new shore appears on your charts: ${a.name}.`, category: 'world' } satisfies LockDef] : []),
+  ];
+});
+
 export const LOCKS: LockDef[] = [
   ...raceLocks,
   ...classLocks,
   ...zoneLocks,
+  ...dungeonLocks,
+  ...seaLocks,
   {
     id: 'class:second',
     requirement: { kind: 'level', min: MULTICLASS.secondaryLevel },
