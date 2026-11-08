@@ -858,6 +858,7 @@ function validateLocks(v: ContentValidator, c: Content): void {
   for (const l of c.locks.all()) {
     const where = `lock ${l.id}`;
     checkCond(v, c, l.requirement, where);
+    if (l.id.startsWith('zone:')) v.ref(c.zones, l.id.slice(5), where);
     v.check(l.hint.length > 0, `${where}: needs an in-world hint`);
     v.check(l.unlockMessage.length > 0, `${where}: needs an unlock message`);
   }

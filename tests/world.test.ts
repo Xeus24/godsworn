@@ -186,8 +186,37 @@ describe('walking', () => {
     const map = mapFor('meadowlands');
     const exit = map.entities.find((e) => e.id === 'exit-east') as MapEntity;
     s.state.world.position = { map: map.id, x: exit.x - 1, y: exit.y };
+    s.state.quests.completed['a1-1'] = 1;
     expect(s.world.step(1, 0).kind).toBe('map');
     expect(s.state.world.position.map).toBe('whisperwood');
+  });
+
+  it('a zone stays shut until its rite is done, says why, and never turns back a returning hero', () => {
+    const s = newSession();
+    const map = mapFor('meadowlands');
+    const exit = map.entities.find((e) => e.id === 'exit-east') as MapEntity;
+    s.state.world.position = { map: map.id, x: exit.x - 1, y: exit.y };
+    const r = s.world.step(1, 0);
+    expect(r.kind).toBe('moved');
+    expect(s.state.world.position.map).toBe('meadowlands');
+    expect(JSON.stringify(r)).toContain('shut');
+    s.state.world.fog['whisperwood'] = '0'.repeat(mapFor('whisperwood').w * mapFor('whisperwood').h);
+    s.state.world.position = { map: map.id, x: exit.x - 1, y: exit.y };
+    expect(s.world.step(1, 0).kind).toBe('map');
+  });
+
+  it('entering a zone far above your level warns but lets you in', () => {
+    const s = newSession();
+    s.state.ngPlus = 0;
+    s.state.quests.completed['a1-1'] = 1;
+    const toasts: string[] = [];
+    s.bus.on('toast', (t) => toasts.push(`${t.kind}:${t.text}`));
+    const map = mapFor('meadowlands');
+    const exit = map.entities.find((e) => e.id === 'exit-east') as MapEntity;
+    s.state.world.position = { map: map.id, x: exit.x - 1, y: exit.y };
+    s.world.step(1, 0);
+    expect(s.state.world.position.map).toBe('whisperwood');
+    expect(toasts.some((t) => t.startsWith('warning:') && t.includes('under-leveled'))).toBe(true);
   });
 });
 

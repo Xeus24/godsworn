@@ -150,3 +150,10 @@ export function profileUnlocked(cond: Cond, f: ProfileFacts): boolean {
 export function profileLockOpen(id: string, f: ProfileFacts, c: Content = content): boolean {
   return profileUnlocked(c.locks.get(id).requirement, f);
 }
+
+/** Why the way into a zone is shut, in the game's words; undefined when it is open (or the zone has no rite). */
+export function zoneShut(state: GameState, zoneId: string, c: Content = content): string | undefined {
+  const id = `zone:${zoneId}`;
+  if (!c.locks.find(id) || isUnlocked(state, id, c)) return undefined;
+  return `The way is shut. ${evaluateLock(state, id, c).missing.join('; ')}.`;
+}

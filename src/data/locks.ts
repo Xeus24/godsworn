@@ -76,9 +76,44 @@ const classLocks: LockDef[] = CLASSES.flatMap((k): LockDef[] => {
   return [];
 });
 
+/**
+ * Entry rites: the chapter of the tale that opens the way into a zone. Each is the quest that
+ * the zone's first main-story errand follows, so the story itself always leads the hero there.
+ * A hero who has already set foot in the zone, or who walks a New Game+, is never turned back.
+ */
+export const ZONE_RITES: Record<string, string> = {
+  whisperwood: 'a1-1',
+  moonfen: 'a1-3',
+  'sunken-caves': 'a1-4',
+  aurelane: 'main-3',
+  'ashen-desert': 'a2-4',
+  gloamwood: 'main-4',
+  thornreach: 'a2-5',
+  saltglass: 'a2-6',
+  frostspire: 'a2-7',
+  'hollow-barrows': 'a3-1',
+  khazrum: 'a3-5',
+  stormcoast: 'a3-6',
+  merrowdeep: 'main-6',
+  'clockwork-foundry': 'a3-7',
+  skyreach: 'a4-2',
+  'volcanic-rift': 'a4-5',
+  'dark-citadel': 'a5-1',
+};
+
+const zoneLocks: LockDef[] = Object.entries(ZONE_RITES).map(([zone, quest]) => ({
+  id: `zone:${zone}`,
+  requirement: { kind: 'any', conds: [{ kind: 'zoneVisited', zone }, { kind: 'ngPlus', min: 1 }, { kind: 'quest', quest, state: 'complete' }] },
+  visibility: 'teased',
+  hint: 'The way there is not yet open. Press on with the main tale; its next chapter leads you there.',
+  unlockMessage: 'A new way is open to you on the Road.',
+  category: 'world',
+}));
+
 export const LOCKS: LockDef[] = [
   ...raceLocks,
   ...classLocks,
+  ...zoneLocks,
   {
     id: 'class:second',
     requirement: { kind: 'level', min: MULTICLASS.secondaryLevel },

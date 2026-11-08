@@ -8,3 +8,8 @@ describe('lock reachability graph', () => {
   it('has no requirement on a flag nothing sets', () => expect(r.unsetFlags).toEqual([]));
   it('has no requirement on an item nothing hands out', () => expect(r.unobtainableItems).toEqual([]));
 });
+
+import { unreachableZones } from '../scripts/lockgraph';
+describe('zone entry rites', () => {
+  it('every zone can be reached using only quests from zones already reachable', () => expect(unreachableZones()).toEqual([]));
+});

@@ -5,6 +5,7 @@ import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
 import { rearrange } from '../world/living';
 import { content } from '../../data';
+import { zoneShut } from '../locks/locks';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { characterStats, restoreFull } from '../character/stats';
 import type { EncounterDef } from '../combat/types';
@@ -421,8 +422,11 @@ export class WorldActions {
         const to = arrival(this.world, map.id, e);
         const need = content.zones.find(to.map)?.ngPlus;
         if (need && this.s.state.ngPlus < need) return { kind: 'moved', message: `${e.label ?? 'The way'}: it is shut. It opens in New Game+${need}.` };
+        const shut = zoneShut(this.s.state, to.map);
+        if (shut) return { kind: 'moved', message: `${e.label ?? 'The way'}: ${shut}` };
         this.placeAt(to.map, to.x, to.y);
         this.world.grace = ENCOUNTER_GRACE;
+        this.warnUnderLevel(to.map);
         return { kind: 'map', message: `${mapFor(to.map).name}` };
       }
       case 'shrine':
@@ -787,12 +791,20 @@ export class WorldActions {
     this.changed('world');
   }
 
+  /** A warning, never a wall: the zone is meant for stronger heroes. */
+  private warnUnderLevel(zoneId: string): void {
+    const z = content.zones.find(zoneId);
+    if (z && !z.ngPlus && this.s.player.level < z.levels[0] - 3) this.toast('warning', `${z.name} is meant for heroes of level ${z.levels[0]} and up. You are under-leveled: tread carefully.`);
+  }
+
   /** Fast travel to another zone's waypoint (both attuned). Costs gold and a few hours. */
   fastTravel(zone: string): WorldResult {
     if (hasRule(this.s.player, 'noFastTravel')) return fail('Ironman: the waypoints will not carry you.');
     if (!this.world.waypoints.includes(zone)) return fail('You have not attuned that waypoint.');
     if (isDungeon(this.world.position.map)) return fail('Leave the dungeon first.');
     if (zone === this.world.position.map) return fail('You are already here.');
+    const shutWay = zoneShut(this.s.state, zone);
+    if (shutWay) return fail(shutWay);
     const cost = FAST_TRAVEL_GOLD_PER_LEVEL * this.s.player.level;
     if (!this.s.spendGold(cost, 'travel')) return fail(`Travel costs ${cost} gold.`);
     const wp = mapFor(zone).entities.find((e) => e.kind === 'waypoint');

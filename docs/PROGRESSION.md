@@ -116,3 +116,13 @@ Decisions:
 - Multiclass failure messages and the Proving Grounds intro now read the lock hint and progress ("Level 7/15"); the old ad hoc level-15 toast is replaced by the lock's unlock message.
 - New condition kinds: `thirdSlot`, `classUnlocked`.
 - Not changed: base classes stay open at creation (core loop). Backgrounds, birth signs and difficulty gating by legacy flags are left for a later group.
+
+## 8. Phase 2b: zone entry rites (built)
+
+- **17 `zone:<id>` locks** (`ZONE_RITES` in `src/data/locks.ts`). Each is a main-story quest: the one that the zone's first story errand follows, so the tale always leads the hero there (Whisperwood after `a1-1`, Moonfen after `a1-3`, ..., the Dark Citadel after `a5-1`). Requirement: that quest is done, **or** the hero has already set foot in the zone (grandfathers every existing save), **or** the hero is in New Game+ (earned systems stay open). Not gated: the Meadowlands, Ashfold (prologue), the shattered isles (sea gate comes with the ship group) and the NG+ regions (already gated by tier).
+- **One enforcement point:** the `exit` case in `WorldActions.interact` (roads and passes) and `fastTravel`. A shut way answers with the lock's missing line ("Complete: ...") and the hint; nothing moves.
+- **Under-level is a warning, not a wall:** entering a zone more than 3 levels below its range shows a warning toast. Never blocks.
+- **Reachability proof:** `unreachableZones()` in `scripts/lockgraph.ts` (run by `tests/lockgraph.test.ts`) walks the map from the Meadowlands over roads and passes and checks that each rite quest's prerequisite chain only uses quests set in zones already reachable. Negative-tested: pointing Whisperwood at `a1-2` makes 17 zones unreachable and the test fails.
+- Verified: `npm test` (1,229 pass), build, and the Warrior playtest finishes the story. The playtest teleports between chapters, so it does not exercise the exit gate itself; the world tests do.
+
+Still to do in the world group (2c): tool and ability gates (lantern, rope, ward-stone, skeleton key) for off-road regions and dungeons, dungeon keys and clears, ship charts per island, the airship, and the zone boundary "arrival" moments.
