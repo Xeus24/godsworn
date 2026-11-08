@@ -1371,6 +1371,12 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests (1203) and the build pass; `npm run playtest -- ng warrior` and `... monk` finish New Game+1 with no lost fights (the Monk lost one fight before this).
 - Cut / deferred: Rogue and Ranger still win about 100% of bosses; Knight loses to Gnarlroot and the Glasswright; the Glass Cardinal's Doom Mark and Archwinder still kill a solo Warrior quickly (it lasts 5-6 hero turns on Archwinder). Hybrid heroes keep only their primary class's trait.
 
+### Balance pass 9: Rogue and Ranger speed
+- On 8 mid and late bosses plus ordinary fights at levels 10-60 the Rogue was 100/97% (boss/ordinary) and the Ranger 91/100%. They take almost no damage because their DEX-driven speed gives them several actions per boss action; trait-sized changes to damage barely moved them (Rogue 100/94 at 25% less damage dealt, Ranger 88/99 at 50% less), while speed did (Rogue 88/89 at 40% less, 64/78 at 55% less).
+- **Rogue** Cutpurse's Luck gains 40% less speed (+30% damage and 50% more max HP unchanged): 88/89. **Ranger** gets Patient Hunter, 35% less speed: 88/91. The Character test that used the Ranger as the class without a trait now checks the rule for every class (no class lacks a trait any more).
+- Tests (1203) and the build pass; `npm run playtest -- ng rogue` and `... ranger` finish New Game+1 with no lost fights.
+- Cut / deferred: Rogue still dips to 63% against one level 30 ordinary encounter (same at 45% and 40% less speed, so it is that fight, not the penalty). Ranger's boss win rate stays 88% whatever the speed (86% at 55% less), so its strength is the pet and ranged damage, a kit-level fix. Anything speed-based (Dancer, Stillhand, Wayfinder) was not re-checked. Pure speed penalties read as a drawback on the class screen; a better-flavoured trade would cost more sim time.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 
