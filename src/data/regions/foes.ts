@@ -25,11 +25,25 @@ function stats(level: number, role: Role): EnemyDef['stats'] {
   };
 }
 
+/**
+ * Balance dial for single bosses the sim (`npm run sim`, benchmark gear) shows as walls for most classes:
+ * a multiplier on the boss's HP, attack and magic. Anything not listed is 1.
+ */
+export const BOSS_EASE: Record<string, number> = {
+  glasswright: 0.6, 'glass-cardinal': 0.6, 'vault-leviathan': 0.7, archwinder: 0.6, 'first-engine': 0.7,
+  'skyreach-sovereign': 0.55, 'gale-warden': 0.7, 'pillar-colossus': 0.7, 'ruin-seraph': 0.6,
+};
+
 const AI: Record<Role, AiProfile> = { brute: 'aggressive', skirm: 'aggressive', caster: 'caster', tank: 'defensive' };
+
+function eased(id: string, st: EnemyDef['stats']): EnemyDef['stats'] {
+  const k = BOSS_EASE[id];
+  return k === undefined ? st : { ...st, hp: Math.round(st.hp * k), attack: Math.round(st.attack * k), magic: Math.round(st.magic * k) };
+}
 
 export function foes(rows: FoeRow[], tier: EnemyTier = 'normal', variant: 'normal' | 'boss' | 'worldBoss' = 'normal'): EnemyDef[] {
   return rows.map(([id, name, family, types, level, role, element, skills, attackName, description, main, accent]): EnemyDef => ({
-    id, name, family, types, level, tier, row: role === 'caster' ? 'back' : 'front', stats: stats(level, role),
+    id, name, family, types, level, tier, row: role === 'caster' ? 'back' : 'front', stats: eased(id, stats(level, role)),
     skills: skills.map((s, i) => ({ id: s, ...(i === 0 ? { weight: 2 } : {}) })),
     basicAttack: { element, ranged: role === 'caster', ...(role === 'caster' ? { magic: true } : {}), name: attackName },
     ai: AI[role],
