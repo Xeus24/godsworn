@@ -35,3 +35,20 @@ Normal drops, NG+0: junk 14.3%, common 40.4%, uncommon 26.2%, rare 12.8%, epic 4
 
 - Auto-battle Cleric vs. Seryth (about 13% in `PROGRESS.md`), rift full-clear rates (about 25% at tier 10, 6% at tier 20): these come from `scripts/classSweep.ts` and `scripts/ngBossSweep.ts` and the playtest, run when Phase 3 starts.
 - The full 26-zone party sim.
+
+## Phase 3a: ordinary encounters on the road (after)
+
+New script `scripts/simEncounters.ts` (11 seconds: 38 classes x 6 fights per road zone; `--threat zone=N` tries a value before editing data). Zone `threat` values in `src/data/world/zones.ts` raised so benchmark heroes land in the 85 to 95% band:
+
+| Zone | Level | Threat before | after | Win before | after |
+|---|---|---|---|---|---|
+| Meadowlands | 5 | 0 | 150 | 100.0% | 93.0% |
+| Whisperwood | 12 | 0 | 90 | 99.1% | 93.9% |
+| Sunken Caves | 20 | 110 | 250 | 99.6% | 90.4% |
+| Ashen Desert | 28 | 70 | 170 | 100.0% | 90.4% |
+| Frostspire | 36 | 60 | 180 | 99.6% | 90.8% |
+| Stormcoast | 44 | 45 | 110 | 100.0% | 95.2% |
+| Volcanic Rift | 52 | 5 | 55 | 99.1% | 89.9% |
+| Dark Citadel | 58 | 0 | 40 | 97.8% | 90.4% |
+
+Caveat: the benchmark hero has benchmark gear and plays on auto, so it is an optimistic model of a real player. Threat only scales random encounters and roaming packs (+HP and +damage), not bosses or dungeons. If real play feels too harsh, scale all eight values down together; the shape is what matters. Full tests (1,236), build and the Mage playtest pass.
