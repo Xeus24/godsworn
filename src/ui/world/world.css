@@ -162,7 +162,26 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   grid-auto-flow: row dense;
-  align-items: start;
+  align-items: stretch;
+}
+
+/* Service launchers form one tidy strip above the tall cards. */
+.town-card.launcher {
+  order: -1;
+}
+
+/* Wide screens: People on the left, Quest Board and Temple stacked beside it. */
+@media (min-width: 1100px) {
+  .town-grid .town-card[data-card='People'] {
+    grid-row: span 2;
+  }
+  .town-grid .town-card[data-card='Quest Board'],
+  .town-grid .town-card[data-card='Temple'] {
+    grid-column: span 2;
+  }
+  .town-grid .town-card[data-card='People'] .npc-list {
+    max-height: 330px;
+  }
 }
 
 /* Long cards scroll inside the card instead of stretching the whole town page. */
@@ -371,7 +390,7 @@
   width: 100%;
   height: auto;
   aspect-ratio: 240 / 48;
-  max-height: 170px;
+  max-height: 130px;
   object-fit: cover;
   object-position: center bottom;
   border: 2px solid var(--border, #3a2f55);
