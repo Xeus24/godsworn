@@ -15,7 +15,7 @@ import { navBar, type Nav } from '../components/navBar';
 import { attachTooltip } from '../components/tooltip';
 import { formatStat } from '../format';
 import { slotLabel } from '../items/itemText';
-import { itemTooltip } from '../items/itemTooltip';
+import { compareTooltip, itemTooltip } from '../items/itemTooltip';
 import { el, type Screen } from '../screen';
 import { companionTreeGraph, type GraphView } from './companionTreeGraph';
 
@@ -133,7 +133,7 @@ export class PartyScreen implements Screen {
       const item = ch.equipment[slot];
       if (!item) return el('span');
       const name = el('span', { style: `color:var(--r-${item.rarity})` }, itemName(item));
-      attachTooltip(name, () => itemTooltip(item));
+      attachTooltip(name, () => itemTooltip(item, s, true, ch));
       return el('div', { class: 'party-gear-row' }, el('span', { class: 'dim small' }, slotLabel(slot)), name, this.btn('Unequip', () => this.say(s.party.unequip(comp.id, slot))));
     });
     const base = characterBaseStats(ch);
@@ -147,7 +147,7 @@ export class PartyScreen implements Screen {
     const bag = usable.map(({ it, i }) => {
       if (!it) return el('span');
       const name = el('span', { style: `color:var(--r-${it.rarity})` }, itemName(it));
-      attachTooltip(name, () => itemTooltip(it));
+      attachTooltip(name, () => compareTooltip(it, s, ch));
       return el('div', { class: 'party-gear-row bag' }, name, this.btn('Equip', () => this.say(s.party.equip(comp.id, i))));
     });
     const quests = [def.recruitQuest, def.personalQuest].map((id) => content.quests.get(id));

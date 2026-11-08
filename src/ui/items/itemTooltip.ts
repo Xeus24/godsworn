@@ -6,6 +6,7 @@ import { activeRuneword, baseStatMultiplier, itemValue, sellValue } from '../../
 import { baseOf, isGear, requiredLevel, uniqueOf } from '../../engine/items/lookup';
 import { itemName } from '../../engine/items/naming';
 import { usesOf } from '../../engine/items/uses';
+import type { Character } from '../../engine/character/types';
 import type { ItemInstance } from '../../engine/items/types';
 import type { GameSession } from '../../engine/state/gameState';
 import { formatStat } from '../format';
@@ -15,7 +16,8 @@ import { formatModifier, slotLabel } from './itemText';
 const line = (cls: string, text: string): HTMLElement => el('div', { class: cls }, text);
 
 /** Full tooltip for an item, with comparison against equipped gear when `session` is given. */
-export function itemTooltip(item: ItemInstance, session?: GameSession, equippedHere = false): HTMLElement {
+export function itemTooltip(item: ItemInstance, session?: GameSession, equippedHere = false, who?: Character): HTMLElement {
+  const wearer = who ?? session?.player;
   const base = baseOf(item);
   const rarity = content.rarities.get(item.rarity);
   const unique = uniqueOf(item);
@@ -93,9 +95,9 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
   // Set progress.
   if (unique?.setId && session) {
     const set = content.itemSets.get(unique.setId);
-    const have = setPieceCounts(session.player).get(set.id) ?? 0;
+    const have = setPieceCounts(wearer!).get(set.id) ?? 0;
     out.push(line('tip-set', `${set.name} (${have}/${set.pieces.length})`));
-    const equippedIds = new Set(Object.values(session.player.equipment).map((i) => i?.uniqueId));
+    const equippedIds = new Set(Object.values(wearer!.equipment).map((i) => i?.uniqueId));
     for (const p of set.pieces) out.push(line(equippedIds.has(p) ? 'tip-set' : 'tip-desc', `  ${content.uniques.get(p).name}`));
     for (const b of set.bonuses) out.push(line(have >= b.pieces ? 'tip-set' : 'tip-desc', `(${b.pieces}) ${b.text}`));
   }
@@ -126,16 +128,16 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
   }
   if (session) {
     const req = requiredLevel(item);
-    if (req > 1) out.push(line(session.player.level >= req ? 'tip-desc' : 'tip-bad', `Requires level ${req}`));
+    if (req > 1) out.push(line(wearer!.level >= req ? 'tip-desc' : 'tip-bad', `Requires level ${req}`));
     if (isGear(item) && !equippedHere) {
-      const slot = defaultSlot(session.player, item);
-      const check = slot ? canEquip(session.player, item, slot, characterStats(session.player)) : { ok: false as const, reason: 'Cannot be equipped.' };
+      const slot = defaultSlot(wearer!, item);
+      const check = slot ? canEquip(wearer!, item, slot, characterStats(wearer!)) : { ok: false as const, reason: 'Cannot be equipped.' };
       // The level requirement already has its own line above; only other reasons are new information.
       if (!check.ok && item.identified && !/^Requires level/i.test(check.reason)) out.push(line('tip-bad', check.reason));
       else if (item.identified) {
-        const deltas = compareEquip(session.player, item);
+        const deltas = compareEquip(wearer!, item);
         if (deltas.length > 0) {
-          out.push(line('tip-desc', slot && session.player.equipment[slot] ? 'If equipped (vs current):' : 'If equipped:'));
+          out.push(line('tip-desc', slot && wearer!.equipment[slot] ? 'If equipped (vs current):' : 'If equipped:'));
           for (const { stat, delta } of deltas.slice(0, 12)) {
             // For Damage Taken, lower is better.
             const good = stat === 'damageTaken' ? delta < 0 : delta > 0;
@@ -161,11 +163,12 @@ export function itemTooltip(item: ItemInstance, session?: GameSession, equippedH
  * The tooltip for a bag or stash item: for gear that would replace something,
  * the item's card with the currently equipped item's card beside it.
  */
-export function compareTooltip(item: ItemInstance, session: GameSession): HTMLElement {
-  const card = itemTooltip(item, session);
+export function compareTooltip(item: ItemInstance, session: GameSession, who?: Character): HTMLElement {
+  const wearer = who ?? session.player;
+  const card = itemTooltip(item, session, false, wearer);
   if (!isGear(item) || !item.identified) return card;
-  const slot = defaultSlot(session.player, item);
-  const worn = slot ? session.player.equipment[slot] : undefined;
+  const slot = defaultSlot(wearer, item);
+  const worn = slot ? wearer.equipment[slot] : undefined;
   if (!worn || worn === item) return card;
-  return el('div', { class: 'tip-pair' }, card, el('div', { class: 'tip-worn' }, el('div', { class: 'tip-worn-label' }, 'Currently equipped'), itemTooltip(worn, session, true)));
+  return el('div', { class: 'tip-pair' }, card, el('div', { class: 'tip-worn' }, el('div', { class: 'tip-worn-label' }, 'Currently equipped'), itemTooltip(worn, session, true, wearer)));
 }

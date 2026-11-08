@@ -38,6 +38,15 @@ const DOLL: [EquipSlot, number, number][] = [
 /** Redraw attempts while the tile paper doll loads (reset once it has). */
 let dollRetries = 0;
 
+/** Drag data can come from anywhere on the page; a malformed payload must not throw inside a drop handler. */
+function parseDragLocation(raw: string): ItemLocation | null {
+  try {
+    return JSON.parse(raw) as ItemLocation;
+  } catch {
+    return null;
+  }
+}
+
 export class InventoryScreen implements Screen {
   private root: HTMLElement | undefined;
   private offs: (() => void)[] = [];
@@ -241,7 +250,8 @@ export class InventoryScreen implements Screen {
     node.addEventListener('drop', (e) => {
       e.preventDefault();
       const raw = e.dataTransfer?.getData(DRAG_TYPE);
-      if (raw) this.drop(JSON.parse(raw) as ItemLocation, loc);
+      const from = raw ? parseDragLocation(raw) : null;
+      if (from) this.drop(from, loc);
     });
     return node;
   }
@@ -422,7 +432,8 @@ export class InventoryScreen implements Screen {
     });
     zone.addEventListener('drop', (e) => {
       const raw = e.dataTransfer?.getData(DRAG_TYPE);
-      if (raw && inv.slots.length > 0) this.drop(JSON.parse(raw) as ItemLocation, locOf(0));
+      const from = raw ? parseDragLocation(raw) : null;
+      if (from && inv.slots.length > 0) this.drop(from, locOf(0));
     });
     return zone;
   }
@@ -439,7 +450,8 @@ export class InventoryScreen implements Screen {
     body.addEventListener('drop', (e) => {
       const raw = e.dataTransfer?.getData(DRAG_TYPE);
       const free = inv.slots.indexOf(null);
-      if (raw && free >= 0 && e.target === body) this.drop(JSON.parse(raw) as ItemLocation, locOf(free));
+      const from = raw ? parseDragLocation(raw) : null;
+      if (from && free >= 0 && e.target === body) this.drop(from, locOf(free));
     });
     return el('div', { class: 'list-wrap' }, head, body);
   }
