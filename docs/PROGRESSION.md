@@ -135,3 +135,12 @@ Finding: the world already had many tool and ability gates in code (Skeleton Key
 - **Ports:** `sea:<area>` (ship level, or owning the airship) and `sea:<area>:chart` (voyages needed before the shore shows on the charts). `destinations()` now reads these locks instead of its own checks and takes the game state, not just the hero. New conditions: `shipLevel`, `voyages`, `airship`.
 - **Left as ability gates in code, documented here:** chest locks (Skeleton Key / Lockpicking), exploration skills on caches and side areas. Their numbers stay in `worldActions.ts` for now; moving them onto locks is a later cleanup, not a player-facing change.
 - Tests: capstone coverage, door message and opening, port locks and progress ("Voyages 0/2").
+
+## 10. Phase 2d: crafting and gear (built)
+
+Finding: recipe tiers by profession level (220 recipes), recipe scrolls for non-starter recipes, essence grades that rise with the upgrade level (faint to mythic), and item tiers by item level and source all exist already and are kept. The two gaps were the professions themselves and the upgrade tiers.
+
+- **Professions:** blacksmithing, alchemy and cooking stay open (core loop). `craft:profession:<id>` gates the rest by a bench in a particular land plus a level: tailoring (Whisperwood, 5), jewelcrafting (Sunken Caves, 8), enchanting (Ashen Desert, 10). Practising it already keeps it open. The workshop screen shows "Locked" and the hint; the economy action refuses with the hint.
+- **Upgrade tiers:** `craft:upgrade:6` (past +5) needs any crafting profession at level 10; `craft:upgrade:11` (past +10, where failures drop the item a level) needs 25. Gear the hero already carries at that level grandfathers it (new `gearUpgrade` condition). Enforced in `EconomyActions.upgrade`.
+- New conditions: `practises`, `gearUpgrade`; `profession` now has readable text.
+- Not changed: socketing, stash filters, sets and runewords (their drop sources are the gate; no change proposed), and the rarity ladder.

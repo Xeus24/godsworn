@@ -1,5 +1,6 @@
 import { hasRule } from '../character/challenges';
 import { content } from '../../data';
+import { isUnlocked } from '../locks/locks';
 import { clampVitals, characterStats } from '../character/stats';
 import { canCraft, craft, FORGET_COST_PER_LEVEL, forgetProfession, gainProfessionXp, learnProfession, learnRecipe, professionLevel, recipeGold } from '../economy/crafting';
 import { addSocket, ascend, ASCEND_COST, canAscend, canUpgrade, modifiable, qualityCost, raiseQuality, rerollAffix, rerollCost, socketCost, upgrade, upgradeCost, type ServiceCost } from '../economy/enchanting';
@@ -200,6 +201,8 @@ export class EconomyActions {
 
   learnProfession(id: CraftingProfession): EconomyResult {
     if (!this.town()) return fail('Find a trainer in town.');
+    const lock = `craft:profession:${id}`;
+    if (content.locks.find(lock) && !isUnlocked(this.s.state, lock)) return fail(content.locks.get(lock).hint);
     const r = learnProfession(this.p, id);
     if (r.ok) this.changed('profession');
     return r.ok ? { ok: true, message: `You take up ${content.professions.get(id).name}.` } : r;
@@ -263,6 +266,8 @@ export class EconomyActions {
     if (!item) return fail('Nothing there.');
     const check = canUpgrade(item);
     if (!check.ok) return check;
+    const tierLock = item.upgrade + 1 > 10 ? 'craft:upgrade:11' : item.upgrade + 1 > 5 ? 'craft:upgrade:6' : undefined;
+    if (tierLock && !isUnlocked(this.s.state, tierLock)) return fail(content.locks.get(tierLock).hint);
     const paid = this.pay(upgradeCost(this.p, item));
     if (!paid.ok) return paid;
     const outcome = upgrade(this.p, item, this.s.rng);

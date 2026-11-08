@@ -143,12 +143,50 @@ const seaLocks: LockDef[] = AREAS.filter((a) => a.access).flatMap((a): LockDef[]
   ];
 });
 
+/**
+ * Crafting. The first three professions are open to every hero (the core loop). The others are taught by a
+ * master who keeps a bench in a particular land: set foot there and be of an age to learn.
+ */
+const PROFESSION_BENCH: Record<string, { zone: string; level: number; place: string }> = {
+  tailoring: { zone: 'whisperwood', level: 5, place: 'Thornwick' },
+  jewelcrafting: { zone: 'sunken-caves', level: 8, place: 'the Sunken Caves' },
+  enchanting: { zone: 'ashen-desert', level: 10, place: 'Sandhaven' },
+};
+
+const craftLocks: LockDef[] = [
+  ...Object.entries(PROFESSION_BENCH).map(([id, b]): LockDef => ({
+    id: `craft:profession:${id}`,
+    requirement: { kind: 'any', conds: [{ kind: 'practises', profession: id }, { kind: 'all', conds: [{ kind: 'zoneVisited', zone: b.zone }, { kind: 'level', min: b.level }] }] },
+    visibility: 'teased',
+    hint: `A master of this craft keeps a bench in ${b.place}. Journey there once you are level ${b.level}.`,
+    unlockMessage: `A master will now teach you ${id}.`,
+    category: 'craft',
+  })),
+  {
+    id: 'craft:upgrade:6',
+    requirement: { kind: 'any', conds: [{ kind: 'gearUpgrade', min: 6 }, { kind: 'profession', level: 10 }] },
+    visibility: 'visible',
+    hint: 'Gear can be tempered past +5 only by a hand skilled in a craft. Raise a crafting profession to level 10.',
+    unlockMessage: 'You have the skill to temper gear past +5.',
+    category: 'craft',
+  },
+  {
+    id: 'craft:upgrade:11',
+    requirement: { kind: 'any', conds: [{ kind: 'gearUpgrade', min: 11 }, { kind: 'profession', level: 25 }] },
+    visibility: 'visible',
+    hint: 'Past +10 the work is perilous and needs a master hand. Raise a crafting profession to level 25.',
+    unlockMessage: 'You have the mastery to temper gear past +10.',
+    category: 'craft',
+  },
+];
+
 export const LOCKS: LockDef[] = [
   ...raceLocks,
   ...classLocks,
   ...zoneLocks,
   ...dungeonLocks,
   ...seaLocks,
+  ...craftLocks,
   {
     id: 'class:second',
     requirement: { kind: 'level', min: MULTICLASS.secondaryLevel },

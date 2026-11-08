@@ -116,6 +116,10 @@ export type Cond =
   | { kind: 'thirdSlot' }
   /** A secret class has been unlocked by its questline. */
   | { kind: 'classUnlocked'; classId: string }
+  /** The hero practises this crafting profession. */
+  | { kind: 'practises'; profession: string }
+  /** Some piece of gear the hero carries, wears or stashes is upgraded to at least +min. */
+  | { kind: 'gearUpgrade'; min: number }
   /** The hero's ship is at least this level (0 = no ship). */
   | { kind: 'shipLevel'; min: number }
   /** Voyages made by ship. */

@@ -77,14 +77,14 @@ export class WorkshopScreen implements Screen {
       const have = p.crafting.professions[id];
       const action = have
         ? this.btn(`Drop (${s.economy.forgetCost(id)}g)`, () => this.say(s.economy.forgetProfession(id)), false, 'tab')
-        : this.btn('Learn', () => this.say(s.economy.learnProfession(id)), Object.keys(p.crafting.professions).length >= MAX_PROFESSIONS, 'tab primary');
+        : this.btn('Learn', () => this.say(s.economy.learnProfession(id)), Object.keys(p.crafting.professions).length >= MAX_PROFESSIONS || !s.locks.isOpen(`craft:profession:${id}`) && content.locks.find(`craft:profession:${id}`) !== undefined, 'tab primary');
       return el(
         'div',
         { class: 'prof-row' },
         el('b', {}, prof.name),
-        el('span', { class: 'small' }, have ? `Level ${have.level} · ${have.xp}/${XP_PER_LEVEL * have.level} XP` : 'Not learned'),
+        el('span', { class: 'small' }, have ? `Level ${have.level} · ${have.xp}/${XP_PER_LEVEL * have.level} XP` : content.locks.find(`craft:profession:${id}`) && !s.locks.isOpen(`craft:profession:${id}`) ? '🔒 Locked' : 'Not learned'),
         action,
-        el('div', { class: 'dim small prof-desc' }, prof.description),
+        el('div', { class: 'dim small prof-desc' }, content.locks.find(`craft:profession:${id}`) && !s.locks.isOpen(`craft:profession:${id}`) && !have ? `🔒 ${content.locks.get(`craft:profession:${id}`).hint}` : prof.description),
       );
     });
     const gathering = content.professions.filter((x) => x.kind === 'gathering').map((g) => el('div', { class: 'small' }, `${g.name}: level ${gatheringLevel(p, g.id as GatheringSkill)}`));

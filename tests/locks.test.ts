@@ -169,3 +169,48 @@ describe('world locks: dungeons and the sea', () => {
     expect(isUnlocked(s.state, 'sea:cloud-orchard')).toBe(true);
   });
 });
+
+describe('crafting and gear locks', () => {
+  it('cooking, blacksmithing and alchemy have no bench lock; the rest are teased until you have been there', () => {
+    expect(content.locks.find('craft:profession:blacksmithing')).toBeUndefined();
+    const s = newSession();
+    expect(isUnlocked(s.state, 'craft:profession:enchanting')).toBe(false);
+    s.state.world.fog['ashen-desert'] = '0';
+    s.player.level = 9;
+    expect(isUnlocked(s.state, 'craft:profession:enchanting')).toBe(false);
+    s.player.level = 10;
+    expect(isUnlocked(s.state, 'craft:profession:enchanting')).toBe(true);
+  });
+
+  it('learning a shut profession is refused with the hint; one you already practise stays open', () => {
+    const s = newSession();
+    Object.defineProperty(s.world, 'inTown', { value: () => 'brightwater' });
+    const r = s.economy.learnProfession('jewelcrafting');
+    expect(r.ok).toBe(false);
+    s.player.crafting.professions.jewelcrafting = { level: 1, xp: 0 };
+    expect(isUnlocked(s.state, 'craft:profession:jewelcrafting')).toBe(true);
+  });
+
+  it('upgrading past +5 needs a craft at 10, past +10 needs 25; gear already past it grandfathers the hero', () => {
+    const s = newSession();
+    expect(isUnlocked(s.state, 'craft:upgrade:6')).toBe(false);
+    s.player.crafting.professions.blacksmithing = { level: 10, xp: 0 };
+    expect(isUnlocked(s.state, 'craft:upgrade:6')).toBe(true);
+    expect(isUnlocked(s.state, 'craft:upgrade:11')).toBe(false);
+    const sword = s.player.equipment.mainHand;
+    expect(sword).toBeDefined();
+    if (sword) sword.upgrade = 11;
+    expect(isUnlocked(s.state, 'craft:upgrade:11')).toBe(true);
+  });
+
+  it('the upgrade service refuses +6 without the skill and says why', () => {
+    const s = newSession();
+    const sword = s.player.equipment.mainHand;
+    if (!sword) throw new Error('no weapon');
+    sword.upgrade = 5;
+    s.state.gold = 1e6;
+    const r = s.economy.upgrade({ where: 'equipment', slot: 'mainHand' });
+    expect(r.ok).toBe(false);
+    expect(JSON.stringify(r)).toContain('level 10');
+  });
+});

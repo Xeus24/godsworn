@@ -27,6 +27,12 @@ export function leafText(cond: Cond, c: Content = content): string {
       return `See ${cond.min} ending${cond.min === 1 ? '' : 's'} of the story`;
     case 'dungeonCleared':
       return `Clear ${c.dungeons.get(cond.dungeon).name}`;
+    case 'practises':
+      return `Take up ${c.professions.get(cond.profession).name}`;
+    case 'gearUpgrade':
+      return `Raise a piece of gear to +${cond.min}`;
+    case 'profession':
+      return `Reach level ${cond.level} in a crafting profession`;
     case 'shipLevel':
       return `Own a ship of level ${cond.min}`;
     case 'voyages':

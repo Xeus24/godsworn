@@ -182,6 +182,12 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return progressOf(state, cond.stat, cond.key, c) >= cond.min;
     case 'atLevelCap':
       return p.level >= state.levelCap;
+    case 'practises':
+      return p.crafting.professions[cond.profession as keyof typeof p.crafting.professions] !== undefined;
+    case 'gearUpgrade': {
+      const held = [...Object.values(p.equipment), ...state.inventory.slots, ...state.stash.tabs.flatMap((t) => t.slots), ...state.overflow];
+      return held.some((i) => (i?.upgrade ?? 0) >= cond.min);
+    }
     case 'shipLevel':
       return (p.world.ship?.level ?? 0) >= cond.min;
     case 'voyages':
