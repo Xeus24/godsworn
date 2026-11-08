@@ -1,6 +1,7 @@
 import { content } from '../../data';
 import type { GameSession } from '../state/gameState';
 import { availablePoints } from '../skills/tree';
+import { firstSteps } from './firstSteps';
 
 /** One plain sentence on what a hero should probably do next. Order: spend points, hand in or continue quests, take a job, go where the level fits. */
 export function nextStep(s: GameSession): string {
@@ -8,6 +9,8 @@ export function nextStep(s: GameSession): string {
   if (p.attributePoints > 0) return `You have ${p.attributePoints} attribute point${p.attributePoints === 1 ? '' : 's'} to spend: open the Character screen (C).`;
   const skills = p.classes.reduce((n, c) => n + Math.max(0, availablePoints(p, c.classId)), 0);
   if (skills > 0) return `You have ${skills} skill point${skills === 1 ? '' : 's'} to spend: open Skills (K).`;
+  const fs = firstSteps(s.state);
+  if (fs.active && fs.next) return `First step: ${fs.next.label.toLowerCase()}. ${fs.next.hint}`;
   const active = s.quests.active();
   const town = s.world.inTown();
   for (const q of active) {

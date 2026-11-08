@@ -1377,6 +1377,14 @@ Six systems that make the world change while you are away, built as sub-phases A
 - Tests (1203) and the build pass; `npm run playtest -- ng rogue` and `... ranger` finish New Game+1 with no lost fights.
 - Cut / deferred: Rogue still dips to 63% against one level 30 ordinary encounter (same at 45% and 40% less speed, so it is that fight, not the penalty). Ranger's boss win rate stays 88% whatever the speed (86% at 55% less), so its strength is the pet and ranged damage, a kit-level fix. Anything speed-based (Dancer, Stillhand, Wayfinder) was not re-checked. Pure speed penalties read as a drawback on the class screen; a better-flavoured trade would cost more sim time.
 
+### Onboarding pass 2: First Steps and a Codex reveal
+- **First Steps** (`engine/guide/firstSteps.ts`): a seven-step checklist for a new hero: win a battle, reach level 2, spend attribute points, learn a skill, use a potion, finish a quest, defeat a dungeon boss. Every step is read from existing state (`stats`, the character, the quest log), so nothing is saved except a dismiss flag (`flags['first-steps-hidden']`). It shows as a fold on the town screen (open on a fresh hero's first visit, `0/7 done`), only for a first-playthrough hero under level 12 who has not hidden it or finished it; the next step is marked and carries its hint, and "Hide this list" dismisses it.
+- **Next?** now says "First step: ..." once points are spent, and falls back to the old logic after the list is done or hidden.
+- **Codex reveal**: Maps and Compendium and Cards open at level 5-6, Families, Legendary Codex and Backgrounds at 6-8, Realm, Heart and Completion at 10, the Ship at 12. The bestiary, lore, companions, achievements and statistics are always shown, a group with nothing open disappears, and a dim line says when more opens. A new hero's Codex shows four groups and a single tab; "Show every screen and town service" turns it all on.
+- A level 1 town is 1111px with the list open (976px without it); it folds like every secondary card.
+- Tests (1208) and the build pass; e2e 15 of 16 (the Spire / Divine Trial test also failed before this pass).
+- Cut / deferred: this is a checklist, not a scripted opening (no forced tutorial fight, no highlight arrows on buttons); Realm sections inside the Codex are not gated individually; the list covers the first hour only and has no rewards.
+
 ## Handoff (read this first in a new session)
 **Where it stands.** The base game (16 phases), the Greater Pantheon expansion (21 phases) and the Innovation Pack sections A to G are done. Section H ("The Oathbound Additions", items 61-167) is partly done: H-1 (61-65, 67), H-2a (68, 69, 75, 82, 84, 85, 86), H-2b (70, 71, 76-81 and part of 79) and H-3a (88, 89, 93, 94, 97, 98) H-3b (90, 91, 92, 95, 96) H-4a (99-112), H-4b (113-126), H-5 (127-141, 66) and H-6 (142-156) and H-7 (157-167) are built, which finishes Section H, tested and pushed. Everything left is in `docs/REMAINING_SPEC.md`.
 

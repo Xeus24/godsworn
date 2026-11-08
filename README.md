@@ -473,4 +473,4 @@ maxHp: { base: 50, perLevel: 5, coefficients: { vit: 12 } },
 Run `npm test` afterwards. The formula tests will flag the change so you can update them deliberately.
 
 ## Onboarding
-New heroes see a short top bar and a short town screen; screens and town services open by level (`src/engine/guide/reveal.ts`). The **Next?** button says what to do next. "Show every screen and town service from level 1" is in the menu settings.
+New heroes see a short top bar and a short town screen; screens and town services open by level (`src/engine/guide/reveal.ts`). The **First Steps** list on the town screen walks a new hero through the first hour, and the **Next?** button says what to do next. Codex pages open by level too. "Show every screen and town service from level 1" is in the menu settings.

@@ -13,6 +13,17 @@ export const REVEAL_LEVELS = {
   'tab:party': 3,
   'tab:general': 5,
   // Town cards (the inn, market, workshop, people, temple, stash and the quest board are always shown).
+  // Codex tabs (the bestiary, lore, companions, achievements and statistics are always shown).
+  'codex:maps': 6,
+  'codex:compendium': 5,
+  'codex:cards': 5,
+  'codex:families': 8,
+  'codex:items': 8,
+  'codex:backgrounds': 6,
+  'codex:realm': 10,
+  'codex:heart': 10,
+  'codex:completion': 10,
+  'codex:ship': 12,
   'town:guild': 3,
   'town:pastimes': 2,
   'town:renown': 4,
@@ -35,7 +46,7 @@ export function isRevealed(state: Pick<GameState, 'player' | 'levelCap' | 'ngPlu
 }
 
 /** The next level at which something new opens, with what it opens, for the one-line town hint. */
-export function nextReveal(state: Pick<GameState, 'player' | 'levelCap' | 'ngPlus' | 'quests' | 'legacy'>, prefix: 'tab:' | 'town:', showAll = false): { level: number; keys: RevealKey[] } | undefined {
+export function nextReveal(state: Pick<GameState, 'player' | 'levelCap' | 'ngPlus' | 'quests' | 'legacy'>, prefix: 'tab:' | 'town:' | 'codex:', showAll = false): { level: number; keys: RevealKey[] } | undefined {
   const closed = (Object.keys(REVEAL_LEVELS) as RevealKey[]).filter((k) => k.startsWith(prefix) && !isRevealed(state, k, showAll));
   if (closed.length === 0) return undefined;
   const level = Math.min(...closed.map((k) => REVEAL_LEVELS[k]));

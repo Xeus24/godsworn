@@ -1,5 +1,6 @@
 import { guildBody, talesBody } from './guildCards';
 import { isRevealed, nextReveal, type RevealKey } from '../../engine/guide/reveal';
+import { firstSteps, hideFirstSteps } from '../../engine/guide/firstSteps';
 import { settings } from '../settings';
 import { nextRenownTier, renownOf, renownTier, statueTowns } from '../../engine/world/renown';
 import { STATUE_POINTS } from '../../data/world/renown';
@@ -79,6 +80,7 @@ export class TownScreen implements Screen {
   private arranging = false;
   /** Folded cards the player has opened, kept across re-renders. */
   private open = new Set<string>();
+  private firstStepsSeen = false;
 
   constructor(
     private readonly session: GameSession,
@@ -242,6 +244,25 @@ export class TownScreen implements Screen {
         this.btn(`Rent a room (${s.world.innCost()}g)`, () => this.say(s.world.stayAtInn()), s.state.gold < s.world.innCost(), 'primary'),
       ),
     );
+    const fsv = firstSteps(s.state);
+    if (fsv.active) {
+      // Open on a fresh hero's first visit, folded afterwards like every other secondary card.
+      if (!this.firstStepsSeen) {
+        this.firstStepsSeen = true;
+        if (fsv.doneCount === 0) this.open.add('First Steps');
+      }
+      cards.push(
+        this.fold(
+          'First Steps',
+          `${fsv.doneCount}/${fsv.total} done`,
+          ...fsv.steps.map(({ step, done }) => el('div', { class: `room-row${done ? ' dim' : ''}`, title: step.hint }, el('b', {}, `${done ? '✓' : step === fsv.next ? '▶' : '·'} ${step.label}`), ...(step === fsv.next ? [el('div', { class: 'dim small' }, step.hint)] : []))),
+          this.btn('Hide this list', () => {
+            hideFirstSteps(s.state);
+            this.render();
+          }, false, 'tab'),
+        ),
+      );
+    }
     const renown = renownOf(p, this.townId);
     const tier = renownTier(renown);
     const next = nextRenownTier(renown);

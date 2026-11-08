@@ -1,4 +1,6 @@
 import { content } from '../../data';
+import { isRevealed, nextReveal, REVEAL_LEVELS, type RevealKey } from '../../engine/guide/reveal';
+import { settings } from '../settings';
 import { ACHIEVEMENT_MILESTONES } from '../../data/achievements';
 import { ACHIEVEMENT_CATEGORIES } from '../../data/achievements';
 import { BESTIARY } from '../../data/bestiary/bestiary';
@@ -152,8 +154,12 @@ export class CodexScreen implements Screen {
 
   private render = (): void => {
     if (!this.root) return;
-    const group = TAB_GROUPS.find((g) => g.tabs.includes(this.tab)) ?? TAB_GROUPS[0]!;
-    const groupBar = el('nav', { class: 'tabs codex-tabs codex-groups' }, ...TAB_GROUPS.map((g) => {
+    // Tabs a new hero does not need yet stay hidden until their level (the open tab always shows).
+    const showAll = settings().showEverything;
+    const shown = (t: Tab): boolean => t === this.tab || !(`codex:${t}` in REVEAL_LEVELS) || isRevealed(this.session.state, `codex:${t}` as RevealKey, showAll);
+    const groups = TAB_GROUPS.map((g) => ({ label: g.label, tabs: g.tabs.filter(shown) })).filter((g) => g.tabs.length > 0);
+    const group = groups.find((g) => g.tabs.includes(this.tab)) ?? groups[0]!;
+    const groupBar = el('nav', { class: 'tabs codex-tabs codex-groups' }, ...groups.map((g) => {
       const b = el('button', { class: `tab${g === group ? ' active' : ''}` }, g.label);
       b.addEventListener('click', () => {
         this.tab = g.tabs[0]!;
@@ -170,7 +176,8 @@ export class CodexScreen implements Screen {
       return b;
     }));
     const body = this.tab === 'heart' ? heartPanel(this.session, () => this.render(), this.heartOpen) : this.tab === 'compendium' ? compendiumPanel(() => this.render(), this.compendiumOpen) : this.tab === 'realm' ? realmPanel(this.session, () => this.render(), this.realmOpen) : this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
-    this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), groupBar, tabs, body));
+    const soon = nextReveal(this.session.state, 'codex:', showAll);
+    this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), groupBar, tabs, body, ...(soon ? [el('p', { class: 'dim small' }, `More Codex pages open at level ${soon.level}.`)] : [])));
   };
 
   // ---------------------------------------------------------------- overview tabs
