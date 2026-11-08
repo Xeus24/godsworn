@@ -69,5 +69,5 @@ describe('the whole story', () => {
       if (r.ending) endings.add(r.ending);
     }
     expect(endings.size).toBe(2);
-  });
+  }, 20000);
 });

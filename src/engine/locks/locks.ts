@@ -25,6 +25,10 @@ export function leafText(cond: Cond, c: Content = content): string {
       return `Begin New Game+ ${cond.min}`;
     case 'endingsSeen':
       return `See ${cond.min} ending${cond.min === 1 ? '' : 's'} of the story`;
+    case 'thirdSlot':
+      return "Finish High Lector Amara's errand";
+    case 'classUnlocked':
+      return `Unlock ${c.classes.get(cond.classId).name} through its secret questline`;
     case 'zoneVisited':
       return `Set foot in ${c.zones.get(cond.zone).name}`;
     case 'zones':
@@ -117,4 +121,32 @@ export function evaluateLock(state: GameState, id: string, c: Content = content)
 /** Shut locks the player should see, honouring visibility (hidden ones stay out of sight). */
 export function visibleLocks(state: GameState, c: Content = content): LockDef[] {
   return c.locks.all().filter((l) => !isUnlocked(state, l.id, c) && l.visibility !== 'hidden');
+}
+
+/** What is known before any hero exists (the browser profile): used by character creation. */
+export interface ProfileFacts {
+  highestNgPlus: number;
+  cleared: boolean;
+}
+
+/** Evaluates the subset of conditions that make sense with no hero (New Game+ reached, story finished). */
+export function profileUnlocked(cond: Cond, f: ProfileFacts): boolean {
+  switch (cond.kind) {
+    case 'ngPlus':
+      return f.highestNgPlus >= cond.min;
+    case 'endingsSeen':
+      return f.cleared || f.highestNgPlus > 0;
+    case 'all':
+      return cond.conds.every((x) => profileUnlocked(x, f));
+    case 'any':
+      return cond.conds.some((x) => profileUnlocked(x, f));
+    case 'not':
+      return !profileUnlocked(cond.cond, f);
+    default:
+      return false;
+  }
+}
+
+export function profileLockOpen(id: string, f: ProfileFacts, c: Content = content): boolean {
+  return profileUnlocked(c.locks.get(id).requirement, f);
 }

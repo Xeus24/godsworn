@@ -215,7 +215,7 @@ export class CreationScreen implements Screen {
         'Race',
         content.races.all().filter((r) => !r.unlock || endgameSeen() || ('clear' in r.unlock && storyCleared())),
         this.choice.raceId,
-        (r) => [r.name, raceUnlocked(r, highestNgPlus(), storyCleared()) ? r.passive.name : `Locked: ${raceUnlockText(r)}`],
+        (r) => (raceUnlocked(r, highestNgPlus(), storyCleared()) ? [r.name, r.passive.name] : [r.name, 'Locked', raceUnlockText(r)]),
         (id) => (this.choice.raceId = id),
         (r) => !raceUnlocked(r, highestNgPlus(), storyCleared()),
         'race',
@@ -224,7 +224,7 @@ export class CreationScreen implements Screen {
         'Class',
         content.classes.all().filter((k) => !k.hidden),
         this.choice.classId,
-        (c) => [c.name, (c.ngPlus ?? 0) > highestNgPlus() ? `Locked: reach New Game+${c.ngPlus}` : `${c.role} · ${'★'.repeat(c.difficulty)}${'☆'.repeat(3 - c.difficulty)}`],
+        (c) => ((c.ngPlus ?? 0) > highestNgPlus() ? [c.name, `Locked: New Game+${c.ngPlus}`, content.locks.get(`class:ngplus:${c.id}`).hint] : [c.name, `${c.role} · ${'★'.repeat(c.difficulty)}${'☆'.repeat(3 - c.difficulty)}`]),
         (id) => (this.choice.classId = id),
         (c) => (c.ngPlus ?? 0) > highestNgPlus(),
         'class',
@@ -256,13 +256,13 @@ export class CreationScreen implements Screen {
     title: string,
     items: T[],
     selected: string,
-    label: (item: T) => [string, string],
+    label: (item: T) => [string, string, string?],
     select: (id: string) => void,
     locked?: (item: T) => boolean,
     icon?: ChoiceKind,
   ): HTMLElement {
     const cards = items.map((item, i) => {
-      const [name, sub] = label(item);
+      const [name, sub, hint] = label(item);
       const card = el(
         'button',
         { class: `choice-card${item.id === selected ? ' selected' : ''}`, 'aria-pressed': String(item.id === selected) },
@@ -272,6 +272,7 @@ export class CreationScreen implements Screen {
       if (locked?.(item)) {
         card.disabled = true;
         card.classList.add('locked');
+        if (hint) card.title = hint;
       }
       card.addEventListener('click', () => {
         select(item.id);

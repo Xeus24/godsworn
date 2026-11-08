@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
 import { validateContent } from '../src/data';
 import { evaluateLock, isUnlocked, lockControl, visibleLocks } from '../src/engine/locks/locks';
+import { classSlotCount } from '../src/engine/character/multiclass';
+import { raceUnlocked } from '../src/engine/character/races';
 import { migrate } from '../src/engine/state/save';
 import { GameSession } from '../src/engine/state/gameState';
 import { makeHero } from './helpers';
@@ -86,5 +88,51 @@ describe('locks', () => {
     expect(loaded.state.unlocks.grandfathered).toBe(true);
     expect(loaded.state.unlocks.opened['reveal:codex:ship']).toBeDefined();
     expect(toasts).toHaveLength(0);
+  });
+
+  it('class slots: the second opens at 15, the third by the errand at 45 or by NG+2 at 40', () => {
+    const s = newSession();
+    expect(isUnlocked(s.state, 'class:second')).toBe(false);
+    s.player.level = 15;
+    expect(isUnlocked(s.state, 'class:second')).toBe(true);
+    s.player.level = 45;
+    expect(isUnlocked(s.state, 'class:third')).toBe(false);
+    expect(evaluateLock(s.state, 'class:third').missing.join(' ')).toContain('Amara');
+    s.player.thirdSlot = true;
+    expect(isUnlocked(s.state, 'class:third')).toBe(true);
+  });
+
+  it('third slot by New Game+2 at level 40, and the lock agrees with classSlotCount', () => {
+    const s = newSession();
+    s.player.level = 40;
+    s.state.ngPlus = 2;
+    expect(isUnlocked(s.state, 'class:third')).toBe(true);
+    expect(classSlotCount(s.player, s.state.ngPlus)).toBe(3);
+  });
+
+  it('secret classes are hidden locks that open with their questline', () => {
+    const s = newSession();
+    const secret = content.classes.all().find((k) => k.hidden);
+    expect(secret).toBeDefined();
+    const id = `class:secret:${secret?.id}`;
+    expect(content.locks.get(id).visibility).toBe('hidden');
+    expect(visibleLocks(s.state).some((l) => l.id === id)).toBe(false);
+    s.player.unlockedClasses.push(secret?.id ?? '');
+    expect(isUnlocked(s.state, id)).toBe(true);
+  });
+
+  it('race locks follow the profile: New Game+ tiers and finishing the story', () => {
+    const gnome = content.races.all().find((r) => r.unlock && 'ngPlus' in r.unlock);
+    const clear = content.races.all().find((r) => r.unlock && 'clear' in r.unlock);
+    expect(gnome && raceUnlocked(gnome, 0)).toBe(false);
+    expect(gnome && raceUnlocked(gnome, 10)).toBe(true);
+    expect(clear && raceUnlocked(clear, 0, false)).toBe(false);
+    expect(clear && raceUnlocked(clear, 0, true)).toBe(true);
+    expect(clear && raceUnlocked(clear, 1, false)).toBe(true);
+  });
+
+  it('every NG+ class and every unlock-gated race has a lock with a hint', () => {
+    for (const k of content.classes.all()) if (k.ngPlus) expect(content.locks.get(`class:ngplus:${k.id}`).hint.length).toBeGreaterThan(10);
+    for (const r of content.races.all()) if (r.unlock) expect(content.locks.get(`race:${r.id}`).hint.length).toBeGreaterThan(10);
   });
 });

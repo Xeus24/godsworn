@@ -27,8 +27,7 @@ export function canAddClass(char: Character, classId: string, ngPlus: number, c:
   const need = c.classes.get(classId).ngPlus;
   if (need && ngPlus < need) return fail(`This class opens in New Game+${need}.`);
   if (char.classes.length >= classSlotCount(char, ngPlus)) {
-    if (char.classes.length === 1) return fail(`A second class opens at level ${MULTICLASS.secondaryLevel}.`);
-    return fail(`A third class opens at level ${MULTICLASS.thirdSlotLevel} after High Lector Amara’s errand, or at level ${MULTICLASS.tertiaryLevel} in NG+${MULTICLASS.tertiaryNgPlus}.`);
+    return fail(c.locks.get(char.classes.length === 1 ? 'class:second' : 'class:third').hint);
   }
   if (c.classes.get(classId).hidden && !char.unlockedClasses.includes(classId)) return fail('A secret class: its questline is yet to be found.');
   const trial = trialFor(classId, c);

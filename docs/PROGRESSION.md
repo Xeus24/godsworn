@@ -96,3 +96,23 @@ Baseline numbers: `docs/baseline-sim.md`.
 - **Tests:** `tests/locks.test.ts` (open, once-only toast, sticky, any/endgame, developer switch, unlock all/reset, visibility, pre-lock save migration).
 
 Not done yet (assigned to later phases): the Unlocks journal tab and "What's next?" panel (Phase 4), first-use tutorial cards (Phase 4), the remaining leaf kinds from the spec (`bossDefeated`, `skillRank`, `season`, `weather`, `storyChapter`, `legacyFlag`, `professionLevel`), and moving the other ~200 scattered `level >= N` checks into lock data (Phase 2, one system group per commit).
+
+## 7. Phase 2a: classes and character creation (built)
+
+New locks (all in `src/data/locks.ts`, numbers come from `MULTICLASS`):
+
+| Lock | Requirement | Visibility |
+|---|---|---|
+| `class:second` | level 15 (then a trial at the Proving Grounds) | visible |
+| `class:third` | level 45 + Amara's errand, **or** level 40 in New Game+2 | visible |
+| `class:hybrids` | level 25 (both parent classes at 25, then the pair trial) | visible |
+| `class:ngplus:<id>` (Godslayer, Voidwalker, Celestial) | New Game+ tier of the class | teased |
+| `class:secret:<id>` (6 hidden classes) | the secret questline sets `unlockedClasses` | hidden |
+| `race:<id>` (Gnome, Fae, Giant, Dragon, Primordial) | New Game+ tier, or finish the story once | teased |
+
+Decisions:
+- **Third slot:** the README ("level 45") and the notes ("level 40 from NG+2") described the same code from two sides: both paths exist. Kept both; `class:third` states them together. No numbers changed.
+- **Creation is lock-aware without a hero.** Races and classes at creation read the browser profile (highest New Game+, story cleared), so locks gained `profileLockOpen` / `profileUnlocked`, a small evaluator for the conditions that make sense with no hero (`ngPlus`, `endingsSeen`, `all`/`any`/`not`). Locked cards stay visible (teased), say "Locked", and carry the in-world hint as a tooltip.
+- Multiclass failure messages and the Proving Grounds intro now read the lock hint and progress ("Level 7/15"); the old ad hoc level-15 toast is replaced by the lock's unlock message.
+- New condition kinds: `thirdSlot`, `classUnlocked`.
+- Not changed: base classes stay open at creation (core loop). Backgrounds, birth signs and difficulty gating by legacy flags are left for a later group.

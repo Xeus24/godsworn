@@ -112,6 +112,10 @@ export type Cond =
   | { kind: 'progress'; stat: ProgressStat; min: number; key?: string }
   /** The hero stands at the current level cap (60, or 90 in New Game+). */
   | { kind: 'atLevelCap' }
+  /** The late-story errand that opens the third class slot is done. */
+  | { kind: 'thirdSlot' }
+  /** A secret class has been unlocked by its questline. */
+  | { kind: 'classUnlocked'; classId: string }
   /** Set foot in this zone. */
   | { kind: 'zoneVisited'; zone: string }
   | { kind: 'all'; conds: Cond[] }

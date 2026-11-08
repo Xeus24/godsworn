@@ -29,7 +29,7 @@ import { GuildActions } from './guildActions';
 import { PromotionActions } from './promotionActions';
 import type { GauntletState } from '../endgame/types';
 import { createMinigameState, type MinigameState } from '../minigames/state';
-import { MULTICLASS, PROGRESSION } from '../../data/progression';
+import { PROGRESSION } from '../../data/progression';
 import { allocateAttribute, respecAttributes, respecCost, type AttributeResult } from '../character/attributes';
 import { spendParagonPoint } from '../character/paragon';
 import { changeDifficulty, type DifficultyChange } from '../character/difficultyChange';
@@ -429,9 +429,6 @@ export class GameSession {
       if (cl.level === SPEC_LEVEL) {
         this.bus.emit('toast', { kind: 'level', text: `${content.classes.get(cl.classId).name} ${SPEC_LEVEL}: choose a specialization in the Skills screen!` });
       }
-    }
-    if (result.levels.includes(MULTICLASS.secondaryLevel) && p.classes.length === 1) {
-      this.bus.emit('toast', { kind: 'level', text: `Level ${MULTICLASS.secondaryLevel}: you may take a second class! Win a trial at the Proving Grounds.` });
     }
     if (result.levels.length > 0) this.devotion.evolveWeapons();
     const slots = this.general.growSlots();

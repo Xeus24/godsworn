@@ -182,6 +182,10 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return progressOf(state, cond.stat, cond.key, c) >= cond.min;
     case 'atLevelCap':
       return p.level >= state.levelCap;
+    case 'thirdSlot':
+      return Boolean(p.thirdSlot);
+    case 'classUnlocked':
+      return p.unlockedClasses.includes(cond.classId) || p.classes.some((x) => x.classId === cond.classId);
     case 'zoneVisited':
       return state.world.fog[cond.zone] !== undefined;
     case 'all':

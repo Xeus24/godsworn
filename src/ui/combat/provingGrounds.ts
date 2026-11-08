@@ -207,7 +207,7 @@ export class ProvingGroundsScreen implements Screen {
     const slots = classSlotCount(p, s.state.ngPlus);
     const intro = p.classes.length >= slots
       ? p.classes.length === 1
-        ? `At level ${MULTICLASS.secondaryLevel} you may take a second class. Beat its trainer in a trial first.`
+        ? [content.locks.get('class:second').hint, ...s.locks.status('class:second').progress.map((q) => `${q.label}: ${q.have}/${q.need}`)].join(' ')
         : 'Your class slots are full.'
       : 'Beat a trainer in their trial, then take up their class as your secondary class.';
     return el(

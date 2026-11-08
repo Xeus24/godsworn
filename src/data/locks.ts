@@ -1,4 +1,7 @@
 import type { LockDef } from '../engine/locks/types';
+import { CLASSES } from './classes';
+import { MULTICLASS } from './progression';
+import { RACES } from './races';
 import type { Cond } from '../engine/quests/types';
 
 /**
@@ -50,7 +53,62 @@ const revealLocks: LockDef[] = (Object.entries(REVEAL_LEVELS) as [RevealKey, rea
   category: 'reveal',
 }));
 
+const raceLocks: LockDef[] = RACES.filter((r) => r.unlock).map((r) => {
+  const u = r.unlock as { ngPlus: number } | { clear: true };
+  const clear = 'clear' in u;
+  return {
+    id: `race:${r.id}`,
+    requirement: clear ? { kind: 'any', conds: [{ kind: 'endingsSeen', min: 1 }, { kind: 'ngPlus', min: 1 }] } : { kind: 'ngPlus', min: u.ngPlus },
+    visibility: 'teased',
+    hint: clear ? 'Finish the story once with any hero, and this people will answer your next hero.' : `Walk the Road again, to New Game+${u.ngPlus}, and this people will answer your next hero.`,
+    unlockMessage: `A new people may take up the Road: ${r.name}.`,
+    category: 'class',
+  } satisfies LockDef;
+});
+
+const classLocks: LockDef[] = CLASSES.flatMap((k): LockDef[] => {
+  if (k.hidden) {
+    return [{ id: `class:secret:${k.id}`, requirement: { kind: 'classUnlocked', classId: k.id }, visibility: 'hidden', hint: 'A secret calling. Follow rumours and strange omens.', unlockMessage: `A secret calling answers you: ${k.name}.`, category: 'class' }];
+  }
+  if (k.ngPlus) {
+    return [{ id: `class:ngplus:${k.id}`, requirement: { kind: 'ngPlus', min: k.ngPlus }, visibility: 'teased', hint: `Only heroes who have walked the Road to New Game+${k.ngPlus} may take this calling.`, unlockMessage: `A new calling is open to new heroes: ${k.name}.`, category: 'class' }];
+  }
+  return [];
+});
+
 export const LOCKS: LockDef[] = [
+  ...raceLocks,
+  ...classLocks,
+  {
+    id: 'class:second',
+    requirement: { kind: 'level', min: MULTICLASS.secondaryLevel },
+    visibility: 'visible',
+    hint: `At level ${MULTICLASS.secondaryLevel} you may take a second class. Beat its trainer in a trial at the Proving Grounds first.`,
+    unlockMessage: `Level ${MULTICLASS.secondaryLevel}: you may take a second class! Win a trial at the Proving Grounds.`,
+    category: 'class',
+  },
+  {
+    id: 'class:third',
+    requirement: {
+      kind: 'any',
+      conds: [
+        { kind: 'all', conds: [{ kind: 'level', min: MULTICLASS.thirdSlotLevel }, { kind: 'thirdSlot' }] },
+        { kind: 'all', conds: [{ kind: 'level', min: MULTICLASS.tertiaryLevel }, { kind: 'ngPlus', min: MULTICLASS.tertiaryNgPlus }] },
+      ],
+    },
+    visibility: 'visible',
+    hint: `A third class opens at level ${MULTICLASS.thirdSlotLevel} after High Lector Amara's errand, or at level ${MULTICLASS.tertiaryLevel} in New Game+${MULTICLASS.tertiaryNgPlus}.`,
+    unlockMessage: 'A third class slot is open to you.',
+    category: 'class',
+  },
+  {
+    id: 'class:hybrids',
+    requirement: { kind: 'level', min: MULTICLASS.hybridLevel },
+    visibility: 'visible',
+    hint: `Take two classes to level ${MULTICLASS.hybridLevel} each, then face both mentors in the pair trial to unlock a hybrid prestige class.`,
+    unlockMessage: 'Hybrid prestige classes are now within reach: raise two classes and face their mentors.',
+    category: 'class',
+  },
   {
     id: 'endgame',
     requirement: ENDGAME_COND,
@@ -61,3 +119,6 @@ export const LOCKS: LockDef[] = [
   },
   ...revealLocks,
 ];
+
+/** Lock id for a race / New Game+ class / secret class, if it has one. */
+export const raceLockId = (raceId: string): string => `race:${raceId}`;
