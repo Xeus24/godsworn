@@ -5,6 +5,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { esc } from './html';
+import { icon } from './icons';
 import { NAV_GROUPS, type PageSpec, type RenderCtx, type WikiSection } from './types';
 
 const VERSION = (JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')) as { version: string }).version;
@@ -26,7 +27,7 @@ export function renderLayout({ page, body, ctx, sections, section, catLinks }: L
       .flatMap((s) => s.nav ?? [{ label: s.title, ...s.landing }])
       .map((n) => {
         const current = page.ns === n.ns ? ' class="current"' : '';
-        return `<li${current}>${ctx.link(n.ns, n.id, n.label)}</li>`;
+        return `<li${current}>${icon(ctx, n.ns)}${ctx.link(n.ns, n.id, n.label)}</li>`;
       })
       .join('');
     return `<div class="nav-group"><div class="nav-head">${esc(g)}</div><ul>${links}</ul></div>`;
@@ -53,6 +54,9 @@ export function renderLayout({ page, body, ctx, sections, section, catLinks }: L
 <title>${esc(page.title)} | Godsworn Wiki</title>
 ${page.summary ? `<meta name="description" content="${esc(page.summary)}">` : ''}
 <link rel="icon" href="${ctx.href('favicon.svg')}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
 <link rel="stylesheet" href="${ctx.href('assets/wiki.css')}">
 <script>try{var t=localStorage.getItem('wiki-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
@@ -64,10 +68,10 @@ ${page.summary ? `<meta name="description" content="${esc(page.summary)}">` : ''
   <button type="button" class="theme-toggle" aria-label="Toggle theme">◐</button>
 </header>
 <div class="shell">
-<nav class="sidebar">${nav}<div class="nav-group"><div class="nav-head">Tools</div><ul><li>${ctx.link('home', 'all-pages', 'All pages')}</li><li><a href="#" class="random-page">Random page</a></li></ul></div></nav>
+<nav class="sidebar">${nav}<div class="nav-group"><div class="nav-head">Tools</div><ul><li>${ctx.link('home', 'all-pages', 'All pages')}</li><li><a href="#" class="random-page">Random page</a></li><li>${ctx.link('home', 'credits', 'Credits')}</li></ul></div></nav>
 <main class="content${page.spoiler ? ' is-spoiler' : ''}">
 <div class="crumbs">${crumbs.join(' › ')}</div>
-<h1>${esc(page.title)}</h1>
+<h1>${icon(ctx, page.ns, 'ico-title')}${esc(page.title)}</h1>
 ${spoiler}
 <div class="page-body">${body}</div>
 ${cats}

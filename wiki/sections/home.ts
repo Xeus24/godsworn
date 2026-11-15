@@ -5,6 +5,7 @@
  */
 import { content } from '../../src/data';
 import { esc, h2 } from '../core/html';
+import { ICON_AUTHORS, icon, iconByName } from '../core/icons';
 import { pathOf } from '../core/site';
 import { NAV_GROUPS, type PageSpec, type WikiSection } from '../core/types';
 
@@ -45,11 +46,24 @@ export function homeSection(others: readonly WikiSection[]): WikiSection {
                   const title = ctx.titleOf(n.ns, n.id) ?? n.label;
                   const count = ctx.pagesIn(n.ns).length - 1;
                   const blurb = ctx.pagesIn(n.ns).find((p) => p.id === n.id)?.summary ?? s.blurb;
-                  return `<a class="tile" href="${ctx.href(pathOf(n.ns, n.id))}">${count > 0 ? `<span class="count">${esc(count)}</span>` : ''}<b>${esc(title)}</b><span>${esc(blurb)}</span></a>`;
+                  return `<a class="tile" href="${ctx.href(pathOf(n.ns, n.id))}">${icon(ctx, n.ns, 'ico-tile')}${count > 0 ? `<span class="count">${esc(count)}</span>` : ''}<b>${esc(title)}</b><span>${esc(blurb)}</span></a>`;
                 })
                 .join('');
               return `${h2(g)}<div class="tiles">${tiles}</div>`;
             }).join(''),
+        },
+        {
+          ns: 'home',
+          id: 'credits',
+          title: 'Credits',
+          summary: 'Fonts and icons used by the wiki, and their licenses.',
+          render: () =>
+            `<p>The wiki's text and data come from Godsworn itself. It uses these free assets:</p>` +
+            `<h2 id="fonts">Fonts</h2><ul><li><a href="https://fonts.google.com/specimen/Cinzel">Cinzel</a> by Natanael Gama, SIL Open Font License 1.1</li><li><a href="https://fonts.google.com/specimen/EB+Garamond">EB Garamond</a> by Georg Duffner and Octavio Pardo, SIL Open Font License 1.1</li></ul>` +
+            `<h2 id="icons">Icons</h2><p>From <a href="https://game-icons.net">game-icons.net</a>, licensed <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. The background square is removed so they can be tinted; otherwise unchanged.</p>` +
+            `<ul class="columns">${Object.entries(ICON_AUTHORS)
+              .map(([name, author]) => `<li>${iconByName(name)} ${esc(name)} by ${esc(author)}</li>`)
+              .join('')}</ul>`,
         },
         {
           ns: 'home',

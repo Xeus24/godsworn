@@ -3,7 +3,7 @@
  * `npm run wiki:serve`). Fails on broken links, duplicate pages or render
  * errors so the wiki never ships dead links.
  */
-import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildSite } from './core/site';
@@ -25,8 +25,7 @@ for (const p of result.pages) {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, p.html);
 }
-mkdirSync(join(out, 'assets'), { recursive: true });
-for (const f of ['wiki.css', 'wiki.js']) copyFileSync(join(here, 'assets', f), join(out, 'assets', f));
+cpSync(join(here, 'assets'), join(out, 'assets'), { recursive: true });
 copyFileSync(join(here, '..', 'public', 'favicon.svg'), join(out, 'favicon.svg'));
 writeFileSync(join(out, 'search-index.json'), JSON.stringify(result.search));
 

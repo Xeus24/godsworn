@@ -184,3 +184,154 @@ blockquote { margin: 8px 0; padding: 4px 14px; border-left: 3px solid var(--line
   .infobox { float: none; width: 100%; margin: 0 0 16px; }
   .brand span { display: none; }
 }
+
+/* ───────────── Storybook skin: parchment, ink, gilt ─────────────
+   Fonts: Cinzel + EB Garamond (OFL). Icons: game-icons.net (CC BY 3.0).
+   The paper grain is an inline SVG noise filter, no image files. */
+:root {
+  --bg: #e9dfc9;
+  --panel: #f7f0e1;
+  --panel-2: #efe4cd;
+  --text: #2b2118;
+  --muted: #6e5d49;
+  --line: #d3c2a2;
+  --link: #8c3b12;
+  --link-hover: #b8541c;
+  --accent: #a87a2a;
+  --gilt: #b8913f;
+  --ink: #3b2a1a;
+  --top: #2a1d13;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --serif: 'EB Garamond', Garamond, 'Iowan Old Style', Georgia, serif;
+  --display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #17110c;
+    --panel: #221912;
+    --panel-2: #2c2118;
+    --text: #eadcc3;
+    --muted: #a8977d;
+    --line: #47382a;
+    --link: #e8b061;
+    --link-hover: #ffd28f;
+    --accent: #c99a45;
+    --gilt: #c99a45;
+    --ink: #eadcc3;
+    --top: #0f0a07;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #17110c;
+  --panel: #221912;
+  --panel-2: #2c2118;
+  --text: #eadcc3;
+  --muted: #a8977d;
+  --line: #47382a;
+  --link: #e8b061;
+  --link-hover: #ffd28f;
+  --accent: #c99a45;
+  --gilt: #c99a45;
+  --ink: #eadcc3;
+  --top: #0f0a07;
+}
+
+body {
+  font-family: var(--serif);
+  font-size: 17.5px;
+  line-height: 1.55;
+  background-color: var(--bg);
+  background-image: var(--grain), radial-gradient(ellipse at top, rgba(255, 240, 200, 0.35), transparent 60%);
+  background-attachment: fixed;
+}
+a { text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+/* Top bar: dark leather with a gilt edge */
+.topbar {
+  background: var(--grain), linear-gradient(180deg, #3a2819, var(--top));
+  border-bottom: 2px solid var(--gilt);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+.brand { font-family: var(--display); font-weight: 700; letter-spacing: 0.06em; color: #f0d8a8; }
+.search input {
+  font-family: var(--serif); font-size: 16px; border-radius: 999px; padding: 6px 16px;
+  background: rgba(255, 240, 210, 0.08); border: 1px solid rgba(201, 154, 69, 0.45);
+}
+.search input:focus { outline: none; border-color: var(--gilt); box-shadow: 0 0 0 3px rgba(201, 154, 69, 0.25); }
+#search-results { font-family: var(--serif); background: var(--panel); background-image: var(--grain); }
+
+/* Sidebar */
+.nav-head { font-family: var(--display); font-size: 12px; letter-spacing: 0.12em; color: var(--accent); border-bottom: 1px solid var(--line); padding-bottom: 2px; margin-bottom: 6px; }
+.sidebar { font-size: 15.5px; }
+.sidebar li { display: flex; align-items: center; gap: 2px; }
+.sidebar li .ico { margin-left: 4px; color: var(--muted); }
+.sidebar li a { flex: 1; padding: 1px 6px; }
+.sidebar li.current { background: color-mix(in srgb, var(--accent) 16%, transparent); border-radius: 4px; }
+.sidebar li.current a { background: none; }
+.sidebar li.current .ico { color: var(--accent); }
+
+/* The page itself: a sheet of parchment */
+.content {
+  background-color: var(--panel);
+  background-image: var(--grain);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 6px 24px rgba(60, 40, 20, 0.18);
+  outline: 1px solid color-mix(in srgb, var(--gilt) 40%, transparent);
+  outline-offset: -7px;
+  padding: 26px 34px 30px;
+}
+h1, h2 { font-family: var(--display); color: var(--ink); letter-spacing: 0.02em; }
+h1 { font-weight: 700; font-size: 30px; display: flex; align-items: center; gap: 10px; border-bottom: 0; padding-bottom: 10px;
+  background: linear-gradient(90deg, var(--gilt), color-mix(in srgb, var(--gilt) 0%, transparent)) bottom left / 100% 1px no-repeat; }
+h2 { font-weight: 500; font-size: 21px; border-bottom: 0; padding-bottom: 4px;
+  background: linear-gradient(90deg, var(--line), transparent) bottom left / 100% 1px no-repeat; }
+h2::before { content: '❧ '; color: var(--accent); font-size: 0.85em; }
+h3 { font-family: var(--serif); font-weight: 600; font-size: 19px; font-style: italic; }
+.crumbs { font-style: italic; }
+.page-body > .infobox + p::first-letter { font-family: var(--display); font-size: 2.6em; float: left; line-height: 0.85; margin: 4px 6px 0 0; color: var(--accent); }
+
+/* Icons (game-icons.net, drawn as masks so they take the text color) */
+.ico { display: inline-block; width: 1.05em; height: 1.05em; flex: none; vertical-align: -0.15em; background: currentColor;
+  -webkit-mask: var(--ico) center / contain no-repeat; mask: var(--ico) center / contain no-repeat; }
+.ico-title { width: 34px; height: 34px; color: var(--accent); }
+.ico-tile { float: left; width: 30px; height: 30px; margin: 2px 10px 0 0; color: var(--accent); }
+
+/* Infobox: a framed card with gilt corners */
+.infobox {
+  background-color: var(--panel-2); background-image: var(--grain);
+  border: 1px solid var(--gilt); border-top: 1px solid var(--gilt); border-radius: 2px;
+  box-shadow: 0 0 0 3px var(--panel), 0 0 0 4px color-mix(in srgb, var(--gilt) 55%, transparent), 0 4px 14px rgba(60, 40, 20, 0.18);
+  font-size: 15.5px; margin: 4px 0 18px 24px;
+}
+.infobox-title { font-family: var(--display); font-weight: 700; letter-spacing: 0.04em; color: var(--ink);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 30%, transparent), color-mix(in srgb, var(--accent) 12%, transparent));
+  border-bottom: 1px solid var(--gilt); }
+.infobox th { font-variant: small-caps; letter-spacing: 0.03em; }
+
+/* Tables: ledger style */
+.wikitable { font-size: 15.5px; background: color-mix(in srgb, var(--panel) 70%, transparent); }
+.wikitable th { font-family: var(--display); font-weight: 500; font-size: 13px; letter-spacing: 0.05em; background: var(--panel-2); color: var(--ink); }
+.wikitable th, .wikitable td { border-color: var(--line); }
+.wikitable tbody tr:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.table-filter, .spoiler-banner button { font-family: var(--serif); font-size: 15px; border-radius: 999px; padding: 5px 14px; background: var(--panel); }
+
+/* Tiles: little cards */
+.tile { background-color: var(--panel-2); background-image: var(--grain); border-radius: 4px; transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s; }
+.tile:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(60, 40, 20, 0.18); border-color: var(--gilt); }
+.tile b { font-family: var(--display); font-weight: 500; letter-spacing: 0.03em; }
+.tile span:not(.count):not(.ico) { display: block; overflow: hidden; }
+.hero { background: var(--grain), linear-gradient(120deg, #2e1f12, #5c3d1c 60%, #7a5226); border: 1px solid var(--gilt); border-radius: 4px;
+  box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.15), inset 0 0 0 5px rgba(201, 154, 69, 0.4); padding: 22px 26px; }
+.hero-title { font-family: var(--display); font-weight: 700; letter-spacing: 0.04em; }
+
+/* Navbox, callouts, quotes */
+.navbox caption { font-family: var(--display); font-weight: 500; letter-spacing: 0.05em; }
+.callout { background-color: var(--panel-2); background-image: var(--grain); font-size: 16.5px; }
+blockquote { font-size: 18px; border-left-color: var(--gilt); }
+.tag { font-family: var(--serif); font-size: 13.5px; font-weight: 600; }
+.toc { background-color: var(--panel-2); background-image: var(--grain); font-size: 15.5px; }
+.toc-title { font-family: var(--display); font-weight: 500; letter-spacing: 0.06em; }
+details > summary { cursor: pointer; padding: 3px 0; }
+details > summary:hover { color: var(--link-hover); }
+::selection { background: color-mix(in srgb, var(--gilt) 40%, transparent); }

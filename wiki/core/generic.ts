@@ -6,6 +6,7 @@
  * keys (`ns:id`) stay the same, so links from other sections keep working.
  */
 import { descOf, esc, h2, infobox, nameOf, prose, table, type InfoboxRow } from './html';
+import { icon } from './icons';
 import { pathOf } from './site';
 import type { NavGroup, PageSpec, RenderCtx, WikiSection } from './types';
 
@@ -115,7 +116,7 @@ export function simpleSection(spec: SimpleSectionSpec): WikiSection {
         render: (ctx) =>
           (spec.intro ?? `<p>${esc(spec.blurb)}</p>`) +
           `<div class="tiles">${spec.tables
-            .map((t) => `<a class="tile" href="${ctx.href(pathOf(t.ns, 'index'))}"><span class="count">${t.entries.length}</span><b>${esc(t.label)}</b><span>${esc(t.blurb ?? '')}</span></a>`)
+            .map((t) => `<a class="tile" href="${ctx.href(pathOf(t.ns, 'index'))}">${icon(ctx, t.ns, 'ico-tile')}<span class="count">${t.entries.length}</span><b>${esc(t.label)}</b><span>${esc(t.blurb ?? '')}</span></a>`)
             .join('')}</div>` +
           (spec.extra?.length ? `${h2('Articles')}<ul>${spec.extra.map((p) => `<li>${ctx.link(p.ns, p.id)}</li>`).join('')}</ul>` : ''),
       };
