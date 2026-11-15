@@ -6,6 +6,7 @@ import { ISLAND_REVEAL } from './world/ship';
 import { DUNGEONS } from './world/places';
 import { AREAS } from './world/areas';
 import type { Cond } from '../engine/quests/types';
+import { CARAVAN, WEATHER_MAGIC } from './road';
 
 /**
  * Every gate in one place. A lock is a quest condition plus how it shows while shut
@@ -180,7 +181,27 @@ const craftLocks: LockDef[] = [
   },
 ];
 
+/** A feature that opens at a hero level (optionally together with other ways in). */
+function levelGate(id: string, min: number, category: LockDef['category'], hint: string, unlockMessage: string, alsoOpen: Cond[] = []): LockDef {
+  const need: Cond = { kind: 'level', min };
+  return { id, requirement: alsoOpen.length ? { kind: 'any', conds: [need, ...alsoOpen] } : need, visibility: 'visible', hint, unlockMessage, category };
+}
+
+/** The step of the Unfinished Hammer that asks for a hero of this level (step index 3). */
+export const HAMMER_STEP_LEVELS: Record<number, number> = { 3: 25 };
+
+/** Town and road services that used to check the hero's level in the engine or the UI. */
+const serviceLocks: LockDef[] = [
+  levelGate('town:stables', 12, 'town', 'The stable-master takes on riders once you are level 12, or once the deeper works of the world are open.', 'The stables will now sell you mounts and pets.', [ENDGAME_COND]),
+  levelGate('road:caravan', CARAVAN.minLevel, 'world', `Caravan masters want escorts of level ${CARAVAN.minLevel}.`, 'Caravan masters will now hire you as an escort.'),
+  levelGate('road:weather', WEATHER_MAGIC.minLevel, 'world', `Weather-working needs level ${WEATHER_MAGIC.minLevel}.`, 'You have the craft to change the sky.'),
+  ...Object.entries(HAMMER_STEP_LEVELS).map(([step, lv]) =>
+    levelGate(`craft:hammer:${step}`, lv, 'craft', `The hammer will take no more until you are level ${lv}.`, `Step ${Number(step) + 1} of Thalor's hammer is within your reach.`),
+  ),
+];
+
 export const LOCKS: LockDef[] = [
+  ...serviceLocks,
   ...raceLocks,
   ...classLocks,
   ...zoneLocks,

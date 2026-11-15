@@ -1,3 +1,4 @@
+import { isUnlocked } from '../locks/locks';
 import { content } from '../../data';
 import { BALL, BALLS, BARDS, BARD_MODS, CARAVAN, CRIMES, GHOSTS, GRIEVANCES, INNS, OUTFITS, ROAD_EVENTS, SONGS, SUSPICION, WANTED, WEATHER_MAGIC } from '../../data/road';
 import type { GauntletState } from '../endgame/types';
@@ -224,7 +225,7 @@ export class RoadActions {
     const from = this.s.world.inTown();
     if (!from) return fail('Caravans gather in towns.');
     if (this.o.caravan) return fail('You are already escorting a caravan.');
-    if (this.s.player.level < CARAVAN.minLevel) return fail(`Caravan masters want escorts of level ${CARAVAN.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'road:caravan')) return fail(`Caravan masters want escorts of level ${CARAVAN.minLevel}.`);
     if (!content.towns.find(to) || to === from) return fail('Choose another town.');
     this.o.caravan = { from, to, legs: this.legsBetween(from, to), done: 0, hp: CARAVAN.startHp, cargo: 1, log: [`The caravan leaves ${content.towns.get(from).name} for ${content.towns.get(to).name}.`] };
     this.s.bus.emit('stateChanged', { reason: 'caravan' });
@@ -281,7 +282,7 @@ export class RoadActions {
 
   castWeather(id: string): OResult {
     if (!WEATHER_MAGIC.ids.includes(id)) return fail('No such weather.');
-    if (this.s.player.level < WEATHER_MAGIC.minLevel) return fail(`Weather-working needs level ${WEATHER_MAGIC.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'road:weather')) return fail(`Weather-working needs level ${WEATHER_MAGIC.minLevel}.`);
     if (this.o.castDay === this.s.state.clock.day) return fail('You have worked the sky today already.');
     if (!content.weather.find(id)) return fail('That weather is not known here.');
     const cost = this.weatherCost();
