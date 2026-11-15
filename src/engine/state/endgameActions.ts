@@ -1,7 +1,8 @@
 import { grantPet } from '../character/stable';
 import { content } from '../../data';
 import { RIFT_AFFIXES, RIFTS } from '../../data/rifts';
-import { DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
+import { BOSS_RUSH_MIN_LEVEL, DIVINE_TRIAL_MIN_LEVEL, DIVINE_TRIALS, LEAGUE, SPIRE, WEEKLY } from '../../data/endgameModes';
+import { isUnlocked } from '../locks/locks';
 import { ATLAS, ATLAS_NODES, CONSTELLATIONS } from '../../data/atlas';
 import { TRIALS } from '../../data/pilgrimage';
 import { Rng } from '../core/rng';
@@ -25,7 +26,7 @@ const fail = (reason: string): EndgameResult => ({ ok: false, reason });
 
 /** Boss Rush: the dungeon bosses in road order, fought back to back at your level. */
 export const BOSS_RUSH = {
-  minLevel: 30,
+  minLevel: BOSS_RUSH_MIN_LEVEL,
   goldPerLevel: 40,
 };
 
@@ -76,7 +77,7 @@ export class EndgameActions {
   canOpenRift(tier: number): EndgameResult {
     if (this.e.active) return fail('Finish (or abandon) the run you are on first.');
     if (!this.s.world.inTown()) return fail('Rifts open at a town’s Rift Gate.');
-    if (this.s.player.level < RIFTS.minLevel) return fail(`Rifts open to heroes of level ${RIFTS.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'endgame:rifts')) return fail(`Rifts open to heroes of level ${RIFTS.minLevel}.`);
     if (tier < 1 || tier > this.maxRiftTier()) return fail(`Clear tier ${tier - 1} first.`);
     if (countHeld(this.s.state, 'rift-map') < 1) return fail('You need a Rift Map (the Black Market sells them, and they turn up in loot).');
     return { ok: true };
@@ -111,7 +112,7 @@ export class EndgameActions {
   canStartBossRush(): EndgameResult {
     if (this.e.active) return fail('Finish (or abandon) the run you are on first.');
     if (!this.s.world.inTown()) return fail('The Boss Rush is fought at a town’s arena.');
-    if (this.s.player.level < BOSS_RUSH.minLevel) return fail(`The Boss Rush opens to heroes of level ${BOSS_RUSH.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'endgame:bossrush')) return fail(`The Boss Rush opens to heroes of level ${BOSS_RUSH.minLevel}.`);
     return { ok: true };
   }
 
@@ -130,15 +131,15 @@ export class EndgameActions {
 
   // ------------------------------------------------------------ the Endless Spire
 
-  private canStartMode(minLevel: number, what: string): EndgameResult {
+  private canStartMode(lock: string, minLevel: number, what: string): EndgameResult {
     if (this.e.active) return fail('Finish (or abandon) the run you are on first.');
     if (!this.s.world.inTown()) return fail(`${what} is entered from a town.`);
-    if (this.s.player.level < minLevel) return fail(`${what} opens to heroes of level ${minLevel}.`);
+    if (!isUnlocked(this.s.state, lock)) return fail(`${what} opens to heroes of level ${minLevel}.`);
     return { ok: true };
   }
 
   canStartSpire(): EndgameResult {
-    return this.canStartMode(SPIRE.minLevel, 'The Endless Spire');
+    return this.canStartMode('endgame:spire', SPIRE.minLevel, 'The Endless Spire');
   }
 
   /** The fight on one floor: level and threat climb, every fifth floor is a guardian. */
@@ -192,7 +193,7 @@ export class EndgameActions {
   // ------------------------------------------------------------ the Divine Trials
 
   canStartDivine(god: string): EndgameResult {
-    const base = this.canStartMode(50, 'A Divine Trial');
+    const base = this.canStartMode('endgame:divine', DIVINE_TRIAL_MIN_LEVEL, 'A Divine Trial');
     if (!base.ok) return base;
     if (!DIVINE_TRIALS.some((t) => t.god === god)) return fail('No such trial.');
     if (!atLeast(this.s.player, god, 'acknowledged')) return fail(`${content.gods.get(god).name} has not yet taken notice of you (Acknowledged favor).`);
@@ -215,7 +216,7 @@ export class EndgameActions {
   // ------------------------------------------------------------ the Arena Champions league
 
   canStartLeague(): EndgameResult {
-    const base = this.canStartMode(LEAGUE.minLevel, 'The Champions league');
+    const base = this.canStartMode('endgame:league', LEAGUE.minLevel, 'The Champions league');
     if (!base.ok) return base;
     if (this.e.league.rank >= LEAGUE.ranks.length - 1) return fail('You are the Champion of Champions. There is no one left to fight.');
     return { ok: true };
@@ -252,7 +253,7 @@ export class EndgameActions {
   }
 
   canStartWeekly(): EndgameResult {
-    return this.canStartMode(WEEKLY.minLevel, 'The weekly run');
+    return this.canStartMode('endgame:weekly', WEEKLY.minLevel, 'The weekly run');
   }
 
   /** The week's run: the same fights and twists for everyone who plays this seed. */
@@ -305,7 +306,7 @@ export class EndgameActions {
   }
 
   canStartDaily(): EndgameResult {
-    return this.canStartMode(TRIALS.dailyMinLevel, 'The Trial of the Day');
+    return this.canStartMode('endgame:daily', TRIALS.dailyMinLevel, 'The Trial of the Day');
   }
 
   /** A short seeded dungeon with twists, the same for everyone today. */
@@ -387,7 +388,7 @@ export class EndgameActions {
   canStartAtlas(id: string): EndgameResult {
     const n = this.atlasNode(id);
     if (!n) return fail('No such map.');
-    const base = this.canStartMode(ATLAS.minLevel, 'The Celestial Atlas');
+    const base = this.canStartMode('endgame:atlas', ATLAS.minLevel, 'The Celestial Atlas');
     if (!base.ok) return base;
     if (!this.nodeOpen(id)) return fail(n.n === 0 ? `Light ${ATLAS.opensAt} maps of the constellation before it first.` : 'Light the map before it first.');
     return { ok: true };

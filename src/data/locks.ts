@@ -6,6 +6,15 @@ import { ISLAND_REVEAL } from './world/ship';
 import { DUNGEONS } from './world/places';
 import { AREAS } from './world/areas';
 import type { Cond } from '../engine/quests/types';
+import { CARAVAN, WEATHER_MAGIC } from './road';
+import { DIVING, HUNTS, ISLANDS, TOURNAMENT } from './trials';
+import { DEFENSE } from './defense';
+import { RIFTS } from './rifts';
+import { ATLAS } from './atlas';
+import { TRIALS } from './pilgrimage';
+import { WAR } from './twilight';
+import { BOSS_RUSH_MIN_LEVEL, DIVINE_TRIAL_MIN_LEVEL, LEAGUE, SPIRE, WEEKLY } from './endgameModes';
+import { ERAS } from './wonders';
 
 /**
  * Every gate in one place. A lock is a quest condition plus how it shows while shut
@@ -180,7 +189,52 @@ const craftLocks: LockDef[] = [
   },
 ];
 
+/** A feature that opens at a hero level (optionally together with other ways in). */
+function levelGate(id: string, min: number, category: LockDef['category'], hint: string, unlockMessage: string, alsoOpen: Cond[] = []): LockDef {
+  const need: Cond = { kind: 'level', min };
+  return { id, requirement: alsoOpen.length ? { kind: 'any', conds: [need, ...alsoOpen] } : need, visibility: 'visible', hint, unlockMessage, category };
+}
+
+/** The step of the Unfinished Hammer that asks for a hero of this level (step index 3). */
+export const HAMMER_STEP_LEVELS: Record<number, number> = { 3: 25 };
+
+/** Town and road services that used to check the hero's level in the engine or the UI. */
+const serviceLocks: LockDef[] = [
+  levelGate('town:stables', 12, 'town', 'The stable-master takes on riders once you are level 12, or once the deeper works of the world are open.', 'The stables will now sell you mounts and pets.', [ENDGAME_COND]),
+  levelGate('road:caravan', CARAVAN.minLevel, 'world', `Caravan masters want escorts of level ${CARAVAN.minLevel}.`, 'Caravan masters will now hire you as an escort.'),
+  levelGate('road:weather', WEATHER_MAGIC.minLevel, 'world', `Weather-working needs level ${WEATHER_MAGIC.minLevel}.`, 'You have the craft to change the sky.'),
+  ...Object.entries(HAMMER_STEP_LEVELS).map(([step, lv]) =>
+    levelGate(`craft:hammer:${step}`, lv, 'craft', `The hammer will take no more until you are level ${lv}.`, `Step ${Number(step) + 1} of Thalor's hammer is within your reach.`),
+  ),
+];
+
+/** Optional trials, games and rift eras that ask for a hero of some standing. */
+const trialLocks: LockDef[] = [
+  levelGate('trials:tournament', TOURNAMENT.minLevel, 'combat', `Entrants to the Hundred Duels must be level ${TOURNAMENT.minLevel}.`, 'You may now enter your name in the Hundred Duels.'),
+  levelGate('trials:hunts', HUNTS.minLevel, 'combat', `Hunters must be level ${HUNTS.minLevel}. The quarries walk under a Blood Moon.`, 'The Blood Moon hunts are open to you.'),
+  levelGate('trials:diving', DIVING.minLevel, 'world', `Divers must be level ${DIVING.minLevel}.`, 'You may now dive on wrecks off the coast.'),
+  ...ISLANDS.map((i) => levelGate(`trials:island:${i.id}`, i.minLevel, 'world', `Level ${i.minLevel} to land on ${i.name}.`, `${i.name} will now bear your weight.`)),
+  levelGate('games:defense', DEFENSE.minLevel, 'combat', `Defenders must be level ${DEFENSE.minLevel}.`, 'The Choir can now be met at the shrines of towns.'),
+  ...ERAS.map((e) => levelGate(`wonders:era:${e.id}`, e.minLevel, 'endgame', `${e.name} opens to heroes of level ${e.minLevel}.`, `${e.name} is open to you.`)),
+];
+
+/** Endgame modes: each asks for a hero level (the Endgame screen itself is the `endgame` lock). */
+const modeLocks: LockDef[] = [
+  levelGate('endgame:rifts', RIFTS.minLevel, 'endgame', `Rifts open to heroes of level ${RIFTS.minLevel}.`, 'The Rift Gates will now open for you.'),
+  levelGate('endgame:bossrush', BOSS_RUSH_MIN_LEVEL, 'endgame', `The Boss Rush opens to heroes of level ${BOSS_RUSH_MIN_LEVEL}.`, 'The arena will now host the Boss Rush for you.'),
+  levelGate('endgame:spire', SPIRE.minLevel, 'endgame', `The Endless Spire opens to heroes of level ${SPIRE.minLevel}.`, 'The Endless Spire is open to you.'),
+  levelGate('endgame:league', LEAGUE.minLevel, 'endgame', `The Champions league opens to heroes of level ${LEAGUE.minLevel}.`, 'The Champions league will take your name.'),
+  levelGate('endgame:weekly', WEEKLY.minLevel, 'endgame', `The weekly run opens to heroes of level ${WEEKLY.minLevel}.`, 'The weekly run is open to you.'),
+  levelGate('endgame:daily', TRIALS.dailyMinLevel, 'endgame', `The Trial of the Day opens to heroes of level ${TRIALS.dailyMinLevel}.`, 'The Trial of the Day is open to you.'),
+  levelGate('endgame:atlas', ATLAS.minLevel, 'endgame', `The Celestial Atlas opens to heroes of level ${ATLAS.minLevel}.`, 'The Celestial Atlas is open to you.'),
+  levelGate('endgame:divine', DIVINE_TRIAL_MIN_LEVEL, 'gods', `A Divine Trial opens to heroes of level ${DIVINE_TRIAL_MIN_LEVEL}.`, 'The gods will now test you in the Divine Trials.'),
+  levelGate('endgame:war', WAR.minLevel, 'endgame', `The war is for heroes of level ${WAR.minLevel}.`, 'The Twilight war is open to you.'),
+];
+
 export const LOCKS: LockDef[] = [
+  ...serviceLocks,
+  ...modeLocks,
+  ...trialLocks,
   ...raceLocks,
   ...classLocks,
   ...zoneLocks,

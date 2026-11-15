@@ -128,6 +128,14 @@ export type Cond =
   | { kind: 'airship' }
   /** Set foot in this zone. */
   | { kind: 'zoneVisited'; zone: string }
+  /** A named skill has reached this mastery level (1-10) from use in battle. */
+  | { kind: 'skillRank'; skill: string; min: number }
+  /** This crafting profession is practised at this level or higher. */
+  | { kind: 'professionLevel'; profession: string; level: number }
+  /** The calendar is in this season (`spring`, `summer`, `autumn`, `winter`). */
+  | { kind: 'season'; season: string }
+  /** The sky over the hero's present region is this weather (a weather id). */
+  | { kind: 'weather'; weather: string }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };

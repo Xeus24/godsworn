@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
 import { validateContent } from '../src/data';
-import { dungeonShut, evaluateLock, isUnlocked, lockControl, visibleLocks } from '../src/engine/locks/locks';
+import { SEASON_DAYS } from '../src/data/realm/wheel';
+import { absMinute, zoneOf } from '../src/engine/world/world';
+import { evaluate } from '../src/engine/quests/conditions';
+import { dungeonShut, evaluateLock, leafText, isUnlocked, lockControl, visibleLocks } from '../src/engine/locks/locks';
 import { classSlotCount } from '../src/engine/character/multiclass';
 import { raceUnlocked } from '../src/engine/character/races';
 import { migrate } from '../src/engine/state/save';
@@ -212,5 +215,75 @@ describe('crafting and gear locks', () => {
     const r = s.economy.upgrade({ where: 'equipment', slot: 'mainHand' });
     expect(r.ok).toBe(false);
     expect(JSON.stringify(r)).toContain('level 10');
+  });
+});
+
+describe('condition leaves added in the lock overhaul', () => {
+  const skillId = content.skills.all()[0]!.id;
+
+  it('skillRank reads mastery level, with text and progress', () => {
+    const s = newSession();
+    const cond = { kind: 'skillRank', skill: skillId, min: 2 } as const;
+    expect(evaluate(s.state, cond)).toBe(false);
+    expect(leafText(cond)).toContain('mastery rank 2');
+    s.player.mastery[skillId] = 30;
+    expect(evaluate(s.state, cond)).toBe(true);
+  });
+
+  it('professionLevel names one profession', () => {
+    const s = newSession();
+    const cond = { kind: 'professionLevel', profession: 'tailoring', level: 3 } as const;
+    expect(evaluate(s.state, cond)).toBe(false);
+    expect(leafText(cond)).toBe('Reach level 3 in Tailoring');
+    s.player.crafting.professions.tailoring = { level: 3, xp: 0 } as never;
+    expect(evaluate(s.state, cond)).toBe(true);
+    expect(evaluate(s.state, { kind: 'professionLevel', profession: 'alchemy', level: 1 })).toBe(false);
+  });
+
+  it('season follows the calendar', () => {
+    const s = newSession();
+    s.state.clock.day = 1;
+    expect(evaluate(s.state, { kind: 'season', season: 'spring' })).toBe(true);
+    expect(evaluate(s.state, { kind: 'season', season: 'winter' })).toBe(false);
+    s.state.clock.day = 3 * SEASON_DAYS + 1;
+    expect(evaluate(s.state, { kind: 'season', season: 'winter' })).toBe(true);
+    expect(leafText({ kind: 'season', season: 'winter' })).toBe('Wait for Deepcold');
+  });
+
+  it('weather reads the sky over the hero now, and lapses', () => {
+    const s = newSession();
+    const zone = zoneOf(s.state.world.position.map);
+    const cond = { kind: 'weather', weather: 'rain' } as const;
+    expect(evaluate(s.state, cond)).toBe(false);
+    s.state.world.weather[zone.id] = { id: 'rain', until: absMinute(s.state.clock) + 60 };
+    expect(evaluate(s.state, cond)).toBe(true);
+    s.state.world.weather[zone.id] = { id: 'rain', until: absMinute(s.state.clock) - 1 };
+    expect(evaluate(s.state, cond)).toBe(false);
+    expect(leafText(cond)).toBe('Wait for Rain weather');
+  });
+});
+
+describe('feature level gates read lock data', () => {
+  it('every feature lock opens at the level its data says, with progress', () => {
+    for (const id of ['road:caravan', 'road:weather', 'trials:diving', 'endgame:rifts', 'endgame:bossrush', 'endgame:war', 'craft:hammer:3']) {
+      const s = newSession();
+      s.player.level = 1;
+      const shut = evaluateLock(s.state, id);
+      expect(shut.unlocked, id).toBe(false);
+      expect(shut.progress[0]?.need, id).toBeGreaterThan(1);
+      s.player.level = shut.progress[0]!.need;
+      expect(isUnlocked(s.state, id), id).toBe(true);
+    }
+  });
+
+  it('the stables open early only at level 12 or in endgame, and a refusal uses the lock', () => {
+    const s = newSession();
+    s.player.level = 11;
+    expect(isUnlocked(s.state, 'town:stables')).toBe(false);
+    s.player.level = 12;
+    expect(isUnlocked(s.state, 'town:stables')).toBe(true);
+    const young = newSession();
+    young.player.level = 1;
+    expect(young.road.startCaravan('brightwater').ok).toBe(false);
   });
 });

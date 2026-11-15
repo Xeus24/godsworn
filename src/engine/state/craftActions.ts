@@ -1,3 +1,4 @@
+import { isUnlocked } from '../locks/locks';
 import { content } from '../../data';
 import { ALIGNED, AWAKEN, COMPASS_ID, COAT_ID, CROWN_ID, DEBTOR, DISHES, FORGE, GODFORGE, HAMMER_ID, HAMMER_STEPS, LANTERN_ID, MEALS, PET, PET_TALENT, RELIC_RULES, RING_ID, TALENTS, TALKING_RELICS, TRAIT_TEXT, WICKS, type Talent, type Trait } from '../../data/craft';
 import type { Battle } from '../combat/battle';
@@ -325,7 +326,7 @@ export class CraftActions {
     const step = k.hammer;
     if (step >= HAMMER_STEPS.length) return fail('The hammer is finished.');
     const s = HAMMER_STEPS[step]!;
-    if (step === 3 && this.s.player.level < 25) return fail('Come back at level 25.');
+    if (step === 3 && !isUnlocked(this.s.state, `craft:hammer:${step}`)) return fail('Come back at level 25.');
     if (!this.hammerNeed(step)) return fail(s.need === 'worldboss' ? 'It needs a world boss’s blood.' : 'It needs a boss’s fire.');
     const cost = s.cost * this.s.player.level;
     if (!this.s.spendGold(cost, 'hammer')) return fail(`This step costs ${cost} gold.`);

@@ -1,3 +1,4 @@
+import { isUnlocked } from '../../engine/locks/locks';
 import { guildBody, talesBody } from './guildCards';
 import { isRevealed, nextReveal, type RevealKey } from '../../engine/guide/reveal';
 import { firstSteps, hideFirstSteps } from '../../engine/guide/firstSteps';
@@ -319,7 +320,7 @@ export class TownScreen implements Screen {
     const late = endgameUnlocked(s.state);
     const forSale = content.mounts.filter((m) => m.price !== undefined);
     const petsForSale = content.pets.filter((pt) => pt.price !== undefined);
-    if (late || s.player.level >= 12 || s.player.stable.mounts.length > 0) cards.push(this.fold('Stables', 'mounts & pets', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you. Some swim or climb for you. Pets follow you about and help a little.'), ...forSale.map((m) => {
+    if (isUnlocked(s.state, 'town:stables') || s.player.stable.mounts.length > 0) cards.push(this.fold('Stables', 'mounts & pets', el('p', { class: 'small' }, 'Mounts carry you across the overworld faster, and fewer things jump out at you. Some swim or climb for you. Pets follow you about and help a little.'), ...forSale.map((m) => {
       const owned = s.player.stable.mounts.includes(m.id);
       return el('div', { class: 'board-row' }, el('b', {}, m.name), el('div', { class: 'dim small' }, `${m.description} ${m.stepMinutes} min per step, ${Math.round((1 - m.encounterMult) * 100)}% fewer ambushes.`), this.btn(owned ? 'Owned' : `Buy (${m.price}g)`, () => this.say(s.world.buyMount(m.id)), owned || s.state.gold < (m.price ?? 0)));
     }), ...petsForSale.map((pt) => {

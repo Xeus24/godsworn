@@ -679,6 +679,12 @@ function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, wher
       return v.ref(c.hybrids, cond.hybrid, where);
     case 'dungeonCleared':
       return v.ref(c.dungeons, cond.dungeon, where);
+    case 'skillRank':
+      return v.ref(c.skills, cond.skill, where);
+    case 'professionLevel':
+      return v.ref(c.professions, cond.profession, where);
+    case 'weather':
+      return v.ref(c.weather, cond.weather, where);
     case 'killed':
       return v.ref(c.enemies, cond.enemy, where);
     case 'ending':

@@ -8,6 +8,10 @@ import { flat, more, pct } from './trees/builder';
  */
 
 /** The Endless Spire: floors without end, harder each time, a guardian every fifth, a new twist every fifth. */
+/** Boss Rush and the Divine Trials open at these hero levels (read by the locks in `locks.ts`). */
+export const BOSS_RUSH_MIN_LEVEL = 30;
+export const DIVINE_TRIAL_MIN_LEVEL = 50;
+
 export const SPIRE = {
   minLevel: 50,
   guardianEvery: 5,

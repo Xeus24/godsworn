@@ -98,8 +98,10 @@ describe('The Sundered Hours (item 27)', () => {
     expect(s.wonders.turn(tp.id, 'b').ok).toBe(true);
     expect(s.state.gold).toBeLessThan(gold);
     expect(s.wonders.turn(tp.id, 'b').ok).toBe(false);
-    s.player.level = 1;
-    expect(s.wonders.turn('crown-1', 'a').ok).toBe(false);
+    // Eras are locks: a hero who has not reached the level has them shut (once open, a lock stays open).
+    const young = session();
+    young.player.level = 1;
+    expect(young.wonders.turn('crown-1', 'a').ok).toBe(false);
   });
 });
 
