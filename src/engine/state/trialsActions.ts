@@ -1,3 +1,4 @@
+import { isUnlocked } from '../locks/locks';
 import { content } from '../../data';
 import { festivalOn } from '../realm/wheel';
 import { DIVING, DREAMS, FEARS, HUNTS, ISLANDS, QUARRIES, RIVALS, SKY, TILTS, TOURNAMENT, WRECKS, type Tilt } from '../../data/trials';
@@ -66,7 +67,7 @@ export class TrialsActions {
     const f = festivalOn(day);
     if (f?.id !== TOURNAMENT.festival) return fail('The Hundred Duels are held once a year, on their festival day.');
     if (!this.s.world.inTown()) return fail('Enter your name in a town.');
-    if (this.s.player.level < TOURNAMENT.minLevel) return fail(`Entrants must be level ${TOURNAMENT.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'trials:tournament')) return fail(`Entrants must be level ${TOURNAMENT.minLevel}.`);
     if (this.t.tournament.entered === dateOf(day).year) return fail('You have entered this year’s bracket already.');
     return { ok: true };
   }
@@ -166,7 +167,7 @@ export class TrialsActions {
     const q = QUARRIES.find((x) => x.id === id);
     if (!q) return fail('No such quarry.');
     if (!this.bloodMoon()) return fail('They walk only under a Blood Moon, at night.');
-    if (this.s.player.level < HUNTS.minLevel) return fail(`Hunters must be level ${HUNTS.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'trials:hunts')) return fail(`Hunters must be level ${HUNTS.minLevel}.`);
     const lvl = this.s.player.level;
     const rng = new Rng(hash(`hunt:${id}:${this.s.state.clock.day}`));
     const kin = this.foes(q.types, lvl, ['normal']);
@@ -202,7 +203,7 @@ export class TrialsActions {
     if (!w) return fail('No such wreck.');
     if (this.t.dives.active) return fail('You are already under.');
     if (this.s.world.zone.id !== w.zone) return fail('That wreck lies in another region.');
-    if (this.s.player.level < DIVING.minLevel) return fail(`Divers must be level ${DIVING.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'trials:diving')) return fail(`Divers must be level ${DIVING.minLevel}.`);
     this.t.dives.active = { wreck: id, air: DIVING.air, haul: 0, seed: this.s.rng.int(1, 1e9), turn: 0, log: [`You go down to ${w.name}. ${w.text}`] };
     this.s.bus.emit('stateChanged', { reason: 'dive' });
     return { ok: true };
@@ -279,7 +280,7 @@ export class TrialsActions {
     const isl = ISLANDS.find((x) => x.id === id);
     if (!isl) return fail('No such island.');
     if (!this.skyOpen()) return fail('Only an airship can reach the Sky Islands.');
-    if (this.s.player.level < isl.minLevel) return fail(`Level ${isl.minLevel} to land here.`);
+    if (!isUnlocked(this.s.state, `trials:island:${isl.id}`)) return fail(`Level ${isl.minLevel} to land here.`);
     const st = (this.t.islands[id] ??= { attempts: 0, solved: false });
     if (st.solved) return fail('You have walked this island.');
     if (seq.length !== SKY.steps || seq.some((x) => !TILTS.includes(x))) return fail(`Choose ${SKY.steps} tilts.`);

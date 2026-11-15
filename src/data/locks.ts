@@ -7,6 +7,9 @@ import { DUNGEONS } from './world/places';
 import { AREAS } from './world/areas';
 import type { Cond } from '../engine/quests/types';
 import { CARAVAN, WEATHER_MAGIC } from './road';
+import { DIVING, HUNTS, ISLANDS, TOURNAMENT } from './trials';
+import { DEFENSE } from './defense';
+import { ERAS } from './wonders';
 
 /**
  * Every gate in one place. A lock is a quest condition plus how it shows while shut
@@ -200,8 +203,19 @@ const serviceLocks: LockDef[] = [
   ),
 ];
 
+/** Optional trials, games and rift eras that ask for a hero of some standing. */
+const trialLocks: LockDef[] = [
+  levelGate('trials:tournament', TOURNAMENT.minLevel, 'combat', `Entrants to the Hundred Duels must be level ${TOURNAMENT.minLevel}.`, 'You may now enter your name in the Hundred Duels.'),
+  levelGate('trials:hunts', HUNTS.minLevel, 'combat', `Hunters must be level ${HUNTS.minLevel}. The quarries walk under a Blood Moon.`, 'The Blood Moon hunts are open to you.'),
+  levelGate('trials:diving', DIVING.minLevel, 'world', `Divers must be level ${DIVING.minLevel}.`, 'You may now dive on wrecks off the coast.'),
+  ...ISLANDS.map((i) => levelGate(`trials:island:${i.id}`, i.minLevel, 'world', `Level ${i.minLevel} to land on ${i.name}.`, `${i.name} will now bear your weight.`)),
+  levelGate('games:defense', DEFENSE.minLevel, 'combat', `Defenders must be level ${DEFENSE.minLevel}.`, 'The Choir can now be met at the shrines of towns.'),
+  ...ERAS.map((e) => levelGate(`wonders:era:${e.id}`, e.minLevel, 'endgame', `${e.name} opens to heroes of level ${e.minLevel}.`, `${e.name} is open to you.`)),
+];
+
 export const LOCKS: LockDef[] = [
   ...serviceLocks,
+  ...trialLocks,
   ...raceLocks,
   ...classLocks,
   ...zoneLocks,

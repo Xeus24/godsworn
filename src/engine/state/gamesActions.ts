@@ -1,3 +1,4 @@
+import { isUnlocked } from '../locks/locks';
 import { content } from '../../data';
 import { CHOIR, DEFENSE, TOWERS, waveOf } from '../../data/defense';
 import { Rng } from '../core/rng';
@@ -36,7 +37,7 @@ export class GamesActions {
   startDefense(): GResult {
     if (this.d.run) return fail('A defence is under way.');
     if (!this.s.world.inTown()) return fail('The Choir comes for the shrines of towns.');
-    if (this.s.player.level < DEFENSE.minLevel) return fail(`Defenders must be level ${DEFENSE.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'games:defense')) return fail(`Defenders must be level ${DEFENSE.minLevel}.`);
     this.d.run = { seed: this.s.rng.int(1, 1e9), wave: 1, shrine: DEFENSE.shrine, faith: DEFENSE.startFaith, towers: Array(DEFENSE.slots).fill(''), log: ['The Choir is singing on the far hill.'] };
     this.d.runs++;
     this.s.bus.emit('stateChanged', { reason: 'defense' });

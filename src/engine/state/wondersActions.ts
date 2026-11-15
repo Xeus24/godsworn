@@ -1,3 +1,4 @@
+import { isUnlocked } from '../locks/locks';
 import { content } from '../../data';
 import { COMMISSIONS, ERAS, LEGENDS, PAINTER, SPIRE_CARDS, SPIRE_RELICS, SUNDERED, TURNING_POINTS, WATERS, type LegendFish } from '../../data/wonders';
 import { Rng } from '../core/rng';
@@ -261,7 +262,7 @@ export class WondersActions {
 
   eraOpen(id: string): boolean {
     const e = ERAS.find((x) => x.id === id);
-    return !!e && this.s.player.level >= e.minLevel;
+    return !!e && isUnlocked(this.s.state, `wonders:era:${e.id}`);
   }
 
   /** Walk the choice you made at a turning point (or choose it the first time). */
