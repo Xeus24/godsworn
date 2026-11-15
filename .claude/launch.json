@@ -4,8 +4,26 @@
     {
       "name": "godsworn-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "5173", "--strictPort"],
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5173",
+        "--strictPort"
+      ],
       "port": 5173
+    },
+    {
+      "name": "godsworn-wiki",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "wiki:serve",
+        "--",
+        "--strictPort"
+      ],
+      "port": 5190
     }
   ]
 }

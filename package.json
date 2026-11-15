@@ -13,6 +13,8 @@
     "typecheck": "tsc --noEmit",
     "sim:loot": "tsx scripts/simulateLoot.ts",
     "content:md": "tsx scripts/contentCatalog.ts",
+    "wiki": "tsx wiki/build.ts",
+    "wiki:serve": "vite wiki/dist --port 5190",
     "sim": "tsx scripts/simulate.ts",
     "sim:party": "tsx scripts/simulateParty.ts",
     "sim:size": "tsx scripts/simulatePartySize.ts",
