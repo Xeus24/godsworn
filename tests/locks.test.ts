@@ -262,3 +262,28 @@ describe('condition leaves added in the lock overhaul', () => {
     expect(leafText(cond)).toBe('Wait for Rain weather');
   });
 });
+
+describe('feature level gates read lock data', () => {
+  it('every feature lock opens at the level its data says, with progress', () => {
+    for (const id of ['road:caravan', 'road:weather', 'trials:diving', 'endgame:rifts', 'endgame:bossrush', 'endgame:war', 'craft:hammer:3']) {
+      const s = newSession();
+      s.player.level = 1;
+      const shut = evaluateLock(s.state, id);
+      expect(shut.unlocked, id).toBe(false);
+      expect(shut.progress[0]?.need, id).toBeGreaterThan(1);
+      s.player.level = shut.progress[0]!.need;
+      expect(isUnlocked(s.state, id), id).toBe(true);
+    }
+  });
+
+  it('the stables open early only at level 12 or in endgame, and a refusal uses the lock', () => {
+    const s = newSession();
+    s.player.level = 11;
+    expect(isUnlocked(s.state, 'town:stables')).toBe(false);
+    s.player.level = 12;
+    expect(isUnlocked(s.state, 'town:stables')).toBe(true);
+    const young = newSession();
+    young.player.level = 1;
+    expect(young.road.startCaravan('brightwater').ok).toBe(false);
+  });
+});

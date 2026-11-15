@@ -11,7 +11,7 @@ The game is not starting from zero. Three gating mechanisms exist today, and the
 | Quest condition evaluator (`Cond`, 60+ leaf kinds, `all`/`any`/`not`) | `src/engine/quests/types.ts`, `conditions.ts` | Quests, dialogue choices, conversation topics, story branches. Already covers level, class, race, stat, favor, rep, renown, item, flag, counter, quest state, companion, dungeon, bestiary, slayer, ending, ngPlus, heresy, riftTier, challenge, cleared, achievements and more. |
 | Progressive reveal | `src/engine/guide/reveal.ts` (`REVEAL_LEVELS`) | Top-bar tabs (skills 2, pantheon 3, party 3, general 5), Codex tabs (maps/compendium/cards/backgrounds 5-6, realm/heart/completion 10, ship 12) and town cards (pastimes 2, guild 3, renown 4, tales/arena 5, library 6, investments 8, fortunes/housing 10). Level only; everything opens at endgame. |
 | Endgame switch | `src/engine/endgame/unlocked.ts` | One boolean (NG+ > 0, any ending seen, story ended, or level cap) opens rifts, Boss Rush, stables and NG+ together. |
-| Hard-coded constants | `src/data/progression.ts` (`MULTICLASS`), plus about 200 `level >= N` / `requires` sites in engine, UI and data | Second class 15, third class 40 (+NG+2) or 45 (late-story quest), hybrid classes both at 25, craft step 3 at 25, mimic tiers, temple tiers, stable card at 12. |
+| Hard-coded constants | `src/data/progression.ts` (`MULTICLASS`), plus a few dozen `level >= N` / `minLevel` sites in engine, UI and data (the audit in section 11 found about 17 `level >= N` hits, not 200, plus about 20 `minLevel` constants) | Second class 15, third class 40 (+NG+2) or 45 (late-story quest), hybrid classes both at 25, craft step 3 at 25, mimic tiers, temple tiers, stable card at 12. |
 
 Existing check: `src/data/index.ts` validates quest conditions at startup, so a bad quest reference already fails loading.
 
@@ -73,7 +73,7 @@ Not covered yet (Phase 1 extends it once locks are data): zone entry, class unlo
 | Library studying inventory-only | S-M | open |
 | `PROGRESS.md` Design decisions ends mid-sentence; Phase 17-20 details missing | S | open |
 | Third class level mismatch (40 / 45) | S | open |
-| Boss Rush level in README vs code | S | to verify |
+| Boss Rush level in README vs code | S | closed: both say 30 (section 11) |
 | Level-only reveal table ignores non-level progress | M | folded into Phase 1 |
 
 Baseline numbers: `docs/baseline-sim.md`.
@@ -95,7 +95,7 @@ Baseline numbers: `docs/baseline-sim.md`.
 - **Developer panel:** a "Locks" section with Ignore locks, Unlock all and Reset locks.
 - **Tests:** `tests/locks.test.ts` (open, once-only toast, sticky, any/endgame, developer switch, unlock all/reset, visibility, pre-lock save migration).
 
-Not done yet (assigned to later phases): the Unlocks journal tab and "What's next?" panel (Phase 4), first-use tutorial cards (Phase 4), the remaining leaf kinds from the spec (`bossDefeated`, `skillRank`, `season`, `weather`, `storyChapter`, `legacyFlag`, `professionLevel`), and moving the other ~200 scattered `level >= N` checks into lock data (Phase 2, one system group per commit).
+Not done yet (assigned to later phases): the Unlocks journal tab and "What's next?" panel (Phase 4), first-use tutorial cards (Phase 4), the remaining leaf kinds from the spec (`bossDefeated`, `skillRank`, `season`, `weather`, `storyChapter`, `legacyFlag`, `professionLevel`), and moving the scattered level checks into lock data (done, section 11). The leaf kinds from the spec are settled in section 11 too.
 
 ## 7. Phase 2a: classes and character creation (built)
 
@@ -144,3 +144,36 @@ Finding: recipe tiers by profession level (220 recipes), recipe scrolls for non-
 - **Upgrade tiers:** `craft:upgrade:6` (past +5) needs any crafting profession at level 10; `craft:upgrade:11` (past +10, where failures drop the item a level) needs 25. Gear the hero already carries at that level grandfathers it (new `gearUpgrade` condition). Enforced in `EconomyActions.upgrade`.
 - New conditions: `practises`, `gearUpgrade`; `profession` now has readable text.
 - Not changed: socketing, stash filters, sets and runewords (their drop sources are the gate; no change proposed), and the rarity ladder.
+
+## 11. Phase 1 leftovers: condition leaves and level-gate audit (built)
+
+### Condition leaves
+Checked against the 60+ existing kinds before adding anything.
+
+| Spec kind | Result |
+|---|---|
+| `skillRank` | **Added.** `{ skill, min }`: mastery level (1-10) of one skill. The existing `mastered` only counts skills. Has text and progress. |
+| `professionLevel` | **Added.** `{ profession, level }`: one named profession. The existing `profession` means "any profession". Has text and progress. |
+| `season` | **Added.** `{ season }`: `spring`, `summer`, `autumn`, `winter`, from the Wheel calendar. Text only (no number). |
+| `weather` | **Added.** `{ weather }`: the unexpired weather stored for the hero's present region. It never rolls the weather itself, so evaluating a lock cannot change the game. Text only. Validated against the weather table. |
+| `bossDefeated` | **Skipped.** `killed { enemy, min }` already does this (bosses are enemies, kills are counted per enemy id), and `progress: bossesSlain` counts them. |
+| `storyChapter` | **Skipped.** `questsDone { questKind: 'main', min }` counts finished chapters, and `quest { quest, state }` names one. Chapters are main quests. |
+| `legacyFlag` | **Skipped.** What the legacy record holds is covered by `ending`, `endingsSeen`, `cleared` and `ngPlus`. A free-form legacy flag would be a second, untyped place to keep facts. |
+| `factionRank` | Already covered by `rep` (the spec listed it by mistake). |
+
+Tests: `tests/locks.test.ts`, "condition leaves added in the lock overhaul".
+
+### Level-gate audit
+Greps: `level (>=|<|>) N` and `minLevel` / `*_LEVEL` constants across `src/`. A gate that unlocks a feature moved to lock data; each constant stays in its data file as the single number and the lock reads it. Refusal messages keep their text.
+
+| Group | Locks | Replaced |
+|---|---|---|
+| Town, road, craft | `town:stables` (12, or endgame), `road:caravan`, `road:weather`, `craft:hammer:3` (25) | `townScreen.ts`, `roadActions.ts`, `craftActions.ts` |
+| Trials, games, eras | `trials:tournament`, `trials:hunts`, `trials:diving`, `trials:island:<id>` (6), `games:defense`, `wonders:era:<id>` (3) | `trialsActions.ts`, `gamesActions.ts`, `wondersActions.ts` |
+| Endgame modes | `endgame:rifts`, `:bossrush` (30), `:spire`, `:league`, `:weekly`, `:daily`, `:atlas`, `:divine`, `:war` | `endgameActions.ts` (`canStartMode` takes a lock id), `twilightActions.ts` |
+
+Notes:
+- Boss Rush is level 30 in code and README: no mismatch, the "to verify" item in section 4 is closed. `BOSS_RUSH_MIN_LEVEL` and `DIVINE_TRIAL_MIN_LEVEL` now live in `src/data/endgameModes.ts`.
+- Grandfathering: locks are sticky and the first sync opens whatever the hero already qualifies for, so no save loses a feature. A lock that has opened stays open even if the level later drops (a test that lowered the level now uses a fresh hero).
+- **Stayed, on purpose:** mimic tier by level and the lab potion tier (scaling), scroll rarity by recipe level (math), Codex knowledge levels (a different "level"), first-steps checklist (tutorial progress), item `requiredLevel` and affix `minLevel` (item rules), `FAST_TRAVEL_GOLD_PER_LEVEL` (cost). `SPEC_LEVEL` (20) is a **class** level, not a hero level, and no condition reads class level, so specialization stays in `specs.ts`. `TEMPT.minLevel` (30) is a scripted story event owned by `talesActions.ts`; it was left to avoid data importing engine constants.
+- Not moved: the level gates inside quest `requires` conditions are already `Cond` data.

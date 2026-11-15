@@ -1,3 +1,4 @@
+import { isUnlocked } from '../locks/locks';
 import { content } from '../../data';
 import { ARCHIVE, CONCLAVE, DOMAINS, EPILOGUE, FADE, FLOCK, GOD_ZONES, PRAYERS, RITES, UNSWORN, WAR, type Rite } from '../../data/twilight';
 import type { GauntletState } from '../endgame/types';
@@ -220,7 +221,7 @@ export class TwilightActions {
   }
 
   conclaveOn(): boolean {
-    return this.s.player.level >= WAR.minLevel && this.regionsWithGrudge().length >= CONCLAVE.minRegions;
+    return isUnlocked(this.s.state, 'endgame:war') && this.regionsWithGrudge().length >= CONCLAVE.minRegions;
   }
 
   strength(town: string): number {
@@ -298,7 +299,7 @@ export class TwilightActions {
 
   /** Three parties, three fronts. Each turn you lead one; the others fight on their own. */
   warStart(): XResult {
-    if (this.s.player.level < WAR.minLevel) return fail(`The war is for heroes of level ${WAR.minLevel}.`);
+    if (!isUnlocked(this.s.state, 'endgame:war')) return fail(`The war is for heroes of level ${WAR.minLevel}.`);
     if (this.t.war.active) return fail('The war is under way.');
     const comps = this.s.party.recruited();
     const approval = comps.length ? comps.reduce((n, c) => n + c.approval, 0) / comps.length : 20;

@@ -9,6 +9,11 @@ import type { Cond } from '../engine/quests/types';
 import { CARAVAN, WEATHER_MAGIC } from './road';
 import { DIVING, HUNTS, ISLANDS, TOURNAMENT } from './trials';
 import { DEFENSE } from './defense';
+import { RIFTS } from './rifts';
+import { ATLAS } from './atlas';
+import { TRIALS } from './pilgrimage';
+import { WAR } from './twilight';
+import { BOSS_RUSH_MIN_LEVEL, DIVINE_TRIAL_MIN_LEVEL, LEAGUE, SPIRE, WEEKLY } from './endgameModes';
 import { ERAS } from './wonders';
 
 /**
@@ -213,8 +218,22 @@ const trialLocks: LockDef[] = [
   ...ERAS.map((e) => levelGate(`wonders:era:${e.id}`, e.minLevel, 'endgame', `${e.name} opens to heroes of level ${e.minLevel}.`, `${e.name} is open to you.`)),
 ];
 
+/** Endgame modes: each asks for a hero level (the Endgame screen itself is the `endgame` lock). */
+const modeLocks: LockDef[] = [
+  levelGate('endgame:rifts', RIFTS.minLevel, 'endgame', `Rifts open to heroes of level ${RIFTS.minLevel}.`, 'The Rift Gates will now open for you.'),
+  levelGate('endgame:bossrush', BOSS_RUSH_MIN_LEVEL, 'endgame', `The Boss Rush opens to heroes of level ${BOSS_RUSH_MIN_LEVEL}.`, 'The arena will now host the Boss Rush for you.'),
+  levelGate('endgame:spire', SPIRE.minLevel, 'endgame', `The Endless Spire opens to heroes of level ${SPIRE.minLevel}.`, 'The Endless Spire is open to you.'),
+  levelGate('endgame:league', LEAGUE.minLevel, 'endgame', `The Champions league opens to heroes of level ${LEAGUE.minLevel}.`, 'The Champions league will take your name.'),
+  levelGate('endgame:weekly', WEEKLY.minLevel, 'endgame', `The weekly run opens to heroes of level ${WEEKLY.minLevel}.`, 'The weekly run is open to you.'),
+  levelGate('endgame:daily', TRIALS.dailyMinLevel, 'endgame', `The Trial of the Day opens to heroes of level ${TRIALS.dailyMinLevel}.`, 'The Trial of the Day is open to you.'),
+  levelGate('endgame:atlas', ATLAS.minLevel, 'endgame', `The Celestial Atlas opens to heroes of level ${ATLAS.minLevel}.`, 'The Celestial Atlas is open to you.'),
+  levelGate('endgame:divine', DIVINE_TRIAL_MIN_LEVEL, 'gods', `A Divine Trial opens to heroes of level ${DIVINE_TRIAL_MIN_LEVEL}.`, 'The gods will now test you in the Divine Trials.'),
+  levelGate('endgame:war', WAR.minLevel, 'endgame', `The war is for heroes of level ${WAR.minLevel}.`, 'The Twilight war is open to you.'),
+];
+
 export const LOCKS: LockDef[] = [
   ...serviceLocks,
+  ...modeLocks,
   ...trialLocks,
   ...raceLocks,
   ...classLocks,
