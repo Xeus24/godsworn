@@ -9,7 +9,9 @@ import type { GameState } from '../state/gameState';
 import { timeOfDay } from '../state/clock';
 import { repOf } from '../world/factions';
 import { renownOf } from '../world/renown';
-import { festivalOn } from '../realm/wheel';
+import { dateOf, festivalOn } from '../realm/wheel';
+import { SEASONS } from '../../data/realm/wheel';
+import { absMinute, zoneOf } from '../world/world';
 import { bondRank, heartOf, holds } from '../heart/heart';
 import { RENOWN_TIERS } from '../../data/world/renown';
 import { progressOf } from '../achievements/progress';
@@ -200,6 +202,16 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       return p.unlockedClasses.includes(cond.classId) || p.classes.some((x) => x.classId === cond.classId);
     case 'zoneVisited':
       return state.world.fog[cond.zone] !== undefined;
+    case 'skillRank':
+      return masteryLevel(p.mastery[cond.skill] ?? 0) >= cond.min;
+    case 'professionLevel':
+      return (p.crafting.professions[cond.profession as keyof typeof p.crafting.professions]?.level ?? 0) >= cond.level;
+    case 'season':
+      return dateOf(state.clock.day).season === SEASONS.findIndex((x) => x.id === cond.season);
+    case 'weather': {
+      const w = state.world.weather[zoneOf(state.world.position.map, c).id];
+      return w !== undefined && w.until > absMinute(state.clock) && w.id === cond.weather;
+    }
     case 'all':
       return cond.conds.every((x) => evaluate(state, x, c));
     case 'any':

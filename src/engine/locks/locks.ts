@@ -1,5 +1,7 @@
 import { content, type Content } from '../../data';
 import { characterBaseStats } from '../character/stats';
+import { SEASONS } from '../../data/realm/wheel';
+import { masteryLevel } from '../skills/mastery';
 import { describe, evaluate } from '../quests/conditions';
 import type { Cond } from '../quests/types';
 import type { GameState } from '../state/gameState';
@@ -53,6 +55,14 @@ export function leafText(cond: Cond, c: Content = content): string {
       return `Earn ${cond.min} achievements`;
     case 'riftTier':
       return `Clear Rift tier ${cond.min}`;
+    case 'skillRank':
+      return `Bring ${c.skills.find(cond.skill)?.name ?? cond.skill} to mastery rank ${cond.min}`;
+    case 'professionLevel':
+      return `Reach level ${cond.level} in ${c.professions.get(cond.profession).name}`;
+    case 'season':
+      return `Wait for ${SEASONS.find((x) => x.id === cond.season)?.name ?? cond.season}`;
+    case 'weather':
+      return `Wait for ${c.weather.find(cond.weather)?.name ?? cond.weather} weather`;
     case 'counter':
       return `${cond.flag.replace(/[-_:]/g, ' ')} ${cond.min}`;
     case 'quest':
@@ -82,6 +92,10 @@ function measure(state: GameState, cond: Cond, c: Content): LockProgress | undef
       return { label: 'Zones visited', have: c.zones.ids().filter((z) => state.world.fog[z] !== undefined).length, need: cond.min };
     case 'counter':
       return { label: cond.flag, have: Number(state.flags[cond.flag] ?? 0), need: cond.min };
+    case 'skillRank':
+      return { label: `${c.skills.find(cond.skill)?.name ?? cond.skill} rank`, have: masteryLevel(p.mastery[cond.skill] ?? 0), need: cond.min };
+    case 'professionLevel':
+      return { label: c.professions.get(cond.profession).name, have: p.crafting.professions[cond.profession as keyof typeof p.crafting.professions]?.level ?? 0, need: cond.level };
     case 'shipLevel':
       return { label: 'Ship level', have: p.world.ship?.level ?? 0, need: cond.min };
     case 'voyages':
