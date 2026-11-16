@@ -52,3 +52,81 @@ New script `scripts/simEncounters.ts` (11 seconds: 38 classes x 6 fights per roa
 | Dark Citadel | 58 | 0 | 40 | 97.8% | 90.4% |
 
 Caveat: the benchmark hero has benchmark gear and plays on auto, so it is an optimistic model of a real player. Threat only scales random encounters and roaming packs (+HP and +damage), not bosses or dungeons. If real play feels too harsh, scale all eight values down together; the shape is what matters. Full tests (1,236), build and the Mage playtest pass.
+
+## Phase 3: bosses, dungeons and rifts (baseline)
+
+Captured with the game data as of the Phase 3a commit, nothing edited. All 48 classes use `benchmarkHero` (benchmark gear, auto-battle, solo, no potions), so every number is optimistic for a real player. Machine was shared with another session, so times are wall-clock under load.
+
+### Story bosses, New Game+1 (`scripts/ngBossSweep.ts`)
+
+Command: `npx tsx scripts/ngBossSweep.ts <all 48 class ids> 12` (12 fights per cell, 212 s). Hero level equals the boss's NG+1 world level. Seryth, Admiral Vey, the Void Commander, Barrow Warden, Forum Orator: **100% for 45 to 48 of 48 classes**. The earlier "Cleric vs. Seryth about 13%" no longer reproduces: cleric is 100% on all seven bosses here (the old figure came from a different setup, probably level or gear).
+
+Cells below 100% (all other cells are 100%):
+
+| Class | Void Cmdr | Orator | Seryth | Shadow of the Unwritten | Severance Engine | Admiral Vey |
+|---|---|---|---|---|---|---|
+| warlock | 92 | | 58 | 50 | | 83 |
+| voidwalker | 83 | | | **0** | 83 | |
+| whisperknight | | | | | **0** | 92 |
+| marshal | | | | | **8** | |
+| facewright | | | | | 42 | |
+| fatedealer | | | | | 50 | 75 |
+| oathbreaker | | | | | 50 | |
+| chronomancer | | 92 | | | 67 | 50 |
+| knight, artificer, hollowhand | | | | | 58 | |
+| witchhunter | | | | | 67 | |
+| truthseeker, mindwright, stillhand | | | | | 67 to 83 | 67 to 83 |
+
+Class means run 81% (voidwalker) to 100%. The Severance Engine is the hard one: 12 classes fall under 70% against it.
+
+### Story bosses, base game, every `q-` boss encounter (scratch script)
+
+`scripts/` has no script for this, so I used a throwaway (`p3sim.ts mode=story`, kept outside the repo in the session scratchpad; same helpers as `ngBossSweep.ts`, hero at the encounter level, 10 fights per class per boss, 50 encounters x 48 classes = 24,000 fights, 552 s). Mean win rate across 48 classes, bosses below 100% only (the other 31 are 100%):
+
+| Encounter | Level | Mean | Lowest classes |
+|---|---|---|---|
+| q-last-light | 80 | 50% | cleric 0, necromancer 0, knight 0 |
+| q-nameless | 80 | 63% | knight 0, warlock 0, dancer 0 |
+| q-engine (Severance Engine) | 53 | 64% | knight 0, godslayer 0, marshal 0 |
+| q-wight | 38 | 78% | inkweaver 0, warlock 10, oathbreaker 10 |
+| q-vey | 46 | 95% | warlock 40, dreamwalker 50 |
+| q-shadow | 60 | 96% | voidwalker 0, warlock 40 |
+| q-unwritten-page | 40 | 96% | bard 70, warlock 70 |
+| five heralds (Solenne, Hesha, Vex, Aurelis, Mirrin) | 25 | 98% | cleric 0 or bard 10, others 100% |
+| everything else | | 99 to 100% | |
+
+q-seryth is 99% mean (cleric 100% in this run; warlock 70% is lowest). Weakest classes overall: warlock 88%, marshal 92%, bard/knight/inkweaver/fatedealer/facewright 93%.
+
+### Dungeons (full-clear rates): NOT captured
+
+No existing script runs a dungeon as a chain of rooms. I wrote a scratch version (rooms-1 encounters then the boss, HP carried, no rests; 73 dungeons x 48 classes x 6 runs, about 150,000 fights) but it ran more than 10 minutes without finishing and was stopped at the user's instruction. Nothing was recorded. Suggested next step: rerun with 1 run per class (about 25,000 fights) in the background, or on a class subset. `scripts/simulate.ts` (`--only zones`) already reports dungeon-boss-only win rates per zone, and `npm run sim:party` covers dungeon bosses with companions; neither was run, since the full-clear number was the gap.
+
+### Rifts (full-clear rates by tier)
+
+Throwaway scratch script (`p3sim.ts rift 10`), built from `EndgameActions.openRift`: hero level 60, rift level 57 + floor((tier-1)/3), 3 zone-drawn waves plus a Guardian (world bosses from tier 10), +8% HP/damage per tier above 1, tier affixes rolled, 35% HP/MP respite between waves, no potions, 10 runs per class per tier = 480 per tier, 135 s.
+
+| Tier | Mean full-clear | Classes at 0% | Classes at 90%+ |
+|---|---|---|---|
+| 1 | 85.2% | 0/48 | 26/48 |
+| 5 | 66.9% | 0/48 | 9/48 |
+| 10 | 31.5% | 6/48 | 1/48 |
+| 15 | 14.4% | 15/48 | 1/48 |
+| 20 | 8.8% | 27/48 | 0/48 |
+
+Earlier PROGRESS.md figures (50% at tier 1, 19% at tier 10, 6% at tier 20) came from a different scratch sim; this one is higher at every tier. Treat tier 10 and 20 as "about 30%" and "under 10%".
+
+### Five worst outliers
+
+1. **Rift tier 20 (8.8%, 27 classes at 0%), effort M.** Threat is +152% HP and damage on every wave and the Guardian, with three affixes and a respite of only 35%; the curve is linear in `RIFTS.threatPerTier` (8) but the hero's power is flat at level 60, so tune `threatPerTier` or affix strength down, or raise the respite at high tiers.
+2. **Rift tier 15 (14.4%, 15 classes at 0%), effort M.** Same cause as tier 20, and from tier 10 any zone's world boss can be the Guardian (`worldBossTier: 10`), which is a party-sized fight dropped on a solo hero.
+3. **q-last-light, L80 (50% mean; cleric, necromancer and knight 0%), effort S-M.** Its 60% phase adds +15% speed, then at 30% a +25% damage phase with a shield and a "final-judgment" telegraph every 4 turns (`bossScripts.ts:166`); that damage-plus-short-telegraph cadence kills slow or low-burst classes.
+4. **Severance Engine (64% base, 12 classes under 70% in NG+1; marshal 8%, whisperknight 0%), effort M.** Phase 1 gives +25% speed and phase 2 adds void-wraith adds and +20% damage with a 5-turn "unmaking" telegraph (`bossScripts.ts:73`), plus a story-finale enrage at turn 75; marshal and whisperknight need allies or summons and are solo here.
+5. **q-nameless, L80 (63%; knight, warlock, dancer 0%), effort S-M.** False-herald adds at 66% and +25% damage at 33% with two 5-turn telegraphs (`bossScripts.ts:165`); adds split damage for melee classes that have no area attacks.
+
+Smaller notes: q-wight (L38, 78%) kills inkweaver at 0%, and voidwalker 0% against the NG+1 Shadow of the Unwritten looks like a class interaction (voidwalker void damage versus a void-aligned boss) worth a look. Both are S.
+
+### Cut / not done
+
+- Dungeon full-clear table (above): cut for time.
+- `scripts/simulateParty.ts` was not run: it measures hero plus companion across all 26 zones and was too slow to fit next to the sweeps; its coverage of dungeon bosses is boss-only.
+- The three scratch scripts are not in the repo; promote `p3sim.ts` to `scripts/` before Phase 3b if the numbers are to be re-measured.
