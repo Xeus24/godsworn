@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status: **Phase 0 (audit) in progress.** Nothing in the game has been changed yet except the new reachability script. This file is the working record for the lock overhaul; later phases fill in the "intended" columns.
+Status (2026-11-16): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers (four more condition leaves, 24 level gates moved into lock data). **Next: Phase 3b** (bosses, dungeons and rifts; numbers in `docs/baseline-sim.md`, dungeon full-clear rates not captured yet), then Phase 4 (UI and tutorials) and Phase 5 (docs and verification). This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -65,14 +65,14 @@ Not covered yet (Phase 1 extends it once locks are data): zone entry, class unlo
 
 | Issue | Size | Status |
 |---|---|---|
-| Auto-battle Cleric vs. Seryth win rate about 13% | M | open |
-| Rift full clear about 25% at tier 10, about 6% at tier 20 | M | open |
-| Early game too easy (normal encounters 98.8% vs 85-95% target) | M | open |
+| Auto-battle Cleric vs. Seryth win rate about 13% | M | closed: does not reproduce, Cleric wins 100% (Phase 3 baseline) |
+| Rift full clear about 31% at tier 10, about 9% at tier 20 (Phase 3 baseline) | M | open: Phase 3b |
+| Early game too easy (normal encounters 98.8% vs 85-95% target) | M | closed: Phase 3a |
 | Solo class spread (warrior, mage, necromancer, bard 69-73%) | M | open |
 | Edicts last 20 battles, designed as days | S-M | open |
 | Library studying inventory-only | S-M | open |
-| `PROGRESS.md` Design decisions ends mid-sentence; Phase 17-20 details missing | S | open |
-| Third class level mismatch (40 / 45) | S | open |
+| `PROGRESS.md` Design decisions ends mid-sentence; Phase 17-20 details missing | S | closed: section is complete and phases 17-20 have their own blocks |
+| Third class level mismatch (40 / 45) | S | closed: both paths exist, `class:third` states them (Phase 2a) |
 | Boss Rush level in README vs code | S | closed: both say 30 (section 11) |
 | Level-only reveal table ignores non-level progress | M | folded into Phase 1 |
 

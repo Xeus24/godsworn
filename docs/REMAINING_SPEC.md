@@ -1,5 +1,7 @@
 # Remaining specification (extracted from the Master Prompt)
 
+> **Status (2026-11-16): all of it is built.** Sections H, I, J and K are done (see the Handoff in `PROGRESS.md`). This file is kept as a record of what was asked for. The simplifications made along the way are under "Cut / deferred" in `PROGRESS.md`; current work is the progression overhaul in `docs/PROGRESSION.md`.
+
 This file is the part of the Master Prompt that is **not built yet**, saved so a fresh session can carry on without the original chat. It was extracted from a conversation transcript, so a few characters may be mangled; the intent is clear. What is built, and what was deliberately cut, is in `PROGRESS.md` (see "Handoff"). The rules that always apply: a feature that already exists is skipped and replaced with something of equal size; the reconciliation table wins on conflicts; content is data-driven (no engine change to add content); nothing is left as a stub (anything deferred is listed under "Cut / deferred" in PROGRESS.md); and nothing may reproduce names, rules text or feature names from a published tabletop game (Section I).
 
 ## Part 1 reconciliation table (R1-R20)
