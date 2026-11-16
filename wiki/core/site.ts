@@ -5,7 +5,7 @@
  * builds it in memory and asserts there are no broken links.
  */
 import { esc, slug } from './html';
-import { renderLayout } from './layout';
+import { navScript, renderLayout, renderNav } from './layout';
 import type { PageSpec, RenderCtx, WikiSection } from './types';
 
 export interface BuiltPage {
@@ -24,6 +24,8 @@ export interface SearchEntry {
 
 export interface BuildResult {
   pages: BuiltPage[];
+  /** Generated assets such as `assets/nav.js`. */
+  assets: BuiltPage[];
   search: SearchEntry[];
   broken: string[];
 }
@@ -94,8 +96,7 @@ export function buildSite(sections: readonly WikiSection[]): BuildResult {
   const broken: string[] = [...problems];
   const built: BuiltPage[] = [];
 
-  for (const [k, p] of pages) {
-    const path = pathOf(p.ns, p.id);
+  const makeCtx = (k: string, path: string): RenderCtx => {
     const ctx: RenderCtx = {
       has: (ns, id) => pages.has(key(ns, id)),
       titleOf: (ns, id) => pages.get(key(ns, id))?.title,
@@ -113,6 +114,15 @@ export function buildSite(sections: readonly WikiSection[]): BuildResult {
         return pages.has(key(ns, id)) ? ctx.link(ns, id, label) : esc(label ?? id);
       },
     };
+    return ctx;
+  };
+
+  // Rendered from the site root; nav.js prefixes each link with the page's root.
+  const assets: BuiltPage[] = [{ path: 'assets/nav.js', html: navScript(renderNav(sections, makeCtx('sidebar', 'index.html'))) }];
+
+  for (const [k, p] of pages) {
+    const path = pathOf(p.ns, p.id);
+    const ctx = makeCtx(k, path);
     let body: string;
     try {
       body = p.render(ctx);
@@ -121,7 +131,7 @@ export function buildSite(sections: readonly WikiSection[]): BuildResult {
       body = `<p class="broken-link">This page failed to render.</p>`;
     }
     const catLinks = (p.categories ?? []).map((c) => ctx.link('category', c, c));
-    built.push({ path, html: renderLayout({ page: p, body, ctx, sections, section: sectionOf.get(k), catLinks }) });
+    built.push({ path, html: renderLayout({ page: p, body, ctx, section: sectionOf.get(k), catLinks }) });
   }
 
   const search: SearchEntry[] = [...pages.values()]
@@ -135,5 +145,5 @@ export function buildSite(sections: readonly WikiSection[]): BuildResult {
       return e;
     });
 
-  return { pages: built, search, broken };
+  return { pages: built, assets, search, broken };
 }

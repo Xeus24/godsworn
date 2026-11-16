@@ -26,6 +26,7 @@ for (const p of result.pages) {
   writeFileSync(file, p.html);
 }
 cpSync(join(here, 'assets'), join(out, 'assets'), { recursive: true });
+for (const a of result.assets) writeFileSync(join(out, a.path), a.html);
 copyFileSync(join(here, '..', 'public', 'favicon.svg'), join(out, 'favicon.svg'));
 writeFileSync(join(out, 'search-index.json'), JSON.stringify(result.search));
 
