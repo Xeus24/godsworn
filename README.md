@@ -33,7 +33,7 @@ Then open http://localhost:5173.
 | `npm run playtest` | Play the main story to an ending with every class, using real auto-battles (`npm run playtest -- mage` logs every fight of one class; `npm run playtest -- ng` plays it again through New Game+1, `npm run playtest -- ng monk` for one class) |
 | `npm run content:md` | Regenerate the item catalogue in CONTENT.md from the data files |
 | `npm run wiki` | Build the fan-style wiki (about 9,900 pages, generated from the data files) to `wiki/dist/`; see [wiki/README.md](wiki/README.md) |
-| `npm run wiki:serve` | Serve the built wiki on http://localhost:5190 |
+| `npm run wiki:serve` | Serve the built wiki on http://localhost:5190 (the game also serves it at `/wiki/`, opened from the title menu's **Wiki** button; `npm run build` builds it into `dist/wiki/`) |
 | `npm run app:build` | Build the production game and package it as a macOS app (Apple Silicon) at `release/Godsworn-darwin-arm64/Godsworn.app` |
 | `npm run app:dev` | Build the game and open it in the desktop shell without packaging |
 

@@ -149,6 +149,7 @@ function showTitle(): void {
   if (saves.list().length) items.unshift({ label: 'Load Game', onSelect: () => showSaves('load') });
   if (latest && !session) items.unshift({ label: `Continue (${latest.name}, level ${latest.level})`, onSelect: () => loadSlot(latest.slot) });
   if (session) items.unshift({ label: 'Resume', onSelect: showWorld });
+  items.push({ label: 'Wiki', onSelect: () => void window.open(`${import.meta.env.BASE_URL}wiki/`, '_blank', 'noopener') });
   items.push({ label: 'Settings', onSelect: () => new SettingsOverlay().open() });
   audio().setTrack('title');
   screens.show(new TitleScreen(items, `Godsworn v${__APP_VERSION__}`));

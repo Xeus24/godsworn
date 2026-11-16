@@ -1,6 +1,6 @@
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { join } from 'node:path';
+import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vitest/config';
 
@@ -47,8 +47,46 @@ function saveToFolder(): Plugin {
   };
 }
 
+/**
+ * The wiki (built by `npm run wiki` into `wiki/dist/`) is served at `/wiki/`:
+ * the dev server reads it straight from `wiki/dist/`, and a production build
+ * copies it to `dist/wiki/` (so the preview server and the Mac app serve it too).
+ */
+function wikiAtSlashWiki(): Plugin {
+  const root = fileURLToPath(new URL('.', import.meta.url));
+  const wikiDist = join(root, 'wiki', 'dist');
+  const types: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml' };
+  return {
+    name: 'godsworn-wiki',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const path = (req.url ?? '').split('?')[0]!;
+        if (path === '/wiki') {
+          res.statusCode = 302;
+          res.setHeader('Location', '/wiki/');
+          return void res.end();
+        }
+        if (!path.startsWith('/wiki/')) return next();
+        let rel = decodeURIComponent(path.slice('/wiki/'.length));
+        if (rel === '' || rel.endsWith('/')) rel += 'index.html';
+        const file = normalize(join(wikiDist, rel));
+        if (!file.startsWith(wikiDist + sep) || !existsSync(file) || !statSync(file).isFile()) {
+          res.statusCode = 404;
+          return void res.end(existsSync(wikiDist) ? 'not found' : 'The wiki is not built yet: run npm run wiki');
+        }
+        res.setHeader('Content-Type', types[extname(file)] ?? 'application/octet-stream');
+        res.end(readFileSync(file));
+      });
+    },
+    closeBundle() {
+      if (!existsSync(wikiDist)) return void console.warn('wiki/dist is missing: the build has no /wiki/ (run npm run wiki)');
+      cpSync(wikiDist, join(root, 'dist', 'wiki'), { recursive: true });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [saveToFolder()],
+  plugins: [saveToFolder(), wikiAtSlashWiki()],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
