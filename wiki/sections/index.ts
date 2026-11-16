@@ -9,9 +9,9 @@ import { guidesSection } from './guides';
 import { homeSection } from './home';
 import { itemsSection } from './items';
 import { skillsSection } from './skills';
-import { systemsSection } from './systems';
+import { systemsSections } from './systems';
 import { worldSection } from './world';
 
-const CONTENT_SECTIONS: WikiSection[] = [guidesSection, charactersSection, skillsSection, itemsSection, bestiarySection, worldSection, systemsSection];
+const CONTENT_SECTIONS: WikiSection[] = [guidesSection, charactersSection, skillsSection, itemsSection, bestiarySection, worldSection, ...systemsSections];
 
 export const SECTIONS: WikiSection[] = [homeSection(CONTENT_SECTIONS), ...CONTENT_SECTIONS];
