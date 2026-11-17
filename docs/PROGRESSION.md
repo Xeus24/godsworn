@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 3 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 4 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -227,8 +227,16 @@ Design references (docs only, never in the game): staggered system introduction 
 | 20 | The Turning Wheel | `system:wheel` | level 10 | sealed | Keeper Orsolya | 3, done |
 | 21 | A Home of Your Own | `reveal:town:housing` | level 10 | sealed | Pippa Bramblebread | 3, done |
 | 22 | The Three Days of Marrow | `system:marrow` | the fog ferry opens (story flag) | hidden | the ferryman | 3, done |
-| 23-30 | Caravans (with the Road), second class, duels, Bonds & Campfire Tales, trophies & sigils, Relic Tools, specialization, hunts, hybrids | | levels 15-25, companions, first elite | | | 4 |
-| 31-38 | Observatory, Fortunes, Faith, Relics & Land, the Road, Boss Rush, Emberfall & sky isles, Oaths | | levels 25-35, 250 favor, chapter 5 | | | 5 |
+| 23 | Kindred Bonds | `system:bonds` | a companion and level 11, or level 14 | sealed | Sergeant Brask | 4, done |
+| 24 | Wayfarer's Arts (Heart page and world-screen button) | `system:arts` | level 12 | sealed | Sahara Longstride | 4, done |
+| 25 | Trophy Forging | `system:trophies` | first boss slain, or level 15 | sealed | Brannoc the smith | 4, done |
+| 26 | A Second Calling | `class:second` | level 15, then the trainer's trial | sealed | the trainers of the Proving Grounds | 4, done |
+| 27 | Learned Arts | `system:learned` | after A Second Calling opens | sealed | the trainers of the Proving Grounds | 4, done |
+| 28 | Campfire Tales | `system:tales` | two companions, or level 16 | sealed | Brother Aldric | 4, done |
+| 29 | Sigils of the Old Faith | `system:sigils` | level 16 | sealed | High Lector Amara | 4, done |
+| 30 | Relic Tools | `system:tools` | level 18 | sealed | a hooded peddler | 4, done |
+| 31 | Hybrid Callings | `class:hybrids` | level 25, then the pair trial | sealed | Commander Elric Vance | 4, done |
+| 32-39 | Specialization, duels and hunts (Trials & Wonders), Observatory, Fortunes, Faith, Relics & Land, the Road with caravans, Boss Rush, Emberfall & sky isles, Oaths | | levels 20-35, 250 favor, chapter 5 | | | 5 |
 | 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
 | 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
 | 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
