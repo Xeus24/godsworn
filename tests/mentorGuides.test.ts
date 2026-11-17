@@ -123,10 +123,10 @@ describe('gates that lean on story and other gates', () => {
     expect(s.guide.entryOpen('realm:grudge')).toBe(true);
     expect(s.locks.isOpen('reveal:codex:realm')).toBe(true);
     expect(s.guide.entryOpen('realm:wheel')).toBe(false);
-    expect(s.guide.entryOpen('realm:observatory', 'codex:pages')).toBe(false);
+    expect(s.guide.entryOpen('realm:echoes', 'codex:pages')).toBe(false);
     s.player.level = 10;
     s.bus.emit('stateChanged', { reason: 'test' });
-    expect(s.guide.entryOpen('realm:observatory', 'codex:pages')).toBe(true);
+    expect(s.guide.entryOpen('realm:echoes', 'codex:pages')).toBe(true);
   });
 
   it('a page no system claims stays open', () => expect(newSession().guide.entryOpen('realm:no-such-page')).toBe(true));

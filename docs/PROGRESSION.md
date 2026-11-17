@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 4 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 5 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -236,7 +236,15 @@ Design references (docs only, never in the game): staggered system introduction 
 | 29 | Sigils of the Old Faith | `system:sigils` | level 16 | sealed | High Lector Amara | 4, done |
 | 30 | Relic Tools | `system:tools` | level 18 | sealed | a hooded peddler | 4, done |
 | 31 | Hybrid Callings | `class:hybrids` | level 25, then the pair trial | sealed | Commander Elric Vance | 4, done |
-| 32-39 | Specialization, duels and hunts (Trials & Wonders), Observatory, Fortunes, Faith, Relics & Land, the Road with caravans, Boss Rush, Emberfall & sky isles, Oaths | | levels 20-35, 250 favor, chapter 5 | | | 5 |
+| 32 | Trials & Wonders (diving 10, duels 15, hunts 20, sky isles by level, inside) | `system:trials` | level 10 | sealed | Captain Reyna Holt | 5, done |
+| 33 | Fortunes of the Realm (Realm page and Town Fortunes card) | `reveal:town:fortunes` | level 10 | sealed | Postmaster Hobb | 5, done |
+| 34 | Soulbinding and the Ranch | `system:ranch` | level 12 (Soul Seals still work earlier; the ranch page waits) | sealed | Tobin Furrow | 5, done |
+| 35 | The Road (caravans from 8 and weather-working from 12 now both show from 12) | `system:road` | level 12 | sealed | Sahara Longstride | 5, done |
+| 36 | Specialization | `system:spec` | level 20 (the class-level-20 rule in the tree is unchanged) | sealed | Brother Ansel | 5, done |
+| 37 | The Observatory | `system:observatory` | level 25 and the Wheel open | sealed | Keeper Orsolya | 5, done |
+| 38 | Relics & Land | `system:land` | level 28 | sealed | Archivist Tamsin | 5, done |
+| 39 | Faith | `system:faith` | Favored (250) with any god, or level 30 | sealed | Sister Wenna | 5, done |
+| 40-47 | Boss Rush, Emberfall, Oaths, Gods & Party, Society, Realm at Large, Crown & Law, Champions league | | levels 30-40, chapter 5 | | | 6 |
 | 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
 | 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
 | 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
