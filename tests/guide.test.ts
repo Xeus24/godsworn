@@ -33,7 +33,7 @@ describe('progressive reveal', () => {
 
   it('reports the next level that opens something', () => {
     const s = session(1);
-    expect(nextReveal(s.state, 'town:')?.level).toBe(2);
+    expect(nextReveal(s.state, 'town:')?.level).toBe(3);
     s.player.level = 60;
     s.state.ngPlus = 1;
     expect(nextReveal(s.state, 'town:')).toBeUndefined();

@@ -53,6 +53,14 @@ export const SYSTEM_LOCKS: LockDef[] = [
     unlockMessage: 'The merchants of the market will trade with you now.',
     category: 'town',
   },
+  {
+    id: 'system:workshop',
+    requirement: { kind: 'any', conds: [{ kind: 'quest', quest: 'sg-hearth-3', state: 'active' }, { kind: 'level', min: 4 }] },
+    visibility: 'teased',
+    hint: 'The workshop masters take on hands that have seen a little of the Road: reach level 4, or take on an errand that needs a bench.',
+    unlockMessage: 'The workshop masters will let you use their benches.',
+    category: 'craft',
+  },
 ];
 
 export const SYSTEMS: SystemDef[] = [
@@ -137,6 +145,107 @@ export const SYSTEMS: SystemDef[] = [
     steps: [
       { text: 'Every town keeps a market. Go in when your bags are heavy.', target: '[data-card="Market"]' },
       { text: 'Sell what you will not wear; a mistake can be bought back the same day.' },
+    ],
+  },
+  // Batch 2: the first town, the gods and the first companions.
+  {
+    id: 'guild',
+    name: "The Adventurers' Guild",
+    lock: 'reveal:town:guild',
+    mentor: 'the guild clerk',
+    summary: 'Contracts for every rank; points raise you through the ranks.',
+    entries: ["card:Adventurers' Guild"],
+    steps: [
+      { text: 'The Guild posts contracts for heroes of every rank. Open its card in any town.', target: '[data-card="Adventurers\' Guild"]' },
+      { text: 'Finish contracts to earn points and climb the ranks. Higher ranks pay better and open harder work.' },
+    ],
+  },
+  {
+    id: 'workshop',
+    name: 'The Workshop',
+    lock: 'system:workshop',
+    mentor: 'Mabry Ladle',
+    summary: 'Crafting professions, recipes, upgrades and sockets.',
+    entries: ['card:Workshop'],
+    steps: [
+      { text: 'The benches are yours to use now. Step into the workshop.', target: '[data-card="Workshop"]' },
+      { text: 'Smithing, alchemy and cooking are open to anyone. You may learn two crafts; masters of the rarer ones keep benches in far lands.' },
+      { text: 'Materials come from foes and gathering spots. The higher your craft, the finer the recipes it can follow.' },
+    ],
+  },
+  {
+    id: 'pastimes',
+    name: 'Pastimes',
+    lock: 'reveal:town:pastimes',
+    mentor: 'Tobin Furrow',
+    summary: 'Fishing, dice, digging and the other pastimes each town is known for.',
+    entries: ['card:Pastimes'],
+    steps: [
+      { text: 'Every town is known for some pastime: fishing, dice, digging and more. Look at its card.', target: '[data-card="Pastimes"]' },
+      { text: 'Pastimes pay in coin and curios, and collectors prize the rarer catches.' },
+    ],
+  },
+  {
+    id: 'general',
+    name: 'General Skills',
+    lock: 'reveal:tab:general',
+    mentor: 'Archivist Tamsin',
+    summary: 'Skills learned from books and teachers, open to every calling.',
+    entries: ['nav:general'],
+    steps: [
+      { text: 'Not every skill comes from your calling. Open your General skills.', target: '[data-guide="nav:general"]', view: 'nav:general' },
+      { text: 'Skillbooks and teachers grant them. Place one in an empty slot to use it.', target: '.general-slots' },
+      { text: 'They belong to you, not your class, so they follow you into any calling you take up later.' },
+    ],
+  },
+  {
+    id: 'tales',
+    name: 'Tales & Tankards',
+    lock: 'reveal:town:tales',
+    mentor: 'Pim the Whisper',
+    summary: 'The card game played in every inn; win hands to win cards.',
+    entries: ['card:Tales & Tankards'],
+    steps: [
+      { text: 'Every inn plays Tales & Tankards. Open its card and sit down for a hand.', target: '[data-card="Tales & Tankards"]' },
+      { text: 'Win hands to win new cards. The Codex keeps your collection.' },
+    ],
+  },
+  {
+    id: 'arena',
+    name: 'The Arena',
+    lock: 'reveal:town:arena',
+    mentor: 'Commander Elric Vance',
+    summary: 'Spar without risk, and meet the trainers who teach new callings.',
+    entries: ['card:Arena & Class Trainers'],
+    steps: [
+      { text: 'The arena lets you spar against foes you have met, with nothing lost if you fall.', target: '[data-card="Arena & Class Trainers"]' },
+      { text: 'Test a new build here before the Road tests it for you. The trainers will speak of second callings once you are ready.' },
+    ],
+  },
+  {
+    id: 'pantheon',
+    name: 'The Pantheon',
+    lock: 'reveal:tab:pantheon',
+    mentor: 'Sister Wenna',
+    summary: 'The gods, their favor, offerings, blessings and the path to Apostle.',
+    entries: ['nav:pantheon'],
+    steps: [
+      { text: 'The gods have noticed you. Open the Pantheon to see where you stand with each.', target: '[data-guide="nav:pantheon"]', view: 'nav:pantheon' },
+      { text: 'Every god loves some deeds and hates others. What you do on the Road raises or lowers their favor.', until: 'favorChanged' },
+      { text: 'At a shrine or temple you may pray and make offerings. Enough favor brings blessings, and one day a god may name you Apostle.' },
+    ],
+  },
+  {
+    id: 'party',
+    name: 'Your Fellowship',
+    lock: 'reveal:tab:party',
+    mentor: 'Sergeant Brask',
+    summary: 'Companions, where they stand in battle, and what they think of you.',
+    entries: ['nav:party'],
+    steps: [
+      { text: 'You are not alone on the Road any more. Open your Party.', target: '[data-guide="nav:party"]', view: 'nav:party' },
+      { text: 'Companions fight beside you. Put the sturdy ones in front and the casters behind.' },
+      { text: 'Talk to them at camp. Deeds they admire raise their approval, and their bond with you grows.' },
     ],
   },
 ];

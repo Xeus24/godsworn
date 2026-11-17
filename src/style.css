@@ -957,3 +957,4 @@ body.reduce-motion .codex-portrait canvas { animation: none !important; }
 @media (prefers-reduced-motion: reduce) { .guide-glow { animation: none; } }
 .reduce-motion .guide-glow, .reduce-flashing .guide-glow { animation: none; }
 .sealed-name { text-decoration: underline dotted; cursor: help; }
+.guide-card.guide-card-right { left: auto; right: 16px; }

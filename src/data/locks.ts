@@ -38,8 +38,8 @@ export const ENDGAME_COND: Cond = {
 /** Screens and town services that a new hero does not need yet: [level, what it is]. */
 export const REVEAL_LEVELS = {
   'tab:skills': [2, 'the skill trees'],
-  'tab:pantheon': [3, 'the Pantheon'],
-  'tab:party': [3, 'your fellowship'],
+  'tab:pantheon': [6, 'the Pantheon'],
+  'tab:party': [8, 'your fellowship'],
   'tab:general': [5, 'the general skills'],
   'codex:maps': [6, 'the maps'],
   'codex:compendium': [5, 'the compendium'],
@@ -52,7 +52,7 @@ export const REVEAL_LEVELS = {
   'codex:completion': [10, 'the completion ledger'],
   'codex:ship': [12, 'the ship'],
   'town:guild': [3, "the Adventurers' Guild"],
-  'town:pastimes': [2, 'the pastimes'],
+  'town:pastimes': [4, 'the pastimes'],
   'town:renown': [4, 'the town renown'],
   'town:tales': [5, 'Tales & Tankards'],
   'town:arena': [5, 'the arena'],
@@ -64,11 +64,20 @@ export const REVEAL_LEVELS = {
 
 export type RevealKey = keyof typeof REVEAL_LEVELS;
 
+/**
+ * Other ways a reveal opens before its level: the story beat that brings the system to the hero.
+ * The level stays as a fallback so a hero who wanders off the story is never left without it.
+ */
+const REVEAL_SOONER: Partial<Record<RevealKey, { cond: Cond; hint: string }>> = {
+  'tab:pantheon': { cond: { kind: 'quest', quest: 'main-1', state: 'complete' }, hint: 'The gods are listening. Answer the call of the Silent Shrine.' },
+  'tab:party': { cond: { kind: 'companions', min: 1 }, hint: 'Find someone willing to walk the Road beside you.' },
+};
+
 const revealLocks: LockDef[] = (Object.entries(REVEAL_LEVELS) as [RevealKey, readonly [number, string]][]).map(([key, [level, what]]) => ({
   id: `reveal:${key}`,
-  requirement: { kind: 'any', conds: [{ kind: 'level', min: level }, ENDGAME_COND] },
+  requirement: { kind: 'any', conds: [...(REVEAL_SOONER[key] ? [REVEAL_SOONER[key].cond] : []), { kind: 'level', min: level }, ENDGAME_COND] },
   visibility: 'teased',
-  hint: `${what.charAt(0).toUpperCase()}${what.slice(1)} will come to you as you walk the Road. Gain experience in battle.`,
+  hint: REVEAL_SOONER[key]?.hint ?? `${what.charAt(0).toUpperCase()}${what.slice(1)} will come to you as you walk the Road and grow in strength.`,
   unlockMessage: `A new door is open to you: ${what}.`,
   category: 'reveal',
 }));

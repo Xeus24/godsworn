@@ -14,6 +14,8 @@ export class GuideCard {
   private session: GameSession | undefined;
   private off: (() => void) | undefined;
   private selector: string | undefined;
+  /** The step whose target was last scrolled into view (once per step, so the hero's own scrolling is not fought). */
+  private shown = '';
   private readonly watcher: MutationObserver;
 
   constructor(host: HTMLElement = document.body) {
@@ -21,6 +23,7 @@ export class GuideCard {
     host.append(this.node);
     this.watcher = new MutationObserver(() => this.glow());
     this.watcher.observe(host, { childList: true, subtree: true });
+    window.addEventListener('resize', () => this.glow());
   }
 
   attach(s: GameSession): void {
@@ -60,5 +63,18 @@ export class GuideCard {
     const want = this.selector ? [...document.querySelectorAll<HTMLElement>(this.selector)] : [];
     for (const old of document.querySelectorAll<HTMLElement>(`.${GLOW}`)) if (!want.includes(old)) old.classList.remove(GLOW);
     for (const w of want) if (!w.classList.contains(GLOW)) w.classList.add(GLOW);
+    const first = want[0];
+    if (!first || this.node.hidden) return;
+    const key = `${this.session?.guide.current()?.def.id}:${this.session?.guide.current()?.index}`;
+    if (key !== this.shown) {
+      this.shown = key;
+      first.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    }
+    // Never cover the thing being pointed at: move to the other corner when they overlap.
+    const a = first.getBoundingClientRect();
+    this.node.classList.remove('guide-card-right');
+    const b = this.node.getBoundingClientRect();
+    const overlap = a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+    if (overlap) this.node.classList.add('guide-card-right');
   }
 }

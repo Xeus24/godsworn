@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batch 1 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 and 2 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -211,12 +211,21 @@ Design references (docs only, never in the game): staggered system introduction 
 | 4 | Body and Mind | `system:attributes` | level 2 | hidden | Gran Pell | 1, done |
 | 5 | Your Calling (skill trees) | `reveal:tab:skills` | level 2 | sealed | Brother Ansel | 1, done |
 | 6 | The Market | `system:market` | first battle won, or level 2 | sealed | Marta of the Gilded Goose | 1, done |
-| 7-14 | Pantheon, Party, Guild, Workshop, Pastimes, General skills, Tales & arena, Codex ledgers | | first main chapter; first companion; levels 3-6 | | | 2 |
-| 15-22 | Renown, investments, caravans, Grudgebound, the Wheel, housing, Convictions, Marrow | | levels 6-14, first defeat or flight, story | | | 3 |
+| 7 | The Adventurers' Guild | `reveal:town:guild` | level 3 | sealed | the guild clerk | 2, done |
+| 8 | The Workshop | `system:workshop` | level 4, or Gran Pell's crafting errand taken up (was open from level 1) | sealed | Mabry Ladle | 2, done |
+| 9 | Pastimes | `reveal:town:pastimes` | level 4 (was 2) | sealed | Tobin Furrow | 2, done |
+| 10 | General Skills | `reveal:tab:general` | level 5 | sealed | Archivist Tamsin | 2, done |
+| 11 | Tales & Tankards | `reveal:town:tales` | level 5 | sealed | Pim the Whisper | 2, done |
+| 12 | The Arena | `reveal:town:arena` | level 5 | sealed | Commander Elric Vance | 2, done |
+| 13 | The Pantheon | `reveal:tab:pantheon` | The Silent Shrine done, or level 6 (was level 3) | sealed | Sister Wenna | 2, done |
+| 14 | Your Fellowship | `reveal:tab:party` | first companion, or level 8 (was level 3) | sealed | Sergeant Brask | 2, done |
+| 15-22 | Codex and its ledgers, Renown, investments, caravans, Grudgebound, the Wheel, housing, Convictions, Marrow | | levels 6-14, first defeat or flight, story | | | 3 |
 | 23-30 | Second class, duels, Bonds & Campfire Tales, trophies & sigils, Relic Tools, specialization, hunts, hybrids | | levels 15-25, companions, first elite | | | 4 |
 | 31-38 | Observatory, Fortunes, Faith, Relics & Land, the Road, Boss Rush, Emberfall & sky isles, Oaths | | levels 25-35, 250 favor, chapter 5 | | | 5 |
 | 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
 | 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
 | 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
+
+Guide card: moves to the other corner when it would cover its target, and scrolls the target into view once per step.
 
 Pacing check is by the playtest's modelled hours (first walk about 16 h, later walks about 8 h each), not a measurement.
