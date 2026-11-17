@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 6 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 7 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -252,11 +252,23 @@ Design references (docs only, never in the game): staggered system introduction 
 | 45 | The Realm at Large | `system:worldly` | level 38 | sealed | Ilaria Wingless | 6, done |
 | 46 | Crown & Law | `system:civic` | level 40 | sealed | High Lector Amara | 6, done |
 | 47 | The Champions League | `endgame:league` | level 40 (unchanged) | sealed | Commander Elric Vance | 6, done |
-| 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
-| 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
-| 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
+| 48 | Games & Testament (Shrine Defense) | `games:defense` | level 12 (unchanged; the page opens with Shrine Defense, see note) | sealed | Sister Wenna | 7, done |
+| 49 | Pockets & Wilds | `system:pockets` | level 24 (table said 36-45; the Godless Wilds start in the meadows) | sealed | a hooded peddler | 7, done |
+| 50 | Relics & Meals | `system:relicmeals` | level 34 (table said 4th walk; relics are found in the first walk) | sealed | Mabry Ladle | 7, done |
+| 51 | Tales & Strangers | `system:strangers` | level 44 | sealed | Pim the Whisper | 7, done |
+| 52 | Great Foes | `system:foes` | main chapter 6 done, or level 45 | sealed | Commander Elric Vance | 7, done |
+| 53 | A Third Calling | `class:third` | level 45 and Amara's errand, or level 40 on the third walk | sealed | High Lector Amara | 7, done |
+| 54 | The Deeper Works (Rift Gate) | `endgame` | story ended, or the level cap, or a later walk | sealed | Commander Elric Vance | 7, done |
+| 55-59 | Rifts, the Endless Spire, the Celestial Atlas, the Divine Trials, the Weekly Run | `endgame:*` | level 50 (league 40, daily 20), behind the Rift Gate | sealed | various | 7, done |
+| 60 | The Trial of the Day | `endgame:daily` | level 20, behind the Rift Gate | sealed | Postmaster Hobb | 7, done |
+| 61 | Twilight & Endgame | `system:twilight` | level 50, or a later walk | sealed | Ilune Firstlight | 7, done |
+| 62 | Apostleship | `system:apostle` | Exalted with a god, or level 54 | sealed | Sister Wenna | 7, done |
+| 63 | The Paragon Board | `system:paragon` | the level cap | sealed | Brother Ansel | 7, done |
+| 64-75 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
 
 Codex > Realm and Heart: each page appears when its own system opens; the Realm tab opens with the first named foe, the Heart tab with Convictions. Pages no system claims yet keep the old level-10 rule (`codex:pages`).
+
+Shrine Defense lives on the Games & Testament page with Living Dungeons, the Gods' Gambit and the Final Testament; the page opens at 12 with Shrine Defense. The old "Endgame unlocked" and "New race unlocked" pop-ups in `main.ts` are reworded in-world.
 
 Guide card: moves to the other corner when it would cover its target, and scrolls the target into view once per step.
 

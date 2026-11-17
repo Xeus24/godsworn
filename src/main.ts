@@ -201,8 +201,8 @@ function attach(s: GameSession): void {
       recordClear();
       for (const race of content.races.all()) {
         if (race.unlock && 'clear' in race.unlock) {
-          toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
-          new UnlockOverlay(`New race unlocked: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose it when you create a new hero.']).open();
+          toasts.show('level', `A new people will answer your next hero: ${race.name}.`);
+          new UnlockOverlay(`A new people: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose them when you make your next hero.']).open();
         }
       }
     }
@@ -211,8 +211,8 @@ function attach(s: GameSession): void {
       recordNgPlus(s.state.ngPlus);
       for (const race of content.races.all()) {
         if (race.unlock && 'ngPlus' in race.unlock && race.unlock.ngPlus > before && race.unlock.ngPlus <= s.state.ngPlus) {
-          toasts.show('level', `New race unlocked for new heroes: ${race.name}!`);
-          new UnlockOverlay(`New race unlocked: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose it when you create a new hero.']).open();
+          toasts.show('level', `A new people will answer your next hero: ${race.name}.`);
+          new UnlockOverlay(`A new people: ${race.name}`, [race.flavor.lore, `${race.passive.name}: ${race.passive.description}`, 'Choose them when you make your next hero.']).open();
         }
       }
     }
@@ -229,13 +229,12 @@ function checkEndgame(s: GameSession, announce: boolean): void {
   if (s.state.flags[key]) return;
   s.state.flags[key] = true;
   if (!announce) return;
-  toasts.show('level', 'Endgame reached!');
-  new UnlockOverlay('Endgame unlocked', [
-    'You have reached the endgame. New things have opened up:',
-    'Rift Gate & Boss Rush: visit any town to open Rifts, or fight every dungeon boss in a row.',
-    'Stables, the Paragon board, item Ascension and the Defender path are now open.',
-    s.state.quests.ending ? 'New Game+ is ready: begin it from the Legacy panel on your Character sheet.' : 'Finish the story to unlock New Game+ (the Legacy panel on your Character sheet).',
-    ...(first0 ? ['New heroes can now take Challenge modes at creation, and the New Game+ races will show as you earn them.'] : []),
+  new UnlockOverlay('The deeper works of the world', [
+    'You stand at the height of your power, and the world has more to show you:',
+    'A Rift Gate in every town: rifts, the Boss Rush and the trials of the gods.',
+    'The stables, the Paragon board, the ascension of your finest gear and the path of the Defender.',
+    s.state.quests.ending ? 'You may walk the Road again from the start: see the Legacy panel on your Character sheet.' : 'Finish the story, and you may walk the Road again from the start (the Legacy panel on your Character sheet).',
+    ...(first0 ? ['New heroes may now take on Challenges at their making, and new peoples will answer them as you earn them.'] : []),
   ]).open();
 }
 
