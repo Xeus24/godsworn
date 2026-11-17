@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 5 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 6 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -244,7 +244,14 @@ Design references (docs only, never in the game): staggered system introduction 
 | 37 | The Observatory | `system:observatory` | level 25 and the Wheel open | sealed | Keeper Orsolya | 5, done |
 | 38 | Relics & Land | `system:land` | level 28 | sealed | Archivist Tamsin | 5, done |
 | 39 | Faith | `system:faith` | Favored (250) with any god, or level 30 | sealed | Sister Wenna | 5, done |
-| 40-47 | Boss Rush, Emberfall, Oaths, Gods & Party, Society, Realm at Large, Crown & Law, Champions league | | levels 30-40, chapter 5 | | | 6 |
+| 40 | The Boss Rush | `endgame:bossrush` | level 30 (unchanged; its card still needs the deeper works) | sealed | Sergeant Brask | 6, done |
+| 41 | Emberfall | `system:emberfall` | level 30 | sealed | Reeve Halwin | 6, done |
+| 42 | Gods & Party | `system:fellowship` | level 32 | sealed | Ilune Firstlight | 6, done |
+| 43 | Oaths | `system:oaths` | main chapter 5 done (about level 35), or level 38 | sealed | Commander Elric Vance | 6, done |
+| 44 | Society | `system:society` | level 36 | sealed | Vesk Lowlamp | 6, done |
+| 45 | The Realm at Large | `system:worldly` | level 38 | sealed | Ilaria Wingless | 6, done |
+| 46 | Crown & Law | `system:civic` | level 40 | sealed | High Lector Amara | 6, done |
+| 47 | The Champions League | `endgame:league` | level 40 (unchanged) | sealed | Commander Elric Vance | 6, done |
 | 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
 | 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
 | 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
