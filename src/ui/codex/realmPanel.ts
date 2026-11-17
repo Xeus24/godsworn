@@ -1,3 +1,4 @@
+import { settings } from '../settings';
 import { content } from '../../data';
 import { ERAS } from '../../data/realm/chronicle';
 import { eraName } from '../../engine/realm/chronicle';
@@ -56,8 +57,11 @@ export const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
+  // Each page appears once its own system has opened (or the player chose to see everything).
+  const shown = SECTIONS.filter(([id]) => settings().showEverything || session.guide.entryOpen(`realm:${id}`, 'codex:pages'));
+  if (!shown.some(([id]) => id === open.section) && shown[0]) open.section = shown[0][0];
   session.guide.viewed(`realm:${open.section}`);
-  const tabs = el('div', { class: 'row' }, ...SECTIONS.map(([id, label]) => {
+  const tabs = el('div', { class: 'row' }, ...shown.map(([id, label]) => {
     const b = el('button', { class: open.section === id ? 'active' : '', type: 'button', 'data-guide': `realm:${id}` }, label);
     b.addEventListener('click', () => {
       open.section = id;

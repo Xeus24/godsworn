@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 and 2 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batches 1 to 3 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -219,12 +219,21 @@ Design references (docs only, never in the game): staggered system introduction 
 | 12 | The Arena | `reveal:town:arena` | level 5 | sealed | Commander Elric Vance | 2, done |
 | 13 | The Pantheon | `reveal:tab:pantheon` | The Silent Shrine done, or level 6 (was level 3) | sealed | Sister Wenna | 2, done |
 | 14 | Your Fellowship | `reveal:tab:party` | first companion, or level 8 (was level 3) | sealed | Sergeant Brask | 2, done |
-| 15-22 | Codex and its ledgers, Renown, investments, caravans, Grudgebound, the Wheel, housing, Convictions, Marrow | | levels 6-14, first defeat or flight, story | | | 3 |
-| 23-30 | Second class, duels, Bonds & Campfire Tales, trophies & sigils, Relic Tools, specialization, hunts, hybrids | | levels 15-25, companions, first elite | | | 4 |
+| 15 | The Codex | `system:codex` | from the start (guide on first opening it) | hidden | Granny Hale | 3, done |
+| 16 | Renown | `reveal:town:renown` | level 4 | sealed | Postmaster Hobb | 3, done |
+| 17 | The Grudgebound | `system:grudge` | first defeat or flight, or level 10 | hidden | a whisper on the wind | 3, done |
+| 18 | Investments | `reveal:town:investments` | level 8 | sealed | Marlow Quickhand | 3, done |
+| 19 | Convictions | `system:convictions` | The Warden's Letter done (about level 9), or level 12 | sealed | Brother Aldric | 3, done |
+| 20 | The Turning Wheel | `system:wheel` | level 10 | sealed | Keeper Orsolya | 3, done |
+| 21 | A Home of Your Own | `reveal:town:housing` | level 10 | sealed | Pippa Bramblebread | 3, done |
+| 22 | The Three Days of Marrow | `system:marrow` | the fog ferry opens (story flag) | hidden | the ferryman | 3, done |
+| 23-30 | Caravans (with the Road), second class, duels, Bonds & Campfire Tales, trophies & sigils, Relic Tools, specialization, hunts, hybrids | | levels 15-25, companions, first elite | | | 4 |
 | 31-38 | Observatory, Fortunes, Faith, Relics & Land, the Road, Boss Rush, Emberfall & sky isles, Oaths | | levels 25-35, 250 favor, chapter 5 | | | 5 |
 | 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
 | 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
 | 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
+
+Codex > Realm and Heart: each page appears when its own system opens; the Realm tab opens with the first named foe, the Heart tab with Convictions. Pages no system claims yet keep the old level-10 rule (`codex:pages`).
 
 Guide card: moves to the other corner when it would cover its target, and scrolls the target into view once per step.
 

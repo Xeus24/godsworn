@@ -1,3 +1,4 @@
+import { settings } from '../settings';
 import { content } from '../../data';
 import { ARTS } from '../../data/heart/arts';
 import { BONDS, BOND_RANK_NAMES, BOND_RANK_POINTS } from '../../data/heart/bonds';
@@ -24,8 +25,10 @@ export const SECTIONS: [HeartSection, string][] = [['convictions', 'Convictions'
 
 /** Codex > Heart: what the hero believes, who they are close to, and what their companions say to each other. */
 export function heartPanel(session: GameSession, rerender: () => void, view: HeartView): HTMLElement {
+  const shown = SECTIONS.filter(([id]) => settings().showEverything || session.guide.entryOpen(`heart:${id}`, 'codex:pages'));
+  if (!shown.some(([id]) => id === view.section) && shown[0]) view.section = shown[0][0];
   session.guide.viewed(`heart:${view.section}`);
-  const tabs = SECTIONS.map(([id, label]) => {
+  const tabs = shown.map(([id, label]) => {
     const b = el('button', { type: 'button', class: view.section === id ? 'active' : '', 'data-guide': `heart:${id}` }, label);
     b.addEventListener('click', () => {
       view.section = id;

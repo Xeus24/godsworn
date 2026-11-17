@@ -113,6 +113,25 @@ describe('the mentor’s guides', () => {
   });
 });
 
+describe('gates that lean on story and other gates', () => {
+  it('the first defeat names a foe: the Grudgebound and the Realm pages open with it, before level 10', () => {
+    const s = newSession();
+    expect(s.guide.entryOpen('realm:grudge')).toBe(false);
+    expect(s.locks.isOpen('reveal:codex:realm')).toBe(false);
+    s.state.stats.battlesLost = 1;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.guide.entryOpen('realm:grudge')).toBe(true);
+    expect(s.locks.isOpen('reveal:codex:realm')).toBe(true);
+    expect(s.guide.entryOpen('realm:wheel')).toBe(false);
+    expect(s.guide.entryOpen('realm:observatory', 'codex:pages')).toBe(false);
+    s.player.level = 10;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.guide.entryOpen('realm:observatory', 'codex:pages')).toBe(true);
+  });
+
+  it('a page no system claims stays open', () => expect(newSession().guide.entryOpen('realm:no-such-page')).toBe(true));
+});
+
 describe('save version 26', () => {
   it('an old save gains the guide record, keeps every bit of progress, and is not flooded with guides', () => {
     const s = newSession();

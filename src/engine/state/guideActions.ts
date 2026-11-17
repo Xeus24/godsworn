@@ -47,6 +47,13 @@ export class GuideActions {
     return content.systems.all().filter((x) => isUnlocked(this.s.state, x.lock));
   }
 
+  /** Is this way in (a `data-guide` / `card:` key) open? Its system's lock decides; with no system, the `unclaimed` lock (if given) does. */
+  entryOpen(entry: string, unclaimed?: string): boolean {
+    const owner = content.systems.all().find((x) => x.entries.includes(entry));
+    if (owner) return isUnlocked(this.s.state, owner.lock);
+    return !unclaimed || isUnlocked(this.s.state, unclaimed);
+  }
+
   /** The guide on screen, if any. */
   current(): GuideNow | undefined {
     if (!this.active) return undefined;

@@ -71,6 +71,8 @@ export type RevealKey = keyof typeof REVEAL_LEVELS;
 const REVEAL_SOONER: Partial<Record<RevealKey, { cond: Cond; hint: string }>> = {
   'tab:pantheon': { cond: { kind: 'quest', quest: 'main-1', state: 'complete' }, hint: 'The gods are listening. Answer the call of the Silent Shrine.' },
   'tab:party': { cond: { kind: 'companions', min: 1 }, hint: 'Find someone willing to walk the Road beside you.' },
+  'codex:realm': { cond: { kind: 'unlocked', lock: 'system:grudge' }, hint: 'The realm stirs around you. Something that beats you will not forget you.' },
+  'codex:heart': { cond: { kind: 'unlocked', lock: 'system:convictions' }, hint: 'What you choose on the Road will shape what you believe.' },
 };
 
 const revealLocks: LockDef[] = (Object.entries(REVEAL_LEVELS) as [RevealKey, readonly [number, string]][]).map(([key, [level, what]]) => ({
@@ -288,6 +290,15 @@ export const LOCKS: LockDef[] = [
     hint: `Take two classes to level ${MULTICLASS.hybridLevel} each, then face both mentors in the pair trial to earn a hybrid prestige class.`,
     unlockMessage: 'Hybrid prestige classes are now within reach: raise two classes and face their mentors.',
     category: 'class',
+  },
+  {
+    // Codex > Realm and Heart pages that no system claims yet keep the old level rule.
+    id: 'codex:pages',
+    requirement: { kind: 'any', conds: [{ kind: 'level', min: 10 }, ENDGAME_COND] },
+    visibility: 'hidden',
+    hint: 'More of the realm will show itself as you grow in strength.',
+    unlockMessage: 'More of the realm reveals itself to you.',
+    category: 'reveal',
   },
   {
     id: 'endgame',
