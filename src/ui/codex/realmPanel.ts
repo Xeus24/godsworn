@@ -52,12 +52,13 @@ export interface RealmView {
   sparkB?: string;
   exam?: { god: string; attempt: number; answers: number[] };
 }
-const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall'], ['waters', 'Waters'], ['cardspire', 'Spire of Cards'], ['sundered', 'Sundered Hours'], ['painter', 'Painter’s Eye'], ['seasons', 'Divine Seasons'], ['omens', 'Omens'], ['tools', 'Chronicler’s Tools'], ['fates', 'Fates'], ['faith', 'Faith'], ['land', 'Relics & Land'], ['road', 'The Road'], ['trials', 'Trials & Wonders'], ['games', 'Games & Testament'], ['oaths', 'Oaths'], ['fellowship', 'Gods & Party'], ['society', 'Society'], ['worldly', 'The Realm at Large'], ['civic', 'Crown & Law'], ['pockets', 'Pockets & Wilds'], ['foes', 'Great Foes'], ['tales', 'Tales & Strangers'], ['craft', 'Relics & Meals'], ['twilight', 'Twilight & Endgame']];
+export const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel', 'The Wheel'], ['fortunes', 'Fortunes'], ['echoes', 'Echoes'], ['chronicle', 'Chronicle'], ['ranch', 'Ranch'], ['trophies', 'Trophies'], ['observatory', 'Observatory'], ['emberfall', 'Emberfall'], ['waters', 'Waters'], ['cardspire', 'Spire of Cards'], ['sundered', 'Sundered Hours'], ['painter', 'Painter’s Eye'], ['seasons', 'Divine Seasons'], ['omens', 'Omens'], ['tools', 'Chronicler’s Tools'], ['fates', 'Fates'], ['faith', 'Faith'], ['land', 'Relics & Land'], ['road', 'The Road'], ['trials', 'Trials & Wonders'], ['games', 'Games & Testament'], ['oaths', 'Oaths'], ['fellowship', 'Gods & Party'], ['society', 'Society'], ['worldly', 'The Realm at Large'], ['civic', 'Crown & Law'], ['pockets', 'Pockets & Wilds'], ['foes', 'Great Foes'], ['tales', 'Tales & Strangers'], ['craft', 'Relics & Meals'], ['twilight', 'Twilight & Endgame']];
 
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
+  session.guide.viewed(`realm:${open.section}`);
   const tabs = el('div', { class: 'row' }, ...SECTIONS.map(([id, label]) => {
-    const b = el('button', { class: open.section === id ? 'active' : '', type: 'button' }, label);
+    const b = el('button', { class: open.section === id ? 'active' : '', type: 'button', 'data-guide': `realm:${id}` }, label);
     b.addEventListener('click', () => {
       open.section = id;
       rerender();

@@ -27,6 +27,10 @@ export interface GameEvents {
   enemyKilled: { enemyId: string; tier: string };
   zoneEntered: { zoneId: string };
   timeChanged: { day: number; hour: number };
+  /** A lock opened (see `src/data/locks.ts`). `silent` when it opened without ceremony (an old save catching up, a reset). */
+  lockOpened: { lockId: string; silent: boolean };
+  /** The mentor's guide moved on (started, stepped, finished). The UI redraws its card. */
+  guideChanged: { id?: string };
   /** Generic "something changed, redraw" signal for UI (debug cheats, respecs...). */
   stateChanged: { reason: string };
   toast: { kind: 'info' | 'loot' | 'level' | 'favor' | 'blessing' | 'quest' | 'warning' | 'achievement'; text: string };

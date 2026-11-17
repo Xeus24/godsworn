@@ -948,3 +948,12 @@ body.reduce-motion .codex-portrait canvas { animation: none !important; }
 @media (prefers-reduced-motion: reduce) { .coach-pulse { animation: none; } }
 .coach-tip { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 8px 12px; margin: 6px 0; border: 1px solid var(--gold, #d9a441); border-radius: 6px; background: rgba(217, 164, 65, 0.12); font-size: 0.9em; }
 .reduce-motion .coach-pulse, .reduce-flashing .coach-pulse { animation: none; }
+
+/* The mentor's guide card and the glow on the control it points at. */
+.guide-card { position: fixed; left: 16px; bottom: 16px; z-index: 1400; max-width: min(340px, calc(100vw - 32px)); padding: 10px 12px; border: 1px solid var(--gold); border-radius: 8px; background: rgba(20, 12, 30, 0.96); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5); }
+.guide-card[hidden] { display: none; }
+.guide-card p { margin: 6px 0 8px; }
+.guide-glow { outline: 2px solid var(--gold); outline-offset: 2px; animation: coach-pulse 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .guide-glow { animation: none; } }
+.reduce-motion .guide-glow, .reduce-flashing .guide-glow { animation: none; }
+.sealed-name { text-decoration: underline dotted; cursor: help; }

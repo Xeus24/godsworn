@@ -40,6 +40,7 @@ function bar(fraction: number, cls: string, label: string): HTMLElement {
 /** Top bar shared by in-game screens: hero, vitals, gold and screen tabs. */
 export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: HTMLElement): HTMLElement {
   const p = session.player;
+  session.guide.viewed(`nav:${active}`);
   const stats = characterStats(p);
   const portrait = el('canvas', { class: 'portrait-small pixel', style: frameStyle(p.appearance?.frame) });
   const primary = p.classes[0];
@@ -49,7 +50,7 @@ export function navBar(session: GameSession, nav: Nav, active: NavTab, extra?: H
   const fs = firstSteps(session.state);
   const coachTab = fs.active ? fs.next?.place : undefined;
   const tab = (id: NavTab, label: string, run: () => void): HTMLElement => {
-    const b = el('button', { class: `tab${active === id ? ' active' : ''}${coachTab === id && active !== id ? ' coach-pulse' : ''}` }, label);
+    const b = el('button', { class: `tab${active === id ? ' active' : ''}${coachTab === id && active !== id ? ' coach-pulse' : ''}`, 'data-guide': `nav:${id}` }, label);
     b.addEventListener('click', run);
     return b;
   };

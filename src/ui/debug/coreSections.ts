@@ -3,7 +3,8 @@ import { formatClock, timeOfDay } from '../../engine/state/clock';
 import type { GameSession } from '../../engine/state/gameState';
 import { calculateStats } from '../../engine/stats/calculate';
 import type { Modifier } from '../../engine/stats/modifiers';
-import { lockControl } from '../../engine/locks/locks';
+import { isUnlocked, lockControl } from '../../engine/locks/locks';
+import { content } from '../../data';
 import { battleFx } from '../combat/combatScene';
 import { el } from '../screen';
 import { debugButton, type DebugPanel } from './debugPanel';
@@ -61,7 +62,18 @@ export function registerCoreSections(panel: DebugPanel, getSession: () => GameSe
             log('locks reset');
             refresh();
           }),
+          debugButton('All guides seen', () => {
+            s?.guide.setAllSeen(true);
+            log('all guides marked seen');
+            refresh();
+          }),
+          debugButton('Forget guides', () => {
+            s?.guide.setAllSeen(false);
+            log('guides forgotten');
+            refresh();
+          }),
         ),
+        s ? lockList(s, refresh, log) : el('span', {}),
       );
     },
   });
@@ -193,4 +205,49 @@ export function registerCoreSections(panel: DebugPanel, getSession: () => GameSe
       );
     },
   });
+}
+
+let lockFilter = '';
+
+/** Every lock with its state, filterable, each with Open / Shut (forced, not saved) / Clear. In a scroll pane. */
+function lockList(s: GameSession, refresh: () => void, log: (msg: string) => void): HTMLElement {
+  const input = el('input', { type: 'search', placeholder: 'filter locks (id or category)', value: lockFilter }) as HTMLInputElement;
+  input.addEventListener('change', () => {
+    lockFilter = input.value.trim().toLowerCase();
+    refresh();
+  });
+  const act = (label: string, run: () => void): HTMLElement => debugButton(label, () => {
+    run();
+    s.bus.emit('stateChanged', { reason: 'debug' });
+    refresh();
+  });
+  const rows = content.locks.all()
+    .filter((l) => !lockFilter || l.id.includes(lockFilter) || l.category.includes(lockFilter))
+    .slice(0, 200)
+    .map((l) => {
+      const shut = lockControl.shut.has(l.id);
+      const open = !shut && isUnlocked(s.state, l.id);
+      const sys = content.systems.all().find((x) => x.lock === l.id);
+      return el(
+        'div',
+        { class: 'row small' },
+        el('span', { class: open ? '' : 'dim' }, `${open ? 'open' : shut ? 'SHUT' : 'shut'} · ${l.id}${sys ? ` (${sys.name}${s.guide.isSeen(sys.id) ? ', seen' : ''})` : ''}`),
+        act('Open', () => {
+          lockControl.shut.delete(l.id);
+          s.state.unlocks.opened[l.id] ??= { day: s.state.clock.day, source: 'developer' };
+          log(`opened ${l.id}`);
+        }),
+        act(shut ? 'Unshut' : 'Shut', () => {
+          if (shut) lockControl.shut.delete(l.id);
+          else lockControl.shut.add(l.id);
+          log(`${shut ? 'unshut' : 'forced shut'} ${l.id}`);
+        }),
+        act('Clear', () => {
+          delete s.state.unlocks.opened[l.id];
+          log(`cleared record of ${l.id}`);
+        }),
+        ...(sys ? [act('Guide', () => s.guide.replay(sys.id))] : []),
+      );
+    });
+  return el('div', {}, input, el('div', { class: 'quest-list', style: 'max-height: 320px; overflow: auto' }, ...rows));
 }

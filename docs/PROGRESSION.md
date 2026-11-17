@@ -1,6 +1,6 @@
 # Progression and locks
 
-Status (2026-11-16): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers (four more condition leaves, 24 level gates moved into lock data). **Next: Phase 3b** (bosses, dungeons and rifts; numbers in `docs/baseline-sim.md`, dungeon full-clear rates not captured yet), then Phase 4 (UI and tutorials) and Phase 5 (docs and verification). This file is the working record for the lock overhaul.
+Status (2026-11-17): **Phases 0, 1, 2a-2d and 3a are built**, plus the Phase 1 leftovers. The old Phases 4 and 5 (UI, tutorials, verification) are replaced by the **systems-and-guides plan** in section 12, approved 2026-11-16: framework built, batch 1 of 8 done. Phase 3b (rift and dungeon balance) stays open and separate. This file is the working record for the lock overhaul.
 
 ## 1. What already exists (verified in code)
 
@@ -177,3 +177,46 @@ Notes:
 - Grandfathering: locks are sticky and the first sync opens whatever the hero already qualifies for, so no save loses a feature. A lock that has opened stays open even if the level later drops (a test that lowered the level now uses a fresh hero).
 - **Stayed, on purpose:** mimic tier by level and the lab potion tier (scaling), scroll rarity by recipe level (math), Codex knowledge levels (a different "level"), first-steps checklist (tutorial progress), item `requiredLevel` and affix `minLevel` (item rules), `FAST_TRAVEL_GOLD_PER_LEVEL` (cost). `SPEC_LEVEL` (20) is a **class** level, not a hero level, and no condition reads class level, so specialization stays in `specs.ts`. `TEMPT.minLevel` (30) is a scripted story event owned by `talesActions.ts`; it was left to avoid data importing engine constants.
 - Not moved: the level gates inside quest `requires` conditions are already `Cond` data.
+
+## 12. Systems, unlock order and the mentor's guides (approved 2026-11-16)
+
+Brief: every player-facing system gets one lock and one in-world guide, introduced one at a time; systems are spread over the first walk of the Road and the next three (New Game+1 to +3) so the game teaches itself over several playthroughs. Answers to the open questions, approved as proposed: spread systems across later walks rather than slowing levels; keep "level" in lock text but never "XP", "unlock", "locked", "New Game+" (said as "the second walk of the Road" and so on); keep Twilight of the Gods as the story arc it is and gate only the new later-walk band by tier; later-walk gates apply to new heroes only (sticky locks keep old saves whole); the guide journal is the **Wayfarer's Primer** in Codex > Progress; the Tabletop Rules toggle stays ungated with a Primer entry.
+
+Design references (docs only, never in the game): staggered system introduction and story / level / standing / key / boss gates as in long-form RPGs; prestige-tier gates for systems on later playthroughs as in incremental games.
+
+### Framework (built)
+
+| Piece | Where |
+|---|---|
+| `SystemDef` (one lock, one guide of 2-5 steps, mentor, entries) | `src/engine/guide/types.ts`, data in `src/data/systems.ts`, table `content.systems` |
+| New condition leaf `unlocked { lock }` (one gate leans on another) | `src/engine/quests/types.ts`, `conditions.ts`; text in `locks.ts` |
+| `lockOpened { lockId, silent }` bus event; `guideChanged` for the UI | `src/engine/core/gameEvents.ts`, `lockActions.ts` |
+| `GuideActions` (`s.guide`): offer, queue, next, skip, replay, `viewed`, auto-advance on `until` events | `src/engine/state/guideActions.ts` |
+| Save v26: `guide { seen, offered, catalog }`. Every load catches up silently (`grandfathered` reset on load), so locks and systems added after a save was written open quietly and their guides are settled as seen. A guide offered but not finished is offered again from step 1 after a reload | `save.ts`, `gameState.ts` |
+| Mentor card (corner panel; glow is a class on the real control, re-applied on redraw, so it survives resizes) | `src/ui/components/guideCard.ts` |
+| Wayfarer's Primer | `src/ui/codex/primerPanel.ts` |
+| Town cards gated from `entries: ['card:<title>']`; sealed services named on one line (nearest two, hint in the tooltip) | `townScreen.ts` (`cardLocks`) |
+| `data-guide` keys on nav tabs, Codex groups and tabs, Realm and Heart sections, the leave-town button | UI files |
+| Developer panel: every lock with Open / Shut (forced, not saved) / Clear / Guide; All guides seen; Forget guides | `src/ui/debug/coreSections.ts` |
+| Lock graph walk: lock-to-lock edges, cycles, locks no hero can open (levels to 90, tiers to 10, quests offered, items and flags produced) | `scripts/lockgraph.ts` `lockReachability` |
+| Tests: guide rules, lock graph (with a negative case), guide behaviour (skip, finish, reload mid-guide, replay, view start), save migration and round trip, wording scan of every lock and guide string | `tests/mentorGuides.test.ts` |
+
+### Unlock order (living table; "done" rows are built)
+
+| # | System | Lock | Condition | Shut shows as | Mentor | Batch |
+|---|---|---|---|---|---|---|
+| 1 | Battle | `system:combat` | from the start | hidden | Captain Reyna Holt | 1, done |
+| 2 | Pack and Gear | `system:gear` | from the start (guide on first opening the bags) | hidden | Brannoc the smith | 1, done |
+| 3 | The Journal | `system:quests` | from the start (guide on first opening Quests) | hidden | Hobb the postmaster | 1, done |
+| 4 | Body and Mind | `system:attributes` | level 2 | hidden | Gran Pell | 1, done |
+| 5 | Your Calling (skill trees) | `reveal:tab:skills` | level 2 | sealed | Brother Ansel | 1, done |
+| 6 | The Market | `system:market` | first battle won, or level 2 | sealed | Marta of the Gilded Goose | 1, done |
+| 7-14 | Pantheon, Party, Guild, Workshop, Pastimes, General skills, Tales & arena, Codex ledgers | | first main chapter; first companion; levels 3-6 | | | 2 |
+| 15-22 | Renown, investments, caravans, Grudgebound, the Wheel, housing, Convictions, Marrow | | levels 6-14, first defeat or flight, story | | | 3 |
+| 23-30 | Second class, duels, Bonds & Campfire Tales, trophies & sigils, Relic Tools, specialization, hunts, hybrids | | levels 15-25, companions, first elite | | | 4 |
+| 31-38 | Observatory, Fortunes, Faith, Relics & Land, the Road, Boss Rush, Emberfall & sky isles, Oaths | | levels 25-35, 250 favor, chapter 5 | | | 5 |
+| 39-46 | Society, Realm at Large, Crown & Law, league, Pockets & Wilds, Great Foes, third class, Tales & Strangers | | levels 36-45, chapter 6 | | | 6 |
+| 47-52 | Rifts, Atlas, Spire, the war, apostleship, paragon | | levels 50-60 | | | 7 |
+| 53-60 | Later walks: Echoes, Fates, Chronicle; Omens, Humbled Path, Tools, Trials of the Day, Waters, Spire of Cards, Painter's Eye (2nd walk); Sundered Hours, Living Dungeons, Gods' Gambit (3rd); Testament, Bloodline, relic meals (4th) | | ending seen; tiers 1-3 | hidden | | 8 |
+
+Pacing check is by the playtest's modelled hours (first walk about 16 h, later walks about 8 h each), not a measurement.

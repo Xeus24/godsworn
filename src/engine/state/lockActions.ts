@@ -7,8 +7,11 @@ export class LockActions {
   private busy = false;
   constructor(private readonly s: GameSession) {}
 
-  /** Opens every shut lock whose requirement now holds. `silent` skips the toasts (migration, resets). */
-  sync(silent = false): string[] {
+  /**
+   * Opens every shut lock whose requirement now holds. `silent` skips the toasts and settles the guides
+   * (migration, resets). `announce: false` only skips the toasts (the first check of a new game).
+   */
+  sync(silent = false, announce = true): string[] {
     if (this.busy) return [];
     this.busy = true;
     try {
@@ -21,7 +24,8 @@ export class LockActions {
         if (st.unlocks.opened[def.id] || !isUnlocked(st, def.id)) continue;
         st.unlocks.opened[def.id] = { day: st.clock.day, source: def.category };
         opened.push(def.id);
-        if (!quiet) this.s.bus.emit('toast', { kind: 'info', text: def.unlockMessage });
+        if (!quiet && announce) this.s.bus.emit('toast', { kind: 'info', text: def.unlockMessage });
+        this.s.bus.emit('lockOpened', { lockId: def.id, silent: quiet });
       }
       lockControl.ignore = saved;
       st.unlocks.grandfathered = true;

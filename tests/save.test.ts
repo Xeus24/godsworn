@@ -45,7 +45,8 @@ describe('saving and loading', () => {
     const s = busySession();
     const result = deserialize(serialize(s));
     expect(result.ok).toBe(true);
-    if (result.ok) expect(result.state).toEqual(JSON.parse(JSON.stringify(s.snapshot())));
+    // Loading marks the lock record for a silent catch-up; everything else comes back as it was.
+    if (result.ok) expect({ ...result.state, unlocks: { ...result.state.unlocks, grandfathered: true } }).toEqual(JSON.parse(JSON.stringify(s.snapshot())));
   });
 
   it('a loaded game carries on exactly as the original would', () => {

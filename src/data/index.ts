@@ -101,6 +101,7 @@ import { STATUSES } from './statuses';
 import { ELEMENT_NAMES, STAT_INFO } from './stats';
 import { SECRET_LINE_IDS, ALL_ENDINGS, COMPANIONS, DIALOGUES, NPCS, QUEST_ENCOUNTERS, QUEST_ITEMS, QUESTS, STORY_ENEMIES } from './story';
 import { LOCKS } from './locks';
+import { SYSTEMS } from './systems';
 import type { ActionDef, Cond, DialogueDef, ObjectiveDef, Spot } from '../engine/quests/types';
 
 /** Earth (phase 11): constructs and stone things shrug it off; things that fly, swim or float are caught out by it. */
@@ -195,6 +196,7 @@ export const content = {
   classTrials: new ContentTable('class trial', CLASS_TRIALS.map((t) => ({ ...t, id: t.classId }))),
   quests: new ContentTable('quest', QUESTS),
   locks: new ContentTable('lock', LOCKS),
+  systems: new ContentTable('system', SYSTEMS),
   npcs: new ContentTable('npc', NPCS),
   dialogues: new ContentTable('dialogue', DIALOGUES),
   companions: new ContentTable('companion', COMPANIONS),
@@ -642,6 +644,7 @@ export function validateContent(c: Content = content): void {
   // ---- Quests, dialogue, NPCs and companions ----
   validateStory(v, c);
   validateLocks(v, c);
+  validateSystems(v, c);
 
   v.throwIfInvalid();
 }
@@ -685,6 +688,8 @@ function checkCond(v: ContentValidator, c: Content, cond: Cond | undefined, wher
       return v.ref(c.professions, cond.profession, where);
     case 'weather':
       return v.ref(c.weather, cond.weather, where);
+    case 'unlocked':
+      return v.ref(c.locks, cond.lock, where);
     case 'killed':
       return v.ref(c.enemies, cond.enemy, where);
     case 'ending':
@@ -857,6 +862,24 @@ function validateStory(v: ContentValidator, c: Content): void {
       checkFlags(v, c, node.flags, `${where} bond ${node.id}`);
     }
     for (const d of [...comp.likes, ...comp.dislikes]) if (d.tag) v.ref(c.skillTags, d.tag, where);
+  }
+}
+
+function validateSystems(v: ContentValidator, c: Content): void {
+  const lockOwner = new Map<string, string>();
+  const entryOwner = new Map<string, string>();
+  for (const sys of c.systems.all()) {
+    const where = `system ${sys.id}`;
+    v.ref(c.locks, sys.lock, where);
+    v.check(!lockOwner.has(sys.lock), `${where}: lock ${sys.lock} already opens ${lockOwner.get(sys.lock)}`);
+    lockOwner.set(sys.lock, sys.id);
+    v.check(sys.steps.length >= 2 && sys.steps.length <= 5, `${where}: a guide has 2 to 5 steps`);
+    v.check(sys.name.length > 0 && sys.mentor.length > 0 && sys.summary.length > 0, `${where}: needs a name, a mentor and a summary`);
+    v.check(sys.when !== 'view' || !!sys.view, `${where}: a guide that starts on a view needs the view`);
+    for (const e of sys.entries) {
+      v.check(!entryOwner.has(e), `${where}: entry ${e} already belongs to ${entryOwner.get(e)}`);
+      entryOwner.set(e, sys.id);
+    }
   }
 }
 

@@ -20,12 +20,13 @@ export interface HeartView {
   artText?: string;
   note?: string;
 }
-const SECTIONS: [HeartSection, string][] = [['convictions', 'Convictions'], ['bonds', 'Kindred Bonds'], ['tales', 'Campfire Tales'], ['art', 'Wayfarer’s Art'], ['sigils', 'Sigils'], ['learned', 'Learned Arts'], ['tools', 'Relic Tools'], ['bloodline', 'Bloodline']];
+export const SECTIONS: [HeartSection, string][] = [['convictions', 'Convictions'], ['bonds', 'Kindred Bonds'], ['tales', 'Campfire Tales'], ['art', 'Wayfarer’s Art'], ['sigils', 'Sigils'], ['learned', 'Learned Arts'], ['tools', 'Relic Tools'], ['bloodline', 'Bloodline']];
 
 /** Codex > Heart: what the hero believes, who they are close to, and what their companions say to each other. */
 export function heartPanel(session: GameSession, rerender: () => void, view: HeartView): HTMLElement {
+  session.guide.viewed(`heart:${view.section}`);
   const tabs = SECTIONS.map(([id, label]) => {
-    const b = el('button', { type: 'button', class: view.section === id ? 'active' : '' }, label);
+    const b = el('button', { type: 'button', class: view.section === id ? 'active' : '', 'data-guide': `heart:${id}` }, label);
     b.addEventListener('click', () => {
       view.section = id;
       rerender();

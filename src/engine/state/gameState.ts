@@ -70,6 +70,8 @@ import { createRealmState, type DeathEcho, type RealmState } from '../realm/type
 import { RealmActions } from './realmActions';
 import type { UnlockState } from '../locks/types';
 import { LockActions } from './lockActions';
+import { GuideActions } from './guideActions';
+import type { GuideState } from '../guide/types';
 import { HeartActions } from './heartActions';
 import { effectOn } from '../realm/wheel';
 import type { WorldState } from '../world/types';
@@ -77,7 +79,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 25;
+export const SAVE_VERSION = 26;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;
@@ -189,11 +191,14 @@ export interface GameState {
   realm: RealmState;
   /** Locks that have opened, with the day (see `src/data/locks.ts`). */
   unlocks: UnlockState;
+  /** The mentor's guides the hero has finished or waved away, and those already offered. */
+  guide: GuideState;
 }
 
 export function createGameState(seed: number, player: Character, now = Date.now()): GameState {
   return {
     unlocks: { opened: {}, grandfathered: true },
+    guide: { seen: {}, offered: {}, catalog: [] },
     meta: { game: GAME_NAME, version: SAVE_VERSION, createdAt: now, playTimeMs: 0 },
     seed: seed >>> 0,
     rngState: seed >>> 0,
@@ -278,6 +283,7 @@ export class GameSession {
   readonly specials: Record<string, (a: GauntletState, won: boolean) => void> = {};
   readonly heart: HeartActions;
   readonly locks: LockActions;
+  readonly guide: GuideActions;
   /** Player setting (not saved): multiplies random encounters on the map; 0 turns them off. */
   encounterScale = 1;
 
@@ -326,10 +332,14 @@ export class GameSession {
     this.promotions = new PromotionActions(this);
     this.heart = new HeartActions(this);
     this.locks = new LockActions(this);
+    this.guide = new GuideActions(this);
     this.world.look();
     this.bus.on('stateChanged', () => this.locks.sync());
     this.bus.on('levelUp', () => this.locks.sync());
-    this.locks.sync();
+    // A loaded save catches up silently: only content added since it was written can open here.
+    const loaded = !state.unlocks.grandfathered;
+    this.locks.sync(false, false);
+    this.guide.resume(loaded);
     this.bus.on('goldChanged', ({ amount, reason }) => {
       this.heart.onGold(amount, reason);
       if (amount > 0) this.state.stats.goldEarned += amount;

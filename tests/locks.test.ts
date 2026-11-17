@@ -54,10 +54,12 @@ describe('locks', () => {
 
   it('the developer switch opens every lock without recording it', () => {
     const s = newSession();
+    const before = Object.keys(s.state.unlocks.opened);
     lockControl.ignore = true;
     try {
       expect(isUnlocked(s.state, 'endgame')).toBe(true);
-      expect(Object.keys(s.state.unlocks.opened)).toHaveLength(0);
+      s.bus.emit('stateChanged', { reason: 'test' });
+      expect(Object.keys(s.state.unlocks.opened)).toEqual(before);
     } finally {
       lockControl.ignore = false;
     }

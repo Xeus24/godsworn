@@ -900,7 +900,7 @@ Generated from the data files by `npm run content:md`.
 Generated from the data files by `npm run content:md`.
 
 <!-- combat:start -->
-### Status effects (50)
+### Status effects (51)
 
 | Status | Kind | Effect |
 |---|---|---|
@@ -920,6 +920,7 @@ Generated from the data files by `npm run content:md`.
 | **Corruption** | debuff | Void eats away at body and soul: void damage each turn and -8% max HP per stack. |
 | **Wet** | debuff | Soaked: -25% lightning resist, +25% fire resist. Lightning on a Wet target can Conduct. |
 | **Regen** | buff | Heals 6% of max HP each turn. |
+| **Bark Regen** | buff | Heals 3% of max HP each turn (Barkskin: half a Regen, so a healer or bard can out-damage it). |
 | **Haste** | buff | 30% more speed. |
 | **Berserk** | buff | +30% damage and +10% crit, but takes 15% more damage. |
 | **Divine Protection** | buff | Takes 50% less damage. |
@@ -959,13 +960,13 @@ Generated from the data files by `npm run content:md`.
 
 | Class | Ultimate | Effect | Trait (primary class) |
 |---|---|---|---|
-| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. | **Battle-Hardened**: 45% more max HP, 20% less damage taken, 40% more physical attack, +10% damage and 5% lifesteal. |
+| Warrior | **Earthsplitter** | Cleave the ground beneath every enemy for 250% ATK. Massive stagger. | **Battle-Hardened**: 70% more max HP, 24% less damage taken, 40% more physical attack, +10% damage and 5% lifesteal. |
 | Mage | **Cataclysm** | Fire falls from the sky: 230% MAG to every enemy, Burning them all. | **Arcane Mastery**: 60% more magic attack, +30% damage, 90% more max HP and 36% less damage taken. |
-| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. | **Cutpurse’s Luck**: +30% damage and 50% more max HP. |
+| Rogue | **Death Mark** | A single perfect strike: 450% ATK, always critical. | **Cutpurse’s Luck**: +30% damage and 50% more max HP, but 40% less speed (a patient thief picks the moment). |
 | Cleric | **Miracle** | Heal every ally for 60% of max HP, cleanse their afflictions and grant Divine Protection. | **Righteous Wrath**: +100% damage, 140% more max HP, 45% less damage taken and hits that ignore enemy shields. |
-| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. |  |
+| Ranger | **Rain of Arrows** | Seven arrows strike random enemies for 90% ATK each. | **Patient Hunter**: 35% less speed: the Ranger takes careful aim, and the pet does the rushing. |
 | Necromancer | **Army of the Dead** | Raise two skeletons without corpses and blast every enemy with shadow for 120% MAG. | **Unholy Vigor**: 40% more magic attack, +50% damage, 90% more max HP, 28% less damage taken and 11% lifesteal. |
-| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. |  |
+| Monk | **Hundred Fists** | A blur of twelve strikes on one enemy, 40% ATK each. | **Inner Discipline**: 20% more max HP, 8% less damage taken, 10% more physical attack and +8% damage. |
 | Bard | **Grand Finale** | A show-stopping crescendo: 160% MAG to every enemy and Haste for the whole party. | **Heroic Presence**: +85% damage, 50% more max HP, 18% less damage taken, 4% lifesteal and +1 attack per point of CHA. |
 | Knight | **Oathkeeper’s Judgement** | Judge the field: 220% ATK holy damage to every enemy and a 15% shield for the party. | **Sworn Shield**: 80% more max HP, 30% less damage taken, 35% more physical attack, +40% damage and 6% lifesteal and attacks that ignore 60% of enemy shields. |
 | Druid | **Wrath of the Grove** | The grove answers: 230% MAG nature damage to every enemy and Poison. | **Wild Heart**: 90% more max HP, 30% less damage taken, 25% more physical and magic attack, +40% damage and 6% lifesteal in any form. |
@@ -974,12 +975,12 @@ Generated from the data files by `npm run content:md`.
 | Alchemist | **Grand Alembic** | Everything at once: 250% MAG fire damage to every enemy, the party is healed for 20% and gains +20% damage for 3 turns. | **Practiced Hands**: 95% more max HP, 30% less damage taken, +150% damage, +10% crit damage and 6% lifesteal. |
 | Shaman | **Ancestral Wrath** | Every shaman who came before you strikes at once: 250% MAG lightning damage to every enemy; the party is healed for 15%. | **Elder’s Blessing**: 95% more max HP, 30% less damage taken, 25% more magic attack, +45% damage, +10% healing power and 5% lifesteal. |
 | Chronomancer | **Eternal Moment** | The moment holds: every ally acts half a turn sooner, every enemy loses one, and the party takes 25% less damage for 3 turns. | **Borrowed Time**: 95% more max HP, 30% less damage taken, 45% more magic attack and +30% damage. |
-| Artificer | **Meltdown** | Everything at once: 280% ATK fire damage to every enemy, your turrets are healed and the party gains +20% damage for 3 turns. | **Built to Last**: 95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage. |
-| Dancer | **Grand Première** | Opening night: 250% ATK to every enemy; the party is shielded for 15% and gains +20% damage for 3 turns. | **Natural Grace**: 95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage. |
-| Inkweaver | **Indelible** | Write it so it cannot be unwritten: 250% MAG shadow damage to every enemy, a sigil on the field for 3 turns, and the party gains +20% damage for 3 turns. | **Steady Hand**: 95% more max HP, 30% less damage taken, 80% more magic attack, +60% damage and 6% lifesteal. |
+| Artificer | **Meltdown** | Everything at once: 280% ATK fire damage to every enemy, your turrets are healed and the party gains +20% damage for 3 turns. | **Built to Last**: 19% more max HP, 6% less damage taken, 7% more physical attack and +8% damage. |
+| Dancer | **Grand Première** | Opening night: 250% ATK to every enemy; the party is shielded for 15% and gains +20% damage for 3 turns. | **Natural Grace**: 38% more max HP, 12% less damage taken, 14% more physical attack and +16% damage. |
+| Inkweaver | **Indelible** | Write it so it cannot be unwritten: 250% MAG shadow damage to every enemy, a sigil on the field for 3 turns, and the party gains +20% damage for 3 turns. | **Steady Hand**: 52% more max HP, 17% less damage taken, 44% more magic attack, +33% damage and 3% lifesteal. |
 | Witch Hunter | **Inquisitor’s Verdict** | The verdict is read: 250% ATK holy damage to every enemy and Mark on all; you gain 40 Conviction and +20% damage for 3 turns. | **Unshaken Faith**: 95% more max HP, 30% less damage taken, 35% more physical attack and +40% damage. |
-| Geomancer | **Leyline Surge** | The lines of the world answer: 260% MAG damage to every enemy, the party is healed for 20% and gains +20% damage for 3 turns, and you gain 50 Ley. | **Rooted Power**: 95% more max HP, 30% less damage taken, 45% more magic attack and +30% damage. |
-| Hemomancer | **Crimson Ascension** | You become the blood: 260% MAG shadow damage to every enemy, heal 25%, and gain +30% damage and 15% lifesteal for 3 turns. | **Thick as Blood**: 95% more max HP, 30% less damage taken, 60% more magic attack, +50% damage and 12% lifesteal. |
+| Geomancer | **Leyline Surge** | The lines of the world answer: 260% MAG damage to every enemy, the party is healed for 20% and gains +20% damage for 3 turns, and you gain 50 Ley. | **Rooted Power**: 33% more max HP, 11% less damage taken, 16% more magic attack and +11% damage. |
+| Hemomancer | **Crimson Ascension** | You become the blood: 260% MAG shadow damage to every enemy, heal 25%, and gain +30% damage and 15% lifesteal for 3 turns. | **Thick as Blood**: 52% more max HP, 17% less damage taken, 33% more magic attack, +28% damage and 7% lifesteal. |
 | Hollow Hand | **The Hollow Hand Closes** | Everything is yours: 260% ATK to every enemy; your Guile fills, and the party gains +20% damage and +15% crit for 3 turns. | **Nothing in Your Hands**: 95% more max HP, 30% less damage taken, 35% more physical attack, +50% damage and +10% crit chance. |
 | Dreamwalker | **Wake the World** | Everyone wakes at once: 280% MAG arcane damage to every enemy, the party is healed for 25% and gains +25% damage for 3 turns. | **Awake in Every Bed**: 110% more max HP, 40% less damage taken, 70% more magic attack and +80% damage. |
 | Dragonsoul | **The Fifth Voice** | A voice no drake has: 260% ATK to every enemy, +25% damage and +25% crit damage for 3 turns, and full Dragonfire. | **Four Voices**: 95% more max HP, 30% less damage taken, 40% more physical attack and +50% damage. |
@@ -989,23 +990,23 @@ Generated from the data files by `npm run content:md`.
 | Godslayer | **Heaven-Breaker** | The sky breaks: 430% ATK to every enemy, who are all Weakened for 3 turns. | **Heaven’s Bane**: 60% more max HP, 20% less damage taken, 35% more physical attack, +40% damage and 5% lifesteal. |
 | Voidwalker | **The Unmaking** | Everything leans toward nothing: 440% MAG void damage to every enemy. | **Hollow Mastery**: 50% more magic attack, 45% more max HP, 18% less damage taken, +40% damage and 4% lifesteal. |
 | Celestial | **Apotheosis** | For one moment you are all of it: 380% DIV holy to every enemy and a 20% heal for the party. | **Heavenly Body**: 45% more divine power, 40% more max HP, 20% less damage taken, +120% damage and +25 healing power. |
-| Vowknight | **The Vowknight’s Resolve** | Every Tenet holds at once: 310% ATK to every enemy, 20% heal and +25% damage for 3 turns. | **Sworn Resolve**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +12% holy damage. |
+| Vowknight | **The Vowknight’s Resolve** | Every Tenet holds at once: 310% ATK to every enemy, 20% heal and +25% damage for 3 turns. | **Sworn Resolve**: 114% more max HP, 36% less damage taken, 42% more physical attack, +48% damage, +12% holy damage. |
 | Wrathsworn | **Wrath Unbound** | Every limit goes: 330% ATK to every enemy, 20% heal and the Wrath state for 5 turns. | **Berserker’s Peace**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +6% crit chance. |
-| Stillhand | **The Still Hand’s Last Breath** | One calm blow: 320% ATK to every enemy, Breath refills and you heal 15%. | **Disciplined Calm**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% dodge. |
-| Wayfinder | **The Wayfinder’s Road** | Every path ends at the quarry: 320% ATK to every enemy, all Quarry for 4 turns. | **Tracker’s Eye**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10 accuracy. |
-| Godblooded | **The Bloodline Awakened** | The god in the blood wakes: 330% MAG to every enemy, Spark fills and you gain +25% damage for 3 turns. | **Innate Magic**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 magic attack. |
+| Stillhand | **The Still Hand’s Last Breath** | One calm blow: 320% ATK to every enemy, Breath refills and you heal 15%. | **Disciplined Calm**: 21% more max HP, 7% less damage taken, 8% more physical attack, +9% damage, +8% dodge. |
+| Wayfinder | **The Wayfinder’s Road** | Every path ends at the quarry: 320% ATK to every enemy, all Quarry for 4 turns. | **Tracker’s Eye**: 14% more max HP, 5% less damage taken, 5% more physical attack, +6% damage, +10 accuracy. |
+| Godblooded | **The Bloodline Awakened** | The god in the blood wakes: 330% MAG to every enemy, Spark fills and you gain +25% damage for 3 turns. | **Innate Magic**: 95% more max HP, 30% less damage taken, 35% more magic attack, +40% damage, +8 magic attack. |
 | Ichorbound | **The Ichor Ascendant** | The god’s blood sings: 320% ATK in all five Rites to every enemy; you heal 20%. | **Borrowed Blood**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +4% lifesteal. |
-| Fatedealer | **The Fatedealer’s Deck** | The whole deck falls: 320% MAG to every enemy, a Held Card boon and Fortune fills. | **Lucky Hands**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +4 LUK. |
-| Mindwright | **The Mindwright’s Calm** | A very quiet storm: 310% MAG to every enemy, heal 20% and Strain clears. | **Unquiet Mind**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 magic attack. |
+| Fatedealer | **The Fatedealer’s Deck** | The whole deck falls: 320% MAG to every enemy, a Held Card boon and Fortune fills. | **Lucky Hands**: 109% more max HP, 35% less damage taken, 40% more magic attack, +46% damage, +4 LUK. |
+| Mindwright | **The Mindwright’s Calm** | A very quiet storm: 310% MAG to every enemy, heal 20% and Strain clears. | **Unquiet Mind**: 95% more max HP, 30% less damage taken, 35% more magic attack, +40% damage, +8 magic attack. |
 | Marshal | **The Marshal’s Command** | Every order at once: 280% ATK to every enemy, the party heals 15% and gains +20% damage; Command fills. | **Born to Lead**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% resource gain and +15% damage. |
-| Corsair | **The Corsair’s Reckoning** | The whole crew, all at once: 310% ATK to every enemy, the party heals 15% and gains +20% damage. | **Sea Legs**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% gold found. |
-| Brawler | **The Brawler’s Last Round** | Last one standing: 310% ATK to every enemy, heal 20% and the Tipsy state. | **Tavern Tough**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% status resist. |
-| Whisperknight | **The Whisperknight’s Vigil** | A watch kept in silence: 310% ATK to every enemy, heal 15%, Hush fills. | **Sworn to Silence**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +12% shadow damage. |
-| Hearthmaster | **The Hearthmaster’s Table** | Every course, in order: 290% ATK to every enemy, the party heals 20% and gains +20% damage; Simmer fills. | **Good Cook**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% healing power and +15% damage. |
-| Truthseeker | **The Truthseeker’s Verdict** | The truth, out loud: 320% MAG to every enemy; the party gains +20% damage and +15% crit for 3 turns. | **Sharp Mind**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8 accuracy and +4% crit chance. |
-| Hedgewitch | **The Hedgewitch’s Brew** | The pot is ready: 300% MAG to every enemy, the party heals 20% and gains +20% damage; Brew fills. | **Village Wisdom**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +8% healing power. |
-| Soulblade | **The Soulblade’s Pact** | You and the blade, in full agreement: 310% ATK to every enemy, +25% damage for 3 turns and heal 15%. | **A Voice in the Hilt**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +6% crit chance. |
-| Facewright | **The Facewright’s Final Face** | The face behind the faces: 310% ATK to every enemy, heal 15% and +20% damage and crit for 3 turns. | **A Face for Every Occasion**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +6 dodge. |
+| Corsair | **The Corsair’s Reckoning** | The whole crew, all at once: 310% ATK to every enemy, the party heals 15% and gains +20% damage. | **Sea Legs**: 57% more max HP, 18% less damage taken, 21% more physical attack, +24% damage, +10% gold found. |
+| Brawler | **The Brawler’s Last Round** | Last one standing: 310% ATK to every enemy, heal 20% and the Tipsy state. | **Tavern Tough**: 57% more max HP, 18% less damage taken, 21% more physical attack, +24% damage, +8% status resist. |
+| Whisperknight | **The Whisperknight’s Vigil** | A watch kept in silence: 310% ATK to every enemy, heal 15%, Hush fills. | **Sworn to Silence**: 124% more max HP, 39% less damage taken, 46% more physical attack, +52% damage, +12% shadow damage. |
+| Hearthmaster | **The Hearthmaster’s Table** | Every course, in order: 290% ATK to every enemy, the party heals 20% and gains +20% damage; Simmer fills. | **Good Cook**: 114% more max HP, 36% less damage taken, 42% more physical attack, +48% damage, +10% healing power and +15% damage. |
+| Truthseeker | **The Truthseeker’s Verdict** | The truth, out loud: 320% MAG to every enemy; the party gains +20% damage and +15% crit for 3 turns. | **Sharp Mind**: 95% more max HP, 30% less damage taken, 35% more magic attack, +40% damage, +8 accuracy and +4% crit chance. |
+| Hedgewitch | **The Hedgewitch’s Brew** | The pot is ready: 300% MAG to every enemy, the party heals 20% and gains +20% damage; Brew fills. | **Village Wisdom**: 109% more max HP, 35% less damage taken, 40% more magic attack, +46% damage, +8% healing power. |
+| Soulblade | **The Soulblade’s Pact** | You and the blade, in full agreement: 310% ATK to every enemy, +25% damage for 3 turns and heal 15%. | **A Voice in the Hilt**: 57% more max HP, 18% less damage taken, 21% more physical attack, +24% damage, +6% crit chance. |
+| Facewright | **The Facewright’s Final Face** | The face behind the faces: 310% ATK to every enemy, heal 15% and +20% damage and crit for 3 turns. | **A Face for Every Occasion**: 114% more max HP, 36% less damage taken, 42% more physical attack, +48% damage, +6 dodge. |
 | Bellwarden | **The Bellwarden’s Peal** | The great peal: 320% MAG to every enemy, the party heals 15% and gains +20% damage. | **Ringing Ears**: 95% more max HP, 30% less damage taken, 35% more physical attack, +40% damage, +10% holy damage, +15% damage and 40% more magic attack. |
 
 **Songs (4):** Song of Valor (Allies deal 12% more damage. Crescendo: A rousing finale strikes every enemy for 120% MAG.) · Ballad of Warding (Allies gain 15% more defense and magic resist. Crescendo: Shields every ally for 15% of their max HP.) · Jig of Swiftness (Allies gain 10% more speed. Crescendo: Hastes every ally for 2 turns.) · Hearthside Lullaby (Allies receive 20% more healing and regenerate 6 HP each turn. Crescendo: Heals every ally for 20% of max HP.)
@@ -3879,14 +3880,14 @@ Eight zones along one road, each a generated tile map with a town or not, dungeo
 
 | Zone | Levels | Town | Dungeons (boss) | World boss | Shrines | Weather | Threat |
 |---|---|---|---|---|---|---|---|
-| **The Meadowlands** | 1-8 | Brightwater | The Goblin Warren (Grukk the Goblin King, lv 8) | Bramblehorn | Solenne, Hesha, Mirrin | Clear, Rain, Fog | 0% |
-| **The Whisperwood** | 8-16 | Thornwick | Spider Hollow (The Broodmother, lv 14); The Old Crypt (The Bone Lord, lv 16) | Gnarlroot the Elder | Ysolde, Morrath, Lyssara | Clear, Rain, Fog | 0% |
-| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira, Ordrun, Lyssara, Mirrin | Clear, Fog | 110% |
-| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne, Seraphel, Hesha | Clear, Heatwave, Sandstorm | 70% |
-| **Frostspire** | 32-40 | Frosthold | The Ice Palace (The Frost Queen, lv 39) | Skaldr the Frost Wyrm | Aurelis, Thalor, Lyssara | Snow, Clear, Fog | 60% |
-| **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald, Seraphel | Thunderstorm, Rain, Clear | 45% |
-| **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael, Ordrun | Ashfall, Heatwave, Clear | 5% |
-| **The Dark Citadel** | 55-60 | - | The Black Throne (Commander of the Black Throne, lv 60) | The Unwritten Herald | Morrath, Vex, Mirrin | Blood Moon, Fog, Clear | 0% |
+| **The Meadowlands** | 1-8 | Brightwater | The Goblin Warren (Grukk the Goblin King, lv 8) | Bramblehorn | Solenne, Hesha, Mirrin | Clear, Rain, Fog | 150% |
+| **The Whisperwood** | 8-16 | Thornwick | Spider Hollow (The Broodmother, lv 14); The Old Crypt (The Bone Lord, lv 16) | Gnarlroot the Elder | Ysolde, Morrath, Lyssara | Clear, Rain, Fog | 90% |
+| **The Sunken Caves** | 16-24 | - | The Drowned Grotto (The Tide Hag, lv 23) | The Abyssal Crab | Nymira, Ordrun, Lyssara, Mirrin | Clear, Fog | 250% |
+| **The Ashen Desert** | 24-32 | Sandhaven | Tomb of the Sun-King (The Withered Sun-King, lv 31) | The Sandworm Colossus | Kael, Solenne, Seraphel, Hesha | Clear, Heatwave, Sandstorm | 170% |
+| **Frostspire** | 32-40 | Frosthold | The Ice Palace (The Frost Queen, lv 39) | Skaldr the Frost Wyrm | Aurelis, Thalor, Lyssara | Snow, Clear, Fog | 180% |
+| **The Stormcoast** | 40-48 | Saltmere | Wreck of the Leviathan (Leviathan Spawn, lv 47); The Smugglers’ Den (Captain Redfang, lv 44) | The Storm Roc | Nymira, Grimvald, Seraphel | Thunderstorm, Rain, Clear | 110% |
+| **The Volcanic Rift** | 48-55 | - | Forge of the Fallen (The Magma Titan, lv 54) | The Ember Matriarch | Thalor, Kael, Ordrun | Ashfall, Heatwave, Clear | 55% |
+| **The Dark Citadel** | 55-60 | - | The Black Throne (Commander of the Black Throne, lv 60) | The Unwritten Herald | Morrath, Vex, Mirrin | Blood Moon, Fog, Clear | 40% |
 | **Aurelane, the Capital** | 20-30 | Aurelane | The Sewer Network (The Rat King of the Undercity, lv 22); The Gilded Vault (The Vault Warden, lv 27); The Catacombs of Aurelane (The Gravedigger Prince, lv 29) | The Hollow Magistrate | Solenne, Aurelis, Grimvald, Hesha | Clear, Rain, Fog | 0% |
 | **The Moonfen Marshes** | 14-22 | Mirewick | The Drowned Orchard (The Orchard King, lv 18); Witchlight Hollow (The Witchlight Matron, lv 20); The Bell Ruin (The Bellringer of the Deep, lv 21) | The Drowned Moon | Lyssara, Ysolde, Morrath | Fog, Rain, Clear, Blood Moon | 0% |
 | **The Thornreach Badlands** | 26-34 | Briarhold | The Raiders’ Warren (Warlord Skarn, lv 29); The Bonethorn Maze (The Bone Gardener, lv 31); The Red Quarry (Ironmaw, lv 33) | The Thornmother | Kael, Vex, Ordrun | Clear, Sandstorm, Heatwave | 0% |

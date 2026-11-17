@@ -15,11 +15,19 @@ import { TRIALS } from './pilgrimage';
 import { WAR } from './twilight';
 import { BOSS_RUSH_MIN_LEVEL, DIVINE_TRIAL_MIN_LEVEL, LEAGUE, SPIRE, WEEKLY } from './endgameModes';
 import { ERAS } from './wonders';
+import { SYSTEM_LOCKS } from './systems';
 
 /**
  * Every gate in one place. A lock is a quest condition plus how it shows while shut
  * and what it says when it opens. Add gates here; nothing in the engine changes.
  */
+
+const ORDINALS = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'];
+
+/** In-world words for a later playthrough: tier 1 is the hero's second walk of the Road. */
+export function roadWalk(tier: number): string {
+  return `the ${ORDINALS[tier] ?? `${tier + 1}th`} walk of the Road`;
+}
 
 /** Endgame time: past a first playthrough, or standing at the level cap. */
 export const ENDGAME_COND: Cond = {
@@ -72,7 +80,7 @@ const raceLocks: LockDef[] = RACES.filter((r) => r.unlock).map((r) => {
     id: `race:${r.id}`,
     requirement: clear ? { kind: 'any', conds: [{ kind: 'endingsSeen', min: 1 }, { kind: 'ngPlus', min: 1 }] } : { kind: 'ngPlus', min: u.ngPlus },
     visibility: 'teased',
-    hint: clear ? 'Finish the story once with any hero, and this people will answer your next hero.' : `Walk the Road again, to New Game+${u.ngPlus}, and this people will answer your next hero.`,
+    hint: clear ? 'Finish the story once with any hero, and this people will answer your next hero.' : `Reach ${roadWalk(u.ngPlus)}, and this people will answer your next hero.`,
     unlockMessage: `A new people may take up the Road: ${r.name}.`,
     category: 'class',
   } satisfies LockDef;
@@ -83,7 +91,7 @@ const classLocks: LockDef[] = CLASSES.flatMap((k): LockDef[] => {
     return [{ id: `class:secret:${k.id}`, requirement: { kind: 'classUnlocked', classId: k.id }, visibility: 'hidden', hint: 'A secret calling. Follow rumours and strange omens.', unlockMessage: `A secret calling answers you: ${k.name}.`, category: 'class' }];
   }
   if (k.ngPlus) {
-    return [{ id: `class:ngplus:${k.id}`, requirement: { kind: 'ngPlus', min: k.ngPlus }, visibility: 'teased', hint: `Only heroes who have walked the Road to New Game+${k.ngPlus} may take this calling.`, unlockMessage: `A new calling is open to new heroes: ${k.name}.`, category: 'class' }];
+    return [{ id: `class:ngplus:${k.id}`, requirement: { kind: 'ngPlus', min: k.ngPlus }, visibility: 'teased', hint: `Only heroes who have reached ${roadWalk(k.ngPlus)} may take this calling.`, unlockMessage: `A new calling is open to new heroes: ${k.name}.`, category: 'class' }];
   }
   return [];
 });
@@ -232,6 +240,7 @@ const modeLocks: LockDef[] = [
 ];
 
 export const LOCKS: LockDef[] = [
+  ...SYSTEM_LOCKS,
   ...serviceLocks,
   ...modeLocks,
   ...trialLocks,
@@ -259,7 +268,7 @@ export const LOCKS: LockDef[] = [
       ],
     },
     visibility: 'visible',
-    hint: `A third class opens at level ${MULTICLASS.thirdSlotLevel} after High Lector Amara's errand, or at level ${MULTICLASS.tertiaryLevel} in New Game+${MULTICLASS.tertiaryNgPlus}.`,
+    hint: `A third class opens at level ${MULTICLASS.thirdSlotLevel} after High Lector Amara's errand, or at level ${MULTICLASS.tertiaryLevel} on ${roadWalk(MULTICLASS.tertiaryNgPlus)}.`,
     unlockMessage: 'A third class slot is open to you.',
     category: 'class',
   },
@@ -267,7 +276,7 @@ export const LOCKS: LockDef[] = [
     id: 'class:hybrids',
     requirement: { kind: 'level', min: MULTICLASS.hybridLevel },
     visibility: 'visible',
-    hint: `Take two classes to level ${MULTICLASS.hybridLevel} each, then face both mentors in the pair trial to unlock a hybrid prestige class.`,
+    hint: `Take two classes to level ${MULTICLASS.hybridLevel} each, then face both mentors in the pair trial to earn a hybrid prestige class.`,
     unlockMessage: 'Hybrid prestige classes are now within reach: raise two classes and face their mentors.',
     category: 'class',
   },
@@ -276,7 +285,7 @@ export const LOCKS: LockDef[] = [
     requirement: ENDGAME_COND,
     visibility: 'teased',
     hint: 'The deeper works of the world wait for those who finish the story or reach the height of their power.',
-    unlockMessage: 'The deeper works of the world are open to you: Rifts, the Boss Rush, stables and New Game+.',
+    unlockMessage: 'The deeper works of the world are open to you: the Rift Gates, the Boss Rush, the stables, and a new walk of the Road.',
     category: 'endgame',
   },
   ...revealLocks,

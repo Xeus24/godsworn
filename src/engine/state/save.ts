@@ -172,6 +172,14 @@ export function migrate(raw: Json): Json {
   state.world = world;
   // Version 25 (locks): a save from before the lock system opens whatever the hero already earned, silently.
   state.unlocks ??= { opened: {}, grandfathered: false } as unknown as Json;
+  // Every load catches up silently: anything that opens on the first check is content added since the save was written.
+  obj(state.unlocks).grandfathered = false;
+  // Version 26 (the mentor's guides): nothing seen or offered yet; systems the hero already has are settled on load.
+  const guide = obj(state.guide);
+  guide.seen ??= {};
+  guide.offered ??= {};
+  guide.catalog ??= [];
+  state.guide = guide;
   state.meta = { ...obj(state.meta), version: SAVE_VERSION };
   return state;
 }

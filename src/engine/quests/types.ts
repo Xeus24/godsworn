@@ -136,6 +136,8 @@ export type Cond =
   | { kind: 'season'; season: string }
   /** The sky over the hero's present region is this weather (a weather id). */
   | { kind: 'weather'; weather: string }
+  /** Another gate (a lock id in `src/data/locks.ts`) has opened. */
+  | { kind: 'unlocked'; lock: string }
   | { kind: 'all'; conds: Cond[] }
   | { kind: 'any'; conds: Cond[] }
   | { kind: 'not'; cond: Cond };

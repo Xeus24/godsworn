@@ -9,6 +9,7 @@ import { content, type Content } from '../src/data';
 import { ZONE_RITES } from '../src/data/locks';
 import { PASSES } from '../src/data/world/areas';
 import type { Cond } from '../src/engine/quests/types';
+import { NG_PLUS } from '../src/data/ngPlus';
 
 export interface LockReport {
   quests: number;
@@ -88,11 +89,8 @@ export function unreachableZones(c: Content = content): string[] {
   return zones.filter((z) => !reach.has(z.id) && z.id !== 'shattered-isles').map((z) => z.id);
 }
 
-export function buildLockReport(c: Content = content): LockReport {
-  const quests = c.quests.all();
-  const ids = new Set(quests.map((q) => q.id));
-
-  // Everything the data can produce: flags set, items given.
+/** Everything the data can produce: flags set, items given. */
+export function producible(c: Content = content): { flagsSet: Set<string>; itemsGiven: Set<string> } {
   const flagsSet = new Set<string>();
   const itemsGiven = new Set<string>();
   for (const table of Object.values(c)) {
@@ -106,6 +104,15 @@ export function buildLockReport(c: Content = content): LockReport {
       if (Array.isArray(o.entries)) for (const e of o.entries) if (e && typeof (e as { item?: unknown }).item === 'string') itemsGiven.add((e as { item: string }).item);
     });
   }
+
+  return { flagsSet, itemsGiven };
+}
+
+export function buildLockReport(c: Content = content): LockReport {
+  const quests = c.quests.all();
+  const ids = new Set(quests.map((q) => q.id));
+
+  const { flagsSet, itemsGiven } = producible(c);
 
   const edges = new Map<string, string[]>();
   const unsetFlags: LockReport['unsetFlags'] = [];
@@ -140,7 +147,72 @@ export function buildLockReport(c: Content = content): LockReport {
   return { quests: quests.length, edges: edgeCount, cycles, unsetFlags, unobtainableItems, noEntry };
 }
 
+export interface LockGraphReport {
+  locks: number;
+  /** Lock-to-lock edges (an `unlocked` condition naming another lock). */
+  edges: number;
+  cycles: string[][];
+  /** Locks no hero can ever open, walking from a new game. */
+  unreachable: string[];
+}
+
+/**
+ * The lock graph. Nodes are locks; an edge A -> B means A's requirement names lock B (`unlocked`).
+ * Walks from a new game: a lock opens once its requirement can hold given the locks already open.
+ * A leaf is achievable when it is within the game's limits (levels up to the cap of the last walk of the
+ * Road, tiers up to the last) and names something the data can produce (a quest someone offers, an item
+ * or flag something hands out). `not` leaves are taken as achievable (they only ever narrow, never gate).
+ */
+export function lockReachability(c: Content = content): LockGraphReport {
+  const locks = c.locks.all();
+  const { flagsSet, itemsGiven } = producible(c);
+  const offered = new Set(c.quests.all().filter((q) => q.auto || q.giver || q.board).map((q) => q.id));
+  const edges = new Map<string, string[]>();
+  let edgeCount = 0;
+  for (const l of locks) {
+    const out = condLeaves(l.requirement).flatMap((x) => (x.kind === 'unlocked' ? [x.lock] : []));
+    edges.set(l.id, out);
+    edgeCount += out.length;
+  }
+  const cycles: string[][] = [];
+  const colour = new Map<string, 1 | 2>();
+  const stack: string[] = [];
+  const dfs = (n: string): void => {
+    colour.set(n, 1); stack.push(n);
+    for (const m of edges.get(n) ?? []) {
+      if (colour.get(m) === 1) cycles.push([...stack.slice(stack.indexOf(m)), m]);
+      else if (!colour.has(m)) dfs(m);
+    }
+    stack.pop(); colour.set(n, 2);
+  };
+  for (const l of locks) if (!colour.has(l.id)) dfs(l.id);
+
+  const open = new Set<string>();
+  const can = (x: Cond): boolean => {
+    switch (x.kind) {
+      case 'all': return x.conds.every(can);
+      case 'any': return x.conds.some(can);
+      case 'not': return true;
+      case 'unlocked': return open.has(x.lock);
+      case 'level': return x.min <= NG_PLUS.levelToMax;
+      case 'ngPlus': return x.min <= NG_PLUS.maxTier;
+      case 'quest': return x.state === 'notStarted' || offered.has(x.quest);
+      case 'item': return itemsGiven.has(x.itemId) || ENGINE_ITEMS.has(x.itemId) || ENGINE_ITEM_PREFIXES.some((p) => x.itemId.startsWith(p));
+      case 'flag':
+      case 'counter': return flagsSet.has(x.flag) || ENGINE_FLAGS.has(x.flag) || ENGINE_FLAG_PREFIXES.some((p) => x.flag.startsWith(p));
+      default: return true;
+    }
+  };
+  for (let grew = true; grew; ) {
+    grew = false;
+    for (const l of locks) if (!open.has(l.id) && can(l.requirement)) { open.add(l.id); grew = true; }
+  }
+  return { locks: locks.length, edges: edgeCount, cycles, unreachable: locks.filter((l) => !open.has(l.id)).map((l) => l.id) };
+}
+
 if (process.argv[1]?.endsWith('lockgraph.ts')) {
+  const g = lockReachability();
+  console.log(`locks ${g.locks}, lock edges ${g.edges}, lock cycles ${g.cycles.length}, never open ${g.unreachable.join(', ') || 'none'}`);
   const r = buildLockReport();
   console.log(`quests ${r.quests}, edges ${r.edges}, cycles ${r.cycles.length}, no entry ${r.noEntry.length}`);
   for (const cy of r.cycles) console.log('CYCLE', cy.join(' -> '));

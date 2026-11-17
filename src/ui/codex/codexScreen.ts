@@ -16,6 +16,7 @@ import { creatureSprite } from '../combat/creatureSprites';
 import { heartPanel, type HeartView } from './heartPanel';
 import { compendiumPanel, type CompendiumView } from './compendiumPanel';
 import { realmPanel, type RealmView } from './realmPanel';
+import { primerPanel } from './primerPanel';
 import { completion, overallCompletion } from '../../engine/achievements/completion';
 import { AIRSHIP, SHIP_LEVELS } from '../../data/world/ship';
 import { destinations, hasAirship, shipLevel } from '../../engine/world/ship';
@@ -23,7 +24,7 @@ import { foldPanel } from '../components/fold';
 import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
-type Tab = 'heart' | 'compendium' | 'realm' | 'bestiary' | 'families' | 'backgrounds' | 'companions' | 'cards' | 'ship' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
+type Tab = 'primer' | 'heart' | 'compendium' | 'realm' | 'bestiary' | 'families' | 'backgrounds' | 'companions' | 'cards' | 'ship' | 'achievements' | 'lore' | 'items' | 'maps' | 'statistics' | 'completion';
 const TABS: [Tab, string][] = [
   ['bestiary', 'Bestiary'],
   ['realm', 'Realm'],
@@ -40,6 +41,7 @@ const TABS: [Tab, string][] = [
   ['maps', 'Maps'],
   ['statistics', 'Statistics'],
   ['completion', 'Completion'],
+  ['primer', 'Primer'],
 ];
 
 /** The fifteen tabs, grouped so only a few show at once. */
@@ -48,7 +50,7 @@ const TAB_GROUPS: { label: string; tabs: Tab[] }[] = [
   { label: 'World', tabs: ['realm', 'maps', 'ship', 'lore'] },
   { label: 'People', tabs: ['companions', 'backgrounds', 'heart'] },
   { label: 'Lore & items', tabs: ['compendium', 'items', 'cards'] },
-  { label: 'Progress', tabs: ['achievements', 'completion', 'statistics'] },
+  { label: 'Progress', tabs: ['primer', 'achievements', 'completion', 'statistics'] },
 ];
 
 const TIER_NAMES: Record<string, string> = { normal: 'Normal', elite: 'Elite', champion: 'Champion', miniboss: 'Miniboss', boss: 'Boss', worldBoss: 'World Boss', punisher: 'Divine Punisher' };
@@ -154,13 +156,14 @@ export class CodexScreen implements Screen {
 
   private render = (): void => {
     if (!this.root) return;
+    this.session.guide.viewed(`codex:${this.tab}`);
     // Tabs a new hero does not need yet stay hidden until their level (the open tab always shows).
     const showAll = settings().showEverything;
     const shown = (t: Tab): boolean => t === this.tab || !(`codex:${t}` in REVEAL_LEVELS) || isRevealed(this.session.state, `codex:${t}` as RevealKey, showAll);
     const groups = TAB_GROUPS.map((g) => ({ label: g.label, tabs: g.tabs.filter(shown) })).filter((g) => g.tabs.length > 0);
     const group = groups.find((g) => g.tabs.includes(this.tab)) ?? groups[0]!;
     const groupBar = el('nav', { class: 'tabs codex-tabs codex-groups' }, ...groups.map((g) => {
-      const b = el('button', { class: `tab${g === group ? ' active' : ''}` }, g.label);
+      const b = el('button', { class: `tab${g === group ? ' active' : ''}`, 'data-guide': `codex-group:${g.label}` }, g.label);
       b.addEventListener('click', () => {
         this.tab = g.tabs[0]!;
         this.render();
@@ -168,14 +171,14 @@ export class CodexScreen implements Screen {
       return b;
     }));
     const tabs = el('nav', { class: 'tabs codex-tabs' }, ...group.tabs.map((id) => {
-      const b = el('button', { class: `tab${this.tab === id ? ' active' : ''}` }, TABS.find(([t]) => t === id)?.[1] ?? id);
+      const b = el('button', { class: `tab${this.tab === id ? ' active' : ''}`, 'data-guide': `codex:${id}` }, TABS.find(([t]) => t === id)?.[1] ?? id);
       b.addEventListener('click', () => {
         this.tab = id;
         this.render();
       });
       return b;
     }));
-    const body = this.tab === 'heart' ? heartPanel(this.session, () => this.render(), this.heartOpen) : this.tab === 'compendium' ? compendiumPanel(() => this.render(), this.compendiumOpen) : this.tab === 'realm' ? realmPanel(this.session, () => this.render(), this.realmOpen) : this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.statistics();
+    const body = this.tab === 'heart' ? heartPanel(this.session, () => this.render(), this.heartOpen) : this.tab === 'compendium' ? compendiumPanel(() => this.render(), this.compendiumOpen) : this.tab === 'realm' ? realmPanel(this.session, () => this.render(), this.realmOpen) : this.tab === 'bestiary' ? this.bestiary() : this.tab === 'families' ? this.families() : this.tab === 'backgrounds' ? this.backgrounds() : this.tab === 'companions' ? this.companions() : this.tab === 'cards' ? this.cards() : this.tab === 'ship' ? this.ship() : this.tab === 'achievements' ? this.achievements() : this.tab === 'lore' ? this.lore() : this.tab === 'items' ? this.legendaryCodex() : this.tab === 'maps' ? this.maps() : this.tab === 'completion' ? this.completion() : this.tab === 'primer' ? primerPanel(this.session) : this.statistics();
     const soon = nextReveal(this.session.state, 'codex:', showAll);
     this.root.replaceChildren(el('div', { class: 'sheet' }, navBar(this.session, this.nav, 'codex'), groupBar, tabs, body, ...(soon ? [el('p', { class: 'dim small' }, `More Codex pages open at level ${soon.level}.`)] : [])));
   };

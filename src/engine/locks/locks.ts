@@ -1,6 +1,7 @@
 import { content, type Content } from '../../data';
 import { characterBaseStats } from '../character/stats';
 import { SEASONS } from '../../data/realm/wheel';
+import { roadWalk } from '../../data/locks';
 import { masteryLevel } from '../skills/mastery';
 import { describe, evaluate } from '../quests/conditions';
 import type { Cond } from '../quests/types';
@@ -8,7 +9,7 @@ import type { GameState } from '../state/gameState';
 import type { LockDef, LockProgress, LockStatus } from './types';
 
 /** Developer panel switch (never saved): every lock reads as open. */
-export const lockControl = { ignore: false };
+export const lockControl = { ignore: false, shut: new Set<string>() };
 
 const KIND_TEXT: Partial<Record<Cond['kind'], string>> = {
   atLevelCap: 'Reach the highest level you can',
@@ -24,7 +25,7 @@ export function leafText(cond: Cond, c: Content = content): string {
     case 'level':
       return `Reach level ${cond.min}`;
     case 'ngPlus':
-      return `Begin New Game+ ${cond.min}`;
+      return `Reach ${roadWalk(cond.min)}`;
     case 'endingsSeen':
       return `See ${cond.min} ending${cond.min === 1 ? '' : 's'} of the story`;
     case 'dungeonCleared':
@@ -44,7 +45,7 @@ export function leafText(cond: Cond, c: Content = content): string {
     case 'thirdSlot':
       return "Finish High Lector Amara's errand";
     case 'classUnlocked':
-      return `Unlock ${c.classes.get(cond.classId).name} through its secret questline`;
+      return `Earn the ${c.classes.get(cond.classId).name} calling through its secret questline`;
     case 'zoneVisited':
       return `Set foot in ${c.zones.get(cond.zone).name}`;
     case 'zones':
@@ -65,6 +66,10 @@ export function leafText(cond: Cond, c: Content = content): string {
       return `Wait for ${c.weather.find(cond.weather)?.name ?? cond.weather} weather`;
     case 'counter':
       return `${cond.flag.replace(/[-_:]/g, ' ')} ${cond.min}`;
+    case 'unlocked': {
+      const l = c.locks.get(cond.lock);
+      return evaluateLockText(l.requirement, c);
+    }
     case 'quest':
       return `${cond.state === 'complete' ? 'Complete' : cond.state === 'active' ? 'Take up' : 'Leave untouched'}: ${c.quests.get(cond.quest).name}`;
     default: {
@@ -72,6 +77,13 @@ export function leafText(cond: Cond, c: Content = content): string {
       return KIND_TEXT[cond.kind] ?? (d || cond.kind);
     }
   }
+}
+
+/** The words for a whole requirement (used when one gate leans on another). */
+function evaluateLockText(cond: Cond, c: Content): string {
+  if (cond.kind === 'all') return cond.conds.map((x) => evaluateLockText(x, c)).join(' and ');
+  if (cond.kind === 'any') return cond.conds.map((x) => evaluateLockText(x, c)).join(', or ');
+  return leafText(cond, c);
 }
 
 /** Current and needed value for the numeric leaf kinds; undefined when the kind has no number. */
@@ -83,7 +95,7 @@ function measure(state: GameState, cond: Cond, c: Content): LockProgress | undef
     case 'gold':
       return { label: 'Gold', have: state.gold, need: cond.min };
     case 'ngPlus':
-      return { label: 'New Game+', have: state.ngPlus, need: cond.min };
+      return { label: 'Walks of the Road', have: state.ngPlus + 1, need: cond.min + 1 };
     case 'stat':
       return { label: cond.stat.toUpperCase(), have: characterBaseStats(p, c)[cond.stat], need: cond.min };
     case 'achievements':
@@ -137,6 +149,7 @@ export function lockDef(id: string, c: Content = content): LockDef {
 
 /** Is this lock open? Open locks stay open; the developer switch opens all. */
 export function isUnlocked(state: GameState, id: string, c: Content = content): boolean {
+  if (lockControl.shut.has(id)) return false;
   if (lockControl.ignore || state.unlocks.opened[id]) return true;
   return evaluate(state, c.locks.get(id).requirement, c);
 }

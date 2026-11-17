@@ -212,6 +212,8 @@ export function evaluate(state: GameState, cond: Cond, c: Content = content): bo
       const w = state.world.weather[zoneOf(state.world.position.map, c).id];
       return w !== undefined && w.until > absMinute(state.clock) && w.id === cond.weather;
     }
+    case 'unlocked':
+      return state.unlocks.opened[cond.lock] !== undefined || evaluate(state, c.locks.get(cond.lock).requirement, c);
     case 'all':
       return cond.conds.every((x) => evaluate(state, x, c));
     case 'any':

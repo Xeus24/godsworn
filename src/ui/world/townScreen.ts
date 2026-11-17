@@ -1,6 +1,6 @@
 import { isUnlocked } from '../../engine/locks/locks';
 import { guildBody, talesBody } from './guildCards';
-import { isRevealed, nextReveal, type RevealKey } from '../../engine/guide/reveal';
+import { evaluateLock } from '../../engine/locks/locks';
 import { firstSteps, hideFirstSteps } from '../../engine/guide/firstSteps';
 import { settings } from '../settings';
 import { nextRenownTier, renownOf, renownTier, statueTowns } from '../../engine/world/renown';
@@ -397,6 +397,7 @@ export class TownScreen implements Screen {
       this.root?.append(this.overlay.element);
     });
     const leave = this.btn('Leave town (Esc)', () => this.town.leave(), false, 'primary');
+    leave.dataset.guide = 'town:leave';
     if (fsv.active && fsv.next && fsv.next.place === 'world' && fsv.next.id !== 'battle') this.coach(leave);
     const arrange = this.btn(this.arranging ? 'Done arranging' : 'Rearrange layout', () => {
       this.arranging = !this.arranging;
@@ -406,17 +407,26 @@ export class TownScreen implements Screen {
       resetLayout();
       this.render();
     }, false, 'tab');
-    // Services a new hero does not need yet stay out of sight until their level (a one-line hint says when the next opens).
+    // Services a new hero does not need yet stay out of sight until their lock opens. Sealed ones the hero
+    // should know about are named on one line, with what opens them in the tooltip; hidden ones are not named.
     const showAll = settings().showEverything;
-    const gate: Record<string, RevealKey> = { Renown: 'town:renown', "Adventurers' Guild": 'town:guild', 'Tales & Tankards': 'town:tales', Pastimes: 'town:pastimes', 'Arena & Class Trainers': 'town:arena', Library: 'town:library', Investments: 'town:investments', 'Town Fortunes': 'town:fortunes', 'House for sale': 'town:housing' };
+    const gate = cardLocks();
+    const sealed: { node: HTMLElement; gap: number }[] = [];
     const visible = cards.filter((c) => {
-      const key = gate[c.dataset.card ?? ''];
-      if (!key) return true;
-      if (key === 'town:library' && books.length > 0) return true;
-      return isRevealed(s.state, key, showAll);
+      const title = c.dataset.card ?? '';
+      const lock = gate[title];
+      if (!lock) return true;
+      if (lock === 'reveal:town:library' && books.length > 0) return true;
+      if (showAll || isUnlocked(s.state, lock)) return true;
+      const def = content.locks.get(lock);
+      if (def.visibility !== 'hidden') {
+        const prog = evaluateLock(s.state, lock).progress;
+        sealed.push({ node: el('span', { class: 'sealed-name', title: [def.hint, ...prog.map((p) => `${p.label}: ${p.have}/${p.need}`)].join(' ') }, title), gap: prog[0] ? prog[0].need - prog[0].have : 99 });
+      }
+      return false;
     });
-    const soon = nextReveal(s.state, 'town:', showAll);
     const grid = this.arrangedGrid(visible);
+    for (const c of visible) if (c.dataset.card) s.guide.viewed(`card:${c.dataset.card}`);
     this.root.replaceChildren(
       el(
         'div',
@@ -437,9 +447,16 @@ export class TownScreen implements Screen {
             ...(this.arranging ? [el('div', { class: 'dim small' }, 'Drag a card to where you want it, or use the arrows. Your layout is saved.')] : []),
           ),
           grid,
-          ...(soon && visible.length < cards.length ? [el('p', { class: 'dim small' }, `More town services open at level ${soon.level}.`)] : []),
+          ...(sealed.length ? [el('p', { class: 'dim small' }, 'Soon to open to you here: ', ...sealed.sort((a, b) => a.gap - b.gap).slice(0, 2).flatMap((x, i) => (i ? [', ', x.node] : [x.node])), sealed.length > 2 ? ', and more as you grow.' : '.')] : []),
         ),
       ),
     );
   };
+}
+
+/** Town card title -> the lock that opens it: the old level reveals, then every system that names a card as its way in. */
+function cardLocks(): Record<string, string> {
+  const out: Record<string, string> = { Renown: 'reveal:town:renown', "Adventurers' Guild": 'reveal:town:guild', 'Tales & Tankards': 'reveal:town:tales', Pastimes: 'reveal:town:pastimes', 'Arena & Class Trainers': 'reveal:town:arena', Library: 'reveal:town:library', Investments: 'reveal:town:investments', 'Town Fortunes': 'reveal:town:fortunes', 'House for sale': 'reveal:town:housing' };
+  for (const sys of content.systems.all()) for (const e of sys.entries) if (e.startsWith('card:')) out[e.slice(5)] = sys.lock;
+  return out;
 }

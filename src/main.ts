@@ -20,6 +20,7 @@ import { timeOfDay } from './engine/state/clock';
 import { CombatScreen, inventoryHooks } from './ui/combat/combatScreen';
 import type { Nav } from './ui/components/navBar';
 import { Toasts } from './ui/components/toasts';
+import { GuideCard } from './ui/components/guideCard';
 import { CreationScreen } from './ui/creation/creationScreen';
 import { registerCoreSections } from './ui/debug/coreSections';
 import { DebugPanel } from './ui/debug/debugPanel';
@@ -98,6 +99,7 @@ let inBattle = false;
 let currentBattle: Battle | undefined;
 const screens = new ScreenManager(root);
 const toasts = new Toasts();
+const guideCard = new GuideCard();
 const debug = new DebugPanel();
 registerCoreSections(debug, () => session);
 registerItemSections(debug, () => session);
@@ -181,6 +183,7 @@ function attach(s: GameSession): void {
   lastAutosave = Date.now();
   recordNgPlus(s.state.ngPlus);
   checkEndgame(s, false);
+  guideCard.attach(s);
   s.bus.on('toast', ({ kind, text }) => {
     toasts.show(kind, text);
     if (kind === 'level') audio().play('levelUp');
