@@ -138,3 +138,6 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 52px;
 }
+/* The Wayfarer's Primer: one folded line per system, in its own scroll pane. */
+.primer-list { max-height: min(48vh, 440px); overflow-y: auto; }
+.primer-list .primer-entry { content-visibility: auto; contain-intrinsic-size: auto 28px; }

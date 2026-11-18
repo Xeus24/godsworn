@@ -30,7 +30,7 @@ export function primerPanel(session: GameSession): HTMLElement {
     { class: 'panel' },
     el('h2', {}, 'The Wayfarer’s Primer'),
     el('p', { class: 'dim small' }, `What your mentors have taught you on the Road. ${known.length} of ${content.systems.all().length} known.`),
-    el('div', { class: 'quest-list' }, ...rows),
+    el('div', { class: 'primer-list' }, ...rows),
     ...(soon.length ? [el('h3', {}, 'Still ahead'), el('ul', {}, ...soon)] : []),
   );
 }

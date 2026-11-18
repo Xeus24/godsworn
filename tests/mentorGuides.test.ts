@@ -30,6 +30,41 @@ describe('systems and their guides', () => {
   });
 });
 
+describe('coverage: every way into a system belongs to one', () => {
+  it('every Realm page, Heart page and nav tab is claimed by exactly one system', async () => {
+    const { SECTIONS: realm } = await import('../src/ui/codex/realmPanel');
+    const { SECTIONS: heart } = await import('../src/ui/codex/heartPanel');
+    const nav = ['character', 'inventory', 'skills', 'general', 'pantheon', 'quests', 'party', 'codex'];
+    const keys = [...realm.map(([id]) => `realm:${id}`), ...heart.map(([id]) => `heart:${id}`), ...nav.map((id) => `nav:${id}`)];
+    const owners = (k: string) => content.systems.all().filter((x) => x.entries.includes(k)).map((x) => x.id);
+    const unclaimed = keys.filter((k) => owners(k).length !== 1);
+    expect(unclaimed).toEqual([]);
+  });
+
+  it('every town card a lock gates belongs to a system', () => {
+    const gated = ['Renown', "Adventurers' Guild", 'Tales & Tankards', 'Pastimes', 'Arena & Class Trainers', 'Library', 'Investments', 'Town Fortunes', 'House for sale', 'Workshop', 'Market', 'Stables', 'Harbor', 'The Fog Ferry', 'Rift Gate & Boss Rush'];
+    const claimed = new Set(content.systems.all().flatMap((x) => x.entries));
+    expect(gated.filter((t) => !claimed.has(`card:${t}`))).toEqual([]);
+  });
+});
+
+describe('the later walks of the Road', () => {
+  it('a first-walk hero at the level cap has not met them; a later walk opens them by tier', () => {
+    const s = newSession();
+    s.player.level = s.state.levelCap;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    for (const id of ['omens', 'waters', 'sundered', 'bloodline']) expect(s.guide.known().map((x) => x.id)).not.toContain(id);
+    s.state.ngPlus = 1;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    const known = s.guide.known().map((x) => x.id);
+    expect(known).toEqual(expect.arrayContaining(['omens', 'waters', 'cardspire', 'painter', 'echoes', 'fates', 'newroad']));
+    expect(known).not.toContain('sundered');
+    s.state.ngPlus = 2;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.guide.known().map((x) => x.id)).toContain('sundered');
+  });
+});
+
 describe('lock graph', () => {
   it('every lock can be opened from a new game, with no circular needs', () => {
     const g = lockReachability();
@@ -123,10 +158,10 @@ describe('gates that lean on story and other gates', () => {
     expect(s.guide.entryOpen('realm:grudge')).toBe(true);
     expect(s.locks.isOpen('reveal:codex:realm')).toBe(true);
     expect(s.guide.entryOpen('realm:wheel')).toBe(false);
-    expect(s.guide.entryOpen('realm:echoes', 'codex:pages')).toBe(false);
+    expect(s.guide.entryOpen('realm:a-page-yet-to-come', 'codex:pages')).toBe(false);
     s.player.level = 10;
     s.bus.emit('stateChanged', { reason: 'test' });
-    expect(s.guide.entryOpen('realm:echoes', 'codex:pages')).toBe(true);
+    expect(s.guide.entryOpen('realm:a-page-yet-to-come', 'codex:pages')).toBe(true);
   });
 
   it('a page no system claims stays open', () => expect(newSession().guide.entryOpen('realm:no-such-page')).toBe(true));
