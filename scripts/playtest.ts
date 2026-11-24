@@ -12,6 +12,8 @@
  *   PLAYTEST_TRACE=1 npm run playtest   also tallies who did what in a lost fight
  *   npm run playtest -- ng      every class again through New Game+1 (the story restarts at the raised levels)
  *   PLAYTEST_RAGE_TACTICS=1 npm run playtest -- ng warrior   the Warrior with Rage played as Tactic Dice
+ *   PLAYTEST_HARDCORE=1 npm run playtest   Hardcore heroes under the Tabletop Rules (no Last Breath: a hero at 0 HP dies).
+ *       A Hardcore fall would end the game; here the run carries on as if from the last save, and the falls are counted.
  *   npm run playtest -- ng monk one class through the base story and New Game+1, with a log of every fight
  */
 import { content } from '../src/data';
@@ -118,8 +120,17 @@ function realFight(s: GameSession, id: string): boolean {
   }
   if (b.outcome !== 'victory' && process.env.PLAYTEST_DEBUG) console.log(`  LOSS ${id}: ${b.combatants.map((u) => `${u.name}${u.side === 'party' ? '*' : ''} ${Math.round(u.hp)}/${Math.round(u.maxHp)}`).join(' | ')}`);
   settleBattle(s, b);
+  if (b.outcome === 'defeat' && s.player.hardcore) {
+    // A real Hardcore hero is gone. The playtest is after crashes and stuck stories, so it carries on from the last save.
+    hardcoreFalls++;
+    s.state.gameOver = false;
+    restoreFull(s.player);
+  }
   return b.outcome === 'victory';
 }
+
+/** Hardcore mode (PLAYTEST_HARDCORE): fights a Hardcore hero lost (each would have ended that game). */
+let hardcoreFalls = 0;
 
 const arg = process.argv[2];
 const ng = arg === 'ng';
@@ -159,7 +170,8 @@ for (const [i, cls] of classes.entries()) {
     });
   };
   const startHero = benchmarkHero(cls, 1);
-  if (process.env.PLAYTEST_TABLETOP) startHero.tabletop = true;
+  if (process.env.PLAYTEST_TABLETOP || process.env.PLAYTEST_HARDCORE) startHero.tabletop = true;
+  if (process.env.PLAYTEST_HARDCORE) startHero.hardcore = true;
   if (process.env.PLAYTEST_RAGE_TACTICS) startHero.rageAsTactics = true;
   const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), startHero);
   const r = run(base, 0);
@@ -179,5 +191,6 @@ for (const [i, cls] of classes.entries()) {
   }
 }
 // One summary line, and a failing exit code when any run did not finish, so scripts and CI can rely on it.
-console.log(`PLAYTEST: ${expected - unfinished.length} of ${expected} runs finished.${unfinished.length ? ` Not finished: ${unfinished.join('; ')}` : ''}`);
+const mode = process.env.PLAYTEST_HARDCORE ? ` (Hardcore, Tabletop Rules: ${hardcoreFalls} falls carried on from the last save)` : process.env.PLAYTEST_TABLETOP ? ' (Tabletop Rules)' : '';
+console.log(`PLAYTEST: ${expected - unfinished.length} of ${expected} runs finished${mode}.${unfinished.length ? ` Not finished: ${unfinished.join('; ')}` : ''}`);
 if (unfinished.length) process.exitCode = 1;

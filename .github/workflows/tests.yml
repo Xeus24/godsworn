@@ -1,7 +1,7 @@
 name: Tests
 
-# Every push runs three jobs in parallel: the type-check, unit tests and build; the browser suite; and the full
-# playtest (every class through the story and the second walk of the Road). The fold audit is built into the
+# Every push runs four jobs in parallel: the type-check, unit tests and build; the browser suite; the full
+# playtest (every class through the story and the second walk of the Road); and the Hardcore Tabletop playtest. The fold audit is built into the
 # browser suite (e2e/fixtures.ts): a test fails if a step clicks, sees or reads something inside a folded panel
 # it did not open with reveal(). The playtest fails when any run does not reach its ending.
 on:
@@ -109,4 +109,44 @@ jobs:
         with:
           name: playtest-log
           path: playtest.log
+          retention-days: 7
+
+  playtest-hardcore:
+    name: Hardcore Tabletop playtest
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # Hardcore heroes under the Tabletop Rules: no Last Breath, so a hero at 0 HP dies outright (the case
+      # that once crashed a boss's Throne Action). First walk of the Road only; falls carry on from the last save.
+      - name: Playtest (every class, Hardcore, Tabletop Rules)
+        shell: bash
+        env:
+          PLAYTEST_HARDCORE: '1'
+        run: npm run playtest | tee playtest-hardcore.log
+
+      - name: Playtest summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Hardcore Tabletop playtest"
+            echo
+            grep '^PLAYTEST:' playtest-hardcore.log || echo "PLAYTEST: no summary line (the playtest stopped early; see the log)."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the playtest log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playtest-hardcore-log
+          path: playtest-hardcore.log
           retention-days: 7
