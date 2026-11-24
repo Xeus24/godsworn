@@ -39,7 +39,7 @@ export interface TownNav {
   harbor: () => void;
   /** The pastimes: fishing, cards, dice, racing, the forge, digging and the arena ladder. */
   games: () => void;
-  /** Rift Gate and Boss Rush. */
+  /** Rift Gate and Gauntlet of Tyrants. */
   endgame: () => void;
   /** The fog ferry to Marrow (Mirewick). */
   marrow: () => void;
@@ -62,7 +62,7 @@ const CARD_ICONS: Record<string, string> = {
   Workshop: 'workshop',
   Pastimes: 'arena',
   Stables: 'stables',
-  'Rift Gate & Boss Rush': 'rift',
+  'Rift Gate & Gauntlet of Tyrants': 'rift',
   'Arena & Class Trainers': 'arena',
   Library: 'library',
   Stash: 'stash',
@@ -327,7 +327,7 @@ export class TownScreen implements Screen {
       const owned = s.player.stable.pets.includes(pt.id);
       return el('div', { class: 'board-row' }, el('b', {}, pt.name), el('div', { class: 'dim small' }, pt.description), this.btn(owned ? 'Owned' : `Buy (${pt.price}g)`, () => this.say(s.world.buyPet(pt.id)), owned || s.state.gold < (pt.price ?? 0)));
     })));
-    if (late) cards.push(this.card('Rift Gate & Boss Rush', el('p', { class: 'small' }, s.endgame.active ? 'Your run is waiting for you.' : 'Open a Rift with a Rift Map, or take on every dungeon boss in a row in the arena’s Boss Rush.'), this.btn(s.endgame.active ? 'Return to your run' : 'Go to the Rift Gate', () => this.town.endgame(), false, 'primary')));
+    if (late) cards.push(this.card('Rift Gate & Gauntlet of Tyrants', el('p', { class: 'small' }, s.endgame.active ? 'Your run is waiting for you.' : 'Open a Rift with a Rift Map, or take on every dungeon boss in a row in the arena’s Gauntlet of Tyrants.'), this.btn(s.endgame.active ? 'Return to your run' : 'Go to the Rift Gate', () => this.town.endgame(), false, 'primary')));
     cards.push(this.card('Arena & Class Trainers', el('p', { class: 'small' }, 'Spar in the arena or train a new class.'), this.btn('Go to the arena', () => this.town.arena(), false, 'primary')));
 
     const books = s.state.inventory.slots.map((it, i) => ({ it, i })).filter((x) => x.it && bookSkill(x.it.baseId));

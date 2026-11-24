@@ -42,7 +42,7 @@ describe('coverage: every way into a system belongs to one', () => {
   });
 
   it('every town card a lock gates belongs to a system', () => {
-    const gated = ['Renown', "Adventurers' Guild", 'Tales & Tankards', 'Pastimes', 'Arena & Class Trainers', 'Library', 'Investments', 'Town Fortunes', 'House for sale', 'Workshop', 'Market', 'Stables', 'Harbor', 'The Fog Ferry', 'Rift Gate & Boss Rush'];
+    const gated = ['Renown', "Adventurers' Guild", 'Tales & Tankards', 'Pastimes', 'Arena & Class Trainers', 'Library', 'Investments', 'Town Fortunes', 'House for sale', 'Workshop', 'Market', 'Stables', 'Harbor', 'The Fog Ferry', 'Rift Gate & Gauntlet of Tyrants'];
     const claimed = new Set(content.systems.all().flatMap((x) => x.entries));
     expect(gated.filter((t) => !claimed.has(`card:${t}`))).toEqual([]);
   });

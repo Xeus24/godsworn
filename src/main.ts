@@ -231,7 +231,7 @@ function checkEndgame(s: GameSession, announce: boolean): void {
   if (!announce) return;
   new UnlockOverlay('The deeper works of the world', [
     'You stand at the height of your power, and the world has more to show you:',
-    'A Rift Gate in every town: rifts, the Boss Rush and the trials of the gods.',
+    'A Rift Gate in every town: rifts, the Gauntlet of Tyrants and the trials of the gods.',
     'The stables, the Paragon board, the ascension of your finest gear and the path of the Defender.',
     s.state.quests.ending ? 'You may walk the Road again from the start: see the Legacy panel on your Character sheet.' : 'Finish the story, and you may walk the Road again from the start (the Legacy panel on your Character sheet).',
     ...(first0 ? ['New heroes may now take on Challenges at their making, and new peoples will answer them as you earn them.'] : []),
@@ -326,7 +326,7 @@ function showEndgame(): void {
   if (session) void import('./ui/endgame/endgameScreen').then((m) => { if (session) screens.show(new m.EndgameScreen(session, nav, startGauntletFight, () => showTown(session?.world.inTown() ?? 'brightwater'))); });
 }
 
-/** The next fight of the Rift or Boss Rush in progress. */
+/** The next fight of the Rift or Gauntlet of Tyrants in progress. */
 function startGauntletFight(): void {
   const f = session?.endgame.nextFight();
   if (f) startFight(f.encounter, f.level, false, { enemyModifiers: f.enemyModifiers, partyModifiers: f.partyModifiers });
@@ -382,7 +382,7 @@ function showWorkshop(town: string): void {
  * trials scale to the hero). World fights use the zone's weather and cannot
  * be replayed.
  */
-/** A fight that is part of a Rift or the Boss Rush: its affixes, and where to go when it ends. */
+/** A fight that is part of a Rift or the Gauntlet of Tyrants: its affixes, and where to go when it ends. */
 interface GauntletOptions {
   enemyModifiers: ModifierSpec[];
   partyModifiers: ModifierSpec[];
@@ -427,7 +427,7 @@ function startFight(encounter: EncounterDef, level?: number, world = false, gaun
     ...(world && !encounter.isBoss ? openingFor(s) : {}),
     companions: s.party.battleMembers(),
     guests: [...s.quests.guests(), ...(follower ? [{ id: 'follower', enemyId: follower, ally: true }] : [])],
-    // Rifts and the Boss Rush are already set at your level: no NG+ stretching.
+    // Rifts and the Gauntlet of Tyrants are already set at your level: no NG+ stretching.
     ...(gauntlet ? { enemyModifiers: gauntlet.enemyModifiers, partyModifiers: [...gauntlet.partyModifiers, ...taleMods] } : { ngPlus: s.state.ngPlus, ngAffixes: s.state.ngAffixes, partyModifiers: [...taleMods, ...s.pilgrimage.partyMods(), ...s.oaths.riteMods()], enemyModifiers: s.pilgrimage.enemyMods() }),
     ...(level !== undefined ? { level } : {}),
   });

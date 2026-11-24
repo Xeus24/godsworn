@@ -185,7 +185,7 @@ export interface GameState {
   ngAffixes: string[];
   /** Fish, cards, dice, races, forging, digging and the arena ladder. */
   minigames: MinigameState;
-  /** Rifts and the Boss Rush: the run in progress and your records. */
+  /** Rifts and the Gauntlet of Tyrants: the run in progress and your records. */
   endgame: EndgameState;
   /** The living world (section A): the Grudgebound and the rest. */
   realm: RealmState;

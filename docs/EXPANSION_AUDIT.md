@@ -156,7 +156,7 @@ Counts come from the live content registry (`npx tsx scripts/auditCounts.ts`), t
 | NG+ classes | 0 | 3 |
 | Twilight chapters | 5 | 3 (total 8) + 3 paths |
 | World affixes | rift affixes 10 | 40+ pool, 2 per tier |
-| Endgame | Rifts, Boss Rush | Endless Spire, Divine Trials, Arena Champions, weekly seeds, Pacifist |
+| Endgame | Rifts, Gauntlet of Tyrants | Endless Spire, Divine Trials, Arena Champions, weekly seeds, Pacifist |
 
 ## Section 13: UX
 

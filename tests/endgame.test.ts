@@ -82,7 +82,7 @@ describe('Rifts', () => {
   });
 });
 
-describe('the Boss Rush', () => {
+describe('the Gauntlet of Tyrants', () => {
   it('fights every dungeon boss in a row and keeps your record', () => {
     const s = hero60();
     expect(s.endgame.startBossRush().ok).toBe(true);

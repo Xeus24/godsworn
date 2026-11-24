@@ -62,7 +62,7 @@
 
 ## 13. New Game+
 - NG+1 to NG+10. Each tier adds scenes, remixed boss phases and two world affixes from a pool of 44. **Twilight of the Gods** has eight chapters and three paths (Godslayer, Ascension, Defender) and a true ending.
-- Endgame: the Endless Spire, Divine Trials, the Arena Champions league, a weekly seeded run, Rifts, the Boss Rush, challenge modes and the Pacifist challenge.
+- Endgame: the Endless Spire, Divine Trials, the Arena Champions league, a weekly seeded run, Rifts, the Gauntlet of Tyrants, challenge modes and the Pacifist challenge.
 
 ## 14. UX & Accessibility
 - Colour-blind palettes **with patterns and symbols**, text size, a dyslexia-friendly font, reduced flashing, high contrast and an encounter-rate slider.

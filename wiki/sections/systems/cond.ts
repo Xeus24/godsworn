@@ -71,7 +71,7 @@ export function describeCond(c: Cond, ctx: RenderCtx): string {
     case 'hardcore': return 'Play a Hardcore hero';
     case 'challenge': return `Play under the ${L('challenge', c.challenge)} challenge`;
     case 'riftTier': return `Clear a Rift of tier ${c.min}`;
-    case 'bossRush': return c.clears ? `Complete ${c.clears} Boss Rush clear${c.clears > 1 ? 's' : ''}` : `Beat ${c.best} bosses in one Boss Rush`;
+    case 'bossRush': return c.clears ? `Complete ${c.clears} Gauntlet of Tyrants clear${c.clears > 1 ? 's' : ''}` : `Beat ${c.best} bosses in one Gauntlet of Tyrants`;
     case 'defender': return 'Defend a second god';
     case 'endingsSeen': return `See ${n(c.min)} different endings`;
     case 'ngPlus': return `Reach New Game+ ${c.min}`;

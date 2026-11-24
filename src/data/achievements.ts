@@ -15,7 +15,7 @@ export const ACHIEVEMENT_CATEGORIES: { id: AchievementCategory; name: string }[]
   { id: 'companions', name: 'Companions' },
   { id: 'challenge', name: 'Challenges' },
   { id: 'twilight', name: 'New Game+ & Twilight' },
-  { id: 'endgame', name: 'Rifts & Boss Rush' },
+  { id: 'endgame', name: 'Rifts & Gauntlet of Tyrants' },
   { id: 'secrets', name: 'Secrets' },
   { id: 'pastimes', name: 'Pastimes' },
   { id: 'travel', name: 'Sea & Sky' },
@@ -201,14 +201,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   ),
   challenge('challenge-triple', 'Masochist', 'Reach an ending with Hardcore and two challenge modes at once.', 60, { kind: 'all', conds: [{ kind: 'hardcore' }, { kind: 'ending' }, { kind: 'any', conds: [['ironman', 'lone-wolf'], ['ironman', 'godless'], ['ironman', 'glass-cannon'], ['ironman', 'nightmare'], ['lone-wolf', 'godless'], ['lone-wolf', 'glass-cannon'], ['lone-wolf', 'nightmare'], ['godless', 'glass-cannon'], ['godless', 'nightmare'], ['glass-cannon', 'nightmare']].map(([a, b]) => ({ kind: 'all' as const, conds: [{ kind: 'challenge' as const, challenge: a as string }, { kind: 'challenge' as const, challenge: b as string }] })) }] }, { title: 'the Unbreakable' }),
 
-  // ---------------- Rifts and the Boss Rush ----------------
+  // ---------------- Rifts and the Gauntlet of Tyrants ----------------
   endgame('rift-1', 'Through the Rift', 'Clear a tier 1 Rift.', 15, { kind: 'riftTier', min: 1 }),
   endgame('rift-5', 'Riftwalker', 'Clear a tier 5 Rift.', 25, { kind: 'riftTier', min: 5 }, { mount: 'rift-strider', title: 'Riftwalker' }),
   endgame('rift-10', 'Into the Deep', 'Clear a tier 10 Rift.', 40, { kind: 'riftTier', min: 10 }),
   endgame('rift-15', 'Edge of Nothing', 'Clear a tier 15 Rift.', 50, { kind: 'riftTier', min: 15 }),
   endgame('rift-20', 'Rift Lord', 'Clear a tier 20 Rift.', 80, { kind: 'riftTier', min: 20 }, { pet: 'primordial-egg', title: 'Rift Lord' }),
-  endgame('boss-rush-5', 'Warming Up', 'Beat 5 bosses in one Boss Rush.', 15, { kind: 'bossRush', best: 5 }),
-  endgame('boss-rush-clear', 'Boss Rush', 'Clear the Boss Rush.', 40, { kind: 'bossRush', clears: 1 }, { title: 'the Relentless Champion' }),
+  endgame('boss-rush-5', 'Warming Up', 'Beat 5 bosses in one Gauntlet of Tyrants.', 15, { kind: 'bossRush', best: 5 }),
+  endgame('boss-rush-clear', 'Gauntlet of Tyrants', 'Clear the Gauntlet of Tyrants.', 40, { kind: 'bossRush', clears: 1 }, { title: 'the Relentless Champion' }),
   endgame('primordial', 'Older Than the Gods', 'Find a Primordial item.', 50, { kind: 'rarity', rarity: 'primordial' }, { hidden: true }),
 
   challenge('achievements-25', 'Achiever', 'Earn 25 achievements.', 10, { kind: 'achievements', min: 25 }),

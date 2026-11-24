@@ -11,8 +11,8 @@ import { navBar, type Nav } from '../components/navBar';
 import { el, type Screen } from '../screen';
 
 /**
- * The Rift Gate and the Boss Rush: open a Rift of any tier you have
- * reached (with a Rift Map), start the Boss Rush, and follow the run in
+ * The Rift Gate and the Gauntlet of Tyrants: open a Rift of any tier you have
+ * reached (with a Rift Map), start the Gauntlet of Tyrants, and follow the run in
  * progress wave by wave.
  */
 export class EndgameScreen implements Screen {
@@ -57,13 +57,13 @@ export class EndgameScreen implements Screen {
   private run(): HTMLElement {
     const s = this.session;
     const a = s.endgame.active;
-    if (!a) return el('section', { class: 'panel' }, el('h2', {}, 'No run in progress'), el('p', { class: 'dim small' }, 'Open a Rift or start the Boss Rush.'));
+    if (!a) return el('section', { class: 'panel' }, el('h2', {}, 'No run in progress'), el('p', { class: 'dim small' }, 'Open a Rift or start the Gauntlet of Tyrants.'));
     const next = a.fights[a.wave];
     const rows = a.fights.map((f, i) => el('div', { class: `trial-stage${i < a.wave ? ' done' : ''}` }, el('b', {}, f.encounter.name), el('div', { class: 'dim small' }, i < a.wave ? 'Beaten' : i === a.wave ? `Next · level ${f.level}` : `Level ${f.level}`)));
     return el(
       'section',
       { class: 'panel' },
-      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Boss Rush', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas', daily: `Trial of the Day ${a.seed ?? ''}`, special: a.label ?? 'A special run' }[a.kind]),
+      el('h2', {}, { rift: `Rift tier ${a.tier}`, bossRush: 'The Gauntlet of Tyrants', spire: `The Endless Spire: floor ${a.floor ?? 1}`, divine: `${DIVINE_TRIALS.find((t) => t.god === a.god)?.name ?? 'A Divine Trial'}`, league: 'The Arena Champions league', weekly: `Weekly run ${a.seed ?? ''}`, atlas: s.endgame.atlasNode(a.atlas ?? '')?.name ?? 'The Celestial Atlas', daily: `Trial of the Day ${a.seed ?? ''}`, special: a.label ?? 'A special run' }[a.kind]),
       el('div', { class: 'small' }, `Fight ${a.wave + 1} of ${a.fights.length} · ${a.turns} turns so far${a.gold ? ` · ${a.gold} gold won` : ''}`),
       ...(a.affixes.length ? [el('h3', {}, 'Rift affixes'), ...a.affixes.map((id) => { const d = content.riftAffixes.get(id); return el('div', { class: 'small' }, el('b', {}, d.name), ` ${d.description}`); })] : []),
       el('p', { class: 'dim small' }, a.kind === 'rift' ? `No rest between fights: only ${RIFTS.respitePct}% of HP and MP comes back between waves. Fall or flee and the Rift closes.` : 'No rest between bosses: HP and MP carry over. Fall and the Rush ends; your best is kept.'),
@@ -104,10 +104,10 @@ export class EndgameScreen implements Screen {
     return el(
       'section',
       { class: 'panel' },
-      el('h2', {}, 'The Boss Rush'),
+      el('h2', {}, 'The Gauntlet of Tyrants'),
       el('p', { class: 'small' }, `All ${content.dungeons.size} dungeon bosses in road order, at your level, one after another. A full clear pays ${BOSS_RUSH.goldPerLevel} gold per level.`),
       el('div', { class: 'small' }, `Best: ${r.best} of ${content.dungeons.size}${r.bestTurns !== undefined ? ` · fastest clear ${r.bestTurns} turns` : ''} · clears: ${r.clears}`),
-      this.btn('Start the Boss Rush', () => this.say(s.endgame.startBossRush()), !check.ok, 'primary'),
+      this.btn('Start the Gauntlet of Tyrants', () => this.say(s.endgame.startBossRush()), !check.ok, 'primary'),
       ...(check.ok ? [] : [el('div', { class: 'dim small' }, check.reason)]),
     );
   }

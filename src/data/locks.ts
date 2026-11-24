@@ -240,7 +240,7 @@ const trialLocks: LockDef[] = [
 /** Endgame modes: each asks for a hero level (the Endgame screen itself is the `endgame` lock). */
 const modeLocks: LockDef[] = [
   levelGate('endgame:rifts', RIFTS.minLevel, 'endgame', `Rifts open to heroes of level ${RIFTS.minLevel}.`, 'The Rift Gates will now open for you.'),
-  levelGate('endgame:bossrush', BOSS_RUSH_MIN_LEVEL, 'endgame', `The Boss Rush opens to heroes of level ${BOSS_RUSH_MIN_LEVEL}.`, 'The arena will now host the Boss Rush for you.'),
+  levelGate('endgame:bossrush', BOSS_RUSH_MIN_LEVEL, 'endgame', `The Gauntlet of Tyrants opens to heroes of level ${BOSS_RUSH_MIN_LEVEL}.`, 'The arena will now host the Gauntlet of Tyrants for you.'),
   levelGate('endgame:spire', SPIRE.minLevel, 'endgame', `The Endless Spire opens to heroes of level ${SPIRE.minLevel}.`, 'The Endless Spire is open to you.'),
   levelGate('endgame:league', LEAGUE.minLevel, 'endgame', `The Champions league opens to heroes of level ${LEAGUE.minLevel}.`, 'The Champions league will take your name.'),
   levelGate('endgame:weekly', WEEKLY.minLevel, 'endgame', `The weekly run opens to heroes of level ${WEEKLY.minLevel}.`, 'The weekly run is open to you.'),
@@ -305,7 +305,7 @@ export const LOCKS: LockDef[] = [
     requirement: ENDGAME_COND,
     visibility: 'teased',
     hint: 'The deeper works of the world wait for those who finish the story or reach the height of their power.',
-    unlockMessage: 'The deeper works of the world are open to you: the Rift Gates, the Boss Rush, the stables, and a new walk of the Road.',
+    unlockMessage: 'The deeper works of the world are open to you: the Rift Gates, the Gauntlet of Tyrants, the stables, and a new walk of the Road.',
     category: 'endgame',
   },
   ...revealLocks,

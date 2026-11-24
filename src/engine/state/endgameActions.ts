@@ -24,7 +24,7 @@ import type { GameSession } from './gameState';
 export type EndgameResult = { ok: true } | { ok: false; reason: string };
 const fail = (reason: string): EndgameResult => ({ ok: false, reason });
 
-/** Boss Rush: the dungeon bosses in road order, fought back to back at your level. */
+/** Gauntlet of Tyrants: the dungeon bosses in road order, fought back to back at your level. */
 export const BOSS_RUSH = {
   minLevel: BOSS_RUSH_MIN_LEVEL,
   goldPerLevel: 40,
@@ -40,7 +40,7 @@ export interface GauntletFight {
 
 /**
  * Endgame runs: Rifts (tiered, opened with a Rift Map at a town's Rift
- * Gate) and the Boss Rush (at a town's arena). A run is a list of fights
+ * Gate) and the Gauntlet of Tyrants (at a town's arena). A run is a list of fights
  * fought in a row; HP and MP carry over, so only potions and skills heal
  * between waves. Losing or fleeing ends the run.
  */
@@ -111,20 +111,20 @@ export class EndgameActions {
 
   canStartBossRush(): EndgameResult {
     if (this.e.active) return fail('Finish (or abandon) the run you are on first.');
-    if (!this.s.world.inTown()) return fail('The Boss Rush is fought at a town’s arena.');
-    if (!isUnlocked(this.s.state, 'endgame:bossrush')) return fail(`The Boss Rush opens to heroes of level ${BOSS_RUSH.minLevel}.`);
+    if (!this.s.world.inTown()) return fail('The Gauntlet of Tyrants is fought at a town’s arena.');
+    if (!isUnlocked(this.s.state, 'endgame:bossrush')) return fail(`The Gauntlet of Tyrants opens to heroes of level ${BOSS_RUSH.minLevel}.`);
     return { ok: true };
   }
 
-  /** The Boss Rush: every dungeon boss in road order, at your level, back to back. */
+  /** The Gauntlet of Tyrants: every dungeon boss in road order, at your level, back to back. */
   startBossRush(): EndgameResult {
     const check = this.canStartBossRush();
     if (!check.ok) return check;
     const level = this.s.player.level;
     const bosses = [...content.dungeons.all()].sort((a, b) => a.level - b.level);
-    const fights = bosses.map((d, i) => ({ encounter: groupEncounter({ weight: 1, enemies: [{ enemyId: d.boss }] }, `gauntlet:bossRush:${i}`, `Boss Rush ${i + 1}/${bosses.length}: ${content.enemies.get(d.boss).name}`, level, { canFlee: false, isBoss: true }), level }));
+    const fights = bosses.map((d, i) => ({ encounter: groupEncounter({ weight: 1, enemies: [{ enemyId: d.boss }] }, `gauntlet:bossRush:${i}`, `Gauntlet of Tyrants ${i + 1}/${bosses.length}: ${content.enemies.get(d.boss).name}`, level, { canFlee: false, isBoss: true }), level }));
     this.e.active = { kind: 'bossRush', tier: 1, fights, wave: 0, affixes: [], turns: 0, gold: 0 };
-    this.toast('quest', `The Boss Rush begins: ${fights.length} bosses, no rest.`);
+    this.toast('quest', `The Gauntlet of Tyrants begins: ${fights.length} bosses, no rest.`);
     this.s.bus.emit('stateChanged', { reason: 'bossRush' });
     return { ok: true };
   }
@@ -583,8 +583,8 @@ export class EndgameActions {
       e.bossRush.bestTurns = Math.min(e.bossRush.bestTurns ?? Infinity, a.turns);
       const gold = BOSS_RUSH.goldPerLevel * this.s.player.level;
       this.s.addGold(gold, 'bossRush');
-      this.toast('level', `Boss Rush cleared in ${a.turns} turns! +${gold} gold.`);
-    } else this.toast('warning', `The Boss Rush ends: ${a.wave} of ${a.fights.length} bosses beaten.`);
+      this.toast('level', `Gauntlet of Tyrants cleared in ${a.turns} turns! +${gold} gold.`);
+    } else this.toast('warning', `The Gauntlet of Tyrants ends: ${a.wave} of ${a.fights.length} bosses beaten.`);
     this.s.bus.emit('stateChanged', { reason: 'gauntlet' });
   }
 }

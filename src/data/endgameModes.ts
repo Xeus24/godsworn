@@ -2,13 +2,13 @@ import type { ModifierSpec } from '../engine/stats/modifiers';
 import { flat, more, pct } from './trees/builder';
 
 /**
- * The endgame beyond Rifts and the Boss Rush (expansion phase 19d): the Endless Spire, the Divine Trials, the
+ * The endgame beyond Rifts and the Gauntlet of Tyrants (expansion phase 19d): the Endless Spire, the Divine Trials, the
  * Arena Champions league and the weekly seeded run. Each is a gauntlet fought in a row with no real rest (see
  * engine/state/endgameActions.ts); these are their numbers.
  */
 
 /** The Endless Spire: floors without end, harder each time, a guardian every fifth, a new twist every fifth. */
-/** Boss Rush and the Divine Trials open at these hero levels (read by the locks in `locks.ts`). */
+/** Gauntlet of Tyrants and the Divine Trials open at these hero levels (read by the locks in `locks.ts`). */
 export const BOSS_RUSH_MIN_LEVEL = 30;
 export const DIVINE_TRIAL_MIN_LEVEL = 50;
 

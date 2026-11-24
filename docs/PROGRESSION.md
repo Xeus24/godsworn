@@ -10,7 +10,7 @@ The game is not starting from zero. Three gating mechanisms exist today, and the
 |---|---|---|
 | Quest condition evaluator (`Cond`, 60+ leaf kinds, `all`/`any`/`not`) | `src/engine/quests/types.ts`, `conditions.ts` | Quests, dialogue choices, conversation topics, story branches. Already covers level, class, race, stat, favor, rep, renown, item, flag, counter, quest state, companion, dungeon, bestiary, slayer, ending, ngPlus, heresy, riftTier, challenge, cleared, achievements and more. |
 | Progressive reveal | `src/engine/guide/reveal.ts` (`REVEAL_LEVELS`) | Top-bar tabs (skills 2, pantheon 3, party 3, general 5), Codex tabs (maps/compendium/cards/backgrounds 5-6, realm/heart/completion 10, ship 12) and town cards (pastimes 2, guild 3, renown 4, tales/arena 5, library 6, investments 8, fortunes/housing 10). Level only; everything opens at endgame. |
-| Endgame switch | `src/engine/endgame/unlocked.ts` | One boolean (NG+ > 0, any ending seen, story ended, or level cap) opens rifts, Boss Rush, stables and NG+ together. |
+| Endgame switch | `src/engine/endgame/unlocked.ts` | One boolean (NG+ > 0, any ending seen, story ended, or level cap) opens rifts, Gauntlet of Tyrants, stables and NG+ together. |
 | Hard-coded constants | `src/data/progression.ts` (`MULTICLASS`), plus a few dozen `level >= N` / `minLevel` sites in engine, UI and data (the audit in section 11 found about 17 `level >= N` hits, not 200, plus about 20 `minLevel` constants) | Second class 15, third class 40 (+NG+2) or 45 (late-story quest), hybrid classes both at 25, craft step 3 at 25, mimic tiers, temple tiers, stable card at 12. |
 
 Existing check: `src/data/index.ts` validates quest conditions at startup, so a bad quest reference already fails loading.
@@ -47,7 +47,7 @@ Existing check: `src/data/index.ts` validates quest conditions at startup, so a 
 | Companions (14) | Recruit quests, approval | Add bond-perk gates and a recruit condition per companion | `data/story/companions*.ts` |
 | Twilight chapters | After main chapters 3/5/7/8 | Keep | `data/twilight.ts` |
 | Rifts | Level 50 + endgame switch | Keep; ordered tiers | `data/rifts.ts` |
-| Boss Rush | Endgame switch (level cap or NG+). README says level 30: **mismatch to verify** | Decide from sim | `endgameModes.ts` |
+| Gauntlet of Tyrants | Endgame switch (level cap or NG+). README says level 30: **mismatch to verify** | Decide from sim | `endgameModes.ts` |
 | Pets / mounts | Pets early, stable card at level 12 | Stable quest or trainer for mounts | `data/pets.ts`, `townScreen.ts` |
 | Optional systems (Tabletop, Afflictions, Hirelings, Holdings) | Opt-in toggles | Sub-features follow the framework | `data/tabletop.ts` etc. |
 | Mini-games | Town card at level 5 (tales) | Cards by tavern visits and wins | `data/minigames` |
@@ -73,7 +73,7 @@ Not covered yet (Phase 1 extends it once locks are data): zone entry, class unlo
 | Library studying inventory-only | S-M | open |
 | `PROGRESS.md` Design decisions ends mid-sentence; Phase 17-20 details missing | S | closed: section is complete and phases 17-20 have their own blocks |
 | Third class level mismatch (40 / 45) | S | closed: both paths exist, `class:third` states them (Phase 2a) |
-| Boss Rush level in README vs code | S | closed: both say 30 (section 11) |
+| Gauntlet of Tyrants level in README vs code | S | closed: both say 30 (section 11) |
 | Level-only reveal table ignores non-level progress | M | folded into Phase 1 |
 
 Baseline numbers: `docs/baseline-sim.md`.
@@ -173,7 +173,7 @@ Greps: `level (>=|<|>) N` and `minLevel` / `*_LEVEL` constants across `src/`. A 
 | Endgame modes | `endgame:rifts`, `:bossrush` (30), `:spire`, `:league`, `:weekly`, `:daily`, `:atlas`, `:divine`, `:war` | `endgameActions.ts` (`canStartMode` takes a lock id), `twilightActions.ts` |
 
 Notes:
-- Boss Rush is level 30 in code and README: no mismatch, the "to verify" item in section 4 is closed. `BOSS_RUSH_MIN_LEVEL` and `DIVINE_TRIAL_MIN_LEVEL` now live in `src/data/endgameModes.ts`.
+- Gauntlet of Tyrants is level 30 in code and README: no mismatch, the "to verify" item in section 4 is closed. `BOSS_RUSH_MIN_LEVEL` and `DIVINE_TRIAL_MIN_LEVEL` now live in `src/data/endgameModes.ts`.
 - Grandfathering: locks are sticky and the first sync opens whatever the hero already qualifies for, so no save loses a feature. A lock that has opened stays open even if the level later drops (a test that lowered the level now uses a fresh hero).
 - **Stayed, on purpose:** mimic tier by level and the lab potion tier (scaling), scroll rarity by recipe level (math), Codex knowledge levels (a different "level"), first-steps checklist (tutorial progress), item `requiredLevel` and affix `minLevel` (item rules), `FAST_TRAVEL_GOLD_PER_LEVEL` (cost). `SPEC_LEVEL` (20) is a **class** level, not a hero level, and no condition reads class level, so specialization stays in `specs.ts`. `TEMPT.minLevel` (30) is a scripted story event owned by `talesActions.ts`; it was left to avoid data importing engine constants.
 - Not moved: the level gates inside quest `requires` conditions are already `Cond` data.
@@ -245,7 +245,7 @@ Design references (docs only, never in the game): staggered system introduction 
 | 37 | The Observatory | `system:observatory` | level 25 and the Wheel open | sealed | Keeper Orsolya | 5, done |
 | 38 | Relics & Land | `system:land` | level 28 | sealed | Archivist Tamsin | 5, done |
 | 39 | Faith | `system:faith` | Favored (250) with any god, or level 30 | sealed | Sister Wenna | 5, done |
-| 40 | The Boss Rush | `endgame:bossrush` | level 30 (unchanged; its card still needs the deeper works) | sealed | Sergeant Brask | 6, done |
+| 40 | The Gauntlet of Tyrants | `endgame:bossrush` | level 30 (unchanged; its card still needs the deeper works) | sealed | Sergeant Brask | 6, done |
 | 41 | Emberfall | `system:emberfall` | level 30 | sealed | Reeve Halwin | 6, done |
 | 42 | Gods & Party | `system:fellowship` | level 32 | sealed | Ilune Firstlight | 6, done |
 | 43 | Oaths | `system:oaths` | main chapter 5 done (about level 35), or level 38 | sealed | Commander Elric Vance | 6, done |

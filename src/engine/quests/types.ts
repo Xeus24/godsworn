@@ -96,7 +96,7 @@ export type Cond =
   | { kind: 'challenge'; challenge: string }
   /** Highest Rift tier cleared. */
   | { kind: 'riftTier'; min: number }
-  /** Boss Rush: full clears, or bosses beaten in one run. */
+  /** Gauntlet of Tyrants: full clears, or bosses beaten in one run. */
   | { kind: 'bossRush'; clears?: number; best?: number }
   /** Defending a second god (the Defender path). */
   | { kind: 'defender' }

@@ -499,12 +499,12 @@
   - **Tiers 1–20:** enemies at your level −3, +1 level every 3 tiers and +8% HP and damage per tier. Clearing a tier opens the next.
   - **Rift affixes** (10): one from tier 3, two from tier 8, three from tier 14. Bloodlust, Bulwark, Haste, Warded and Deadly toughen enemies; Fragile, Parched and Drained weaken your party for a bounty of more gold and Magic Find; Empowered and Gilded cut both ways.
   - **Rewards:** gold per wave (×3 for the Guardian), an elite loot roll per wave and three boss rolls for the Guardian, +15% Magic Find per tier, Primordials from the Guardian at tier 10+, and sometimes a Rift pet.
-- **The Boss Rush** (any town, level 30+): all 10 dungeon bosses in road order at your level, back to back. Your best run and fastest full clear are kept; a clear pays 40 gold × level.
-- Rift and Boss Rush fights are set at your level, so NG+ does not stretch them. A run in progress is shown at the Rift Gate (town card) and survives leaving the screen.
+- **The Gauntlet of Tyrants** (any town, level 30+): all 10 dungeon bosses in road order at your level, back to back. Your best run and fastest full clear are kept; a clear pays 40 gold × level.
+- Rift and Gauntlet of Tyrants fights are set at your level, so NG+ does not stretch them. A run in progress is shown at the Rift Gate (town card) and survives leaving the screen.
 - **Challenge modes** (`data/challenges.ts`), chosen at creation (any combination, with Hardcore): **Ironman** (no buying, no fast travel), **Lone Wolf** (no companions or followers in battle), **Godless** (favor can only fall), **Glass Cannon** (half max HP, +30% damage) and **Nightmare** (enemies +50% HP and +40% damage, you +100% Magic and Gold Find). They show as badges under your name. Rules are enforced in the engine (shops, waypoints, party, favor) and the modifiers flow through `calculateStats`.
 - **Primordial items** (10, `data/items/primordials.ts`): three effects each (The First Word, the Unmade Crown, World-Anchor, Starborn...). Item level 70+, NG+5 or later (or a tier 10+ Rift Guardian), and only from elites, champions and bosses: about 0.06–0.09% of elite and boss drops at NG+5. **Ascended** items (Phase 3) still come from upgrading legendaries and mythics in NG+.
 - **Pets** (9) and **mounts** (5) (`data/pets.ts`, `character/stable.ts`): one pet out at a time for a small bonus (from achievements and, rarely, Rift Guardians); one mount at a time for faster overworld travel (0.5–1.5 minutes a step instead of 2) and fewer ambushes. Three mounts are sold at every town's **Stables**; two are earned (Cartographer, Riftwalker). Pick both on the Character screen.
-- **Achievements:** 14 more (112 → 126, 45 titles): finishing the story in each challenge mode (with titles), Masochist (Hardcore plus two challenges), Rift tiers 1/5/10/15/20, the Boss Rush, and finding a Primordial. Some achievements now bring a pet or mount.
+- **Achievements:** 14 more (112 → 126, 45 titles): finishing the story in each challenge mode (with titles), Masochist (Hardcore plus two challenges), Rift tiers 1/5/10/15/20, the Gauntlet of Tyrants, and finding a Primordial. Some achievements now bring a pet or mount.
 - **Balance** (scratch sim, every class at 60 with benchmark gear, alone, no potions): full Rift clears 50% at tier 1, 48% at tier 5, 19% at tier 10 and 6% at tier 20. By class at tier 1: rogue, ranger and monk 100%, cleric 83%, bard 17%, and warrior, mage and necromancer 0%. Those three are the weak solo classes from earlier phases; with companions and potions they clear. Fixing them is Phase 16's class pass.
 - 433 unit tests.
 
@@ -631,7 +631,7 @@
 - **Heresy is a track of its own, not an 11th god's favor,** because the Nameless One is not a member of the pantheon: it has no prayers, blessings or punisher, and every gain is paid for with every god's favor.
 - **Politics change relations, not the gods.** The pantheon data stays fixed; the save records which pairs became rivals, allies or made peace, and every rival lookup goes through `rivalsOf`.
 - **Followers count as part of a companion** (0.4) for enemy scaling: as a full companion they were a net loss (the enemies' extra HP outweighed them), and without any scaling they were worth a whole companion for free.
-- **Rifts and the Boss Rush share one gauntlet engine:** a run is a saved list of fights; `settleBattle` reports each result back, and the run decides what comes next. Fights are pre-rolled when the run opens, so a run can be left and resumed.
+- **Rifts and the Gauntlet of Tyrants share one gauntlet engine:** a run is a saved list of fights; `settleBattle` reports each result back, and the run decides what comes next. Fights are pre-rolled when the run opens, so a run can be left and resumed.
 - **Challenge modes are data with rules and modifiers,** so most of what they do goes through `calculateStats` and the battle setup; the few rules that stop actions (shops, waypoints, companions, favor) are checked where those actions happen.
 - **Mounts change step time, not movement,** so the map and fog work unchanged; fractional minutes carry over between steps.
 - **Saves go through a store interface,** so the engine never touches localStorage; migrations fill defaults by field rather than by version step, which keeps any old save loadable with one function.
@@ -664,7 +664,7 @@
 - The Codex Achievements tab has a "What points do" panel listing every milestone, which are active and how far the next one is. A toast announces each milestone as it is passed.
 
 ### Endgame stays hidden until endgame (added after Phase 16)
-- `engine/endgame/unlocked.ts`: endgame opens when the hero reaches the level cap, finishes the story, or is in New Game+. Until then the UI hides the Rift Gate and Boss Rush, the Stables (unless you own a mount), the Pet & Mount and Legacy (New Game+) panels, the Paragon board, the workshop's Ascend, and the Defender path. A popup (`UnlockOverlay`) explains what opened up, once per legend, and another pops up for each New Game+ race you unlock.
+- `engine/endgame/unlocked.ts`: endgame opens when the hero reaches the level cap, finishes the story, or is in New Game+. Until then the UI hides the Rift Gate and Gauntlet of Tyrants, the Stables (unless you own a mount), the Pet & Mount and Legacy (New Game+) panels, the Paragon board, the workshop's Ascend, and the Defender path. A popup (`UnlockOverlay`) explains what opened up, once per legend, and another pops up for each New Game+ race you unlock.
 - On the creation screen, challenge modes and the New Game+ races stay hidden until any of your heroes has reached endgame (kept in the browser profile, `ui/profile.ts`).
 
 ### New Game+ races (added after Phase 16)
@@ -942,7 +942,7 @@ The expansion prompt adds roughly 10x the content in 20 phases. `docs/EXPANSION_
 - **Not done / cut:** no skill evolutions, hybrid prestige pairings or companions for these classes; the Grimoires are one each; art is the same simple sprite style. **Still to do in phase 19:** 19d, the endgame modes (Endless Spire, Divine Trials, Arena Champions league, weekly seeded challenges, Pacifist).
 
 ### Expansion phase 19d: the endgame modes
-- **Four new runs** beside Rifts and the Boss Rush, all on the endgame screen and fought as gauntlets (`engine/state/endgameActions.ts`, numbers in `data/endgameModes.ts`; **save version 22**, older saves start the records empty):
+- **Four new runs** beside Rifts and the Gauntlet of Tyrants, all on the endgame screen and fought as gauntlets (`engine/state/endgameActions.ts`, numbers in `data/endgameModes.ts`; **save version 22**, older saves start the records empty):
   - **The Endless Spire:** floors without end from level 50, 4% harder each; a guardian boss every fifth floor and a Rift twist every fifth (up to four). Leave standing and keep what you won; fall and the run ends. Your deepest floor is recorded.
   - **The Divine Trials:** one for each of the 14 gods, a single fight against their Aspect with a theme of its own (`DIVINE_TRIALS`); needs Acknowledged favor with the god; clearing all fourteen earns the title Trialsworn.
   - **The Arena Champions league:** a season is eight class champions (the arena's mentors, never your own class), harder with your rank; win the season to climb eight ranks, from Bronze to Champion (title Arena Champion of Champions).
@@ -1274,7 +1274,7 @@ Six systems that make the world change while you are away, built as sub-phases A
 
 ## Cut / deferred
 
-- **Systems and guides (2026-11-17):** "Boss Rush" kept as the mode's in-game name. Batches 4-8 were checked by unit tests and one level-60 browser pass, not screen by screen.
+- **Systems and guides (2026-11-17):** "Gauntlet of Tyrants" kept as the mode's in-game name. Batches 4-8 were checked by unit tests and one level-60 browser pass, not screen by screen.
 - **Section K:** promotion art is a mark drawn over the hero's figure (`ui/art/promotionMark.ts`: a gold hem and corner studs at Tier 2, plus a halo at Tier 3, in battle and on the inventory doll), not a redesigned sprite or portrait per tier; the dialogue portrait and the map sprite are unchanged; skill and node names are generated from the title (they read well but are not hand-written); the Shade fights are not balance-tested beyond the same stat formulas as other foes; companions cannot be promoted (their tree view hides promotion branches); the quest kill objective relies on the normal enemy-killed event firing for the special fight, which is checked by the Promotion panel itself rather than by quest progress alone.
 - **Section J:** the new evolutions reuse the base skill's art (no new visual effect per evolution; the tooltip is the description), several take their power from a flat multiplier (1.35-1.45x) plus one status, and 'heal 5-8%' stands in for skills with no damage; they are not balance-tested against Grandmaster costs (2,600 uses each), which stays an endgame goal.
 - **Section I-8c:** the 15 hybrids are not balance-tested in real play beyond the trial tuning (retuned afterwards with 12 fights per step; most trials now sit at 50-80% for the benchmark pair); none has its own art or mentor lines.
@@ -1319,7 +1319,7 @@ Six systems that make the world change while you are away, built as sub-phases A
 - **Achievement rewards** are titles, gold, pets, mounts and portrait frames. Transmog covers armor looks (weight and tier per slot); weapon skins are not built.
 - **Puzzle rooms** are the rune-stone doors in dungeons; more puzzle kinds can come later.
 - **Treasure maps** returned in expansion phase 1 (56 maps). No map seller or trader exists yet; maps come from chests and world bosses.
-- **Rift leaderboards:** there are none beyond your own best tier and Boss Rush times (no server).
+- **Rift leaderboards:** there are none beyond your own best tier and Gauntlet of Tyrants times (no server).
 - **Cloud saves:** saves stay in the browser; export and import move them by hand.
 - **Music** is procedural and short-looped by default. The optional composed music has no per-room tracks beyond three depth tiers, and a mood change fades rather than finishing the current track. The forest and bird ambience have no synthesized stand-in (the synthesized sound has only noise-based ambience); weather ambience plays only in the open. Footsteps are recorded-only (no synthesized step). The composed and recorded paths were verified in a browser for the meadow, but dungeon, lair, victory and defeat sounds are verified only by the fake-context engine test. The dynamic battle music is not true layered stems (none exist under CC0): it is a filter and, for the synthesized music, extra notes.
 

@@ -301,9 +301,9 @@ const defs: GuideDef[] = [
   {
     id: 'endgame-and-new-game-plus',
     title: 'Endgame and New Game+',
-    summary: 'Rifts, the Boss Rush, other gauntlets, New Game+ tiers and the Twilight of the Gods.',
+    summary: 'Rifts, the Gauntlet of Tyrants, other gauntlets, New Game+ tiers and the Twilight of the Gods.',
     spoiler: true,
-    keywords: ['rift', 'boss rush', 'ng+', 'heresy', 'twilight', 'spire', 'paragon'],
+    keywords: ['rift', 'gauntlet of tyrants', 'ng+', 'heresy', 'twilight', 'spire', 'paragon'],
     body: (ctx) =>
       callout('warn', `This page describes endgame systems and the New Game+ storyline.`) +
       p(`Endgame content stays out of sight until your hero reaches the level cap or finishes the story.`) +
@@ -311,7 +311,7 @@ const defs: GuideDef[] = [
       p(`From level ${RIFTS.minLevel}, take a Rift Map (sold in the Black Market) to any town's Rift Gate: ${RIFTS.waves} waves and a Rift Guardian back to back. Tiers go to ${RIFTS.maxTier}; each adds ${RIFTS.threatPerTier}% enemy HP and damage and more Magic Find. Between waves you recover ${RIFTS.respitePct}% of HP and MP. From tier ${RIFTS.primordialTier} the Guardian can drop Primordial items. Clearing a tier opens the next.`) +
       h2('Other gauntlets') +
       ul([
-        'The <b>Boss Rush</b> pits you against every dungeon boss in a row.',
+        'The <b>Gauntlet of Tyrants</b> pits you against every dungeon boss in a row.',
         'The <b>Endless Spire</b>, Divine Trials, the Arena Champions league and a weekly seeded run.',
         `Challenge modes: ${(content.challenges.all() as { id: string; name: string }[]).map((c) => ctx.linkIf('challenge', c.id, c.name)).join(', ')}.`,
       ]) +

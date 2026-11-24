@@ -1,9 +1,9 @@
 import type { EncounterDef } from '../combat/types';
 
-/** A run of fights in a row with no rest between them: a Rift or the Boss Rush. */
+/** A run of fights in a row with no rest between them: a Rift or the Gauntlet of Tyrants. */
 export interface GauntletState {
   kind: 'rift' | 'bossRush' | 'spire' | 'divine' | 'league' | 'weekly' | 'atlas' | 'daily' | 'special';
-  /** Rift tier (1 for the Boss Rush). */
+  /** Rift tier (1 for the Gauntlet of Tyrants). */
   tier: number;
   /** Fights in order; the last is the Guardian (Rifts). */
   fights: { encounter: EncounterDef; level: number }[];
@@ -11,7 +11,7 @@ export interface GauntletState {
   wave: number;
   /** Rift affixes in play. */
   affixes: string[];
-  /** Turns taken so far (the Boss Rush keeps your best). */
+  /** Turns taken so far (the Gauntlet of Tyrants keeps your best). */
   turns: number;
   gold: number;
   /** The Endless Spire: the floor you are on. */
@@ -34,7 +34,7 @@ export interface EndgameState {
   /** Highest Rift tier cleared. */
   riftTier: number;
   riftsCleared: number;
-  /** Best Boss Rush: most bosses beaten, then fewest turns for a full clear. */
+  /** Best Gauntlet of Tyrants: most bosses beaten, then fewest turns for a full clear. */
   bossRush: { best: number; bestTurns?: number; clears: number };
   /** The Endless Spire: deepest floor, and runs begun. */
   spire: { best: number; runs: number };
