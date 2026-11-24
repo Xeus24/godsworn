@@ -5,23 +5,33 @@ export type { Page } from '@playwright/test';
 /** The fold audit is always on; `FOLD_AUDIT=0` switches it off for one run (to see what a test does without it). */
 const auditing = (): boolean => process.env.FOLD_AUDIT !== '0';
 
-/** Audit mode: notes a visible element that sits inside a fold the test did not open with `reveal`. */
-async function auditVisible(locator: Locator): Promise<void> {
-  const found = await locator.first().evaluate((el) => {
+/**
+ * Notes a checked element that sits inside a fold the test did not open with `reveal`. `verb` says what the
+ * check did ("sees", "reads"). If a fold around it is closed, the player could not see what the check read.
+ */
+async function auditInside(locator: Locator, verb: string): Promise<void> {
+  const found = await locator.first().evaluate((el, verb) => {
     const d = el.closest('details');
     const revealed = (window as unknown as { __revealedFolds?: string[] }).__revealedFolds ?? [];
     const opened = (x: Element): boolean => !!x.closest('[data-revealed]') || revealed.some((t) => (x.querySelector(':scope > summary')?.textContent?.trim() ?? '').startsWith(t));
     if (!d || el.closest('summary') || opened(d)) return null;
     const where = d.querySelector(':scope > summary')?.textContent?.trim().slice(0, 40) ?? '?';
     const name = (el as HTMLInputElement).labels?.[0]?.textContent || el.getAttribute('aria-label') || el.textContent || el.tagName;
-    return `sees "${name.trim().slice(0, 40)}" inside "${where}"`;
-  }).catch(() => null);
+    let shut = false;
+    for (let x: Element | null = d; x; x = x.parentElement?.closest('details') ?? null) if (!(x as HTMLDetailsElement).open) shut = true;
+    return `${verb} "${name.trim().slice(0, 40)}" inside "${where}"${shut ? ' (the fold is closed: the player cannot see this text)' : ''}`;
+  }, verb).catch(() => null);
   if (found) await locator.page().evaluate((line) => { const w = window as unknown as { __folds?: string[] }; (w.__folds ??= []).push(line); }, found);
 }
 
+type TextExpected = string | RegExp | readonly (string | RegExp)[];
+type TextOptions = { timeout?: number; ignoreCase?: boolean; useInnerText?: boolean };
+
 /**
- * The usual `expect`, with `toBeVisible` passed through unchanged. In audit mode a passing visibility check
- * also reports an element seen inside a fold the test did not open, as clicks are reported.
+ * The usual `expect`, with `toBeVisible`, `toHaveText` and `toContainText` passed through unchanged. When one
+ * of them passes, the fold audit also notes an element it checked inside a fold the test did not open. Text
+ * checks are audited in both forms (`not.toHaveText` reads the text too): they pass even on text a closed fold
+ * hides from the player.
  */
 export const expect = baseExpect.extend({
   async toBeVisible(locator: Locator, options?: { timeout?: number; visible?: boolean }) {
@@ -32,8 +42,30 @@ export const expect = baseExpect.extend({
     } catch (e) {
       return { pass: isNot, name: 'toBeVisible', message: () => (e as Error).message };
     }
-    if (!isNot && auditing()) await auditVisible(locator);
+    if (!isNot && auditing()) await auditInside(locator, 'sees');
     return { pass: !isNot, name: 'toBeVisible', message: () => '' };
+  },
+  async toHaveText(locator: Locator, expected: TextExpected, options?: TextOptions) {
+    const isNot = this.isNot;
+    try {
+      if (isNot) await baseExpect(locator).not.toHaveText(expected as string, options);
+      else await baseExpect(locator).toHaveText(expected as string, options);
+    } catch (e) {
+      return { pass: isNot, name: 'toHaveText', message: () => (e as Error).message };
+    }
+    if (auditing()) await auditInside(locator, 'reads');
+    return { pass: !isNot, name: 'toHaveText', message: () => '' };
+  },
+  async toContainText(locator: Locator, expected: TextExpected, options?: TextOptions) {
+    const isNot = this.isNot;
+    try {
+      if (isNot) await baseExpect(locator).not.toContainText(expected as string, options);
+      else await baseExpect(locator).toContainText(expected as string, options);
+    } catch (e) {
+      return { pass: isNot, name: 'toContainText', message: () => (e as Error).message };
+    }
+    if (auditing()) await auditInside(locator, 'reads');
+    return { pass: !isNot, name: 'toContainText', message: () => '' };
   },
 });
 
@@ -63,7 +95,8 @@ export async function reveal(target: Locator): Promise<Locator> {
 
 /**
  * The fold audit: a test fails if one of its steps clicks something inside a fold it did not open with
- * `reveal`, or a passing `toBeVisible` check saw something inside one (see `expect` above). Such a step
+ * `reveal`, or a passing `toBeVisible`, `toHaveText` or `toContainText` check met something inside one
+ * (see `expect` above). Such a step
  * only works while that fold happens to be open. The failure lists the steps; give each one `reveal`.
  */
 export const test = base.extend<{ foldAudit: void }>({
