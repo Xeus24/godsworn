@@ -14,6 +14,8 @@
  *   PLAYTEST_RAGE_TACTICS=1 npm run playtest -- ng warrior   the Warrior with Rage played as Tactic Dice
  *   PLAYTEST_HARDCORE=1 npm run playtest   Hardcore heroes under the Tabletop Rules (no Last Breath: a hero at 0 HP dies).
  *       A Hardcore fall would end the game; here the run carries on as if from the last save, and the falls are counted.
+ *       Boss fights start the party at 1 HP until someone in it dies, so each run sees a death in a real battle;
+ *       the playtest fails if no run does.
  *   npm run playtest -- ng monk one class through the base story and New Game+1, with a log of every fight
  */
 import { content } from '../src/data';
@@ -111,6 +113,14 @@ function realFight(s: GameSession, id: string): boolean {
   prepare(s);
   const enc = content.encounters.find(id) ?? groupEncounter({ weight: 1, enemies: [{ enemyId: id }] }, `boss:${id}`, content.enemies.get(id).name, s.player.level, { isBoss: true });
   const b = createEncounterBattle(s.player, enc, { rng: s.rng, level: s.quests.fightLevel(enc), companions: s.party.battleMembers(), guests: s.quests.guests() });
+  // Hardcore mode: boss fights start with the whole party at 1 HP until someone in the party dies in one, so each
+  // run sees a hero die in a real battle (a boss's Domain Turn and Throne Action included) and has to carry on.
+  const forced = forceDeath && s.player.hardcore && b.combatants.some((u) => u.side === 'enemy' && (u.tier === 'boss' || u.tier === 'worldBoss'));
+  if (forced) {
+    forcedFights++;
+    for (const u of b.alive('party')) u.hp = 1;
+    if (process.env.PLAYTEST_DEBUG) console.log(`  FORCED ${id}: ${b.combatants.map((u) => `${u.name}${u.side === 'party' ? '*' : ''} ${u.tier ?? u.kind}`).join(', ')}`);
+  }
   const events = runAutoBattle(b);
   clock.bosses += SECONDS.fight + SECONDS.boss + SECONDS.hero * events.filter((e) => e.type === 'turn' && b.get(e.actorId)?.kind === 'hero').length;
   if (b.outcome !== 'victory' && process.env.PLAYTEST_TRACE) {
@@ -119,6 +129,10 @@ function realFight(s: GameSession, id: string): boolean {
     console.log(`  TRACE ${id} (${b.turnCount} turns): ${[...tally].sort((x, y) => y[1] - x[1]).slice(0, 14).map(([k, n]) => `${k} x${n}`).join(' | ')}`);
   }
   if (b.outcome !== 'victory' && process.env.PLAYTEST_DEBUG) console.log(`  LOSS ${id}: ${b.combatants.map((u) => `${u.name}${u.side === 'party' ? '*' : ''} ${Math.round(u.hp)}/${Math.round(u.maxHp)}`).join(' | ')}`);
+  if (forced && b.combatants.some((u) => u.side === 'party' && (u.kind === 'hero' || u.kind === 'companion') && !u.alive)) {
+    forcedDeaths++;
+    forceDeath = false;
+  }
   settleBattle(s, b);
   if (b.outcome === 'defeat' && s.player.hardcore) {
     // A real Hardcore hero is gone. The playtest is after crashes and stuck stories, so it carries on from the last save.
@@ -131,6 +145,11 @@ function realFight(s: GameSession, id: string): boolean {
 
 /** Hardcore mode (PLAYTEST_HARDCORE): fights a Hardcore hero lost (each would have ended that game). */
 let hardcoreFalls = 0;
+/** Hardcore mode: boss fights start the party at 1 HP until one ends in a death (reset at the start of each run). */
+let forceDeath = false;
+let forcedFights = 0;
+/** Runs in which a forced fight ended with a hero or companion dead. */
+let forcedDeaths = 0;
 
 const arg = process.argv[2];
 const ng = arg === 'ng';
@@ -144,6 +163,7 @@ let expected = 0;
 for (const [i, cls] of classes.entries()) {
   expected += ng ? 2 : 1;
   const run = (s: GameSession, tier: number) => {
+    forceDeath = !!process.env.PLAYTEST_HARDCORE;
     clock = { reading: 0, walking: 0, packs: 0, bosses: 0, levelling: 0, chores: 0 };
     return playStory(s, {
       fight: realFight,
@@ -191,6 +211,13 @@ for (const [i, cls] of classes.entries()) {
   }
 }
 // One summary line, and a failing exit code when any run did not finish, so scripts and CI can rely on it.
-const mode = process.env.PLAYTEST_HARDCORE ? ` (Hardcore, Tabletop Rules: ${hardcoreFalls} falls carried on from the last save)` : process.env.PLAYTEST_TABLETOP ? ' (Tabletop Rules)' : '';
+const mode = process.env.PLAYTEST_HARDCORE
+  ? ` (Hardcore, Tabletop Rules: ${hardcoreFalls} falls carried on from the last save; a hero or companion died in ${forcedDeaths} of ${expected} runs, after ${forcedFights} boss fights started at 1 HP)`
+  : process.env.PLAYTEST_TABLETOP ? ' (Tabletop Rules)' : '';
 console.log(`PLAYTEST: ${expected - unfinished.length} of ${expected} runs finished${mode}.${unfinished.length ? ` Not finished: ${unfinished.join('; ')}` : ''}`);
 if (unfinished.length) process.exitCode = 1;
+// Hardcore mode exists to exercise a hero dying outright: if no forced fight produced a death, it proved nothing.
+if (process.env.PLAYTEST_HARDCORE && forcedDeaths === 0) {
+  console.log('PLAYTEST: no forced fight ended in a death, so the Hardcore death path was not exercised.');
+  process.exitCode = 1;
+}
