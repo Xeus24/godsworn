@@ -20,6 +20,7 @@
     "sim:size": "tsx scripts/simulatePartySize.ts",
     "tune:hybrids": "tsx scripts/tuneHybridTrials.ts",
     "playtest": "tsx scripts/playtest.ts",
+    "test:e2e:folds": "FOLD_AUDIT=1 playwright test",
     "test:e2e": "playwright test",
     "secrets:md": "tsx scripts/secretsDoc.ts",
     "app:dev": "npm run build && electron .",

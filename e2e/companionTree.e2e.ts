@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 test('a companion\'s skill tree is an editable graph', async ({ page }) => {
   const errors: string[] = [];

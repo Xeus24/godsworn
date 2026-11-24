@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, reveal, test, type Page } from './fixtures';
 
 async function newHero(page: Page): Promise<void> {
   await page.goto('/');
@@ -73,8 +73,7 @@ test.describe('Endgame modes', () => {
     // A Divine Trial: the panel is folded to one line on the Rift Gate, so open it, face the Aspect
     // (the first trial that is open), then abandon.
     const trials = page.locator('summary', { hasText: 'The Divine Trials' });
-    await trials.click();
-    await page.getByRole('button', { name: 'Face the Aspect' }).and(page.locator(':not([disabled])')).first().click();
+    await (await reveal(page.getByRole('button', { name: 'Face the Aspect', includeHidden: true }))).and(page.locator(':not([disabled])')).first().click();
     await expect(page.getByRole('button', { name: /^Fight: / })).toBeVisible();
     await page.getByRole('button', { name: 'Abandon the run' }).click();
     await expect(trials).toBeVisible();

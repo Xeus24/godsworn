@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 test('a battle shows Foresight, the Covenant, Shove / Pull and Talk with mercy', async ({ page }) => {
   const errors: string[] = [];

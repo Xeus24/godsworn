@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, reveal, test, type Page } from './fixtures';
 
 /** New hero from the title screen, then open the inventory screen. */
 async function openInventory(page: Page): Promise<void> {
@@ -78,8 +78,8 @@ test.describe('inventory in a real browser', () => {
   });
 
   test('a stash tab sorting rule can be set from the page', async ({ page }) => {
-    await page.getByText('Sorting rule for this tab').click();
-    await page.getByLabel('Claim Materials').check();
+    // The rule sits in a fold: open it (a click on its title would close it again if it were already open).
+    await (await reveal(page.getByLabel('Claim Materials'))).check();
     await expect(page.getByLabel('Claim Materials')).toBeChecked();
     await expect(page.locator('.tabs .tab', { hasText: 'Tab 1' }).filter({ hasText: '◈' })).toHaveCount(1);
   });
