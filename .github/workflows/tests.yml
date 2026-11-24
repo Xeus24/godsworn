@@ -1,0 +1,94 @@
+name: Tests
+
+# Every push runs three jobs in parallel: the type-check, unit tests and build; the browser suite; and the full
+# playtest (every class through the story and the second walk of the Road). The fold audit is built into the
+# browser suite (e2e/fixtures.ts): a test fails if a step clicks, sees or reads something inside a folded panel
+# it did not open with reveal(). The playtest fails when any run does not reach its ending.
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    name: Type-check, unit tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type-check
+        run: npx tsc --noEmit -p .
+
+      - name: Unit tests
+        run: npx vitest run
+
+      - name: Build
+        run: npm run build
+
+  e2e:
+    name: Browser tests with the fold audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # The tests drive the installed Google Chrome (playwright.config.ts, channel: 'chrome'). GitHub's Ubuntu
+      # runners ship with it; install it only if it is missing.
+      - name: Chrome
+        run: google-chrome --version || npx playwright install --with-deps chrome
+
+      - name: Browser tests
+        run: npm run test:e2e
+
+      - name: Keep the failure snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-results
+          path: test-results/
+          retention-days: 7
+
+  playtest:
+    name: Full playtest
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Playtest (every class, then the second walk of the Road)
+        # shell: bash sets pipefail, so a failing playtest is not hidden by tee.
+        shell: bash
+        run: npm run playtest -- ng | tee playtest.log
+
+      - name: Keep the playtest log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playtest-log
+          path: playtest.log
+          retention-days: 7

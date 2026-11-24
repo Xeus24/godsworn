@@ -127,7 +127,11 @@ const only = ng ? process.argv[3] : arg;
 const classes = only ? [only] : content.classes.ids();
 console.log(`Playtest: the main story with real battles (benchmark build at each chapter level, 3 tries a fight)${ng ? ', then New Game+1' : ''}`);
 console.log(`${'class'.padEnd(13)} ${'ending'.padEnd(12)} fights  losses  result`);
+/** Runs that did not reach their ending (a stuck story, a lost fight, a walk of the Road that could not start). */
+const unfinished: string[] = [];
+let expected = 0;
 for (const [i, cls] of classes.entries()) {
+  expected += ng ? 2 : 1;
   const run = (s: GameSession, tier: number) => {
     clock = { reading: 0, walking: 0, packs: 0, bosses: 0, levelling: 0, chores: 0 };
     return playStory(s, {
@@ -160,13 +164,20 @@ for (const [i, cls] of classes.entries()) {
   const base = GameSession.newGame(300 + i + Number(process.env.PLAYTEST_SEED ?? 0), startHero);
   const r = run(base, 0);
   console.log(`${cls.padEnd(13)} ${(r.ending ?? '-').padEnd(12)} ${String(r.fights).padStart(6)}  ${String(r.losses).padStart(6)}  ${r.stuck ?? 'finished'}  ~${clockLine()}`);
+  if (r.stuck) unfinished.push(`${cls}: ${r.stuck}`);
+  if (ng && !r.ending) unfinished.push(`NG+1 ${cls}: never started (no ending)`);
   if (ng && r.ending) {
     const started = startNgPlus(r.session);
     if (!started.ok) {
       console.log(`${`  NG+1 ${cls}`.padEnd(13)} ${'-'.padEnd(12)} ${'-'.padStart(6)}  ${'-'.padStart(6)}  could not start: ${started.reason}`);
+      unfinished.push(`NG+1 ${cls}: could not start: ${started.reason}`);
       continue;
     }
     const r2 = run(r.session, 1);
     console.log(`${`  NG+1 ${cls}`.padEnd(13)} ${(r2.ending ?? '-').padEnd(12)} ${String(r2.fights).padStart(6)}  ${String(r2.losses).padStart(6)}  ${r2.stuck ?? 'finished'}  ~${clockLine()}`);
+    if (r2.stuck) unfinished.push(`NG+1 ${cls}: ${r2.stuck}`);
   }
 }
+// One summary line, and a failing exit code when any run did not finish, so scripts and CI can rely on it.
+console.log(`PLAYTEST: ${expected - unfinished.length} of ${expected} runs finished.${unfinished.length ? ` Not finished: ${unfinished.join('; ')}` : ''}`);
+if (unfinished.length) process.exitCode = 1;
