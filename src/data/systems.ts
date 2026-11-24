@@ -413,6 +413,30 @@ export const SYSTEM_LOCKS: LockDef[] = [
     unlockMessage: 'Your line will outlast you: the Sworn Bloodline is open.',
     category: 'meta',
   },
+  {
+    id: 'system:living',
+    requirement: { kind: 'ngPlus', min: 2 },
+    visibility: 'hidden',
+    hint: 'On the third walk of the Road, the dungeons begin to shift between visits.',
+    unlockMessage: 'The dungeons have begun to shift: what lurks inside stands somewhere new each time you return.',
+    category: 'world',
+  },
+  {
+    id: 'system:gambit',
+    requirement: { kind: 'ngPlus', min: 2 },
+    visibility: 'hidden',
+    hint: 'The gods play their game only with heroes on their third walk of the Road.',
+    unlockMessage: 'The gods will play their Gambit with you now, at any town shrine.',
+    category: 'gods',
+  },
+  {
+    id: 'system:testament',
+    requirement: { kind: 'ngPlus', min: 3 },
+    visibility: 'hidden',
+    hint: 'Brother Quill writes the testament only of heroes on their fourth walk of the Road.',
+    unlockMessage: 'Brother Quill has begun to write your Final Testament.',
+    category: 'meta',
+  },
 ];
 
 export const SYSTEMS: SystemDef[] = [
@@ -1387,6 +1411,43 @@ export const SYSTEMS: SystemDef[] = [
     steps: [
       { text: 'A hero who stakes everything and falls leaves an heir. See the Bloodline under Heart.', target: '[data-guide="heart:bloodline"]', view: 'heart:bloodline' },
       { text: 'The heir inherits gold, beliefs, a few habits and the favor of the old patron.' },
+    ],
+  },
+  // Games & Testament, split by walk: Shrine Defense stays at 12, the rest wait for later walks.
+  {
+    id: 'living',
+    name: 'Living Dungeons',
+    lock: 'system:living',
+    mentor: 'a whisper on the wind',
+    summary: 'Monsters and chests stand somewhere new on every visit to a dungeon.',
+    entries: ['world:living'],
+    steps: [
+      { text: 'The dungeons have begun to shift. Each time you return, their monsters and chests stand somewhere new.' },
+      { text: 'Walls, doors and the boss stay put, and nothing waits by the entrance. Old routes will not save you any more.' },
+    ],
+  },
+  {
+    id: 'gambit',
+    name: "The Gods' Gambit",
+    lock: 'system:gambit',
+    mentor: 'Sister Wenna',
+    summary: 'A game of six pieces a side against the gods, at any town shrine.',
+    entries: ['games:gambit'],
+    steps: [
+      { text: "The gods will play you at their own game. Find the Gambit on the Games & Testament page and choose an opponent.", target: '[data-guide="realm:games"]', view: 'realm:games' },
+      { text: 'Take the other Oath-keeper to win. Each god plays with its own cunning; beat them all for their respect.' },
+    ],
+  },
+  {
+    id: 'testament',
+    name: 'The Final Testament',
+    lock: 'system:testament',
+    mentor: 'Brother Quill',
+    summary: "Brother Quill's history of your hero, written from what you actually did.",
+    entries: ['games:testament'],
+    steps: [
+      { text: 'Brother Quill is writing your history from what you have truly done. Read it on the Games & Testament page.', target: '[data-guide="realm:games"]', view: 'realm:games' },
+      { text: 'It changes as you play. Copy it out whenever you like.' },
     ],
   },
 ];

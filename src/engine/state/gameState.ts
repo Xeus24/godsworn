@@ -79,7 +79,7 @@ import { createWorldState } from '../world/world';
 
 export const GAME_NAME = 'Godsworn';
 /** Bumped whenever the saved shape changes; save migrations key off this. */
-export const SAVE_VERSION = 26;
+export const SAVE_VERSION = 27;
 
 export interface SaveMeta {
   game: typeof GAME_NAME;

@@ -167,6 +167,49 @@ describe('gates that lean on story and other gates', () => {
   it('a page no system claims stays open', () => expect(newSession().guide.entryOpen('realm:no-such-page')).toBe(true));
 });
 
+describe('save version 27: old heroes keep what they could see', () => {
+  const oldSave = (level: number): GameSession => {
+    const s = newSession();
+    s.player.level = level;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    const raw = JSON.parse(serialize(s)) as { state: Record<string, unknown> };
+    // As written by the previous version: none of the newer locks recorded.
+    (raw.state.meta as { version: number }).version = 26;
+    (raw.state.unlocks as { opened: Record<string, unknown> }).opened = {};
+    (raw.state.guide as { seen: Record<string, number> }).seen = { combat: 1 };
+    const r = deserialize(JSON.stringify(raw));
+    if (!r.ok) throw new Error(r.reason);
+    return new GameSession(r.state);
+  };
+
+  it('a level-15 hero from an older save still sees every Realm page, the Pantheon and the Workshop, with no wall of guides', () => {
+    const back = oldSave(15);
+    for (const e of ['realm:waters', 'realm:sundered', 'realm:omens', 'heart:bloodline', 'games:gambit', 'nav:pantheon', 'card:Workshop']) expect(back.guide.entryOpen(e), e).toBe(true);
+    expect(back.locks.isOpen('system:living')).toBe(true);
+    expect(back.guide.current()).toBeUndefined();
+  });
+
+  it('a level-5 hero from an older save keeps the Pantheon and Workshop but not pages it never saw', () => {
+    const back = oldSave(5);
+    expect(back.guide.entryOpen('nav:pantheon')).toBe(true);
+    expect(back.guide.entryOpen('card:Workshop')).toBe(true);
+    expect(back.guide.entryOpen('realm:waters')).toBe(false);
+  });
+
+  it('a new hero meets the Gambit, the Testament and Living Dungeons only on later walks', () => {
+    const s = newSession();
+    s.player.level = 60;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.guide.entryOpen('games:gambit')).toBe(false);
+    expect(s.locks.isOpen('system:living')).toBe(false);
+    s.state.ngPlus = 2;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.guide.entryOpen('games:gambit')).toBe(true);
+    expect(s.locks.isOpen('system:living')).toBe(true);
+    expect(s.guide.entryOpen('games:testament')).toBe(false);
+  });
+});
+
 describe('save version 26', () => {
   it('an old save gains the guide record, keeps every bit of progress, and is not flooded with guides', () => {
     const s = newSession();

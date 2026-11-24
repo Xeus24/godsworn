@@ -5,7 +5,7 @@ import { hasRule } from '../character/challenges';
 import { worldLevel } from '../ngplus/ngplus';
 import { rearrange } from '../world/living';
 import { content } from '../../data';
-import { dungeonShut, zoneShut } from '../locks/locks';
+import { dungeonShut, isUnlocked, zoneShut } from '../locks/locks';
 import { HOUSE_PRICE } from '../../data/world/housing';
 import { characterStats, restoreFull } from '../character/stats';
 import type { EncounterDef } from '../combat/types';
@@ -132,7 +132,8 @@ export class WorldActions {
 
   /** Living Dungeons: put the monsters and chests where this visit has them. */
   private living(m: TileMap): void {
-    const v = this.s.trials.t.visits?.[m.id] ?? 0;
+    // Living Dungeons wait for the third walk of the Road (visit 0 keeps every room as it was built).
+    const v = isUnlocked(this.s.state, 'system:living') ? (this.s.trials.t.visits?.[m.id] ?? 0) : 0;
     if (this.shuffled.get(m.id) === v) return;
     rearrange(m, v);
     this.shuffled.set(m.id, v);

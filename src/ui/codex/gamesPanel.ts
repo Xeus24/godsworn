@@ -72,5 +72,7 @@ export function gamesPanel(s: GameSession, rerender: () => void, open: RealmView
     el('h3', {}, t.title), el('p', { class: 'dim small' }, t.byline),
     ...t.chapters.flatMap((c) => [el('h4', {}, c.title), el('p', { class: 'small' }, c.text)]),
     copy);
-  return el('div', {}, defense, chess, testament, ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []));
+  // The Gambit and the Testament belong to later walks of the Road; Shrine Defense is here from the start.
+  const later = [...(s.guide.entryOpen('games:gambit') ? [chess] : []), ...(s.guide.entryOpen('games:testament') ? [testament] : [])];
+  return el('div', {}, defense, ...later, ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []));
 }

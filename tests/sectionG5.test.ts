@@ -55,6 +55,9 @@ describe('Pantheon Chess (item 59)', () => {
   });
   it('plays a game against a god to some end', () => {
     const s = session();
+    // The Gambit belongs to the third walk of the Road.
+    expect(s.games.startChess('vex').ok).toBe(false);
+    s.state.ngPlus = 2;
     expect(s.games.startChess('vex').ok).toBe(true);
     for (let i = 0; i < 90 && s.games.game; i++) {
       const moves = legalMoves(s.games.game.board, 'you');

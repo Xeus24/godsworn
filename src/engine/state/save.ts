@@ -6,6 +6,7 @@ import { createEndgameState } from '../endgame/types';
 import { BUILD_SLOTS } from '../skills/treeTypes';
 import { emptyBuild } from '../skills/tree';
 import { createAppearanceState } from '../items/appearance';
+import { legacyLocks } from '../locks/legacy';
 import { createGameStats, GAME_NAME, GameSession, SAVE_VERSION, type GameState } from './gameState';
 
 /**
@@ -172,10 +173,28 @@ export function migrate(raw: Json): Json {
   state.world = world;
   // Version 25 (locks): a save from before the lock system opens whatever the hero already earned, silently.
   state.unlocks ??= { opened: {}, grandfathered: false } as unknown as Json;
+  // Version 27: a save from before the systems-and-guides overhaul keeps every page and service its old rules showed it.
+  const oldVersion = Number(obj(state.meta).version ?? 0);
+  if (oldVersion < 27) {
+    const op = obj(obj(state.unlocks).opened);
+    obj(state.unlocks).opened = op;
+    const legacy = obj(state.legacy);
+    const pastFirstEnd = Number(state.ngPlus ?? 0) > 0 || ((legacy.endings as unknown[]) ?? []).length > 0;
+    const day = Number(obj(state.clock).day ?? 1);
+    const g = obj(state.guide);
+    const seen = obj(g.seen);
+    for (const id of legacyLocks(Number(p.level ?? 1), pastFirstEnd)) {
+      op[id] ??= { day, source: 'legacy' };
+      for (const sys of content.systems.all()) if (sys.lock === id) seen[sys.id] ??= day;
+    }
+    g.seen = seen;
+    state.guide = g;
+  }
   // Every load catches up silently: anything that opens on the first check is content added since the save was written.
   obj(state.unlocks).grandfathered = false;
   // Version 26 (the mentor's guides): nothing seen or offered yet; systems the hero already has are settled on load.
   const guide = obj(state.guide);
+  guide.seen ??= {};
   guide.seen ??= {};
   guide.offered ??= {};
   guide.catalog ??= [];

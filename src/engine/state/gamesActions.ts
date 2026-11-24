@@ -131,6 +131,7 @@ export class GamesActions {
 
   startChess(god: string): GResult {
     if (!GOD_DEPTH[god]) return fail('That god does not play.');
+    if (!isUnlocked(this.s.state, 'system:gambit')) return fail(content.locks.get('system:gambit').hint);
     if (this.c.game) return fail('A game is on the table.');
     if (!this.s.world.inTown()) return fail('The gods play at a town’s shrine.');
     this.c.game = { god, board: START, turn: 'you', moves: 0 };
