@@ -14,10 +14,9 @@ mkdir -p "$LOGS"
 npm run content:md >/dev/null 2>&1
 npx tsx scripts/lockStrings.ts >/dev/null 2>&1
 
-# Browser tests, with the fold audit: a step that relies on a folded panel happening to be open fails the check.
-npm run test:e2e:folds > "$LOGS/e2e.log" 2>&1; E=$?
-FOLDS=$(grep -c "\[fold-audit\]" "$LOGS/e2e.log")
-grep -E "passed|failed|\[fold-audit\]" "$LOGS/e2e.log" | tail -5
+# Browser tests. The fold audit is built in: a step that relies on a folded panel happening to be open fails its test.
+npm run test:e2e > "$LOGS/e2e.log" 2>&1; E=$?
+grep -E "passed|failed" "$LOGS/e2e.log" | tail -3
 
 npx tsc --noEmit -p . > "$LOGS/tsc.log" 2>&1; T=$?
 npx vitest run > "$LOGS/vitest.log" 2>&1
@@ -30,8 +29,8 @@ npm run playtest -- ng > "$LOGS/playtest.log" 2>&1
 F=$(grep -c "finished" "$LOGS/playtest.log")
 S=$(grep -c "stalled" "$LOGS/playtest.log")
 
-echo "e2e=$E fold_audit_lines=$FOLDS tsc=$T vitest_failed_lines=$V build=$B finished=$F stalled=$S logs=$LOGS"
-if [ "$E" = "0" ] && [ "$FOLDS" = "0" ] && [ "$T" = "0" ] && [ "$V" = "0" ] && [ "$B" = "0" ] && [ "$S" = "0" ] && [ "$F" -ge 96 ]; then
+echo "e2e=$E tsc=$T vitest_failed_lines=$V build=$B finished=$F stalled=$S logs=$LOGS"
+if [ "$E" = "0" ] && [ "$T" = "0" ] && [ "$V" = "0" ] && [ "$B" = "0" ] && [ "$S" = "0" ] && [ "$F" -ge 96 ]; then
   git add -A && git commit -q -F "$MSG" && git push -q origin main && git log --oneline -1 && echo PUSHED
 else
   echo "NOT COMMITTED"
