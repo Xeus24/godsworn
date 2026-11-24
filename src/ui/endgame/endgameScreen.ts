@@ -194,6 +194,7 @@ export class EndgameScreen implements Screen {
   private render = (): void => {
     if (!this.root) return;
     const s = this.session;
+    s.guide.viewed('endgame:gate');
     this.root.replaceChildren(
       el(
         'div',
@@ -203,10 +204,16 @@ export class EndgameScreen implements Screen {
           'div',
           { class: 'codex-scroll' },
           ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
-          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, this.rifts(), this.bossRush(), this.spire(), this.league(), this.daily(), this.weekly(), foldPanel(this.atlas(), `${s.state.endgame.atlas.cleared ? Object.keys(s.state.endgame.atlas.cleared).length : 0} of ${ATLAS_NODES.length} lit`), foldPanel(this.divine(), `${DIVINE_TRIALS.filter((t) => (s.state.endgame.divine[t.god]?.clears ?? 0) > 0).length} of ${DIVINE_TRIALS.length} passed`)),
+          s.endgame.active ? this.run() : el('div', { class: 'codex-grid' }, tag(this.rifts(), 'rifts'), tag(this.bossRush(), 'bossrush'), tag(this.spire(), 'spire'), tag(this.league(), 'league'), tag(this.daily(), 'daily'), tag(this.weekly(), 'weekly'), tag(foldPanel(this.atlas(), `${s.state.endgame.atlas.cleared ? Object.keys(s.state.endgame.atlas.cleared).length : 0} of ${ATLAS_NODES.length} lit`), 'atlas'), tag(foldPanel(this.divine(), `${DIVINE_TRIALS.filter((t) => (s.state.endgame.divine[t.god]?.clears ?? 0) > 0).length} of ${DIVINE_TRIALS.length} passed`), 'divine')),
           this.btn('Back to town', () => this.back()),
         ),
       ),
     );
   };
+}
+
+/** Marks a Rift Gate panel so a guide can make it glow (`[data-guide="endgame:rifts"]` and so on). */
+function tag(node: HTMLElement, key: string): HTMLElement {
+  node.dataset.guide = `endgame:${key}`;
+  return node;
 }

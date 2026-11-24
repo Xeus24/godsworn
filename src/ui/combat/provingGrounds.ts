@@ -74,6 +74,7 @@ export class ProvingGroundsScreen implements Screen {
   private render(): void {
     if (!this.root) return;
     const s = this.session;
+    s.guide.viewed('arena');
     const p = s.player;
     const stats = characterStats(p);
     const rest = el('button', {}, 'Back to the world');
@@ -212,13 +213,13 @@ export class ProvingGroundsScreen implements Screen {
       : 'Beat a trainer in their trial, then take up their class as your secondary class.';
     return el(
       'section',
-      { class: 'panel trainers' },
+      { class: 'panel trainers', 'data-guide': 'arena:trainers' },
       el('h3', {}, 'Class Trainers'),
       el('p', { class: 'dim small' }, intro),
       ...(this.message ? [el('div', { class: 'field-error' }, this.message)] : []),
       ...(p.classes.length < slots || p.classes.length === 1 ? [el('div', { class: 'trainer-grid' }, ...classCards, ...secretCards)] : []),
       ...(hybridCards.length
-        ? [el('h3', {}, 'Hybrid Trials'), el('p', { class: 'dim small' }, `With both classes at level ${MULTICLASS.hybridLevel}, face both mentors to unlock a hybrid prestige class and its tree.`), el('div', { class: 'trainer-grid' }, ...hybridCards)]
+        ? [el('h3', { 'data-guide': 'arena:hybrids' }, 'Hybrid Trials'), el('p', { class: 'dim small' }, `With both classes at level ${MULTICLASS.hybridLevel}, face both mentors to unlock a hybrid prestige class and its tree.`), el('div', { class: 'trainer-grid' }, ...hybridCards)]
         : []),
     );
   }

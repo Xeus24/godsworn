@@ -769,8 +769,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Take up a second class after beating its trainer in a trial.',
     entries: ['class:second'],
     steps: [
-      { text: 'You are ready for a second calling. The trainers wait at the arena in any town.', target: '[data-card="Arena & Class Trainers"]' },
-      { text: 'Choose a calling and beat its trainer in a trial. Win, and its skills are yours beside your own.' },
+      { text: 'You are ready for a second calling. The trainers wait at the arena in any town.', target: '[data-card="Arena & Class Trainers"], [data-guide="arena:trainers"]', view: 'arena' },
+      { text: 'Open Class Trainers, choose a calling and beat its trainer in a trial. Win, and its skills are yours beside your own.', target: '[data-guide="arena:trainers"]' },
       { text: 'Experience is shared between your callings, so a second one grows more slowly. Choose one that covers what yours lacks.' },
     ],
   },
@@ -830,8 +830,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Two callings at level 25 and a pair trial open a prestige class that joins them.',
     entries: ['class:hybrids'],
     steps: [
-      { text: 'Two callings raised far enough can become one. The trainers at the arena will set you a pair trial.', target: '[data-card="Arena & Class Trainers"]' },
-      { text: 'Bring both callings to level 25, then beat both mentors together. The hybrid that answers carries the best of each.' },
+      { text: 'Two callings raised far enough can become one. The trainers at the arena will set you a pair trial.', target: '[data-card="Arena & Class Trainers"], [data-guide="arena:trainers"]', view: 'arena' },
+      { text: 'Under Hybrid Trials, bring both callings to level 25, then beat both mentors together. The hybrid that answers carries the best of each.', target: '[data-guide="arena:hybrids"], [data-guide="arena:trainers"]' },
     ],
   },
   // Batch 5: the wider world opens.
@@ -943,8 +943,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Every dungeon boss in a row, in the arena, for glory and rewards.',
     entries: ['endgame:bossrush'],
     steps: [
-      { text: 'The arena will set every dungeon boss you have beaten against you, one after another.' },
-      { text: 'Wounds carry over between fights. Go as far as you can; the arena pays by how far you got.' },
+      { text: 'The arena will set every dungeon boss you have beaten against you, one after another. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:bossrush"]', view: 'endgame:gate' },
+      { text: 'Wounds carry over between fights. Go as far as you can; the arena pays by how far you got.', target: '[data-guide="endgame:bossrush"]' },
     ],
   },
   {
@@ -1030,8 +1030,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Seasons of ranked arena fights against champions.',
     entries: ['endgame:league'],
     steps: [
-      { text: 'The arena keeps a league of champions. Enter your name and climb its ranks a fight at a time.' },
-      { text: 'Each season ends with rewards by rank, then the league begins again.' },
+      { text: 'The arena keeps a league of champions. Enter your name and climb its ranks a fight at a time. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:league"]', view: 'endgame:gate' },
+      { text: 'Each season ends with rewards by rank, then the league begins again.', target: '[data-guide="endgame:league"]' },
     ],
   },
   // Batch 7a: the deeper works of the world.
@@ -1043,8 +1043,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'The Rift Gate in every town: rifts, the Boss Rush, the Spire, trials and runs.',
     entries: ['card:Rift Gate & Boss Rush'],
     steps: [
-      { text: 'The deeper works of the world are open to you. Every town now has a Rift Gate.', target: '[data-card="Rift Gate & Boss Rush"]' },
-      { text: 'Behind it wait rifts, the Boss Rush, the Endless Spire and the trials of the gods. Each opens as you grow.' },
+      { text: 'The deeper works of the world are open to you. Every town now has a Rift Gate.', target: '[data-card="Rift Gate & Boss Rush"]', view: 'endgame:gate' },
+      { text: 'Behind it wait rifts, the Boss Rush, the Endless Spire and the trials of the gods. Each opens as you grow.', target: '[data-guide="endgame:rifts"], [data-guide="endgame:bossrush"], [data-guide="endgame:spire"]' },
       { text: 'Finish the story, and you may walk the Road again from the start, with all you have earned.' },
     ],
   },
@@ -1056,8 +1056,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Open a rift with a Rift Map: waves of foes, a Guardian, and tiers that climb.',
     entries: ['endgame:rifts'],
     steps: [
-      { text: 'A Rift Map tears open a rift: waves of foes from across the world, then a Guardian.' },
-      { text: 'Clear a tier to open the next. Each tier is harder, and pays better.' },
+      { text: 'A Rift Map tears open a rift: waves of foes from across the world, then a Guardian. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:rifts"]', view: 'endgame:gate' },
+      { text: 'Clear a tier to open the next. Each tier is harder, and pays better.', target: '[data-guide="endgame:rifts"]' },
     ],
   },
   {
@@ -1068,8 +1068,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Climb floor after floor; your best floor is remembered.',
     entries: ['endgame:spire'],
     steps: [
-      { text: 'The Spire has no top that anyone has seen. Climb a floor at a time.' },
-      { text: 'Your best floor is remembered, and the higher it is, the finer the reward.' },
+      { text: 'The Spire has no top that anyone has seen. Climb a floor at a time. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:spire"]', view: 'endgame:gate' },
+      { text: 'Your best floor is remembered, and the higher it is, the finer the reward.', target: '[data-guide="endgame:spire"]' },
     ],
   },
   {
@@ -1080,8 +1080,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Clear maps to light stars, then tilt the constellations toward reward or danger.',
     entries: ['endgame:atlas'],
     steps: [
-      { text: 'Every map of the Atlas you clear lights a star.' },
-      { text: 'Spend stars on the Constellation Board to tilt a constellation toward richer rewards, or greater danger.' },
+      { text: 'Every map of the Atlas you clear lights a star. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:atlas"]', view: 'endgame:gate' },
+      { text: 'Spend stars on the Constellation Board to tilt a constellation toward richer rewards, or greater danger.', target: '[data-guide="endgame:atlas"]' },
     ],
   },
   {
@@ -1092,8 +1092,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'Face the Aspect of a god in its own trial.',
     entries: ['endgame:divine'],
     steps: [
-      { text: 'Each god will test you in person: face its Aspect in a Divine Trial.' },
-      { text: 'A god you stand well with sets a fairer trial, and pays in kind.' },
+      { text: 'Each god will test you in person: face its Aspect in a Divine Trial. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:divine"]', view: 'endgame:gate' },
+      { text: 'A god you stand well with sets a fairer trial, and pays in kind.', target: '[data-guide="endgame:divine"]' },
     ],
   },
   {
@@ -1104,8 +1104,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'One trial a day, the same for everyone that day; a streak pays more.',
     entries: ['endgame:daily'],
     steps: [
-      { text: 'Each day brings one trial, set by the day itself. Try it at the Rift Gate.' },
-      { text: 'Claim its reward once a day. Come back day after day, and the streak pays more.' },
+      { text: 'Each day brings one trial, set by the day itself. Try it at the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:daily"]', view: 'endgame:gate' },
+      { text: 'Claim its reward once a day. Come back day after day, and the streak pays more.', target: '[data-guide="endgame:daily"]' },
     ],
   },
   {
@@ -1116,8 +1116,8 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'A longer run set for the whole week; beat your best.',
     entries: ['endgame:weekly'],
     steps: [
-      { text: 'Once a week a longer run is set. Everyone faces the same one.' },
-      { text: 'Your best score and fewest turns are kept. Claim the reward once each week.' },
+      { text: 'Once a week a longer run is set. Everyone faces the same one. Go through the Rift Gate in any town.', target: '[data-card="Rift Gate & Boss Rush"], [data-guide="endgame:weekly"]', view: 'endgame:gate' },
+      { text: 'Your best score and fewest turns are kept. Claim the reward once each week.', target: '[data-guide="endgame:weekly"]' },
     ],
   },
   {
@@ -1179,7 +1179,7 @@ export const SYSTEMS: SystemDef[] = [
     summary: 'A third class slot, after the High Lector\'s errand (or on a later walk of the Road).',
     entries: ['class:third'],
     steps: [
-      { text: 'You are ready for a third calling. Its trainer waits at the arena, as before.', target: '[data-card="Arena & Class Trainers"]' },
+      { text: 'You are ready for a third calling. Its trainer waits at the arena, under Class Trainers, as before.', target: '[data-card="Arena & Class Trainers"], [data-guide="arena:trainers"]', view: 'arena' },
       { text: 'Three callings share your experience three ways. Choose one that fills what the other two lack.' },
     ],
   },

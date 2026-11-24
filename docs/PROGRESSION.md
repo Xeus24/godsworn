@@ -291,6 +291,8 @@ Known deviations from the approved table, by choice: Trials & Wonders at 10 (div
 
 Level-60 check (1440x768 pane, first walk): town fits one screen; Codex > Realm shows 23 of 32 pages (the later-walk pages are out of sight); the Primer is a 369px scroll pane, page bottom at 740px.
 
+Rift Gate and arena: panels carry `data-guide` keys (`endgame:rifts` ... `endgame:divine`, `arena:trainers`, `arena:hybrids`) and the screens report `endgame:gate` and `arena`, so those guides glow the town card first and the panel once inside.
+
 Guide card: moves to the other corner when it would cover its target, and scrolls the target into view once per step.
 
 Pacing check is by the playtest's modelled hours (first walk about 16 h, later walks about 8 h each), not a measurement.
