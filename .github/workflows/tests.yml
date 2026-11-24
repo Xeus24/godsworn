@@ -56,7 +56,40 @@ jobs:
         run: google-chrome --version || npx playwright install --with-deps chrome
 
       - name: Browser tests
-        run: npm run test:e2e
+        # shell: bash sets pipefail, so a failing suite is not hidden by tee.
+        shell: bash
+        run: npm run test:e2e | tee e2e.log
+
+      # The run's summary page: test totals and the fold audit. The guard tests in e2e/foldAudit.e2e.ts break the
+      # rule on purpose (their titles start "fails a test"), so their audit lines are expected; any other is a finding.
+      - name: Browser tests and fold audit summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Browser tests and fold audit"
+            echo
+            passed=$(grep -oE '^ *[0-9]+ passed' e2e.log | grep -oE '[0-9]+' | tail -1)
+            failed=$(grep -oE '^ *[0-9]+ failed' e2e.log | grep -oE '[0-9]+' | tail -1)
+            guards=$(grep -c '^\[fold-audit\] fails a test' e2e.log || true)
+            findings=$(grep '^\[fold-audit\]' e2e.log | grep -v '^\[fold-audit\] fails a test' || true)
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Tests passed | ${passed:-0} |"
+            echo "| Tests failed | ${failed:-0} |"
+            echo "| Guard tests the audit caught (expected 3) | ${guards} of 3 |"
+            if [ -n "$findings" ]; then
+              echo "| Fold audit findings in other tests | $(grep -c . <<< "$findings") |"
+              echo
+              echo "Tests that reached into a fold they did not open with \`reveal()\`:"
+              echo
+              echo '```'
+              echo "$findings"
+              echo '```'
+            else
+              echo "| Fold audit findings in other tests | none |"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Keep the failure snapshots
         if: failure()
