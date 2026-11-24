@@ -140,7 +140,20 @@ jobs:
           {
             echo "## Hardcore Tabletop playtest"
             echo
-            grep '^PLAYTEST:' playtest-hardcore.log || echo "PLAYTEST: no summary line (the playtest stopped early; see the log)."
+            line=$(grep -m1 '^PLAYTEST:' playtest-hardcore.log || true)
+            if [ -z "$line" ]; then
+              echo "No summary line: the playtest stopped early. See the playtest-hardcore-log artifact."
+            else
+              pick() { sed -nE "s/$1/\\1/p" <<< "$line"; }
+              echo "| | |"
+              echo "|---|---|"
+              echo "| Runs finished | $(pick '^PLAYTEST: ([0-9]+ of [0-9]+) runs finished.*') |"
+              echo "| Runs where a hero or companion died (forced) | $(pick '.*died in ([0-9]+ of [0-9]+) runs.*') |"
+              echo "| Boss fights started at 1 HP | $(pick '.*after ([0-9]+) boss fights.*') |"
+              echo "| Party wipes carried on from the last save | $(pick '.*: ([0-9]+) falls carried on.*') |"
+              echo
+              grep '^PLAYTEST:' playtest-hardcore.log
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Keep the playtest log
