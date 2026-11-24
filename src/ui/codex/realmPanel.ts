@@ -58,7 +58,7 @@ export const SECTIONS: [Section, string][] = [['grudge', 'Grudgebound'], ['wheel
 /** The living world (Codex > Realm): what the realm is doing while you are away. Each section of the Innovation Pack adds a tab here. */
 export function realmPanel(session: GameSession, rerender: () => void, open: RealmView): HTMLElement {
   // Each page appears once its own system has opened (or the player chose to see everything).
-  const shown = SECTIONS.filter(([id]) => settings().showEverything || session.guide.entryOpen(`realm:${id}`, 'codex:pages'));
+  const shown = SECTIONS.filter(([id]) => settings().showEverything || session.guide.pageOpen(`realm:${id}`, 'codex:pages'));
   if (!shown.some(([id]) => id === open.section) && shown[0]) open.section = shown[0][0];
   session.guide.viewed(`realm:${open.section}`);
   const tabs = el('div', { class: 'row' }, ...shown.map(([id, label]) => {

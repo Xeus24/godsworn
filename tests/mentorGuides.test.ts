@@ -164,6 +164,19 @@ describe('gates that lean on story and other gates', () => {
     expect(s.guide.entryOpen('realm:a-page-yet-to-come', 'codex:pages')).toBe(true);
   });
 
+  it('caravans open at level 8 on their own: the Road page shows just them until level 12', () => {
+    const s = newSession();
+    s.player.level = 8;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.locks.isOpen('reveal:codex:realm')).toBe(true);
+    expect(s.guide.pageOpen('realm:road')).toBe(true);
+    expect(s.guide.entryOpen('realm:road')).toBe(false);
+    expect(s.guide.known().map((x) => x.id)).toContain('caravans');
+    s.player.level = 12;
+    s.bus.emit('stateChanged', { reason: 'test' });
+    expect(s.guide.entryOpen('realm:road')).toBe(true);
+  });
+
   it('a page no system claims stays open', () => expect(newSession().guide.entryOpen('realm:no-such-page')).toBe(true));
 });
 

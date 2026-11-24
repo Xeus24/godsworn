@@ -71,7 +71,7 @@ export type RevealKey = keyof typeof REVEAL_LEVELS;
 const REVEAL_SOONER: Partial<Record<RevealKey, { cond: Cond; hint: string }>> = {
   'tab:pantheon': { cond: { kind: 'quest', quest: 'main-1', state: 'complete' }, hint: 'The gods are listening. Answer the call of the Silent Shrine.' },
   'tab:party': { cond: { kind: 'companions', min: 1 }, hint: 'Find someone willing to walk the Road beside you.' },
-  'codex:realm': { cond: { kind: 'unlocked', lock: 'system:grudge' }, hint: 'The realm stirs around you. Something that beats you will not forget you.' },
+  'codex:realm': { cond: { kind: 'any', conds: [{ kind: 'unlocked', lock: 'system:grudge' }, { kind: 'unlocked', lock: 'road:caravan' }] }, hint: 'The realm stirs around you. Something that beats you will not forget you, and caravans will want escorts soon.' },
   'codex:heart': { cond: { kind: 'unlocked', lock: 'system:convictions' }, hint: 'What you choose on the Road will shape what you believe.' },
 };
 

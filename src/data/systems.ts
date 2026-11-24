@@ -177,7 +177,7 @@ export const SYSTEM_LOCKS: LockDef[] = [
     id: 'system:road',
     requirement: { kind: 'level', min: 12 },
     visibility: 'teased',
-    hint: 'Caravans, haunted inns and masked balls: the Road has more to it than fighting. It opens to heroes of level 12.',
+    hint: 'Haunted inns, bardic songs, masked balls and weather-working: the rest of the Road opens to heroes of level 12.',
     unlockMessage: 'The Road has more to offer than fighting now.',
     category: 'world',
   },
@@ -876,11 +876,11 @@ export const SYSTEMS: SystemDef[] = [
     name: 'The Road',
     lock: 'system:road',
     mentor: 'Sahara Longstride',
-    summary: 'Caravans, weather-working, haunted inns, bardic legends, masked balls and the price on your head.',
+    summary: 'Weather-working, haunted inns, bardic legends, masked balls and the price on your head.',
     entries: ['realm:road'],
     steps: [
-      { text: 'The Road is more than fighting. Its page under the Realm holds caravans, ghosts, songs and balls.', target: '[data-guide="realm:road"]', view: 'realm:road' },
-      { text: 'Escort a caravan between towns for pay. Later you may change the weather itself, once a day.' },
+      { text: 'The rest of the Road is open to you: ghosts in the inns, songs about your deeds, masked balls. See The Road under the Realm pages.', target: '[data-guide="realm:road"]', view: 'realm:road' },
+      { text: 'Once a day you may change the weather over a region, for a price.' },
       { text: 'Break the law in the open and hunters will come for you. A good disguise helps at a masked ball, and on the run.' },
     ],
   },
@@ -1448,6 +1448,18 @@ export const SYSTEMS: SystemDef[] = [
     steps: [
       { text: 'Brother Quill is writing your history from what you have truly done. Read it on the Games & Testament page.', target: '[data-guide="realm:games"]', view: 'realm:games' },
       { text: 'It changes as you play. Copy it out whenever you like.' },
+    ],
+  },
+  {
+    id: 'caravans',
+    name: 'Pilgrim Caravans',
+    lock: 'road:caravan',
+    mentor: 'Sahara Longstride',
+    summary: 'Escort a caravan between towns; a road event each day, pay by how much arrives intact.',
+    entries: ['realm:road/caravans'],
+    steps: [
+      { text: 'Caravan masters will hire you as an escort now. Their contracts are on The Road page, under the Realm pages.', target: '[data-guide="codex-group:World"], [data-guide="codex:realm"], [data-guide="realm:road"]', view: 'realm:road' },
+      { text: 'March a day at a time. Every day on the road brings an event; the more of the caravan that arrives intact, the better you are paid.' },
     ],
   },
 ];

@@ -51,5 +51,9 @@ export function roadPanel(s: GameSession, rerender: () => void, open: RealmView)
     el('p', { class: 'dim small' }, 'Bards sing of what you have done. Songs lift your Charisma and bargaining, and change what people say to you.'),
     ...s.road.songs().map((x) => el('p', { class: 'small' }, el('b', {}, x.name), ` ${x.verse}`)),
     town && s.road.reaction(town) ? el('p', { class: 'small' }, `In ${content.towns.get(town).name}, someone says: ${s.road.reaction(town)}`) : '');
-  return el('div', {}, wanted, ball, caravan, weather, inns, songs, ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []));
+  // Caravans open at their own level; the rest of the Road waits for its lock.
+  const parts = s.guide.entryOpen('realm:road')
+    ? [wanted, ball, caravan, weather, inns, songs]
+    : [caravan, el('p', { class: 'dim small' }, content.locks.get('system:road').hint)];
+  return el('div', {}, ...parts, ...(open.outcome ? [el('p', { class: 'small' }, open.outcome)] : []));
 }

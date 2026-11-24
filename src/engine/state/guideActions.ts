@@ -54,6 +54,15 @@ export class GuideActions {
     return !unclaimed || isUnlocked(this.s.state, unclaimed);
   }
 
+  /**
+   * Is a Codex page open? Its own system decides, but a system that claims a part of the page
+   * (an entry `realm:road/caravans`) opens the page early with just that part showing.
+   */
+  pageOpen(page: string, unclaimed?: string): boolean {
+    if (this.entryOpen(page, unclaimed)) return true;
+    return content.systems.all().some((x) => x.entries.some((e) => e.startsWith(`${page}/`)) && isUnlocked(this.s.state, x.lock));
+  }
+
   /** The guide on screen, if any. */
   current(): GuideNow | undefined {
     if (!this.active) return undefined;
