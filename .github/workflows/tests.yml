@@ -69,8 +69,8 @@ jobs:
           {
             echo "## Browser tests and fold audit"
             echo
-            passed=$(grep -oE '^ *[0-9]+ passed' e2e.log | grep -oE '[0-9]+' | tail -1)
-            failed=$(grep -oE '^ *[0-9]+ failed' e2e.log | grep -oE '[0-9]+' | tail -1)
+            passed=$(grep -oE '^ *[0-9]+ passed' e2e.log | grep -oE '[0-9]+' | tail -1 || true)
+            failed=$(grep -oE '^ *[0-9]+ failed' e2e.log | grep -oE '[0-9]+' | tail -1 || true)
             guards=$(grep -c '^\[fold-audit\] fails a test' e2e.log || true)
             findings=$(grep '^\[fold-audit\]' e2e.log | grep -v '^\[fold-audit\] fails a test' || true)
             echo "| | |"
