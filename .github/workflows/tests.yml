@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -41,9 +41,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -60,7 +60,7 @@ jobs:
 
       - name: Keep the failure snapshots
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e2e-results
           path: test-results/
@@ -71,9 +71,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -85,9 +85,27 @@ jobs:
         shell: bash
         run: npm run playtest -- ng | tee playtest.log
 
+      # The run's summary page: the PLAYTEST line, and the per-class table folded underneath.
+      - name: Playtest summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Playtest"
+            echo
+            grep '^PLAYTEST:' playtest.log || echo "PLAYTEST: no summary line (the playtest stopped early; see the log)."
+            echo
+            echo "<details><summary>Every run</summary>"
+            echo
+            echo '```'
+            grep -E 'finished|stuck|lost|could not start|no main quest' playtest.log | grep -v '^PLAYTEST:' || true
+            echo '```'
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Keep the playtest log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playtest-log
           path: playtest.log

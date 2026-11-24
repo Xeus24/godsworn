@@ -1,3 +1,4 @@
+import { roundTick } from '../src/engine/combat/tabletopRules';
 import { describe, expect, it } from 'vitest';
 import { content } from '../src/data';
 import { groupEncounter } from '../src/engine/world/world';
@@ -80,6 +81,22 @@ describe('Tabletop Rules in battle (196, 197, 205, 206, 207)', () => {
       expect(l.some((t) => t.startsWith('Domain Turn')), `tabletop ${tt}`).toBe(tt);
       expect(l.some((t) => t.startsWith('Throne Action')), `tabletop ${tt}`).toBe(tt);
     }
+  });
+
+  it('a Domain Turn that kills the last hero ends the fight instead of crashing the Throne Action', () => {
+    // Hardcore turns Last Breath off, so a hero at 0 HP dies outright and no one is left to strike.
+    const hero = benchmarkHero('warrior', 14);
+    hero.tabletop = true;
+    const b = createEncounterBattle(hero, bossEnc(), { rng: new Rng(6), level: 14 });
+    b.lastBreath = false;
+    for (const u of b.alive('party')) u.hp = 1;
+    b.round = 1;
+    b.drain();
+    expect(() => roundTick(b)).not.toThrow();
+    expect(b.alive('party')).toHaveLength(0);
+    const said = b.drain().filter((e) => e.type === 'log').map((e) => (e as { text: string }).text);
+    expect(said.some((t) => t.startsWith('Domain Turn'))).toBe(true);
+    expect(said.some((t) => t.startsWith('Throne Action'))).toBe(false);
   });
 
   it('Muse Dice: a Bard hands every ally two bonus dice', () => {

@@ -132,10 +132,14 @@ export function roundTick(b: Battle): void {
     try {
       b.log(`Domain Turn: ${domain.name}; ${domain.text}.`);
       for (const t of targets) dealDamage(b, boss, t, { element: boss.basicAttack.element, power: Math.max(1, t.maxHp * 0.015), canMiss: false, isDot: true, fromEffect: true, label: domain.name });
-      const stats = b.stats(boss);
-      const foe = b.rng.pick(b.alive('party'));
-      b.log(`Throne Action: ${boss.name} strikes ${foe.name}.`);
-      dealDamage(b, boss, foe, { element: boss.basicAttack.element, power: Math.max(stats.physicalAttack, stats.magicAttack) * 0.3, canMiss: true, fromEffect: true, label: 'Throne Action' });
+      // The Domain Turn can finish the party off: then there is no one left for the Throne Action to strike.
+      const left = b.alive('party');
+      if (left.length > 0) {
+        const stats = b.stats(boss);
+        const foe = b.rng.pick(left);
+        b.log(`Throne Action: ${boss.name} strikes ${foe.name}.`);
+        dealDamage(b, boss, foe, { element: boss.basicAttack.element, power: Math.max(stats.physicalAttack, stats.magicAttack) * 0.3, canMiss: true, fromEffect: true, label: 'Throne Action' });
+      }
     } finally {
       b.inTabletopHit = false;
     }

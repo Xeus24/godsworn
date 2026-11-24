@@ -1,5 +1,7 @@
 # Godsworn
 
+[![Tests](https://github.com/Xeus24/godsworn/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Xeus24/godsworn/actions/workflows/tests.yml)
+
 A turn-based fantasy RPG for the browser: classes and multiclassing, sprawling skill trees, a pantheon of gods to serve (or betray), procedural loot across twelve rarities, and a New Game+ arc called **Twilight of the Gods**.
 
 Built with TypeScript and Vite. There is no game engine: HTML/CSS for menus and Canvas for the world and combat.
