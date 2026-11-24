@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# The full check before a batch is committed: regenerated docs, browser tests with the fold audit,
+# type-check, unit tests, build and the full playtest. Commits everything and pushes `main` only if all pass.
+# Takes about 12 minutes: run it in the background, and do not edit files while it runs (it uses `git add -A`).
+#
+# Usage: scripts/verify-and-push.sh <commit-message-file> [log-dir]
+set -u
+MSG="${1:?usage: scripts/verify-and-push.sh <commit-message-file> [log-dir]}"
+LOGS="${2:-$(mktemp -d)}"
+cd "$(dirname "$0")/.."
+mkdir -p "$LOGS"
+[ -f "$MSG" ] || { echo "No commit message file: $MSG"; exit 2; }
+
+npm run content:md >/dev/null 2>&1
+npx tsx scripts/lockStrings.ts >/dev/null 2>&1
+
+# Browser tests, with the fold audit: a step that relies on a folded panel happening to be open fails the check.
+npm run test:e2e:folds > "$LOGS/e2e.log" 2>&1; E=$?
+FOLDS=$(grep -c "\[fold-audit\]" "$LOGS/e2e.log")
+grep -E "passed|failed|\[fold-audit\]" "$LOGS/e2e.log" | tail -5
+
+npx tsc --noEmit -p . > "$LOGS/tsc.log" 2>&1; T=$?
+npx vitest run > "$LOGS/vitest.log" 2>&1
+V=$(grep -c " failed" "$LOGS/vitest.log")
+grep -E "Tests " "$LOGS/vitest.log"
+
+npm run build > "$LOGS/build.log" 2>&1; B=$?
+
+npm run playtest -- ng > "$LOGS/playtest.log" 2>&1
+F=$(grep -c "finished" "$LOGS/playtest.log")
+S=$(grep -c "stalled" "$LOGS/playtest.log")
+
+echo "e2e=$E fold_audit_lines=$FOLDS tsc=$T vitest_failed_lines=$V build=$B finished=$F stalled=$S logs=$LOGS"
+if [ "$E" = "0" ] && [ "$FOLDS" = "0" ] && [ "$T" = "0" ] && [ "$V" = "0" ] && [ "$B" = "0" ] && [ "$S" = "0" ] && [ "$F" -ge 96 ]; then
+  git add -A && git commit -q -F "$MSG" && git push -q origin main && git log --oneline -1 && echo PUSHED
+else
+  echo "NOT COMMITTED"
+  exit 1
+fi
