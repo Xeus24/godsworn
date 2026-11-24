@@ -31,7 +31,12 @@ S=$(grep -c "stalled" "$LOGS/playtest.log")
 
 echo "e2e=$E tsc=$T vitest_failed_lines=$V build=$B finished=$F stalled=$S logs=$LOGS"
 if [ "$E" = "0" ] && [ "$T" = "0" ] && [ "$V" = "0" ] && [ "$B" = "0" ] && [ "$S" = "0" ] && [ "$F" -ge 96 ]; then
-  git add -A && git commit -q -F "$MSG" && git push -q origin main && git log --oneline -1 && echo PUSHED
+  git add -A
+  if git diff --cached --quiet; then
+    echo "ALL CHECKS PASSED. Nothing to commit."
+  else
+    git commit -q -F "$MSG" && git push -q origin main && git log --oneline -1 && echo PUSHED
+  fi
 else
   echo "NOT COMMITTED"
   exit 1
