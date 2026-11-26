@@ -130,3 +130,18 @@ Smaller notes: q-wight (L38, 78%) kills inkweaver at 0%, and voidwalker 0% again
 - Dungeon full-clear table (above): cut for time.
 - `scripts/simulateParty.ts` was not run: it measures hero plus companion across all 26 zones and was too slow to fit next to the sweeps; its coverage of dungeon bosses is boss-only.
 - The three scratch scripts are not in the repo; promote `p3sim.ts` to `scripts/` before Phase 3b if the numbers are to be re-measured.
+
+## Rift balance pass (2026-11-26)
+
+`npm run sim:rift` (`scripts/simulateRift.ts`) replaces the throwaway scratch script. It reproduced the Phase 3 numbers (tier 1/5/10/15/20: 85/65/31/13/10% against 85/67/31/14/9%). Where the failed runs died at the baseline: tier 20, 159 of 430 failures in the first wave (at full health), 105 in the second, 80 in the third, 115 at the Guardian; from tier 10, world-boss Guardians were cleared far less often than dungeon bosses (46% against 64% at tier 10).
+
+| Candidate | Settings | Tier 5 | 10 | 15 | 20 |
+|---|---|---|---|---|---|
+| Baseline | threat 8, respite 35, affixes 3/8/14, world bosses 10 | 65 | 31 | 13 | 10 |
+| A | threat 5 | 75 | 44 | 24 | 13 |
+| B | threat 4, respite 45 | 76 | 48 | 30 | 19 |
+| C | threat 5, affixes 5/11/17, world bosses 12 | 75 | 51 | 27 | 13 |
+| **D (applied)** | threat 4, respite 50, affixes 5/11/17, world bosses 12 | 75 | 60 | 38 | 20 |
+| E | threat 3.5, respite 50, affixes 6/12/18, world bosses 14 | 80 | 63 | 42 | 23 |
+
+A to C used 8 runs per class, D and E 12. D was applied (closest to the target 90 / 75 / 55 / 35 / 20%; E was a little too easy), and a run on the real data reproduces D exactly. Tier 1 is 86% for both. Outlier items 1 and 2 above (rift tiers 15 and 20) are addressed; items 3 to 5 (boss scripts) are not.

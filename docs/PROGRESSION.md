@@ -66,7 +66,7 @@ Not covered yet (Phase 1 extends it once locks are data): zone entry, class unlo
 | Issue | Size | Status |
 |---|---|---|
 | Auto-battle Cleric vs. Seryth win rate about 13% | M | closed: does not reproduce, Cleric wins 100% (Phase 3 baseline) |
-| Rift full clear about 31% at tier 10, about 9% at tier 20 (Phase 3 baseline) | M | open: Phase 3b |
+| Rift full clear about 31% at tier 10, about 9% at tier 20 (Phase 3 baseline) | M | closed: rifts retuned (section 13); 60% at tier 10, 20% at tier 20 |
 | Early game too easy (normal encounters 98.8% vs 85-95% target) | M | closed: Phase 3a |
 | Solo class spread (warrior, mage, necromancer, bard 69-73%) | M | open |
 | Edicts last 20 battles, designed as days | S-M | open |
@@ -296,3 +296,16 @@ Rift Gate and arena: panels carry `data-guide` keys (`endgame:rifts` ... `endgam
 Guide card: moves to the other corner when it would cover its target, and scrolls the target into view once per step.
 
 Pacing check is by the playtest's modelled hours (first walk about 16 h, later walks about 8 h each), not a measurement.
+
+## 13. Rift balance (2026-11-26)
+
+Baseline (Phase 3) found tier 10 at 31% and tier 20 at 10%, with half the classes at 0% at tier 20. Most failed runs died in the first ordinary wave, at full health, so the cause was the threat curve: each tier adds `threatPerTier` percent to enemy HP **and** damage, which multiply (tier 20 at 8% is about 6.3 times as tough). The measurement is now `npm run sim:rift` (`scripts/simulateRift.ts`), built on `buildRift` in `src/engine/endgame/riftRun.ts`, the same function `openRift` uses.
+
+| | Before | After |
+|---|---|---|
+| Enemy HP and damage per tier above 1 | +8% | +4% |
+| Respite between waves | 35% of HP and MP | 50% |
+| Affixes (1st, 2nd, 3rd) | tiers 3 / 8 / 14 | tiers 5 / 11 / 17 |
+| World bosses can be the Guardian | from tier 10 | from tier 12 |
+
+Full clear, solo benchmark hero at level 60, 48 classes x 12 runs, mean: tier 1 85% to 86%, tier 5 65% to 75%, tier 10 31% to 60%, tier 15 13% to 38%, tier 20 10% to 20%. Classes at 0%: none up to tier 10, 15 of 48 at tier 20 (was 24; with 8 to 12 runs a class near 20% shows 0% by chance). Target was about 90 / 75 / 55 / 35 / 20%; the benchmark hero has no Ascended or Primordial gear, so the top tiers stay hard on purpose. Rewards per tier are unchanged, so the higher tiers are reached more often. Tier 1 stays near 86% because its Guardian is a boss fight. Details and the candidates tried: `docs/baseline-sim.md`.

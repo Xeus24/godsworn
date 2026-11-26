@@ -26,19 +26,22 @@ export const RIFTS = {
   /** Enemy level: your level plus levelOffset, plus one per this many tiers. */
   levelOffset: -3,
   tiersPerLevel: 3,
-  /** Extra enemy HP and damage (percent) per tier above 1. */
-  threatPerTier: 8,
+  /**
+   * Extra enemy HP and damage (percent) per tier above 1. Both rise together, so a tier-20 enemy is about
+   * (1 + 19 x this / 100) squared times as tough: tuned with `scripts/simulateRift.ts` (docs/baseline-sim.md).
+   */
+  threatPerTier: 4,
   /** Between waves the Rift lets you catch your breath: this share (percent) of max HP and MP comes back. */
-  respitePct: 35,
+  respitePct: 50,
   /** Rift affixes rolled: one from this tier, two from the next, three from the last. */
-  affixTiers: [3, 8, 14],
+  affixTiers: [5, 11, 17],
   /** Rewards per cleared wave and for the Guardian. */
   goldPerLevelPerTier: 6,
   magicFindPerTier: 15,
   waveLootRolls: 1,
   guardianLootRolls: 3,
-  /** From this tier, world bosses can be Rift Guardians too. */
-  worldBossTier: 10,
+  /** From this tier, world bosses can be Rift Guardians too (party-sized fights, so only once heroes are strong). */
+  worldBossTier: 12,
   /** From this tier, the Guardian's loot rolls as New Game+5 (Primordials can drop). */
   primordialTier: 10,
   /** Chance (0-1) a Guardian leaves a Rift pet behind, plus this much per tier. */

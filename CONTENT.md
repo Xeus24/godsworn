@@ -5552,7 +5552,7 @@ Elites roll 1 affix, champion packs 2 (shared by the pack). Each affix adds 25% 
 <!-- endgame:start -->
 ### Rifts
 
-Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every zone, then a Rift Guardian (a dungeon boss; world bosses too from tier 10). Tiers 1–20: enemies at your level -3 +1 per 3 tiers, +8% HP and damage per tier, 35% of HP and MP back between waves. Affixes from tiers 3 / 8 / 14. Rewards: 6 gold × level × tier per wave (×3 for the Guardian), 1 elite loot roll per wave and 3 boss rolls for the Guardian, +15% Magic Find per tier; Primordials from tier 10; a Rift pet at 3% + 0.4% per tier.
+Open with a Rift Map at a town's Rift Gate (level 50+): 3 waves drawn from every zone, then a Rift Guardian (a dungeon boss; world bosses too from tier 12). Tiers 1–20: enemies at your level -3 +1 per 3 tiers, +4% HP and damage per tier, 50% of HP and MP back between waves. Affixes from tiers 5 / 11 / 17. Rewards: 6 gold × level × tier per wave (×3 for the Guardian), 1 elite loot roll per wave and 3 boss rolls for the Guardian, +15% Magic Find per tier; Primordials from tier 10; a Rift pet at 3% + 0.4% per tier.
 
 | Rift affix | Effect | Bounty |
 |---|---|---|

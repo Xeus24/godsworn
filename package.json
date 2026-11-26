@@ -17,6 +17,7 @@
     "wiki:serve": "vite wiki/dist --port 5190",
     "sim": "tsx scripts/simulate.ts",
     "sim:party": "tsx scripts/simulateParty.ts",
+    "sim:rift": "tsx scripts/simulateRift.ts",
     "sim:size": "tsx scripts/simulatePartySize.ts",
     "tune:hybrids": "tsx scripts/tuneHybridTrials.ts",
     "playtest": "tsx scripts/playtest.ts",

@@ -19,6 +19,7 @@ import { rollLoot } from '../items/loot';
 import type { ItemInstance } from '../items/types';
 import type { ModifierSpec } from '../stats/modifiers';
 import { groupEncounter } from '../world/world';
+import { buildRift } from '../endgame/riftRun';
 import type { GameSession } from './gameState';
 
 export type EndgameResult = { ok: true } | { ok: false; reason: string };
@@ -88,21 +89,7 @@ export class EndgameActions {
     const check = this.canOpenRift(tier);
     if (!check.ok) return check;
     takeHeld(this.s.state, 'rift-map', 1);
-    const rng = this.s.rng;
-    const level = this.riftLevel(tier);
-    const threat = (tier - 1) * RIFTS.threatPerTier;
-    const fights: GauntletState['fights'] = [];
-    const zones = content.zones.all();
-    for (let i = 0; i < RIFTS.waves; i++) {
-      const zone = rng.pick(zones);
-      const group = rng.weighted(zone.encounters, (g) => g.weight);
-      fights.push({ encounter: groupEncounter(group, `gauntlet:rift:${i}`, `Rift wave ${i + 1}`, level, { canFlee: true, threat }), level });
-    }
-    // World bosses (party fights) guard only the deeper tiers.
-    const guardians = [...content.dungeons.all().map((d) => d.boss), ...(tier >= RIFTS.worldBossTier ? zones.map((z) => z.worldBoss) : [])];
-    const guardian = rng.pick(guardians);
-    fights.push({ encounter: groupEncounter({ weight: 1, enemies: [{ enemyId: guardian }] }, `gauntlet:rift:${RIFTS.waves}`, `Rift Guardian: ${content.enemies.get(guardian).name}`, level, { canFlee: false, isBoss: true, threat }), level });
-    const affixes = rng.sample(RIFT_AFFIXES.map((a) => a.id), this.affixCount(tier));
+    const { fights, affixes } = buildRift(this.s.rng, this.riftLevel(tier), tier, this.affixCount(tier));
     this.e.active = { kind: 'rift', tier, fights, wave: 0, affixes, turns: 0, gold: 0 };
     this.toast('quest', `Rift tier ${tier} opens${affixes.length ? `: ${affixes.map((id) => content.riftAffixes.get(id).name).join(', ')}` : ''}.`);
     this.s.bus.emit('stateChanged', { reason: 'rift' });
